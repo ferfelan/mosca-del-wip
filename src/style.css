@@ -1,0 +1,169 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #cfe8e0;
+}
+
+#lienzo-3d {
+  position: fixed;
+  inset: 0;
+  display: block;
+}
+
+#panel {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 300px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(6px);
+  border-radius: 16px;
+  padding: 18px 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  color: #1e293b;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+}
+
+#panel h1 {
+  font-size: 18px;
+  margin: 0 0 14px;
+}
+
+#panel h2 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #64748b;
+  margin: 4px 0 8px;
+}
+
+.fila {
+  margin-bottom: 14px;
+}
+
+.fila label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+input[type='range'] {
+  width: 100%;
+}
+
+.botones {
+  display: flex;
+  gap: 6px;
+}
+
+.botones button {
+  flex: 1;
+  padding: 8px 6px;
+  border: none;
+  border-radius: 10px;
+  background: #1e293b;
+  color: white;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.botones button:hover {
+  background: #334155;
+}
+
+.botones button.activo {
+  background: #2563eb;
+}
+
+.reloj {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.barra-dia {
+  flex: 1;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+#barra-dia-relleno {
+  height: 100%;
+  width: 0%;
+  background: #60a5fa;
+  transition: width 0.2s linear;
+}
+
+.metricas {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.metrica {
+  flex: 1;
+  background: #f1f5f9;
+  border-radius: 10px;
+  padding: 8px 4px;
+  text-align: center;
+}
+
+.metrica-valor {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.metrica-label {
+  display: block;
+  font-size: 10px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+th, td {
+  text-align: center;
+  padding: 4px 2px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+th {
+  color: #64748b;
+  font-weight: 600;
+}
+
+#banner-fin-dia {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1e293b;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+#banner-fin-dia.oculto {
+  display: none;
+}

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mosca del WIP</title>
+  </head>
+  <body>
+    <canvas id="lienzo-3d"></canvas>
+
+    <div id="panel">
+      <h1>🪰 Mosca del WIP</h1>
+
+      <div class="fila">
+        <label for="wip">Tareas en curso a la vez (WIP): <strong id="wip-valor">3</strong></label>
+        <input type="range" id="wip" min="1" max="10" step="1" value="3" />
+      </div>
+
+      <div class="fila botones">
+        <button id="btn-pausa">⏸ Pausa</button>
+        <button id="btn-velocidad">x1</button>
+        <button id="btn-reiniciar">↺ Reiniciar día</button>
+      </div>
+
+      <div class="fila reloj">
+        <span id="reloj-texto">09:00</span>
+        <div class="barra-dia"><div id="barra-dia-relleno"></div></div>
+      </div>
+
+      <div class="metricas">
+        <div class="metrica">
+          <span class="metrica-valor" id="m-hechas">0</span>
+          <span class="metrica-label">Tareas terminadas</span>
+        </div>
+        <div class="metrica">
+          <span class="metrica-valor" id="m-colillas">0</span>
+          <span class="metrica-label">Colillas</span>
+        </div>
+        <div class="metrica">
+          <span class="metrica-valor" id="m-estres">Tranqui</span>
+          <span class="metrica-label">Estrés</span>
+        </div>
+      </div>
+
+      <div class="fila">
+        <h2>Días jugados</h2>
+        <table id="tabla-dias">
+          <thead>
+            <tr><th>WIP</th><th>Terminadas</th><th>Colillas</th><th>Estrés máx.</th></tr>
+          </thead>
+          <tbody id="tabla-dias-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="banner-fin-dia" class="oculto">
+      <p>🏁 Fin del día. Mira la tabla de comparación o reinicia para probar otro WIP.</p>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
