@@ -8,7 +8,7 @@ html, body {
   height: 100%;
   overflow: hidden;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #cfe8e0;
+  background: #eadfd2;
 }
 
 #lienzo-3d {
@@ -19,44 +19,47 @@ html, body {
 
 #panel {
   position: fixed;
-  top: 16px;
-  right: 16px;
-  width: 300px;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(6px);
-  border-radius: 16px;
-  padding: 18px 20px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  color: #1e293b;
-  max-height: calc(100vh - 32px);
+  top: 14px;
+  right: 14px;
+  width: 262px;
+  background: rgba(255, 252, 247, 0.9);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(180, 150, 110, 0.25);
+  border-radius: 18px;
+  padding: 16px 18px;
+  box-shadow: 0 10px 30px rgba(90, 70, 45, 0.18);
+  color: #3d3326;
+  max-height: calc(100vh - 28px);
   overflow-y: auto;
 }
 
 #panel h1 {
-  font-size: 18px;
+  font-size: 17px;
   margin: 0 0 14px;
+  color: #6b4a22;
 }
 
 #panel h2 {
-  font-size: 13px;
+  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
-  color: #64748b;
-  margin: 4px 0 8px;
+  letter-spacing: 0.06em;
+  color: #9b8569;
+  margin: 2px 0 6px;
 }
 
 .fila {
-  margin-bottom: 14px;
+  margin-bottom: 13px;
 }
 
 .fila label {
   display: block;
-  font-size: 13px;
+  font-size: 12.5px;
   margin-bottom: 6px;
 }
 
 input[type='range'] {
   width: 100%;
+  accent-color: #c4622f;
 }
 
 .botones {
@@ -66,22 +69,18 @@ input[type='range'] {
 
 .botones button {
   flex: 1;
-  padding: 8px 6px;
+  padding: 8px 4px;
   border: none;
   border-radius: 10px;
-  background: #1e293b;
-  color: white;
-  font-size: 13px;
+  background: #6b4a22;
+  color: #fff8ed;
+  font-size: 12px;
   cursor: pointer;
   transition: background 0.15s;
 }
 
 .botones button:hover {
-  background: #334155;
-}
-
-.botones button.activo {
-  background: #2563eb;
+  background: #8a6130;
 }
 
 .reloj {
@@ -95,7 +94,7 @@ input[type='range'] {
 .barra-dia {
   flex: 1;
   height: 8px;
-  background: #e2e8f0;
+  background: #e6dbca;
   border-radius: 4px;
   overflow: hidden;
 }
@@ -103,65 +102,80 @@ input[type='range'] {
 #barra-dia-relleno {
   height: 100%;
   width: 0%;
-  background: #60a5fa;
+  background: #d79a4e;
   transition: width 0.2s linear;
 }
 
 .metricas {
   display: flex;
-  gap: 8px;
-  margin-bottom: 14px;
+  gap: 7px;
+  margin-bottom: 8px;
 }
 
 .metrica {
   flex: 1;
-  background: #f1f5f9;
-  border-radius: 10px;
-  padding: 8px 4px;
+  background: #f6eee2;
+  border-radius: 11px;
+  padding: 8px 3px;
   text-align: center;
 }
 
 .metrica-valor {
   display: block;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
 }
 
 .metrica-label {
   display: block;
-  font-size: 10px;
-  color: #64748b;
+  font-size: 9.5px;
+  color: #9b8569;
   margin-top: 2px;
+}
+
+.barra-estres {
+  height: 7px;
+  background: #e6dbca;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+#barra-estres-relleno {
+  height: 100%;
+  width: 0%;
+  background: #7bc47f;
+  transition: width 0.25s linear, background 0.4s;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: 11.5px;
 }
 
 th, td {
   text-align: center;
   padding: 4px 2px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid #ece1d1;
 }
 
 th {
-  color: #64748b;
+  color: #9b8569;
   font-weight: 600;
 }
 
 #banner-fin-dia {
   position: fixed;
-  bottom: 24px;
-  left: 50%;
+  bottom: 22px;
+  left: 44%;
   transform: translateX(-50%);
-  background: #1e293b;
-  color: white;
-  padding: 12px 20px;
+  background: #6b4a22;
+  color: #fff8ed;
+  padding: 11px 20px;
   border-radius: 12px;
-  font-size: 14px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  font-size: 13.5px;
+  box-shadow: 0 8px 24px rgba(80, 55, 25, 0.3);
 }
 
 #banner-fin-dia.oculto {

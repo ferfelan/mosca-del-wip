@@ -1,46 +1,66 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
+import { texturaFondo } from './textures.js';
+
+export const CAMARA_INICIAL = {
+  posicion: new THREE.Vector3(0.42, 2.68, 2.78),
+  objetivo: new THREE.Vector3(-0.33, 1.28, -0.5),
+};
 
 export function crearEscena(canvas) {
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color('#cfe8e0');
-  scene.fog = new THREE.Fog('#cfe8e0', 10, 20);
+  scene.background = texturaFondo();
+  scene.fog = new THREE.Fog('#ecdfce', 8, 22);
 
-  const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
-  camera.position.set(2.6, 2.4, 3.6);
+  const camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 0.1, 60);
+  camera.position.copy(CAMARA_INICIAL.posicion);
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.08;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
 
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  scene.environmentIntensity = 0.38;
+
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.target.set(0, 1.1, 0.2);
+  controls.target.copy(CAMARA_INICIAL.objetivo);
   controls.enableDamping = true;
-  controls.minDistance = 2.5;
+  controls.dampingFactor = 0.08;
+  controls.minDistance = 1.6;
   controls.maxDistance = 7;
-  controls.maxPolarAngle = Math.PI / 2.05;
+  controls.maxPolarAngle = Math.PI / 2.08;
   controls.update();
 
-  const luzAmbiente = new THREE.AmbientLight('#ffffff', 0.7);
-  scene.add(luzAmbiente);
+  scene.add(new THREE.HemisphereLight('#eaf2ff', '#d6bf9c', 0.6));
 
-  const luzHemi = new THREE.HemisphereLight('#e0f2fe', '#8d7a5e', 0.5);
-  scene.add(luzHemi);
+  const luzPrincipal = new THREE.DirectionalLight('#fff0d8', 2.0);
+  luzPrincipal.position.set(3.4, 4.8, 3.2);
+  luzPrincipal.castShadow = true;
+  luzPrincipal.shadow.mapSize.set(2048, 2048);
+  luzPrincipal.shadow.camera.near = 0.5;
+  luzPrincipal.shadow.camera.far = 16;
+  luzPrincipal.shadow.camera.left = -5;
+  luzPrincipal.shadow.camera.right = 5;
+  luzPrincipal.shadow.camera.top = 5;
+  luzPrincipal.shadow.camera.bottom = -4;
+  luzPrincipal.shadow.bias = -0.0006;
+  luzPrincipal.shadow.radius = 4;
+  scene.add(luzPrincipal);
 
-  const luzSol = new THREE.DirectionalLight('#fff7e6', 1.1);
-  luzSol.position.set(4, 6, 3);
-  luzSol.castShadow = true;
-  luzSol.shadow.mapSize.set(1024, 1024);
-  luzSol.shadow.camera.near = 1;
-  luzSol.shadow.camera.far = 20;
-  luzSol.shadow.camera.left = -6;
-  luzSol.shadow.camera.right = 6;
-  luzSol.shadow.camera.top = 6;
-  luzSol.shadow.camera.bottom = -6;
-  scene.add(luzSol);
+  const relleno = new THREE.DirectionalLight('#dce8ff', 0.5);
+  relleno.position.set(-3.6, 2.4, 2.2);
+  scene.add(relleno);
+
+  const contraluz = new THREE.DirectionalLight('#ffe9c9', 0.45);
+  contraluz.position.set(-1.6, 2.6, -3.4);
+  scene.add(contraluz);
 
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;

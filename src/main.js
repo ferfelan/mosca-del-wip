@@ -1,15 +1,15 @@
 import './style.css';
-import { crearEscena } from './scene.js';
+import { crearEscena, CAMARA_INICIAL } from './scene.js';
 import { crearOficina } from './office.js';
 import { crearMosca } from './fly.js';
-import { DayBrain, nivelDeEstres } from './brain.js';
+import { DayBrain } from './brain.js';
 
 const CLAVE_STORAGE = 'mosca-del-wip-dias';
 const MIN_SIM_POR_SEG_REAL = 540 / 60; // día de 540 min simulados en 60s reales a x1
 
 const canvas = document.getElementById('lienzo-3d');
 const { scene, camera, renderer, controls } = crearEscena(canvas);
-const oficina = crearOficina(scene);
+const oficina = crearOficina(scene, { anisotropia: renderer.capabilities.getMaxAnisotropy() });
 const mosca = crearMosca(scene);
 
 const elWip = document.getElementById('wip');
@@ -22,6 +22,7 @@ const elBarraDia = document.getElementById('barra-dia-relleno');
 const elHechas = document.getElementById('m-hechas');
 const elColillas = document.getElementById('m-colillas');
 const elEstres = document.getElementById('m-estres');
+const elBarraEstres = document.getElementById('barra-estres-relleno');
 const elTablaBody = document.getElementById('tabla-dias-body');
 const elBanner = document.getElementById('banner-fin-dia');
 
@@ -29,6 +30,7 @@ const VELOCIDADES = [1, 2, 4];
 let indiceVelocidad = 0;
 let pausado = false;
 let diaYaRegistrado = false;
+let colillasPintadas = 0;
 
 let juego = new DayBrain(Number(elWip.value));
 
@@ -40,13 +42,6 @@ function cargarDias() {
   }
 }
 
-function guardarDia(resumen) {
-  const dias = cargarDias();
-  dias.push(resumen);
-  localStorage.setItem(CLAVE_STORAGE, JSON.stringify(dias));
-  pintarTabla(dias);
-}
-
 function pintarTabla(dias) {
   elTablaBody.innerHTML = '';
   dias.forEach((d) => {
@@ -54,6 +49,13 @@ function pintarTabla(dias) {
     tr.innerHTML = `<td>${d.wip}</td><td>${d.hechas}</td><td>${d.colillas}</td><td>${d.estresMax}</td>`;
     elTablaBody.appendChild(tr);
   });
+}
+
+function guardarDia(resumen) {
+  const dias = cargarDias();
+  dias.push(resumen);
+  localStorage.setItem(CLAVE_STORAGE, JSON.stringify(dias));
+  pintarTabla(dias);
 }
 
 pintarTabla(cargarDias());
@@ -76,11 +78,10 @@ elBtnVelocidad.addEventListener('click', () => {
 elBtnReiniciar.addEventListener('click', () => {
   juego = new DayBrain(Number(elWip.value));
   diaYaRegistrado = false;
+  colillasPintadas = 0;
   elBanner.classList.add('oculto');
   oficina.limpiarColillas();
 });
-
-let colillasPintadas = 0;
 
 function refrescarUI(estado) {
   elReloj.textContent = estado.hora;
@@ -89,6 +90,8 @@ function refrescarUI(estado) {
   elColillas.textContent = estado.colillas;
   elEstres.textContent = estado.nivel.nombre;
   elEstres.style.color = estado.nivel.color;
+  elBarraEstres.style.width = `${Math.round(estado.estres)}%`;
+  elBarraEstres.style.background = estado.nivel.color;
 
   oficina.actualizarKanban(estado);
   oficina.actualizarReloj(estado.fraccionDelDia);
@@ -105,25 +108,62 @@ function refrescarUI(estado) {
   }
 }
 
-const reloj3js = { ultimo: performance.now() };
+let ultimoTiempo = performance.now();
 
 function animar() {
   requestAnimationFrame(animar);
   const ahora = performance.now();
-  const dtReal = Math.min((ahora - reloj3js.ultimo) / 1000, 0.1);
-  reloj3js.ultimo = ahora;
+  const dtReal = Math.min((ahora - ultimoTiempo) / 1000, 0.1);
+  ultimoTiempo = ahora;
 
-  if (!pausado && !juego.estado().terminado) {
-    const velocidad = VELOCIDADES[indiceVelocidad];
-    juego.tick(dtReal * MIN_SIM_POR_SEG_REAL * velocidad);
+  if (!pausado && !juego.terminado) {
+    juego.tick(dtReal * MIN_SIM_POR_SEG_REAL * VELOCIDADES[indiceVelocidad]);
   }
 
   const estado = juego.estado();
   refrescarUI(estado);
-  mosca.update(dtReal, { fumando: estado.fumando, nivel: estado.nivel.nombre });
+  mosca.update(dtReal, { fumando: estado.fumando, estres: estado.estres / 100 });
 
   controls.update();
   renderer.render(scene, camera);
 }
 
 animar();
+
+if (import.meta.env.DEV) {
+  window.__mosca = {
+    escena: scene,
+    estado: () => juego.estado(),
+    setWip(v) {
+      elWip.value = String(v);
+      elWip.dispatchEvent(new Event('input'));
+    },
+    forzar({ estres, fumando, colillas, hechas } = {}) {
+      if (estres !== undefined) {
+        juego.estres = estres;
+        juego.estresMax = Math.max(juego.estresMax, estres);
+      }
+      if (fumando !== undefined) {
+        juego.fumando = fumando;
+        juego.minutosFumadaRestantes = fumando ? 1e6 : 0;
+      }
+      if (colillas !== undefined) juego.colillas = colillas;
+      if (hechas !== undefined) {
+        while (juego.hechas.length < hechas && juego.porHacer.length) juego.hechas.push(juego.porHacer.shift());
+      }
+    },
+    pausar(v) {
+      pausado = v;
+    },
+    camara(pos, objetivo) {
+      camera.position.set(...pos);
+      controls.target.set(...(objetivo ?? CAMARA_INICIAL.objetivo.toArray()));
+      controls.update();
+    },
+    reencuadrar() {
+      camera.position.copy(CAMARA_INICIAL.posicion);
+      controls.target.copy(CAMARA_INICIAL.objetivo);
+      controls.update();
+    },
+  };
+}
