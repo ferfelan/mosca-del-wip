@@ -2,10 +2,10 @@
 // Todo lo visual lee el estado que produce esta clase.
 
 export const NIVELES_ESTRES = [
-  { max: 25, nombre: 'Tranqui', color: '#4ade80' },
-  { max: 50, nombre: 'Ocupada', color: '#facc15' },
-  { max: 75, nombre: 'Estresada', color: '#fb923c' },
-  { max: 101, nombre: 'Colapsada', color: '#f87171' },
+  { max: 25, nombre: 'Tranqui', color: '#4f9d6a' },
+  { max: 50, nombre: 'Ocupada', color: '#c99a1e' },
+  { max: 75, nombre: 'Estresada', color: '#d9732e' },
+  { max: 101, nombre: 'Colapsada', color: '#cc4a43' },
 ];
 
 export function nivelDeEstres(estres) {

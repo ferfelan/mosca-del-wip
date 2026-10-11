@@ -3,6 +3,7 @@ import { crearEscena, CAMARA_INICIAL } from './scene.js';
 import { crearOficina } from './office.js';
 import { crearMosca } from './fly.js';
 import { DayBrain } from './brain.js';
+import { revisarChoques } from './choques.js';
 
 const CLAVE_STORAGE = 'mosca-del-wip-dias';
 const MIN_SIM_POR_SEG_REAL = 540 / 60; // día de 540 min simulados en 60s reales a x1
@@ -25,10 +26,12 @@ const elEstres = document.getElementById('m-estres');
 const elBarraEstres = document.getElementById('barra-estres-relleno');
 const elTablaBody = document.getElementById('tabla-dias-body');
 const elBanner = document.getElementById('banner-fin-dia');
+const elWipNota = document.getElementById('wip-nota');
 
 const VELOCIDADES = [1, 2, 4];
 let indiceVelocidad = 0;
 let pausado = false;
+let congelado = false; // sólo para capturas: deja la animación quieta
 let diaYaRegistrado = false;
 let colillasPintadas = 0;
 
@@ -44,6 +47,10 @@ function cargarDias() {
 
 function pintarTabla(dias) {
   elTablaBody.innerHTML = '';
+  if (!dias.length) {
+    elTablaBody.innerHTML = '<tr class="vacia"><td colspan="4">Juega un día completo para comparar</td></tr>';
+    return;
+  }
   dias.forEach((d) => {
     const tr = document.createElement('tr');
     tr.innerHTML = `<td>${d.wip}</td><td>${d.hechas}</td><td>${d.colillas}</td><td>${d.estresMax}</td>`;
@@ -60,14 +67,26 @@ function guardarDia(resumen) {
 
 pintarTabla(cargarDias());
 
+function pintarWip() {
+  const v = Number(elWip.value);
+  elWipValor.textContent = v;
+  elWip.style.setProperty('--relleno', `${((v - 1) / 9) * 100}%`);
+  const sano = v <= 3;
+  elWipNota.textContent = sano ? 'Dentro del límite sano' : 'Sobre el límite sano (3)';
+  elWipNota.classList.toggle('alerta', !sano);
+  document.getElementById('panel').classList.toggle('wip-alto', !sano);
+}
+
 elWip.addEventListener('input', () => {
-  elWipValor.textContent = elWip.value;
+  pintarWip();
   juego.setWip(Number(elWip.value));
 });
+pintarWip();
 
 elBtnPausa.addEventListener('click', () => {
   pausado = !pausado;
-  elBtnPausa.textContent = pausado ? '▶ Reanudar' : '⏸ Pausa';
+  elBtnPausa.textContent = pausado ? 'Reanudar' : 'Pausa';
+  elBtnPausa.classList.toggle('activo', pausado);
 });
 
 elBtnVelocidad.addEventListener('click', () => {
@@ -83,7 +102,7 @@ elBtnReiniciar.addEventListener('click', () => {
   oficina.limpiarColillas();
 });
 
-function refrescarUI(estado) {
+function refrescarUI(estado, cigarroEnMano) {
   elReloj.textContent = estado.hora;
   elBarraDia.style.width = `${Math.round(estado.fraccionDelDia * 100)}%`;
   elHechas.textContent = estado.hechas;
@@ -96,7 +115,9 @@ function refrescarUI(estado) {
   oficina.actualizarKanban(estado);
   oficina.actualizarReloj(estado.fraccionDelDia);
 
-  while (colillasPintadas < estado.colillasVisibles) {
+  // El cigarro que la mosca tiene en la mano llega al cenicero cuando lo termina
+  const colillasEnCenicero = Math.max(0, estado.colillasVisibles - (cigarroEnMano ? 1 : 0));
+  while (colillasPintadas < colillasEnCenicero) {
     oficina.agregarColilla();
     colillasPintadas++;
   }
@@ -121,8 +142,8 @@ function animar() {
   }
 
   const estado = juego.estado();
-  refrescarUI(estado);
-  mosca.update(dtReal, { fumando: estado.fumando, estres: estado.estres / 100 });
+  if (!congelado) mosca.update(dtReal, { fumando: estado.fumando, estres: estado.estres / 100 });
+  refrescarUI(estado, mosca.cigarroEnMano());
 
   controls.update();
   renderer.render(scene, camera);
@@ -155,11 +176,24 @@ if (import.meta.env.DEV) {
     pausar(v) {
       pausado = v;
     },
+    congelar(v) {
+      congelado = v;
+    },
     camara(pos, objetivo) {
       camera.position.set(...pos);
       controls.target.set(...(objetivo ?? CAMARA_INICIAL.objetivo.toArray()));
       controls.update();
     },
+    // Avanza sólo la animación de la mosca (sin el reloj del juego), útil para
+    // capturas en un navegador lento.
+    avanzar(segundos, paso = 1 / 60) {
+      const estado = juego.estado();
+      for (let t = 0; t < segundos; t += paso) {
+        mosca.update(paso, { fumando: estado.fumando, estres: estado.estres / 100 });
+      }
+      refrescarUI(estado, mosca.cigarroEnMano());
+    },
+    choques: (opciones) => revisarChoques(scene, opciones),
     reencuadrar() {
       camera.position.copy(CAMARA_INICIAL.posicion);
       controls.target.copy(CAMARA_INICIAL.objetivo);

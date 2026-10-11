@@ -9,18 +9,30 @@ import {
   texturaMadera,
 } from './textures.js';
 
-export const ALTO_ESCRITORIO = 0.95;
-export const POS_CENICERO = new THREE.Vector3(-0.28, ALTO_ESCRITORIO, 0.16);
+import {
+  ALTO_ESCRITORIO,
+  ESCRITORIO,
+  POS_MONITOR,
+  ROT_MONITOR,
+  TECLADO,
+  POS_MOUSE,
+  POS_MOUSEPAD,
+  POS_CENICERO,
+  POS_TAZA,
+  MOSCA,
+} from './layout.js';
+
+export { ALTO_ESCRITORIO };
 
 const COLORES = {
-  pared: '#ead9c4',
-  zocalo: '#f6ece0',
+  pared: '#d9e0d2',
+  zocalo: '#f3f1ea',
   piso: '#e8d3b4',
   alfombra: '#dfc2c0',
   metal: '#3a4350',
   plastico: '#262c35',
-  ceramica: '#e7e0d2',
-  ceniza: '#4b4640',
+  ceramica: '#2f7579',
+  ceniza: '#8c8780',
 };
 
 function malla(geo, mat, { x = 0, y = 0, z = 0, sombra = true, recibe = false } = {}) {
@@ -31,29 +43,58 @@ function malla(geo, mat, { x = 0, y = 0, z = 0, sombra = true, recibe = false } 
   return m;
 }
 
+const LARGO_COLILLA = 0.096;
+const RADIO_COLILLA = 0.016;
+
 function crearColilla() {
   const g = new THREE.Group();
-  const papel = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.021, 0.021, 0.1, 10),
-    new THREE.MeshStandardMaterial({ color: '#f6f3ec', roughness: 0.85 })
-  );
-  g.add(papel);
-  const filtro = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.022, 0.022, 0.042, 10),
-    new THREE.MeshStandardMaterial({ color: '#d4a263', roughness: 0.9 })
-  );
-  filtro.position.y = -0.07;
-  g.add(filtro);
-  const quemado = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.019, 0.021, 0.022, 10),
-    new THREE.MeshStandardMaterial({ color: '#2f2a26', roughness: 1 })
-  );
-  quemado.position.y = 0.06;
-  g.add(quemado);
-  g.traverse((o) => {
-    o.castShadow = true;
+  const L = LARGO_COLILLA;
+  const partes = [
+    [0.035, '#d9a35f', -L / 2 + 0.0175],
+    [0.049, '#f6f3ec', -L / 2 + 0.035 + 0.0245],
+    [0.012, '#3a332d', L / 2 - 0.006],
+  ];
+  partes.forEach(([largo, color, y]) => {
+    const m = new THREE.Mesh(
+      new THREE.CylinderGeometry(RADIO_COLILLA, RADIO_COLILLA, largo, 12),
+      new THREE.MeshStandardMaterial({ color, roughness: 0.9 })
+    );
+    m.position.y = y;
+    m.castShadow = true;
+    m.userData.colilla = true;
+    g.add(m);
   });
   return g;
+}
+
+// Dónde cae cada colilla dentro del cenicero: primero un anillo apoyado en el
+// borde, luego otro encima, y al final un montoncito en el centro.
+const SUELO_CENICERO = 0.019;
+function ubicacionColilla(n) {
+  const capas = [
+    { cuantas: 6, giro: 10, adentro: [0.035, 0.035], afuera: [0.128, 0.06] },
+    { cuantas: 6, giro: 40, adentro: [0.05, 0.066], afuera: [0.14, 0.086] },
+    { cuantas: 5, giro: 15, adentro: [0.032, 0.106], afuera: [0.122, 0.121] },
+  ];
+  let i = n;
+  for (const c of capas) {
+    if (i < c.cuantas) {
+      const a = ((c.giro + (i * 360) / c.cuantas) * Math.PI) / 180;
+      const dir = new THREE.Vector3(Math.cos(a), 0, Math.sin(a));
+      const pIn = dir.clone().multiplyScalar(c.adentro[0]).setY(c.adentro[1]);
+      const pOut = dir.clone().multiplyScalar(c.afuera[0]).setY(c.afuera[1]);
+      return { filtro: pOut, punta: pIn };
+    }
+    i -= c.cuantas;
+  }
+  // Encima de todo: cruzadas sobre el centro
+  const a = (i * 60 * Math.PI) / 180 + 0.3;
+  const dir = new THREE.Vector3(Math.cos(a), 0, Math.sin(a));
+  const y = 0.142 + i * 0.03;
+  return {
+    filtro: dir.clone().multiplyScalar(LARGO_COLILLA / 2).setY(y),
+    punta: dir.clone().multiplyScalar(-LARGO_COLILLA / 2).setY(y),
+  };
 }
 
 export function crearOficina(scene, { anisotropia = 4 } = {}) {
@@ -199,35 +240,50 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
   oficina.add(planta);
 
   // ---------- Escritorio ----------
+  const solido = (m) => {
+    m.userData.solido = 'oficina';
+    return m;
+  };
   const maderaTex = texturaMadera();
   maderaTex.anisotropy = anisotropia;
-  const tablero = malla(
-    new RoundedBoxGeometry(3.4, 0.1, 1.15, 4, 0.035),
-    new THREE.MeshStandardMaterial({ map: maderaTex, color: '#ffffff', roughness: 0.6 }),
-    { x: -0.4, y: ALTO_ESCRITORIO - 0.05, z: -0.12, recibe: true }
+  const tablero = solido(
+    malla(
+      new RoundedBoxGeometry(ESCRITORIO.ancho, 0.1, ESCRITORIO.fondo, 4, 0.035),
+      new THREE.MeshStandardMaterial({ map: maderaTex, color: '#ffffff', roughness: 0.6 }),
+      { x: ESCRITORIO.x, y: ALTO_ESCRITORIO - 0.05, z: ESCRITORIO.z, recibe: true }
+    )
   );
   oficina.add(tablero);
 
   const patas = new THREE.MeshStandardMaterial({ color: '#a9793f', roughness: 0.7 });
+  const mx = ESCRITORIO.ancho / 2 - 0.1;
+  const mz = ESCRITORIO.fondo / 2 - 0.08;
   [
-    [-2.0, -0.62],
-    [1.15, -0.62],
-    [-2.0, 0.38],
-    [1.15, 0.38],
+    [-mx, -mz],
+    [mx, -mz],
+    [-mx, mz],
+    [mx, mz],
   ].forEach(([x, z]) => {
     oficina.add(
-      malla(new RoundedBoxGeometry(0.1, 0.9, 0.1, 2, 0.025), patas, { x, y: 0.45, z, recibe: true })
+      solido(
+        malla(new RoundedBoxGeometry(0.1, 0.9, 0.1, 2, 0.025), patas, {
+          x: ESCRITORIO.x + x,
+          y: 0.45,
+          z: ESCRITORIO.z + z,
+          recibe: true,
+        })
+      )
     );
   });
 
-  // ---------- Monitor ----------
+  // ---------- Monitor (girado entre la mosca y la cámara) ----------
   const monitor = new THREE.Group();
-  monitor.position.set(0.12, ALTO_ESCRITORIO, -0.5);
-  monitor.rotation.y = -0.45;
+  monitor.position.copy(POS_MONITOR);
+  monitor.rotation.y = ROT_MONITOR;
   const matMonitor = new THREE.MeshStandardMaterial({ color: COLORES.plastico, roughness: 0.45 });
-  monitor.add(malla(new RoundedBoxGeometry(0.44, 0.04, 0.28, 2, 0.015), matMonitor, { y: 0.02, recibe: true }));
-  monitor.add(malla(new RoundedBoxGeometry(0.075, 0.28, 0.06, 2, 0.02), matMonitor, { y: 0.16 }));
-  monitor.add(malla(new RoundedBoxGeometry(0.98, 0.63, 0.05, 3, 0.026), matMonitor, { y: 0.63 }));
+  monitor.add(solido(malla(new RoundedBoxGeometry(0.44, 0.04, 0.28, 2, 0.015), matMonitor, { y: 0.02, recibe: true })));
+  monitor.add(solido(malla(new RoundedBoxGeometry(0.075, 0.28, 0.06, 2, 0.02), matMonitor, { y: 0.16 })));
+  monitor.add(solido(malla(new RoundedBoxGeometry(0.98, 0.63, 0.05, 3, 0.026), matMonitor, { y: 0.63 })));
 
   const { ctx: kanbanCtx, textura: kanbanTextura } = crearTexturaKanban(anisotropia);
   dibujarKanban(kanbanCtx, { porHacer: 0, enCurso: 0, hechas: 0, hora: '09:00' });
@@ -240,46 +296,52 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
   monitor.add(pantalla);
   oficina.add(monitor);
 
-  // ---------- Mousepad, teclado y mouse ----------
+  // ---------- Mousepad, teclado y mouse (frente a la mosca) ----------
   const mousepad = malla(
-    new RoundedBoxGeometry(1.15, 0.012, 0.44, 2, 0.006),
+    new RoundedBoxGeometry(0.98, 0.012, 0.4, 2, 0.006),
     new THREE.MeshStandardMaterial({ color: '#56657a', roughness: 0.95 }),
-    { x: -0.72, y: ALTO_ESCRITORIO + 0.006, z: -0.4, sombra: false, recibe: true }
+    { x: POS_MOUSEPAD.x, y: ALTO_ESCRITORIO + 0.006, z: POS_MOUSEPAD.z, sombra: false, recibe: true }
   );
-  mousepad.rotation.y = 0.75;
+  mousepad.rotation.y = TECLADO.rot;
   oficina.add(mousepad);
 
   const teclado = new THREE.Group();
-  teclado.position.set(-0.84, ALTO_ESCRITORIO + 0.012, -0.44);
-  teclado.rotation.y = 0.75;
+  teclado.position.copy(TECLADO.pos).setY(ALTO_ESCRITORIO + 0.012);
+  teclado.rotation.y = TECLADO.rot;
   teclado.add(
-    malla(new RoundedBoxGeometry(0.64, 0.035, 0.24, 2, 0.012), new THREE.MeshStandardMaterial({ color: '#2f343d', roughness: 0.6 }), {
-      y: 0.018,
-      recibe: true,
-    })
+    solido(
+      malla(
+        new RoundedBoxGeometry(TECLADO.ancho, 0.035, TECLADO.fondo, 2, 0.012),
+        new THREE.MeshStandardMaterial({ color: '#2f343d', roughness: 0.6 }),
+        { y: 0.0175, recibe: true }
+      )
+    )
   );
   const tapaTeclas = malla(
-    new THREE.PlaneGeometry(0.6, 0.21),
+    new THREE.PlaneGeometry(TECLADO.ancho - 0.03, TECLADO.fondo - 0.025),
     new THREE.MeshStandardMaterial({ map: texturaTeclado(), roughness: 0.7 }),
-    { y: 0.037, sombra: false }
+    { y: 0.0365, sombra: false, recibe: true }
   );
   tapaTeclas.rotation.x = -Math.PI / 2;
   teclado.add(tapaTeclas);
   oficina.add(teclado);
 
-  const mouse = malla(
-    new THREE.SphereGeometry(1, 16, 12),
-    new THREE.MeshStandardMaterial({ color: '#3b424d', roughness: 0.5 }),
-    { x: -0.32, y: ALTO_ESCRITORIO + 0.03, z: -0.3 }
+  const mouse = solido(
+    malla(new THREE.SphereGeometry(1, 16, 12), new THREE.MeshStandardMaterial({ color: '#3b424d', roughness: 0.5 }), {
+      x: POS_MOUSE.x,
+      y: ALTO_ESCRITORIO + 0.012,
+      z: POS_MOUSE.z,
+    })
   );
-  mouse.scale.set(0.05, 0.022, 0.075);
+  mouse.scale.set(0.05, 0.024, 0.075);
+  mouse.rotation.y = MOSCA.rumbo;
   oficina.add(mouse);
 
   // ---------- Taza ----------
   const taza = new THREE.Group();
-  taza.position.set(0.52, ALTO_ESCRITORIO, 0.18);
+  taza.position.copy(POS_TAZA);
   const matTaza = new THREE.MeshStandardMaterial({ color: '#f3f0e8', roughness: 0.35 });
-  taza.add(malla(new THREE.CylinderGeometry(0.085, 0.072, 0.13, 22), matTaza, { y: 0.065, recibe: true }));
+  taza.add(solido(malla(new THREE.CylinderGeometry(0.085, 0.072, 0.13, 22), matTaza, { y: 0.065, recibe: true })));
   const asa = malla(new THREE.TorusGeometry(0.045, 0.014, 10, 20, Math.PI * 1.3), matTaza, { x: 0.095, y: 0.07 });
   asa.rotation.y = Math.PI / 2;
   taza.add(asa);
@@ -291,27 +353,34 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
   );
   oficina.add(taza);
 
-  // ---------- Cenicero ----------
+  // ---------- Cenicero: cerámica con hueco de verdad ----------
   const cenicero = new THREE.Group();
   cenicero.position.copy(POS_CENICERO);
-  const matCeramica = new THREE.MeshStandardMaterial({ color: COLORES.ceramica, roughness: 0.3, metalness: 0.05 });
-  cenicero.add(malla(new THREE.CylinderGeometry(0.21, 0.19, 0.05, 28), matCeramica, { y: 0.025, recibe: true }));
-  cenicero.add(
-    malla(new THREE.CylinderGeometry(0.168, 0.15, 0.055, 28), new THREE.MeshStandardMaterial({ color: '#8d8578', roughness: 0.95 }), {
-      y: 0.036,
-      sombra: false,
-      recibe: true,
-    })
+  const perfilCenicero = [
+    [0, 0],
+    [0.16, 0],
+    [0.172, 0.008],
+    [0.176, 0.045],
+    [0.169, 0.062],
+    [0.156, 0.067],
+    [0.144, 0.061],
+    [0.128, 0.026],
+    [0.118, SUELO_CENICERO],
+    [0, SUELO_CENICERO],
+  ].map(([r, y]) => new THREE.Vector2(r, y));
+  const cuenco = solido(
+    malla(
+      new THREE.LatheGeometry(perfilCenicero, 48),
+      new THREE.MeshStandardMaterial({ color: COLORES.ceramica, roughness: 0.25, metalness: 0.05, side: THREE.DoubleSide }),
+      { recibe: true }
+    )
   );
-  const borde = malla(new THREE.TorusGeometry(0.2, 0.023, 10, 30), matCeramica, { y: 0.05 });
-  borde.rotation.x = Math.PI / 2;
-  cenicero.add(borde);
+  cenicero.add(cuenco);
   const ceniza = malla(
-    new THREE.SphereGeometry(0.13, 16, 10),
+    new THREE.CylinderGeometry(1, 1.15, 1, 28),
     new THREE.MeshStandardMaterial({ color: COLORES.ceniza, roughness: 1 }),
-    { y: 0.04, sombra: false }
+    { y: SUELO_CENICERO, sombra: false, recibe: true }
   );
-  ceniza.scale.set(1, 0.12, 1);
   ceniza.visible = false;
   cenicero.add(ceniza);
   oficina.add(cenicero);
@@ -320,23 +389,17 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
   function agregarColilla() {
     const n = colillas.length;
     const colilla = crearColilla();
-    colilla.scale.setScalar(0.85);
-    if (n < 9) {
-      const a = Math.random() * Math.PI * 2;
-      const r = 0.03 + Math.random() * 0.1;
-      colilla.position.set(Math.cos(a) * r, 0.055 + n * 0.009, Math.sin(a) * r);
-      colilla.rotation.set(Math.PI / 2 + (Math.random() - 0.5) * 0.18, Math.random() * Math.PI * 2, 0);
-    } else {
-      const a = Math.random() * Math.PI * 2;
-      const r = 0.26 + Math.random() * 0.16;
-      colilla.position.set(Math.cos(a) * r, 0.021, Math.sin(a) * r);
-      colilla.rotation.set(Math.PI / 2, Math.random() * Math.PI * 2, 0);
-    }
+    const { filtro, punta } = ubicacionColilla(n);
+    colilla.position.addVectors(filtro, punta).multiplyScalar(0.5);
+    colilla.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), punta.clone().sub(filtro).normalize());
+    colilla.rotateY(Math.random() * Math.PI * 2);
     cenicero.add(colilla);
     colillas.push(colilla);
     ceniza.visible = true;
-    const crecer = Math.min(1, 0.4 + colillas.length * 0.07);
-    ceniza.scale.set(crecer, 0.12 + colillas.length * 0.012, crecer);
+    const r = Math.min(0.112, 0.05 + n * 0.006);
+    const alto = 0.004 + Math.min(n, 12) * 0.0008;
+    ceniza.scale.set(r, alto, r);
+    ceniza.position.y = SUELO_CENICERO + alto / 2;
   }
 
   function limpiarColillas() {

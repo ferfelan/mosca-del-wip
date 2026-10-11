@@ -24,48 +24,6 @@ function rectRedondo(ctx, x, y, w, h, r) {
   ctx.closePath();
 }
 
-export function texturaRayasAbdomen() {
-  const { canvas, ctx } = lienzo(128, 256);
-  const base = ctx.createLinearGradient(0, 0, 0, 256);
-  base.addColorStop(0, '#5c4d3c');
-  base.addColorStop(0.35, '#9c8463');
-  base.addColorStop(1, '#ab9471');
-  ctx.fillStyle = base;
-  ctx.fillRect(0, 0, 128, 256);
-  ctx.fillStyle = '#463a2c';
-  [
-    [58, 22],
-    [110, 26],
-    [164, 24],
-  ].forEach(([y, h]) => {
-    const g = ctx.createLinearGradient(0, y, 0, y + h);
-    g.addColorStop(0, 'rgba(70,58,44,0)');
-    g.addColorStop(0.3, '#463a2c');
-    g.addColorStop(0.7, '#463a2c');
-    g.addColorStop(1, 'rgba(70,58,44,0)');
-    ctx.fillStyle = g;
-    ctx.fillRect(0, y, 128, h);
-  });
-  return aTextura(canvas);
-}
-
-export function texturaHumo() {
-  const { canvas, ctx } = lienzo(128, 128);
-  for (const [cx, cy, r, a] of [
-    [64, 66, 52, 0.8],
-    [48, 54, 34, 0.55],
-    [82, 58, 30, 0.5],
-  ]) {
-    const g = ctx.createRadialGradient(cx, cy, 2, cx, cy, r);
-    g.addColorStop(0, `rgba(126,133,150,${a})`);
-    g.addColorStop(0.5, `rgba(150,157,172,${a * 0.55})`);
-    g.addColorStop(1, 'rgba(160,167,182,0)');
-    ctx.fillStyle = g;
-    ctx.fillRect(0, 0, 128, 128);
-  }
-  return aTextura(canvas);
-}
-
 export function texturaBrillo(color = '255,150,60') {
   const { canvas, ctx } = lienzo(64, 64);
   const g = ctx.createRadialGradient(32, 32, 1, 32, 32, 30);
@@ -142,9 +100,9 @@ export function texturaTeclado() {
   ctx.fillRect(0, 0, 320, 128);
   ctx.fillStyle = '#4b5361';
   const filas = [
-    { y: 14, n: 13 },
-    { y: 42, n: 12 },
-    { y: 70, n: 11 },
+    { y: 12, n: 11 },
+    { y: 40, n: 10 },
+    { y: 68, n: 9 },
   ];
   filas.forEach(({ y, n }) => {
     const w = (300 - (n - 1) * 4) / n;
@@ -180,9 +138,9 @@ export function texturaCaraReloj() {
 export function texturaFondo() {
   const { canvas, ctx } = lienzo(16, 256);
   const g = ctx.createLinearGradient(0, 0, 0, 256);
-  g.addColorStop(0, '#dcd2e8');
-  g.addColorStop(0.45, '#eadfd2');
-  g.addColorStop(1, '#f3e7d8');
+  g.addColorStop(0, '#d5dde3');
+  g.addColorStop(0.45, '#e2e6dc');
+  g.addColorStop(1, '#ece8dc');
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, 16, 256);
   return aTextura(canvas);
@@ -202,4 +160,220 @@ export function texturaMadera() {
     ctx.stroke();
   }
   return aTextura(canvas);
+}
+
+// ---------- Mosca de la fruta ----------
+
+// Abdomen de Drosophila: café amarillento con una banda oscura al final de
+// cada segmento y la punta oscura. Las filas del lienzo se vuelven anillos.
+export function texturaAbdomenDrosophila() {
+  const { canvas, ctx } = lienzo(256, 512);
+  const base = ctx.createLinearGradient(0, 0, 0, 512);
+  base.addColorStop(0, '#d9b36e');
+  base.addColorStop(1, '#c99c55');
+  ctx.fillStyle = base;
+  ctx.fillRect(0, 0, 256, 512);
+
+  const bandas = [
+    [0.27, 0.07],
+    [0.42, 0.075],
+    [0.57, 0.08],
+    [0.72, 0.085],
+  ];
+  bandas.forEach(([inicio, alto]) => {
+    const y = inicio * 512;
+    const h = alto * 512;
+    const g = ctx.createLinearGradient(0, y, 0, y + h);
+    g.addColorStop(0, 'rgba(58,38,22,0)');
+    g.addColorStop(0.35, '#3a2616');
+    g.addColorStop(1, '#3a2616');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, y, 256, h);
+  });
+  const punta = ctx.createLinearGradient(0, 0.84 * 512, 0, 512);
+  punta.addColorStop(0, 'rgba(58,38,22,0)');
+  punta.addColorStop(0.3, '#3a2616');
+  punta.addColorStop(1, '#2c1d11');
+  ctx.fillStyle = punta;
+  ctx.fillRect(0, 0.84 * 512, 256, 0.16 * 512);
+
+  // Pelitos finos para que no se vea plástico
+  ctx.fillStyle = 'rgba(70,48,28,0.18)';
+  for (let i = 0; i < 900; i++) {
+    ctx.fillRect(Math.random() * 256, Math.random() * 512, 1.5, 3);
+  }
+  return aTextura(canvas);
+}
+
+// Ojo compuesto: panal de facetas. Cada fila tiene menos facetas hacia los
+// polos para que en la esfera se vean todas del mismo tamaño.
+export function texturaOjoFacetas() {
+  const W = 1024;
+  const H = 512;
+  const color = lienzo(W, H);
+  const relieve = lienzo(W, H);
+  color.ctx.fillStyle = '#8f0f14';
+  color.ctx.fillRect(0, 0, W, H);
+  relieve.ctx.fillStyle = '#000';
+  relieve.ctx.fillRect(0, 0, W, H);
+
+  const filas = 22;
+  const porVuelta = 46;
+  const altoFila = H / filas;
+  for (let f = 0; f < filas; f++) {
+    const lat = (0.5 - (f + 0.5) / filas) * Math.PI;
+    const n = Math.max(4, Math.round(porVuelta * Math.cos(lat)));
+    const ancho = W / n;
+    const y = (f + 0.5) * altoFila;
+    const desfase = (f % 2) * ancho * 0.5;
+    for (let i = -1; i <= n; i++) {
+      const x = i * ancho + desfase + ancho / 2;
+      const rx = ancho * 0.47;
+      const ry = altoFila * 0.5;
+      const hexagono = (ctx) => {
+        ctx.beginPath();
+        for (let k = 0; k < 6; k++) {
+          const a = (k / 6) * Math.PI * 2 + Math.PI / 6;
+          ctx.lineTo(x + Math.cos(a) * rx, y + Math.sin(a) * ry);
+        }
+        ctx.closePath();
+      };
+      const g = color.ctx.createRadialGradient(x - rx * 0.2, y - ry * 0.25, 1, x, y, Math.max(rx, ry));
+      g.addColorStop(0, '#ff6a4f');
+      g.addColorStop(0.55, '#e0302a');
+      g.addColorStop(1, '#a8151a');
+      color.ctx.fillStyle = g;
+      hexagono(color.ctx);
+      color.ctx.fill();
+
+      const gr = relieve.ctx.createRadialGradient(x, y, 1, x, y, Math.max(rx, ry));
+      gr.addColorStop(0, '#fff');
+      gr.addColorStop(0.7, '#bbb');
+      gr.addColorStop(1, '#222');
+      relieve.ctx.fillStyle = gr;
+      hexagono(relieve.ctx);
+      relieve.ctx.fill();
+    }
+  }
+  const mapa = aTextura(color.canvas);
+  mapa.anisotropy = 8;
+  const bump = new THREE.CanvasTexture(relieve.canvas);
+  bump.anisotropy = 8;
+  return { mapa, bump };
+}
+
+// Contorno del ala de Drosophila en (u, v): u va de la base (0) a la punta (1),
+// v es el ancho (positivo = borde de adelante).
+export const ALA_V_MIN = -0.22;
+export const ALA_V_MAX = 0.2;
+export const CONTORNO_ALA = [
+  [0, 0.0],
+  [0.12, 0.05],
+  [0.35, 0.12],
+  [0.62, 0.165],
+  [0.85, 0.15],
+  [0.97, 0.08],
+  [1.0, 0.0],
+  [0.97, -0.08],
+  [0.86, -0.16],
+  [0.66, -0.2],
+  [0.42, -0.17],
+  [0.2, -0.09],
+  [0.06, -0.035],
+];
+
+// Venas del ala: costa, L2-L5 y las dos venas cruzadas.
+export function texturaAla() {
+  const W = 512;
+  const H = 256;
+  const { canvas, ctx } = lienzo(W, H);
+  const px = (u, v) => [u * W, ((ALA_V_MAX - v) / (ALA_V_MAX - ALA_V_MIN)) * H];
+
+  ctx.beginPath();
+  const curva = new THREE.SplineCurve(CONTORNO_ALA.concat([CONTORNO_ALA[0]]).map(([u, v]) => new THREE.Vector2(u, v)));
+  curva.getPoints(80).forEach((p, i) => {
+    const [x, y] = px(p.x, p.y);
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(226,234,250,0.22)';
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(120,92,62,0.55)';
+  ctx.lineWidth = 2.2;
+  ctx.stroke();
+
+  const vena = (puntos, grosor = 3.2) => {
+    ctx.beginPath();
+    puntos.forEach(([u, v], i) => {
+      const [x, y] = px(u, v);
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.strokeStyle = 'rgba(110,80,50,0.85)';
+    ctx.lineWidth = grosor;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.stroke();
+  };
+  vena([[0.02, 0.01], [0.15, 0.055], [0.4, 0.125], [0.65, 0.16], [0.87, 0.145]], 4);
+  vena([[0.08, 0.03], [0.35, 0.08], [0.6, 0.12], [0.8, 0.15]]);
+  vena([[0.08, 0.015], [0.4, 0.03], [0.7, 0.035], [0.995, 0.01]]);
+  vena([[0.08, 0.0], [0.4, -0.04], [0.7, -0.08], [0.94, -0.115]]);
+  vena([[0.08, -0.015], [0.35, -0.08], [0.6, -0.14], [0.78, -0.185]]);
+  vena([[0.43, 0.031], [0.42, -0.044]], 2.6);
+  vena([[0.63, -0.074], [0.6, -0.14]], 2.6);
+
+  const t = aTextura(canvas);
+  t.anisotropy = 8;
+  return t;
+}
+
+// Corbata azul intenso con rayas diagonales doradas.
+export function texturaCorbata() {
+  const { canvas, ctx } = lienzo(128, 128);
+  ctx.fillStyle = '#1f4fc4';
+  ctx.fillRect(0, 0, 128, 128);
+  ctx.strokeStyle = '#f2c14e';
+  ctx.lineWidth = 9;
+  for (let i = -128; i < 256; i += 64) {
+    ctx.beginPath();
+    ctx.moveTo(i, 128);
+    ctx.lineTo(i + 128, 0);
+    ctx.stroke();
+  }
+  const t = aTextura(canvas);
+  t.wrapS = THREE.RepeatWrapping;
+  t.wrapT = THREE.RepeatWrapping;
+  return t;
+}
+
+// Volutas de humo: manchas suaves e irregulares (varias variantes).
+export function texturasHumo(cantidad = 4) {
+  const lista = [];
+  for (let k = 0; k < cantidad; k++) {
+    const { canvas, ctx } = lienzo(128, 128);
+    for (let i = 0; i < 16; i++) {
+      const a = Math.random() * Math.PI * 2;
+      const d = Math.random() * 26;
+      const cx = 64 + Math.cos(a) * d;
+      const cy = 64 + Math.sin(a) * d;
+      const r = 14 + Math.random() * 26;
+      const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+      const alfa = 0.16 + Math.random() * 0.16;
+      g.addColorStop(0, `rgba(255,255,255,${alfa})`);
+      g.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, 128, 128);
+    }
+    // borde suave para que nunca se note el cuadrado
+    ctx.globalCompositeOperation = 'destination-in';
+    const borde = ctx.createRadialGradient(64, 64, 20, 64, 64, 64);
+    borde.addColorStop(0, 'rgba(0,0,0,1)');
+    borde.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = borde;
+    ctx.fillRect(0, 0, 128, 128);
+    lista.push(aTextura(canvas));
+  }
+  return lista;
 }

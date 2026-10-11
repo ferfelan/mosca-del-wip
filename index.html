@@ -9,55 +9,70 @@
   <body>
     <canvas id="lienzo-3d"></canvas>
 
-    <div id="panel">
-      <h1>🪰 Mosca del WIP</h1>
+    <aside id="panel">
+      <header class="cabecera">
+        <h1>Mosca del WIP</h1>
+        <p class="subtitulo">Un día de oficina, de 09:00 a 18:00</p>
+      </header>
 
-      <div class="fila">
-        <label for="wip">Tareas en curso a la vez (WIP): <strong id="wip-valor">3</strong></label>
-        <input type="range" id="wip" min="1" max="10" step="1" value="3" />
-      </div>
-
-      <div class="fila botones">
-        <button id="btn-pausa">⏸ Pausa</button>
-        <button id="btn-velocidad">x1</button>
-        <button id="btn-reiniciar">↺ Reiniciar día</button>
-      </div>
-
-      <div class="fila reloj">
-        <span id="reloj-texto">09:00</span>
-        <div class="barra-dia"><div id="barra-dia-relleno"></div></div>
-      </div>
-
-      <div class="metricas">
-        <div class="metrica">
-          <span class="metrica-valor" id="m-hechas">0</span>
-          <span class="metrica-label">Tareas terminadas</span>
+      <section class="bloque">
+        <div class="bloque-fila">
+          <label for="wip" class="etiqueta">Tareas en curso a la vez</label>
+          <span class="wip-numero" id="wip-valor">3</span>
         </div>
-        <div class="metrica">
-          <span class="metrica-valor" id="m-colillas">0</span>
-          <span class="metrica-label">Colillas</span>
+        <input type="range" id="wip" min="1" max="10" step="1" value="3" aria-describedby="wip-nota" />
+        <div class="escala" aria-hidden="true">
+          <span>1</span><span>3</span><span>10</span>
         </div>
-        <div class="metrica">
-          <span class="metrica-valor" id="m-estres">Tranqui</span>
-          <span class="metrica-label">Estrés</span>
+        <p class="nota" id="wip-nota">Dentro del límite sano</p>
+      </section>
+
+      <section class="bloque">
+        <div class="bloque-fila">
+          <span class="etiqueta">Hora</span>
+          <span class="hora" id="reloj-texto">09:00</span>
         </div>
-      </div>
+        <div class="barra"><div id="barra-dia-relleno"></div></div>
+        <div class="controles">
+          <button id="btn-pausa" type="button">Pausa</button>
+          <button id="btn-velocidad" type="button" title="Velocidad">x1</button>
+          <button id="btn-reiniciar" type="button">Reiniciar día</button>
+        </div>
+      </section>
 
-      <div class="barra-estres"><div id="barra-estres-relleno"></div></div>
+      <section class="bloque">
+        <div class="metricas">
+          <div class="metrica">
+            <span class="metrica-valor" id="m-hechas">0</span>
+            <span class="metrica-label">Terminadas</span>
+          </div>
+          <div class="metrica">
+            <span class="metrica-valor" id="m-colillas">0</span>
+            <span class="metrica-label">Colillas</span>
+          </div>
+        </div>
+        <div class="estres">
+          <div class="bloque-fila">
+            <span class="etiqueta">Estrés</span>
+            <span class="estres-nivel" id="m-estres">Tranqui</span>
+          </div>
+          <div class="barra"><div id="barra-estres-relleno"></div></div>
+        </div>
+      </section>
 
-      <div class="fila">
-        <h2>Días jugados</h2>
+      <section class="bloque ultimo">
+        <h2 class="etiqueta">Días jugados</h2>
         <table id="tabla-dias">
           <thead>
             <tr><th>WIP</th><th>Terminadas</th><th>Colillas</th><th>Estrés máx.</th></tr>
           </thead>
           <tbody id="tabla-dias-body"></tbody>
         </table>
-      </div>
-    </div>
+      </section>
+    </aside>
 
     <div id="banner-fin-dia" class="oculto">
-      <p>🏁 Fin del día. Mira la tabla de comparación o reinicia para probar otro WIP.</p>
+      <p><strong>Fin del día.</strong> Mira la tabla o reinicia para probar otro WIP.</p>
     </div>
 
     <script type="module" src="/src/main.js"></script>

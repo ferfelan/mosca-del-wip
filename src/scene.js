@@ -2,16 +2,14 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { texturaFondo } from './textures.js';
+import { CAMARA_INICIAL } from './layout.js';
 
-export const CAMARA_INICIAL = {
-  posicion: new THREE.Vector3(0.42, 2.68, 2.78),
-  objetivo: new THREE.Vector3(-0.33, 1.28, -0.5),
-};
+export { CAMARA_INICIAL };
 
 export function crearEscena(canvas) {
   const scene = new THREE.Scene();
   scene.background = texturaFondo();
-  scene.fog = new THREE.Fog('#ecdfce', 8, 22);
+  scene.fog = new THREE.Fog('#e4e6dc', 9, 24);
 
   const camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 0.1, 60);
   camera.position.copy(CAMARA_INICIAL.posicion);
@@ -41,7 +39,7 @@ export function crearEscena(canvas) {
   scene.add(new THREE.HemisphereLight('#eaf2ff', '#d6bf9c', 0.6));
 
   const luzPrincipal = new THREE.DirectionalLight('#fff0d8', 2.0);
-  luzPrincipal.position.set(3.4, 4.8, 3.2);
+  luzPrincipal.position.set(-2.6, 5.0, 3.6);
   luzPrincipal.castShadow = true;
   luzPrincipal.shadow.mapSize.set(2048, 2048);
   luzPrincipal.shadow.camera.near = 0.5;
@@ -54,12 +52,12 @@ export function crearEscena(canvas) {
   luzPrincipal.shadow.radius = 4;
   scene.add(luzPrincipal);
 
-  const relleno = new THREE.DirectionalLight('#dce8ff', 0.5);
-  relleno.position.set(-3.6, 2.4, 2.2);
+  const relleno = new THREE.DirectionalLight('#dce8ff', 0.55);
+  relleno.position.set(3.6, 2.6, 2.4);
   scene.add(relleno);
 
   const contraluz = new THREE.DirectionalLight('#ffe9c9', 0.45);
-  contraluz.position.set(-1.6, 2.6, -3.4);
+  contraluz.position.set(0.6, 2.8, -3.4);
   scene.add(contraluz);
 
   window.addEventListener('resize', () => {
