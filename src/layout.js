@@ -29,8 +29,10 @@ export const TECLADO = { pos: delanteDeLaMosca(0.957), rot: MOSCA.rumbo + Math.P
 export const MOUSEPAD = { pos: delanteDeLaMosca(0.967, 0), ancho: 0.8, fondo: 0.4 };
 export const POS_MOUSEPAD = MOUSEPAD.pos;
 export const POS_MOUSE = delanteDeLaMosca(0.99, 0.33);
-// Taza a la derecha del teclado (como se ve en pantalla), al alcance de la pata
-export const POS_TAZA = delanteDeLaMosca(1.03, -0.4);
+// Taza a la derecha del mousepad, sobre un posavasos, al alcance de la pata
+// (sin tocar el mousepad, el teclado ni el cenicero)
+export const POS_TAZA = delanteDeLaMosca(1.05, -0.55);
+export const ALTO_POSAVASOS = 0.008;
 // La manilla de la taza mira hacia la pata delantera derecha de la mosca
 // (la que la toma). En la taza, la manilla apunta a su eje +x.
 const _haciaPata = new THREE.Vector3(MOSCA.x, 0, MOSCA.z)

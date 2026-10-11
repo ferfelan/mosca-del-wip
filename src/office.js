@@ -27,6 +27,7 @@ import {
   POS_VENTANA,
   POS_PILA,
   ROT_TAZA,
+  ALTO_POSAVASOS,
   POS_LAMPARA,
   MOSCA,
 } from './layout.js';
@@ -71,6 +72,7 @@ function crearColilla() {
     m.position.y = y;
     m.castShadow = true;
     m.userData.colilla = true;
+    m.userData.solido = 'colilla'; // la pata de la mosca no debe atravesarlas
     g.add(m);
   });
   return g;
@@ -407,20 +409,58 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
   );
   monitor.add(pantalla);
 
-  // Post-its pegados en el borde del monitor (sobre el marco, sin tapar el kanban)
-  [
-    { x: 0.52, y: 0.82, giro: -0.12, color: '#ffe46b', texto: ['¡urgente!', 'cliente'] },
-    { x: 0.525, y: 0.6, giro: 0.1, color: '#ff9ec7', texto: ['revisar', 'informe'] },
-    { x: -0.52, y: 0.74, giro: 0.14, color: '#a6e3a1', texto: ['WIP ≤ 3', ':)'] },
-  ].forEach(({ x, y, giro, color, texto }) => {
+  // Post-its en el borde del monitor: más WIP = más post-its. Los primeros
+  // van ordenados en el marco; los siguientes, cada vez más chuecos, unos
+  // encima de otros y algunos tapando un poco las esquinas de la pantalla
+  // (nunca el centro del kanban).
+  const POSTITS = [
+    { x: -0.52, y: 0.74, giro: 0.03, color: '#a6e3a1', texto: ['WIP ≤ 3', ':)'] },
+    { x: 0.52, y: 0.8, giro: -0.04, color: '#ffe46b', texto: ['¡urgente!', 'cliente'] },
+    { x: 0.525, y: 0.6, giro: 0.08, color: '#ff9ec7', texto: ['revisar', 'informe'] },
+    { x: 0.505, y: 0.41, giro: -0.12, color: '#9fd0ff', texto: ['reunión', '11:00'] },
+    { x: -0.52, y: 0.5, giro: 0.14, color: '#ffb877', texto: ['pagar', 'facturas'] },
+    // arriba: pegados al borde superior, entre el título y la hora
+    { x: -0.02, y: 0.945, giro: -0.08, color: '#ffe46b', texto: ['llamar', 'cliente'] },
+    { x: 0.2, y: 0.95, giro: 0.18, color: '#ff9ec7', texto: ['bug', '#42'] },
+    // esquinas de abajo: tapan un poco la pantalla, no los títulos ni los números
+    { x: 0.43, y: 0.37, giro: 0.32, color: '#a6e3a1', texto: ['¡hoy!', ''] },
+    { x: -0.43, y: 0.375, giro: -0.3, color: '#ffe46b', texto: ['ASAP', ''] },
+    { x: 0.548, y: 0.7, giro: -0.24, color: '#ffb877', texto: ['¿y esto?', ''] },
+    { x: -0.535, y: 0.87, giro: 0.26, color: '#ff9ec7', texto: ['feedback', 'equipo'] },
+    { x: -0.25, y: 0.952, giro: 0.07, color: '#9fd0ff', texto: ['presu-', 'puesto'] },
+    { x: 0.465, y: 0.53, giro: 0.36, color: '#ffe46b', texto: ['deploy', 'viernes'] },
+    { x: -0.548, y: 0.63, giro: -0.32, color: '#a6e3a1', texto: ['pendiente', ''] },
+  ];
+
+  const geoPostit = new THREE.BoxGeometry(0.088, 0.088, 0.002);
+  const postits = POSTITS.map(({ x, y, giro, color, texto }, i) => {
     const nota = malla(
-      new THREE.BoxGeometry(0.088, 0.088, 0.002),
+      geoPostit,
       new THREE.MeshStandardMaterial({ map: texturaPostit(color, texto), roughness: 0.85 }),
-      { x, y, z: 0.027, sombra: false }
+      // cada uno un poco más adelante que el anterior: se pueden montar
+      { x, y, z: 0.027 + i * 0.0012, sombra: false }
     );
     nota.rotation.z = giro;
+    nota.scale.setScalar(0.001);
+    nota.visible = false;
+    nota.userData = { presencia: 0, giro, fase: Math.random() * 6 };
     monitor.add(nota);
+    return nota;
   });
+  let postitsObjetivo = 1;
+  function actualizarPostits(dt) {
+    postits.forEach((nota, i) => {
+      const u = nota.userData;
+      u.presencia += ((i < postitsObjetivo ? 1 : 0) - u.presencia) * (1 - Math.exp(-5 * dt));
+      nota.visible = u.presencia > 0.01;
+      if (!nota.visible) return;
+      // aparece "pegándose": crece con un pequeño rebote y gira a su lugar
+      const p = u.presencia;
+      const rebote = 1 + 0.12 * Math.sin(p * Math.PI);
+      nota.scale.setScalar(Math.max(0.001, p * rebote));
+      nota.rotation.z = u.giro + (1 - p) * 0.6;
+    });
+  }
   oficina.add(monitor);
 
   // ---------- Mousepad, teclado y mouse (frente a la mosca) ----------
@@ -430,6 +470,7 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
     { x: POS_MOUSEPAD.x, y: ALTO_ESCRITORIO + 0.006, z: POS_MOUSEPAD.z, sombra: false, recibe: true }
   );
   mousepad.rotation.y = TECLADO.rot;
+  mousepad.userData.solido = 'oficina';
   oficina.add(mousepad);
 
   const teclado = new THREE.Group();
@@ -467,8 +508,17 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
   // ---------- Taza ----------
   // La manilla es una "C" redondeada cuyos extremos entran en la pared de la
   // taza (bien unida). La mosca la toma por el centro de la "C".
+  // Posavasos de corcho
+  const posavasos = solido(
+    malla(
+      new THREE.CylinderGeometry(0.105, 0.105, ALTO_POSAVASOS, 40),
+      new THREE.MeshStandardMaterial({ color: '#c8935c', roughness: 0.95 }),
+      { x: POS_TAZA.x, y: ALTO_ESCRITORIO + ALTO_POSAVASOS / 2, z: POS_TAZA.z, recibe: true }
+    )
+  );
+  oficina.add(posavasos);
   const taza = new THREE.Group();
-  taza.position.copy(POS_TAZA);
+  taza.position.copy(POS_TAZA).setY(ALTO_ESCRITORIO + ALTO_POSAVASOS);
   taza.rotation.y = ROT_TAZA;
   const matTaza = new THREE.MeshStandardMaterial({ color: '#f3f0e8', roughness: 0.35 });
   taza.add(solido(malla(new THREE.CylinderGeometry(0.085, 0.072, 0.13, 32), matTaza, { y: 0.065, recibe: true })));
@@ -489,6 +539,10 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
   const bordeTaza = malla(new THREE.TorusGeometry(0.083, 0.005, 8, 40), matTaza, { y: 0.13, sombra: false });
   bordeTaza.rotation.x = Math.PI / 2;
   taza.add(bordeTaza);
+  // La taza se mueve (la mosca la levanta): el revisor de choques la cuida
+  taza.traverse((o) => {
+    if (o.isMesh) Object.assign(o.userData, { movil: 'taza', revisaCuerpo: true });
+  });
   oficina.add(taza);
   // Pose de descanso (la mosca la levanta y la vuelve a dejar aquí)
   const reposoTaza = { posicion: taza.position.clone(), rotacion: taza.quaternion.clone() };
@@ -555,6 +609,8 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
       const lado = Math.abs(Math.atan2(Math.sin(a - haciaMosca), Math.cos(a - haciaMosca)));
       if (lado < 0.7 || z < zMin || z > zMax) continue;
       if (ocupados.some((o) => Math.hypot(o.p.x - x, o.p.z - z) < o.r)) continue;
+      // tampoco sobre el mousepad
+      if (Math.abs(x - MOUSEPAD.pos.x) < MOUSEPAD.ancho / 2 + 0.07 && Math.abs(z - MOUSEPAD.pos.z) < MOUSEPAD.fondo / 2 + 0.07) continue;
       if (desbordes.some((d) => Math.hypot(d.x - x, d.z - z) < 0.085)) continue;
       desbordes.push({ a, r, x, z, giro: a * 2.3 + k });
     }
@@ -815,6 +871,7 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
     actualizar(dt, estres = 0) {
       actualizarVapor(Math.min(dt, 0.05), estres);
       actualizarPila(Math.min(dt, 0.05));
+      actualizarPostits(Math.min(dt, 0.05));
     },
     grupo: oficina,
     actualizarKanban(estado) {
@@ -831,6 +888,10 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
     AGARRE_TAZA,
     BORDE_TAZA,
     calorCafe: () => calor,
+    // WIP 1 → 1 post-it; WIP 10 → 14
+    actualizarPostits(wip) {
+      postitsObjetivo = Math.round(1 + ((Math.min(10, Math.max(1, wip)) - 1) * (POSTITS.length - 1)) / 9);
+    },
     actualizarPilaTareas(enCurso) {
       carpetasObjetivo = Math.min(MAX_CAPAS, enCurso);
     },

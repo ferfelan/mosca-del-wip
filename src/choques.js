@@ -63,7 +63,7 @@ export function revisarChoques(escena, { margenMundo = 0.004 } = {}) {
   escena.traverse((o) => {
     if (!o.isMesh || !visibleDeVerdad(o)) return;
     if (o.userData.solido) solidos.push(o);
-    if (o.userData.parteMosca || o.userData.colilla) moviles.push(o);
+    if (o.userData.parteMosca || o.userData.colilla || o.userData.movil) moviles.push(o);
   });
 
   const v = new THREE.Vector3();
@@ -77,7 +77,9 @@ export function revisarChoques(escena, { margenMundo = 0.004 } = {}) {
     for (const s of solidos) {
       if (s === m) continue;
       const tipo = s.userData.solido;
-      if (tipo === m.userData.solido) continue;
+      if (tipo === m.userData.solido && !m.userData.movil) continue;
+      // una pieza que se mueve no choca consigo misma (ej. la taza)
+      if (m.userData.movil && s.userData.movil === m.userData.movil) continue;
       if (m.userData.ignorar === s) continue;
       // Las piezas de la mosca sólo se revisan contra su propio cuerpo si
       // son antebrazo, mano o cigarro (lo demás nace dentro del cuerpo).

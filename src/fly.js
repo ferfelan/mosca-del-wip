@@ -917,6 +917,7 @@ export function crearMosca(scene, { taza = null } = {}) {
   let pendienteCafe = false;
   let cafeAntes = false;
   let mezclaCafe = 0;
+  let holguraManilla = 0;
   const posTaza = new THREE.Vector3();
   const qTaza = new THREE.Quaternion();
   const qSorbo = new THREE.Quaternion();
@@ -1185,6 +1186,8 @@ export function crearMosca(scene, { taza = null } = {}) {
         const poloBoca = new THREE.Vector3(lado * 0.7, 0.85, 0.25).normalize();
         polo.copy(poloAbajo).lerp(poloBoca, lev).normalize();
         patasDelanteras[i].poner(cadera, objetivo, dirTarso, polo);
+        // cuánto le falta a la pata para llegar a la manilla (para revisar)
+        holguraManilla = tC > C_TOMA && tC < C_BAJA ? patasDelanteras[i].punta.distanceTo(enManilla) * S : 0;
         cigarro.visible = false;
       } else if (i === 0 && cicloActivo) {
         // Poses clave (en el espacio del cuerpo)
@@ -1361,5 +1364,6 @@ export function crearMosca(scene, { taza = null } = {}) {
     // El cigarro que fuma ahora todavía no es colilla
     cigarroEnMano: () => cicloActivo || pendienteFumar,
     tomandoCafe: () => cicloCafe,
+    holguraManilla: () => holguraManilla,
   };
 }

@@ -189,6 +189,7 @@ function refrescarUI(estado, cigarroEnMano) {
 
   oficina.actualizarKanban(estado);
   oficina.actualizarPilaTareas(estado.terminado ? 0 : estado.enCurso);
+  oficina.actualizarPostits(estado.wip);
   oficina.actualizarReloj(estado.fraccionDelDia);
 
   // El cigarro que la mosca tiene en la mano llega al cenicero cuando lo termina
@@ -683,6 +684,7 @@ if (import.meta.env.DEV) {
     ocultarCerebro: (v) => alternarCerebro(v),
     ocultarControles: (v) => alternarControles(v),
     calorCafe: () => oficina.calorCafe(),
+    holguraManilla: () => mosca.holguraManilla(),
     // Salta casi al final del día (para probar el loop de exhibición)
     posCabeza: () => mosca.cabeza.getWorldPosition(new THREE.Vector3()).toArray(),
     diaExhibicion: (w) => {

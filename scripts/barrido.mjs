@@ -22,6 +22,8 @@ const r = await p.evaluate(() => {
   tramo('vuelve-del-cafe', 4, { cafe: false });
   // Le toca fumar mientras toma café: espera su turno
   tramo('cafe-y-luego-fuma', 9, { estres: 50, cafe: true, fumando: true });
+  // Café con el cenicero lleno (la pata pasa junto a las colillas)
+  tramo('cafe-cenicero-lleno', 8, { estres: 5, colillas: 30, cafe: true, fumando: false });
   tramo('fin-mezcla', 5, { cafe: false, fumando: false });
   tramo('final', 4, { fumando: false, colillas: 20 });
   return { malos, pasos };
