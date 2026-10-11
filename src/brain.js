@@ -24,6 +24,11 @@ const ESTRES_BAJA = 1.0; // por minuto, cuando WIP <= 3
 const URGENCIA_FUMAR_FACTOR = 0.02; // cuánta "urgencia" se acumula por minuto según el estrés
 const DURACION_PITADO_MIN = 8; // minutos simulados que dura cada salida a fumar
 const MAX_COLILLAS_VISIBLES = 33; // 21 caben en el cenicero, el resto se desborda
+// Café = "pausa sana": sólo con estrés bajo. Las ganas crecen más rápido
+// mientras más tranquila está; con estrés alto se olvida del café.
+const ESTRES_MAX_CAFE = 40;
+const URGENCIA_CAFE_POR_MIN = 1.2; // con estrés 0: un café cada ~80 min (de vez en cuando)
+const DURACION_CAFE_MIN = 1.5; // minutos simulados que dura cada sorbo
 
 function tareaAleatoria(id) {
   return {
@@ -51,6 +56,10 @@ export class DayBrain {
     this.urgenciaFumar = 0;
     this.colillas = 0;
     this.fumando = false;
+    this.urgenciaCafe = 0;
+    this.cafes = 0;
+    this.tomandoCafe = false;
+    this.minutosCafeRestantes = 0;
     this.minutosFumadaRestantes = 0;
     this.terminado = false;
     this.eventoEsteTick = null; // 'trabajando' | 'empieza_a_fumar' | 'fumando' | 'vuelve_a_trabajar'
@@ -93,7 +102,7 @@ export class DayBrain {
   tick(dtMin) {
     if (this.terminado || dtMin <= 0) return;
 
-    this.eventoEsteTick = this.fumando ? 'fumando' : 'trabajando';
+    this.eventoEsteTick = this.fumando ? 'fumando' : this.tomandoCafe ? 'cafe' : 'trabajando';
 
     const restanteDia = MINUTOS_DIA_FIN - this.minutoActual;
     const dt = Math.min(dtMin, Math.max(restanteDia, 0));
@@ -109,6 +118,12 @@ export class DayBrain {
       this.minutosFumadaRestantes -= dt;
       if (this.minutosFumadaRestantes <= 0) {
         this.fumando = false;
+        this.eventoEsteTick = 'vuelve_a_trabajar';
+      }
+    } else if (this.tomandoCafe) {
+      this.minutosCafeRestantes -= dt;
+      if (this.minutosCafeRestantes <= 0) {
+        this.tomandoCafe = false;
         this.eventoEsteTick = 'vuelve_a_trabajar';
       }
     } else if (this.enCurso.length > 0) {
@@ -138,8 +153,22 @@ export class DayBrain {
     this.estres = Math.max(0, Math.min(100, this.estres));
     this.estresMax = Math.max(this.estresMax, this.estres);
 
+    // Ganas de un café (sólo con estrés bajo)
+    if (!this.fumando && !this.tomandoCafe) {
+      if (this.estres < ESTRES_MAX_CAFE) {
+        this.urgenciaCafe += URGENCIA_CAFE_POR_MIN * (1 - this.estres / ESTRES_MAX_CAFE) * dt;
+      }
+      if (this.urgenciaCafe >= 100) {
+        this.urgenciaCafe = 0;
+        this.tomandoCafe = true;
+        this.minutosCafeRestantes = DURACION_CAFE_MIN;
+        this.cafes += 1;
+        this.eventoEsteTick = 'empieza_cafe';
+      }
+    }
+
     // Urgencia de fumar: se acumula más rápido mientras más estrés hay.
-    if (!this.fumando) {
+    if (!this.fumando && !this.tomandoCafe) {
       // Con mucho estrés las ganas crecen más rápido (WIP 9 ≈ 13 colillas al día)
       const e = this.estres / 100;
       this.urgenciaFumar += this.estres * URGENCIA_FUMAR_FACTOR * (1 + 0.6 * e * e) * dt;
@@ -169,6 +198,8 @@ export class DayBrain {
       colillas: this.colillas,
       colillasVisibles: Math.min(this.colillas, MAX_COLILLAS_VISIBLES),
       fumando: this.fumando,
+      cafes: this.cafes,
+      tomandoCafe: this.tomandoCafe,
       terminado: this.terminado,
       evento: this.eventoEsteTick,
     };
@@ -179,6 +210,7 @@ export class DayBrain {
       wip: this.wipMin === this.wipMax ? this.wip : `${this.wipMin}–${this.wipMax}`,
       hechas: this.hechas.length,
       colillas: this.colillas,
+      cafes: this.cafes,
       estresMax: Math.round(this.estresMax), // siempre en % (0 a 100)
     };
   }

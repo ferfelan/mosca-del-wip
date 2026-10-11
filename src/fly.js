@@ -57,6 +57,13 @@ const T_BOCA = 1.55;
 const T_PITADA = 2.55;
 const T_DEJA = 3.35;
 const T_FIN = 4.0;
+// Sorbo de café (pausa sana, sólo con estrés bajo): toma la taza por la
+// manilla -> la sube a la trompita -> sorbo -> la deja -> vuelve al teclado.
+const C_TOMA = 0.7;
+const C_SUBE = 1.45;
+const C_SORBO = 2.25;
+const C_BAJA = 3.0;
+const C_FIN = 3.5;
 
 // La silla (en metros del mundo, centrada bajo la mosca)
 const Z_SILLA = -0.1 * ESCALA_MOSCA;
@@ -296,7 +303,7 @@ function crearSilla() {
 
 // =====================================================================
 
-export function crearMosca(scene) {
+export function crearMosca(scene, { taza = null } = {}) {
   const S = ESCALA_MOSCA;
   const raiz = new THREE.Group();
   raiz.position.set(MOSCA.x, 0, MOSCA.z);
@@ -904,6 +911,17 @@ export function crearMosca(scene) {
   let mezclaFumar = 0;
   let cicloActivo = false;
   let tc = 0; // tiempo dentro de la secuencia de fumar
+  let pendienteFumar = false;
+  let cicloCafe = false;
+  let tcafe = 0; // tiempo dentro del sorbo de café
+  let pendienteCafe = false;
+  let cafeAntes = false;
+  let mezclaCafe = 0;
+  const posTaza = new THREE.Vector3();
+  const qTaza = new THREE.Quaternion();
+  const qSorbo = new THREE.Quaternion();
+  const posSorbo = new THREE.Vector3();
+  const agarreMundo = new THREE.Vector3();
   let pesoBoca = 0;
   let fumandoAntes = false;
   let quemado = 0;
@@ -967,13 +985,38 @@ export function crearMosca(scene) {
     estresSuave = amortiguar(estresSuave, estado.estres, 1.6, dt);
     const s = estresSuave;
 
-    // --- Fumar: secuencia completa cada vez que sale a fumar ---
-    if (estado.fumando && !fumandoAntes && !cicloActivo) {
-      cicloActivo = true;
-      tc = 0;
-      quemado = 0;
-    }
+    // --- Fumar y café: nunca a la vez. Si llega uno mientras hace el otro,
+    // espera su turno. ---
+    if (estado.fumando && !fumandoAntes) pendienteFumar = true;
     fumandoAntes = estado.fumando;
+    if (taza && estado.tomandoCafe && !cafeAntes) pendienteCafe = true;
+    cafeAntes = !!estado.tomandoCafe;
+    if (!cicloActivo && !cicloCafe) {
+      if (pendienteFumar) {
+        pendienteFumar = false;
+        pendienteCafe = false;
+        cicloActivo = true;
+        tc = 0;
+        quemado = 0;
+      } else if (pendienteCafe) {
+        pendienteCafe = false;
+        cicloCafe = true;
+        tcafe = 0;
+      }
+    }
+    if (cicloCafe) {
+      tcafe += dt;
+      if (tcafe >= C_FIN) {
+        if (estado.tomandoCafe) tcafe = 0;
+        else cicloCafe = false;
+      }
+    }
+    mezclaCafe = amortiguar(mezclaCafe, cicloCafe ? 1 : 0, 3, dt);
+    if (taza && !cicloCafe) {
+      taza.objeto.position.copy(taza.reposo.posicion);
+      taza.objeto.quaternion.copy(taza.reposo.rotacion);
+    }
+
     if (cicloActivo) {
       tc += dt;
       if (tc >= T_FIN) {
@@ -994,7 +1037,7 @@ export function crearMosca(scene) {
     // Tranquila: erguida. Estresada: encorvada hacia la pantalla. Fumando:
     // echada hacia atrás y girada un poco en la silla.
     raiz.rotation.y = MOSCA.rumbo - mezclaFumar * 0.16;
-    delantero.rotation.x = lerp(-0.03, 0.11, s) * (1 - mezclaFumar) - mezclaFumar * 0.07;
+    delantero.rotation.x = lerp(-0.03, 0.11, s) * (1 - mezclaFumar) - mezclaFumar * 0.07 - mezclaCafe * 0.03;
     const temblor = suave(0.8, 1, s);
     cuerpo.position.x = Math.sin(t * 21) * 0.001 * temblor;
     torax.scale.x = R_TORAX.lado * (1 + Math.sin(t * 1.7) * 0.008);
@@ -1080,7 +1123,70 @@ export function crearMosca(scene) {
       const cadera = enCuerpo(CADERA_DEL(lado));
       const poloTecleo = new THREE.Vector3(lado * 0.9, 1, -0.2).normalize();
 
-      if (i === 0 && cicloActivo) {
+      if (i === 0 && cicloCafe) {
+        // ---- Sorbo de café ----
+        // Pose de la taza para beber: inclinada hacia la mosca, con el borde
+        // cercano justo delante de la trompita y la manilla hacia su derecha.
+        boca.getWorldPosition(mundoBoca);
+        cabeza.getWorldQuaternion(qCabeza);
+        const adelante = new THREE.Vector3(0, 0, 1).applyQuaternion(qCabeza).setY(0).normalize();
+        raiz.getWorldQuaternion(qDelantero);
+        const derecha = new THREE.Vector3(-1, 0, 0).applyQuaternion(qDelantero).setY(0).normalize();
+        const tC = tcafe;
+        const sorbo = tC > C_SUBE && tC < C_SORBO ? Math.sin(((tC - C_SUBE) / (C_SORBO - C_SUBE)) * Math.PI) : 0;
+        const alfa = 0.5 + 0.22 * sorbo;
+        const arribaTaza = new THREE.Vector3(0, Math.cos(alfa), 0).addScaledVector(adelante, -Math.sin(alfa));
+        const ejeX = derecha.clone().multiplyScalar(0.9).addScaledVector(adelante, -0.3);
+        ejeX.addScaledVector(arribaTaza, -ejeX.dot(arribaTaza)).normalize();
+        const ejeZ = new THREE.Vector3().crossVectors(ejeX, arribaTaza);
+        qSorbo.setFromRotationMatrix(new THREE.Matrix4().makeBasis(ejeX, arribaTaza, ejeZ));
+        const haciaMosca = adelante.clone().negate();
+        haciaMosca.addScaledVector(arribaTaza, -haciaMosca.dot(arribaTaza)).normalize();
+        const bordeCerca = mundoBoca.clone().addScaledVector(adelante, 0.025).add(new THREE.Vector3(0, -0.01, 0));
+        posSorbo
+          .copy(bordeCerca)
+          .addScaledVector(haciaMosca, -0.083)
+          .addScaledVector(arribaTaza, -taza.BORDE.y);
+
+        // Cuánto está levantada la taza (0 = en la mesa, 1 = en la boca)
+        const lev =
+          tC < C_TOMA ? 0 : tC < C_SUBE ? suave(C_TOMA, C_SUBE, tC) : tC < C_SORBO ? 1 : tC < C_BAJA ? 1 - suave(C_SORBO, C_BAJA, tC) : 0;
+        posTaza.copy(taza.reposo.posicion).lerp(posSorbo, lev);
+        posTaza.y += Math.sin(Math.PI * lev) * 0.05;
+        qTaza.copy(taza.reposo.rotacion).slerp(qSorbo, lev);
+        taza.objeto.position.copy(posTaza);
+        taza.objeto.quaternion.copy(qTaza);
+        taza.objeto.updateMatrixWorld(true);
+        agarreMundo.copy(taza.AGARRE).applyQuaternion(qTaza).add(posTaza);
+        const enManilla = desdeMundo(agarreMundo.clone()).clone();
+
+        // La pata: del teclado a la manilla, sigue la taza, y vuelve
+        let objetivo;
+        if (tC < C_TOMA) {
+          const u = suave(0, C_TOMA, tC);
+          objetivo = enTecla.clone().lerp(enManilla, u);
+          objetivo.y += Math.sin(Math.PI * u) * 0.06;
+        } else if (tC < C_BAJA) {
+          objetivo = enManilla;
+        } else {
+          const u = suave(C_BAJA, C_FIN, tC);
+          objetivo = enManilla.clone().lerp(enTecla, u);
+          objetivo.y += Math.sin(Math.PI * u) * 0.06;
+        }
+        // La punta entra a la manilla desde afuera; la articulación hacia
+        // arriba y afuera (nunca al revés)
+        const dirManilla = ejeX.clone().negate().transformDirection(cuerpo.matrixWorld.clone().invert());
+        const dirEnTaza = new THREE.Vector3().copy(taza.AGARRE).normalize().applyQuaternion(qTaza).negate()
+          .add(new THREE.Vector3(0, -0.6, 0)).normalize().transformDirection(cuerpo.matrixWorld.clone().invert());
+        const enTaza = tC < C_TOMA ? suave(0, C_TOMA, tC) : tC < C_BAJA ? 1 : 1 - suave(C_BAJA, C_FIN, tC);
+        dirTarso.copy(DIR_TARSO_TECLA).lerp(lev > 0.01 ? dirManilla.lerp(dirEnTaza, 1 - lev) : dirEnTaza, enTaza).normalize();
+        const poloAbajo = new THREE.Vector3(lado * 0.7, 1, 0.1).normalize();
+        // con la taza en alto la rodilla sigue arriba y afuera
+        const poloBoca = new THREE.Vector3(lado * 0.7, 0.85, 0.25).normalize();
+        polo.copy(poloAbajo).lerp(poloBoca, lev).normalize();
+        patasDelanteras[i].poner(cadera, objetivo, dirTarso, polo);
+        cigarro.visible = false;
+      } else if (i === 0 && cicloActivo) {
         // Poses clave (en el espacio del cuerpo)
         boca.getWorldPosition(mundoBoca);
         puntoBoca.copy(mundoBoca);
@@ -1253,6 +1359,7 @@ export function crearMosca(scene) {
     cabeza,
     update,
     // El cigarro que fuma ahora todavía no es colilla
-    cigarroEnMano: () => cicloActivo,
+    cigarroEnMano: () => cicloActivo || pendienteFumar,
+    tomandoCafe: () => cicloCafe,
   };
 }

@@ -57,6 +57,7 @@ body {
   width: 256px;
   max-height: calc(100vh - 32px);
   overflow-y: auto;
+  transition: transform var(--transicion), opacity 0.35s ease, visibility 0s linear 0s;
   background: var(--fondo-panel);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -305,12 +306,12 @@ input[type='range']:focus-visible::-moz-range-thumb {
 
 .metricas {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
 }
 
 .metrica {
-  padding: 8px 11px;
+  padding: 8px 9px;
   border-radius: 10px;
   background: var(--superficie);
 }
@@ -326,7 +327,7 @@ input[type='range']:focus-visible::-moz-range-thumb {
 .metrica-label {
   display: block;
   margin-top: 2px;
-  font-size: 11.5px;
+  font-size: 11px;
   color: var(--tinta-suave);
 }
 
@@ -489,7 +490,7 @@ tr.vacia td {
   position: fixed;
   top: 16px;
   left: 16px;
-  width: 428px;
+  width: 360px;
   display: flex;
   flex-direction: column;
   transition: transform var(--transicion), opacity 0.35s ease, visibility 0s linear 0s;
@@ -603,7 +604,7 @@ body.exhibicion .solo-control-inline {
 .cerebro-lienzo {
   position: relative;
   /* cerebro en vertical: el panel se alarga hacia abajo */
-  height: clamp(260px, calc(100vh - 330px), 500px);
+  height: clamp(220px, calc(100vh - 450px), 380px);
   background: #060a16;
 }
 
@@ -809,7 +810,7 @@ body.exhibicion #banner-fin-dia {
 
 body.exhibicion #escena {
   inset: 68px auto 24px 24px;
-  width: calc(50% - 36px);
+  width: calc(60% - 36px);
   border: 1px solid var(--oscuro-borde);
   border-radius: 16px;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
@@ -884,7 +885,7 @@ body.exhibicion #cerebro {
   right: 24px;
   bottom: 24px;
   left: auto;
-  width: calc(50% - 36px);
+  width: calc(40% - 36px);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
 }
 
@@ -905,7 +906,7 @@ body.exhibicion .cerebro-cuerpo {
   flex: 1;
   min-height: 0;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 214px;
+  grid-template-columns: minmax(0, 1fr) 188px;
 }
 
 body.exhibicion .cerebro-lienzo {
@@ -965,7 +966,9 @@ body.exhibicion .grupo {
 }
 
 body.exhibicion .grupo-nombre {
-  gap: 8px;
+  white-space: nowrap;
+  font-size: 12px;
+  gap: 7px;
   color: var(--oscuro-tinta);
   font-weight: 600;
 }
@@ -1094,4 +1097,97 @@ body.cerebro-oculto:not(.exhibicion) #btn-mostrar-cerebro {
   border-radius: 50%;
   background: var(--c);
   box-shadow: 0 0 5px var(--c);
+}
+
+#c-estado.cafe {
+  color: #e8c38a;
+}
+
+/* ---------- Ocultar / mostrar el panel de controles (sólo en Control) ---------- */
+
+.boton-icono-claro {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--tinta);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.boton-icono-claro:hover {
+  background: var(--superficie);
+}
+
+.boton-icono-claro:focus {
+  outline: none;
+}
+
+.boton-icono-claro:focus-visible {
+  box-shadow: 0 0 0 3px var(--anillo);
+}
+
+body.controles-oculto:not(.exhibicion) #panel {
+  transform: translateX(calc(100% + 24px));
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform var(--transicion), opacity 0.35s ease, visibility 0s linear 0.45s;
+}
+
+#btn-mostrar-controles {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  background: var(--fondo-panel);
+  box-shadow: 0 8px 22px rgba(60, 45, 25, 0.16);
+  color: var(--tinta);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateX(12px);
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
+}
+
+body.controles-oculto:not(.exhibicion) #btn-mostrar-controles {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.3s ease 0.2s, transform 0.3s ease 0.2s, visibility 0s linear 0s;
+}
+
+#btn-mostrar-controles:hover {
+  background: #fff;
+}
+
+#btn-mostrar-controles:focus {
+  outline: none;
+}
+
+#btn-mostrar-controles:focus-visible {
+  box-shadow: 0 0 0 3px var(--anillo);
+}
+
+body.exhibicion #btn-mostrar-controles {
+  display: none;
+}
+
+body.controles-oculto #banner-fin-dia {
+  left: 50%;
 }

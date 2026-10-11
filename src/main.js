@@ -6,7 +6,7 @@ import { crearMosca } from './fly.js';
 import { DayBrain } from './brain.js';
 import { revisarChoques } from './choques.js';
 import { cargarDatosCerebro, crearCerebro, GRUPOS_VISUALES } from './cerebro.js';
-import { POS_CENICERO, CENTRO_PANTALLA, ESCALA_MONITOR } from './layout.js';
+import { POS_CENICERO, POS_PILA, CENTRO_PANTALLA, ESCALA_MONITOR } from './layout.js';
 
 const CLAVE_STORAGE = 'mosca-del-wip-dias';
 const MIN_SIM_POR_SEG_REAL = 540 / 60; // día de 540 min simulados en 60s reales a x1
@@ -14,7 +14,9 @@ const MIN_SIM_POR_SEG_REAL = 540 / 60; // día de 540 min simulados en 60s reale
 const canvas = document.getElementById('lienzo-3d');
 const { scene, camera, renderer, controls } = crearEscena(canvas);
 const oficina = crearOficina(scene, { anisotropia: renderer.capabilities.getMaxAnisotropy() });
-const mosca = crearMosca(scene);
+const mosca = crearMosca(scene, {
+  taza: { objeto: oficina.taza, reposo: oficina.reposoTaza, AGARRE: oficina.AGARRE_TAZA, BORDE: oficina.BORDE_TAZA },
+});
 
 const elWip = document.getElementById('wip');
 const elWipValor = document.getElementById('wip-valor');
@@ -25,6 +27,7 @@ const elReloj = document.getElementById('reloj-texto');
 const elBarraDia = document.getElementById('barra-dia-relleno');
 const elHechas = document.getElementById('m-hechas');
 const elColillas = document.getElementById('m-colillas');
+const elCafes = document.getElementById('m-cafes');
 const elEstres = document.getElementById('m-estres');
 const elBarraEstres = document.getElementById('barra-estres-relleno');
 const elTablaBody = document.getElementById('tabla-dias-body');
@@ -49,6 +52,7 @@ const elExWip = document.getElementById('ex-wip');
 const elExHora = document.getElementById('ex-hora');
 const elExHechas = document.getElementById('ex-hechas');
 const elExColillas = document.getElementById('ex-colillas');
+const elExCafes = document.getElementById('ex-cafes');
 const elExEstres = document.getElementById('ex-estres');
 const elExFin = document.getElementById('ex-fin');
 const elExFinTexto = document.getElementById('ex-fin-texto');
@@ -85,12 +89,12 @@ function pintarTabla(dias) {
   elTablaBody.innerHTML = '';
   elBtnBorrar.hidden = !dias.length;
   if (!dias.length) {
-    elTablaBody.innerHTML = '<tr class="vacia"><td colspan="5">Juega un día completo para comparar</td></tr>';
+    elTablaBody.innerHTML = '<tr class="vacia"><td colspan="6">Juega un día completo para comparar</td></tr>';
     return;
   }
   dias.forEach((d, i) => {
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${d.wip}</td><td>${d.hechas}</td><td>${d.colillas}</td><td>${d.estresMax}%</td>`;
+    tr.innerHTML = `<td>${d.wip}</td><td>${d.hechas}</td><td>${d.colillas}</td><td>${d.cafes ?? '–'}</td><td>${d.estresMax}%</td>`;
     const celda = document.createElement('td');
     const quitar = document.createElement('button');
     quitar.type = 'button';
@@ -177,6 +181,7 @@ function refrescarUI(estado, cigarroEnMano) {
   elBarraDia.style.width = `${Math.round(estado.fraccionDelDia * 100)}%`;
   elHechas.textContent = estado.hechas;
   elColillas.textContent = estado.colillas;
+  elCafes.textContent = estado.cafes;
   elEstres.textContent = estado.nivel.nombre;
   elEstres.style.color = estado.nivel.color;
   elBarraEstres.style.width = `${Math.round(estado.estres)}%`;
@@ -198,6 +203,7 @@ function refrescarUI(estado, cigarroEnMano) {
     elExHora.textContent = estado.hora;
     elExHechas.textContent = `${estado.hechas} terminadas`;
     elExColillas.textContent = `${estado.colillas} colillas`;
+    elExCafes.textContent = `${estado.cafes} cafés`;
     elExEstres.textContent = estado.nivel.nombre;
     elExEstres.style.color = estado.nivel.color;
     return;
@@ -242,7 +248,16 @@ try {
 } catch {
   // sin almacenamiento: empieza visible
 }
-let factorPanel = cerebroOculto ? 0 : 1; // 1 = el panel ocupa su espacio
+const CLAVE_CONTROLES_OCULTO = 'mosca-del-wip-controles-oculto';
+let controlesOculto = false;
+try {
+  controlesOculto = localStorage.getItem(CLAVE_CONTROLES_OCULTO) === '1';
+} catch {
+  // sin almacenamiento: empieza visible
+}
+// 1 = el panel ocupa su espacio; 0 = oculto (cambian de a poco)
+let factorIzq = cerebroOculto ? 0 : 1;
+let factorDer = controlesOculto ? 0 : 1;
 const camBase = new THREE.PerspectiveCamera();
 const _v = new THREE.Vector3();
 // Silueta de la mosca: una muestra de puntos reales de su cuerpo (se
@@ -260,8 +275,23 @@ function muestrearSilueta() {
   });
 }
 
+// Lo que no debe quedar tapado: la mosca, la pantalla con el kanban y la
+// pila de trabajo. Sólo se cuenta lo que cae a la altura de cada panel.
+const puntosFijos = [];
+for (const sx of [-1, 1])
+  for (const sy of [-1, 1])
+    puntosFijos.push(
+      CENTRO_PANTALLA.clone().add(new THREE.Vector3(sx * 0.49 * ESCALA_MONITOR, sy * 0.3 * ESCALA_MONITOR, 0))
+    );
+for (const sx of [-1, 1])
+  for (const sz of [-1, 1])
+    for (const alto of [0, 0.3]) puntosFijos.push(POS_PILA.clone().add(new THREE.Vector3(sx * 0.18, alto, sz * 0.16)));
+
 function aplicarEspacioPanel() {
-  if (vista === 'exhibicion' || factorPanel < 0.002) {
+  const fi = factorIzq;
+  const fd = factorDer;
+  if (vista === 'exhibicion' || (fi < 0.002 && fd < 0.002)) {
+    // Sin paneles: la escena ocupa toda la pantalla con el encuadre oficial
     camera.zoom = 1;
     camera.clearViewOffset();
     camera.updateProjectionMatrix();
@@ -269,7 +299,7 @@ function aplicarEspacioPanel() {
   }
   const w = elEscena.clientWidth;
   const h = elEscena.clientHeight;
-  // ¿Dónde quedaría el borde izquierdo de la mosca con el encuadre normal?
+  // ¿Dónde quedaría cada cosa con el encuadre normal?
   camera.updateMatrixWorld();
   camBase.fov = camera.fov;
   camBase.aspect = camera.aspect;
@@ -280,24 +310,42 @@ function aplicarEspacioPanel() {
     muestrearSilueta();
     cuadrosSilueta = 120;
   }
+  const arribaIzq = elCerebro.offsetTop - 8;
+  const abajoIzq = elCerebro.offsetTop + elCerebro.offsetHeight + 8;
+  const arribaDer = elPanelControl.offsetTop - 8;
+  const abajoDer = elPanelControl.offsetTop + elPanelControl.offsetHeight + 8;
   let xMin = Infinity;
-  for (const e of silueta) {
-    _v.copy(e).applyMatrix4(camera.matrixWorldInverse).applyMatrix4(camBase.projectionMatrix);
-    xMin = Math.min(xMin, ((_v.x + 1) / 2) * w);
-  }
-  const izquierda = elCerebro.offsetLeft + elCerebro.offsetWidth + 16;
-  const derecha = elPanelControl.getBoundingClientRect().left - 8;
+  let xMax = -Infinity;
+  const medir = (p) => {
+    _v.copy(p).applyMatrix4(camera.matrixWorldInverse);
+    // lo que queda detrás de la cámara (al rotarla) no cuenta
+    if (_v.z > -camera.near) return;
+    _v.applyMatrix4(camBase.projectionMatrix);
+    if (Math.abs(_v.x) > 1.6 || Math.abs(_v.y) > 1.6) return;
+    const x = ((_v.x + 1) / 2) * w;
+    const y = ((1 - _v.y) / 2) * h;
+    if (y > arribaIzq && y < abajoIzq) xMin = Math.min(xMin, x);
+    if (y > arribaDer && y < abajoDer) xMax = Math.max(xMax, x);
+  };
+  silueta.forEach(medir);
+  puntosFijos.forEach(medir);
+
+  // Espacio libre entre los paneles (crece de a poco al ocultar uno)
+  const L = fi * (elCerebro.offsetLeft + elCerebro.offsetWidth + 16);
+  const R = w - fd * (w - (elPanelControl.offsetLeft - 12));
   const c = w / 2;
   let zoom = 1;
-  let dx = 0;
-  if (xMin < izquierda && derecha > izquierda) {
-    zoom = Math.min(1, Math.max(0.7, (derecha - izquierda) / (derecha - xMin)));
-    dx = izquierda - c - (xMin - c) * zoom;
+  if (Number.isFinite(xMin) && Number.isFinite(xMax) && xMax - xMin > R - L) {
+    zoom = Math.max(0.7, (R - L) / (xMax - xMin));
   }
+  // Movimiento mínimo para que nada quede tapado
+  const desde = Number.isFinite(xMin) ? L - c - (xMin - c) * zoom : -Infinity;
+  const hasta = Number.isFinite(xMax) ? R - c - (xMax - c) * zoom : Infinity;
+  const limite = w * 0.35;
+  const dx = Math.max(-limite, Math.min(limite, desde > hasta ? (desde + hasta) / 2 : Math.min(Math.max(0, desde), hasta)));
   const dy = (1 - zoom) * h * 0.3;
-  const f = factorPanel;
-  camera.zoom = 1 + (zoom - 1) * f;
-  camera.setViewOffset(w, h, -dx * f, -dy * f, w, h);
+  camera.zoom = zoom;
+  camera.setViewOffset(w, h, -dx, -dy, w, h);
   camera.updateProjectionMatrix();
 }
 
@@ -305,6 +353,25 @@ function pintarCerebroOculto() {
   document.body.classList.toggle('cerebro-oculto', cerebroOculto);
   document.getElementById('btn-ocultar-cerebro').setAttribute('aria-expanded', String(!cerebroOculto));
 }
+
+function pintarControlesOculto() {
+  document.body.classList.toggle('controles-oculto', controlesOculto);
+  document.getElementById('btn-ocultar-controles').setAttribute('aria-expanded', String(!controlesOculto));
+}
+
+function alternarControles(ocultar = !controlesOculto) {
+  if (vista !== 'control') return;
+  controlesOculto = ocultar;
+  try {
+    localStorage.setItem(CLAVE_CONTROLES_OCULTO, ocultar ? '1' : '0');
+  } catch {
+    // sin almacenamiento: sólo dura esta sesión
+  }
+  pintarControlesOculto();
+}
+document.getElementById('btn-ocultar-controles').addEventListener('click', () => alternarControles(true));
+document.getElementById('btn-mostrar-controles').addEventListener('click', () => alternarControles(false));
+pintarControlesOculto();
 
 function alternarCerebro(ocultar = !cerebroOculto) {
   if (vista !== 'control') return;
@@ -330,29 +397,50 @@ ajustarEscena();
 // el recuadro (que es más angosto que la pantalla completa).
 const _caja = new THREE.Box3();
 const _p = new THREE.Vector3();
+function puntosVisibles(objeto, porPieza = 24) {
+  const puntos = [];
+  objeto.updateMatrixWorld(true);
+  objeto.traverse((o) => {
+    if (!o.isMesh || !o.geometry?.attributes?.position) return;
+    for (let n = o; n; n = n.parent) if (!n.visible) return;
+    const pos = o.geometry.attributes.position;
+    const paso = Math.max(1, Math.floor(pos.count / porPieza));
+    for (let i = 0; i < pos.count; i += paso) puntos.push(new THREE.Vector3().fromBufferAttribute(pos, i).applyMatrix4(o.matrixWorld));
+  });
+  return puntos;
+}
+
 function encuadrarExhibicion() {
-  // La mosca (sin la silla), la pantalla con el kanban y el cenicero
-  _caja.setFromObject(mosca.figura);
+  // Lo que debe verse completo: la mosca (sin la silla), la pantalla con el
+  // kanban y el cenicero. Se usan puntos reales de la mosca (no su caja), así
+  // la cámara queda lo más cerca posible.
+  const puntos = puntosVisibles(mosca.figura);
   const anchoPantalla = 0.49 * ESCALA_MONITOR;
-  _caja.expandByPoint(_p.copy(CENTRO_PANTALLA).add(new THREE.Vector3(anchoPantalla, 0.36 * ESCALA_MONITOR, 0)));
-  _caja.expandByPoint(_p.copy(CENTRO_PANTALLA).add(new THREE.Vector3(-anchoPantalla, 0.36 * ESCALA_MONITOR, 0)));
-  _caja.expandByPoint(_p.copy(POS_CENICERO).add(new THREE.Vector3(0.12, 0, 0.12)));
-  const centro = _caja.getCenter(new THREE.Vector3());
+  for (const sx of [-1, 1])
+    for (const sy of [-1, 1])
+      puntos.push(CENTRO_PANTALLA.clone().add(new THREE.Vector3(sx * anchoPantalla, sy * 0.33 * ESCALA_MONITOR, 0)));
+  for (const sx of [-1, 1]) for (const sz of [-1, 1]) puntos.push(POS_CENICERO.clone().add(new THREE.Vector3(sx * 0.17, 0.06, sz * 0.17)));
+  const caja = new THREE.Box3().setFromPoints(puntos);
+  const centro = caja.getCenter(new THREE.Vector3());
   const direccion = CAMARA_INICIAL.posicion.clone().sub(CAMARA_INICIAL.objetivo).normalize();
-  const esquinas = [];
-  for (const x of [_caja.min.x, _caja.max.x])
-    for (const y of [_caja.min.y, _caja.max.y]) for (const z of [_caja.min.z, _caja.max.z]) esquinas.push(new THREE.Vector3(x, y, z));
-  // El rótulo de abajo ocupa un poco: dejo más margen abajo
-  for (let d = 1.5; d < 14; d += 0.02) {
-    camera.position.copy(centro).addScaledVector(direccion, d);
+  // Me acerco hasta que algo se saldría del recuadro (dejando espacio abajo
+  // para el rótulo)
+  const entra = () =>
+    puntos.every((e) => {
+      _p.copy(e).applyMatrix4(camera.matrixWorldInverse);
+      if (_p.z > -camera.near) return false;
+      _p.applyMatrix4(camera.projectionMatrix);
+      return Math.abs(_p.x) < 0.96 && _p.y < 0.94 && _p.y > -0.8;
+    });
+  let d = 14;
+  for (; d > 1.2; d -= 0.02) {
+    camera.position.copy(centro).addScaledVector(direccion, d - 0.02);
     camera.lookAt(centro);
     camera.updateMatrixWorld();
-    const entra = esquinas.every((e) => {
-      _p.copy(e).project(camera);
-      return Math.abs(_p.x) < 0.97 && _p.y < 0.95 && _p.y > -0.84;
-    });
-    if (entra) break;
+    if (!entra()) break;
   }
+  camera.position.copy(centro).addScaledVector(direccion, d);
+  camera.lookAt(centro);
   controls.target.copy(centro);
   controls.update();
 }
@@ -417,6 +505,7 @@ window.addEventListener('keydown', (e) => {
   }
   if (e.key === 'e' || e.key === 'E') cambiarVista();
   if (e.key === 'b' || e.key === 'B') alternarCerebro();
+  if (e.key === 'c' || e.key === 'C') alternarControles();
   if (e.key === 'Escape' && vista === 'exhibicion') cambiarVista('control');
 });
 
@@ -458,17 +547,18 @@ cargarDatosCerebro()
   .catch((err) => console.error('No se pudo cargar el cerebro', err));
 
 let ultimaLectura = 0;
-function refrescarCerebro(dt, estado, fumandoVisible, ahora) {
+function refrescarCerebro(dt, estado, fumandoVisible, cafeVisible, ahora) {
   if (!cerebro) return;
   cerebro.actualizar(dt, {
     enCurso: estado.enCurso,
     estres: estado.estres / 100,
     fumando: fumandoVisible,
+    cafe: cafeVisible,
     terminado: estado.terminado,
     hechas: estado.hechas,
   });
   // Oculto (y ya fuera de la pantalla): no se dibuja, así no gasta nada
-  if (vista === 'control' && cerebroOculto && factorPanel === 0) return;
+  if (vista === 'control' && cerebroOculto && factorIzq === 0) return;
   cerebro.renderizar();
   // Los números se actualizan unas 8 veces por segundo (más se vería nervioso)
   if (ahora - ultimaLectura < 125) return;
@@ -476,9 +566,10 @@ function refrescarCerebro(dt, estado, fumandoVisible, ahora) {
   const l = cerebro.lectura();
   elActivas.textContent = formato.format(l.activas);
   elNivel.textContent = `${Math.round(l.nivel * 100)}%`;
-  const estadoTexto = estado.terminado ? 'Descansa' : fumandoVisible ? 'Fuma' : 'Trabaja';
+  const estadoTexto = estado.terminado ? 'Descansa' : fumandoVisible ? 'Fuma' : cafeVisible ? 'Café' : 'Trabaja';
   elEstado.textContent = estadoTexto;
   elEstado.classList.toggle('fuma', estadoTexto === 'Fuma');
+  elEstado.classList.toggle('cafe', estadoTexto === 'Café');
   l.porGrupo.forEach((g) => {
     const fila = filasGrupo[g.id];
     if (!fila) return;
@@ -508,7 +599,7 @@ function animar(ahora = performance.now()) {
       // Día de ejemplo terminado: muestro el resumen y empiezo otro
       if (finExhibicion === 0) {
         const r = juego.resumenFinal();
-        elExFinTexto.textContent = `${r.hechas} tareas terminadas · ${r.colillas} colillas · estrés máximo ${r.estresMax}%. Empieza otro día…`;
+        elExFinTexto.textContent = `${r.hechas} tareas terminadas · ${r.colillas} colillas · ${r.cafes} cafés · estrés máximo ${r.estresMax}%. Empieza otro día…`;
         elExFin.classList.remove('oculto');
       }
       finExhibicion += dtReal;
@@ -520,19 +611,22 @@ function animar(ahora = performance.now()) {
 
   const estado = juego.estado();
   if (!congelado) {
-    mosca.update(dtReal, { fumando: estado.fumando, estres: estado.estres / 100 });
-    oficina.actualizar(dtReal);
+    mosca.update(dtReal, { fumando: estado.fumando, tomandoCafe: estado.tomandoCafe, estres: estado.estres / 100 });
+    oficina.actualizar(dtReal, estado.estres / 100);
   }
   refrescarUI(estado, mosca.cigarroEnMano());
 
   controls.update();
   // El espacio que ocupa el panel del cerebro cambia de a poco (transición suave)
-  const objetivoPanel = enExhibicion || cerebroOculto ? 0 : 1;
-  factorPanel += (objetivoPanel - factorPanel) * (1 - Math.exp(-7 * dtReal));
-  if (Math.abs(objetivoPanel - factorPanel) < 0.002) factorPanel = objetivoPanel;
+  const acercar = (actual, objetivo) => {
+    const nuevo = actual + (objetivo - actual) * (1 - Math.exp(-7 * dtReal));
+    return Math.abs(objetivo - nuevo) < 0.002 ? objetivo : nuevo;
+  };
+  factorIzq = acercar(factorIzq, enExhibicion || cerebroOculto ? 0 : 1);
+  factorDer = acercar(factorDer, enExhibicion || controlesOculto ? 0 : 1);
   aplicarEspacioPanel();
   renderer.render(scene, camera);
-  refrescarCerebro(dtReal, estado, mosca.cigarroEnMano(), ahora);
+  refrescarCerebro(dtReal, estado, mosca.cigarroEnMano(), mosca.tomandoCafe(), ahora);
 }
 
 animar();
@@ -545,7 +639,7 @@ if (import.meta.env.DEV) {
       elWip.value = String(v);
       elWip.dispatchEvent(new Event('input'));
     },
-    forzar({ estres, fumando, colillas, hechas } = {}) {
+    forzar({ estres, fumando, cafe, colillas, hechas } = {}) {
       if (estres !== undefined) {
         juego.estres = estres;
         juego.estresMax = Math.max(juego.estresMax, estres);
@@ -553,6 +647,10 @@ if (import.meta.env.DEV) {
       if (fumando !== undefined) {
         juego.fumando = fumando;
         juego.minutosFumadaRestantes = fumando ? 1e6 : 0;
+      }
+      if (cafe !== undefined) {
+        juego.tomandoCafe = cafe;
+        juego.minutosCafeRestantes = cafe ? 1e6 : 0;
       }
       if (colillas !== undefined) juego.colillas = colillas;
       if (hechas !== undefined) {
@@ -575,14 +673,16 @@ if (import.meta.env.DEV) {
     avanzar(segundos, paso = 1 / 60) {
       const estado = juego.estado();
       for (let t = 0; t < segundos; t += paso) {
-        mosca.update(paso, { fumando: estado.fumando, estres: estado.estres / 100 });
-        oficina.actualizar(paso);
+        mosca.update(paso, { fumando: estado.fumando, tomandoCafe: estado.tomandoCafe, estres: estado.estres / 100 });
+        oficina.actualizar(paso, estado.estres / 100);
       }
       refrescarUI(estado, mosca.cigarroEnMano());
     },
     choques: (opciones) => revisarChoques(scene, opciones),
     vista: (v) => cambiarVista(v, true),
     ocultarCerebro: (v) => alternarCerebro(v),
+    ocultarControles: (v) => alternarControles(v),
+    calorCafe: () => oficina.calorCafe(),
     // Salta casi al final del día (para probar el loop de exhibición)
     posCabeza: () => mosca.cabeza.getWorldPosition(new THREE.Vector3()).toArray(),
     diaExhibicion: (w) => {

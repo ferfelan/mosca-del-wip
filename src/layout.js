@@ -31,6 +31,15 @@ export const POS_MOUSEPAD = MOUSEPAD.pos;
 export const POS_MOUSE = delanteDeLaMosca(0.99, 0.33);
 // Taza a la derecha del teclado (como se ve en pantalla), al alcance de la pata
 export const POS_TAZA = delanteDeLaMosca(1.03, -0.4);
+// La manilla de la taza mira hacia la pata delantera derecha de la mosca
+// (la que la toma). En la taza, la manilla apunta a su eje +x.
+const _haciaPata = new THREE.Vector3(MOSCA.x, 0, MOSCA.z)
+  .addScaledVector(IZQ_MOSCA, -0.12)
+  .addScaledVector(DIR_MOSCA, 0.35)
+  .sub(POS_TAZA)
+  .setY(0)
+  .normalize();
+export const ROT_TAZA = Math.atan2(-_haciaPata.z, _haciaPata.x);
 // Cenicero cerca del borde, a la derecha: la pata delantera lo alcanza
 export const POS_CENICERO = delanteDeLaMosca(0.73, -0.6);
 // Cajetilla al lado del cenicero (lado de la cámara)

@@ -26,6 +26,7 @@ import {
   POS_TAZA,
   POS_VENTANA,
   POS_PILA,
+  ROT_TAZA,
   POS_LAMPARA,
   MOSCA,
 } from './layout.js';
@@ -464,20 +465,36 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
   oficina.add(mouse);
 
   // ---------- Taza ----------
+  // La manilla es una "C" redondeada cuyos extremos entran en la pared de la
+  // taza (bien unida). La mosca la toma por el centro de la "C".
   const taza = new THREE.Group();
   taza.position.copy(POS_TAZA);
+  taza.rotation.y = ROT_TAZA;
   const matTaza = new THREE.MeshStandardMaterial({ color: '#f3f0e8', roughness: 0.35 });
-  taza.add(solido(malla(new THREE.CylinderGeometry(0.085, 0.072, 0.13, 22), matTaza, { y: 0.065, recibe: true })));
-  const asa = malla(new THREE.TorusGeometry(0.045, 0.014, 10, 20, Math.PI * 1.3), matTaza, { x: 0.095, y: 0.07 });
-  asa.rotation.y = Math.PI / 2;
+  taza.add(solido(malla(new THREE.CylinderGeometry(0.085, 0.072, 0.13, 32), matTaza, { y: 0.065, recibe: true })));
+  const ARCO_ASA = Math.PI * 1.3;
+  const R_ASA = 0.038;
+  const X_ASA = 0.092;
+  const Y_ASA = 0.07;
+  const asa = malla(new THREE.TorusGeometry(R_ASA, 0.012, 14, 40, ARCO_ASA), matTaza, { x: X_ASA, y: Y_ASA });
+  asa.rotation.z = -ARCO_ASA / 2;
   taza.add(asa);
   taza.add(
-    malla(new THREE.CylinderGeometry(0.075, 0.075, 0.01, 22), new THREE.MeshStandardMaterial({ color: '#6b4631', roughness: 0.3 }), {
-      y: 0.126,
+    malla(new THREE.CylinderGeometry(0.077, 0.077, 0.006, 32), new THREE.MeshStandardMaterial({ color: '#6b4631', roughness: 0.25 }), {
+      y: 0.118,
       sombra: false,
     })
   );
+  // Borde un poco más grueso (se ve más "taza")
+  const bordeTaza = malla(new THREE.TorusGeometry(0.083, 0.005, 8, 40), matTaza, { y: 0.13, sombra: false });
+  bordeTaza.rotation.x = Math.PI / 2;
+  taza.add(bordeTaza);
   oficina.add(taza);
+  // Pose de descanso (la mosca la levanta y la vuelve a dejar aquí)
+  const reposoTaza = { posicion: taza.position.clone(), rotacion: taza.quaternion.clone() };
+  // Donde la pata toma la manilla, y el borde por donde bebe (en la taza)
+  const AGARRE_TAZA = new THREE.Vector3(X_ASA + R_ASA + 0.014, Y_ASA, 0);
+  const BORDE_TAZA = new THREE.Vector3(0, 0.13, 0);
 
   // ---------- Cenicero: cerámica con hueco de verdad ----------
   const cenicero = new THREE.Group();
@@ -524,7 +541,7 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
     { p: POS_CAJETILLA, r: 0.13 },
     { p: TECLADO.pos, r: 0.34 },
     { p: POS_MOUSE, r: 0.12 },
-    { p: POS_PILA, r: 0.25 },
+    { p: POS_PILA, r: 0.42 },
   ];
   const haciaMosca = Math.atan2(MOSCA.z - POS_CENICERO.z, MOSCA.x - POS_CENICERO.x);
   const zMin = ESCRITORIO.z - ESCRITORIO.fondo / 2 + 0.08;
@@ -566,59 +583,126 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
     ceniza.visible = false;
   }
 
-  // ---------- Pila de carpetas: una por cada tarea en curso ----------
-  // Con pocas tareas queda ordenada; con muchas, alta y desordenada.
-  const MAX_CARPETAS = 10;
-  const ALTO_CARPETA = 0.024;
+  // ---------- Pila de trabajo: crece con las tareas en curso ----------
+  // Cada tarea en curso suma una carpeta con un fajo de hojas encima. Con
+  // pocas tareas: pila chica y ordenada. Con muchas: torre alta, torcida y
+  // desordenada, con hojas que asoman y hojas sueltas sobre el escritorio.
+  const MAX_CAPAS = 10;
   const pila = new THREE.Group();
   pila.position.copy(POS_PILA);
   pila.rotation.y = 0.35;
   oficina.add(pila);
   const coloresPestana = ['#4f86c6', '#e0794f', '#6aa86f', '#c9a227', '#9b6fc4'];
-  const matManila = new THREE.MeshStandardMaterial({ color: '#e7c983', roughness: 0.85 });
+  const coloresCarpeta = ['#e7c983', '#e7c983', '#9fc1e0', '#e7c983', '#f0a8a0'];
   const matPapel = new THREE.MeshStandardMaterial({ color: '#fbfaf6', roughness: 0.9 });
-  const carpetas = [];
-  for (let i = 0; i < MAX_CARPETAS; i++) {
+  const matPapel2 = new THREE.MeshStandardMaterial({ color: '#f1efe8', roughness: 0.9 });
+  const geoHoja = new THREE.BoxGeometry(0.21, 0.0035, 0.29);
+  const capas = [];
+  for (let i = 0; i < MAX_CAPAS; i++) {
     const g = new THREE.Group();
+    const matCarpeta = new THREE.MeshStandardMaterial({ color: coloresCarpeta[i % coloresCarpeta.length], roughness: 0.85 });
     // Carpeta de cartulina con hojas adentro que asoman por un costado
-    const tapa = malla(new RoundedBoxGeometry(0.3, 0.018, 0.22, 2, 0.004), matManila, { y: 0.009, recibe: true });
+    const tapa = malla(new RoundedBoxGeometry(0.31, 0.02, 0.23, 2, 0.004), matCarpeta, { y: 0.01, recibe: true });
     tapa.userData.solido = 'oficina';
     g.add(tapa);
-    const papel = malla(new THREE.BoxGeometry(0.27, 0.008, 0.19), matPapel, {
-      x: 0.03 + Math.random() * 0.03,
-      y: 0.009,
-      z: (Math.random() - 0.5) * 0.03,
-      recibe: true,
-    });
-    g.add(papel);
-    const pestana = malla(
-      new RoundedBoxGeometry(0.07, 0.012, 0.03, 1, 0.004),
-      new THREE.MeshStandardMaterial({ color: coloresPestana[i % coloresPestana.length], roughness: 0.7 }),
-      { x: -0.06 + (i % 3) * 0.06, y: 0.007, z: -0.12 }
+    g.add(
+      malla(new THREE.BoxGeometry(0.28, 0.01, 0.2), matPapel, {
+        x: 0.03 + Math.random() * 0.03,
+        y: 0.01,
+        z: (Math.random() - 0.5) * 0.03,
+        recibe: true,
+      })
     );
-    g.add(pestana);
+    g.add(
+      malla(
+        new RoundedBoxGeometry(0.07, 0.014, 0.03, 1, 0.004),
+        new THREE.MeshStandardMaterial({ color: coloresPestana[i % coloresPestana.length], roughness: 0.7 }),
+        { x: -0.06 + (i % 3) * 0.06, y: 0.009, z: -0.124 }
+      )
+    );
+    // Fajo de hojas encima de la carpeta
+    const hojas = [];
+    for (let k = 0; k < 6; k++) {
+      const hoja = malla(geoHoja, k % 2 ? matPapel : matPapel2, { y: 0.0215 + k * 0.0042, recibe: true });
+      hoja.rotation.y = Math.PI / 2;
+      hoja.userData = { azarX: Math.random() - 0.5, azarZ: Math.random() - 0.5, azarGiro: Math.random() - 0.5 };
+      g.add(hoja);
+      hojas.push(hoja);
+    }
+    // Una hoja que asoma por un costado (sólo con desorden)
+    const asoma = malla(geoHoja, matPapel, { y: 0.022, recibe: true });
+    asoma.userData = { lado: i % 2 ? 1 : -1, azar: Math.random() };
+    g.add(asoma);
     g.visible = false;
-    g.userData = { presencia: 0, azarGiro: Math.random() - 0.5, azarX: Math.random() - 0.5, azarZ: Math.random() - 0.5 };
+    g.userData = {
+      presencia: 0,
+      azarGiro: Math.random() - 0.5,
+      azarX: Math.random() - 0.5,
+      azarZ: Math.random() - 0.5,
+      hojas,
+      asoma,
+    };
     pila.add(g);
-    carpetas.push(g);
+    capas.push(g);
   }
+  const ALTO_CAPA = 0.0215 + 6 * 0.0042;
+
+  // Hojas sueltas sobre el escritorio alrededor de la pila (con WIP alto)
+  const sueltas = [];
+  [
+    [0.27, -0.1, 0.4],
+    [-0.05, 0.27, 1.2],
+    [0.22, 0.22, 2.1],
+    [-0.3, -0.12, 0.7],
+    [0.05, -0.28, 2.6],
+  ].forEach(([x, z, giro], i) => {
+    const hoja = malla(geoHoja, i % 2 ? matPapel : matPapel2, { x, y: 0.002 + i * 0.0005, z, recibe: true });
+    hoja.rotation.y = giro;
+    hoja.visible = false;
+    hoja.userData = { presencia: 0, umbral: 0.35 + i * 0.13 };
+    pila.add(hoja);
+    sueltas.push(hoja);
+  });
+
   let carpetasObjetivo = 0;
   let desorden = 0;
   function actualizarPila(dt) {
     desorden += (Math.min(1, Math.max(0, (carpetasObjetivo - 3) / 7)) - desorden) * (1 - Math.exp(-2 * dt));
     let altura = 0;
-    carpetas.forEach((g, i) => {
+    let derivaX = 0;
+    let derivaZ = 0;
+    capas.forEach((g, i) => {
       const u = g.userData;
       const objetivo = i < carpetasObjetivo ? 1 : 0;
-      u.presencia += (objetivo - u.presencia) * (1 - Math.exp(-5 * dt));
+      u.presencia += (objetivo - u.presencia) * (1 - Math.exp(-4 * dt));
       g.visible = u.presencia > 0.02;
       if (!g.visible) return;
-      const m = desorden * (0.35 + 0.65 * (i / MAX_CARPETAS));
+      // Más arriba, más desorden; la torre se va inclinando de a poco
+      const m = desorden * (0.3 + 0.7 * (i / MAX_CAPAS));
+      derivaX += 0.012 * desorden;
+      derivaZ += u.azarZ * 0.01 * desorden;
       // cae desde arriba al aparecer
-      g.position.set(u.azarX * 0.07 * m, altura + (1 - u.presencia) * 0.18, u.azarZ * 0.06 * m);
-      g.rotation.set(u.azarZ * 0.05 * m, u.azarGiro * 0.9 * m, u.azarX * 0.04 * m);
+      g.position.set(derivaX + u.azarX * 0.07 * m, altura + (1 - u.presencia) * 0.2, derivaZ + u.azarZ * 0.05 * m);
+      g.rotation.set(u.azarZ * 0.04 * m, u.azarGiro * 1.0 * m, u.azarX * 0.035 * m);
       g.scale.setScalar(0.6 + 0.4 * u.presencia);
-      altura += ALTO_CARPETA * u.presencia;
+      u.hojas.forEach((h) => {
+        const d = h.userData;
+        h.position.x = d.azarX * 0.035 * m;
+        h.position.z = d.azarZ * 0.035 * m;
+        h.rotation.y = Math.PI / 2 + d.azarGiro * 0.7 * m;
+      });
+      const a = u.asoma;
+      a.visible = desorden > 0.15;
+      a.position.x = a.userData.lado * (0.06 + 0.07 * desorden);
+      a.position.y = 0.022 + 0.01 * a.userData.azar;
+      a.rotation.set(0, a.userData.lado * (0.4 + a.userData.azar * 0.5), a.userData.lado * 0.05 * desorden);
+      altura += ALTO_CAPA * u.presencia;
+    });
+    sueltas.forEach((h) => {
+      const u = h.userData;
+      u.presencia += ((desorden > u.umbral ? 1 : 0) - u.presencia) * (1 - Math.exp(-3 * dt));
+      h.visible = u.presencia > 0.02;
+      h.scale.setScalar(Math.max(0.01, u.presencia));
     });
   }
 
@@ -676,7 +760,10 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
   // ---------- Vapor del café: hilos blancos suaves que suben y se van ----------
   const texVapor = texturasHumo(3);
   const vapor = [];
-  const bocaTaza = new THREE.Vector3(POS_TAZA.x, ALTO_ESCRITORIO + 0.13, POS_TAZA.z);
+  const bocaTaza = new THREE.Vector3();
+  // Temperatura del café: caliente con estrés bajo; con estrés alto se
+  // olvida del café y se enfría de a poco (el vapor se apaga).
+  let calor = 1;
   for (let i = 0; i < 26; i++) {
     const sp = new THREE.Sprite(
       new THREE.SpriteMaterial({ map: texVapor[i % 3], color: '#e9edf2', transparent: true, depthWrite: false, opacity: 0 })
@@ -688,9 +775,13 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
   }
   let acumVapor = 0;
   let tVapor = 0;
-  function actualizarVapor(dt) {
+  function actualizarVapor(dt, estres) {
     tVapor += dt;
-    acumVapor += dt * 8;
+    const objetivoCalor = 1 - Math.min(1, Math.max(0, (estres - 0.35) / 0.25));
+    // se enfría lento (~10 s) y se "recalienta" (taza nueva) un poco más rápido
+    calor += (objetivoCalor - calor) * (1 - Math.exp(-dt / (objetivoCalor < calor ? 10 : 6)));
+    taza.localToWorld(bocaTaza.copy(BORDE_TAZA));
+    acumVapor += dt * 8 * calor;
     while (acumVapor >= 1) {
       acumVapor -= 1;
       const libre = vapor.find((p) => !p.visible);
@@ -714,15 +805,15 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
       p.position.z += Math.cos(tVapor * 1.1 + u.semilla) * 0.02 * dt;
       p.scale.setScalar(0.045 + a * 0.16);
       p.material.rotation += dt * 0.2;
-      p.material.opacity = 0.8 * Math.min(1, a / 0.12) * Math.pow(1 - a, 1.4);
+      p.material.opacity = 0.8 * Math.max(0.15, calor) * Math.min(1, a / 0.12) * Math.pow(1 - a, 1.4);
     });
   }
 
   scene.add(oficina);
 
   return {
-    actualizar(dt) {
-      actualizarVapor(Math.min(dt, 0.05));
+    actualizar(dt, estres = 0) {
+      actualizarVapor(Math.min(dt, 0.05), estres);
       actualizarPila(Math.min(dt, 0.05));
     },
     grupo: oficina,
@@ -735,8 +826,13 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
       manecillaHora.rotation.z = -((horaDelDia % 12) / 12) * Math.PI * 2;
       manecillaMin.rotation.z = -(horaDelDia % 1) * Math.PI * 2;
     },
+    taza,
+    reposoTaza,
+    AGARRE_TAZA,
+    BORDE_TAZA,
+    calorCafe: () => calor,
     actualizarPilaTareas(enCurso) {
-      carpetasObjetivo = Math.min(MAX_CARPETAS, enCurso);
+      carpetasObjetivo = Math.min(MAX_CAPAS, enCurso);
     },
     agregarColilla,
     limpiarColillas,

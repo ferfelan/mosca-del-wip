@@ -232,7 +232,7 @@ export function crearCerebro(canvas, datos) {
   let pulsoTarea = 0;
   let hechasAntes = null;
 
-  function objetivos({ enCurso, estres, fumando, terminado, hechas }) {
+  function objetivos({ enCurso, estres, fumando, cafe, terminado, hechas }) {
     if (hechasAntes !== null && hechas > hechasAntes) pulsoTarea = 1;
     hechasAntes = hechas;
     if (terminado) return Object.fromEntries(ids.map((id) => [id, 0.03]));
@@ -248,6 +248,11 @@ export function crearCerebro(canvas, datos) {
       mando: 0.03 + 0.06 * trabajando + 0.75 * (fumando ? 1 : 0),
       movimiento: 0.03 + 0.1 * trabajando + 0.78 * (fumando ? 1 : 0),
     };
+    // Sorbo de café: mueve una pata (movimiento y mando suben un poco)
+    if (cafe) {
+      o.movimiento = Math.max(o.movimiento, 0.38);
+      o.mando = Math.max(o.mando, 0.3);
+    }
     // El estrés sube un poco todo
     for (const id of ids) o[id] = clamp(o[id] + 0.12 * estres * estres, 0, 0.95);
     return o;
