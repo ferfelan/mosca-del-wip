@@ -195,6 +195,32 @@ function texturaPostit(color, lineas) {
   return t;
 }
 
+function texturaCafe() {
+  const c = document.createElement('canvas');
+  c.width = c.height = 128;
+  const ctx = c.getContext('2d');
+  const g = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+  g.addColorStop(0, '#2a170c');
+  g.addColorStop(0.6, '#3d2213');
+  g.addColorStop(0.82, '#6b4022');
+  g.addColorStop(0.93, '#a0703f');
+  g.addColorStop(1, '#7a4a28');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, 128, 128);
+  // pequeñas burbujas de crema en el borde
+  ctx.fillStyle = 'rgba(200,150,95,0.55)';
+  for (let i = 0; i < 26; i++) {
+    const a = Math.random() * Math.PI * 2;
+    const r = 50 + Math.random() * 10;
+    ctx.beginPath();
+    ctx.arc(64 + Math.cos(a) * r, 64 + Math.sin(a) * r, 1 + Math.random() * 2, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+
 function texturaCharcoLuz() {
   const c = document.createElement('canvas');
   c.width = c.height = 128;
@@ -524,22 +550,45 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
   taza.position.copy(POS_TAZA).setY(ALTO_ESCRITORIO + ALTO_POSAVASOS);
   taza.rotation.y = ROT_TAZA;
   const matTaza = new THREE.MeshStandardMaterial({ color: '#f3f0e8', roughness: 0.35 });
-  taza.add(solido(malla(new THREE.CylinderGeometry(0.085, 0.072, 0.13, 32), matTaza, { y: 0.065, recibe: true })));
+  // Pared exterior abierta arriba (antes era un cilindro cerrado y su tapa
+  // blanca tapaba el café). Para el revisor de choques cuenta como sólida.
+  taza.add(solido(malla(new THREE.CylinderGeometry(0.085, 0.072, 0.13, 40, 1, true), matTaza, { y: 0.065, recibe: true })));
+  // Fondo
+  const fondoTaza = malla(new THREE.CircleGeometry(0.072, 40), matTaza, { y: 0.0005, sombra: false });
+  fondoTaza.rotation.x = Math.PI / 2;
+  taza.add(fondoTaza);
+  // Pared interior: lo poco que se ve entre el borde y el café
+  taza.add(
+    malla(
+      new THREE.CylinderGeometry(0.0785, 0.0772, 0.016, 40, 1, true),
+      new THREE.MeshStandardMaterial({ color: '#efe9de', roughness: 0.4, side: THREE.BackSide }),
+      { y: 0.122, sombra: false }
+    )
+  );
   const ARCO_ASA = Math.PI * 1.3;
   const R_ASA = 0.038;
   const X_ASA = 0.092;
-  const Y_ASA = 0.07;
+  const Y_ASA = 0.068;
   const asa = malla(new THREE.TorusGeometry(R_ASA, 0.012, 14, 40, ARCO_ASA), matTaza, { x: X_ASA, y: Y_ASA });
   asa.rotation.z = -ARCO_ASA / 2;
   taza.add(asa);
+  // El café: superficie oscura y brillante, con un anillo de crema junto a la pared
+  const cafe = malla(
+    new THREE.CircleGeometry(0.0775, 40),
+    new THREE.MeshPhysicalMaterial({ map: texturaCafe(), roughness: 0.18, clearcoat: 1, clearcoatRoughness: 0.08 }),
+    { y: 0.114, sombra: false, recibe: true }
+  );
+  cafe.rotation.x = -Math.PI / 2;
+  taza.add(cafe);
+  // Debajo del café la taza está "llena" (así nada se ve por dentro)
   taza.add(
-    malla(new THREE.CylinderGeometry(0.077, 0.077, 0.006, 32), new THREE.MeshStandardMaterial({ color: '#6b4631', roughness: 0.25 }), {
-      y: 0.118,
+    malla(new THREE.CylinderGeometry(0.0772, 0.0705, 0.112, 40), new THREE.MeshStandardMaterial({ color: '#3b2416' }), {
+      y: 0.057,
       sombra: false,
     })
   );
   // Borde un poco más grueso (se ve más "taza")
-  const bordeTaza = malla(new THREE.TorusGeometry(0.083, 0.005, 8, 40), matTaza, { y: 0.13, sombra: false });
+  const bordeTaza = malla(new THREE.TorusGeometry(0.0815, 0.0045, 10, 48), matTaza, { y: 0.13, sombra: false });
   bordeTaza.rotation.x = Math.PI / 2;
   taza.add(bordeTaza);
   // La taza se mueve (la mosca la levanta): el revisor de choques la cuida
