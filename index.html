@@ -35,6 +35,7 @@
         <span id="ex-estres">Tranqui</span>
       </div>
       <div id="ex-inicio" class="aviso-inicio oculto" role="status">
+        <span class="aviso-inicio-tipo">Día de ejemplo</span>
         <span class="aviso-inicio-wip" id="ex-inicio-wip">WIP 9</span>
         <span id="ex-inicio-texto">Muchas tareas a la vez</span>
       </div>
@@ -144,6 +145,16 @@
       </header>
       <div class="cerebro-cuerpo">
         <div class="cerebro-lienzo"><canvas id="lienzo-cerebro"></canvas></div>
+        <div class="cerebro-dia">
+          <div class="cerebro-dia-cabecera">
+            <span class="etiqueta-oscura">Actividad del día</span>
+            <span class="cerebro-dia-pico" id="cerebro-dia-pico">empieza a las 09:00</span>
+          </div>
+          <div class="cerebro-dia-grafico">
+            <canvas id="lienzo-dia" role="img" aria-label="Actividad del cerebro durante el día"></canvas>
+            <div class="cerebro-dia-tooltip" id="cerebro-dia-tooltip" hidden></div>
+          </div>
+        </div>
         <div class="cerebro-lado">
           <div class="cerebro-contadores">
             <div class="contador">

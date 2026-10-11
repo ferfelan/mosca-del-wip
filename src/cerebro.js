@@ -232,6 +232,7 @@ export function crearCerebro(canvas, datos) {
   const actividad = Object.fromEntries(ids.map((id) => [id, 0.06]));
   let pulsoTarea = 0;
   let hechasAntes = null;
+  let saltar = false; // día nuevo: la actividad parte en su valor, sin arrastrar
 
   function objetivos({ enCurso, estres, fumando, cafe, terminado, hechas }) {
     if (hechasAntes !== null && hechas > hechasAntes) pulsoTarea = 1;
@@ -266,9 +267,10 @@ export function crearCerebro(canvas, datos) {
     const o = objetivos(estadoJuego);
     ids.forEach((id, i) => {
       // sube y baja de a poco (sin cambios bruscos)
-      actividad[id] = amortiguar(actividad[id], o[id], 1.4, dt);
+      actividad[id] = saltar ? o[id] : amortiguar(actividad[id], o[id], 1.4, dt);
       uniforms.uAct.value[i] = actividad[id];
     });
+    saltar = false;
     uniforms.uTiempo.value = tiempo;
     // El resplandor azul de fondo se enciende con la actividad total
     let media = 0;
@@ -295,5 +297,11 @@ export function crearCerebro(canvas, datos) {
     return { activas: Math.round(activas), total, nivel: activas / total, porGrupo };
   }
 
-  return { actualizar, renderizar, lectura, info };
+  function reiniciar() {
+    saltar = true;
+    hechasAntes = null;
+    pulsoTarea = 0;
+  }
+
+  return { actualizar, renderizar, lectura, info, reiniciar };
 }

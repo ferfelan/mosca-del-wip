@@ -7,6 +7,7 @@ import { DayBrain } from './brain.js';
 import { revisarChoques } from './choques.js';
 import { cargarDatosCerebro, crearCerebro, GRUPOS_VISUALES } from './cerebro.js';
 import { sacarFoto } from './foto.js';
+import { crearGraficoDia } from './grafico.js';
 import { POS_CENICERO, POS_PILA, CENTRO_PANTALLA, ESCALA_MONITOR } from './layout.js';
 
 const CLAVE_STORAGE = 'mosca-del-wip-dias';
@@ -53,7 +54,7 @@ const DIAS_EXHIBICION = [
 ];
 const WIP_EXHIBICION = DIAS_EXHIBICION[0].wip;
 const PAUSA_FIN_EXHIBICION = 7; // segundos mostrando la comparación antes de seguir
-const DURACION_AVISO_INICIO = 3.2;
+
 const elEscena = document.getElementById('escena');
 const elVelo = document.getElementById('velo');
 const elExWip = document.getElementById('ex-wip');
@@ -70,7 +71,6 @@ const elExInicio = document.getElementById('ex-inicio');
 const elExInicioWip = document.getElementById('ex-inicio-wip');
 const elExInicioTexto = document.getElementById('ex-inicio-texto');
 let indiceDiaExhibicion = -1;
-let avisoInicio = 0;
 const resultadosExhibicion = {}; // último resultado de cada WIP
 let vista = 'control';
 let guardadoControl = null; // el juego del usuario mientras se ve la exhibición
@@ -197,7 +197,7 @@ function reiniciarDia() {
   colillasPintadas = 0;
   elBanner.classList.add('oculto');
   oficina.limpiarColillas();
-  mosca.apagarCigarro();
+  empezarLimpio();
 }
 elBtnReiniciar.addEventListener('click', reiniciarDia);
 
@@ -486,6 +486,14 @@ function encuadrarExhibicion() {
 }
 
 // ---------- Cambio de vista ----------
+// Día nuevo o cambio de vista: la mosca, el cerebro y el gráfico parten
+// del estado real del juego (sin arrastrar el día anterior)
+function empezarLimpio() {
+  mosca.reiniciar(juego.estado().estres / 100);
+  cerebro?.reiniciar();
+  graficoDia?.reiniciar();
+}
+
 function reponerCenicero() {
   oficina.limpiarColillas();
   mosca.apagarCigarro();
@@ -503,11 +511,13 @@ function nuevoDiaExhibicion() {
   elExInicioWip.textContent = `WIP ${dia.wip}`;
   elExInicioTexto.textContent = dia.texto;
   elExInicio.classList.toggle('alto', dia.wip > 3);
+  // El aviso queda visible todo el día: explica por qué la mosca se estresa
   elExInicio.classList.remove('oculto');
-  avisoInicio = DURACION_AVISO_INICIO;
+  empezarLimpio();
 }
 
 function mostrarComparacion() {
+  elExInicio.classList.add('oculto');
   const r = juego.resumenFinal();
   resultadosExhibicion[r.wip] = r;
   elExFinTitulo.textContent = `Fin del día con WIP ${r.wip}`;
@@ -530,12 +540,18 @@ function aplicarVista(nueva) {
   if (nueva === vista) return;
   if (nueva === 'exhibicion') {
     guardadoControl = { juego, diaYaRegistrado };
-    indiceDiaExhibicion = -1;
+    // Parte con el día parecido a la partida actual: si iba tranquila (WIP
+    // bajo), primero el día con pocas tareas; así no "salta" al estrés.
+    const tranquila = guardadoControl.juego.wip <= 3;
+    const inicio = DIAS_EXHIBICION.findIndex((d) => (tranquila ? d.wip <= 3 : d.wip > 3));
+    indiceDiaExhibicion = (inicio < 0 ? 0 : inicio) - 1;
     nuevoDiaExhibicion();
     // Se puede rotar y hacer zoom con el mouse, igual que en Control
     controls.maxDistance = 12;
   } else {
     ({ juego, diaYaRegistrado } = guardadoControl);
+    elExInicio.classList.add('oculto');
+    empezarLimpio();
     guardadoControl = null;
     reponerCenicero();
     controls.maxDistance = 7;
@@ -568,6 +584,13 @@ function cambiarVista(nueva = vista === 'control' ? 'exhibicion' : 'control', in
 }
 
 document.getElementById('btn-exhibicion').addEventListener('click', () => cambiarVista('exhibicion'));
+// Un botón apretado con el mouse suelta el foco: así Espacio pausa el juego
+// en vez de volver a apretar ese botón (con teclado, el foco se mantiene)
+document.addEventListener('click', (e) => {
+  const boton = e.target.closest?.('button');
+  if (boton && e.detail > 0) boton.blur();
+});
+
 window.addEventListener('keydown', (e) => {
   if (e.target instanceof HTMLInputElement && e.key !== 'Escape') {
     if (e.target.type !== 'range') return;
@@ -624,6 +647,11 @@ cargarDatosCerebro()
   .catch((err) => console.error('No se pudo cargar el cerebro', err));
 
 let ultimaLectura = 0;
+const graficoDia = crearGraficoDia({
+  lienzo: document.getElementById('lienzo-dia'),
+  tooltip: document.getElementById('cerebro-dia-tooltip'),
+  elPico: document.getElementById('cerebro-dia-pico'),
+});
 // Lectura en palabras simples de lo que se enciende más ahora
 const elLectura = document.getElementById('cerebro-lectura');
 let grupoDestacado = null;
@@ -685,6 +713,8 @@ function refrescarCerebro(dt, estado, fumandoVisible, cafeVisible, ahora) {
   elEstado.classList.toggle('fuma', estadoTexto === 'Fuma');
   elEstado.classList.toggle('cafe', estadoTexto === 'Café');
   escribirLectura(l, estado, fumandoVisible, cafeVisible);
+  if (!(vista === 'control' && pausado)) graficoDia.registrar(estado.fraccionDelDia, l.nivel, estado.wip);
+  graficoDia.dibujar();
   l.porGrupo.forEach((g) => {
     const fila = filasGrupo[g.id];
     if (!fila) return;
@@ -709,10 +739,7 @@ function animar(ahora = performance.now()) {
 
   if (window.devicePixelRatio !== dprAplicado) ajustarEscena();
   const enExhibicion = vista === 'exhibicion';
-  if (avisoInicio > 0) {
-    avisoInicio -= dtReal;
-    if (avisoInicio <= 0 || !enExhibicion) elExInicio.classList.add('oculto');
-  }
+
   if (enExhibicion) {
     if (!juego.terminado) juego.tick(dtReal * MIN_SIM_POR_SEG_REAL);
     else {

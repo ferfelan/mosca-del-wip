@@ -1397,6 +1397,29 @@ export function crearMosca(scene, { taza = null } = {}) {
     cigarroEnMano: () => cicloActivo || pendienteFumar,
     // cigarros que todavía no son colilla (en la mano, por fumar o en el cenicero)
     cigarrosSinColilla: () => (cicloActivo || pendienteFumar ? 1 : 0) + (cigarroEnCenicero ? 1 : 0),
+    // Empieza "limpia" (día nuevo o cambio de vista): sin cigarro ni café a
+    // medias y con la cara/postura del estrés actual (sin arrastrar el anterior)
+    reiniciar: (estresActual = 0) => {
+      cicloActivo = false;
+      pendienteFumar = false;
+      cicloCafe = false;
+      pendienteCafe = false;
+      cigarroEnCenicero = false;
+      apagando = 0;
+      mezclaFumar = 0;
+      mezclaCafe = 0;
+      pesoBoca = 0;
+      exhalando = 0;
+      quemado = 0;
+      fumandoAntes = false;
+      cafeAntes = false;
+      estresSuave = estresActual;
+      particulas.forEach((p) => (p.visible = false));
+      if (taza) {
+        taza.objeto.position.copy(taza.reposo.posicion);
+        taza.objeto.quaternion.copy(taza.reposo.rotacion);
+      }
+    },
     apagarCigarro: () => {
       cigarroEnCenicero = false;
       apagando = 0;

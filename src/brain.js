@@ -67,7 +67,9 @@ export class DayBrain {
 
   setWip(wip) {
     this.wip = wip;
-    if (this.minutoActual > MINUTOS_DIA_INICIO) {
+    // Cambiarlo en los primeros 15 minutos cuenta como elegir el WIP del día
+    // (no como un día "mixto")
+    if (this.minutoActual > MINUTOS_DIA_INICIO + 15) {
       this.wipMin = Math.min(this.wipMin, wip);
       this.wipMax = Math.max(this.wipMax, wip);
     } else {
