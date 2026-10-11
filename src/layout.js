@@ -37,6 +37,10 @@ export const POS_CENICERO = delanteDeLaMosca(0.73, -0.6);
 export const POS_CAJETILLA = delanteDeLaMosca(0.8, -0.88);
 // Hacia dónde queda la mosca vista desde el cenicero: ahí se apoya el
 // cigarro encendido, y en ese sector no caen colillas.
+// Lado derecho del escritorio: pila de carpetas (crece con el WIP) bajo una
+// lámpara
+export const POS_PILA = new THREE.Vector3(0.42, ALTO_ESCRITORIO, 0.02);
+export const POS_LAMPARA = new THREE.Vector3(0.86, ALTO_ESCRITORIO, -0.46);
 export const ANG_APOYO_CENICERO = Math.atan2(MOSCA.z - POS_CENICERO.z, MOSCA.x - POS_CENICERO.x);
 // Monitor de frente a la mosca (de espaldas a la ventana)
 export const POS_MONITOR = delanteDeLaMosca(1.5);

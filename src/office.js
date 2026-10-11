@@ -25,6 +25,8 @@ import {
   POS_CENICERO,
   POS_TAZA,
   POS_VENTANA,
+  POS_PILA,
+  POS_LAMPARA,
   MOSCA,
 } from './layout.js';
 
@@ -171,6 +173,38 @@ function crearCajetilla() {
     g.add(cig);
   });
   return g;
+}
+
+function texturaPostit(color, lineas) {
+  const c = document.createElement('canvas');
+  c.width = c.height = 128;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = color;
+  ctx.fillRect(0, 0, 128, 128);
+  ctx.fillStyle = 'rgba(0,0,0,0.06)';
+  ctx.fillRect(0, 0, 128, 18);
+  ctx.fillStyle = '#3a3226';
+  ctx.font = 'italic 600 24px "Marker Felt", "Comic Sans MS", cursive';
+  ctx.textAlign = 'center';
+  lineas.forEach((t, i) => ctx.fillText(t, 64, 58 + i * 32));
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+
+function texturaCharcoLuz() {
+  const c = document.createElement('canvas');
+  c.width = c.height = 128;
+  const ctx = c.getContext('2d');
+  const g = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+  g.addColorStop(0, 'rgba(255,214,150,0.22)');
+  g.addColorStop(0.6, 'rgba(255,214,150,0.08)');
+  g.addColorStop(1, 'rgba(255,214,150,0)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, 128, 128);
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
 }
 
 export function crearOficina(scene, { anisotropia = 4 } = {}) {
@@ -371,6 +405,21 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
     { y: 0.63, z: 0.028, sombra: false }
   );
   monitor.add(pantalla);
+
+  // Post-its pegados en el borde del monitor (sobre el marco, sin tapar el kanban)
+  [
+    { x: 0.52, y: 0.82, giro: -0.12, color: '#ffe46b', texto: ['¡urgente!', 'cliente'] },
+    { x: 0.525, y: 0.6, giro: 0.1, color: '#ff9ec7', texto: ['revisar', 'informe'] },
+    { x: -0.52, y: 0.74, giro: 0.14, color: '#a6e3a1', texto: ['WIP ≤ 3', ':)'] },
+  ].forEach(({ x, y, giro, color, texto }) => {
+    const nota = malla(
+      new THREE.BoxGeometry(0.088, 0.088, 0.002),
+      new THREE.MeshStandardMaterial({ map: texturaPostit(color, texto), roughness: 0.85 }),
+      { x, y, z: 0.027, sombra: false }
+    );
+    nota.rotation.z = giro;
+    monitor.add(nota);
+  });
   oficina.add(monitor);
 
   // ---------- Mousepad, teclado y mouse (frente a la mosca) ----------
@@ -475,6 +524,7 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
     { p: POS_CAJETILLA, r: 0.13 },
     { p: TECLADO.pos, r: 0.34 },
     { p: POS_MOUSE, r: 0.12 },
+    { p: POS_PILA, r: 0.25 },
   ];
   const haciaMosca = Math.atan2(MOSCA.z - POS_CENICERO.z, MOSCA.x - POS_CENICERO.x);
   const zMin = ESCRITORIO.z - ESCRITORIO.fondo / 2 + 0.08;
@@ -515,6 +565,113 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
     colillas.length = 0;
     ceniza.visible = false;
   }
+
+  // ---------- Pila de carpetas: una por cada tarea en curso ----------
+  // Con pocas tareas queda ordenada; con muchas, alta y desordenada.
+  const MAX_CARPETAS = 10;
+  const ALTO_CARPETA = 0.024;
+  const pila = new THREE.Group();
+  pila.position.copy(POS_PILA);
+  pila.rotation.y = 0.35;
+  oficina.add(pila);
+  const coloresPestana = ['#4f86c6', '#e0794f', '#6aa86f', '#c9a227', '#9b6fc4'];
+  const matManila = new THREE.MeshStandardMaterial({ color: '#e7c983', roughness: 0.85 });
+  const matPapel = new THREE.MeshStandardMaterial({ color: '#fbfaf6', roughness: 0.9 });
+  const carpetas = [];
+  for (let i = 0; i < MAX_CARPETAS; i++) {
+    const g = new THREE.Group();
+    // Carpeta de cartulina con hojas adentro que asoman por un costado
+    const tapa = malla(new RoundedBoxGeometry(0.3, 0.018, 0.22, 2, 0.004), matManila, { y: 0.009, recibe: true });
+    tapa.userData.solido = 'oficina';
+    g.add(tapa);
+    const papel = malla(new THREE.BoxGeometry(0.27, 0.008, 0.19), matPapel, {
+      x: 0.03 + Math.random() * 0.03,
+      y: 0.009,
+      z: (Math.random() - 0.5) * 0.03,
+      recibe: true,
+    });
+    g.add(papel);
+    const pestana = malla(
+      new RoundedBoxGeometry(0.07, 0.012, 0.03, 1, 0.004),
+      new THREE.MeshStandardMaterial({ color: coloresPestana[i % coloresPestana.length], roughness: 0.7 }),
+      { x: -0.06 + (i % 3) * 0.06, y: 0.007, z: -0.12 }
+    );
+    g.add(pestana);
+    g.visible = false;
+    g.userData = { presencia: 0, azarGiro: Math.random() - 0.5, azarX: Math.random() - 0.5, azarZ: Math.random() - 0.5 };
+    pila.add(g);
+    carpetas.push(g);
+  }
+  let carpetasObjetivo = 0;
+  let desorden = 0;
+  function actualizarPila(dt) {
+    desorden += (Math.min(1, Math.max(0, (carpetasObjetivo - 3) / 7)) - desorden) * (1 - Math.exp(-2 * dt));
+    let altura = 0;
+    carpetas.forEach((g, i) => {
+      const u = g.userData;
+      const objetivo = i < carpetasObjetivo ? 1 : 0;
+      u.presencia += (objetivo - u.presencia) * (1 - Math.exp(-5 * dt));
+      g.visible = u.presencia > 0.02;
+      if (!g.visible) return;
+      const m = desorden * (0.35 + 0.65 * (i / MAX_CARPETAS));
+      // cae desde arriba al aparecer
+      g.position.set(u.azarX * 0.07 * m, altura + (1 - u.presencia) * 0.18, u.azarZ * 0.06 * m);
+      g.rotation.set(u.azarZ * 0.05 * m, u.azarGiro * 0.9 * m, u.azarX * 0.04 * m);
+      g.scale.setScalar(0.6 + 0.4 * u.presencia);
+      altura += ALTO_CARPETA * u.presencia;
+    });
+  }
+
+  // ---------- Lámpara de escritorio (ilumina la pila) ----------
+  const lampara = new THREE.Group();
+  lampara.position.copy(POS_LAMPARA);
+  oficina.add(lampara);
+  const matLampara = new THREE.MeshStandardMaterial({ color: '#d9a23b', roughness: 0.45, metalness: 0.15 });
+  const matArticulacion = new THREE.MeshStandardMaterial({ color: '#3b424d', roughness: 0.5 });
+  const baseLampara = malla(new THREE.CylinderGeometry(0.1, 0.115, 0.03, 32), matLampara, { y: 0.015, recibe: true });
+  baseLampara.userData.solido = 'oficina';
+  lampara.add(baseLampara);
+  // Brazos: del pie hacia arriba y luego hacia la pila
+  const objetivoLuz = POS_PILA.clone().add(new THREE.Vector3(0, 0.05, 0));
+  const hombro = new THREE.Vector3(0, 0.04, 0).add(POS_LAMPARA);
+  const codo = POS_LAMPARA.clone().add(new THREE.Vector3(-0.08, 0.42, 0.05));
+  const muneca = POS_LAMPARA.clone().lerp(objetivoLuz, 0.42).setY(ALTO_ESCRITORIO + 0.5);
+  const brazo = (a, b) => {
+    const largo = a.distanceTo(b);
+    const m = malla(new THREE.CylinderGeometry(0.012, 0.012, largo, 12), matLampara);
+    m.position.copy(a).add(b).multiplyScalar(0.5).sub(POS_LAMPARA);
+    m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.clone().sub(a).normalize());
+    lampara.add(m);
+  };
+  brazo(hombro, codo);
+  brazo(codo, muneca);
+  [hombro, codo, muneca].forEach((p) => {
+    lampara.add(malla(new THREE.SphereGeometry(0.022, 14, 10), matArticulacion, { x: p.x - POS_LAMPARA.x, y: p.y - POS_LAMPARA.y, z: p.z - POS_LAMPARA.z }));
+  });
+  const cabezal = new THREE.Group();
+  cabezal.position.copy(muneca).sub(POS_LAMPARA);
+  cabezal.quaternion.setFromUnitVectors(new THREE.Vector3(0, -1, 0), objetivoLuz.clone().sub(muneca).normalize());
+  lampara.add(cabezal);
+  const pantallaLampara = malla(new THREE.CylinderGeometry(0.035, 0.1, 0.12, 28, 1, true), new THREE.MeshStandardMaterial({ color: '#d9a23b', roughness: 0.45, metalness: 0.15, side: THREE.DoubleSide }), { y: -0.04 });
+  cabezal.add(pantallaLampara);
+  cabezal.add(malla(new THREE.SphereGeometry(0.04, 16, 12, 0, Math.PI * 2, 0, Math.PI / 2), matLampara, { y: 0.02 }));
+  const ampolleta = malla(
+    new THREE.SphereGeometry(0.035, 16, 12),
+    new THREE.MeshStandardMaterial({ color: '#fff4d6', emissive: '#ffd98a', emissiveIntensity: 1.6 }),
+    { y: -0.08, sombra: false }
+  );
+  cabezal.add(ampolleta);
+  const luzLampara = new THREE.PointLight('#ffd9a0', 0.55, 1.1, 2);
+  luzLampara.position.copy(muneca).sub(POS_LAMPARA).add(objetivoLuz.clone().sub(muneca).normalize().multiplyScalar(0.12));
+  lampara.add(luzLampara);
+  // Círculo de luz cálida sobre el escritorio (pintado, no cuesta nada)
+  const charco = malla(
+    new THREE.CircleGeometry(0.42, 40),
+    new THREE.MeshBasicMaterial({ map: texturaCharcoLuz(), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }),
+    { x: objetivoLuz.x - POS_LAMPARA.x, y: 0.0015, z: objetivoLuz.z - POS_LAMPARA.z, sombra: false }
+  );
+  charco.rotation.x = -Math.PI / 2;
+  lampara.add(charco);
 
   // ---------- Vapor del café: hilos blancos suaves que suben y se van ----------
   const texVapor = texturasHumo(3);
@@ -566,6 +723,7 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
   return {
     actualizar(dt) {
       actualizarVapor(Math.min(dt, 0.05));
+      actualizarPila(Math.min(dt, 0.05));
     },
     grupo: oficina,
     actualizarKanban(estado) {
@@ -576,6 +734,9 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
       const horaDelDia = 9 + fraccionDelDia * 9;
       manecillaHora.rotation.z = -((horaDelDia % 12) / 12) * Math.PI * 2;
       manecillaMin.rotation.z = -(horaDelDia % 1) * Math.PI * 2;
+    },
+    actualizarPilaTareas(enCurso) {
+      carpetasObjetivo = Math.min(MAX_CARPETAS, enCurso);
     },
     agregarColilla,
     limpiarColillas,

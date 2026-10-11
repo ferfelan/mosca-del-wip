@@ -455,14 +455,31 @@ export function crearMosca(scene) {
     punta.scale.set(1, 1, 0.35);
   });
 
-  // Cuello de la mosca
+  // Cuello de la mosca: una pieza sólida que nace DENTRO del tórax y termina
+  // DENTRO de la cabeza (así no quedan huecos desde ningún ángulo, aunque la
+  // cabeza gire). El cuello de la camisa lo abraza.
+  const dirCuello = CABEZA_C.clone().sub(CUELLO).normalize();
+  const inicioCuello = TORAX_C.clone().addScaledVector(EJE_TORAX, 0.11);
+  const finCuello = CABEZA_C.clone().addScaledVector(dirCuello, -0.07);
+  const largoCuello = inicioCuello.distanceTo(finCuello);
+  const enCollar = CUELLO.clone().sub(inicioCuello).dot(dirCuello) / largoCuello;
+  const perfilCuello = [];
+  for (let i = 0; i <= 16; i++) {
+    const t = i / 16;
+    // grueso abajo, un poco más fino a la altura del collar y luego se abre
+    const angosto = Math.exp(-(((t - enCollar) / 0.28) ** 2));
+    perfilCuello.push(new THREE.Vector2(0.084 - 0.014 * angosto + 0.004 * t, t * largoCuello));
+  }
+  perfilCuello.unshift(new THREE.Vector2(0, 0));
+  perfilCuello.push(new THREE.Vector2(0, largoCuello));
   const cuelloPiel = agregar(
     delantero,
-    new THREE.CylinderGeometry(0.048, 0.055, 0.1, 16),
+    new THREE.LatheGeometry(perfilCuello, 28),
     mats.cuticula,
-    CUELLO.clone().lerp(CABEZA_C, 0.45)
+    inicioCuello,
+    { solido: 'cuerpo', parteMosca: true }
   );
-  cuelloPiel.quaternion.setFromUnitVectors(EJE_Y, CABEZA_C.clone().sub(CUELLO).normalize());
+  cuelloPiel.quaternion.setFromUnitVectors(EJE_Y, dirCuello);
 
   // --- Corbata: nudo marcado adelante y la hoja por encima del hombro ---
   const nudoGeo = new THREE.SphereGeometry(1, 24, 16);
@@ -1232,6 +1249,7 @@ export function crearMosca(scene) {
 
   return {
     grupo: raiz,
+    cabeza,
     update,
     // El cigarro que fuma ahora todavía no es colilla
     cigarroEnMano: () => cicloActivo,

@@ -183,6 +183,7 @@ function refrescarUI(estado, cigarroEnMano) {
   elBarraEstres.style.background = estado.nivel.color;
 
   oficina.actualizarKanban(estado);
+  oficina.actualizarPilaTareas(estado.terminado ? 0 : estado.enCurso);
   oficina.actualizarReloj(estado.fraccionDelDia);
 
   // El cigarro que la mosca tiene en la mano llega al cenicero cuando lo termina
@@ -285,6 +286,7 @@ function aplicarVista(nueva) {
   }
   vista = nueva;
   document.body.classList.toggle('exhibicion', nueva === 'exhibicion');
+  cerebro?.disposicion(nueva === 'exhibicion' ? 'vertical' : 'horizontal');
   ajustarEscena();
   if (nueva === 'exhibicion') encuadrarExhibicion();
   controls.update();
@@ -337,6 +339,7 @@ const formato = new Intl.NumberFormat('es-CL');
 cargarDatosCerebro()
   .then((datos) => {
     cerebro = crearCerebro(document.getElementById('lienzo-cerebro'), datos);
+    cerebro.disposicion(vista === 'exhibicion' ? 'vertical' : 'horizontal');
     const { info } = datos;
     datos.info.grupos.forEach((g) => {
       const li = document.createElement('li');
@@ -472,6 +475,11 @@ if (import.meta.env.DEV) {
     choques: (opciones) => revisarChoques(scene, opciones),
     vista: (v) => cambiarVista(v, true),
     // Salta casi al final del día (para probar el loop de exhibición)
+    posCabeza: () => mosca.cabeza.getWorldPosition(new THREE.Vector3()).toArray(),
+    diaExhibicion: (w) => {
+      juego = new DayBrain(w);
+      reponerCenicero();
+    },
     casiFin: () => (juego.minutoActual = 18 * 60 - 2),
     camaraInfo: () => ({ pos: camera.position.toArray(), obj: controls.target.toArray(), aspect: camera.aspect }),
     cerebro: () => cerebro?.lectura(),
