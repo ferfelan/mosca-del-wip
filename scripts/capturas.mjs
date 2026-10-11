@@ -46,6 +46,8 @@ const VISTAS = {
   arriba: [[-0.55, 3.2, 1.7], [-0.9, 1.0, 0.85]],
   cenicero: [[-0.75, 1.55, 1.25], [-0.32, 1.0, 0.5]],
   fumar: [[0.25, 1.6, 1.9], [-0.7, 1.25, 0.75]],
+  alasArriba: [[-0.85, 2.25, 1.75], [-0.9, 1.0, 1.15]],
+  alasLado: [[0.15, 1.35, 1.6], [-0.9, 1.05, 1.3]],
   monitor: [[-0.25, 1.75, 1.1], [-0.9, 1.72, -0.35]],
 };
 
@@ -59,7 +61,7 @@ await M(() => {
   window.__mosca.forzar({ estres: 8, hechas: 6, fumando: false });
   window.__mosca.avanzar(3);
 });
-for (const v of ['general', 'cara', 'lado', 'manos', 'atras', 'arriba']) {
+for (const v of ['general', 'cara', 'lado', 'manos', 'atras', 'arriba', 'alasArriba', 'alasLado']) {
   await vista(v);
   await captura(`wip2-${v}`);
 }

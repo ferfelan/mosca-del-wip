@@ -307,7 +307,7 @@ export function texturaAla() {
     else ctx.lineTo(x, y);
   });
   ctx.closePath();
-  ctx.fillStyle = 'rgba(205,218,240,0.46)';
+  ctx.fillStyle = 'rgba(210,222,242,0.4)';
   ctx.fill();
   ctx.strokeStyle = 'rgba(96,74,52,0.75)';
   ctx.lineWidth = 3;
@@ -320,8 +320,8 @@ export function texturaAla() {
       if (i === 0) ctx.moveTo(x, y);
       else ctx.lineTo(x, y);
     });
-    ctx.strokeStyle = 'rgba(84,62,42,0.95)';
-    ctx.lineWidth = grosor * 1.25;
+    ctx.strokeStyle = 'rgba(70,52,36,0.95)';
+    ctx.lineWidth = grosor * 1.4;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     ctx.stroke();

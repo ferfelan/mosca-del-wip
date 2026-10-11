@@ -668,35 +668,107 @@ export function crearMosca(scene) {
   });
 
   // --- Alas con venas, plegadas sobre el abdomen (bien visibles) ---
-  const geoAla = crearGeometriaAla(0.44);
+  const LARGO_ALA = 0.44;
+  const geoAla = crearGeometriaAla(LARGO_ALA);
   const matAla = new THREE.MeshPhysicalMaterial({
     map: texturaAla(),
     transparent: true,
-    roughness: 0.15,
+    roughness: 0.12,
+    clearcoat: 1,
+    clearcoatRoughness: 0.04,
     iridescence: 1,
     iridescenceIOR: 1.3,
     iridescenceThicknessRange: [150, 450],
     side: THREE.DoubleSide,
     depthWrite: false,
   });
-  // Las alas nacen arriba del tórax, en los "hombros" (justo detrás de la
-  // cabeza), y quedan plegadas hacia atrás sobre el abdomen.
+  // Borde fino y marcado del ala (un tubito que sigue el contorno)
+  const curvaBorde = new THREE.CatmullRomCurve3(
+    CONTORNO_ALA.map(([u, v]) => new THREE.Vector3(u * LARGO_ALA, v * LARGO_ALA, 0)),
+    true
+  );
+  const geoBorde = new THREE.TubeGeometry(curvaBorde, 90, 0.0022, 5, true);
+  const matBorde = new THREE.MeshStandardMaterial({ color: '#4a3a2c', roughness: 0.4, transparent: true, opacity: 0.85 });
+
+  // Para colocar las alas sin que atraviesen nada: ¿un punto (en el espacio
+  // del "delantero") queda dentro del tórax o del abdomen?
+  const qTorax = new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI / 2 - INCLINACION_TORAX, 0, 0)).invert();
+  const qAbdomen = new THREE.Quaternion().setFromEuler(new THREE.Euler(ABDOMEN.giro, 0, 0)).invert();
+  const CINTURA = new THREE.Vector3(0, ALTO_CINTURA, 0);
+  const dentroElipsoide = (p, c, qInv, r, margen) => {
+    const q = p.clone().sub(c).applyQuaternion(qInv);
+    return (q.x / (r[0] + margen)) ** 2 + (q.y / (r[1] + margen)) ** 2 + (q.z / (r[2] + margen)) ** 2 < 1;
+  };
+  const tocaCuerpo = (pDelantero, inclinacion) => {
+    if (dentroElipsoide(pDelantero, TORAX_C, qTorax, [R_TORAX.lado, R_TORAX.largo, R_TORAX.fondo], 0.006)) return true;
+    // el abdomen está en el "cuerpo": paso el punto con la inclinación dada
+    const enCuerpo = pDelantero.clone().applyAxisAngle(LADO_X, inclinacion).add(CINTURA);
+    return dentroElipsoide(enCuerpo, ABDOMEN.c, qAbdomen, ABDOMEN.r, 0.012);
+  };
+  // Puntos de prueba del ala: el contorno y su interior
+  const muestrasAla = [];
+  CONTORNO_ALA.forEach(([u, v]) => {
+    for (const f of [1, 0.7, 0.4]) muestrasAla.push(new THREE.Vector3(u * LARGO_ALA, v * f * LARGO_ALA, 0));
+  });
+
+  // Las alas: base pegada por fuera arriba del tórax (en los "hombros"),
+  // apoyadas hacia atrás sobre el abdomen, abiertas en una V leve.
   const alas = [-1, 1].map((lado) => {
+    const raiz = sobreTorax(0.35, lado * 0.6, 0);
+    // normal del tórax en ese punto (hacia afuera)
+    const local = raiz.clone().sub(TORAX_C).applyQuaternion(qTorax);
+    const normal = new THREE.Vector3(
+      local.x / R_TORAX.lado ** 2,
+      local.y / R_TORAX.largo ** 2,
+      local.z / R_TORAX.fondo ** 2
+    )
+      .applyQuaternion(qTorax.clone().invert())
+      .normalize();
+    // dirección hacia atrás (V leve), apoyada en el plano tangente
+    const haciaAtras = new THREE.Vector3(lado * 0.35, -0.6, -1);
+    haciaAtras.addScaledVector(normal, -haciaAtras.dot(normal)).normalize();
+    const afuera = new THREE.Vector3().crossVectors(normal, haciaAtras);
+    if (afuera.x * lado < 0) afuera.negate();
+    const eje3 = new THREE.Vector3().crossVectors(haciaAtras, afuera);
+    // Si el tercer eje mira hacia adentro, "levantar" el ala es girar al revés
+    const signo = eje3.dot(normal) > 0 ? 1 : -1;
+    const base = new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().makeBasis(haciaAtras, afuera, eje3));
+
     const pivote = new THREE.Group();
-    pivote.position.copy(sobreTorax(0.4, lado * 0.75, -0.012));
-    const haciaAtras = new THREE.Vector3(lado * 0.16, -0.5, -0.88).normalize();
-    const afuera = new THREE.Vector3(lado, -0.2, 0);
-    afuera.addScaledVector(haciaAtras, -afuera.dot(haciaAtras)).normalize();
-    const normal = new THREE.Vector3().crossVectors(haciaAtras, afuera);
-    pivote.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(haciaAtras, afuera, normal));
-    const base = pivote.quaternion.clone();
+    pivote.position.copy(raiz).addScaledVector(normal, 0.008);
+
+    // Levanto el ala de a poco hasta que ningún punto toque el cuerpo, con
+    // la mosca erguida, encorvada o echada hacia atrás.
+    const levantar = (ang) =>
+      base.clone().multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), -signo * ang));
+    let elevacion = 0;
+    for (; elevacion < 0.8; elevacion += 0.01) {
+      const q = levantar(elevacion);
+      const choca = muestrasAla.some((m) => {
+        const p = m.clone().applyQuaternion(q).add(pivote.position);
+        return [-0.09, 0, 0.12].some((inc) => tocaCuerpo(p, inc));
+      });
+      if (!choca) break;
+    }
+    elevacion += 0.03; // un poquito de aire entre el ala y el abdomen
+    pivote.quaternion.copy(levantar(elevacion));
+
     const ala = new THREE.Mesh(geoAla, matAla);
     ala.renderOrder = 2;
-    // El ala nace dentro del tórax; se revisa que no toque el abdomen
-    ala.userData = { parteMosca: true, revisaCuerpo: true, ignorar: torax };
+    ala.userData = { parteMosca: true, revisaCuerpo: true };
     pivote.add(ala);
+    const borde = new THREE.Mesh(geoBorde, matBorde);
+    borde.renderOrder = 2;
+    borde.userData = { parteMosca: true, revisaCuerpo: true };
+    pivote.add(borde);
     delantero.add(pivote);
-    return { lado, pivote, base };
+
+    // Bisagra: un nudito de cutícula pegado al tórax en la base del ala
+    const bisagra = agregar(delantero, new THREE.SphereGeometry(0.016, 14, 10), mats.articulacion, raiz.clone().addScaledVector(normal, 0.004));
+    bisagra.scale.set(1.3, 0.8, 1.3);
+    bisagra.quaternion.setFromUnitVectors(EJE_Y, normal);
+
+    return { lado, pivote, levantar, elevacion };
   });
 
   // --- Patas: 6, finas, con articulaciones y pelitos ---
@@ -949,9 +1021,9 @@ export function crearMosca(scene) {
     // --- Alas: casi quietas; un zumbido leve con mucho estrés ---
     faseAlas += dt * (14 + 16 * s);
     const zumbido = Math.sin(faseAlas) * 0.03 * suave(0.55, 1, s);
-    alas.forEach(({ lado, pivote, base }) => {
-      const e = new THREE.Euler(lado * (Math.sin(t * 1.3) * 0.015 + zumbido), 0, 0);
-      pivote.quaternion.copy(base).multiply(new THREE.Quaternion().setFromEuler(e));
+    // Sólo se levantan (nunca bajan hacia el cuerpo)
+    alas.forEach(({ pivote, levantar, elevacion }) => {
+      pivote.quaternion.copy(levantar(elevacion + (0.5 + 0.5 * Math.sin(t * 1.3)) * 0.015 + Math.abs(zumbido)));
     });
 
     // --- Patas de apoyo (sobre el asiento) ---
