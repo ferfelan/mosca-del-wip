@@ -679,12 +679,13 @@ export function crearMosca(scene) {
     side: THREE.DoubleSide,
     depthWrite: false,
   });
-  const raizAla = TORAX_C.clone().addScaledVector(VIENTRE, -0.13).addScaledVector(EJE_TORAX, -0.05);
+  // Las alas nacen arriba del tórax, en los "hombros" (justo detrás de la
+  // cabeza), y quedan plegadas hacia atrás sobre el abdomen.
   const alas = [-1, 1].map((lado) => {
     const pivote = new THREE.Group();
-    pivote.position.copy(raizAla).add(new THREE.Vector3(lado * 0.045, 0, 0));
-    const haciaAtras = new THREE.Vector3(lado * 0.3, -0.22, -1).normalize();
-    const afuera = new THREE.Vector3(lado, -0.35, 0);
+    pivote.position.copy(sobreTorax(0.4, lado * 0.75, -0.012));
+    const haciaAtras = new THREE.Vector3(lado * 0.16, -0.5, -0.88).normalize();
+    const afuera = new THREE.Vector3(lado, -0.2, 0);
     afuera.addScaledVector(haciaAtras, -afuera.dot(haciaAtras)).normalize();
     const normal = new THREE.Vector3().crossVectors(haciaAtras, afuera);
     pivote.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(haciaAtras, afuera, normal));

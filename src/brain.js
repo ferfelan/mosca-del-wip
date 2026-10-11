@@ -140,9 +140,9 @@ export class DayBrain {
 
     // Urgencia de fumar: se acumula más rápido mientras más estrés hay.
     if (!this.fumando) {
-      // Con mucho estrés las ganas crecen mucho más rápido (fuma más seguido)
+      // Con mucho estrés las ganas crecen más rápido (WIP 9 ≈ 13 colillas al día)
       const e = this.estres / 100;
-      this.urgenciaFumar += this.estres * URGENCIA_FUMAR_FACTOR * (1 + 2 * e * e) * dt;
+      this.urgenciaFumar += this.estres * URGENCIA_FUMAR_FACTOR * (1 + 0.6 * e * e) * dt;
       if (this.urgenciaFumar >= 100) {
         this.urgenciaFumar = 0;
         this.fumando = true;
