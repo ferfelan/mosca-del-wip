@@ -7,6 +7,7 @@ import {
   texturaTeclado,
   texturaCaraReloj,
   texturaMadera,
+  texturasHumo,
 } from './textures.js';
 
 import {
@@ -14,11 +15,13 @@ import {
   ESCRITORIO,
   POS_MONITOR,
   ROT_MONITOR,
+  ESCALA_MONITOR,
   TECLADO,
   POS_MOUSE,
   POS_MOUSEPAD,
   POS_CENICERO,
   POS_TAZA,
+  POS_VENTANA,
   MOSCA,
 } from './layout.js';
 
@@ -134,7 +137,7 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
 
   // ---------- Ventana ----------
   const ventana = new THREE.Group();
-  ventana.position.set(-2.0, 1.85, -2.06);
+  ventana.position.copy(POS_VENTANA);
   const marcoMat = new THREE.MeshStandardMaterial({ color: '#fbf6ee', roughness: 0.6 });
   const vidrio = malla(
     new THREE.PlaneGeometry(1.5, 1.2),
@@ -160,13 +163,13 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
   const poster = malla(
     new THREE.PlaneGeometry(0.72, 0.92),
     new THREE.MeshStandardMaterial({ map: texturaPoster(), roughness: 0.9 }),
-    { x: 0.48, y: 1.9, z: -2.07, sombra: false }
+    { x: 0.95, y: 1.95, z: -2.07, sombra: false }
   );
   oficina.add(poster);
 
   // ---------- Reloj de pared ----------
   const reloj = new THREE.Group();
-  reloj.position.set(-0.38, 2.12, -2.04);
+  reloj.position.set(0.15, 2.3, -2.04);
   const caraReloj = malla(
     new THREE.CircleGeometry(0.26, 40),
     new THREE.MeshStandardMaterial({ map: texturaCaraReloj(), roughness: 0.6 }),
@@ -205,7 +208,7 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
 
   // ---------- Planta ----------
   const planta = new THREE.Group();
-  planta.position.set(1.45, 0, -1.55);
+  planta.position.set(1.7, 0, -1.6);
   const maceta = malla(
     new THREE.CylinderGeometry(0.26, 0.2, 0.38, 20),
     new THREE.MeshStandardMaterial({ color: '#c9774f', roughness: 0.85 }),
@@ -280,6 +283,7 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
   const monitor = new THREE.Group();
   monitor.position.copy(POS_MONITOR);
   monitor.rotation.y = ROT_MONITOR;
+  monitor.scale.setScalar(ESCALA_MONITOR);
   const matMonitor = new THREE.MeshStandardMaterial({ color: COLORES.plastico, roughness: 0.45 });
   monitor.add(solido(malla(new RoundedBoxGeometry(0.44, 0.04, 0.28, 2, 0.015), matMonitor, { y: 0.02, recibe: true })));
   monitor.add(solido(malla(new RoundedBoxGeometry(0.075, 0.28, 0.06, 2, 0.02), matMonitor, { y: 0.16 })));
@@ -408,9 +412,57 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
     ceniza.visible = false;
   }
 
+  // ---------- Vapor del café: hilos blancos suaves que suben y se van ----------
+  const texVapor = texturasHumo(3);
+  const vapor = [];
+  const bocaTaza = new THREE.Vector3(POS_TAZA.x, ALTO_ESCRITORIO + 0.13, POS_TAZA.z);
+  for (let i = 0; i < 26; i++) {
+    const sp = new THREE.Sprite(
+      new THREE.SpriteMaterial({ map: texVapor[i % 3], color: '#e9edf2', transparent: true, depthWrite: false, opacity: 0 })
+    );
+    sp.visible = false;
+    sp.userData = { edad: 0, vida: 1, semilla: 0 };
+    oficina.add(sp);
+    vapor.push(sp);
+  }
+  let acumVapor = 0;
+  let tVapor = 0;
+  function actualizarVapor(dt) {
+    tVapor += dt;
+    acumVapor += dt * 8;
+    while (acumVapor >= 1) {
+      acumVapor -= 1;
+      const libre = vapor.find((p) => !p.visible);
+      if (!libre) break;
+      libre.visible = true;
+      libre.position.copy(bocaTaza).add(new THREE.Vector3((Math.random() - 0.5) * 0.06, 0, (Math.random() - 0.5) * 0.06));
+      Object.assign(libre.userData, { edad: 0, vida: 2.4 + Math.random() * 1.2, semilla: Math.random() * 10 });
+      libre.material.rotation = Math.random() * Math.PI * 2;
+    }
+    vapor.forEach((p) => {
+      if (!p.visible) return;
+      const u = p.userData;
+      u.edad += dt;
+      const a = u.edad / u.vida;
+      if (a >= 1) {
+        p.visible = false;
+        return;
+      }
+      p.position.y += dt * (0.06 + a * 0.04);
+      p.position.x += Math.sin(tVapor * 1.3 + u.semilla + a * 4) * 0.03 * dt;
+      p.position.z += Math.cos(tVapor * 1.1 + u.semilla) * 0.02 * dt;
+      p.scale.setScalar(0.045 + a * 0.16);
+      p.material.rotation += dt * 0.2;
+      p.material.opacity = 0.8 * Math.min(1, a / 0.12) * Math.pow(1 - a, 1.4);
+    });
+  }
+
   scene.add(oficina);
 
   return {
+    actualizar(dt) {
+      actualizarVapor(Math.min(dt, 0.05));
+    },
     grupo: oficina,
     actualizarKanban(estado) {
       dibujarKanban(kanbanCtx, estado);

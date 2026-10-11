@@ -169,8 +169,8 @@ export function texturaMadera() {
 export function texturaAbdomenDrosophila() {
   const { canvas, ctx } = lienzo(256, 512);
   const base = ctx.createLinearGradient(0, 0, 0, 512);
-  base.addColorStop(0, '#b9a07f');
-  base.addColorStop(1, '#a88e6e');
+  base.addColorStop(0, '#78685a');
+  base.addColorStop(1, '#6a5a4b');
   ctx.fillStyle = base;
   ctx.fillRect(0, 0, 256, 512);
 
@@ -179,22 +179,22 @@ export function texturaAbdomenDrosophila() {
     const y = inicio * 512;
     const h = (0.032 + i * 0.004) * 512;
     const g = ctx.createLinearGradient(0, y, 0, y + h);
-    g.addColorStop(0, 'rgba(94,70,50,0)');
-    g.addColorStop(0.45, '#5e4632');
-    g.addColorStop(1, 'rgba(94,70,50,0.85)');
+    g.addColorStop(0, 'rgba(48,37,28,0)');
+    g.addColorStop(0.45, '#30251c');
+    g.addColorStop(1, 'rgba(48,37,28,0.85)');
     ctx.fillStyle = g;
     ctx.fillRect(0, y, 256, h);
   });
   const punta = ctx.createLinearGradient(0, 0.86 * 512, 0, 512);
-  punta.addColorStop(0, 'rgba(94,70,50,0)');
-  punta.addColorStop(1, '#6a5038');
+  punta.addColorStop(0, 'rgba(48,37,28,0)');
+  punta.addColorStop(1, '#3a2d22');
   ctx.fillStyle = punta;
   ctx.fillRect(0, 0.86 * 512, 256, 0.14 * 512);
 
   // Pelitos cortos y oscuros en filas, sobre todo en el borde de cada banda
-  ctx.strokeStyle = 'rgba(60,45,32,0.22)';
-  ctx.lineWidth = 0.8;
-  for (let i = 0; i < 900; i++) {
+  ctx.strokeStyle = 'rgba(25,19,14,0.5)';
+  ctx.lineWidth = 0.9;
+  for (let i = 0; i < 1300; i++) {
     const x = Math.random() * 256;
     const y = Math.random() * 512;
     ctx.beginPath();
@@ -208,10 +208,10 @@ export function texturaAbdomenDrosophila() {
 // Cutícula gris canela con pelitos cortos (cabeza)
 export function texturaCuticula() {
   const { canvas, ctx } = lienzo(256, 128);
-  ctx.fillStyle = '#a98f70';
+  ctx.fillStyle = '#6f6052';
   ctx.fillRect(0, 0, 256, 128);
-  ctx.fillStyle = 'rgba(70,52,38,0.12)';
-  for (let i = 0; i < 400; i++) ctx.fillRect(Math.random() * 256, Math.random() * 128, 0.8, 1.6);
+  ctx.fillStyle = 'rgba(30,23,17,0.25)';
+  for (let i = 0; i < 500; i++) ctx.fillRect(Math.random() * 256, Math.random() * 128, 0.9, 1.8);
   return aTextura(canvas);
 }
 
@@ -370,7 +370,7 @@ export function texturasHumo(cantidad = 4) {
       const cy = 64 + Math.sin(a) * d;
       const r = 14 + Math.random() * 26;
       const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
-      const alfa = 0.16 + Math.random() * 0.16;
+      const alfa = 0.2 + Math.random() * 0.18;
       g.addColorStop(0, `rgba(255,255,255,${alfa})`);
       g.addColorStop(1, 'rgba(255,255,255,0)');
       ctx.fillStyle = g;
@@ -398,5 +398,40 @@ export function texturaBrilloOjo() {
   g.addColorStop(1, 'rgba(255,255,255,0)');
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, 64, 64);
+  return aTextura(canvas);
+}
+
+// Tórax de mosca: gris café oscuro con franjas longitudinales en el lomo
+// (u = 0.75 es el lomo en la esfera del tórax) y pelitos cortos.
+export function texturaTorax() {
+  const W = 512;
+  const H = 256;
+  const { canvas, ctx } = lienzo(W, H);
+  const base = ctx.createLinearGradient(0, 0, W, 0);
+  base.addColorStop(0, '#6c5d4f');
+  base.addColorStop(0.75, '#776757');
+  base.addColorStop(1, '#6c5d4f');
+  ctx.fillStyle = base;
+  ctx.fillRect(0, 0, W, H);
+  [-0.11, -0.04, 0.04, 0.11].forEach((d) => {
+    const x = (0.75 + d) * W;
+    const ancho = 0.028 * W;
+    const g = ctx.createLinearGradient(x - ancho, 0, x + ancho, 0);
+    g.addColorStop(0, 'rgba(52,41,32,0)');
+    g.addColorStop(0.5, 'rgba(52,41,32,0.85)');
+    g.addColorStop(1, 'rgba(52,41,32,0)');
+    ctx.fillStyle = g;
+    ctx.fillRect(x - ancho, H * 0.12, ancho * 2, H * 0.78);
+  });
+  ctx.strokeStyle = 'rgba(25,19,14,0.45)';
+  ctx.lineWidth = 0.9;
+  for (let i = 0; i < 1500; i++) {
+    const x = Math.random() * W;
+    const y = Math.random() * H;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + (Math.random() - 0.5), y + 2.5);
+    ctx.stroke();
+  }
   return aTextura(canvas);
 }

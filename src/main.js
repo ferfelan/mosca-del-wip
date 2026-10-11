@@ -142,7 +142,10 @@ function animar() {
   }
 
   const estado = juego.estado();
-  if (!congelado) mosca.update(dtReal, { fumando: estado.fumando, estres: estado.estres / 100 });
+  if (!congelado) {
+    mosca.update(dtReal, { fumando: estado.fumando, estres: estado.estres / 100 });
+    oficina.actualizar(dtReal);
+  }
   refrescarUI(estado, mosca.cigarroEnMano());
 
   controls.update();
@@ -190,6 +193,7 @@ if (import.meta.env.DEV) {
       const estado = juego.estado();
       for (let t = 0; t < segundos; t += paso) {
         mosca.update(paso, { fumando: estado.fumando, estres: estado.estres / 100 });
+        oficina.actualizar(paso);
       }
       refrescarUI(estado, mosca.cigarroEnMano());
     },
