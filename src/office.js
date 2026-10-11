@@ -29,6 +29,8 @@ import {
   ROT_TAZA,
   ALTO_POSAVASOS,
   POS_LAMPARA,
+  POS_FOTO,
+  ROT_FOTO,
   MOSCA,
 } from './layout.js';
 
@@ -648,6 +650,7 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
     { p: TECLADO.pos, r: 0.34 },
     { p: POS_MOUSE, r: 0.12 },
     { p: POS_PILA, r: 0.42 },
+    { p: POS_FOTO, r: 0.2 },
   ];
   const haciaMosca = Math.atan2(MOSCA.z - POS_CENICERO.z, MOSCA.x - POS_CENICERO.x);
   const zMin = ESCRITORIO.z - ESCRITORIO.fondo / 2 + 0.08;
@@ -814,6 +817,54 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
     });
   }
 
+  // ---------- Foto enmarcada: la mosca con su gato ----------
+  // Marco de madera apoyado en el escritorio, levemente inclinado hacia
+  // atrás, con un soporte por detrás. La foto se pone cuando está lista.
+  const marco = new THREE.Group();
+  marco.position.copy(POS_FOTO);
+  marco.rotation.y = ROT_FOTO;
+  oficina.add(marco);
+  const ANCHO_MARCO = 0.27;
+  const ALTO_MARCO = 0.21;
+  const INCLINACION_MARCO = 0.2;
+  const frente = new THREE.Group();
+  frente.rotation.x = -INCLINACION_MARCO;
+  marco.add(frente);
+  const matMadera = new THREE.MeshStandardMaterial({ color: '#7b5232', roughness: 0.55 });
+  const cuerpoMarco = solido(
+    malla(new RoundedBoxGeometry(ANCHO_MARCO, ALTO_MARCO, 0.018, 3, 0.006), matMadera, { y: ALTO_MARCO / 2, recibe: true })
+  );
+  frente.add(cuerpoMarco);
+  // Paspartú blanco y la foto
+  frente.add(
+    malla(new THREE.PlaneGeometry(ANCHO_MARCO - 0.03, ALTO_MARCO - 0.03), new THREE.MeshStandardMaterial({ color: '#f7f3ea', roughness: 0.9 }), {
+      y: ALTO_MARCO / 2,
+      z: 0.0092,
+      sombra: false,
+    })
+  );
+  const matFoto = new THREE.MeshBasicMaterial({ color: '#d9d4c8' });
+  const foto = malla(new THREE.PlaneGeometry(ANCHO_MARCO - 0.06, ALTO_MARCO - 0.06), matFoto, {
+    y: ALTO_MARCO / 2,
+    z: 0.0095,
+    sombra: false,
+  });
+  frente.add(foto);
+  // Vidrio con un reflejo suave
+  frente.add(
+    malla(
+      new THREE.PlaneGeometry(ANCHO_MARCO - 0.03, ALTO_MARCO - 0.03),
+      new THREE.MeshPhysicalMaterial({ color: '#ffffff', transparent: true, opacity: 0.08, roughness: 0.05, clearcoat: 1 }),
+      { y: ALTO_MARCO / 2, z: 0.0105, sombra: false }
+    )
+  );
+  // Soporte trasero (la patita)
+  const pata = malla(new RoundedBoxGeometry(0.035, ALTO_MARCO * 0.78, 0.008, 1, 0.003), matMadera);
+  pata.geometry.translate(0, -ALTO_MARCO * 0.39, 0);
+  pata.position.set(0, ALTO_MARCO * 0.8 * Math.cos(INCLINACION_MARCO), -ALTO_MARCO * 0.8 * Math.sin(INCLINACION_MARCO) - 0.012);
+  pata.rotation.x = 0.42;
+  marco.add(pata);
+
   // ---------- Lámpara de escritorio (ilumina la pila) ----------
   const lampara = new THREE.Group();
   lampara.position.copy(POS_LAMPARA);
@@ -934,6 +985,11 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
       const horaDelDia = 9 + fraccionDelDia * 9;
       manecillaHora.rotation.z = -((horaDelDia % 12) / 12) * Math.PI * 2;
       manecillaMin.rotation.z = -(horaDelDia % 1) * Math.PI * 2;
+    },
+    ponerFoto(textura) {
+      matFoto.map = textura;
+      matFoto.color.set('#ffffff');
+      matFoto.needsUpdate = true;
     },
     taza,
     reposoTaza,

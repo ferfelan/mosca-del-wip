@@ -6,6 +6,7 @@ import { crearMosca } from './fly.js';
 import { DayBrain } from './brain.js';
 import { revisarChoques } from './choques.js';
 import { cargarDatosCerebro, crearCerebro, GRUPOS_VISUALES } from './cerebro.js';
+import { sacarFoto } from './foto.js';
 import { POS_CENICERO, POS_PILA, CENTRO_PANTALLA, ESCALA_MONITOR } from './layout.js';
 
 const CLAVE_STORAGE = 'mosca-del-wip-dias';
@@ -696,6 +697,7 @@ function refrescarCerebro(dt, estado, fumandoVisible, cafeVisible, ahora) {
 // ---------- Bucle principal (máximo 60 cuadros por segundo: fluido y sin calentar) ----------
 const CUADRO_MINIMO = 1000 / 61;
 let ultimoTiempo = performance.now();
+let fotoLista = false;
 let ultimoCuadro = 0;
 
 function animar(ahora = performance.now()) {
@@ -731,6 +733,11 @@ function animar(ahora = performance.now()) {
   refrescarUI(estado, mosca.cigarroEnMano());
 
   controls.update();
+  // La foto del escritorio se saca una vez, cuando la mosca ya tiene su pose
+  if (!fotoLista) {
+    fotoLista = true;
+    oficina.ponerFoto(sacarFoto(renderer, mosca.figura));
+  }
   // El espacio que ocupa el panel del cerebro cambia de a poco (transición suave)
   const acercar = (actual, objetivo) => {
     const nuevo = actual + (objetivo - actual) * (1 - Math.exp(-7 * dtReal));

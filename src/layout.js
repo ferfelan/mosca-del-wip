@@ -52,6 +52,10 @@ export const POS_CAJETILLA = delanteDeLaMosca(0.8, -0.88);
 // lámpara
 export const POS_PILA = new THREE.Vector3(0.42, ALTO_ESCRITORIO, 0.02);
 export const POS_LAMPARA = new THREE.Vector3(0.86, ALTO_ESCRITORIO, -0.46);
+// Foto enmarcada (la mosca con su gato), entre el monitor y la lámpara,
+// mirando hacia la mosca
+export const POS_FOTO = new THREE.Vector3(-0.1, ALTO_ESCRITORIO, -0.4);
+export const ROT_FOTO = -0.2;
 export const ANG_APOYO_CENICERO = Math.atan2(MOSCA.z - POS_CENICERO.z, MOSCA.x - POS_CENICERO.x);
 // Monitor de frente a la mosca (de espaldas a la ventana)
 export const POS_MONITOR = delanteDeLaMosca(1.5);
