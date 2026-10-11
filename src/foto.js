@@ -3,8 +3,10 @@
 // vez a una textura, que luego va dentro del marco.
 import * as THREE from 'three';
 
-const ANCHO_FOTO = 640;
-const ALTO_FOTO = 480;
+// Se saca en alta resolución y con versiones reducidas (mipmaps) para que
+// se vea nítida tanto de cerca como chiquita en el escritorio.
+const ANCHO_FOTO = 1600;
+const ALTO_FOTO = 1200;
 
 function lienzo(w, h) {
   const c = document.createElement('canvas');
@@ -15,7 +17,8 @@ function lienzo(w, h) {
 
 // Pelaje naranjo con rayas más oscuras
 function texturaPelaje() {
-  const { c, ctx } = lienzo(256, 128);
+  const { c, ctx } = lienzo(512, 256);
+  ctx.scale(2, 2); // mismo dibujo, el doble de resolución
   ctx.fillStyle = '#e7953f';
   ctx.fillRect(0, 0, 256, 128);
   ctx.strokeStyle = 'rgba(176, 92, 30, 0.75)';
@@ -98,7 +101,8 @@ function crearGato() {
 }
 
 function texturaFondo() {
-  const { c, ctx } = lienzo(512, 384);
+  const { c, ctx } = lienzo(1536, 1152);
+  ctx.scale(3, 3); // mismo dibujo, el triple de resolución
   const cielo = ctx.createLinearGradient(0, 0, 0, 384);
   cielo.addColorStop(0, '#9fd3f2');
   cielo.addColorStop(0.62, '#dff0f6');
@@ -180,8 +184,14 @@ export function sacarFoto(renderer, figuraMosca) {
   camara.position.set(0.1, 0.52, 1.85);
   camara.lookAt(0.0, 0.34, 0.02);
 
-  const destino = new THREE.WebGLRenderTarget(ANCHO_FOTO, ALTO_FOTO, { samples: 4 });
+  const destino = new THREE.WebGLRenderTarget(ANCHO_FOTO, ALTO_FOTO, {
+    samples: 4,
+    generateMipmaps: true,
+    minFilter: THREE.LinearMipmapLinearFilter,
+    magFilter: THREE.LinearFilter,
+  });
   destino.texture.colorSpace = THREE.SRGBColorSpace;
+  destino.texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
   const antes = renderer.getRenderTarget();
   const sombras = renderer.shadowMap.enabled;
   renderer.shadowMap.enabled = false;

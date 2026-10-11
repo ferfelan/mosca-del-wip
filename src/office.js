@@ -844,6 +844,17 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
     })
   );
   const matFoto = new THREE.MeshBasicMaterial({ color: '#d9d4c8' });
+  // Un poco más nítida al verse chica (usa una versión algo más detallada de
+  // la imagen, sin llegar a verse pixelada)
+  matFoto.onBeforeCompile = (shader) => {
+    shader.fragmentShader = shader.fragmentShader.replace(
+      '#include <map_fragment>',
+      `#ifdef USE_MAP
+        vec4 sampledDiffuseColor = texture2D( map, vMapUv, -0.6 );
+        diffuseColor *= sampledDiffuseColor;
+      #endif`
+    );
+  };
   const foto = malla(new THREE.PlaneGeometry(ANCHO_MARCO - 0.06, ALTO_MARCO - 0.06), matFoto, {
     y: ALTO_MARCO / 2,
     z: 0.0095,
