@@ -383,3 +383,81 @@ tr.vacia td {
 #banner-fin-dia.oculto {
   display: none;
 }
+
+/* ---------- Historial ---------- */
+
+.nota-tenue {
+  font-size: 11px;
+  color: var(--tinta-tenue);
+}
+
+.quitar-fila {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--tinta-tenue);
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.quitar-fila:hover {
+  background: var(--superficie);
+  color: var(--alerta);
+}
+
+.quitar-fila:focus {
+  outline: none;
+}
+
+.quitar-fila:focus-visible {
+  box-shadow: 0 0 0 3px var(--anillo);
+}
+
+.boton-texto {
+  display: block;
+  margin: 10px auto 0;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--tinta-suave);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.boton-texto:hover {
+  background: var(--superficie);
+  color: var(--tinta);
+}
+
+.boton-texto.confirmar {
+  color: var(--alerta);
+  font-weight: 600;
+}
+
+.boton-texto:focus {
+  outline: none;
+}
+
+.boton-texto:focus-visible {
+  box-shadow: 0 0 0 3px var(--anillo);
+}
+
+.boton-texto[hidden] {
+  display: none;
+}
+
+.solo-lector {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}

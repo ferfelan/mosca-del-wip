@@ -23,7 +23,7 @@ const ESTRES_SUBE_POR_UNIDAD = 0.6; // por minuto, por cada unidad de WIP sobre 
 const ESTRES_BAJA = 1.0; // por minuto, cuando WIP <= 3
 const URGENCIA_FUMAR_FACTOR = 0.02; // cuánta "urgencia" se acumula por minuto según el estrés
 const DURACION_PITADO_MIN = 8; // minutos simulados que dura cada salida a fumar
-const MAX_COLILLAS_VISIBLES = 20;
+const MAX_COLILLAS_VISIBLES = 33; // 21 caben en el cenicero, el resto se desborda
 
 function tareaAleatoria(id) {
   return {
@@ -140,7 +140,9 @@ export class DayBrain {
 
     // Urgencia de fumar: se acumula más rápido mientras más estrés hay.
     if (!this.fumando) {
-      this.urgenciaFumar += this.estres * URGENCIA_FUMAR_FACTOR * dt;
+      // Con mucho estrés las ganas crecen mucho más rápido (fuma más seguido)
+      const e = this.estres / 100;
+      this.urgenciaFumar += this.estres * URGENCIA_FUMAR_FACTOR * (1 + 2 * e * e) * dt;
       if (this.urgenciaFumar >= 100) {
         this.urgenciaFumar = 0;
         this.fumando = true;

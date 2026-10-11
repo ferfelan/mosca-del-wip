@@ -61,13 +61,17 @@
       </section>
 
       <section class="bloque ultimo">
-        <h2 class="etiqueta">Días jugados</h2>
+        <div class="bloque-fila">
+          <h2 class="etiqueta">Días jugados</h2>
+          <span class="nota-tenue">últimos 5</span>
+        </div>
         <table id="tabla-dias">
           <thead>
-            <tr><th>WIP</th><th>Terminadas</th><th>Colillas</th><th>Estrés máx.</th></tr>
+            <tr><th>WIP</th><th>Terminadas</th><th>Colillas</th><th>Estrés máx.</th><th><span class="solo-lector">Eliminar</span></th></tr>
           </thead>
           <tbody id="tabla-dias-body"></tbody>
         </table>
+        <button id="btn-borrar-historial" class="boton-texto" type="button" hidden>Borrar historial</button>
       </section>
     </aside>
 

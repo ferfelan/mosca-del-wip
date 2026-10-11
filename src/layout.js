@@ -26,11 +26,18 @@ function delanteDeLaMosca(distancia, lateral = 0) {
 }
 
 export const TECLADO = { pos: delanteDeLaMosca(0.957), rot: MOSCA.rumbo + Math.PI, ancho: 0.52, fondo: 0.2 };
-export const POS_MOUSEPAD = delanteDeLaMosca(0.967, 0);
-export const POS_MOUSE = delanteDeLaMosca(0.99, 0.42);
+export const MOUSEPAD = { pos: delanteDeLaMosca(0.967, 0), ancho: 0.8, fondo: 0.4 };
+export const POS_MOUSEPAD = MOUSEPAD.pos;
+export const POS_MOUSE = delanteDeLaMosca(0.99, 0.33);
 // Taza a la derecha del teclado (como se ve en pantalla), al alcance de la pata
-export const POS_TAZA = delanteDeLaMosca(1.0, -0.47);
-export const POS_CENICERO = delanteDeLaMosca(0.84, -0.88);
+export const POS_TAZA = delanteDeLaMosca(1.03, -0.4);
+// Cenicero cerca del borde, a la derecha: la pata delantera lo alcanza
+export const POS_CENICERO = delanteDeLaMosca(0.73, -0.6);
+// Cajetilla al lado del cenicero (lado de la cámara)
+export const POS_CAJETILLA = delanteDeLaMosca(0.8, -0.88);
+// Hacia dónde queda la mosca vista desde el cenicero: ahí se apoya el
+// cigarro encendido, y en ese sector no caen colillas.
+export const ANG_APOYO_CENICERO = Math.atan2(MOSCA.z - POS_CENICERO.z, MOSCA.x - POS_CENICERO.x);
 // Monitor de frente a la mosca (de espaldas a la ventana)
 export const POS_MONITOR = delanteDeLaMosca(1.5);
 export const ROT_MONITOR = MOSCA.rumbo + Math.PI;

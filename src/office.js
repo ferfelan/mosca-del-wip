@@ -19,6 +19,9 @@ import {
   TECLADO,
   POS_MOUSE,
   POS_MOUSEPAD,
+  MOUSEPAD,
+  POS_CAJETILLA,
+  ANG_APOYO_CENICERO,
   POS_CENICERO,
   POS_TAZA,
   POS_VENTANA,
@@ -70,34 +73,104 @@ function crearColilla() {
   return g;
 }
 
-// Dónde cae cada colilla dentro del cenicero: primero un anillo apoyado en el
-// borde, luego otro encima, y al final un montoncito en el centro.
+// Dónde cae cada colilla. Dentro del cenicero: un anillo apoyado en el
+// borde, otro encima y uno más arriba, dejando libre el sector donde la mosca
+// apoya el cigarro encendido. Cuando se llena, se desbordan al escritorio.
 const SUELO_CENICERO = 0.019;
-function ubicacionColilla(n) {
-  const capas = [
-    { cuantas: 6, giro: 10, adentro: [0.035, 0.035], afuera: [0.128, 0.06] },
-    { cuantas: 6, giro: 40, adentro: [0.05, 0.066], afuera: [0.14, 0.086] },
-    { cuantas: 5, giro: 15, adentro: [0.032, 0.106], afuera: [0.122, 0.121] },
-  ];
+const HUECO = (70 * Math.PI) / 180;
+const DENTRO = [
+  { cuantas: 6, adentro: [0.035, 0.035], afuera: [0.128, 0.06] },
+  { cuantas: 6, adentro: [0.05, 0.066], afuera: [0.14, 0.086] },
+  { cuantas: 5, adentro: [0.032, 0.106], afuera: [0.122, 0.121] },
+  { cuantas: 4, adentro: [0.02, 0.15], afuera: [0.11, 0.152] },
+];
+const CAPACIDAD = DENTRO.reduce((n, c) => n + c.cuantas, 0);
+
+function anguloLibre(i, cuantas, desfase) {
+  const inicio = ANG_APOYO_CENICERO + HUECO / 2;
+  return inicio + ((i + 0.5 + desfase) / cuantas) * (Math.PI * 2 - HUECO);
+}
+
+function ubicacionColilla(n, desbordes) {
   let i = n;
-  for (const c of capas) {
+  for (const [k, c] of DENTRO.entries()) {
     if (i < c.cuantas) {
-      const a = ((c.giro + (i * 360) / c.cuantas) * Math.PI) / 180;
+      const a = anguloLibre(i, c.cuantas, k * 0.33);
       const dir = new THREE.Vector3(Math.cos(a), 0, Math.sin(a));
-      const pIn = dir.clone().multiplyScalar(c.adentro[0]).setY(c.adentro[1]);
-      const pOut = dir.clone().multiplyScalar(c.afuera[0]).setY(c.afuera[1]);
-      return { filtro: pOut, punta: pIn };
+      return {
+        filtro: dir.clone().multiplyScalar(c.afuera[0]).setY(c.afuera[1]),
+        punta: dir.clone().multiplyScalar(c.adentro[0]).setY(c.adentro[1]),
+      };
     }
     i -= c.cuantas;
   }
-  // Encima de todo: cruzadas sobre el centro
-  const a = (i * 60 * Math.PI) / 180 + 0.3;
-  const dir = new THREE.Vector3(Math.cos(a), 0, Math.sin(a));
-  const y = 0.142 + i * 0.03;
-  return {
-    filtro: dir.clone().multiplyScalar(LARGO_COLILLA / 2).setY(y),
-    punta: dir.clone().multiplyScalar(-LARGO_COLILLA / 2).setY(y),
-  };
+  // Desborde: tiradas sobre el escritorio alrededor del cenicero
+  const d = desbordes[i % desbordes.length];
+  const capa = Math.floor(i / desbordes.length);
+  const giro = d.giro + capa * 1.2;
+  const eje = new THREE.Vector3(Math.cos(giro), 0, Math.sin(giro)).multiplyScalar(LARGO_COLILLA / 2);
+  const centro = new THREE.Vector3(Math.cos(d.a) * d.r, RADIO_COLILLA * (1 + 2 * capa), Math.sin(d.a) * d.r);
+  return { filtro: centro.clone().sub(eje), punta: centro.clone().add(eje) };
+}
+
+// Cajetilla de cigarros: caja roja y blanca con la tapa abierta y dos
+// cigarros asomando.
+function crearCajetilla() {
+  const g = new THREE.Group();
+  const W = 0.085;
+  const H = 0.12;
+  const D = 0.032;
+  const lienzo = document.createElement('canvas');
+  lienzo.width = 128;
+  lienzo.height = 192;
+  const c = lienzo.getContext('2d');
+  c.fillStyle = '#f5f1ea';
+  c.fillRect(0, 0, 128, 192);
+  c.fillStyle = '#c8322b';
+  c.beginPath();
+  c.moveTo(0, 0);
+  c.lineTo(128, 0);
+  c.lineTo(128, 70);
+  c.lineTo(64, 104);
+  c.lineTo(0, 70);
+  c.closePath();
+  c.fill();
+  c.fillStyle = '#2a2420';
+  c.font = 'bold 22px -apple-system, Helvetica, sans-serif';
+  c.textAlign = 'center';
+  c.fillText('WIP', 64, 150);
+  c.font = '13px -apple-system, Helvetica, sans-serif';
+  c.fillText('FILTERS', 64, 170);
+  const tex = new THREE.CanvasTexture(lienzo);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  const matFrente = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.55 });
+  const matLado = new THREE.MeshStandardMaterial({ color: '#efe9df', roughness: 0.55 });
+  const matRojo = new THREE.MeshStandardMaterial({ color: '#c8322b', roughness: 0.55 });
+  const cuerpo = new THREE.Mesh(new THREE.BoxGeometry(W, H * 0.8, D), [matLado, matLado, matRojo, matLado, matFrente, matFrente]);
+  cuerpo.position.y = (H * 0.8) / 2;
+  cuerpo.castShadow = true;
+  cuerpo.userData.solido = 'oficina';
+  g.add(cuerpo);
+  // tapa abierta hacia atrás
+  const bisagra = new THREE.Group();
+  bisagra.position.set(0, H * 0.8, -D / 2);
+  bisagra.rotation.x = -1.9;
+  const tapa = new THREE.Mesh(new THREE.BoxGeometry(W, H * 0.22, D), matRojo);
+  tapa.position.set(0, (H * 0.22) / 2, D / 2);
+  tapa.castShadow = true;
+  bisagra.add(tapa);
+  g.add(bisagra);
+  // cigarros asomando
+  [-0.022, 0.0, 0.022].forEach((x, i) => {
+    const alto = [0.03, 0.045, 0.02][i];
+    const cig = new THREE.Group();
+    const papel = new THREE.Mesh(new THREE.CylinderGeometry(0.0095, 0.0095, alto, 12), new THREE.MeshStandardMaterial({ color: '#d9a35f', roughness: 0.8 }));
+    papel.position.y = alto / 2;
+    cig.add(papel);
+    cig.position.set(x, H * 0.8 - 0.01, 0);
+    g.add(cig);
+  });
+  return g;
 }
 
 export function crearOficina(scene, { anisotropia = 4 } = {}) {
@@ -302,7 +375,7 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
 
   // ---------- Mousepad, teclado y mouse (frente a la mosca) ----------
   const mousepad = malla(
-    new RoundedBoxGeometry(0.98, 0.012, 0.4, 2, 0.006),
+    new RoundedBoxGeometry(MOUSEPAD.ancho, 0.012, MOUSEPAD.fondo, 2, 0.006),
     new THREE.MeshStandardMaterial({ color: '#56657a', roughness: 0.95 }),
     { x: POS_MOUSEPAD.x, y: ALTO_ESCRITORIO + 0.006, z: POS_MOUSEPAD.z, sombra: false, recibe: true }
   );
@@ -389,14 +462,45 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
   cenicero.add(ceniza);
   oficina.add(cenicero);
 
+  const cajetilla = crearCajetilla();
+  cajetilla.position.copy(POS_CAJETILLA);
+  cajetilla.rotation.y = MOSCA.rumbo + Math.PI + 0.5;
+  oficina.add(cajetilla);
+
+  // Lugares para colillas desbordadas: sobre el escritorio alrededor del
+  // cenicero, sin caer encima de la taza, la cajetilla o el teclado, ni del
+  // lado de la mosca, y separadas entre sí.
+  const ocupados = [
+    { p: POS_TAZA, r: 0.17 },
+    { p: POS_CAJETILLA, r: 0.13 },
+    { p: TECLADO.pos, r: 0.34 },
+    { p: POS_MOUSE, r: 0.12 },
+  ];
+  const haciaMosca = Math.atan2(MOSCA.z - POS_CENICERO.z, MOSCA.x - POS_CENICERO.x);
+  const zMin = ESCRITORIO.z - ESCRITORIO.fondo / 2 + 0.08;
+  const zMax = ESCRITORIO.z + ESCRITORIO.fondo / 2 - 0.08;
+  const desbordes = [];
+  for (const r of [0.27, 0.34, 0.41, 0.48]) {
+    for (let k = 0; k < 24; k++) {
+      const a = (k / 24) * Math.PI * 2 + r * 3;
+      const x = POS_CENICERO.x + Math.cos(a) * r;
+      const z = POS_CENICERO.z + Math.sin(a) * r;
+      const lado = Math.abs(Math.atan2(Math.sin(a - haciaMosca), Math.cos(a - haciaMosca)));
+      if (lado < 0.7 || z < zMin || z > zMax) continue;
+      if (ocupados.some((o) => Math.hypot(o.p.x - x, o.p.z - z) < o.r)) continue;
+      if (desbordes.some((d) => Math.hypot(d.x - x, d.z - z) < 0.085)) continue;
+      desbordes.push({ a, r, x, z, giro: a * 2.3 + k });
+    }
+  }
+
   const colillas = [];
   function agregarColilla() {
     const n = colillas.length;
     const colilla = crearColilla();
-    const { filtro, punta } = ubicacionColilla(n);
+    const { filtro, punta } = ubicacionColilla(n, desbordes);
     colilla.position.addVectors(filtro, punta).multiplyScalar(0.5);
     colilla.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), punta.clone().sub(filtro).normalize());
-    colilla.rotateY(Math.random() * Math.PI * 2);
+    if (n < CAPACIDAD) colilla.rotateY(Math.random() * Math.PI * 2);
     cenicero.add(colilla);
     colillas.push(colilla);
     ceniza.visible = true;

@@ -28,6 +28,8 @@ import {
   DIR_MOSCA,
   CENTRO_PANTALLA,
   CAMARA_INICIAL,
+  POS_CENICERO,
+  ANG_APOYO_CENICERO,
 } from './layout.js';
 
 const COLORES = {
@@ -46,9 +48,15 @@ const COLORES = {
   gota: '#86d3f4',
 };
 
-// Cuánto dura en pantalla cada salida a fumar (segundos reales), aunque el
-// juego la cuente como unos pocos minutos simulados.
-const DURACION_FUMADA_VISUAL = 3.0;
+// Cada fumada en pantalla sigue esta secuencia (segundos reales), aunque el
+// juego la cuente como unos pocos minutos simulados:
+// teclado -> toma el cigarro del cenicero -> a la trompita -> pitada ->
+// lo baja y lo deja en el cenicero -> vuelve al teclado.
+const T_TOMA = 0.75;
+const T_BOCA = 1.55;
+const T_PITADA = 2.55;
+const T_DEJA = 3.35;
+const T_FIN = 4.0;
 
 // La silla (en metros del mundo, centrada bajo la mosca)
 const Z_SILLA = -0.1 * ESCALA_MOSCA;
@@ -61,14 +69,17 @@ const ALTO_CINTURA = 0.21; // unión tórax-abdomen, sobre el asiento
 const INCLINACION_TORAX = (55 * Math.PI) / 180;
 const EJE_TORAX = new THREE.Vector3(0, Math.sin(INCLINACION_TORAX), Math.cos(INCLINACION_TORAX));
 const VIENTRE = new THREE.Vector3(0, -Math.cos(INCLINACION_TORAX), Math.sin(INCLINACION_TORAX));
-const R_TORAX = { lado: 0.15, largo: 0.21, fondo: 0.15 };
+const R_TORAX = { lado: 0.17, largo: 0.205, fondo: 0.17 };
 // Medidas relativas a la cintura (el "delantero" gira desde ahí)
 const TORAX_C = EJE_TORAX.clone().multiplyScalar(0.19);
-const CUELLO = TORAX_C.clone().addScaledVector(EJE_TORAX, 0.18);
+const CUELLO = TORAX_C.clone().addScaledVector(EJE_TORAX, 0.19);
 const NUDO = CUELLO.clone().addScaledVector(VIENTRE, 0.1);
-const CABEZA_C = new THREE.Vector3(0, 0.41, 0.3);
+const CABEZA_C = new THREE.Vector3(0, 0.455, 0.335);
+// La cabeza se dibuja con estas medidas y luego se agranda (cabeza grande, ojos grandes)
+const ESCALA_CABEZA = 1.3;
 const R_CABEZA = new THREE.Vector3(0.14, 0.12, 0.115);
-const ABDOMEN = { c: new THREE.Vector3(0, ALTO_CINTURA - 0.052, -0.245), giro: -0.21, r: [0.15, 0.13, 0.27] };
+// Abdomen corto y redondeado (mosca compacta)
+const ABDOMEN = { c: new THREE.Vector3(0, ALTO_CINTURA - 0.045, -0.185), giro: -0.25, r: [0.165, 0.145, 0.2] };
 
 const lerp = (a, b, t) => a + (b - a) * t;
 const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
@@ -463,81 +474,40 @@ export function crearMosca(scene) {
   nudo.scale.set(0.027, 0.023, 0.016);
   nudo.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), VIENTRE);
 
-  // La hoja de la corbata va tirada por encima del hombro derecho (el lado
-  // de la cámara), como quien teclea agachado: así se ve desde atrás. Es una
-  // cinta que sigue una curva y se separa del cuerpo lo justo para no
-  // atravesarlo.
-  const DER = new THREE.Vector3(-1, 0, 0); // derecha de la mosca
-  const despegar = (p, minimo) => {
-    const d = p.clone().sub(TORAX_C);
-    const a = d.dot(EJE_TORAX) / R_TORAX.largo;
-    const b = d.dot(LOMO) / R_TORAX.fondo;
-    const c = d.x / R_TORAX.lado;
-    const r = Math.sqrt(a * a + b * b + c * c);
-    return r >= minimo ? p : TORAX_C.clone().addScaledVector(d, minimo / r);
-  };
-  const curvaCorbata = new THREE.CatmullRomCurve3(
-    [
-      NUDO.clone().addScaledVector(DER, 0.012),
-      CUELLO.clone().addScaledVector(VIENTRE, 0.07).addScaledVector(DER, 0.07),
-      CUELLO.clone().addScaledVector(DER, 0.115).addScaledVector(EJE_TORAX, -0.005),
-      sobreTorax(0.45, -0.95, 0.03),
-      sobreTorax(0.15, -0.6, 0.022),
-      sobreTorax(-0.2, -0.45, 0.02),
-      sobreTorax(-0.48, -0.42, 0.02),
-    ].map((p) => despegar(p, 1.14))
-  );
-  const N_CORBATA = 60;
-  const GROSOR_CORBATA = 0.006;
-  const anchoCorbata = (t) => (t < 0.15 ? lerp(0.016, 0.022, t / 0.15) : t < 0.86 ? lerp(0.022, 0.052, (t - 0.15) / 0.71) : lerp(0.052, 0, (t - 0.86) / 0.14));
-  const vCorb = [];
-  const uvCorb = [];
-  const iCorb = [];
-  let largoAcum = 0;
-  let previo = null;
-  for (let k = 0; k <= N_CORBATA; k++) {
-    const t = k / N_CORBATA;
-    const c = despegar(curvaCorbata.getPoint(t), 1.14);
-    if (previo) largoAcum += c.distanceTo(previo);
-    previo = c;
-    const tangente = curvaCorbata.getTangent(t).normalize();
-    const normal = c.clone().sub(TORAX_C);
-    normal.addScaledVector(tangente, -normal.dot(tangente)).normalize();
-    const ancho = new THREE.Vector3().crossVectors(tangente, normal).normalize();
-    const hw = anchoCorbata(t);
-    for (const capa of [GROSOR_CORBATA / 2, -GROSOR_CORBATA / 2]) {
-      for (const lado of [-1, 1]) {
-        const p = c.clone().addScaledVector(ancho, lado * hw).addScaledVector(normal, capa);
-        vCorb.push(p.x, p.y, p.z);
-        uvCorb.push((lado * hw) * 9 + 0.5, largoAcum * 9);
-      }
-    }
-  }
-  for (let k = 0; k < N_CORBATA; k++) {
-    const a0 = k * 4;
-    const b0 = a0 + 4;
-    // arriba (0,1), abajo (2,3)
-    iCorb.push(a0, b0, a0 + 1, a0 + 1, b0, b0 + 1);
-    iCorb.push(a0 + 2, a0 + 3, b0 + 2, a0 + 3, b0 + 3, b0 + 2);
-    iCorb.push(a0, a0 + 2, b0, a0 + 2, b0 + 2, b0);
-    iCorb.push(a0 + 1, b0 + 1, a0 + 3, a0 + 3, b0 + 1, b0 + 3);
-  }
-  const corbataGeo = new THREE.BufferGeometry();
-  corbataGeo.setAttribute('position', new THREE.Float32BufferAttribute(vCorb, 3));
-  corbataGeo.setAttribute('uv', new THREE.Float32BufferAttribute(uvCorb, 2));
-  corbataGeo.setIndex(iCorb);
-  corbataGeo.computeVertexNormals();
+  // La hoja cuelga del nudo hacia abajo, por delante del pecho (siempre
+  // vertical aunque la mosca se incline). Desde la cámara asoma por el
+  // costado.
+  const forma = new THREE.Shape();
+  forma.moveTo(-0.016, 0);
+  forma.lineTo(0.016, 0);
+  forma.lineTo(0.034, -0.15);
+  forma.lineTo(0, -0.178);
+  forma.lineTo(-0.034, -0.15);
+  forma.closePath();
+  const hojaGeo = new THREE.ExtrudeGeometry(forma, {
+    depth: 0.006,
+    bevelEnabled: true,
+    bevelSize: 0.002,
+    bevelThickness: 0.002,
+    bevelSegments: 1,
+  });
+  hojaGeo.translate(0, 0, -0.003);
   const texCorbata = texturaCorbata();
-  texCorbata.repeat.set(1, 1);
-  const corbata = marcar(
-    new THREE.Mesh(corbataGeo, new THREE.MeshStandardMaterial({ map: texCorbata, roughness: 0.5, side: THREE.DoubleSide })),
-    { parteMosca: true, revisaCuerpo: true }
-  );
+  texCorbata.repeat.set(14, 14);
+  const corbata = new THREE.Group();
+  corbata.position.copy(NUDO).addScaledVector(EJE_TORAX, -0.012).addScaledVector(VIENTRE, 0.014);
   delantero.add(corbata);
+  const hoja = marcar(new THREE.Mesh(hojaGeo, new THREE.MeshStandardMaterial({ map: texCorbata, roughness: 0.5 })), {
+    solido: 'corbata',
+    parteMosca: true,
+    revisaCuerpo: true,
+  });
+  corbata.add(hoja);
 
   // --- Cabeza: más chica que el cuerpo, casi toda ojos ---
   const cabeza = new THREE.Group();
   cabeza.position.copy(CABEZA_C);
+  cabeza.scale.setScalar(ESCALA_CABEZA);
   cabeza.rotation.order = 'YXZ';
   delantero.add(cabeza);
 
@@ -698,7 +668,7 @@ export function crearMosca(scene) {
   });
 
   // --- Alas con venas, plegadas sobre el abdomen (bien visibles) ---
-  const geoAla = crearGeometriaAla(0.52);
+  const geoAla = crearGeometriaAla(0.44);
   const matAla = new THREE.MeshPhysicalMaterial({
     map: texturaAla(),
     transparent: true,
@@ -743,7 +713,7 @@ export function crearMosca(scene) {
     crearPata(cuerpo, mats, { largos: [0.22, 0.24, 0.08], radios: [0.014, 0.011, 0.008] })
   );
   // Caderas, en el espacio del "delantero"
-  const CADERA_DEL = (lado) => new THREE.Vector3(lado * 0.06, 0.17, 0.25);
+  const CADERA_DEL = (lado) => new THREE.Vector3(lado * 0.085, 0.16, 0.25);
   const CADERA_MED = (lado) => new THREE.Vector3(lado * 0.08, 0.044, 0.165);
   const CADERA_TRA = (lado) => new THREE.Vector3(lado * 0.07, 0.0, 0.105);
 
@@ -842,8 +812,8 @@ export function crearMosca(scene) {
   let t = 0;
   let estresSuave = 0;
   let mezclaFumar = 0;
-  let restanteFumar = 0;
-  let tFumar = 0;
+  let cicloActivo = false;
+  let tc = 0; // tiempo dentro de la secuencia de fumar
   let pesoBoca = 0;
   let fumandoAntes = false;
   let quemado = 0;
@@ -878,6 +848,17 @@ export function crearMosca(scene) {
   const EJE_REPOSO = new THREE.Vector3(-0.3, 0.95, -0.1).normalize();
   const AGARRE = 0.035; // dónde sujeta el cigarro, medido desde el filtro
 
+  // Cigarro apoyado en el borde del cenicero: filtro afuera (hacia la mosca),
+  // brasa sobre el cenicero, un poco inclinado hacia adentro.
+  const dirApoyo = new THREE.Vector3(Math.cos(ANG_APOYO_CENICERO), 0, Math.sin(ANG_APOYO_CENICERO));
+  const INCLINA = 0.1;
+  const EJE_APOYO_MUNDO = dirApoyo.clone().multiplyScalar(-Math.cos(INCLINA)).setY(-Math.sin(INCLINA)).normalize();
+  const CRUCE_BORDE = POS_CENICERO.clone().addScaledVector(dirApoyo, 0.156).setY(ALTO_ESCRITORIO + 0.067 + RADIO_CIG * S + 0.004);
+  const AGARRE_MUNDO = AGARRE * S;
+  // El filtro queda afuera del borde: la pata lo toma justo sobre el borde
+  const FILTRO_APOYO_MUNDO = CRUCE_BORDE.clone().addScaledVector(EJE_APOYO_MUNDO, -0.065);
+  const MANO_APOYO_MUNDO = FILTRO_APOYO_MUNDO.clone().addScaledVector(EJE_APOYO_MUNDO, AGARRE_MUNDO);
+
   function puntoTeclado(lado, levantar, lateral) {
     const altoTecla = ALTO_ESCRITORIO + 0.049;
     return tmp
@@ -896,27 +877,26 @@ export function crearMosca(scene) {
     estresSuave = amortiguar(estresSuave, estado.estres, 1.6, dt);
     const s = estresSuave;
 
-    // --- Fumar: dura un rato fijo en pantalla ---
-    if (estado.fumando && !fumandoAntes) {
-      if (restanteFumar <= 0) tFumar = 0;
+    // --- Fumar: secuencia completa cada vez que sale a fumar ---
+    if (estado.fumando && !fumandoAntes && !cicloActivo) {
+      cicloActivo = true;
+      tc = 0;
       quemado = 0;
     }
     fumandoAntes = estado.fumando;
-    if (estado.fumando) restanteFumar = DURACION_FUMADA_VISUAL;
-    else restanteFumar -= dt;
-    const fumando = restanteFumar > 0;
-    if (fumando) tFumar += dt;
-    mezclaFumar = amortiguar(mezclaFumar, fumando ? 1 : 0, 4, dt);
-    quemado = Math.min(0.6, quemado + dt * 0.09 * (1 + pesoBoca * 2));
-
-    const PERIODO = 2.6;
-    let ciclo = 0;
-    if (fumando && tFumar > 0.5) {
-      const p = (tFumar - 0.5) % PERIODO;
-      ciclo = suave(0, 0.65, p) * (1 - suave(1.35, 2.0, p));
+    if (cicloActivo) {
+      tc += dt;
+      if (tc >= T_FIN) {
+        // Si sigue en su pausa de fumar, otra pitada; si no, el cigarro ya
+        // es colilla y la mosca vuelve a trabajar.
+        if (estado.fumando) tc = 0;
+        else cicloActivo = false;
+      }
     }
+    mezclaFumar = amortiguar(mezclaFumar, cicloActivo ? 1 : 0, 3, dt);
     pesoBocaAntes = pesoBoca;
-    pesoBoca = amortiguar(pesoBoca, ciclo * suave(0.6, 0.95, mezclaFumar), 12, dt);
+    pesoBoca = cicloActivo ? suave(T_BOCA - 0.25, T_BOCA, tc) * (1 - suave(T_PITADA, T_PITADA + 0.3, tc)) : 0;
+    quemado = Math.min(0.6, quemado + dt * 0.06 * (1 + pesoBoca * 3));
     if (pesoBocaAntes > 0.9 && pesoBoca <= 0.9) exhalando = 0.6;
     exhalando = Math.max(0, exhalando - dt);
 
@@ -929,6 +909,9 @@ export function crearMosca(scene) {
     cuerpo.position.x = Math.sin(t * 21) * 0.001 * temblor;
     torax.scale.x = R_TORAX.lado * (1 + Math.sin(t * 1.7) * 0.008);
     delantero.updateMatrix();
+    // La corbata cuelga siempre vertical, con un vaivén suave
+    corbata.rotation.x = -delantero.rotation.x + Math.sin(t * 1.3) * 0.03;
+    corbata.rotation.z = Math.sin(t * 0.9) * 0.03;
 
 
     // --- Cabeza: mira la pantalla ---
@@ -1005,47 +988,82 @@ export function crearMosca(scene) {
       const lateral = Math.sin(faseTipeo * 0.31 + i * 2) * 0.022 * (1 - quieta);
       const enTecla = desdeMundo(puntoTeclado(lado, levantar, lateral)).clone();
       const cadera = enCuerpo(CADERA_DEL(lado));
-      const poloTecleo = new THREE.Vector3(lado * 0.7, 1, -0.25).normalize();
+      const poloTecleo = new THREE.Vector3(lado * 0.9, 1, -0.2).normalize();
 
-      if (i === 0 && mezclaFumar > 0.001) {
+      if (i === 0 && cicloActivo) {
+        // Poses clave (en el espacio del cuerpo)
         boca.getWorldPosition(mundoBoca);
         puntoBoca.copy(mundoBoca);
         desdeMundo(puntoBoca);
         qDelantero.setFromEuler(delantero.rotation);
         adelanteCabeza.set(0, 0, 1).applyQuaternion(cabeza.quaternion).applyQuaternion(qDelantero);
         derechaCabeza.set(-1, 0, 0).applyQuaternion(cabeza.quaternion).applyQuaternion(qDelantero);
-        const ejeBoca = tmp2
+        // En la boca: el cigarro sale hacia adelante y a su derecha
+        const ejeBoca = new THREE.Vector3()
           .copy(adelanteCabeza)
-          .multiplyScalar(0.7)
-          .addScaledVector(derechaCabeza, 0.6)
-          .add(new THREE.Vector3(0, -0.15, 0))
-          .normalize()
-          .clone();
-        const filtroBoca = puntoBoca.clone().addScaledVector(ejeBoca, 0.006);
-        const manoBoca = filtroBoca.clone().addScaledVector(ejeBoca, AGARRE);
+          .multiplyScalar(0.75)
+          .addScaledVector(derechaCabeza, 0.55)
+          .add(new THREE.Vector3(0, -0.1, 0))
+          .normalize();
+        const manoBoca = puntoBoca.clone().addScaledVector(ejeBoca, 0.006 + AGARRE);
+        const manoCenicero = desdeMundo(MANO_APOYO_MUNDO.clone());
+        const ejeCenicero = EJE_APOYO_MUNDO.clone().transformDirection(cuerpo.matrixWorld.clone().invert());
+        // Punto de paso entre el cenicero y la boca: arriba y hacia afuera
+        const paso = manoCenicero.clone().lerp(manoBoca, 0.5).add(new THREE.Vector3(-0.06, 0.06, 0.02));
 
-        manoObjetivo.copy(MANO_REPOSO).lerp(manoBoca, pesoBoca);
-        ejeCig.copy(EJE_REPOSO).lerp(ejeBoca, pesoBoca).normalize();
+        // Tramos de la secuencia: [inicio, fin, desde, hasta, curva]
+        const tramos = [
+          [0, T_TOMA, 'tecla', 'cenicero'],
+          [T_TOMA, T_BOCA, 'cenicero', 'boca'],
+          [T_BOCA, T_PITADA, 'boca', 'boca'],
+          [T_PITADA, T_DEJA, 'boca', 'cenicero'],
+          [T_DEJA, T_FIN, 'cenicero', 'tecla'],
+        ];
+        const pose = { tecla: enTecla, cenicero: manoCenicero, boca: manoBoca };
+        const tramo = tramos.find((tr) => tc < tr[1]) ?? tramos[tramos.length - 1];
+        const u = suave(0, 1, (tc - tramo[0]) / (tramo[1] - tramo[0]));
+        const objetivo = pose[tramo[2]].clone().lerp(pose[tramo[3]], u);
+        const arco = Math.sin(Math.PI * u);
+        const viaje = tramo[2] + '-' + tramo[3];
+        if (viaje === 'tecla-cenicero' || viaje === 'cenicero-tecla') objetivo.y += arco * 0.07;
+        if (viaje === 'cenicero-boca' || viaje === 'boca-cenicero') {
+          // curva suave pasando por el punto de paso
+          const recto = pose[tramo[2]].clone().lerp(pose[tramo[3]], 0.5);
+          objetivo.addScaledVector(paso.clone().sub(recto), arco);
+        }
 
-        // En el camino teclado <-> cigarro la pata sube en arco y la
-        // rodilla cambia de lado recién al final: nunca roza el escritorio.
-        const objetivo = enTecla.clone().lerp(manoObjetivo, mezclaFumar);
-        // Arco hacia afuera (a su derecha) para no pasar por delante de los ojos
-        const arco = Math.sin(Math.PI * mezclaFumar);
-        objetivo.x -= arco * 0.2;
-        objetivo.y += arco * 0.05;
-        const mezclaRodilla = suave(0.55, 1, mezclaFumar);
-        const dirSujetar = manoObjetivo.clone().sub(cadera).normalize();
-        dirTarso.copy(DIR_TARSO_TECLA).lerp(dirSujetar, mezclaFumar).normalize();
-        const poloFumar = new THREE.Vector3(lado * 0.9, -0.2, -0.4).normalize();
-        polo.copy(poloTecleo).lerp(poloFumar, mezclaRodilla).normalize();
+        // ¿Dónde está la "mano" en la secuencia? 0 = cenicero, 1 = boca
+        const enBoca = tc < T_TOMA ? 0 : tc < T_BOCA ? u : tc < T_PITADA ? 1 : tc < T_DEJA ? 1 - u : 0;
+        const sujeta = tc >= T_TOMA && tc < T_DEJA;
+
+        // La articulación nunca se dobla al revés: cerca del teclado y del
+        // cenicero apunta hacia arriba y afuera (como pata de insecto); al
+        // subir a la boca gira de a poco hacia adelante y afuera.
+        const poloAbajo = new THREE.Vector3(lado * 0.7, 1, 0.1).normalize();
+        const poloBoca = new THREE.Vector3(lado * 0.85, 0.25, 0.5).normalize();
+        polo.copy(poloAbajo).lerp(poloBoca, enBoca).normalize();
+        const dirCenicero = new THREE.Vector3(0, -0.85, 0.5).normalize();
+        const dirBoca = ejeBoca.clone().negate().add(new THREE.Vector3(0, 0.35, 0)).normalize();
+        if (tramo[2] === 'tecla' || tramo[3] === 'tecla') {
+          const haciaTecla = tramo[3] === 'tecla' ? u : 1 - u;
+          dirTarso.copy(dirCenicero).lerp(DIR_TARSO_TECLA, haciaTecla).normalize();
+        } else {
+          dirTarso.copy(dirCenicero).lerp(dirBoca, enBoca).normalize();
+        }
         patasDelanteras[i].poner(cadera, objetivo, dirTarso, polo);
 
-        const aparecer = suave(0.55, 0.92, mezclaFumar);
-        cigarro.visible = aparecer > 0.01;
-        cigarro.position.copy(patasDelanteras[i].punta).addScaledVector(ejeCig, -AGARRE * aparecer);
+        // Cigarro: apoyado en el cenicero o en la pata
+        cigarro.visible = true;
+        const aparecer = suave(0, 0.35, tc) + (tc > T_FIN - 0.2 && !estado.fumando ? -suave(T_FIN - 0.2, T_FIN, tc) : 0);
+        cigarro.scale.setScalar(Math.max(0.001, aparecer));
+        if (sujeta) {
+          ejeCig.copy(ejeCenicero).lerp(ejeBoca, enBoca).normalize();
+          cigarro.position.copy(patasDelanteras[i].punta).addScaledVector(ejeCig, -AGARRE);
+        } else {
+          ejeCig.copy(ejeCenicero);
+          cigarro.position.copy(desdeMundo(FILTRO_APOYO_MUNDO.clone()));
+        }
         cigarro.quaternion.setFromUnitVectors(EJE_Y, ejeCig);
-        cigarro.scale.setScalar(Math.max(aparecer, 0.001));
       } else {
         patasDelanteras[i].poner(cadera, enTecla, DIR_TARSO_TECLA, poloTecleo);
         if (i === 0) cigarro.visible = false;
@@ -1143,6 +1161,6 @@ export function crearMosca(scene) {
     grupo: raiz,
     update,
     // El cigarro que fuma ahora todavía no es colilla
-    cigarroEnMano: () => mezclaFumar > 0.5,
+    cigarroEnMano: () => cicloActivo,
   };
 }

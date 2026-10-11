@@ -37,23 +37,54 @@ let colillasPintadas = 0;
 
 let juego = new DayBrain(Number(elWip.value));
 
+// Historial de días: se guarda en el navegador (sobrevive a recargar la
+// página) y sólo se conservan los últimos 5.
+const MAX_DIAS = 5;
+const elBtnBorrar = document.getElementById('btn-borrar-historial');
+
 function cargarDias() {
   try {
-    return JSON.parse(localStorage.getItem(CLAVE_STORAGE)) || [];
+    const dias = JSON.parse(localStorage.getItem(CLAVE_STORAGE)) || [];
+    return Array.isArray(dias) ? dias.slice(-MAX_DIAS) : [];
   } catch {
     return [];
   }
 }
 
+function escribirDias(dias) {
+  const recortados = dias.slice(-MAX_DIAS);
+  try {
+    localStorage.setItem(CLAVE_STORAGE, JSON.stringify(recortados));
+  } catch {
+    // sin almacenamiento disponible: la tabla igual se ve en esta sesión
+  }
+  pintarTabla(recortados);
+}
+
 function pintarTabla(dias) {
   elTablaBody.innerHTML = '';
+  elBtnBorrar.hidden = !dias.length;
   if (!dias.length) {
-    elTablaBody.innerHTML = '<tr class="vacia"><td colspan="4">Juega un día completo para comparar</td></tr>';
+    elTablaBody.innerHTML = '<tr class="vacia"><td colspan="5">Juega un día completo para comparar</td></tr>';
     return;
   }
-  dias.forEach((d) => {
+  dias.forEach((d, i) => {
     const tr = document.createElement('tr');
     tr.innerHTML = `<td>${d.wip}</td><td>${d.hechas}</td><td>${d.colillas}</td><td>${d.estresMax}%</td>`;
+    const celda = document.createElement('td');
+    const quitar = document.createElement('button');
+    quitar.type = 'button';
+    quitar.className = 'quitar-fila';
+    quitar.textContent = '×';
+    quitar.title = 'Eliminar este día';
+    quitar.setAttribute('aria-label', `Eliminar el día ${i + 1} (WIP ${d.wip})`);
+    quitar.addEventListener('click', () => {
+      const actuales = cargarDias();
+      actuales.splice(i, 1);
+      escribirDias(actuales);
+    });
+    celda.appendChild(quitar);
+    tr.appendChild(celda);
     elTablaBody.appendChild(tr);
   });
 }
@@ -61,11 +92,30 @@ function pintarTabla(dias) {
 function guardarDia(resumen) {
   const dias = cargarDias();
   dias.push(resumen);
-  localStorage.setItem(CLAVE_STORAGE, JSON.stringify(dias));
-  pintarTabla(dias);
+  escribirDias(dias);
 }
 
-pintarTabla(cargarDias());
+// Borrar todo pide confirmar con un segundo toque (sin ventanas emergentes)
+let esperandoConfirmacion = null;
+elBtnBorrar.addEventListener('click', () => {
+  if (esperandoConfirmacion) {
+    clearTimeout(esperandoConfirmacion);
+    esperandoConfirmacion = null;
+    elBtnBorrar.textContent = 'Borrar historial';
+    elBtnBorrar.classList.remove('confirmar');
+    escribirDias([]);
+    return;
+  }
+  elBtnBorrar.textContent = '¿Seguro? Toca de nuevo';
+  elBtnBorrar.classList.add('confirmar');
+  esperandoConfirmacion = setTimeout(() => {
+    esperandoConfirmacion = null;
+    elBtnBorrar.textContent = 'Borrar historial';
+    elBtnBorrar.classList.remove('confirmar');
+  }, 3000);
+});
+
+escribirDias(cargarDias());
 
 function pintarWip() {
   const v = Number(elWip.value);

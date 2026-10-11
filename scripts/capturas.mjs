@@ -44,7 +44,8 @@ const VISTAS = {
   manos: [[-0.35, 1.45, 0.55], [-0.9, 1.0, 0.3]],
   atras: [[-1.9, 1.9, 2.7], [-0.9, 1.1, 1.0]],
   arriba: [[-0.55, 3.2, 1.7], [-0.9, 1.0, 0.85]],
-  cenicero: [[0.45, 1.45, 1.0], [-0.02, 1.0, 0.36]],
+  cenicero: [[-0.75, 1.55, 1.25], [-0.32, 1.0, 0.5]],
+  fumar: [[0.25, 1.6, 1.9], [-0.7, 1.25, 0.75]],
   monitor: [[-0.25, 1.75, 1.1], [-0.9, 1.72, -0.35]],
 };
 
@@ -74,24 +75,25 @@ for (const v of ['general', 'cara', 'manos']) {
   await captura(`wip9-${v}`);
 }
 
-// ----- WIP 9: fumando (cigarro en reposo y en la boca) -----
-await M(() => {
-  window.__mosca.forzar({ fumando: true });
-  window.__mosca.avanzar(1.6);
-});
-for (const v of ['general', 'cara', 'lado']) {
-  await vista(v);
-  await captura(`wip9-fuma-boca-${v}`);
+// ----- WIP 9: una fumada completa, cuadro a cuadro -----
+// 0,5 s toma el cigarro · 1,2 s lo sube · 2,0 s pitada · 3,0 s lo baja ·
+// 3,5 s lo dejó en el cenicero y vuelve al teclado
+await M(() => window.__mosca.forzar({ fumando: true }));
+let tAnterior = 0;
+for (const tc of [0.5, 1.2, 2.0, 3.0, 3.5]) {
+  await M((d) => window.__mosca.avanzar(d), tc - tAnterior);
+  tAnterior = tc;
+  for (const v of ['fumar', 'lado']) {
+    await vista(v);
+    await captura(`wip9-fuma-${tc.toFixed(1)}s-${v}`);
+  }
 }
-await M(() => window.__mosca.avanzar(1.3));
-for (const v of ['general', 'cara', 'lado', 'atras']) {
-  await vista(v);
-  await captura(`wip9-fuma-baja-${v}`);
-}
+await vista('general');
+await captura('wip9-fuma-general');
 
 // ----- Cenicero lleno -----
 await M(() => {
-  window.__mosca.forzar({ fumando: false, colillas: 20 });
+  window.__mosca.forzar({ fumando: false, colillas: 30 });
   window.__mosca.avanzar(4);
 });
 await vista('cenicero');
