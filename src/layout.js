@@ -7,8 +7,8 @@ export const ESCRITORIO = { x: -0.4, z: -0.02, ancho: 3.4, fondo: 1.35 };
 export const BORDE_TRASERO_ESCRITORIO = ESCRITORIO.z - ESCRITORIO.fondo / 2;
 
 // La mosca se sienta detrás del escritorio, girada hacia el monitor.
-export const MOSCA = { x: -1.02, z: -0.99, rumbo: 0.45 };
-export const ESCALA_MOSCA = 1.35;
+export const MOSCA = { x: -1.02, z: -1.18, rumbo: 0.45 };
+export const ESCALA_MOSCA = 1.45;
 export const ALTO_ASIENTO = 0.47;
 
 // Hacia dónde mira la mosca (adelante) y cuál es su lado izquierdo, en el mundo.
@@ -16,19 +16,23 @@ export const DIR_MOSCA = new THREE.Vector3(Math.sin(MOSCA.rumbo), 0, Math.cos(MO
 export const IZQ_MOSCA = new THREE.Vector3(Math.cos(MOSCA.rumbo), 0, -Math.sin(MOSCA.rumbo));
 const POS_MOSCA = new THREE.Vector3(MOSCA.x, 0, MOSCA.z);
 
+// La mosca se corrió hacia atrás para que nada choque con el borde; las cosas
+// del escritorio siguen en el mismo lugar del mundo.
+const RETROCESO = 0.06 / Math.cos(MOSCA.rumbo);
 function delanteDeLaMosca(distancia, lateral = 0) {
   return POS_MOSCA.clone()
-    .addScaledVector(DIR_MOSCA, distancia)
+    .addScaledVector(DIR_MOSCA, distancia + RETROCESO)
     .addScaledVector(IZQ_MOSCA, lateral)
     .setY(ALTO_ESCRITORIO);
 }
 
-export const TECLADO = { pos: delanteDeLaMosca(0.76), rot: MOSCA.rumbo + Math.PI, ancho: 0.52, fondo: 0.2 };
-export const POS_MOUSE = delanteDeLaMosca(0.78, -0.4);
-export const POS_MOUSEPAD = delanteDeLaMosca(0.77, -0.12);
-export const POS_MONITOR = delanteDeLaMosca(1.27);
+export const TECLADO = { pos: delanteDeLaMosca(0.89), rot: MOSCA.rumbo + Math.PI, ancho: 0.52, fondo: 0.2 };
+export const POS_MOUSE = delanteDeLaMosca(0.92, -0.42);
+export const POS_MOUSEPAD = delanteDeLaMosca(0.9, -0.12);
+export const POS_MONITOR = delanteDeLaMosca(1.41);
 export const POS_CENICERO = new THREE.Vector3(-1.3, ALTO_ESCRITORIO, 0.3);
-export const POS_TAZA = new THREE.Vector3(0.55, ALTO_ESCRITORIO, 0.3);
+// Taza a la derecha del teclado (como se ve en pantalla), al alcance de la pata
+export const POS_TAZA = delanteDeLaMosca(0.95, 0.47);
 
 export const CAMARA_INICIAL = {
   posicion: new THREE.Vector3(-2.2, 2.25, 2.42),

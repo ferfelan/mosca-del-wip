@@ -36,6 +36,9 @@ function tareaAleatoria(id) {
 export class DayBrain {
   constructor(wip) {
     this.wip = wip;
+    // Si mueven el slider a mitad del día, la tabla muestra el rango usado
+    this.wipMin = wip;
+    this.wipMax = wip;
     this.minutoActual = MINUTOS_DIA_INICIO;
     this.porHacer = [];
     for (let i = 1; i <= TOTAL_TAREAS_BACKLOG; i++) this.porHacer.push(tareaAleatoria(i));
@@ -55,6 +58,13 @@ export class DayBrain {
 
   setWip(wip) {
     this.wip = wip;
+    if (this.minutoActual > MINUTOS_DIA_INICIO) {
+      this.wipMin = Math.min(this.wipMin, wip);
+      this.wipMax = Math.max(this.wipMax, wip);
+    } else {
+      this.wipMin = wip;
+      this.wipMax = wip;
+    }
   }
 
   get minutosDeDia() {
@@ -163,10 +173,10 @@ export class DayBrain {
 
   resumenFinal() {
     return {
-      wip: this.wip,
+      wip: this.wipMin === this.wipMax ? this.wip : `${this.wipMin}–${this.wipMax}`,
       hechas: this.hechas.length,
       colillas: this.colillas,
-      estresMax: Math.round(this.estresMax),
+      estresMax: Math.round(this.estresMax), // siempre en % (0 a 100)
     };
   }
 }

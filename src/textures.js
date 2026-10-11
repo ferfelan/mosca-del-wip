@@ -169,39 +169,49 @@ export function texturaMadera() {
 export function texturaAbdomenDrosophila() {
   const { canvas, ctx } = lienzo(256, 512);
   const base = ctx.createLinearGradient(0, 0, 0, 512);
-  base.addColorStop(0, '#d9b36e');
-  base.addColorStop(1, '#c99c55');
+  base.addColorStop(0, '#b9a07f');
+  base.addColorStop(1, '#a88e6e');
   ctx.fillStyle = base;
   ctx.fillRect(0, 0, 256, 512);
 
-  const bandas = [
-    [0.27, 0.07],
-    [0.42, 0.075],
-    [0.57, 0.08],
-    [0.72, 0.085],
-  ];
-  bandas.forEach(([inicio, alto]) => {
+  // Bandas finas café oscuro al final de cada segmento (no negras)
+  [0.24, 0.37, 0.5, 0.63, 0.76].forEach((inicio, i) => {
     const y = inicio * 512;
-    const h = alto * 512;
+    const h = (0.032 + i * 0.004) * 512;
     const g = ctx.createLinearGradient(0, y, 0, y + h);
-    g.addColorStop(0, 'rgba(58,38,22,0)');
-    g.addColorStop(0.35, '#3a2616');
-    g.addColorStop(1, '#3a2616');
+    g.addColorStop(0, 'rgba(94,70,50,0)');
+    g.addColorStop(0.45, '#5e4632');
+    g.addColorStop(1, 'rgba(94,70,50,0.85)');
     ctx.fillStyle = g;
     ctx.fillRect(0, y, 256, h);
   });
-  const punta = ctx.createLinearGradient(0, 0.84 * 512, 0, 512);
-  punta.addColorStop(0, 'rgba(58,38,22,0)');
-  punta.addColorStop(0.3, '#3a2616');
-  punta.addColorStop(1, '#2c1d11');
+  const punta = ctx.createLinearGradient(0, 0.86 * 512, 0, 512);
+  punta.addColorStop(0, 'rgba(94,70,50,0)');
+  punta.addColorStop(1, '#6a5038');
   ctx.fillStyle = punta;
-  ctx.fillRect(0, 0.84 * 512, 256, 0.16 * 512);
+  ctx.fillRect(0, 0.86 * 512, 256, 0.14 * 512);
 
-  // Pelitos finos para que no se vea plástico
-  ctx.fillStyle = 'rgba(70,48,28,0.18)';
+  // Pelitos cortos y oscuros en filas, sobre todo en el borde de cada banda
+  ctx.strokeStyle = 'rgba(60,45,32,0.22)';
+  ctx.lineWidth = 0.8;
   for (let i = 0; i < 900; i++) {
-    ctx.fillRect(Math.random() * 256, Math.random() * 512, 1.5, 3);
+    const x = Math.random() * 256;
+    const y = Math.random() * 512;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + (Math.random() - 0.5) * 1.5, y + 3 + Math.random() * 2);
+    ctx.stroke();
   }
+  return aTextura(canvas);
+}
+
+// Cutícula gris canela con pelitos cortos (cabeza)
+export function texturaCuticula() {
+  const { canvas, ctx } = lienzo(256, 128);
+  ctx.fillStyle = '#a98f70';
+  ctx.fillRect(0, 0, 256, 128);
+  ctx.fillStyle = 'rgba(70,52,38,0.12)';
+  for (let i = 0; i < 400; i++) ctx.fillRect(Math.random() * 256, Math.random() * 128, 0.8, 1.6);
   return aTextura(canvas);
 }
 
@@ -297,10 +307,10 @@ export function texturaAla() {
     else ctx.lineTo(x, y);
   });
   ctx.closePath();
-  ctx.fillStyle = 'rgba(226,234,250,0.22)';
+  ctx.fillStyle = 'rgba(205,218,240,0.46)';
   ctx.fill();
-  ctx.strokeStyle = 'rgba(120,92,62,0.55)';
-  ctx.lineWidth = 2.2;
+  ctx.strokeStyle = 'rgba(96,74,52,0.75)';
+  ctx.lineWidth = 3;
   ctx.stroke();
 
   const vena = (puntos, grosor = 3.2) => {
@@ -310,8 +320,8 @@ export function texturaAla() {
       if (i === 0) ctx.moveTo(x, y);
       else ctx.lineTo(x, y);
     });
-    ctx.strokeStyle = 'rgba(110,80,50,0.85)';
-    ctx.lineWidth = grosor;
+    ctx.strokeStyle = 'rgba(84,62,42,0.95)';
+    ctx.lineWidth = grosor * 1.25;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     ctx.stroke();
@@ -376,4 +386,17 @@ export function texturasHumo(cantidad = 4) {
     lista.push(aTextura(canvas));
   }
   return lista;
+}
+
+// Brillo de ojo: centro nítido y borde suave
+export function texturaBrilloOjo() {
+  const { canvas, ctx } = lienzo(64, 64);
+  const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 31);
+  g.addColorStop(0, 'rgba(255,255,255,1)');
+  g.addColorStop(0.38, 'rgba(255,255,255,0.95)');
+  g.addColorStop(0.62, 'rgba(255,255,255,0.25)');
+  g.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, 64, 64);
+  return aTextura(canvas);
 }

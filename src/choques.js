@@ -78,6 +78,7 @@ export function revisarChoques(escena, { margenMundo = 0.004 } = {}) {
       if (s === m) continue;
       const tipo = s.userData.solido;
       if (tipo === m.userData.solido) continue;
+      if (m.userData.ignorar === s) continue;
       // Las piezas de la mosca sólo se revisan contra su propio cuerpo si
       // son antebrazo, mano o cigarro (lo demás nace dentro del cuerpo).
       if (tipo === 'cuerpo' && !m.userData.revisaCuerpo) continue;

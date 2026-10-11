@@ -53,7 +53,7 @@ function pintarTabla(dias) {
   }
   dias.forEach((d) => {
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${d.wip}</td><td>${d.hechas}</td><td>${d.colillas}</td><td>${d.estresMax}</td>`;
+    tr.innerHTML = `<td>${d.wip}</td><td>${d.hechas}</td><td>${d.colillas}</td><td>${d.estresMax}%</td>`;
     elTablaBody.appendChild(tr);
   });
 }

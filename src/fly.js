@@ -1,14 +1,18 @@
-// La mosca oficinista: una Drosophila melanogaster en versión tierna.
-// Las patas se calculan cada cuadro para que las manos queden justo sobre el
-// teclado (o con el cigarro en la boca) sin atravesar nada.
+// La mosca oficinista: una Drosophila melanogaster en versión tierna, con
+// cuerpo de mosca de verdad (cabeza chica, tórax y abdomen largos, patas
+// finas con pelitos, trompita en vez de boca). Las patas se calculan cada
+// cuadro para que se apoyen justo en el teclado y en el asiento, y para que
+// lleven el cigarro a la trompita sin atravesar nada.
 import * as THREE from 'three';
 import {
   texturaAbdomenDrosophila,
+  texturaCuticula,
   texturaOjoFacetas,
   texturaAla,
   texturaCorbata,
   texturasHumo,
   texturaBrillo,
+  texturaBrilloOjo,
   CONTORNO_ALA,
   ALA_V_MIN,
   ALA_V_MAX,
@@ -26,12 +30,15 @@ import {
 } from './layout.js';
 
 const COLORES = {
-  cuticula: '#c99a58',
-  pata: '#b0834a',
-  pataPunta: '#6e4b2a',
-  cerda: '#3a2818',
-  ojoPupila: '#240405',
+  cuticula: '#a98f70',
+  pata: '#9b8162',
+  articulacion: '#6c5642',
+  pataPunta: '#4e3d2e',
+  trompa: '#8e7458',
+  labelo: '#a88b6b',
+  cerda: '#2e241b',
   camisa: '#fbf8f2',
+  boton: '#e4ded2',
   silla: '#46525f',
   metal: '#9aa3ad',
   gota: '#86d3f4',
@@ -41,8 +48,25 @@ const COLORES = {
 // juego la cuente como unos pocos minutos simulados.
 const DURACION_FUMADA_VISUAL = 3.0;
 
-const Z_SILLA = -0.2;
-const SILLA = { radio: 0.27, grosor: 0.07, altoAro: 0.25, radioAro: 0.2, tuboAro: 0.013 };
+// La silla (en metros del mundo, centrada bajo la mosca)
+const Z_SILLA = -0.1 * ESCALA_MOSCA;
+const SILLA = { radio: 0.32, grosor: 0.07, altoAro: 0.25, radioAro: 0.2, tuboAro: 0.013 };
+
+// ---------- Forma del cuerpo (medidas de la mosca, antes de escalar) ----------
+// El tórax va inclinado hacia arriba (como una mosca que levanta el frente) y
+// el abdomen se alarga hacia atrás sobre el asiento.
+const ALTO_CINTURA = 0.21; // unión tórax-abdomen, sobre el asiento
+const INCLINACION_TORAX = (55 * Math.PI) / 180;
+const EJE_TORAX = new THREE.Vector3(0, Math.sin(INCLINACION_TORAX), Math.cos(INCLINACION_TORAX));
+const VIENTRE = new THREE.Vector3(0, -Math.cos(INCLINACION_TORAX), Math.sin(INCLINACION_TORAX));
+const R_TORAX = { lado: 0.15, largo: 0.21, fondo: 0.15 };
+// Medidas relativas a la cintura (el "delantero" gira desde ahí)
+const TORAX_C = EJE_TORAX.clone().multiplyScalar(0.19);
+const CUELLO = TORAX_C.clone().addScaledVector(EJE_TORAX, 0.18);
+const NUDO = CUELLO.clone().addScaledVector(VIENTRE, 0.1);
+const CABEZA_C = new THREE.Vector3(0, 0.41, 0.3);
+const R_CABEZA = new THREE.Vector3(0.14, 0.12, 0.115);
+const ABDOMEN = { c: new THREE.Vector3(0, ALTO_CINTURA - 0.052, -0.245), giro: -0.21, r: [0.15, 0.13, 0.27] };
 
 const lerp = (a, b, t) => a + (b - a) * t;
 const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
@@ -94,11 +118,43 @@ function resolverIK(a, objetivo, L1, L2, polo, outRodilla, outFin) {
   outFin.copy(a).addScaledVector(_d, dist);
 }
 
+
+// Pelitos cortos y oscuros a lo largo de un tramo de pata
+const GEO_PELO = new THREE.ConeGeometry(0.0032, 0.026, 4);
+GEO_PELO.translate(0, 0.013, 0);
+const _ref = new THREE.Vector3();
+const _p1 = new THREE.Vector3();
+const _p2 = new THREE.Vector3();
+const _dirPelo = new THREE.Vector3();
+function ubicarPelos(lista, a, b, fase) {
+  _dir.subVectors(b, a);
+  const largo = _dir.length();
+  _dir.divideScalar(largo || 1);
+  _ref.set(0, 1, 0);
+  if (Math.abs(_dir.y) > 0.9) _ref.set(1, 0, 0);
+  _p1.crossVectors(_dir, _ref).normalize();
+  _p2.crossVectors(_dir, _p1).normalize();
+  lista.forEach((m, i) => {
+    const f = (i + 0.6) / (lista.length + 0.3);
+    m.position.copy(a).addScaledVector(_dir, largo * f);
+    const ang = fase + i * 2.3;
+    _dirPelo
+      .copy(_p1)
+      .multiplyScalar(Math.cos(ang))
+      .addScaledVector(_p2, Math.sin(ang))
+      .addScaledVector(_dir, 0.95)
+      .normalize();
+    m.quaternion.setFromUnitVectors(EJE_Y, _dirPelo);
+  });
+}
+
+// Pata de mosca: fémur, tibia y tarso (con segmentos), articulaciones
+// marcadas y pelitos.
 function crearPata(padre, mats, { largos, radios, manga = null, revisaCuerpo = false }) {
   const [L1, L2, L3] = largos;
   const [r1, r2, r3] = radios;
   const datosPunta = revisaCuerpo ? { revisaCuerpo: true } : {};
-  const femur = crearHueso(padre, r1, r1 * 0.85, mats.pata);
+  const femur = crearHueso(padre, r1, r1 * 0.8, mats.pata);
   const tibia = crearHueso(padre, r2, r2 * 0.85, mats.pata, datosPunta);
   const tarso = crearHueso(padre, r3, r3 * 0.8, mats.pata, datosPunta);
   const esfera = (r, mat, datos = {}) => {
@@ -106,13 +162,23 @@ function crearPata(padre, mats, { largos, radios, manga = null, revisaCuerpo = f
     padre.add(m);
     return m;
   };
-  const rodillaM = esfera(r1 * 1.05, mats.pata);
-  const munecaM = esfera(r2 * 0.95, mats.pata, datosPunta);
+  const caderaM = esfera(r1 * 1.25, mats.articulacion);
+  const rodillaM = esfera(r1 * 1.15, mats.articulacion);
+  const munecaM = esfera(r2 * 1.1, mats.articulacion, datosPunta);
+  const segmentos = [0.3, 0.55, 0.78].map(() => esfera(r3 * 1.18, mats.articulacion, datosPunta));
   const almohadilla = esfera(r3 * 1.5, mats.pataPunta, datosPunta);
+
+  const pelo = () => {
+    const m = new THREE.Mesh(GEO_PELO, mats.cerda);
+    padre.add(m);
+    return m;
+  };
+  const pelosFemur = [0, 1, 2].map(pelo);
+  const pelosTibia = [0, 1, 2, 3].map(pelo);
 
   let mangaM = null;
   if (manga) {
-    mangaM = new THREE.Mesh(new THREE.CylinderGeometry(0.036, 0.043, 1, 18, 1, true), manga);
+    mangaM = new THREE.Mesh(new THREE.CapsuleGeometry(0.022, 1, 4, 14), manga);
     marcar(mangaM, {});
     padre.add(mangaM);
   }
@@ -129,126 +195,20 @@ function crearPata(padre, mats, { largos, radios, manga = null, revisaCuerpo = f
     ubicarHueso(femur, cadera, rodilla);
     ubicarHueso(tibia, rodilla, muneca);
     ubicarHueso(tarso, muneca, punta);
+    caderaM.position.copy(cadera);
     rodillaM.position.copy(rodilla);
     munecaM.position.copy(muneca);
+    segmentos.forEach((m, i) => m.position.lerpVectors(muneca, punta, [0.3, 0.55, 0.78][i]));
     almohadilla.position.copy(punta);
+    ubicarPelos(pelosFemur, cadera, rodilla, 0.4);
+    ubicarPelos(pelosTibia, rodilla, muneca, 1.7);
     if (mangaM) {
-      finManga.subVectors(rodilla, cadera).normalize().multiplyScalar(0.1).add(cadera);
+      finManga.subVectors(rodilla, cadera).normalize().multiplyScalar(0.035).add(cadera);
       ubicarHueso(mangaM, cadera, finManga);
+      mangaM.scale.y = 0.035 / 1.044;
     }
   }
   return { poner, punta, muneca };
-}
-
-// ---------- Casquete (pupila y brillos pegados a la superficie del ojo) ----------
-
-function crearCasquete(radio, angulo, anillos = 6, segmentos = 32) {
-  const n = 1 + anillos * segmentos;
-  const geo = new THREE.BufferGeometry();
-  geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(n * 3), 3));
-  geo.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(n * 3), 3));
-  const idx = [];
-  for (let s = 0; s < segmentos; s++) idx.push(0, 1 + ((s + 1) % segmentos), 1 + s);
-  for (let r = 1; r < anillos; r++) {
-    for (let s = 0; s < segmentos; s++) {
-      const a = 1 + (r - 1) * segmentos + s;
-      const b = 1 + (r - 1) * segmentos + ((s + 1) % segmentos);
-      idx.push(a, b, a + segmentos, b, b + segmentos, a + segmentos);
-    }
-  }
-  geo.setIndex(idx);
-  geo.userData = { radio, anillos, segmentos, angulo: -1 };
-  fijarAnguloCasquete(geo, angulo);
-  return geo;
-}
-
-function fijarAnguloCasquete(geo, angulo) {
-  const { radio, anillos, segmentos } = geo.userData;
-  if (Math.abs(geo.userData.angulo - angulo) < 0.002) return;
-  geo.userData.angulo = angulo;
-  const pos = geo.attributes.position;
-  const nor = geo.attributes.normal;
-  pos.setXYZ(0, 0, radio, 0);
-  nor.setXYZ(0, 0, 1, 0);
-  for (let r = 1; r <= anillos; r++) {
-    const a = (angulo * r) / anillos;
-    for (let s = 0; s < segmentos; s++) {
-      const f = (s / segmentos) * Math.PI * 2;
-      const x = Math.sin(a) * Math.cos(f);
-      const y = Math.cos(a);
-      const z = Math.sin(a) * Math.sin(f);
-      const i = 1 + (r - 1) * segmentos + s;
-      pos.setXYZ(i, x * radio, y * radio, z * radio);
-      nor.setXYZ(i, x, y, z);
-    }
-  }
-  pos.needsUpdate = true;
-  nor.needsUpdate = true;
-  geo.computeBoundingSphere();
-}
-
-// ---------- Piezas de tela pegadas al pecho (corbata, nudo, cuello) ----------
-
-const PECHO = { c: new THREE.Vector3(0, 0.4, 0.02), r: new THREE.Vector3(0.175, 0.19, 0.16) };
-function superficiePecho(x, y) {
-  const u = (x - PECHO.c.x) / PECHO.r.x;
-  const v = (y - PECHO.c.y) / PECHO.r.y;
-  return PECHO.c.z + PECHO.r.z * Math.sqrt(Math.max(0, 1 - u * u - v * v));
-}
-
-// perfil(t) -> { x, y, hw, nx, ny }: centro, medio ancho y dirección del ancho.
-function crearPiezaSobrePecho(perfil, { nT = 18, nS = 6, atras = 0.003, frente = 0.014, escalaUV = 7 } = {}) {
-  const pos = [];
-  const uv = [];
-  const idx = [];
-  const punto = (t, s, d) => {
-    const p = perfil(t);
-    const x = p.x + s * p.hw * p.nx;
-    const y = p.y + s * p.hw * p.ny;
-    return [x, y, superficiePecho(x, y) + d];
-  };
-  function capa(d) {
-    const base = pos.length / 3;
-    for (let i = 0; i <= nT; i++) {
-      for (let j = 0; j <= nS; j++) {
-        const [x, y, z] = punto(i / nT, -1 + (2 * j) / nS, d);
-        pos.push(x, y, z);
-        uv.push(x * escalaUV, y * escalaUV);
-      }
-    }
-    for (let i = 0; i < nT; i++) {
-      for (let j = 0; j < nS; j++) {
-        const a = base + i * (nS + 1) + j;
-        const c = a + nS + 1;
-        idx.push(a, c, a + 1, a + 1, c, c + 1);
-      }
-    }
-  }
-  function borde(muestras) {
-    const base = pos.length / 3;
-    muestras.forEach(([t, s]) => {
-      pos.push(...punto(t, s, frente), ...punto(t, s, atras));
-      uv.push(0, 0, 0, 0);
-    });
-    for (let k = 0; k < muestras.length - 1; k++) {
-      const v0 = base + 2 * k;
-      idx.push(v0, v0 + 1, v0 + 2, v0 + 1, v0 + 3, v0 + 2);
-    }
-  }
-  capa(frente);
-  capa(atras);
-  const lado = (s) => Array.from({ length: nT + 1 }, (_, i) => [i / nT, s]);
-  borde(lado(-1));
-  borde(lado(1));
-  borde(Array.from({ length: nS + 1 }, (_, j) => [0, -1 + (2 * j) / nS]));
-  borde(Array.from({ length: nS + 1 }, (_, j) => [1, -1 + (2 * j) / nS]));
-
-  const geo = new THREE.BufferGeometry();
-  geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
-  geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
-  geo.setIndex(idx);
-  geo.computeVertexNormals();
-  return geo;
 }
 
 // ---------- Ala con venas ----------
@@ -324,6 +284,7 @@ function crearSilla() {
 // =====================================================================
 
 export function crearMosca(scene) {
+  const S = ESCALA_MOSCA;
   const raiz = new THREE.Group();
   raiz.position.set(MOSCA.x, 0, MOSCA.z);
   raiz.rotation.y = MOSCA.rumbo;
@@ -331,220 +292,254 @@ export function crearMosca(scene) {
 
   const mosca = new THREE.Group();
   mosca.position.y = ALTO_ASIENTO;
-  mosca.scale.setScalar(ESCALA_MOSCA);
+  mosca.scale.setScalar(S);
   raiz.add(mosca);
 
+  // cuerpo: abdomen y patas. delantero: tórax, cabeza y alas (se inclina
+  // desde la cintura para mostrar el ánimo con la postura).
   const cuerpo = new THREE.Group();
   mosca.add(cuerpo);
+  const delantero = new THREE.Group();
+  delantero.position.set(0, ALTO_CINTURA, 0);
+  cuerpo.add(delantero);
 
+  const texCuticula = texturaCuticula();
   const mats = {
-    cuticula: new THREE.MeshStandardMaterial({ color: COLORES.cuticula, roughness: 0.62 }),
+    cuticula: new THREE.MeshStandardMaterial({ map: texCuticula, roughness: 0.6 }),
     pata: new THREE.MeshStandardMaterial({ color: COLORES.pata, roughness: 0.55 }),
+    articulacion: new THREE.MeshStandardMaterial({ color: COLORES.articulacion, roughness: 0.5 }),
     pataPunta: new THREE.MeshStandardMaterial({ color: COLORES.pataPunta, roughness: 0.6 }),
-    antena: new THREE.MeshStandardMaterial({ color: '#a8743d', roughness: 0.55 }),
     cerda: new THREE.MeshStandardMaterial({ color: COLORES.cerda, roughness: 0.5 }),
     camisa: new THREE.MeshStandardMaterial({ color: COLORES.camisa, roughness: 0.82 }),
     camisaDoble: new THREE.MeshStandardMaterial({ color: COLORES.camisa, roughness: 0.82, side: THREE.DoubleSide }),
+    trompa: new THREE.MeshStandardMaterial({ color: COLORES.trompa, roughness: 0.5 }),
+    labelo: new THREE.MeshStandardMaterial({ color: COLORES.labelo, roughness: 0.45 }),
   };
 
-  const parte = (geo, mat, x, y, z, datos = { parteMosca: true }) => {
+  const agregar = (padre, geo, mat, pos, datos = {}) => {
     const m = marcar(new THREE.Mesh(geo, mat), datos);
-    m.position.set(x, y, z);
-    cuerpo.add(m);
+    m.position.copy(pos);
+    padre.add(m);
     return m;
   };
 
-  // --- Abdomen con rayas ---
-  const abdomenGeo = new THREE.SphereGeometry(1, 36, 24);
+  // --- Abdomen: largo hacia atrás, con bandas finas ---
+  const abdomenGeo = new THREE.SphereGeometry(1, 40, 26);
   abdomenGeo.rotateX(Math.PI / 2);
-  const abdomen = parte(
+  const abdomen = agregar(
+    cuerpo,
     abdomenGeo,
-    new THREE.MeshStandardMaterial({ map: texturaAbdomenDrosophila(), roughness: 0.55 }),
-    0,
-    0.17,
-    -0.17,
+    new THREE.MeshStandardMaterial({ map: texturaAbdomenDrosophila(), roughness: 0.6 }),
+    ABDOMEN.c,
     { solido: 'cuerpo', parteMosca: true }
   );
-  abdomen.rotation.x = -0.25;
-  abdomen.scale.set(0.19, 0.16, 0.26);
+  abdomen.rotation.x = ABDOMEN.giro;
+  abdomen.scale.set(...ABDOMEN.r);
 
   // --- Tórax con camisa ---
-  const torax = parte(new THREE.SphereGeometry(1, 36, 26), mats.camisa, PECHO.c.x, PECHO.c.y, PECHO.c.z, {
+  const torax = agregar(delantero, new THREE.SphereGeometry(1, 36, 26), mats.camisa, TORAX_C, {
     solido: 'cuerpo',
     parteMosca: true,
   });
-  torax.scale.copy(PECHO.r);
+  torax.rotation.x = Math.PI / 2 - INCLINACION_TORAX;
+  torax.scale.set(R_TORAX.lado, R_TORAX.largo, R_TORAX.fondo);
 
-  const cuelloPiel = parte(new THREE.CylinderGeometry(0.066, 0.072, 0.1, 18), mats.cuticula, 0, 0.625, 0.05);
-  cuelloPiel.userData = {};
-  const cuelloCamisa = parte(new THREE.TorusGeometry(0.07, 0.016, 10, 30), mats.camisa, 0, 0.585, 0.035, {});
-  cuelloCamisa.rotation.x = Math.PI / 2 + 0.12;
-
-  // Puntas del cuello de la camisa
-  [-1, 1].forEach((lado) => {
-    const ax = 0.05 * lado;
-    const ay = -0.075;
-    const largo = Math.hypot(ax, ay);
-    const geo = crearPiezaSobrePecho(
-      (t) => ({
-        x: lado * 0.022 + ax * t,
-        y: 0.592 + ay * t,
-        hw: 0.028 * (1 - t),
-        nx: -ay / largo,
-        ny: ax / largo,
-      }),
-      { atras: 0.002, frente: 0.011, nT: 8, nS: 4 }
+  // Botones de la camisa por el frente
+  [0.07, 0.0, -0.07].forEach((u) => {
+    const w = R_TORAX.fondo * Math.sqrt(1 - (u / R_TORAX.largo) ** 2);
+    const pos = TORAX_C.clone().addScaledVector(EJE_TORAX, u).addScaledVector(VIENTRE, w + 0.002);
+    const boton = agregar(
+      delantero,
+      new THREE.SphereGeometry(0.009, 10, 8),
+      new THREE.MeshStandardMaterial({ color: COLORES.boton, roughness: 0.4 }),
+      pos
     );
-    parte(geo, mats.camisaDoble, 0, 0, 0, {});
+    boton.scale.set(1, 1, 0.45);
+    boton.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), VIENTRE);
   });
 
-  // --- Corbata: azul intenso con rayas doradas, pegada a la curva del pecho ---
-  const matCorbata = new THREE.MeshStandardMaterial({
-    map: texturaCorbata(),
-    roughness: 0.5,
-    side: THREE.DoubleSide,
+  // Cuello de la camisa (anillo) y sus dos puntas
+  const anillo = agregar(delantero, new THREE.TorusGeometry(0.072, 0.015, 10, 30), mats.camisa, CUELLO);
+  anillo.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), EJE_TORAX);
+  [-1, 1].forEach((lado) => {
+    const geo = new THREE.ConeGeometry(0.024, 0.055, 3);
+    const punta = agregar(
+      delantero,
+      geo,
+      mats.camisa,
+      CUELLO.clone().addScaledVector(VIENTRE, 0.075).addScaledVector(EJE_TORAX, -0.012).add(new THREE.Vector3(lado * 0.034, 0, 0))
+    );
+    const dir = VIENTRE.clone().multiplyScalar(0.45).addScaledVector(EJE_TORAX, -0.85).add(new THREE.Vector3(lado * 0.45, 0, 0)).normalize();
+    punta.quaternion.setFromUnitVectors(EJE_Y, dir);
+    punta.scale.set(1, 1, 0.35);
   });
-  const hoja = crearPiezaSobrePecho(
-    (t) => {
-      const y = t < 0.8 ? lerp(0.53, 0.335, t / 0.8) : lerp(0.335, 0.285, (t - 0.8) / 0.2);
-      const hw = t < 0.8 ? lerp(0.02, 0.054, t / 0.8) : lerp(0.054, 0.0, (t - 0.8) / 0.2);
-      return { x: 0, y, hw, nx: 1, ny: 0 };
-    },
-    { atras: 0.004, frente: 0.017 }
+
+  // Cuello de la mosca
+  const cuelloPiel = agregar(
+    delantero,
+    new THREE.CylinderGeometry(0.048, 0.055, 0.1, 16),
+    mats.cuticula,
+    CUELLO.clone().lerp(CABEZA_C, 0.45)
   );
-  parte(hoja, matCorbata, 0, 0, 0, { solido: 'cuerpo', parteMosca: true });
-  // Nudo: un bulto trapezoidal bien marcado, apoyado en el pecho
+  cuelloPiel.quaternion.setFromUnitVectors(EJE_Y, CABEZA_C.clone().sub(CUELLO).normalize());
+
+  // --- Corbata: nudo marcado y hoja que cuelga derecha ---
   const nudoGeo = new THREE.SphereGeometry(1, 24, 16);
   const pn = nudoGeo.attributes.position;
-  for (let i = 0; i < pn.count; i++) {
-    const y = pn.getY(i);
-    pn.setX(i, pn.getX(i) * (1 + 0.38 * y));
-  }
+  for (let i = 0; i < pn.count; i++) pn.setX(i, pn.getX(i) * (1 + 0.38 * pn.getY(i)));
   nudoGeo.computeVertexNormals();
-  const yNudo = 0.548;
-  const pendiente = (superficiePecho(0, yNudo + 0.005) - superficiePecho(0, yNudo - 0.005)) / 0.01;
-  const nudo = parte(
-    nudoGeo,
-    new THREE.MeshStandardMaterial({ color: '#1d48b5', roughness: 0.45 }),
-    0,
-    yNudo,
-    superficiePecho(0, yNudo) + 0.014,
-    { solido: 'cuerpo', parteMosca: true }
-  );
-  nudo.scale.set(0.036, 0.03, 0.017);
-  nudo.rotation.x = -Math.atan(-pendiente) * 0.85;
+  const matNudo = new THREE.MeshStandardMaterial({ color: '#1d48b5', roughness: 0.45 });
+  const nudo = agregar(delantero, nudoGeo, matNudo, NUDO);
+  nudo.scale.set(0.027, 0.023, 0.016);
+  nudo.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), VIENTRE);
 
-  // --- Cabeza ---
+  const forma = new THREE.Shape();
+  forma.moveTo(-0.014, 0);
+  forma.lineTo(0.014, 0);
+  forma.lineTo(0.031, -0.078);
+  forma.lineTo(0, -0.1);
+  forma.lineTo(-0.031, -0.078);
+  forma.closePath();
+  const hojaGeo = new THREE.ExtrudeGeometry(forma, {
+    depth: 0.007,
+    bevelEnabled: true,
+    bevelSize: 0.002,
+    bevelThickness: 0.002,
+    bevelSegments: 1,
+  });
+  hojaGeo.translate(0, 0, -0.0035);
+  const texCorbata = texturaCorbata();
+  texCorbata.repeat.set(16, 16);
+  const corbata = new THREE.Group();
+  corbata.position.copy(NUDO).addScaledVector(EJE_TORAX, -0.016).addScaledVector(VIENTRE, 0.008);
+  delantero.add(corbata);
+  const hoja = marcar(new THREE.Mesh(hojaGeo, new THREE.MeshStandardMaterial({ map: texCorbata, roughness: 0.5 })), {
+    solido: 'corbata',
+    parteMosca: true,
+    revisaCuerpo: true,
+  });
+  corbata.add(hoja);
+
+  // --- Cabeza: más chica que el cuerpo, casi toda ojos ---
   const cabeza = new THREE.Group();
-  cabeza.position.set(0, 0.79, 0.07);
+  cabeza.position.copy(CABEZA_C);
   cabeza.rotation.order = 'YXZ';
-  cuerpo.add(cabeza);
-  const R_CABEZA = new THREE.Vector3(0.208, 0.188, 0.188);
+  delantero.add(cabeza);
 
-  const enCabeza = (geo, mat, x, y, z, datos = {}) => {
-    const m = marcar(new THREE.Mesh(geo, mat), datos);
-    m.position.set(x, y, z);
-    cabeza.add(m);
-    return m;
-  };
-
-  const craneo = enCabeza(new THREE.SphereGeometry(1, 36, 28), mats.cuticula, 0, 0, 0, { solido: 'cuerpo', parteMosca: true });
+  const craneo = agregar(cabeza, new THREE.SphereGeometry(1, 36, 28), mats.cuticula, new THREE.Vector3(), {
+    solido: 'cuerpo',
+    parteMosca: true,
+  });
   craneo.scale.copy(R_CABEZA);
 
-  // Ojos compuestos
+  // Ojos compuestos: rojo, facetas y un brillo suave (sin pupila)
   const facetas = texturaOjoFacetas();
   const matOjo = new THREE.MeshPhysicalMaterial({
     map: facetas.mapa,
     bumpMap: facetas.bump,
     bumpScale: 1.2,
-    roughness: 0.38,
+    roughness: 0.4,
     clearcoat: 1,
-    clearcoatRoughness: 0.06,
+    clearcoatRoughness: 0.12,
   });
-  const matPupila = new THREE.MeshPhysicalMaterial({
-    color: COLORES.ojoPupila,
-    roughness: 0.3,
-    clearcoat: 1,
-    clearcoatRoughness: 0.05,
-    polygonOffset: true,
-    polygonOffsetFactor: -1,
-    polygonOffsetUnits: -1,
-  });
-  const matBrilloOjo = new THREE.MeshBasicMaterial({
-    color: '#ffffff',
-    polygonOffset: true,
-    polygonOffsetFactor: -2,
-    polygonOffsetUnits: -2,
-  });
-  const R_OJO = 0.112;
+  const texGlint = texturaBrilloOjo();
+  const R_OJO = 0.085;
   const ojos = [-1, 1].map((lado) => {
     const grupo = new THREE.Group();
-    grupo.position.set(lado * 0.114, 0.012, 0.084);
-    grupo.rotation.y = lado * 0.42;
-    grupo.scale.set(0.84, 1.1, 0.94);
+    grupo.position.set(lado * 0.088, 0.012, 0.035);
+    grupo.rotation.y = lado * 0.95;
+    grupo.scale.set(0.72, 1.12, 0.95);
     cabeza.add(grupo);
-    const esfera = marcar(new THREE.Mesh(new THREE.SphereGeometry(R_OJO, 48, 32), matOjo), { solido: 'cuerpo', parteMosca: true });
-    grupo.add(esfera);
-    const pupila = new THREE.Mesh(crearCasquete(R_OJO * 1.004, 0.48), matPupila);
-    const brilloGrande = new THREE.Mesh(crearCasquete(R_OJO * 1.008, 0.17), matBrilloOjo);
-    const brilloChico = new THREE.Mesh(crearCasquete(R_OJO * 1.008, 0.085), matBrilloOjo);
-    grupo.add(pupila, brilloGrande, brilloChico);
-    return { lado, grupo, pupila, brilloGrande, brilloChico };
+    grupo.add(marcar(new THREE.Mesh(new THREE.SphereGeometry(R_OJO, 48, 32), matOjo), { solido: 'cuerpo', parteMosca: true }));
+    const crearBrillo = (dir) => {
+      const b = new THREE.Sprite(new THREE.SpriteMaterial({ map: texGlint, transparent: true, depthWrite: false }));
+      b.position.copy(dir).normalize().multiplyScalar(R_OJO * 1.12);
+      grupo.add(b);
+      return b;
+    };
+    const brillo = [crearBrillo(new THREE.Vector3(-lado * 0.25, 0.5, 0.83)), crearBrillo(new THREE.Vector3(-lado * 0.05, 0.22, 0.97))];
+    return { lado, grupo, brillo };
   });
 
-  // Cejas (cerdas oscuras sobre los ojos: le dan expresión)
-  const cejas = [-1, 1].map((lado) => {
-    const ceja = enCabeza(new THREE.CapsuleGeometry(0.011, 0.07, 4, 10), mats.cerda, lado * 0.1, 0.132, 0.122);
-    ceja.rotation.order = 'YXZ';
-    ceja.rotation.y = lado * 0.5;
-    ceja.rotation.x = -0.5;
-    return ceja;
-  });
-
-  // Boca
-  const boca = enCabeza(new THREE.TorusGeometry(0.03, 0.0075, 8, 24, Math.PI), mats.cerda, 0, -0.105, 0.157);
-  boca.rotation.order = 'XYZ';
-  boca.rotation.x = 0.56;
-  boca.rotation.z = Math.PI;
-
-  // Antenas: segmento ovalado + arista plumosa
+  // Trompita (probóscide) con su labelo: en vez de boca
+  const trompa = new THREE.Group();
+  trompa.position.set(0, -0.088, 0.06);
+  trompa.rotation.x = -0.45;
+  cabeza.add(trompa);
+  const troncoGeo = new THREE.CylinderGeometry(0.017, 0.014, 0.05, 14);
+  troncoGeo.translate(0, -0.025, 0);
+  trompa.add(marcar(new THREE.Mesh(troncoGeo, mats.trompa), {}));
   [-1, 1].forEach((lado) => {
+    const lobulo = marcar(new THREE.Mesh(new THREE.SphereGeometry(0.016, 14, 10), mats.labelo), {});
+    lobulo.position.set(lado * 0.011, -0.057, 0.002);
+    lobulo.scale.set(0.9, 0.75, 1.15);
+    trompa.add(lobulo);
+  });
+  const boca = new THREE.Object3D();
+  boca.position.set(0, -0.068, 0.006);
+  trompa.add(boca);
+
+  // Antenas: segmento ovalado y arista plumosa (muestran el ánimo)
+  const antenas = [-1, 1].map((lado) => {
     const antena = new THREE.Group();
-    antena.position.set(lado * 0.034, 0.04, 0.178);
-    antena.rotation.set(0.35, lado * 0.25, 0);
+    antena.position.set(lado * 0.026, 0.05, 0.096);
+    antena.rotation.order = 'YXZ';
+    antena.rotation.y = lado * 0.35;
     cabeza.add(antena);
-    const pedicelo = marcar(new THREE.Mesh(new THREE.SphereGeometry(0.013, 12, 10), mats.antena), {});
-    antena.add(pedicelo);
-    const funiculo = marcar(new THREE.Mesh(new THREE.SphereGeometry(0.016, 14, 12), mats.antena), {});
-    funiculo.scale.set(0.85, 1.4, 0.85);
-    funiculo.position.set(0, -0.028, 0.012);
+    antena.add(marcar(new THREE.Mesh(new THREE.SphereGeometry(0.011, 12, 10), mats.articulacion), {}));
+    const funiculo = marcar(new THREE.Mesh(new THREE.SphereGeometry(0.012, 14, 12), mats.articulacion), {});
+    funiculo.scale.set(0.85, 1.3, 0.85);
+    funiculo.position.set(0, -0.006, 0.014);
     antena.add(funiculo);
     const curva = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(lado * 0.012, -0.02, 0.022),
-      new THREE.Vector3(lado * 0.03, 0.012, 0.05),
-      new THREE.Vector3(lado * 0.036, 0.055, 0.062),
+      new THREE.Vector3(lado * 0.008, -0.002, 0.02),
+      new THREE.Vector3(lado * 0.018, 0.02, 0.042),
+      new THREE.Vector3(lado * 0.022, 0.045, 0.062),
     ]);
-    const arista = marcar(new THREE.Mesh(new THREE.TubeGeometry(curva, 12, 0.0026, 5), mats.cerda), {});
-    antena.add(arista);
+    antena.add(marcar(new THREE.Mesh(new THREE.TubeGeometry(curva, 14, 0.0024, 5), mats.cerda), {}));
+    for (let i = 0; i < 5; i++) {
+      const p = curva.getPoint(0.25 + i * 0.15);
+      const rama = new THREE.Mesh(new THREE.CylinderGeometry(0.0011, 0.0011, 0.011, 3), mats.cerda);
+      rama.position.copy(p);
+      rama.rotation.set(0.9, 0, (i % 2 ? 1 : -1) * 0.9);
+      antena.add(rama);
+    }
+    return { lado, antena };
   });
 
-  // Ocelos (3 ojitos simples arriba de la cabeza) y cerdas del cráneo
+  // Ocelos (3 ojitos simples arriba) y cerdas cortas y oscuras
+  const enCabezaSuperficie = (yaw, pitch, extra = 0) =>
+    new THREE.Vector3(
+      Math.sin(yaw) * Math.cos(pitch) * (R_CABEZA.x + extra),
+      Math.sin(pitch) * (R_CABEZA.y + extra),
+      Math.cos(yaw) * Math.cos(pitch) * (R_CABEZA.z + extra)
+    );
   const matOcelo = new THREE.MeshStandardMaterial({ color: '#7a1d14', roughness: 0.3 });
   [
-    [0, 0.186, 0.03],
-    [-0.022, 0.183, -0.006],
-    [0.022, 0.183, -0.006],
-  ].forEach(([x, y, z]) => enCabeza(new THREE.SphereGeometry(0.0105, 10, 8), matOcelo, x, y, z));
+    [0, 1.42],
+    [-0.5, 1.32],
+    [0.5, 1.32],
+  ].forEach(([yaw, pitch]) =>
+    agregar(cabeza, new THREE.SphereGeometry(0.008, 10, 8), matOcelo, enCabezaSuperficie(yaw, pitch, -0.002))
+  );
+  const geoCerda = new THREE.ConeGeometry(0.0028, 0.02, 5);
+  geoCerda.translate(0, 0.01, 0);
+  const atras = new THREE.Vector3(0, 0.2, -1);
   [-1, 1].forEach((lado) => {
-    [0, 1].forEach((k) => {
-      const geo = new THREE.ConeGeometry(0.0055, 0.075, 6);
-      geo.translate(0, 0.0375, 0);
-      const cerda = enCabeza(geo, mats.cerda, lado * (0.03 + k * 0.03), 0.178 - k * 0.012, -0.03 - k * 0.03);
-      cerda.rotation.set(-0.75 - k * 0.2, 0, lado * -(0.2 + k * 0.25));
+    [
+      [0.35, 0.95],
+      [0.7, 0.85],
+      [0.3, 1.25],
+      [1.1, 0.45],
+    ].forEach(([yaw, pitch]) => {
+      const pos = enCabezaSuperficie(lado * yaw, pitch);
+      const cerda = agregar(cabeza, geoCerda, mats.cerda, pos);
+      const dir = pos.clone().normalize().addScaledVector(atras, 1.6).normalize();
+      cerda.quaternion.setFromUnitVectors(EJE_Y, dir);
     });
   });
 
-  // Gotas de sudor (forma de lágrima)
+  // Gotas de sudor (forma de lágrima), pequeñas
   const perfilGota = [
     [0, -1],
     [0.55, -0.82],
@@ -553,12 +548,12 @@ export function crearMosca(scene) {
     [0.42, 0.42],
     [0.18, 0.78],
     [0, 1],
-  ].map(([x, y]) => new THREE.Vector2(x * 0.02, y * 0.026));
+  ].map(([x, y]) => new THREE.Vector2(x * 0.015, y * 0.02));
   const gotaGeo = new THREE.LatheGeometry(perfilGota, 14);
   const gotas = [
     { lado: -1, fase: 0 },
-    { lado: -1, fase: 0.45 },
-    { lado: 1, fase: 0.22 },
+    { lado: -1, fase: 0.5 },
+    { lado: 1, fase: 0.25 },
   ].map((g) => {
     const mat = new THREE.MeshPhysicalMaterial({
       color: COLORES.gota,
@@ -574,76 +569,66 @@ export function crearMosca(scene) {
     return { ...g, m };
   });
 
-  // --- Alas con venas, plegadas sobre el abdomen ---
-  const geoAla = crearGeometriaAla(0.5);
+  // --- Alas con venas, plegadas sobre el abdomen (bien visibles) ---
+  const geoAla = crearGeometriaAla(0.52);
   const matAla = new THREE.MeshPhysicalMaterial({
     map: texturaAla(),
     transparent: true,
     roughness: 0.15,
-    iridescence: 0.9,
+    iridescence: 1,
     iridescenceIOR: 1.3,
     iridescenceThicknessRange: [150, 450],
     side: THREE.DoubleSide,
     depthWrite: false,
   });
+  const raizAla = TORAX_C.clone().addScaledVector(VIENTRE, -0.13).addScaledVector(EJE_TORAX, -0.05);
   const alas = [-1, 1].map((lado) => {
     const pivote = new THREE.Group();
-    pivote.position.set(lado * 0.055, 0.5, -0.1);
-    const atras = new THREE.Vector3(lado * 0.24, -0.34, -1).normalize();
-    const afuera = new THREE.Vector3(lado, 0.12, 0);
-    afuera.addScaledVector(atras, -afuera.dot(atras)).normalize();
-    const normal = new THREE.Vector3().crossVectors(atras, afuera);
-    pivote.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(atras, afuera, normal));
+    pivote.position.copy(raizAla).add(new THREE.Vector3(lado * 0.045, 0, 0));
+    const haciaAtras = new THREE.Vector3(lado * 0.3, -0.22, -1).normalize();
+    const afuera = new THREE.Vector3(lado, -0.35, 0);
+    afuera.addScaledVector(haciaAtras, -afuera.dot(haciaAtras)).normalize();
+    const normal = new THREE.Vector3().crossVectors(haciaAtras, afuera);
+    pivote.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(haciaAtras, afuera, normal));
     const base = pivote.quaternion.clone();
     const ala = new THREE.Mesh(geoAla, matAla);
     ala.renderOrder = 2;
+    // El ala nace dentro del tórax; se revisa que no toque el abdomen
+    ala.userData = { parteMosca: true, revisaCuerpo: true, ignorar: torax };
     pivote.add(ala);
-    cuerpo.add(pivote);
+    delantero.add(pivote);
     return { lado, pivote, base };
   });
 
-  // --- Patas: 6, finas, de tres tramos ---
-  const brazos = [-1, 1].map((lado) =>
+  // --- Patas: 6, finas, con articulaciones y pelitos ---
+  const patasDelanteras = [-1, 1].map(() =>
     crearPata(cuerpo, mats, {
-      largos: [0.25, 0.25, 0.09],
-      radios: [0.019, 0.015, 0.0105],
+      largos: [0.21, 0.21, 0.1],
+      radios: [0.015, 0.012, 0.0085],
       manga: mats.camisaDoble,
       revisaCuerpo: true,
     })
   );
   const patasMedias = [-1, 1].map(() =>
-    crearPata(cuerpo, mats, { largos: [0.2, 0.21, 0.08], radios: [0.017, 0.013, 0.0095] })
+    crearPata(cuerpo, mats, { largos: [0.2, 0.21, 0.08], radios: [0.014, 0.011, 0.008] })
   );
   const patasTraseras = [-1, 1].map(() =>
-    crearPata(cuerpo, mats, { largos: [0.21, 0.23, 0.08], radios: [0.017, 0.013, 0.0095] })
+    crearPata(cuerpo, mats, { largos: [0.22, 0.24, 0.08], radios: [0.014, 0.011, 0.008] })
   );
+  // Caderas, en el espacio del "delantero"
+  const CADERA_DEL = (lado) => new THREE.Vector3(lado * 0.06, 0.17, 0.25);
+  const CADERA_MED = (lado) => new THREE.Vector3(lado * 0.08, 0.044, 0.165);
+  const CADERA_TRA = (lado) => new THREE.Vector3(lado * 0.07, 0.0, 0.105);
 
-  const HOMBRO = (lado) => new THREE.Vector3(lado * 0.15, 0.47, 0.05);
-  const CADERA_MEDIA = (lado) => new THREE.Vector3(lado * 0.15, 0.31, -0.03);
-  const CADERA_TRASERA = (lado) => new THREE.Vector3(lado * 0.1, 0.22, -0.03);
+  // Apoyos fijos sobre el asiento (en el espacio de la mosca)
+  const radioAlmohadilla = 0.008 * 1.5;
+  const apoyoMedio = (lado) => new THREE.Vector3(lado * 0.18, radioAlmohadilla, -0.01);
+  const apoyoTrasero = (lado) => new THREE.Vector3(lado * 0.18, radioAlmohadilla, -0.17);
 
-  // Puntos de apoyo fijos (en el espacio de la mosca, antes de inclinarse)
-  const S = ESCALA_MOSCA;
-  const aMosca = (x, y, z) => new THREE.Vector3(x / S, (y - ALTO_ASIENTO) / S, z / S);
-  const radioAlmohadilla = 0.0095 * 1.5 * S;
-  const apoyoMedio = (lado) => {
-    const a = (70 * Math.PI) / 180;
-    const r = SILLA.radio + radioAlmohadilla;
-    return aMosca(lado * Math.sin(a) * r, ALTO_ASIENTO - 0.022, Z_SILLA + Math.cos(a) * r);
-  };
-  const apoyoTrasero = (lado) => {
-    const x = 0.09;
-    return aMosca(
-      lado * x,
-      SILLA.altoAro + SILLA.tuboAro + radioAlmohadilla,
-      Z_SILLA + Math.sqrt(SILLA.radioAro ** 2 - x * x)
-    );
-  };
-
-  // --- Cigarro (en la mano derecha: el lado que ve la cámara) ---
-  const LARGO_FILTRO = 0.032;
-  const LARGO_PAPEL = 0.088;
-  const RADIO_CIG = 0.0115;
+  // --- Cigarro (en la pata delantera derecha: el lado que ve la cámara) ---
+  const LARGO_FILTRO = 0.028;
+  const LARGO_PAPEL = 0.078;
+  const RADIO_CIG = 0.0105;
   const cigarro = new THREE.Group();
   cigarro.visible = false;
   cuerpo.add(cigarro);
@@ -653,7 +638,7 @@ export function crearMosca(scene) {
       new THREE.CylinderGeometry(RADIO_CIG, RADIO_CIG, LARGO_FILTRO, 14),
       new THREE.MeshStandardMaterial({ color: '#d9a35f', roughness: 0.85 })
     ),
-    { ...datosCig, cigarroBoca: true }
+    datosCig
   );
   filtro.position.y = LARGO_FILTRO / 2;
   cigarro.add(filtro);
@@ -704,16 +689,7 @@ export function crearMosca(scene) {
       new THREE.SpriteMaterial({ map: texHumo[i % texHumo.length], transparent: true, depthWrite: false, opacity: 0 })
     );
     sprite.visible = false;
-    sprite.userData = {
-      edad: 0,
-      vida: 1,
-      vel: new THREE.Vector3(),
-      t0: 0.02,
-      t1: 0.2,
-      opMax: 0.3,
-      giro: 0,
-      semilla: 0,
-    };
+    sprite.userData = { edad: 0, vida: 1, vel: new THREE.Vector3(), t0: 0.02, t1: 0.2, opMax: 0.3, giro: 0, semilla: 0 };
     grupoHumo.add(sprite);
     particulas.push(sprite);
   }
@@ -750,37 +726,40 @@ export function crearMosca(scene) {
   let faseAlas = 0;
   let acumHumo = 0;
   let acumExhalo = 0;
-  const giroCabeza = { yaw: 0.0, pitch: 0.0 };
+  const giroCabeza = { yaw: 0, pitch: 0 };
 
   const tmp = new THREE.Vector3();
   const tmp2 = new THREE.Vector3();
   const objetivoMirada = new THREE.Vector3();
-  const invCuerpo = new THREE.Matrix4();
   const puntoBoca = new THREE.Vector3();
   const adelanteCabeza = new THREE.Vector3();
   const derechaCabeza = new THREE.Vector3();
   const manoObjetivo = new THREE.Vector3();
   const ejeCig = new THREE.Vector3();
-  const filtroPos = new THREE.Vector3();
   const posBrasa = new THREE.Vector3();
   const dirTarso = new THREE.Vector3();
   const polo = new THREE.Vector3();
   const mundoBoca = new THREE.Vector3();
   const adelanteMundo = new THREE.Vector3();
+  const qCabeza = new THREE.Quaternion();
+  const qDelantero = new THREE.Quaternion();
 
-  const DIR_TARSO_TECLA = new THREE.Vector3(0, -0.72, 0.69).normalize();
-  const MANO_REPOSO = new THREE.Vector3(-0.25, 0.6, 0.17);
-  const EJE_REPOSO = new THREE.Vector3(-0.3, 0.88, 0.36).normalize();
-  const AGARRE = 0.04; // dónde sujeta el cigarro, medido desde el filtro
+  const DIR_TARSO_TECLA = new THREE.Vector3(0, -0.62, 0.78).normalize();
+  const MANO_REPOSO = new THREE.Vector3(-0.21, 0.56, 0.44);
+  const EJE_REPOSO = new THREE.Vector3(-0.3, 0.85, 0.42).normalize();
+  const AGARRE = 0.035; // dónde sujeta el cigarro, medido desde el filtro
 
   function puntoTeclado(lado, levantar, lateral) {
     const altoTecla = ALTO_ESCRITORIO + 0.049;
     return tmp
       .copy(TECLADO.pos)
       .addScaledVector(IZQ_MOSCA, lado * 0.1 + lateral)
-      .addScaledVector(DIR_MOSCA, -0.035)
-      .setY(altoTecla + radioAlmohadilla + levantar);
+      .addScaledVector(DIR_MOSCA, -0.04)
+      .setY(altoTecla + radioAlmohadilla * S + levantar);
   }
+
+  // De "delantero" a "cuerpo" (para las caderas)
+  const enCuerpo = (v) => v.applyMatrix4(delantero.matrix);
 
   function update(dtReal, estado) {
     const dt = Math.min(dtReal, 0.05);
@@ -801,7 +780,6 @@ export function crearMosca(scene) {
     mezclaFumar = amortiguar(mezclaFumar, fumando ? 1 : 0, 4, dt);
     quemado = Math.min(0.6, quemado + dt * 0.09 * (1 + pesoBoca * 2));
 
-    // Ciclo: sube a la boca, chupa, baja, descansa
     const PERIODO = 2.6;
     let ciclo = 0;
     if (fumando && tFumar > 0.5) {
@@ -810,148 +788,137 @@ export function crearMosca(scene) {
     }
     pesoBocaAntes = pesoBoca;
     pesoBoca = amortiguar(pesoBoca, ciclo * suave(0.6, 0.95, mezclaFumar), 12, dt);
-    if (pesoBocaAntes > 0.9 && pesoBoca <= 0.9) exhalando = 0.75;
+    if (pesoBocaAntes > 0.9 && pesoBoca <= 0.9) exhalando = 0.6;
     exhalando = Math.max(0, exhalando - dt);
 
-    // --- Postura: gira un poco la silla al fumar, se inclina al estresarse ---
+    // --- Postura: el ánimo se ve en el cuerpo ---
+    // Tranquila: erguida. Estresada: encorvada hacia la pantalla. Fumando:
+    // echada hacia atrás y girada un poco en la silla.
     raiz.rotation.y = MOSCA.rumbo - mezclaFumar * 0.16;
-    cuerpo.rotation.x = lerp(0, 0.09, s) * (1 - mezclaFumar) - mezclaFumar * 0.05;
-    // Al inclinarse, el abdomen gira sobre el asiento: lo levanto lo justo
-    // para que nunca se hunda en el cojín.
-    cuerpo.position.y = Math.max(0, -cuerpo.rotation.x) * 0.42 + Math.max(0, cuerpo.rotation.x) * 0.12;
-    const temblor = suave(0.78, 1, s);
-    cuerpo.position.x = Math.sin(t * 21) * 0.0012 * temblor;
-    torax.scale.set(PECHO.r.x * (1 + Math.sin(t * 1.7) * 0.008), PECHO.r.y, PECHO.r.z);
+    delantero.rotation.x = lerp(-0.03, 0.11, s) * (1 - mezclaFumar) - mezclaFumar * 0.07;
+    const temblor = suave(0.8, 1, s);
+    cuerpo.position.x = Math.sin(t * 21) * 0.001 * temblor;
+    torax.scale.x = R_TORAX.lado * (1 + Math.sin(t * 1.7) * 0.008);
+    delantero.updateMatrix();
 
-    // --- Cabeza: mira la pantalla; al fumar mira un poco a la cámara ---
+    // La corbata cuelga siempre derecha, con un vaivén suave
+    corbata.rotation.x = -delantero.rotation.x + Math.sin(t * 1.3) * 0.03;
+    corbata.rotation.z = Math.sin(t * 0.9) * 0.025;
+
+    // --- Cabeza: mira la pantalla ---
     raiz.updateMatrixWorld(true);
-    objetivoMirada.copy(CENTRO_PANTALLA).lerp(CAMARA_INICIAL.posicion, mezclaFumar * 0.22);
+    objetivoMirada.copy(CENTRO_PANTALLA).lerp(CAMARA_INICIAL.posicion, mezclaFumar * 0.15);
     tmp.copy(objetivoMirada);
-    cuerpo.worldToLocal(tmp).sub(cabeza.position);
+    delantero.worldToLocal(tmp).sub(cabeza.position);
     const yaw = clamp(Math.atan2(tmp.x, tmp.z), -0.75, 0.75);
     const pitch = clamp(Math.atan2(-tmp.y, Math.hypot(tmp.x, tmp.z)), -0.35, 0.35);
     giroCabeza.yaw = amortiguar(giroCabeza.yaw, yaw, 3, dt);
-    giroCabeza.pitch = amortiguar(giroCabeza.pitch, pitch + s * 0.12, 3, dt);
+    giroCabeza.pitch = amortiguar(giroCabeza.pitch, pitch + s * 0.1, 3, dt);
     cabeza.rotation.y = giroCabeza.yaw;
     cabeza.rotation.x = giroCabeza.pitch + Math.sin(t * 2.1) * 0.012 * (1 - s);
     cabeza.updateMatrixWorld(true);
 
-    // --- Ojos: la "pupila" de mosca apunta a donde mira ---
-    const anguloPupila = lerp(0.5, 0.36, s);
-    ojos.forEach((o) => {
-      tmp.copy(objetivoMirada);
-      o.grupo.worldToLocal(tmp).normalize();
-      o.pupila.quaternion.setFromUnitVectors(EJE_Y, tmp);
-      fijarAnguloCasquete(o.pupila.geometry, anguloPupila);
-      const derecha = tmp2.crossVectors(EJE_Y, tmp).normalize();
-      const arriba = new THREE.Vector3().crossVectors(tmp, derecha);
-      const dirG = new THREE.Vector3()
-        .copy(tmp)
-        .addScaledVector(arriba, 0.36)
-        .addScaledVector(derecha, -0.2)
-        .normalize();
-      const dirC = new THREE.Vector3()
-        .copy(tmp)
-        .addScaledVector(arriba, -0.24)
-        .addScaledVector(derecha, 0.24)
-        .normalize();
-      o.brilloGrande.quaternion.setFromUnitVectors(EJE_Y, dirG);
-      o.brilloChico.quaternion.setFromUnitVectors(EJE_Y, dirC);
-      o.grupo.scale.y = lerp(1.1, 1.03, s);
+    // --- Antenas: paradas cuando está tranquila, caídas con estrés ---
+    antenas.forEach(({ lado, antena }) => {
+      const tic = Math.sin(t * 3.1 + lado * 1.7) * 0.05 * (1 - s) + Math.sin(t * 0.7 + lado) * 0.03;
+      antena.rotation.x = lerp(-0.25, 0.75, s) + tic;
+      antena.rotation.z = lado * lerp(0.0, 0.35, s);
     });
 
-    // --- Cara: cejas, boca ---
-    cejas.forEach((ceja, i) => {
-      const lado = i === 0 ? -1 : 1;
-      ceja.rotation.z = Math.PI / 2 + lado * lerp(0.12, -0.42, s);
-      ceja.position.y = lerp(0.134, 0.141, s);
+    // --- Ojos: brillan cuando está tranquila; con estrés el brillo se apaga ---
+    ojos.forEach(({ brillo }) => {
+      brillo[0].material.opacity = lerp(0.95, 0.2, s);
+      brillo[0].scale.setScalar(lerp(0.042, 0.026, s));
+      brillo[1].material.opacity = lerp(0.8, 0.0, s);
+      brillo[1].scale.setScalar(0.018);
     });
-    boca.scale.set(lerp(1, 0.8, s) * lerp(1, 0.55, pesoBoca), lerp(1, -0.85, Math.min(1, s * 1.2)), 1);
+    // Con estrés el ojo pierde brillo: más opaco y un poco más oscuro
+    matOjo.clearcoatRoughness = lerp(0.05, 0.5, s);
+    matOjo.color.setScalar(lerp(1, 0.74, s));
 
-    // --- Alas: casi quietas; un zumbido leve cuando hay mucho estrés ---
+    // --- Alas: casi quietas; un zumbido leve con mucho estrés ---
     faseAlas += dt * (14 + 16 * s);
     const zumbido = Math.sin(faseAlas) * 0.03 * suave(0.55, 1, s);
     alas.forEach(({ lado, pivote, base }) => {
-      tmp.set(0, 0, 0);
       const e = new THREE.Euler(lado * (Math.sin(t * 1.3) * 0.015 + zumbido), 0, 0);
       pivote.quaternion.copy(base).multiply(new THREE.Quaternion().setFromEuler(e));
     });
 
-    // --- Patas ---
+    // --- Patas de apoyo (sobre el asiento) ---
     cuerpo.updateMatrix();
-    invCuerpo.copy(cuerpo.matrix).invert();
-    const enCuerpo = (v) => v.applyMatrix4(invCuerpo);
-    const desdeMundo = (v) => cuerpo.worldToLocal(v);
-
+    const invCuerpo = cuerpo.matrix.clone().invert();
     patasMedias.forEach((pata, i) => {
       const lado = i === 0 ? -1 : 1;
-      dirTarso.set(lado * 0.35, -0.9, 0.15).normalize();
-      pata.poner(CADERA_MEDIA(lado), enCuerpo(apoyoMedio(lado)), dirTarso, polo.set(lado, 0.9, 0.1).normalize());
+      dirTarso.set(lado * 0.4, -0.88, 0.2).normalize();
+      pata.poner(
+        enCuerpo(CADERA_MED(lado)),
+        apoyoMedio(lado).applyMatrix4(invCuerpo),
+        dirTarso,
+        polo.set(lado, 0.9, 0.15).normalize()
+      );
     });
     patasTraseras.forEach((pata, i) => {
       const lado = i === 0 ? -1 : 1;
-      dirTarso.set(lado * 0.1, -0.8, -0.55).normalize();
+      dirTarso.set(lado * 0.35, -0.85, -0.35).normalize();
       pata.poner(
-        CADERA_TRASERA(lado),
-        enCuerpo(apoyoTrasero(lado)),
+        enCuerpo(CADERA_TRA(lado)),
+        apoyoTrasero(lado).applyMatrix4(invCuerpo),
         dirTarso,
-        polo.set(lado * 0.35, 0.3, 1).normalize()
+        polo.set(lado, 0.8, -0.35).normalize()
       );
     });
 
-    // Tipeo: las manos suben y bajan sobre las teclas (nunca bajo ellas)
+    // --- Patas delanteras: tipean; la derecha además fuma ---
     faseTipeo += dt * (7 + 7 * s) * (1 - mezclaFumar * 0.8);
+    const desdeMundo = (v) => cuerpo.worldToLocal(v);
     [0, 1].forEach((i) => {
       const lado = i === 0 ? -1 : 1;
       const onda = 0.5 + 0.5 * Math.sin(faseTipeo + i * Math.PI);
       const quieta = i === 1 ? mezclaFumar : 0;
-      const levantar = onda * onda * 0.028 * (1 - quieta);
+      const levantar = onda * onda * 0.03 * (1 - quieta);
       const lateral = Math.sin(faseTipeo * 0.31 + i * 2) * 0.022 * (1 - quieta);
       const enTecla = desdeMundo(puntoTeclado(lado, levantar, lateral)).clone();
-      const hombro = HOMBRO(lado);
-      const poloTecleo = polo.set(lado, -0.35, -0.45).normalize().clone();
+      const cadera = enCuerpo(CADERA_DEL(lado));
+      const poloTecleo = new THREE.Vector3(lado * 0.7, 1, -0.25).normalize();
 
       if (i === 0 && mezclaFumar > 0.001) {
-        // Mano del cigarro
         boca.getWorldPosition(mundoBoca);
         puntoBoca.copy(mundoBoca);
         desdeMundo(puntoBoca);
-        adelanteCabeza.set(0, 0, 1).applyQuaternion(cabeza.quaternion);
-        derechaCabeza.set(-1, 0, 0).applyQuaternion(cabeza.quaternion);
+        qDelantero.setFromEuler(delantero.rotation);
+        adelanteCabeza.set(0, 0, 1).applyQuaternion(cabeza.quaternion).applyQuaternion(qDelantero);
+        derechaCabeza.set(-1, 0, 0).applyQuaternion(cabeza.quaternion).applyQuaternion(qDelantero);
         const ejeBoca = tmp2
           .copy(adelanteCabeza)
-          .multiplyScalar(0.8)
-          .addScaledVector(derechaCabeza, 0.55)
-          .add(new THREE.Vector3(0, -0.04, 0))
+          .multiplyScalar(0.7)
+          .addScaledVector(derechaCabeza, 0.6)
+          .add(new THREE.Vector3(0, -0.15, 0))
           .normalize()
           .clone();
-        const filtroBoca = puntoBoca.clone().addScaledVector(adelanteCabeza, 0.012);
+        const filtroBoca = puntoBoca.clone().addScaledVector(ejeBoca, 0.006);
         const manoBoca = filtroBoca.clone().addScaledVector(ejeBoca, AGARRE);
 
         manoObjetivo.copy(MANO_REPOSO).lerp(manoBoca, pesoBoca);
         ejeCig.copy(EJE_REPOSO).lerp(ejeBoca, pesoBoca).normalize();
-        filtroPos.copy(manoObjetivo).addScaledVector(ejeCig, -AGARRE);
 
-        // En el camino teclado <-> cigarro la mano sube primero (arco), y el
-        // codo sólo baja cuando la mano ya está cerca del cuerpo: así el brazo
-        // nunca roza el escritorio.
+        // En el camino teclado <-> cigarro la pata sube en arco y la
+        // rodilla cambia de lado recién al final: nunca roza el escritorio.
         const objetivo = enTecla.clone().lerp(manoObjetivo, mezclaFumar);
         objetivo.y += Math.sin(Math.PI * mezclaFumar) * 0.1;
-        const mezclaCodo = suave(0.55, 1, mezclaFumar);
-        const dirSujetar = manoObjetivo.clone().sub(hombro).add(new THREE.Vector3(0, 0.05, 0)).normalize();
+        const mezclaRodilla = suave(0.55, 1, mezclaFumar);
+        const dirSujetar = manoObjetivo.clone().sub(cadera).normalize();
         dirTarso.copy(DIR_TARSO_TECLA).lerp(dirSujetar, mezclaFumar).normalize();
-        const poloFumar = new THREE.Vector3(lado * 0.75, -1, -0.25).normalize();
-        polo.copy(poloTecleo).lerp(poloFumar, mezclaCodo).normalize();
-        brazos[i].poner(hombro, objetivo, dirTarso, polo);
+        const poloFumar = new THREE.Vector3(lado * 0.9, 0.6, -0.25).normalize();
+        polo.copy(poloTecleo).lerp(poloFumar, mezclaRodilla).normalize();
+        patasDelanteras[i].poner(cadera, objetivo, dirTarso, polo);
 
-        // Cigarro en la mano
         const aparecer = suave(0.55, 0.92, mezclaFumar);
         cigarro.visible = aparecer > 0.01;
-        cigarro.position.copy(brazos[i].punta).addScaledVector(ejeCig, -AGARRE * aparecer);
+        cigarro.position.copy(patasDelanteras[i].punta).addScaledVector(ejeCig, -AGARRE * aparecer);
         cigarro.quaternion.setFromUnitVectors(EJE_Y, ejeCig);
         cigarro.scale.setScalar(Math.max(aparecer, 0.001));
       } else {
-        brazos[i].poner(hombro, enTecla, DIR_TARSO_TECLA, poloTecleo);
+        patasDelanteras[i].poner(cadera, enTecla, DIR_TARSO_TECLA, poloTecleo);
         if (i === 0) cigarro.visible = false;
       }
     });
@@ -959,14 +926,14 @@ export function crearMosca(scene) {
     // Largo del cigarro, ceniza y brasa
     const largoPapel = LARGO_PAPEL * (1 - quemado);
     papel.scale.y = largoPapel;
-    const largoCeniza = 0.004 + quemado * 0.03;
+    const largoCeniza = 0.004 + quemado * 0.026;
     ceniza.position.y = LARGO_FILTRO + largoPapel;
     ceniza.scale.y = largoCeniza;
     brasa.position.y = LARGO_FILTRO + largoPapel + largoCeniza;
     resplandor.position.y = brasa.position.y + 0.004;
     const chupada = pesoBoca * (0.75 + 0.25 * Math.sin(t * 9));
     matBrasa.emissiveIntensity = 1.6 + chupada * 3.5;
-    resplandor.scale.setScalar(0.05 + chupada * 0.035);
+    resplandor.scale.setScalar(0.045 + chupada * 0.03);
     resplandor.material.opacity = 0.75 + chupada * 0.25;
     brasa.getWorldPosition(posBrasa);
     tmp.copy(posBrasa);
@@ -975,7 +942,7 @@ export function crearMosca(scene) {
 
     // --- Humo ---
     if (cigarro.visible && cigarro.scale.x > 0.6) {
-      // Cerca de la cara echa menos humo, para que no le tape los ojos
+      // Cerca de la cara echa menos humo, para no taparle los ojos
       acumHumo += dt * 15 * (1 - 0.85 * pesoBoca);
       while (acumHumo >= 1) {
         acumHumo -= 1;
@@ -988,13 +955,9 @@ export function crearMosca(scene) {
     }
     if (exhalando > 0) {
       boca.getWorldPosition(mundoBoca);
-      // Exhala hacia el costado (el lado de la cámara) y un poco hacia arriba,
-      // para que el humo no tape la cara.
-      const qCabeza = cabeza.getWorldQuaternion(new THREE.Quaternion());
-      adelanteMundo
-        .set(-0.75, 0.2, 0.55)
-        .applyQuaternion(qCabeza)
-        .normalize();
+      // Exhala hacia el costado (lado de la cámara) para no taparse la cara
+      cabeza.getWorldQuaternion(qCabeza);
+      adelanteMundo.set(-0.75, 0.2, 0.55).applyQuaternion(qCabeza).normalize();
       acumExhalo += dt * 22;
       while (acumExhalo >= 1) {
         acumExhalo -= 1;
@@ -1022,7 +985,6 @@ export function crearMosca(scene) {
         return;
       }
       u.vel.y = Math.min(0.16, u.vel.y + dt * 0.03);
-      u.vel.multiplyScalar(1 - dt * 0.6 * (u.vel.y > 0.1 ? 0 : 1) * 0.3);
       const turbulencia = 0.35 + a * 1.1;
       const vientoX = (Math.sin(t * 0.6 + p.position.y * 5 + u.semilla * 6) * 0.04 - 0.02) * turbulencia;
       const vientoZ = Math.cos(t * 0.45 + p.position.y * 4 + u.semilla * 4) * 0.03 * turbulencia;
@@ -1041,15 +1003,7 @@ export function crearMosca(scene) {
       const vis = sudor * suave(0, 0.15, ciclo) * (1 - suave(0.72, 1, ciclo));
       g.m.visible = vis > 0.01;
       if (!g.m.visible) return;
-      const yaw = g.lado * 1.42;
-      const lat = lerp(0.55, -0.2, ciclo);
-      const r = 1.0;
-      g.m.position.set(
-        Math.sin(yaw) * Math.cos(lat) * R_CABEZA.x * r,
-        Math.sin(lat) * R_CABEZA.y * r,
-        Math.cos(yaw) * Math.cos(lat) * R_CABEZA.z * r
-      );
-      g.m.position.addScaledVector(g.m.position.clone().normalize(), 0.012);
+      g.m.position.copy(enCabezaSuperficie(g.lado * 1.65, lerp(0.75, 0.0, ciclo), 0.01));
       g.m.material.opacity = 0.9 * vis;
       g.m.scale.setScalar(lerp(0.85, 1.1, ciclo));
     });
