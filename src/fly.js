@@ -912,6 +912,10 @@ export function crearMosca(scene, { taza = null } = {}) {
   let cicloActivo = false;
   let tc = 0; // tiempo dentro de la secuencia de fumar
   let pendienteFumar = false;
+  // Al terminar de fumar, el cigarro queda en el cenicero encendido (se
+  // consume solo, echando un hilo de humo) hasta convertirse en colilla.
+  let cigarroEnCenicero = false;
+  let apagando = 0;
   let cicloCafe = false;
   let tcafe = 0; // tiempo dentro del sorbo de café
   let pendienteCafe = false;
@@ -1000,6 +1004,9 @@ export function crearMosca(scene, { taza = null } = {}) {
         cicloActivo = true;
         tc = 0;
         quemado = 0;
+        // el que seguía encendido en el cenicero pasa a ser colilla
+        cigarroEnCenicero = false;
+        apagando = 0;
       } else if (pendienteCafe) {
         pendienteCafe = false;
         cicloCafe = true;
@@ -1025,13 +1032,26 @@ export function crearMosca(scene, { taza = null } = {}) {
         // Si sigue en su pausa de fumar, otra pitada; si no, el cigarro ya
         // es colilla y la mosca vuelve a trabajar.
         if (estado.fumando) tc = 0;
-        else cicloActivo = false;
+        else {
+          cicloActivo = false;
+          cigarroEnCenicero = true;
+          apagando = 0;
+        }
       }
     }
     mezclaFumar = amortiguar(mezclaFumar, cicloActivo ? 1 : 0, 3, dt);
     pesoBocaAntes = pesoBoca;
     pesoBoca = cicloActivo ? suave(T_BOCA - 0.25, T_BOCA, tc) * (1 - suave(T_PITADA, T_PITADA + 0.3, tc)) : 0;
-    quemado = Math.min(0.6, quemado + dt * 0.06 * (1 + pesoBoca * 3));
+    // en la mano se quema más rápido (y mucho más al pitar); en el cenicero, lento
+    quemado = Math.min(0.6, quemado + dt * (cigarroEnCenicero ? 0.03 : 0.06 * (1 + pesoBoca * 3)));
+    // En el cenicero se sigue consumiendo; cuando se acaba, se apaga
+    if (cigarroEnCenicero && quemado >= 0.6) {
+      apagando += dt / 0.5;
+      if (apagando >= 1) {
+        cigarroEnCenicero = false;
+        apagando = 0;
+      }
+    }
     if (pesoBocaAntes > 0.9 && pesoBoca <= 0.9) exhalando = 0.6;
     exhalando = Math.max(0, exhalando - dt);
 
@@ -1256,7 +1276,7 @@ export function crearMosca(scene, { taza = null } = {}) {
 
         // Cigarro: apoyado en el cenicero o en la pata
         cigarro.visible = true;
-        const aparecer = suave(0, 0.35, tc) + (tc > T_FIN - 0.2 && !estado.fumando ? -suave(T_FIN - 0.2, T_FIN, tc) : 0);
+        const aparecer = suave(0, 0.35, tc);
         cigarro.scale.setScalar(Math.max(0.001, aparecer));
         if (sujeta) {
           ejeCig.copy(ejeCenicero).lerp(ejeBoca, enBoca).normalize();
@@ -1268,7 +1288,16 @@ export function crearMosca(scene, { taza = null } = {}) {
         cigarro.quaternion.setFromUnitVectors(EJE_Y, ejeCig);
       } else {
         patasDelanteras[i].poner(cadera, enTecla, DIR_TARSO_TECLA, poloTecleo);
-        if (i === 0) cigarro.visible = false;
+        if (i === 0) {
+          // Cigarro encendido descansando en el cenicero
+          cigarro.visible = cigarroEnCenicero;
+          if (cigarroEnCenicero) {
+            cigarro.scale.setScalar(Math.max(0.001, 1 - apagando));
+            cigarro.position.copy(desdeMundo(FILTRO_APOYO_MUNDO.clone()));
+            ejeCig.copy(EJE_APOYO_MUNDO).transformDirection(cuerpo.matrixWorld.clone().invert());
+            cigarro.quaternion.setFromUnitVectors(EJE_Y, ejeCig);
+          }
+        }
       }
     });
 
@@ -1366,6 +1395,12 @@ export function crearMosca(scene, { taza = null } = {}) {
     update,
     // El cigarro que fuma ahora todavía no es colilla
     cigarroEnMano: () => cicloActivo || pendienteFumar,
+    // cigarros que todavía no son colilla (en la mano, por fumar o en el cenicero)
+    cigarrosSinColilla: () => (cicloActivo || pendienteFumar ? 1 : 0) + (cigarroEnCenicero ? 1 : 0),
+    apagarCigarro: () => {
+      cigarroEnCenicero = false;
+      apagando = 0;
+    },
     tomandoCafe: () => cicloCafe,
     holguraManilla: () => holguraManilla,
   };

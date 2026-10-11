@@ -396,7 +396,10 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
   monitor.scale.setScalar(ESCALA_MONITOR);
   const matMonitor = new THREE.MeshStandardMaterial({ color: COLORES.plastico, roughness: 0.45 });
   monitor.add(solido(malla(new RoundedBoxGeometry(0.44, 0.04, 0.28, 2, 0.015), matMonitor, { y: 0.02, recibe: true })));
-  monitor.add(solido(malla(new RoundedBoxGeometry(0.075, 0.28, 0.06, 2, 0.02), matMonitor, { y: 0.16 })));
+  // Cuello: sube desde la base y entra por detrás de la pantalla, con una
+  // placa de montaje que la sujeta (así la pantalla no se ve flotando)
+  monitor.add(solido(malla(new RoundedBoxGeometry(0.075, 0.54, 0.06, 2, 0.02), matMonitor, { y: 0.3, z: -0.052 })));
+  monitor.add(solido(malla(new RoundedBoxGeometry(0.2, 0.16, 0.035, 2, 0.012), matMonitor, { y: 0.6, z: -0.04 })));
   monitor.add(solido(malla(new RoundedBoxGeometry(0.98, 0.63, 0.05, 3, 0.026), matMonitor, { y: 0.63 })));
 
   const { ctx: kanbanCtx, textura: kanbanTextura } = crearTexturaKanban(anisotropia);
@@ -888,9 +891,9 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
     AGARRE_TAZA,
     BORDE_TAZA,
     calorCafe: () => calor,
-    // WIP 1 → 1 post-it; WIP 10 → 14
-    actualizarPostits(wip) {
-      postitsObjetivo = Math.round(1 + ((Math.min(10, Math.max(1, wip)) - 1) * (POSTITS.length - 1)) / 9);
+    // Misma carga que la pila: 1 tarea en curso → 1 post-it; 10 → 14
+    actualizarPostits(carga) {
+      postitsObjetivo = carga <= 0 ? 0 : Math.round(1 + ((Math.min(10, carga) - 1) * (POSTITS.length - 1)) / 9);
     },
     actualizarPilaTareas(enCurso) {
       carpetasObjetivo = Math.min(MAX_CAPAS, enCurso);

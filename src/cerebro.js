@@ -67,7 +67,7 @@ const VERTICE = /* glsl */ `
     float t = uTiempo * ritmo + aSemilla * 17.0;
     float latido = floor(t);
     float fase = t - latido;
-    float dispara = step(azar(vec2(aSemilla * 97.0, latido)), act * 0.6);
+    float dispara = step(azar(vec2(aSemilla * 97.0, latido)), act * 0.75);
     float envolvente = smoothstep(0.0, 0.16, fase) * (1.0 - smoothstep(0.24, 0.8, fase));
     vEncendido = dispara * envolvente;
     vAct = act;
@@ -75,7 +75,8 @@ const VERTICE = /* glsl */ `
 
     vec4 mv = modelViewMatrix * vec4(position, 1.0);
     gl_Position = projectionMatrix * mv;
-    float tamano = uTamano * (0.75 + 0.35 * act + 1.25 * vEncendido);
+    // con poca actividad los puntos se achican; con mucha, crecen
+    float tamano = uTamano * (0.6 + 0.7 * act + 1.35 * vEncendido);
     gl_PointSize = max(1.2, tamano * uEscalaVista / -mv.z);
   }
 `;
@@ -91,12 +92,12 @@ const FRAGMENTO = /* glsl */ `
     if (d > 1.0) discard;
     float nucleo = smoothstep(0.5, 0.0, d);
     // El halo (glow) crece con la actividad y con cada destello
-    float halo = exp(-d * d * mix(5.0, 2.2, max(vAct, vEncendido)));
-    // Poca actividad: casi apagado. Mucha: brillante.
-    float base = mix(0.09, 0.32, smoothstep(0.03, 0.85, vAct));
-    float brillo = base + 1.0 * vEncendido;
-    vec3 color = vColor * (nucleo + halo * (0.25 + 0.6 * vEncendido + 0.2 * vAct)) * brillo;
-    color += vec3(1.0) * nucleo * vEncendido * 0.12;
+    float halo = exp(-d * d * mix(6.0, 2.0, max(vAct, vEncendido)));
+    // Poca actividad: opaco, casi apagado. Mucha: brillante, con glow.
+    float base = mix(0.035, 0.36, smoothstep(0.05, 0.8, vAct));
+    float brillo = base + 0.85 * vEncendido;
+    vec3 color = vColor * (nucleo + halo * (0.12 + 0.55 * vEncendido + 0.35 * vAct)) * brillo;
+    color += vec3(1.0) * nucleo * vEncendido * 0.05;
     gl_FragColor = vec4(color * uGanancia, 1.0);
   }
 `;
@@ -224,7 +225,7 @@ export function crearCerebro(canvas, datos) {
     uniforms.uEscalaVista.value = (h * ratio) / (2 * tanMedio);
     // En el panel chico los puntos quedan muy juntos y se suman: bajo la
     // intensidad para que no se quemen a blanco
-    uniforms.uGanancia.value = clamp((w * h) / 560000, 0.5, 0.85);
+    uniforms.uGanancia.value = clamp((w * h) / 520000, 0.45, 0.9);
   }
 
   // ---------- Actividad (modelo ilustrativo) ----------
@@ -269,6 +270,11 @@ export function crearCerebro(canvas, datos) {
       uniforms.uAct.value[i] = actividad[id];
     });
     uniforms.uTiempo.value = tiempo;
+    // El resplandor azul de fondo se enciende con la actividad total
+    let media = 0;
+    ids.forEach((id) => (media += actividad[id] / ids.length));
+    resplandor.material.opacity = 0.2 + 1.1 * media;
+    resplandor.material.transparent = true;
     giratorio.rotation.y = (tiempo / VUELTA_SEGUNDOS) * Math.PI * 2;
   }
 

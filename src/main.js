@@ -196,6 +196,7 @@ function reiniciarDia() {
   colillasPintadas = 0;
   elBanner.classList.add('oculto');
   oficina.limpiarColillas();
+  mosca.apagarCigarro();
 }
 elBtnReiniciar.addEventListener('click', reiniciarDia);
 
@@ -222,12 +223,15 @@ function refrescarUI(estado, cigarroEnMano) {
   elBarraEstres.style.background = estado.nivel.color;
 
   oficina.actualizarKanban(estado);
-  oficina.actualizarPilaTareas(estado.terminado ? 0 : estado.enCurso);
-  oficina.actualizarPostits(estado.wip);
+  // Carga de trabajo: tareas en curso. La pila de papeles y los post-its
+  // crecen y bajan juntos con ella.
+  const carga = estado.terminado ? 0 : estado.enCurso;
+  oficina.actualizarPilaTareas(carga);
+  oficina.actualizarPostits(carga);
   oficina.actualizarReloj(estado.fraccionDelDia);
 
   // El cigarro que la mosca tiene en la mano llega al cenicero cuando lo termina
-  const colillasEnCenicero = Math.max(0, estado.colillasVisibles - (cigarroEnMano ? 1 : 0));
+  const colillasEnCenicero = Math.max(0, estado.colillasVisibles - mosca.cigarrosSinColilla());
   while (colillasPintadas < colillasEnCenicero) {
     oficina.agregarColilla();
     colillasPintadas++;
@@ -483,6 +487,7 @@ function encuadrarExhibicion() {
 // ---------- Cambio de vista ----------
 function reponerCenicero() {
   oficina.limpiarColillas();
+  mosca.apagarCigarro();
   colillasPintadas = 0;
 }
 
@@ -618,6 +623,33 @@ cargarDatosCerebro()
   .catch((err) => console.error('No se pudo cargar el cerebro', err));
 
 let ultimaLectura = 0;
+// Lectura en palabras simples de lo que se enciende más ahora
+const elLectura = document.getElementById('cerebro-lectura');
+let grupoDestacado = null;
+function frasePara(id, { fumando, cafe }) {
+  if (id === 'vision') return 've muchas tareas abiertas en la pantalla';
+  if (id === 'central') return 'el estrés la tiene pensando de más';
+  if (id === 'memoria') return 'guarda lo que acaba de terminar';
+  if (id === 'mando') return fumando ? 'el cerebro ordena al cuerpo ir por el cigarro' : 'el cerebro le da órdenes al cuerpo';
+  if (fumando) return 'mueve la pata para fumar';
+  if (cafe) return 'mueve la pata para tomar café';
+  return 'mueve las patas para teclear';
+}
+function escribirLectura(l, estado, fumando, cafe) {
+  let html;
+  if (estado.terminado) html = 'Día terminado: el cerebro descansa.';
+  else if (vista === 'control' && pausado) html = 'En pausa.';
+  else if (l.nivel < 0.16) html = 'Cerebro tranquilo: pocas neuronas encendidas.';
+  else {
+    // cambia de zona sólo si otra la supera claramente (no parpadea)
+    const orden = [...l.porGrupo].sort((a, b) => b.actividad - a.actividad);
+    const actual = l.porGrupo.find((g) => g.id === grupoDestacado);
+    if (!actual || orden[0].actividad > actual.actividad + 0.06) grupoDestacado = orden[0].id;
+    const g = l.porGrupo.find((x) => x.id === grupoDestacado);
+    html = `Se enciende más <span class="lectura-zona" style="--c: ${GRUPOS_VISUALES[g.id].color}"><span class="grupo-punto"></span>${g.nombre}</span>: ${frasePara(g.id, { fumando, cafe })}.`;
+  }
+  if (elLectura.innerHTML !== html) elLectura.innerHTML = html;
+}
 function refrescarCerebro(dt, estado, fumandoVisible, cafeVisible, ahora) {
   if (!cerebro) return;
   cerebro.actualizar(dt, {
@@ -637,6 +669,8 @@ function refrescarCerebro(dt, estado, fumandoVisible, cafeVisible, ahora) {
   const l = cerebro.lectura();
   elActivas.textContent = formato.format(l.activas);
   elNivel.textContent = `${Math.round(l.nivel * 100)}%`;
+  // El borde del panel también brilla más con más actividad
+  elCerebro.style.setProperty('--actividad', l.nivel.toFixed(3));
   const estadoTexto = estado.terminado
     ? 'Descansa'
     : vista === 'control' && pausado
@@ -649,6 +683,7 @@ function refrescarCerebro(dt, estado, fumandoVisible, cafeVisible, ahora) {
   elEstado.textContent = estadoTexto;
   elEstado.classList.toggle('fuma', estadoTexto === 'Fuma');
   elEstado.classList.toggle('cafe', estadoTexto === 'Café');
+  escribirLectura(l, estado, fumandoVisible, cafeVisible);
   l.porGrupo.forEach((g) => {
     const fila = filasGrupo[g.id];
     if (!fila) return;
@@ -763,6 +798,7 @@ if (import.meta.env.DEV) {
     ocultarControles: (v) => alternarControles(v),
     calorCafe: () => oficina.calorCafe(),
     holguraManilla: () => mosca.holguraManilla(),
+    cigarrosSinColilla: () => mosca.cigarrosSinColilla(),
     // Salta casi al final del día (para probar el loop de exhibición)
     posCabeza: () => mosca.cabeza.getWorldPosition(new THREE.Vector3()).toArray(),
     diaExhibicion: (w) => {
