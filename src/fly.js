@@ -929,6 +929,7 @@ export function crearMosca(scene, { taza = null } = {}) {
   let exhalando = 0;
   let pesoBocaAntes = 0;
   let faseTipeo = 0;
+  let ganasTeclear = 1; // 0 = descansa (pausa o fin del día), 1 = teclea
   let faseAlas = 0;
   let acumHumo = 0;
   let acumExhalo = 0;
@@ -1112,14 +1113,16 @@ export function crearMosca(scene, { taza = null } = {}) {
     });
 
     // --- Patas delanteras: tipean; la derecha además fuma ---
-    faseTipeo += dt * (7 + 7 * s) * (1 - mezclaFumar * 0.8);
+    // En pausa o al terminar el día deja de teclear (de a poco)
+    ganasTeclear = amortiguar(ganasTeclear, estado.descansa ? 0 : 1, 3, dt);
+    faseTipeo += dt * (7 + 7 * s) * (1 - mezclaFumar * 0.8) * ganasTeclear;
     const desdeMundo = (v) => cuerpo.worldToLocal(v);
     [0, 1].forEach((i) => {
       const lado = i === 0 ? -1 : 1;
       const onda = 0.5 + 0.5 * Math.sin(faseTipeo + i * Math.PI);
       const quieta = i === 1 ? mezclaFumar : 0;
-      const levantar = onda * onda * 0.03 * (1 - quieta);
-      const lateral = Math.sin(faseTipeo * 0.31 + i * 2) * 0.022 * (1 - quieta);
+      const levantar = onda * onda * 0.03 * (1 - quieta) * ganasTeclear;
+      const lateral = Math.sin(faseTipeo * 0.31 + i * 2) * 0.022 * (1 - quieta) * ganasTeclear;
       const enTecla = desdeMundo(puntoTeclado(lado, levantar, lateral)).clone();
       const cadera = enCuerpo(CADERA_DEL(lado));
       const poloTecleo = new THREE.Vector3(lado * 0.9, 1, -0.2).normalize();

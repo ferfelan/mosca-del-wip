@@ -22,14 +22,22 @@ console.log('tras E otra vez:', await clase());
 await p.keyboard.press('Escape');
 await p.waitForTimeout(1000);
 console.log('tras Escape:', await clase(), '| hora del juego del usuario:', await p.evaluate(() => window.__mosca.estado().hora), 'wip', await p.evaluate(() => window.__mosca.estado().wip));
-// loop de exhibición
+// loop de exhibición: alterna WIP 9 y WIP 2 y compara al final de cada día
 await p.keyboard.press('e');
 await p.waitForTimeout(1000);
-await p.evaluate(() => window.__mosca.casiFin());
-await p.waitForTimeout(1500);
-console.log('al terminar:', await p.evaluate(() => [window.__mosca.estado().terminado, document.getElementById('ex-fin').className, document.getElementById('ex-fin-texto').textContent]));
-await p.screenshot({ path: 'capturas/vista-exhibicion-fin.png' });
-await p.waitForTimeout(6000);
-console.log('después de la pausa:', await p.evaluate(() => [window.__mosca.estado().hora, window.__mosca.estado().terminado, window.__mosca.estado().wip, document.getElementById('ex-fin').className]));
+console.log('primer día:', await p.evaluate(() => [window.__mosca.estado().wip, document.getElementById('ex-inicio').className]));
+for (let dia = 1; dia <= 2; dia++) {
+  await p.evaluate(() => window.__mosca.casiFin());
+  await p.waitForTimeout(1500);
+  const fin = await p.evaluate(() => ({
+    titulo: document.getElementById('ex-fin-titulo').textContent,
+    filas: [...document.querySelectorAll('#ex-fin-filas tr')].map((tr) => tr.textContent.replace(/\s+/g, ' ').trim()),
+    sigue: document.getElementById('ex-fin-texto').textContent,
+  }));
+  console.log(`fin del día ${dia}:`, JSON.stringify(fin));
+  await p.screenshot({ path: `capturas/exhibicion-fin-dia${dia}.png` });
+  await p.waitForTimeout(7500);
+  console.log(`  luego empieza: WIP ${await p.evaluate(() => window.__mosca.estado().wip)}`);
+}
 console.log('errores:', errores.length ? errores : 'ninguno');
 await b.close();

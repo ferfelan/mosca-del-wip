@@ -10,7 +10,7 @@
     <header id="barra-exhibicion" class="solo-exhibicion" aria-hidden="true">
       <div class="marca">
         <span class="marca-nombre">Mosca del WIP</span>
-        <span class="marca-sub">Un día de oficina con muchas tareas a la vez · se repite solo</span>
+        <span class="marca-sub">Un día con muchas tareas a la vez y otro con pocas · se repite solo</span>
       </div>
       <div class="barra-datos">
         <span class="chip-datos" id="chip-datos">Male CNS v1.0 · cerebro + cordón nervioso</span>
@@ -34,9 +34,17 @@
         <span class="sep">·</span>
         <span id="ex-estres">Tranqui</span>
       </div>
+      <div id="ex-inicio" class="aviso-inicio oculto" role="status">
+        <span class="aviso-inicio-wip" id="ex-inicio-wip">WIP 9</span>
+        <span id="ex-inicio-texto">Muchas tareas a la vez</span>
+      </div>
       <div id="ex-fin" class="aviso-fin oculto" role="status">
-        <strong>Fin del día de ejemplo</strong>
-        <span id="ex-fin-texto"></span>
+        <strong id="ex-fin-titulo">Fin del día</strong>
+        <table class="comparacion" aria-label="Comparación de los días">
+          <thead><tr><th></th><th>Terminadas</th><th>Colillas</th><th>Cafés</th><th>Estrés máx.</th></tr></thead>
+          <tbody id="ex-fin-filas"></tbody>
+        </table>
+        <span class="aviso-fin-sigue" id="ex-fin-texto"></span>
       </div>
     </div>
 
@@ -112,6 +120,9 @@
           <tbody id="tabla-dias-body"></tbody>
         </table>
         <button id="btn-borrar-historial" class="boton-texto" type="button" hidden>Borrar historial</button>
+        <p class="atajos" aria-label="Atajos de teclado">
+          <kbd>Espacio</kbd> pausa · <kbd>R</kbd> reinicia · <kbd>E</kbd> exhibición · <kbd>B</kbd> cerebro · <kbd>C</kbd> controles
+        </p>
       </section>
     </aside>
 

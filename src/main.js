@@ -44,8 +44,15 @@ let colillasPintadas = 0;
 let juego = new DayBrain(Number(elWip.value));
 
 // ---------- Vistas: "control" (normal) y "exhibición" (pantalla completa) ----------
-const WIP_EXHIBICION = 9;
-const PAUSA_FIN_EXHIBICION = 5; // segundos mostrando el resumen antes de repetir
+// En exhibición se alternan un día con muchas tareas a la vez y otro con
+// pocas, para que se vea la diferencia (que es la lección).
+const DIAS_EXHIBICION = [
+  { wip: 9, texto: 'Muchas tareas a la vez' },
+  { wip: 2, texto: 'Pocas tareas a la vez' },
+];
+const WIP_EXHIBICION = DIAS_EXHIBICION[0].wip;
+const PAUSA_FIN_EXHIBICION = 7; // segundos mostrando la comparación antes de seguir
+const DURACION_AVISO_INICIO = 3.2;
 const elEscena = document.getElementById('escena');
 const elVelo = document.getElementById('velo');
 const elExWip = document.getElementById('ex-wip');
@@ -56,6 +63,14 @@ const elExCafes = document.getElementById('ex-cafes');
 const elExEstres = document.getElementById('ex-estres');
 const elExFin = document.getElementById('ex-fin');
 const elExFinTexto = document.getElementById('ex-fin-texto');
+const elExFinTitulo = document.getElementById('ex-fin-titulo');
+const elExFinFilas = document.getElementById('ex-fin-filas');
+const elExInicio = document.getElementById('ex-inicio');
+const elExInicioWip = document.getElementById('ex-inicio-wip');
+const elExInicioTexto = document.getElementById('ex-inicio-texto');
+let indiceDiaExhibicion = -1;
+let avisoInicio = 0;
+const resultadosExhibicion = {}; // último resultado de cada WIP
 let vista = 'control';
 let guardadoControl = null; // el juego del usuario mientras se ve la exhibición
 let finExhibicion = 0;
@@ -92,8 +107,14 @@ function pintarTabla(dias) {
     elTablaBody.innerHTML = '<tr class="vacia"><td colspan="6">Juega un día completo para comparar</td></tr>';
     return;
   }
+  // El mejor día (más tareas terminadas) se destaca: ayuda a comparar
+  const mejor = dias.length > 1 ? Math.max(...dias.map((d) => d.hechas)) : null;
   dias.forEach((d, i) => {
     const tr = document.createElement('tr');
+    if (d.hechas === mejor) {
+      tr.className = 'mejor-dia';
+      tr.title = 'El día con más tareas terminadas';
+    }
     tr.innerHTML = `<td>${d.wip}</td><td>${d.hechas}</td><td>${d.colillas}</td><td>${d.cafes ?? '–'}</td><td>${d.estresMax}%</td>`;
     const celda = document.createElement('td');
     const quitar = document.createElement('button');
@@ -157,24 +178,37 @@ elWip.addEventListener('input', () => {
 });
 pintarWip();
 
-elBtnPausa.addEventListener('click', () => {
+function alternarPausa() {
   pausado = !pausado;
   elBtnPausa.textContent = pausado ? 'Reanudar' : 'Pausa';
   elBtnPausa.classList.toggle('activo', pausado);
-});
+}
+elBtnPausa.addEventListener('click', alternarPausa);
 
 elBtnVelocidad.addEventListener('click', () => {
   indiceVelocidad = (indiceVelocidad + 1) % VELOCIDADES.length;
   elBtnVelocidad.textContent = `x${VELOCIDADES[indiceVelocidad]}`;
 });
 
-elBtnReiniciar.addEventListener('click', () => {
+function reiniciarDia() {
   juego = new DayBrain(Number(elWip.value));
   diaYaRegistrado = false;
   colillasPintadas = 0;
   elBanner.classList.add('oculto');
   oficina.limpiarColillas();
-});
+}
+elBtnReiniciar.addEventListener('click', reiniciarDia);
+
+// Lo que la animación de la mosca necesita saber del juego
+function estadoMosca(estado) {
+  const enPausa = vista === 'control' && pausado;
+  return {
+    fumando: estado.fumando,
+    tomandoCafe: estado.tomandoCafe,
+    estres: estado.estres / 100,
+    descansa: enPausa || estado.terminado,
+  };
+}
 
 function refrescarUI(estado, cigarroEnMano) {
   elReloj.textContent = estado.hora;
@@ -453,16 +487,44 @@ function reponerCenicero() {
 }
 
 function nuevoDiaExhibicion() {
-  juego = new DayBrain(WIP_EXHIBICION);
+  indiceDiaExhibicion = (indiceDiaExhibicion + 1) % DIAS_EXHIBICION.length;
+  const dia = DIAS_EXHIBICION[indiceDiaExhibicion];
+  juego = new DayBrain(dia.wip);
   reponerCenicero();
   finExhibicion = 0;
   elExFin.classList.add('oculto');
+  // Aviso al comenzar: qué día se va a ver
+  elExInicioWip.textContent = `WIP ${dia.wip}`;
+  elExInicioTexto.textContent = dia.texto;
+  elExInicio.classList.toggle('alto', dia.wip > 3);
+  elExInicio.classList.remove('oculto');
+  avisoInicio = DURACION_AVISO_INICIO;
+}
+
+function mostrarComparacion() {
+  const r = juego.resumenFinal();
+  resultadosExhibicion[r.wip] = r;
+  elExFinTitulo.textContent = `Fin del día con WIP ${r.wip}`;
+  elExFinFilas.innerHTML = '';
+  // Muestra los dos días (el de recién y el otro, si ya se vio)
+  DIAS_EXHIBICION.map((d) => resultadosExhibicion[d.wip])
+    .filter(Boolean)
+    .forEach((x) => {
+      const tr = document.createElement('tr');
+      if (x.wip === r.wip) tr.className = 'actual';
+      tr.innerHTML = `<th>WIP ${x.wip}</th><td>${x.hechas}</td><td>${x.colillas}</td><td>${x.cafes}</td><td>${x.estresMax}%</td>`;
+      elExFinFilas.appendChild(tr);
+    });
+  const siguiente = DIAS_EXHIBICION[(indiceDiaExhibicion + 1) % DIAS_EXHIBICION.length];
+  elExFinTexto.textContent = `Ahora: un día con WIP ${siguiente.wip} (${siguiente.texto.toLowerCase()})…`;
+  elExFin.classList.remove('oculto');
 }
 
 function aplicarVista(nueva) {
   if (nueva === vista) return;
   if (nueva === 'exhibicion') {
     guardadoControl = { juego, diaYaRegistrado };
+    indiceDiaExhibicion = -1;
     nuevoDiaExhibicion();
     // Se puede rotar y hacer zoom con el mouse, igual que en Control
     controls.maxDistance = 12;
@@ -508,6 +570,14 @@ window.addEventListener('keydown', (e) => {
   if (e.key === 'b' || e.key === 'B') alternarCerebro();
   if (e.key === 'c' || e.key === 'C') alternarControles();
   if (e.key === 'Escape' && vista === 'exhibicion') cambiarVista('control');
+  // Para presentar: Espacio pausa/reanuda y R reinicia el día (sólo en Control)
+  if (vista === 'control' && !e.metaKey && !e.ctrlKey) {
+    if (e.code === 'Space' && !(e.target instanceof HTMLButtonElement)) {
+      e.preventDefault();
+      alternarPausa();
+    }
+    if (e.key === 'r' || e.key === 'R') reiniciarDia();
+  }
 });
 
 // En exhibición el cursor se esconde si no se mueve (para mostrar en una tele)
@@ -555,7 +625,7 @@ function refrescarCerebro(dt, estado, fumandoVisible, cafeVisible, ahora) {
     estres: estado.estres / 100,
     fumando: fumandoVisible,
     cafe: cafeVisible,
-    terminado: estado.terminado,
+    terminado: estado.terminado || (vista === 'control' && pausado),
     hechas: estado.hechas,
   });
   // Oculto (y ya fuera de la pantalla): no se dibuja, así no gasta nada
@@ -567,7 +637,15 @@ function refrescarCerebro(dt, estado, fumandoVisible, cafeVisible, ahora) {
   const l = cerebro.lectura();
   elActivas.textContent = formato.format(l.activas);
   elNivel.textContent = `${Math.round(l.nivel * 100)}%`;
-  const estadoTexto = estado.terminado ? 'Descansa' : fumandoVisible ? 'Fuma' : cafeVisible ? 'Café' : 'Trabaja';
+  const estadoTexto = estado.terminado
+    ? 'Descansa'
+    : vista === 'control' && pausado
+      ? 'En pausa'
+      : fumandoVisible
+        ? 'Fuma'
+        : cafeVisible
+          ? 'Café'
+          : 'Trabaja';
   elEstado.textContent = estadoTexto;
   elEstado.classList.toggle('fuma', estadoTexto === 'Fuma');
   elEstado.classList.toggle('cafe', estadoTexto === 'Café');
@@ -594,15 +672,15 @@ function animar(ahora = performance.now()) {
 
   if (window.devicePixelRatio !== dprAplicado) ajustarEscena();
   const enExhibicion = vista === 'exhibicion';
+  if (avisoInicio > 0) {
+    avisoInicio -= dtReal;
+    if (avisoInicio <= 0 || !enExhibicion) elExInicio.classList.add('oculto');
+  }
   if (enExhibicion) {
     if (!juego.terminado) juego.tick(dtReal * MIN_SIM_POR_SEG_REAL);
     else {
       // Día de ejemplo terminado: muestro el resumen y empiezo otro
-      if (finExhibicion === 0) {
-        const r = juego.resumenFinal();
-        elExFinTexto.textContent = `${r.hechas} tareas terminadas · ${r.colillas} colillas · ${r.cafes} cafés · estrés máximo ${r.estresMax}%. Empieza otro día…`;
-        elExFin.classList.remove('oculto');
-      }
+      if (finExhibicion === 0) mostrarComparacion();
       finExhibicion += dtReal;
       if (finExhibicion > PAUSA_FIN_EXHIBICION) nuevoDiaExhibicion();
     }
@@ -612,7 +690,7 @@ function animar(ahora = performance.now()) {
 
   const estado = juego.estado();
   if (!congelado) {
-    mosca.update(dtReal, { fumando: estado.fumando, tomandoCafe: estado.tomandoCafe, estres: estado.estres / 100 });
+    mosca.update(dtReal, estadoMosca(estado));
     oficina.actualizar(dtReal, estado.estres / 100);
   }
   refrescarUI(estado, mosca.cigarroEnMano());
@@ -674,7 +752,7 @@ if (import.meta.env.DEV) {
     avanzar(segundos, paso = 1 / 60) {
       const estado = juego.estado();
       for (let t = 0; t < segundos; t += paso) {
-        mosca.update(paso, { fumando: estado.fumando, tomandoCafe: estado.tomandoCafe, estres: estado.estres / 100 });
+        mosca.update(paso, estadoMosca(estado));
         oficina.actualizar(paso, estado.estres / 100);
       }
       refrescarUI(estado, mosca.cigarroEnMano());
@@ -690,6 +768,10 @@ if (import.meta.env.DEV) {
     diaExhibicion: (w) => {
       juego = new DayBrain(w);
       reponerCenicero();
+    },
+    // Juega el resto del día de una vez (para probar resúmenes)
+    completarDia: () => {
+      while (!juego.terminado) juego.tick(1);
     },
     casiFin: () => (juego.minutoActual = 18 * 60 - 2),
     camaraInfo: () => ({ pos: camera.position.toArray(), obj: controls.target.toArray(), aspect: camera.aspect }),
