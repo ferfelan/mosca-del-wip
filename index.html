@@ -10,19 +10,22 @@
     <header id="barra-exhibicion" class="solo-exhibicion" aria-hidden="true">
       <div class="marca">
         <span class="marca-nombre">Mosca del WIP</span>
-        <span class="marca-sub">Un día con muchas tareas a la vez y otro con pocas · se repite solo</span>
+        <span class="marca-sub">La misma partida, en grande</span>
       </div>
       <div class="barra-datos">
         <span class="chip-datos" id="chip-datos">Male CNS v1.0 · cerebro + cordón nervioso</span>
-        <span class="atajo"><kbd>E</kbd> volver al control</span>
+        <span class="atajo"><kbd>Espacio</kbd> pausa <kbd>R</kbd> otro día <kbd>1–9</kbd> WIP <kbd>D</kbd> demo <kbd>E</kbd> volver</span>
       </div>
     </header>
 
     <div id="escena">
       <canvas id="lienzo-3d"></canvas>
       <div class="rotulo-escena solo-exhibicion">
-        <span class="punto-vivo"></span>
+        <span class="punto-vivo" aria-hidden="true"></span>
+        <span class="ex-situacion" id="ex-pausa" hidden>En pausa</span>
+        <span class="ex-situacion ex-terminado">Día terminado</span>
         <span id="ex-wip">WIP 9</span>
+        <span class="ex-ritmo" id="ex-ritmo" hidden>x1</span>
         <span class="sep">·</span>
         <span id="ex-hora">09:00</span>
         <span class="sep">·</span>
@@ -34,12 +37,12 @@
         <span class="sep">·</span>
         <span id="ex-estres">Tranqui</span>
       </div>
-      <div id="ex-inicio" class="aviso-inicio oculto" role="status">
-        <span class="aviso-inicio-tipo">Día de ejemplo</span>
+      <div id="ex-inicio" class="aviso-inicio" role="status">
+        <span class="aviso-inicio-tipo" id="ex-inicio-tipo">En vivo</span>
         <span class="aviso-inicio-wip" id="ex-inicio-wip">WIP 9</span>
         <span id="ex-inicio-texto">Muchas tareas a la vez</span>
       </div>
-      <div id="ex-fin" class="aviso-fin oculto" role="status">
+      <div id="ex-fin" class="aviso-fin oculto solo-exhibicion" role="status">
         <strong id="ex-fin-titulo">Fin del día</strong>
         <table class="comparacion" aria-label="Comparación de los días">
           <thead><tr><th></th><th>Terminadas</th><th>Colillas</th><th>Cafés</th><th>Estrés máx.</th></tr></thead>
@@ -122,7 +125,7 @@
         </table>
         <button id="btn-borrar-historial" class="boton-texto" type="button" hidden>Borrar historial</button>
         <p class="atajos" aria-label="Atajos de teclado">
-          <kbd>Espacio</kbd> pausa · <kbd>R</kbd> reinicia · <kbd>E</kbd> exhibición · <kbd>B</kbd> cerebro · <kbd>C</kbd> controles
+          <kbd>Espacio</kbd> pausa · <kbd>R</kbd> reinicia · <kbd>1–9</kbd> WIP · <kbd>E</kbd> exhibición · <kbd>B</kbd> cerebro · <kbd>C</kbd> controles
         </p>
       </section>
     </aside>

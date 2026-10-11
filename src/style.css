@@ -1513,3 +1513,53 @@ body.exhibicion .cerebro-lado {
   font-size: 12.5px;
   font-weight: 500;
 }
+
+/* ---------- Exhibición: la misma partida (en vivo / en pausa / terminado) ---------- */
+
+.ex-situacion {
+  font-weight: 700;
+}
+
+.ex-terminado {
+  display: none;
+}
+
+.rotulo-escena[data-estado='terminado'] .ex-terminado {
+  display: inline;
+}
+
+.rotulo-escena[data-estado='pausa'] .punto-vivo,
+.rotulo-escena[data-estado='terminado'] .punto-vivo {
+  background: var(--oscuro-tenue);
+  box-shadow: none;
+  animation: none;
+}
+
+#ex-pausa {
+  color: #ffd27a;
+}
+
+#ex-pausa[hidden] {
+  display: none;
+}
+
+.ex-ritmo {
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.ex-ritmo[hidden] {
+  display: none;
+}
+
+.atajo kbd + kbd,
+.atajo kbd {
+  margin-left: 6px;
+}
+
+.atajo kbd:first-child {
+  margin-left: 0;
+}
