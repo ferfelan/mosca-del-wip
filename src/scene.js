@@ -60,11 +60,7 @@ export function crearEscena(canvas) {
   contraluz.position.set(0.6, 2.8, -3.4);
   scene.add(contraluz);
 
-  window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
+  // El tamaño del lienzo lo ajusta main.js según la vista (control o exhibición)
 
   return { scene, camera, renderer, controls };
 }

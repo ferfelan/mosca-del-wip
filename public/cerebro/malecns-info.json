@@ -1,0 +1,53 @@
+{
+  "fuente": "Male CNS connectome v1.0 — FlyEM (HHMI Janelia), University of Cambridge, MRC LMB y Google Research",
+  "url": "https://male-cns.janelia.org",
+  "licencia": "CC BY 4.0",
+  "tabla": "body-annotations-male-cns-v1.0-minconf-0.5.feather",
+  "cuerpos_en_tabla": 211577,
+  "neuronas_con_posicion": 139662,
+  "puntos": 25000,
+  "escala": 2,
+  "unidad": "µm",
+  "tamano_um": [
+    728.1,
+    995.0,
+    512.5
+  ],
+  "grupos": [
+    {
+      "id": "vision",
+      "nombre": "Visión",
+      "detalle": "lóbulos ópticos",
+      "muestra": 10500,
+      "real": 90810
+    },
+    {
+      "id": "central",
+      "nombre": "Cerebro central",
+      "detalle": "integra y decide",
+      "muestra": 5500,
+      "real": 27584
+    },
+    {
+      "id": "memoria",
+      "nombre": "Memoria",
+      "detalle": "cuerpos fungiformes",
+      "muestra": 2000,
+      "real": 4486
+    },
+    {
+      "id": "mando",
+      "nombre": "Mando",
+      "detalle": "conecta cerebro y cuerpo",
+      "muestra": 2500,
+      "real": 3132
+    },
+    {
+      "id": "movimiento",
+      "nombre": "Movimiento",
+      "detalle": "cordón nervioso y motoras",
+      "muestra": 4500,
+      "real": 13650
+    }
+  ]
+}

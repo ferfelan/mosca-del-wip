@@ -7,12 +7,43 @@
     <title>Mosca del WIP</title>
   </head>
   <body>
-    <canvas id="lienzo-3d"></canvas>
+    <header id="barra-exhibicion" class="solo-exhibicion" aria-hidden="true">
+      <div class="marca">
+        <span class="marca-nombre">Mosca del WIP</span>
+        <span class="marca-sub">Un día de oficina con muchas tareas a la vez · se repite solo</span>
+      </div>
+      <div class="barra-datos">
+        <span class="chip-datos" id="chip-datos">Male CNS v1.0 · cerebro + cordón nervioso</span>
+        <span class="atajo"><kbd>E</kbd> volver al control</span>
+      </div>
+    </header>
+
+    <div id="escena">
+      <canvas id="lienzo-3d"></canvas>
+      <div class="rotulo-escena solo-exhibicion">
+        <span class="punto-vivo"></span>
+        <span id="ex-wip">WIP 9</span>
+        <span class="sep">·</span>
+        <span id="ex-hora">09:00</span>
+        <span class="sep">·</span>
+        <span id="ex-hechas">0 terminadas</span>
+        <span class="sep">·</span>
+        <span id="ex-colillas">0 colillas</span>
+        <span class="sep">·</span>
+        <span id="ex-estres">Tranqui</span>
+      </div>
+      <div id="ex-fin" class="aviso-fin oculto" role="status">
+        <strong>Fin del día de ejemplo</strong>
+        <span id="ex-fin-texto"></span>
+      </div>
+    </div>
 
     <aside id="panel">
       <header class="cabecera">
-        <h1>Mosca del WIP</h1>
-        <p class="subtitulo">Un día de oficina, de 09:00 a 18:00</p>
+        <div>
+          <h1>Mosca del WIP</h1>
+          <p class="subtitulo">Un día de oficina, de 09:00 a 18:00</p>
+        </div>
       </header>
 
       <section class="bloque">
@@ -74,6 +105,48 @@
         <button id="btn-borrar-historial" class="boton-texto" type="button" hidden>Borrar historial</button>
       </section>
     </aside>
+
+    <section id="cerebro" aria-label="Cerebro de la mosca en vivo">
+      <header class="cerebro-cabecera">
+        <div>
+          <h2>Cerebro en vivo</h2>
+          <p class="cerebro-sub">Neuronas reales<span class="solo-exhibicion-inline"> de la mosca · Male CNS v1.0 · cerebro + cordón nervioso</span></p>
+        </div>
+        <button id="btn-exhibicion" class="boton-exhibicion solo-control" type="button" title="Vista exhibición: pantalla completa para mostrar (tecla E)">
+          Exhibición
+          <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M9.5 2.5h4v4M13.5 2.5 9 7M6.5 13.5h-4v-4M2.5 13.5 7 9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </header>
+      <div class="cerebro-cuerpo">
+        <div class="cerebro-lienzo"><canvas id="lienzo-cerebro"></canvas></div>
+        <div class="cerebro-lado">
+          <div class="cerebro-contadores">
+            <div class="contador">
+              <span class="contador-valor" id="c-activas">0</span>
+              <span class="contador-label">neuronas activas</span>
+            </div>
+            <div class="contador">
+              <span class="contador-valor" id="c-nivel">0%</span>
+              <span class="contador-label">actividad</span>
+            </div>
+            <div class="contador">
+              <span class="contador-valor" id="c-estado">Trabaja</span>
+              <span class="contador-label">estado</span>
+            </div>
+          </div>
+          <ul class="cerebro-grupos" id="cerebro-grupos"></ul>
+          <div class="cerebro-pie">
+            <p class="cerebro-nota">Etapa 2: luces ilustrativas. En la Etapa 3 las controlará el conectoma real.</p>
+            <p class="cerebro-credito">
+              <span class="solo-control-inline">Datos: Male CNS v1.0 · CC BY 4.0</span>
+              <span class="credito-largo" id="cerebro-credito">Datos: Male CNS v1.0 · CC BY 4.0</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div id="velo" aria-hidden="true"></div>
 
     <div id="banner-fin-dia" class="oculto">
       <p><strong>Fin del día.</strong> Mira la tabla o reinicia para probar otro WIP.</p>

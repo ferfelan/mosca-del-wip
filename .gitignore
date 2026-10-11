@@ -2,3 +2,10 @@ node_modules
 dist
 .DS_Store
 capturas
+
+# Imágenes de referencia de terceros (no son nuestras, no se suben)
+referencias/
+
+# Datos crudos descargados y herramientas de Python (se regeneran con scripts/datos/)
+datos-crudos/
+.venv-datos/

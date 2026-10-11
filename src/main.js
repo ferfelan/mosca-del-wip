@@ -1,9 +1,12 @@
 import './style.css';
+import * as THREE from 'three';
 import { crearEscena, CAMARA_INICIAL } from './scene.js';
 import { crearOficina } from './office.js';
 import { crearMosca } from './fly.js';
 import { DayBrain } from './brain.js';
 import { revisarChoques } from './choques.js';
+import { cargarDatosCerebro, crearCerebro, GRUPOS_VISUALES } from './cerebro.js';
+import { POS_CENICERO, POS_CAJETILLA, CENTRO_PANTALLA, ESCALA_MONITOR } from './layout.js';
 
 const CLAVE_STORAGE = 'mosca-del-wip-dias';
 const MIN_SIM_POR_SEG_REAL = 540 / 60; // día de 540 min simulados en 60s reales a x1
@@ -36,6 +39,23 @@ let diaYaRegistrado = false;
 let colillasPintadas = 0;
 
 let juego = new DayBrain(Number(elWip.value));
+
+// ---------- Vistas: "control" (normal) y "exhibición" (pantalla completa) ----------
+const WIP_EXHIBICION = 9;
+const PAUSA_FIN_EXHIBICION = 5; // segundos mostrando el resumen antes de repetir
+const elEscena = document.getElementById('escena');
+const elVelo = document.getElementById('velo');
+const elExWip = document.getElementById('ex-wip');
+const elExHora = document.getElementById('ex-hora');
+const elExHechas = document.getElementById('ex-hechas');
+const elExColillas = document.getElementById('ex-colillas');
+const elExEstres = document.getElementById('ex-estres');
+const elExFin = document.getElementById('ex-fin');
+const elExFinTexto = document.getElementById('ex-fin-texto');
+let vista = 'control';
+let guardadoControl = null; // el juego del usuario mientras se ve la exhibición
+let finExhibicion = 0;
+let cambiandoVista = false;
 
 // Historial de días: se guarda en el navegador (sobrevive a recargar la
 // página) y sólo se conservan los últimos 5.
@@ -172,6 +192,16 @@ function refrescarUI(estado, cigarroEnMano) {
     colillasPintadas++;
   }
 
+  if (vista === 'exhibicion') {
+    elExWip.textContent = `WIP ${estado.wip ?? WIP_EXHIBICION}`;
+    elExHora.textContent = estado.hora;
+    elExHechas.textContent = `${estado.hechas} terminadas`;
+    elExColillas.textContent = `${estado.colillas} colillas`;
+    elExEstres.textContent = estado.nivel.nombre;
+    elExEstres.style.color = estado.nivel.color;
+    return;
+  }
+
   if (estado.terminado && !diaYaRegistrado) {
     diaYaRegistrado = true;
     guardarDia(juego.resumenFinal());
@@ -179,15 +209,206 @@ function refrescarUI(estado, cigarroEnMano) {
   }
 }
 
-let ultimoTiempo = performance.now();
+// ---------- Tamaño de los lienzos y encuadre ----------
+function ajustarEscena() {
+  const w = Math.max(1, elEscena.clientWidth);
+  const h = Math.max(1, elEscena.clientHeight);
+  renderer.setSize(w, h); // también fija el tamaño visible del lienzo
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+}
+new ResizeObserver(() => {
+  ajustarEscena();
+  if (vista === 'exhibicion') encuadrarExhibicion();
+}).observe(elEscena);
+ajustarEscena();
 
-function animar() {
+// En exhibición la cámara mira desde el mismo ángulo oficial, pero se
+// acerca o aleja para que la mosca, el monitor y el cenicero entren bien en
+// el recuadro (que es más angosto que la pantalla completa).
+const _caja = new THREE.Box3();
+const _p = new THREE.Vector3();
+function encuadrarExhibicion() {
+  _caja.setFromObject(mosca.grupo);
+  const anchoPantalla = 0.49 * ESCALA_MONITOR;
+  _caja.expandByPoint(_p.copy(CENTRO_PANTALLA).add(new THREE.Vector3(anchoPantalla, 0.36 * ESCALA_MONITOR, 0)));
+  _caja.expandByPoint(_p.copy(CENTRO_PANTALLA).add(new THREE.Vector3(-anchoPantalla, 0.36 * ESCALA_MONITOR, 0)));
+  _caja.expandByPoint(_p.copy(POS_CENICERO).add(new THREE.Vector3(0.2, 0, 0.2)));
+  _caja.expandByPoint(_p.copy(POS_CAJETILLA).add(new THREE.Vector3(0.1, 0.12, 0.1)));
+  const centro = _caja.getCenter(new THREE.Vector3());
+  const direccion = CAMARA_INICIAL.posicion.clone().sub(CAMARA_INICIAL.objetivo).normalize();
+  const esquinas = [];
+  for (const x of [_caja.min.x, _caja.max.x])
+    for (const y of [_caja.min.y, _caja.max.y]) for (const z of [_caja.min.z, _caja.max.z]) esquinas.push(new THREE.Vector3(x, y, z));
+  // El rótulo de abajo ocupa un poco: dejo más margen abajo
+  for (let d = 2; d < 14; d += 0.05) {
+    camera.position.copy(centro).addScaledVector(direccion, d);
+    camera.lookAt(centro);
+    camera.updateMatrixWorld();
+    const entra = esquinas.every((e) => {
+      _p.copy(e).project(camera);
+      return Math.abs(_p.x) < 0.9 && _p.y < 0.9 && _p.y > -0.78;
+    });
+    if (entra) break;
+  }
+  controls.target.copy(centro);
+}
+
+// ---------- Cambio de vista ----------
+function reponerCenicero() {
+  oficina.limpiarColillas();
+  colillasPintadas = 0;
+}
+
+function nuevoDiaExhibicion() {
+  juego = new DayBrain(WIP_EXHIBICION);
+  reponerCenicero();
+  finExhibicion = 0;
+  elExFin.classList.add('oculto');
+}
+
+function aplicarVista(nueva) {
+  if (nueva === vista) return;
+  if (nueva === 'exhibicion') {
+    guardadoControl = { juego, diaYaRegistrado };
+    nuevoDiaExhibicion();
+    controls.enabled = false;
+    controls.maxDistance = 30;
+  } else {
+    ({ juego, diaYaRegistrado } = guardadoControl);
+    guardadoControl = null;
+    reponerCenicero();
+    controls.enabled = true;
+    controls.maxDistance = 7;
+    camera.position.copy(CAMARA_INICIAL.posicion);
+    controls.target.copy(CAMARA_INICIAL.objetivo);
+  }
+  vista = nueva;
+  document.body.classList.toggle('exhibicion', nueva === 'exhibicion');
+  ajustarEscena();
+  if (nueva === 'exhibicion') encuadrarExhibicion();
+  controls.update();
+}
+
+// Transición suave: se funde a oscuro, cambia, y vuelve a aparecer
+function cambiarVista(nueva = vista === 'control' ? 'exhibicion' : 'control', inmediato = false) {
+  if (cambiandoVista || nueva === vista) return;
+  if (inmediato) {
+    aplicarVista(nueva);
+    return;
+  }
+  cambiandoVista = true;
+  elVelo.classList.add('activo');
+  setTimeout(() => {
+    aplicarVista(nueva);
+    requestAnimationFrame(() => {
+      elVelo.classList.remove('activo');
+      setTimeout(() => (cambiandoVista = false), 350);
+    });
+  }, 330);
+}
+
+document.getElementById('btn-exhibicion').addEventListener('click', () => cambiarVista('exhibicion'));
+window.addEventListener('keydown', (e) => {
+  if (e.target instanceof HTMLInputElement && e.key !== 'Escape') {
+    if (e.target.type !== 'range') return;
+  }
+  if (e.key === 'e' || e.key === 'E') cambiarVista();
+  if (e.key === 'Escape' && vista === 'exhibicion') cambiarVista('control');
+});
+
+// En exhibición el cursor se esconde si no se mueve (para mostrar en una tele)
+let temporizadorCursor = null;
+window.addEventListener('mousemove', () => {
+  document.body.classList.remove('sin-cursor');
+  clearTimeout(temporizadorCursor);
+  temporizadorCursor = setTimeout(() => document.body.classList.add('sin-cursor'), 2000);
+});
+
+// ---------- Cerebro ----------
+let cerebro = null;
+const elActivas = document.getElementById('c-activas');
+const elNivel = document.getElementById('c-nivel');
+const elEstado = document.getElementById('c-estado');
+const elGrupos = document.getElementById('cerebro-grupos');
+const filasGrupo = {};
+const formato = new Intl.NumberFormat('es-CL');
+
+cargarDatosCerebro()
+  .then((datos) => {
+    cerebro = crearCerebro(document.getElementById('lienzo-cerebro'), datos);
+    const { info } = datos;
+    datos.info.grupos.forEach((g) => {
+      const li = document.createElement('li');
+      li.className = 'grupo';
+      li.style.setProperty('--c', GRUPOS_VISUALES[g.id].color);
+      li.innerHTML = `<span class="grupo-nombre"><span class="grupo-punto"></span>${g.nombre}</span><span class="grupo-valor">0%</span><span class="grupo-barra"><span></span></span><span class="grupo-detalle">${g.detalle}</span>`;
+      elGrupos.appendChild(li);
+      filasGrupo[g.id] = { valor: li.querySelector('.grupo-valor'), barra: li.querySelector('.grupo-barra span') };
+    });
+    document.getElementById('cerebro-credito').textContent =
+      `Datos: Male CNS v1.0 (Janelia, Cambridge, MRC LMB y Google) · CC BY 4.0 · ` +
+      `${formato.format(info.puntos)} de ${formato.format(info.neuronas_con_posicion)} neuronas`;
+    document.getElementById('chip-datos').textContent =
+      `Male CNS v1.0 · ${formato.format(info.neuronas_con_posicion)} neuronas con posición · muestra de ${formato.format(info.puntos)}`;
+  })
+  .catch((err) => console.error('No se pudo cargar el cerebro', err));
+
+let ultimaLectura = 0;
+function refrescarCerebro(dt, estado, fumandoVisible, ahora) {
+  if (!cerebro) return;
+  cerebro.actualizar(dt, {
+    enCurso: estado.enCurso,
+    estres: estado.estres / 100,
+    fumando: fumandoVisible,
+    terminado: estado.terminado,
+    hechas: estado.hechas,
+  });
+  cerebro.renderizar();
+  // Los números se actualizan unas 8 veces por segundo (más se vería nervioso)
+  if (ahora - ultimaLectura < 125) return;
+  ultimaLectura = ahora;
+  const l = cerebro.lectura();
+  elActivas.textContent = formato.format(l.activas);
+  elNivel.textContent = `${Math.round(l.nivel * 100)}%`;
+  const estadoTexto = estado.terminado ? 'Descansa' : fumandoVisible ? 'Fuma' : 'Trabaja';
+  elEstado.textContent = estadoTexto;
+  elEstado.classList.toggle('fuma', estadoTexto === 'Fuma');
+  l.porGrupo.forEach((g) => {
+    const fila = filasGrupo[g.id];
+    if (!fila) return;
+    const pct = Math.round(g.actividad * 100);
+    fila.valor.textContent = `${pct}%`;
+    fila.barra.style.width = `${pct}%`;
+  });
+}
+
+// ---------- Bucle principal (máximo 60 cuadros por segundo: fluido y sin calentar) ----------
+const CUADRO_MINIMO = 1000 / 61;
+let ultimoTiempo = performance.now();
+let ultimoCuadro = 0;
+
+function animar(ahora = performance.now()) {
   requestAnimationFrame(animar);
-  const ahora = performance.now();
+  if (ahora - ultimoCuadro < CUADRO_MINIMO) return;
+  ultimoCuadro = ahora;
   const dtReal = Math.min((ahora - ultimoTiempo) / 1000, 0.1);
   ultimoTiempo = ahora;
 
-  if (!pausado && !juego.terminado) {
+  const enExhibicion = vista === 'exhibicion';
+  if (enExhibicion) {
+    if (!juego.terminado) juego.tick(dtReal * MIN_SIM_POR_SEG_REAL);
+    else {
+      // Día de ejemplo terminado: muestro el resumen y empiezo otro
+      if (finExhibicion === 0) {
+        const r = juego.resumenFinal();
+        elExFinTexto.textContent = `${r.hechas} tareas terminadas · ${r.colillas} colillas · estrés máximo ${r.estresMax}%. Empieza otro día…`;
+        elExFin.classList.remove('oculto');
+      }
+      finExhibicion += dtReal;
+      if (finExhibicion > PAUSA_FIN_EXHIBICION) nuevoDiaExhibicion();
+    }
+  } else if (!pausado && !juego.terminado) {
     juego.tick(dtReal * MIN_SIM_POR_SEG_REAL * VELOCIDADES[indiceVelocidad]);
   }
 
@@ -200,6 +421,7 @@ function animar() {
 
   controls.update();
   renderer.render(scene, camera);
+  refrescarCerebro(dtReal, estado, mosca.cigarroEnMano(), ahora);
 }
 
 animar();
@@ -248,6 +470,11 @@ if (import.meta.env.DEV) {
       refrescarUI(estado, mosca.cigarroEnMano());
     },
     choques: (opciones) => revisarChoques(scene, opciones),
+    vista: (v) => cambiarVista(v, true),
+    // Salta casi al final del día (para probar el loop de exhibición)
+    casiFin: () => (juego.minutoActual = 18 * 60 - 2),
+    camaraInfo: () => ({ pos: camera.position.toArray(), obj: controls.target.toArray(), aspect: camera.aspect }),
+    cerebro: () => cerebro?.lectura(),
     reencuadrar() {
       camera.position.copy(CAMARA_INICIAL.posicion);
       controls.target.copy(CAMARA_INICIAL.objetivo);

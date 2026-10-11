@@ -158,6 +158,7 @@ export class DayBrain {
   estado() {
     return {
       hora: this.horaTexto(),
+      wip: this.wip,
       fraccionDelDia: this.fraccionDelDia,
       porHacer: this.porHacer.length,
       enCurso: this.enCurso.length,
