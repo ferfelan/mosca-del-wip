@@ -6,7 +6,7 @@ import { crearMosca } from './fly.js';
 import { DayBrain } from './brain.js';
 import { revisarChoques } from './choques.js';
 import { cargarDatosCerebro, crearCerebro, GRUPOS_VISUALES } from './cerebro.js';
-import { POS_CENICERO, POS_CAJETILLA, CENTRO_PANTALLA, ESCALA_MONITOR } from './layout.js';
+import { POS_CENICERO, CENTRO_PANTALLA, ESCALA_MONITOR } from './layout.js';
 
 const CLAVE_STORAGE = 'mosca-del-wip-dias';
 const MIN_SIM_POR_SEG_REAL = 540 / 60; // día de 540 min simulados en 60s reales a x1
@@ -211,13 +211,114 @@ function refrescarUI(estado, cigarroEnMano) {
 }
 
 // ---------- Tamaño de los lienzos y encuadre ----------
+// Resolución: en Control, la real de la pantalla (y se actualiza si la
+// ventana pasa a otra pantalla); en Exhibición, siempre al doble (nítida
+// aunque la pantalla no sea Retina).
+function ratioEscena() {
+  const dpr = window.devicePixelRatio || 1;
+  return vista === 'exhibicion' ? 2 : Math.min(Math.max(dpr, 1), 2);
+}
+let dprAplicado = 0;
 function ajustarEscena() {
   const w = Math.max(1, elEscena.clientWidth);
   const h = Math.max(1, elEscena.clientHeight);
+  dprAplicado = window.devicePixelRatio;
+  renderer.setPixelRatio(ratioEscena());
   renderer.setSize(w, h); // también fija el tamaño visible del lienzo
   camera.aspect = w / h;
+  aplicarEspacioPanel();
+}
+
+// ---------- Panel del cerebro: mostrar / ocultar ----------
+// Cuando el panel está visible en Control, la escena se corre a la derecha
+// y se aleja un poco (sólo la imagen, sin mover la cámara) para que la
+// mosca no quede tapada. Al ocultarlo, vuelve al encuadre oficial.
+const CLAVE_CEREBRO_OCULTO = 'mosca-del-wip-cerebro-oculto';
+const elCerebro = document.getElementById('cerebro');
+const elPanelControl = document.getElementById('panel');
+let cerebroOculto = false;
+try {
+  cerebroOculto = localStorage.getItem(CLAVE_CEREBRO_OCULTO) === '1';
+} catch {
+  // sin almacenamiento: empieza visible
+}
+let factorPanel = cerebroOculto ? 0 : 1; // 1 = el panel ocupa su espacio
+const camBase = new THREE.PerspectiveCamera();
+const _v = new THREE.Vector3();
+// Silueta de la mosca: una muestra de puntos reales de su cuerpo (se
+// renueva cada tanto porque la mosca se mueve un poco)
+let silueta = [];
+let cuadrosSilueta = 0;
+function muestrearSilueta() {
+  silueta = [];
+  mosca.grupo.updateMatrixWorld(true);
+  mosca.grupo.traverse((o) => {
+    if (!o.isMesh || !o.visible || !o.geometry?.attributes?.position) return;
+    const pos = o.geometry.attributes.position;
+    const paso = Math.max(1, Math.floor(pos.count / 24));
+    for (let i = 0; i < pos.count; i += paso) silueta.push(new THREE.Vector3().fromBufferAttribute(pos, i).applyMatrix4(o.matrixWorld));
+  });
+}
+
+function aplicarEspacioPanel() {
+  if (vista === 'exhibicion' || factorPanel < 0.002) {
+    camera.zoom = 1;
+    camera.clearViewOffset();
+    camera.updateProjectionMatrix();
+    return;
+  }
+  const w = elEscena.clientWidth;
+  const h = elEscena.clientHeight;
+  // ¿Dónde quedaría el borde izquierdo de la mosca con el encuadre normal?
+  camera.updateMatrixWorld();
+  camBase.fov = camera.fov;
+  camBase.aspect = camera.aspect;
+  camBase.near = camera.near;
+  camBase.far = camera.far;
+  camBase.updateProjectionMatrix();
+  if (cuadrosSilueta-- <= 0) {
+    muestrearSilueta();
+    cuadrosSilueta = 120;
+  }
+  let xMin = Infinity;
+  for (const e of silueta) {
+    _v.copy(e).applyMatrix4(camera.matrixWorldInverse).applyMatrix4(camBase.projectionMatrix);
+    xMin = Math.min(xMin, ((_v.x + 1) / 2) * w);
+  }
+  const izquierda = elCerebro.offsetLeft + elCerebro.offsetWidth + 16;
+  const derecha = elPanelControl.getBoundingClientRect().left - 8;
+  const c = w / 2;
+  let zoom = 1;
+  let dx = 0;
+  if (xMin < izquierda && derecha > izquierda) {
+    zoom = Math.min(1, Math.max(0.7, (derecha - izquierda) / (derecha - xMin)));
+    dx = izquierda - c - (xMin - c) * zoom;
+  }
+  const dy = (1 - zoom) * h * 0.3;
+  const f = factorPanel;
+  camera.zoom = 1 + (zoom - 1) * f;
+  camera.setViewOffset(w, h, -dx * f, -dy * f, w, h);
   camera.updateProjectionMatrix();
 }
+
+function pintarCerebroOculto() {
+  document.body.classList.toggle('cerebro-oculto', cerebroOculto);
+  document.getElementById('btn-ocultar-cerebro').setAttribute('aria-expanded', String(!cerebroOculto));
+}
+
+function alternarCerebro(ocultar = !cerebroOculto) {
+  if (vista !== 'control') return;
+  cerebroOculto = ocultar;
+  try {
+    localStorage.setItem(CLAVE_CEREBRO_OCULTO, ocultar ? '1' : '0');
+  } catch {
+    // sin almacenamiento: sólo dura esta sesión
+  }
+  pintarCerebroOculto();
+}
+document.getElementById('btn-ocultar-cerebro').addEventListener('click', () => alternarCerebro(true));
+document.getElementById('btn-mostrar-cerebro').addEventListener('click', () => alternarCerebro(false));
+pintarCerebroOculto();
 new ResizeObserver(() => {
   ajustarEscena();
   if (vista === 'exhibicion') encuadrarExhibicion();
@@ -230,29 +331,30 @@ ajustarEscena();
 const _caja = new THREE.Box3();
 const _p = new THREE.Vector3();
 function encuadrarExhibicion() {
-  _caja.setFromObject(mosca.grupo);
+  // La mosca (sin la silla), la pantalla con el kanban y el cenicero
+  _caja.setFromObject(mosca.figura);
   const anchoPantalla = 0.49 * ESCALA_MONITOR;
   _caja.expandByPoint(_p.copy(CENTRO_PANTALLA).add(new THREE.Vector3(anchoPantalla, 0.36 * ESCALA_MONITOR, 0)));
   _caja.expandByPoint(_p.copy(CENTRO_PANTALLA).add(new THREE.Vector3(-anchoPantalla, 0.36 * ESCALA_MONITOR, 0)));
-  _caja.expandByPoint(_p.copy(POS_CENICERO).add(new THREE.Vector3(0.2, 0, 0.2)));
-  _caja.expandByPoint(_p.copy(POS_CAJETILLA).add(new THREE.Vector3(0.1, 0.12, 0.1)));
+  _caja.expandByPoint(_p.copy(POS_CENICERO).add(new THREE.Vector3(0.12, 0, 0.12)));
   const centro = _caja.getCenter(new THREE.Vector3());
   const direccion = CAMARA_INICIAL.posicion.clone().sub(CAMARA_INICIAL.objetivo).normalize();
   const esquinas = [];
   for (const x of [_caja.min.x, _caja.max.x])
     for (const y of [_caja.min.y, _caja.max.y]) for (const z of [_caja.min.z, _caja.max.z]) esquinas.push(new THREE.Vector3(x, y, z));
   // El rótulo de abajo ocupa un poco: dejo más margen abajo
-  for (let d = 2; d < 14; d += 0.05) {
+  for (let d = 1.5; d < 14; d += 0.02) {
     camera.position.copy(centro).addScaledVector(direccion, d);
     camera.lookAt(centro);
     camera.updateMatrixWorld();
     const entra = esquinas.every((e) => {
       _p.copy(e).project(camera);
-      return Math.abs(_p.x) < 0.9 && _p.y < 0.9 && _p.y > -0.78;
+      return Math.abs(_p.x) < 0.97 && _p.y < 0.95 && _p.y > -0.84;
     });
     if (entra) break;
   }
   controls.target.copy(centro);
+  controls.update();
 }
 
 // ---------- Cambio de vista ----------
@@ -273,20 +375,18 @@ function aplicarVista(nueva) {
   if (nueva === 'exhibicion') {
     guardadoControl = { juego, diaYaRegistrado };
     nuevoDiaExhibicion();
-    controls.enabled = false;
-    controls.maxDistance = 30;
+    // Se puede rotar y hacer zoom con el mouse, igual que en Control
+    controls.maxDistance = 12;
   } else {
     ({ juego, diaYaRegistrado } = guardadoControl);
     guardadoControl = null;
     reponerCenicero();
-    controls.enabled = true;
     controls.maxDistance = 7;
     camera.position.copy(CAMARA_INICIAL.posicion);
     controls.target.copy(CAMARA_INICIAL.objetivo);
   }
   vista = nueva;
   document.body.classList.toggle('exhibicion', nueva === 'exhibicion');
-  cerebro?.disposicion(nueva === 'exhibicion' ? 'vertical' : 'horizontal');
   ajustarEscena();
   if (nueva === 'exhibicion') encuadrarExhibicion();
   controls.update();
@@ -316,6 +416,7 @@ window.addEventListener('keydown', (e) => {
     if (e.target.type !== 'range') return;
   }
   if (e.key === 'e' || e.key === 'E') cambiarVista();
+  if (e.key === 'b' || e.key === 'B') alternarCerebro();
   if (e.key === 'Escape' && vista === 'exhibicion') cambiarVista('control');
 });
 
@@ -339,7 +440,6 @@ const formato = new Intl.NumberFormat('es-CL');
 cargarDatosCerebro()
   .then((datos) => {
     cerebro = crearCerebro(document.getElementById('lienzo-cerebro'), datos);
-    cerebro.disposicion(vista === 'exhibicion' ? 'vertical' : 'horizontal');
     const { info } = datos;
     datos.info.grupos.forEach((g) => {
       const li = document.createElement('li');
@@ -367,6 +467,8 @@ function refrescarCerebro(dt, estado, fumandoVisible, ahora) {
     terminado: estado.terminado,
     hechas: estado.hechas,
   });
+  // Oculto (y ya fuera de la pantalla): no se dibuja, así no gasta nada
+  if (vista === 'control' && cerebroOculto && factorPanel === 0) return;
   cerebro.renderizar();
   // Los números se actualizan unas 8 veces por segundo (más se vería nervioso)
   if (ahora - ultimaLectura < 125) return;
@@ -398,6 +500,7 @@ function animar(ahora = performance.now()) {
   const dtReal = Math.min((ahora - ultimoTiempo) / 1000, 0.1);
   ultimoTiempo = ahora;
 
+  if (window.devicePixelRatio !== dprAplicado) ajustarEscena();
   const enExhibicion = vista === 'exhibicion';
   if (enExhibicion) {
     if (!juego.terminado) juego.tick(dtReal * MIN_SIM_POR_SEG_REAL);
@@ -423,6 +526,11 @@ function animar(ahora = performance.now()) {
   refrescarUI(estado, mosca.cigarroEnMano());
 
   controls.update();
+  // El espacio que ocupa el panel del cerebro cambia de a poco (transición suave)
+  const objetivoPanel = enExhibicion || cerebroOculto ? 0 : 1;
+  factorPanel += (objetivoPanel - factorPanel) * (1 - Math.exp(-7 * dtReal));
+  if (Math.abs(objetivoPanel - factorPanel) < 0.002) factorPanel = objetivoPanel;
+  aplicarEspacioPanel();
   renderer.render(scene, camera);
   refrescarCerebro(dtReal, estado, mosca.cigarroEnMano(), ahora);
 }
@@ -474,6 +582,7 @@ if (import.meta.env.DEV) {
     },
     choques: (opciones) => revisarChoques(scene, opciones),
     vista: (v) => cambiarVista(v, true),
+    ocultarCerebro: (v) => alternarCerebro(v),
     // Salta casi al final del día (para probar el loop de exhibición)
     posCabeza: () => mosca.cabeza.getWorldPosition(new THREE.Vector3()).toArray(),
     diaExhibicion: (w) => {

@@ -38,10 +38,6 @@ export async function cargarDatosCerebro() {
   return { info, posiciones, grupos, tonos };
 }
 
-// Altura (en µm) que separa el cerebro (arriba) del cordón nervioso (abajo):
-// entre ambos hay un hueco sin cuerpos de neuronas.
-const CORTE_CEREBRO_CORDON = 160;
-
 const VERTICE = /* glsl */ `
   attribute vec3 aColor;
   attribute float aGrupo;
@@ -120,45 +116,6 @@ function texturaResplandor() {
   return t;
 }
 
-// Separa los puntos en dos piezas (cerebro y cordón) y calcula su tamaño
-function crearPieza(indices, posiciones, colores, grupos, semillas, material) {
-  const n = indices.length;
-  const pos = new Float32Array(n * 3);
-  const col = new Float32Array(n * 3);
-  const grp = new Float32Array(n);
-  const sem = new Float32Array(n);
-  const min = [Infinity, Infinity, Infinity];
-  const max = [-Infinity, -Infinity, -Infinity];
-  let sx = 0;
-  let sz = 0;
-  indices.forEach((i, k) => {
-    for (let e = 0; e < 3; e++) {
-      const v = posiciones[i * 3 + e];
-      pos[k * 3 + e] = v;
-      col[k * 3 + e] = colores[i * 3 + e];
-      min[e] = Math.min(min[e], v);
-      max[e] = Math.max(max[e], v);
-    }
-    sx += posiciones[i * 3];
-    sz += posiciones[i * 3 + 2];
-    grp[k] = grupos[i];
-    sem[k] = semillas[i];
-  });
-  const geo = new THREE.BufferGeometry();
-  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  geo.setAttribute('aColor', new THREE.BufferAttribute(col, 3));
-  geo.setAttribute('aGrupo', new THREE.BufferAttribute(grp, 1));
-  geo.setAttribute('aSemilla', new THREE.BufferAttribute(sem, 1));
-  const puntos = new THREE.Points(geo, material);
-  puntos.frustumCulled = false;
-  const centro = { x: sx / n, y: (min[1] + max[1]) / 2, z: sz / n };
-  // radio de giro alrededor del eje largo de la pieza (desde el centro de masa)
-  let radio = 0;
-  for (let k = 0; k < n; k++) radio = Math.max(radio, Math.hypot(pos[k * 3] - centro.x, pos[k * 3 + 2] - centro.z));
-  // (el mismo radio sirve para el cordón acostado: rueda sobre ese eje)
-  return { puntos, centro, alto: max[1] - min[1], radio, radioLargo: radio, min, max };
-}
-
 export function crearCerebro(canvas, datos) {
   const { info, posiciones, grupos, tonos } = datos;
   const ids = info.grupos.map((g) => g.id);
@@ -212,105 +169,40 @@ export function crearCerebro(canvas, datos) {
     blending: THREE.AdditiveBlending,
   });
 
-  const idxCerebro = [];
-  const idxCordon = [];
-  for (let i = 0; i < n; i++) (posiciones[i * 3 + 1] > CORTE_CEREBRO_CORDON ? idxCerebro : idxCordon).push(i);
-  const cerebro = crearPieza(idxCerebro, posiciones, colores, grupos, semillas, material);
-  const cordon = crearPieza(idxCordon, posiciones, colores, grupos, semillas, material);
+  const grupoF = new Float32Array(n);
+  for (let i = 0; i < n; i++) grupoF[i] = grupos[i];
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(posiciones, 3));
+  geo.setAttribute('aColor', new THREE.BufferAttribute(colores, 3));
+  geo.setAttribute('aGrupo', new THREE.BufferAttribute(grupoF, 1));
+  geo.setAttribute('aSemilla', new THREE.BufferAttribute(semillas, 1));
+  const nube = new THREE.Points(geo, material);
+  nube.frustumCulled = false;
 
-  // ---------- Dos disposiciones ----------
-  // "vertical" (exhibición): el sistema nervioso completo, cerebro arriba y
-  //   cordón colgando, girando juntos alrededor de un eje vertical.
-  // "horizontal" (panel chico): cerebro a la izquierda (de frente, girando)
-  //   y el cordón acostado a su lado (rodando sobre su eje largo), como va
-  //   dentro de la mosca: cerebro en la cabeza, cordón en el tórax.
-  const giros = []; // grupos que giran con el tiempo: [grupo, eje]
-  const raiz = new THREE.Group();
-  scene.add(raiz);
-  let disposicion = null;
-  let encuadre = { ancho: 1, alto: 1, profundidad: 1 };
-
-  // Centro de masa de todo (para la vista vertical)
+  // ---------- Disposición: cerebro arriba y cordón nervioso colgando ----------
+  // Ambos giran juntos alrededor de un eje vertical que pasa por el centro de
+  // las neuronas (así no se separan al girar).
   let tx = 0;
   let tz = 0;
   for (let i = 0; i < n; i++) {
     tx += posiciones[i * 3];
     tz += posiciones[i * 3 + 2];
   }
-  const centroTotal = { x: tx / n, z: tz / n };
   const [anchoTotal, altoTotal, fondoTotal] = info.tamano_um;
-
-  function armar(modo) {
-    if (modo === disposicion) return;
-    disposicion = modo;
-    raiz.clear();
-    giros.length = 0;
-    if (modo === 'vertical') {
-      const inclinado = new THREE.Group();
-      inclinado.rotation.x = INCLINACION;
-      const giratorio = new THREE.Group();
-      inclinado.add(giratorio);
-      raiz.add(inclinado);
-      for (const pieza of [cerebro, cordon]) {
-        pieza.puntos.position.set(-centroTotal.x, 0, -centroTotal.z);
-        giratorio.add(pieza.puntos);
-      }
-      giros.push([giratorio, 'y']);
-      const radio = Math.hypot(anchoTotal, fondoTotal) / 2;
-      encuadre = {
-        mitadAncho: radio,
-        mitadAlto: (altoTotal * Math.cos(INCLINACION) + fondoTotal * Math.sin(INCLINACION)) / 2,
-        cercania: radio,
-      };
-      resplandor.scale.set(1500, 1500, 1);
-      resplandor.position.x = 0;
-    } else {
-      const SEPARACION = 70;
-      // Cerebro: de frente, un poco inclinado, girando sobre su eje vertical
-      const anchoCerebro = 2 * cerebro.radio;
-      // Cordón acostado: su largo queda en horizontal
-      const largoCordon = cordon.alto;
-      const anchoTotalH = anchoCerebro + SEPARACION + largoCordon;
-      const xCerebro = -anchoTotalH / 2 + cerebro.radio;
-      const xCordon = anchoTotalH / 2 - largoCordon / 2;
-
-      const posC = new THREE.Group();
-      posC.position.x = xCerebro;
-      const incC = new THREE.Group();
-      incC.rotation.x = INCLINACION;
-      const giroC = new THREE.Group();
-      cerebro.puntos.position.set(-cerebro.centro.x, -cerebro.centro.y, -cerebro.centro.z);
-      giroC.add(cerebro.puntos);
-      incC.add(giroC);
-      posC.add(incC);
-      raiz.add(posC);
-      giros.push([giroC, 'y']);
-
-      // El extremo de adelante del cordón (el que se une al cerebro) mira
-      // hacia el cerebro
-      const posK = new THREE.Group();
-      posK.position.x = xCordon;
-      const acostado = new THREE.Group();
-      acostado.rotation.z = Math.PI / 2;
-      const giroK = new THREE.Group();
-      cordon.puntos.position.set(-cordon.centro.x, -cordon.centro.y, -cordon.centro.z);
-      giroK.add(cordon.puntos);
-      acostado.add(giroK);
-      posK.add(acostado);
-      raiz.add(posK);
-      giros.push([giroK, 'y']);
-
-      const altoCerebro = cerebro.alto * Math.cos(INCLINACION) + 2 * cerebro.radio * Math.sin(INCLINACION);
-      encuadre = {
-        mitadAncho: anchoTotalH / 2,
-        mitadAlto: Math.max(altoCerebro / 2, cordon.radioLargo),
-        cercania: Math.max(cerebro.radio, cordon.radioLargo),
-      };
-      resplandor.scale.set(anchoTotalH * 1.1, anchoTotalH * 0.75, 1);
-      resplandor.position.x = 0;
-    }
-    tamano = { w: 0, h: 0 }; // fuerza re-encuadrar
-  }
+  const inclinado = new THREE.Group();
+  inclinado.rotation.x = INCLINACION;
+  const giratorio = new THREE.Group();
+  inclinado.add(giratorio);
+  scene.add(inclinado);
+  nube.position.set(-tx / n, 0, -tz / n);
+  giratorio.add(nube);
+  const radioGiro = Math.hypot(anchoTotal, fondoTotal) / 2;
+  const encuadre = {
+    mitadAncho: radioGiro,
+    mitadAlto: (altoTotal * Math.cos(INCLINACION) + fondoTotal * Math.sin(INCLINACION)) / 2,
+    cercania: radioGiro,
+  };
+  resplandor.scale.set(1500, 1500, 1);
 
   let tamano = { w: 0, h: 0 };
   function redimensionar() {
@@ -318,7 +210,8 @@ export function crearCerebro(canvas, datos) {
     const h = Math.max(1, Math.round(canvas.clientHeight));
     if (w === tamano.w && h === tamano.h) return;
     tamano = { w, h };
-    const ratio = Math.min(window.devicePixelRatio || 1, 2);
+    // Nunca por debajo de la resolución de la pantalla (nítido también con zoom del navegador)
+    const ratio = Math.min(Math.max(window.devicePixelRatio || 1, 1), 2);
     renderer.setPixelRatio(ratio);
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
@@ -371,8 +264,7 @@ export function crearCerebro(canvas, datos) {
       uniforms.uAct.value[i] = actividad[id];
     });
     uniforms.uTiempo.value = tiempo;
-    const angulo = (tiempo / VUELTA_SEGUNDOS) * Math.PI * 2;
-    for (const [grupo] of giros) grupo.rotation.y = angulo;
+    giratorio.rotation.y = (tiempo / VUELTA_SEGUNDOS) * Math.PI * 2;
   }
 
   function renderizar() {
@@ -392,6 +284,5 @@ export function crearCerebro(canvas, datos) {
     return { activas: Math.round(activas), total, nivel: activas / total, porGrupo };
   }
 
-  armar('horizontal');
-  return { actualizar, renderizar, lectura, info, disposicion: armar };
+  return { actualizar, renderizar, lectura, info };
 }

@@ -112,10 +112,15 @@
           <h2>Cerebro en vivo</h2>
           <p class="cerebro-sub">Neuronas reales<span class="solo-exhibicion-inline"> de la mosca · Male CNS v1.0 · cerebro + cordón nervioso</span></p>
         </div>
-        <button id="btn-exhibicion" class="boton-exhibicion solo-control" type="button" title="Vista exhibición: pantalla completa para mostrar (tecla E)">
-          Exhibición
-          <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M9.5 2.5h4v4M13.5 2.5 9 7M6.5 13.5h-4v-4M2.5 13.5 7 9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
+        <div class="cerebro-acciones solo-control">
+          <button id="btn-exhibicion" class="boton-exhibicion" type="button" title="Vista exhibición: pantalla completa para mostrar (tecla E)">
+            Exhibición
+            <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M9.5 2.5h4v4M13.5 2.5 9 7M6.5 13.5h-4v-4M2.5 13.5 7 9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button id="btn-ocultar-cerebro" class="boton-icono" type="button" title="Ocultar el cerebro (tecla B)" aria-label="Ocultar el panel del cerebro" aria-controls="cerebro" aria-expanded="true">
+            <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M10 3.5 5.5 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
       </header>
       <div class="cerebro-cuerpo">
         <div class="cerebro-lienzo"><canvas id="lienzo-cerebro"></canvas></div>
@@ -145,6 +150,14 @@
         </div>
       </div>
     </section>
+
+    <button id="btn-mostrar-cerebro" type="button" title="Mostrar el cerebro (tecla B)" aria-controls="cerebro">
+      <span class="icono-cerebro" aria-hidden="true">
+        <span style="--c: #2fe3ff"></span><span style="--c: #8b5cff"></span><span style="--c: #ffd84d"></span><span style="--c: #ff4fd8"></span>
+      </span>
+      Cerebro
+      <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
 
     <div id="velo" aria-hidden="true"></div>
 

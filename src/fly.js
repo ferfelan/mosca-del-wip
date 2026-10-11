@@ -1249,6 +1249,7 @@ export function crearMosca(scene) {
 
   return {
     grupo: raiz,
+    figura: mosca, // la mosca sin la silla (para encuadrar)
     cabeza,
     update,
     // El cigarro que fuma ahora todavía no es colilla
