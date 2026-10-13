@@ -187,10 +187,21 @@ function pintarWip() {
   const v = Number(elWip.value);
   elWipValor.textContent = v;
   elWip.style.setProperty('--relleno', `${((v - 1) / 9) * 100}%`);
-  const sano = v <= 3;
-  elWipNota.textContent = sano ? 'Dentro del límite sano' : 'Sobre el límite sano (3)';
-  elWipNota.classList.toggle('alerta', !sano);
-  document.getElementById('panel').classList.toggle('wip-alto', !sano);
+  document.getElementById('panel').classList.toggle('wip-alto', v > 3);
+  pintarNotaWip(v, juego.enCurso.length);
+}
+
+// Bajo el slider: si bajaron el límite y todavía tiene más tareas abiertas,
+// avisa que está terminando lo empezado (no toma nuevas hasta quedar bajo él)
+function pintarNotaWip(limite, enCurso) {
+  const drenando = enCurso > limite;
+  const texto = drenando
+    ? `Terminando lo empezado: ${enCurso} en curso`
+    : limite <= 3
+      ? 'Dentro del límite sano'
+      : 'Sobre el límite sano (3)';
+  if (elWipNota.textContent !== texto) elWipNota.textContent = texto;
+  elWipNota.classList.toggle('alerta', drenando || limite > 3);
 }
 
 // Un solo lugar para cambiar el WIP (slider, teclas 1–9/0 o modo demo)
@@ -298,8 +309,14 @@ function refrescarUI(estado, cigarroEnMano) {
   elExPausa.hidden = situacion !== 'pausa';
   elExInicioTipo.textContent = modoDemo ? 'Modo demo' : pausado ? 'En pausa' : 'En vivo';
   elExInicioWip.textContent = `WIP ${estado.wip}`;
-  elExInicioTexto.textContent = estado.wip > 3 ? 'Muchas tareas a la vez' : 'Pocas tareas a la vez';
-  elExInicio.classList.toggle('alto', estado.wip > 3);
+  const drenando = estado.enCurso > estado.wip && !estado.terminado;
+  pintarNotaWip(estado.wip, estado.terminado ? 0 : estado.enCurso);
+  elExInicioTexto.textContent = drenando
+    ? `Terminando lo empezado · ${estado.enCurso} en curso`
+    : estado.wip > 3
+      ? 'Muchas tareas a la vez'
+      : 'Pocas tareas a la vez';
+  elExInicio.classList.toggle('alto', estado.wip > 3 || drenando);
   elExInicio.classList.toggle('oculto', estado.terminado);
 
   // Fin del día (en cualquier vista): se guarda en "Días jugados" y se

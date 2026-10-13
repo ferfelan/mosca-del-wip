@@ -26,11 +26,21 @@ const TOTAL_TAREAS_BACKLOG = 50;
 // Costo de cambiar de tarea (Weinberg 1992, en versión suave): qué parte
 // del tiempo rinde de verdad según cuántas tareas alterna. WIP 1 = 100%.
 export const RENDIMIENTO_POR_WIP = [1, 0.85, 0.78, 0.72, 0.67, 0.62, 0.58, 0.55, 0.52, 0.5];
-// Estrés con techo según el WIP (Mark, Gudith y Klocke 2008: más
-// interrupciones = más estrés). El estrés sube o baja suave hacia este
-// nivel: WIP 1–3 Tranqui, 4–5 Ocupada, 6–7 Estresada, 8–10 Colapsada.
+// Estrés con techo según las tareas REALMENTE abiertas (Mark, Gudith y
+// Klocke 2008: más interrupciones = más estrés; Leroy 2009: lo que queda sin
+// terminar sigue ocupando la cabeza). 1–3 abiertas Tranqui, 4–5 Ocupada,
+// 6–7 Estresada, 8–10 Colapsada.
 export const ESTRES_OBJETIVO_POR_WIP = [5, 10, 18, 32, 44, 57, 68, 84, 92, 100];
-const MINUTOS_ACOMODO_ESTRES = 40; // en ~40 min recorre 2/3 del camino al objetivo
+// Sube rápido y baja lento (Dickerson y Kemeny 2004; modelo
+// Esfuerzo-Recuperación de Meijman y Mulder 1998). Minutos del juego en que
+// recorre 2/3 del camino hacia su techo. Con esto, bajar de WIP 10 a 2 lleva
+// de "Colapsada" a "Tranqui" en ~2 h 50 min del juego (ver simular-dias).
+const MINUTOS_SUBE_ESTRES = 40;
+const MINUTOS_BAJA_ESTRES = 55;
+// Al bajar el límite, lo empezado sigue abierto: trabaja sólo en las más
+// antiguas (tantas como el WIP), pero cada tarea que quedó esperando le
+// resta un poco (residuo atencional, Leroy 2009).
+const RESIDUO_POR_TAREA_ESPERANDO = 0.03;
 // Fumar: sólo sobre "Tranqui"; las ganas crecen con el estrés que sobra, y
 // más rápido mientras más alto (WIP 4 ≈ 1 colilla al día, WIP 9 ≈ 13).
 const ESTRES_MIN_FUMAR = 25;
@@ -43,6 +53,12 @@ const MAX_COLILLAS_VISIBLES = 33; // 21 caben en el cenicero, el resto se desbor
 const ESTRES_MAX_CAFE = 55;
 const URGENCIA_CAFE_POR_MIN = 1.3; // con estrés 0: un café cada ~75 min (de vez en cuando)
 const DURACION_CAFE_MIN = 1.5; // minutos simulados que dura cada sorbo
+// Saliendo de una sobrecarga (estrés bajo 55 pero todavía 10 puntos o más
+// sobre su techo) el cuerpo pide una pausa: un café cada ~40 min. Cada café
+// hace que el estrés baje 3 veces más rápido durante 12 min. Fumar no ayuda.
+const URGENCIA_CAFE_RECUPERANDO = 2.5;
+const MINUTOS_RECUPERA_CAFE = 12;
+const FACTOR_RECUPERA_CAFE = 3;
 // El tablero no parte vacío cada mañana: "En curso" trae lo que venía de
 // días anteriores, a medio hacer. Se juegan en silencio estos días previos
 // con el mismo WIP (así se cumple la Ley de Little también en un solo día).
@@ -87,6 +103,7 @@ export class DayBrain {
     this.cafes = 0;
     this.tomandoCafe = false;
     this.minutosCafeRestantes = 0;
+    this.minutosRecuperando = 0; // después de un café, el estrés baja más rápido
     this.minutosFumadaRestantes = 0;
     this.terminado = false;
     this.eventoEsteTick = null; // 'trabajando' | 'empieza_a_fumar' | 'fumando' | 'vuelve_a_trabajar'
@@ -179,9 +196,14 @@ export class DayBrain {
       }
     } else if (this.enCurso.length > 0) {
       // Va rotando entre las tareas en curso; mientras más alterna, menos
-      // rinde cada minuto (costo de cambiar de tarea)
-      const tarea = this.enCurso[this.punteroRoundRobin % this.enCurso.length];
-      tarea.minutosRestantes -= dt * porWip(RENDIMIENTO_POR_WIP, this.enCurso.length);
+      // rinde cada minuto (costo de cambiar de tarea). Si bajaron el límite y
+      // tiene más abiertas que el WIP, no toma nuevas y se enfoca en terminar
+      // las más antiguas; las que esperan igual le restan (residuo).
+      const enfoque = Math.min(this.enCurso.length, this.wip);
+      const esperando = this.enCurso.length - enfoque;
+      const tarea = this.enCurso[this.punteroRoundRobin % enfoque];
+      const rinde = porWip(RENDIMIENTO_POR_WIP, enfoque) * (1 - RESIDUO_POR_TAREA_ESPERANDO) ** esperando;
+      tarea.minutosRestantes -= dt * rinde;
 
       if (tarea.minutosRestantes <= 0) {
         const idx = this.enCurso.indexOf(tarea);
@@ -191,15 +213,20 @@ export class DayBrain {
         this.tareasMedidas += 1;
         this._rellenarEnCurso();
       } else {
-        this.punteroRoundRobin = (this.punteroRoundRobin + 1) % Math.max(this.enCurso.length, 1);
+        this.punteroRoundRobin = (this.punteroRoundRobin + 1) % Math.max(enfoque, 1);
       }
     }
     this.areaEnCurso += this.enCurso.length * dt;
 
-    // Estrés: sube o baja suave hacia el techo que pone el WIP elegido.
-    // Fumar NO lo baja (sólo bajar el WIP lo baja).
-    const objetivo = porWip(ESTRES_OBJETIVO_POR_WIP, this.wip);
-    this.estres += (objetivo - this.estres) * (1 - Math.exp(-dt / MINUTOS_ACOMODO_ESTRES));
+    // Estrés: se acerca al techo que ponen las tareas abiertas; sube rápido
+    // y baja lento. Fumar NO lo baja; un café reciente sí ayuda a bajarlo.
+    const objetivo = porWip(ESTRES_OBJETIVO_POR_WIP, this.enCurso.length);
+    let minutos = MINUTOS_SUBE_ESTRES;
+    if (objetivo < this.estres) {
+      minutos = MINUTOS_BAJA_ESTRES / (this.minutosRecuperando > 0 ? FACTOR_RECUPERA_CAFE : 1);
+    }
+    this.minutosRecuperando = Math.max(0, this.minutosRecuperando - dt);
+    this.estres += (objetivo - this.estres) * (1 - Math.exp(-dt / minutos));
     this.estres = Math.max(0, Math.min(100, this.estres));
     this.estresMax = Math.max(this.estresMax, this.estres);
     this.areaEstres += this.estres * dt;
@@ -207,12 +234,17 @@ export class DayBrain {
     // Ganas de un café (sólo con estrés bajo)
     if (!this.fumando && !this.tomandoCafe) {
       if (this.estres < ESTRES_MAX_CAFE) {
-        this.urgenciaCafe += URGENCIA_CAFE_POR_MIN * (1 - this.estres / ESTRES_MAX_CAFE) * dt;
+        // Saliendo de una sobrecarga (el estrés todavía está bastante sobre
+        // su techo) le pide el cuerpo una pausa: las ganas crecen más rápido
+        const recuperando = objetivo < this.estres - 10;
+        const ritmo = recuperando ? URGENCIA_CAFE_RECUPERANDO : URGENCIA_CAFE_POR_MIN * (1 - this.estres / ESTRES_MAX_CAFE);
+        this.urgenciaCafe += ritmo * dt;
       }
       if (this.urgenciaCafe >= 100) {
         this.urgenciaCafe = 0;
         this.tomandoCafe = true;
         this.minutosCafeRestantes = DURACION_CAFE_MIN;
+        this.minutosRecuperando = MINUTOS_RECUPERA_CAFE;
         this.cafes += 1;
         this.eventoEsteTick = 'empieza_cafe';
       }

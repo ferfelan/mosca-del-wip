@@ -4,6 +4,8 @@
 //    tarea sube; las colillas nunca bajan (y desde WIP 3 suben siempre);
 //    WIP 1–3 no fuma y queda "Tranqui".
 //  - la Ley de Little: WIP promedio ≈ terminadas por minuto × tiempo por tarea.
+//  - bajar el WIP a mitad del día (10 → 2 a las 12:00): las tareas empezadas
+//    drenan de a poco y el estrés pasa de Colapsada a Tranqui en 2 a 3 horas.
 //
 // Uso: node scripts/simular-dias.mjs            (200 días por WIP)
 //      DIAS=500 node scripts/simular-dias.mjs
@@ -85,6 +87,72 @@ for (const r of filas) {
   if (dif > 0.05) problemas.push(`WIP ${r.wip}: la Ley de Little se aleja ${f1(dif * 100)}%`);
 }
 
+// ---- Prueba: WIP 10 desde las 09:00 y a las 12:00 baja a 2 ----
+// Lo empezado no desaparece: drena de a poco, y el estrés baja más lento de
+// lo que subió (pero llega a Tranqui dentro del día).
+const MARCAS = [9, 10, 11, 12, 12.5, 13, 13.5, 14, 14.5, 15, 16, 17, 18].map((h) => h * 60);
+const suma = MARCAS.map(() => ({ abiertas: 0, estres: 0, colillas: 0, cafes: 0 }));
+const t = { drena: 0, saleColapsada: 0, tranqui: 0, cafeAntesTranqui: 0, subeAlto: false };
+for (let d = 0; d < DIAS; d++) {
+  const dia = new DayBrain(10);
+  let k = 0;
+  let drena = null;
+  let sale = null;
+  let tranqui = null;
+  let primerCafe = null;
+  let cafes12 = null;
+  let maxAbiertasTras12 = 10;
+  const anotar = () => {
+    while (k < MARCAS.length && dia.minutoActual >= MARCAS[k] - 1e-9) {
+      Object.assign(suma[k], {
+        abiertas: suma[k].abiertas + dia.enCurso.length,
+        estres: suma[k].estres + dia.estres,
+        colillas: suma[k].colillas + dia.colillas,
+        cafes: suma[k].cafes + dia.cafes,
+      });
+      k++;
+    }
+  };
+  anotar();
+  while (!dia.terminado) {
+    if (dia.minutoActual >= 720 && dia.wip === 10) {
+      dia.setWip(2);
+      cafes12 = dia.cafes;
+    }
+    dia.tick(PASO);
+    anotar();
+    if (dia.wip !== 2) continue;
+    maxAbiertasTras12 = Math.max(maxAbiertasTras12, dia.enCurso.length);
+    if (drena === null && dia.enCurso.length <= 2) drena = dia.minutoActual;
+    if (sale === null && dia.estres < 75) sale = dia.minutoActual;
+    if (tranqui === null && dia.estres < 25) tranqui = dia.minutoActual;
+    if (primerCafe === null && dia.cafes > cafes12) primerCafe = dia.minutoActual;
+  }
+  if (maxAbiertasTras12 > 10) t.subeAlto = true;
+  t.drena += drena ?? 1080;
+  t.saleColapsada += sale ?? 1080;
+  t.tranqui += tranqui ?? 1080;
+  if (primerCafe !== null && tranqui !== null && primerCafe < tranqui) t.cafeAntesTranqui++;
+}
+const hora = (m) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(Math.round(m % 60)).padStart(2, '0')}`;
+console.log(`\nPrueba: WIP 10 desde las 09:00 y a las 12:00 baja a 2 (promedio de ${DIAS} días)\n`);
+console.log(' Hora   En curso  Estrés  Nivel       Colillas  Cafés');
+MARCAS.forEach((m, i) => {
+  const r = suma[i];
+  const e = r.estres / DIAS;
+  console.log(` ${hora(m)}  ${pad(f1(r.abiertas / DIAS), 8)}  ${pad(Math.round(e) + '%', 6)}  ${nivelDeEstres(e).nombre.padEnd(10)}  ${pad(f1(r.colillas / DIAS), 8)}  ${pad(f1(r.cafes / DIAS), 5)}`);
+});
+const mDrena = t.drena / DIAS;
+const mSale = t.saleColapsada / DIAS;
+const mTranqui = t.tranqui / DIAS;
+console.log(`\n Vuelve a 2 tareas en curso: ~${hora(mDrena)} · deja "Colapsada": ~${hora(mSale)} · llega a "Tranqui": ~${hora(mTranqui)} (${f1((mTranqui - 720) / 60)} h después de bajar el WIP)`);
+console.log(` Días con un café antes de quedar Tranqui (la pausa ayuda a recuperarse): ${Math.round((t.cafeAntesTranqui / DIAS) * 100)}%`);
+const est1230 = suma[MARCAS.indexOf(750)].estres / DIAS;
+if (t.subeAlto) problemas.push('al bajar el WIP aparecieron tareas nuevas en curso');
+if (est1230 < 75) problemas.push(`a las 12:30 ya no está Colapsada (${Math.round(est1230)}%): se calma demasiado rápido`);
+if (mTranqui - 720 < 120 || mTranqui - 720 > 195) problemas.push(`llega a Tranqui ${f1((mTranqui - 720) / 60)} h después (se busca 2 a 3 h)`);
+if (suma[MARCAS.length - 1].abiertas / DIAS > 2.05) problemas.push('a las 18:00 todavía no vuelve al límite de 2');
+
 console.log('');
 if (problemas.length) {
   console.log('PROBLEMAS:');
@@ -93,4 +161,5 @@ if (problemas.length) {
 } else {
   console.log('Forma: todo bien (cada tarea extra suma costo; WIP 1–3 sigue siendo lo mejor).');
   console.log('Ley de Little: se cumple en todos los WIP (diferencia < 5%).');
+  console.log('Bajar el WIP: lo empezado drena de a poco y el estrés baja más lento de lo que sube (2 a 3 h).');
 }

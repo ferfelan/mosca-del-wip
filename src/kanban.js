@@ -55,7 +55,11 @@ export function dibujarKanban(ctx, estado) {
   COLUMNAS.forEach((col, i) => {
     const x = margen + i * (colW + margen);
     const cantidad = estado[col.clave] ?? 0;
-    const excedido = col.clave === 'enCurso' && cantidad > LIMITE_SANO;
+    // Si bajaron el límite, lo empezado sigue abierto: "8 / 2" y aviso
+    const limite = estado.wip ?? Infinity;
+    const sobreLimite = col.clave === 'enCurso' && cantidad > limite;
+    const excedido = col.clave === 'enCurso' && (cantidad > LIMITE_SANO || sobreLimite);
+    const aviso = sobreLimite ? `SOBRE EL LÍMITE (${limite})` : excedido ? '¡WIP ALTO!' : null;
 
     ctx.fillStyle = '#e8ecf3';
     rectRedondo(ctx, x, colY, colW, colH, 18);
@@ -72,11 +76,12 @@ export function dibujarKanban(ctx, estado) {
     ctx.fillText(col.titulo, x + 20, colY + 32);
     ctx.textAlign = 'right';
     ctx.font = 'bold 36px -apple-system, Helvetica, sans-serif';
-    ctx.fillText(String(cantidad), x + colW - 20, colY + 32);
+    ctx.fillText(sobreLimite ? `${cantidad} / ${limite}` : String(cantidad), x + colW - 20, colY + 32);
 
     const altoTarjeta = 56;
     const sep = 12;
-    const maxVisibles = Math.floor((colH - 84) / (altoTarjeta + sep));
+    // con aviso rojo abajo se deja su espacio (no se monta sobre "+N más")
+    const maxVisibles = Math.floor((colH - 84 - (aviso ? 40 : 0)) / (altoTarjeta + sep));
     const visibles = Math.min(cantidad, maxVisibles);
 
     for (let t = 0; t < visibles; t++) {
@@ -113,14 +118,14 @@ export function dibujarKanban(ctx, estado) {
       ctx.fillStyle = '#64748b';
       ctx.font = 'bold 26px -apple-system, Helvetica, sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText(`+${cantidad - visibles} más`, x + colW / 2, colY + colH - 26);
+      ctx.fillText(`+${cantidad - visibles} más`, x + colW / 2, colY + colH - (aviso ? 62 : 26));
     }
 
-    if (excedido) {
+    if (aviso) {
       ctx.fillStyle = '#e03b3b';
-      ctx.font = 'bold 26px -apple-system, Helvetica, sans-serif';
+      ctx.font = `bold ${sobreLimite ? 24 : 26}px -apple-system, Helvetica, sans-serif`;
       ctx.textAlign = 'center';
-      ctx.fillText('¡WIP ALTO!', x + colW / 2, colY + colH - 26);
+      ctx.fillText(aviso, x + colW / 2, colY + colH - 24);
     }
   });
 }
