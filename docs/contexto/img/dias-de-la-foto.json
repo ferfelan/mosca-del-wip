@@ -4,23 +4,23 @@
     "hechas": 9,
     "colillas": 13,
     "cafes": 0,
-    "tiempoPorTarea": 496,
+    "tiempoPorTarea": 582,
     "estresMax": 92
   },
   {
     "wip": 5,
-    "hechas": 14,
+    "hechas": 16,
     "colillas": 3,
     "cafes": 1,
-    "tiempoPorTarea": 203,
+    "tiempoPorTarea": 186,
     "estresMax": 44
   },
   {
     "wip": 2,
-    "hechas": 19,
+    "hechas": 17,
     "colillas": 0,
     "cafes": 5,
-    "tiempoPorTarea": 55,
+    "tiempoPorTarea": 62,
     "estresMax": 10
   }
 ]

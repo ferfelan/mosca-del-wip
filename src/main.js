@@ -64,6 +64,7 @@ const elExHechas = document.getElementById('ex-hechas');
 const elExColillas = document.getElementById('ex-colillas');
 const elExCafes = document.getElementById('ex-cafes');
 const elExTiempo = document.getElementById('ex-tiempo');
+const elExTiempoCorto = document.getElementById('ex-tiempo-corto');
 const elExEstres = document.getElementById('ex-estres');
 const elExRitmo = document.getElementById('ex-ritmo');
 const elRotulo = document.querySelector('.rotulo-escena');
@@ -108,6 +109,18 @@ function escribirDias(dias) {
   pintarTabla(recortados);
 }
 
+// Tiempo por tarea: en minutos hasta 60 y en horas y minutos sobre eso.
+// Largo: "45 min" / "10 h 37 min". Corto (tablas): "45m" / "10h 37m".
+function formatoTiempo(minutos, corto = false) {
+  if (minutos === null || minutos === undefined) return corto ? '–' : '– min';
+  const m = Math.round(minutos);
+  if (m <= 60) return corto ? `${m}m` : `${m} min`;
+  const h = Math.floor(m / 60);
+  const resto = m % 60;
+  if (corto) return resto ? `${h}h ${resto}m` : `${h}h`;
+  return resto ? `${h} h ${resto} min` : `${h} h`;
+}
+
 function pintarTabla(dias) {
   elTablaBody.innerHTML = '';
   elBtnBorrar.hidden = !dias.length;
@@ -123,7 +136,7 @@ function pintarTabla(dias) {
       tr.className = 'mejor-dia';
       tr.title = 'El día con más tareas terminadas';
     }
-    tr.innerHTML = `<td>${d.wip}</td><td>${d.hechas}</td><td>${d.tiempoPorTarea ?? '–'}</td><td>${d.colillas}</td><td>${d.cafes ?? '–'}</td><td>${d.estresMax}%</td>`;
+    tr.innerHTML = `<td>${d.wip}</td><td>${d.hechas}</td><td>${formatoTiempo(d.tiempoPorTarea, true)}</td><td>${d.colillas}</td><td>${d.cafes ?? '–'}</td><td>${d.estresMax}%</td>`;
     const celda = document.createElement('td');
     const quitar = document.createElement('button');
     quitar.type = 'button';
@@ -236,8 +249,7 @@ function refrescarUI(estado, cigarroEnMano) {
   elColillas.textContent = estado.colillas;
   elCafes.textContent = estado.cafes;
   // Tiempo por tarea: "–" hasta que termine la primera tarea del día
-  const minPorTarea = estado.tiempoPorTarea === null ? '–' : Math.round(estado.tiempoPorTarea);
-  elTiempo.textContent = `${minPorTarea} min`;
+  elTiempo.textContent = formatoTiempo(estado.tiempoPorTarea);
   elEstres.textContent = estado.nivel.nombre;
   elEstres.style.color = estado.nivel.color;
   elBarraEstres.style.width = `${Math.round(estado.estres)}%`;
@@ -267,7 +279,8 @@ function refrescarUI(estado, cigarroEnMano) {
   elExHechas.textContent = plural(estado.hechas, 'terminada', 'terminadas');
   elExColillas.textContent = plural(estado.colillas, 'colilla', 'colillas');
   elExCafes.textContent = plural(estado.cafes, 'café', 'cafés');
-  elExTiempo.textContent = minPorTarea;
+  elExTiempo.textContent = formatoTiempo(estado.tiempoPorTarea);
+  elExTiempoCorto.textContent = formatoTiempo(estado.tiempoPorTarea, true);
   elExEstres.textContent = estado.nivel.nombre;
   elExEstres.style.color = estado.nivel.color;
   // Tarjeta "Estado de la mosca" (exhibición): nivel, barra de estrés y qué
@@ -310,7 +323,7 @@ function llenarResumenDelDia() {
   dias.slice(-3).forEach((d, i, lista) => {
     const tr = document.createElement('tr');
     if (i === lista.length - 1) tr.className = 'actual';
-    tr.innerHTML = `<th>WIP ${d.wip}</th><td>${d.hechas}</td><td>${d.tiempoPorTarea ?? '–'}</td><td>${d.colillas}</td><td>${d.cafes ?? '–'}</td><td>${d.estresMax}%</td>`;
+    tr.innerHTML = `<th>WIP ${d.wip}</th><td>${d.hechas}</td><td>${formatoTiempo(d.tiempoPorTarea, true)}</td><td>${d.colillas}</td><td>${d.cafes ?? '–'}</td><td>${d.estresMax}%</td>`;
     elExFinFilas.appendChild(tr);
   });
   pintarSiguienteDia();

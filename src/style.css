@@ -54,7 +54,7 @@ body {
   position: fixed;
   top: 16px;
   right: 16px;
-  width: 256px;
+  width: 280px;
   max-height: calc(100vh - 32px);
   overflow-y: auto;
   transition: transform var(--transicion), opacity 0.35s ease, visibility 0s linear 0s;
@@ -386,6 +386,32 @@ tr:last-child td {
   border-bottom: none;
 }
 
+/* "Días jugados": usa también parte del margen del panel y letra medio
+   punto más chica, para que quepan "Terminadas" y el tiempo en horas en
+   una sola línea (sin cortar ningún texto) */
+#tabla-dias {
+  width: calc(100% + 20px);
+  margin-left: -10px;
+  margin-right: -10px;
+  font-size: 11px;
+}
+
+#tabla-dias th,
+#tabla-dias td {
+  padding-left: 1.5px;
+  padding-right: 1.5px;
+  white-space: nowrap;
+}
+
+#tabla-dias th {
+  font-size: 9.5px;
+  line-height: 1.25;
+}
+
+#tabla-dias tr.vacia td {
+  white-space: normal;
+}
+
 tr.vacia td {
   padding: 10px 0 2px;
   color: var(--tinta-tenue);
@@ -397,7 +423,7 @@ tr.vacia td {
 #banner-fin-dia {
   position: fixed;
   bottom: 24px;
-  left: calc((100vw - 288px) / 2);
+  left: calc((100vw - 312px) / 2);
   transform: translateX(-50%);
   padding: 12px 20px;
   border-radius: 12px;
@@ -854,9 +880,19 @@ body.exhibicion #escena {
   white-space: nowrap;
 }
 
-/* "min por tarea" en grande; "min/tarea" en ventanas angostas */
+/* Tiempo por tarea: "10 h 37 min por tarea" en pantallas grandes;
+   "10h 37m/tarea" en las más chicas (para que el rótulo quepa) */
 .rotulo-corto {
   display: none;
+}
+
+@media (max-width: 1400px) {
+  .rotulo-largo {
+    display: none;
+  }
+  .rotulo-corto {
+    display: inline;
+  }
 }
 
 .punto-vivo {
@@ -1458,7 +1494,7 @@ tr.mejor-dia td:last-child {
 
 .comparacion th,
 .comparacion td {
-  padding: 5px 7px;
+  padding: 5px 6px;
   border-bottom: 1px solid var(--oscuro-borde);
   text-align: center;
 }
@@ -1578,12 +1614,12 @@ body.exhibicion .cerebro-lado {
     font-size: 12px;
     gap: 6px;
     padding: 7px 11px;
-  }
-  .rotulo-largo {
-    display: none;
-  }
-  .rotulo-corto {
-    display: inline;
+    /* si no cabe (fin del día), pasa a dos líneas; aquí el resumen va
+       arriba, así que no choca con nada */
+    flex-wrap: wrap;
+    row-gap: 2px;
+    max-width: calc(100% - 32px);
+    border-radius: 15px;
   }
 }
 

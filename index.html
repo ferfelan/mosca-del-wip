@@ -35,7 +35,7 @@
         <span class="sep">·</span>
         <span id="ex-cafes">0 cafés</span>
         <span class="sep">·</span>
-        <span title="Tiempo por tarea: minutos promedio desde que una tarea entra a «En curso» hasta que se termina"><span id="ex-tiempo">–</span> min<span class="rotulo-largo"> por tarea</span><span class="rotulo-corto">/tarea</span></span>
+        <span title="Tiempo por tarea: tiempo promedio desde que una tarea entra a «En curso» hasta que se termina"><span class="rotulo-largo"><span id="ex-tiempo">– min</span> por tarea</span><span class="rotulo-corto"><span id="ex-tiempo-corto">–</span>/tarea</span></span>
         <span class="sep">·</span>
         <span id="ex-estres">Tranqui</span>
       </div>
@@ -56,7 +56,7 @@
       <div id="ex-fin" class="aviso-fin oculto solo-exhibicion" role="status">
         <strong id="ex-fin-titulo">Fin del día</strong>
         <table class="comparacion" aria-label="Comparación de los días">
-          <thead><tr><th></th><th>Terminadas</th><th title="Tiempo por tarea, en minutos del juego">Min. por<br />tarea</th><th>Colillas</th><th>Cafés</th><th>Estrés<br />máx.</th></tr></thead>
+          <thead><tr><th></th><th>Terminadas</th><th title="Tiempo por tarea, en horas y minutos del juego">Tiempo<br />por tarea</th><th>Colillas</th><th>Cafés</th><th>Estrés<br />máx.</th></tr></thead>
           <tbody id="ex-fin-filas"></tbody>
         </table>
         <span class="aviso-fin-sigue" id="ex-fin-texto"></span>
@@ -114,7 +114,7 @@
             <span class="metrica-label">Cafés</span>
           </div>
         </div>
-        <div class="bloque-fila tiempo-tarea" title="Minutos promedio (del juego) desde que una tarea entra a «En curso» hasta que se termina. Con más tareas a la vez, cada una tarda más (Ley de Little).">
+        <div class="bloque-fila tiempo-tarea" title="Tiempo promedio (del juego) desde que una tarea entra a «En curso» hasta que se termina. Con más tareas a la vez, cada una tarda más (Ley de Little).">
           <span class="etiqueta">Tiempo por tarea</span>
           <span class="tiempo-tarea-valor" id="m-tiempo">–</span>
         </div>
@@ -134,13 +134,13 @@
         </div>
         <table id="tabla-dias">
           <thead>
-            <tr><th>WIP</th><th title="Tareas terminadas">Hechas</th><th title="Tiempo por tarea, en minutos del juego">Min/<br />tarea</th><th>Colillas</th><th>Cafés</th><th title="Estrés máximo del día">Estrés</th><th><span class="solo-lector">Eliminar</span></th></tr>
+            <tr><th>WIP</th><th>Terminadas</th><th title="Tiempo por tarea, en horas y minutos del juego">Tiempo<br />por tarea</th><th>Colillas</th><th>Cafés</th><th title="Estrés máximo del día">Estrés</th><th><span class="solo-lector">Eliminar</span></th></tr>
           </thead>
           <tbody id="tabla-dias-body"></tbody>
         </table>
         <button id="btn-borrar-historial" class="boton-texto" type="button" hidden>Borrar historial</button>
         <p class="atajos" aria-label="Atajos de teclado">
-          <kbd>Espacio</kbd> pausa · <kbd>R</kbd> reinicia · <kbd>1–9</kbd> WIP · <kbd>E</kbd> exhibición · <kbd>B</kbd> cerebro · <kbd>C</kbd> controles
+          <kbd>Espacio</kbd>&nbsp;pausa · <kbd>R</kbd>&nbsp;reinicia · <kbd>1–9</kbd>&nbsp;WIP · <kbd>E</kbd>&nbsp;exhibición · <kbd>B</kbd>&nbsp;cerebro · <kbd>C</kbd>&nbsp;controles
         </p>
       </section>
     </aside>
