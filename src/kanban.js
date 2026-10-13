@@ -75,8 +75,14 @@ export function dibujarKanban(ctx, estado) {
     ctx.textAlign = 'left';
     ctx.fillText(col.titulo, x + 20, colY + 32);
     ctx.textAlign = 'right';
+    // "10 / 2" no cabe al lado del título a 36 px: se achica lo justo
+    const anchoTitulo = ctx.measureText(col.titulo).width;
+    const textoCantidad = sobreLimite ? `${cantidad} / ${limite}` : String(cantidad);
     ctx.font = 'bold 36px -apple-system, Helvetica, sans-serif';
-    ctx.fillText(sobreLimite ? `${cantidad} / ${limite}` : String(cantidad), x + colW - 20, colY + 32);
+    const libre = colW - 40 - anchoTitulo - 16;
+    const tamano = Math.min(36, Math.floor((36 * libre) / ctx.measureText(textoCantidad).width));
+    ctx.font = `bold ${tamano}px -apple-system, Helvetica, sans-serif`;
+    ctx.fillText(textoCantidad, x + colW - 20, colY + 32);
 
     const altoTarjeta = 56;
     const sep = 12;
