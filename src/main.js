@@ -74,6 +74,11 @@ const elExInicioTipo = document.getElementById('ex-inicio-tipo');
 const elExInicioWip = document.getElementById('ex-inicio-wip');
 const elExInicioTexto = document.getElementById('ex-inicio-texto');
 const elExPausa = document.getElementById('ex-pausa');
+const elExMosca = document.getElementById('ex-mosca');
+const elExMoscaNivel = document.getElementById('ex-mosca-nivel');
+const elExMoscaPct = document.getElementById('ex-mosca-pct');
+const elExMoscaBarra = document.getElementById('ex-mosca-barra');
+const elExMoscaHace = document.getElementById('ex-mosca-hace');
 let vista = 'control';
 let cambiandoVista = false;
 
@@ -259,6 +264,13 @@ function refrescarUI(estado, cigarroEnMano) {
   elExCafes.textContent = plural(estado.cafes, 'café', 'cafés');
   elExEstres.textContent = estado.nivel.nombre;
   elExEstres.style.color = estado.nivel.color;
+  // Tarjeta "Estado de la mosca" (exhibición): nivel, barra de estrés y qué
+  // está haciendo (esto último se escribe junto al estado del cerebro)
+  elExMosca.style.setProperty('--nivel', estado.nivel.color);
+  elExMoscaNivel.textContent = estado.nivel.nombre;
+  elExMoscaPct.textContent = `${Math.round(estado.estres)}%`;
+  elExMoscaBarra.style.width = `${Math.round(estado.estres)}%`;
+  elExMosca.classList.toggle('fin', estado.terminado);
   const velocidad = VELOCIDADES[indiceVelocidad];
   elExRitmo.hidden = velocidad === 1;
   elExRitmo.textContent = `x${velocidad}`;
@@ -632,6 +644,14 @@ let cerebro = null;
 const elActivas = document.getElementById('c-activas');
 const elNivel = document.getElementById('c-nivel');
 const elEstado = document.getElementById('c-estado');
+// Lo que está haciendo la mosca, en palabras (tarjeta de la exhibición)
+const QUE_HACE = {
+  Trabaja: 'Trabajando en el kanban',
+  Fuma: 'Salió a fumar: pierde tiempo',
+  Café: 'Pausa sana: toma café',
+  'En pausa': 'Juego en pausa',
+  Descansa: 'Día terminado: descansa',
+};
 const elGrupos = document.getElementById('cerebro-grupos');
 const filasGrupo = {};
 const formato = new Intl.NumberFormat('es-CL');
@@ -720,6 +740,7 @@ function refrescarCerebro(dt, estado, fumandoVisible, cafeVisible, ahora) {
           ? 'Café'
           : 'Trabaja';
   elEstado.textContent = estadoTexto;
+  elExMoscaHace.textContent = QUE_HACE[estadoTexto];
   elEstado.classList.toggle('fuma', estadoTexto === 'Fuma');
   elEstado.classList.toggle('cafe', estadoTexto === 'Café');
   escribirLectura(l, estado, fumandoVisible, cafeVisible);

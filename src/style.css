@@ -854,26 +854,163 @@ body.exhibicion #escena {
   }
 }
 
+/* Resumen del fin del día: abajo a la derecha, sobre el escritorio y la
+   alfombra (no tapa la mosca, el cenicero ni el kanban) */
 .aviso-fin {
   position: absolute;
-  left: 50%;
-  top: 50%;
+  right: 16px;
+  bottom: 62px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  padding: 16px 24px;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 12px 14px 10px;
   border-radius: 14px;
   background: rgba(10, 14, 28, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: var(--oscuro-tinta);
-  font-size: 13.5px;
-  text-align: center;
-  transform: translate(-50%, -50%);
+  font-size: 13px;
   transition: opacity 0.4s;
 }
 
 .aviso-fin strong {
-  font-size: 16px;
+  font-size: 14.5px;
+}
+
+/* Estado de la mosca (exhibición): arriba a la izquierda, sobre la pared */
+.estado-mosca {
+  position: absolute;
+  left: 16px;
+  top: 64px;
+  flex-direction: column;
+  gap: 6px;
+  width: 224px;
+  padding: 11px 14px 12px;
+  border-radius: 14px;
+  background: rgba(10, 14, 28, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  color: var(--oscuro-tinta);
+  --nivel: var(--ok);
+}
+
+.estado-mosca-titulo {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--oscuro-suave);
+}
+
+.estado-mosca-fila {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.estado-mosca-nivel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--nivel);
+  transition: color 0.6s ease;
+}
+
+.estado-mosca-punto {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--nivel);
+  box-shadow: 0 0 10px var(--nivel);
+  transition: background 0.6s ease, box-shadow 0.6s ease;
+}
+
+.estado-mosca-pct {
+  font-size: 15px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--oscuro-tinta);
+}
+
+.estado-mosca-barra {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.estado-mosca-barra span {
+  display: block;
+  height: 100%;
+  width: 10%;
+  border-radius: inherit;
+  background: var(--nivel);
+  transition: width 0.6s ease, background 0.6s ease;
+}
+
+.estado-mosca-hace {
+  font-size: 13px;
+  color: var(--oscuro-suave);
+}
+
+/* Pantallas bajas (proyector 1280×720, ventanas chicas): resumen y tarjeta
+   más compactos para no tapar las patas ni la silla */
+@media (max-height: 800px) {
+  .aviso-fin {
+    padding: 9px 11px 8px;
+    font-size: 11.5px;
+  }
+  .aviso-fin strong {
+    font-size: 13px;
+  }
+  .aviso-fin .comparacion {
+    font-size: 11.5px;
+  }
+  .aviso-fin .comparacion th,
+  .aviso-fin .comparacion td {
+    padding: 3px 7px;
+  }
+  .aviso-fin .comparacion thead th {
+    font-size: 10px;
+  }
+  .aviso-fin .comparacion tbody th {
+    font-size: 11.5px;
+  }
+  .aviso-fin .aviso-fin-sigue {
+    font-size: 10.5px;
+  }
+  .estado-mosca {
+    width: 200px;
+    padding: 9px 12px 10px;
+    gap: 5px;
+  }
+  .estado-mosca-nivel {
+    font-size: 19px;
+  }
+  .estado-mosca-hace {
+    font-size: 12px;
+  }
+}
+
+/* Ventanas angostas: no hay espacio a la derecha de la mosca. Al terminar
+   el día, el resumen va arriba a la izquierda (sobre la pared) en el lugar
+   de la tarjeta de estado. */
+@media (max-width: 1100px) {
+  .aviso-fin {
+    left: 16px;
+    right: auto;
+    top: 64px;
+    bottom: auto;
+  }
+  body.exhibicion .estado-mosca.fin {
+    display: none !important;
+  }
 }
 
 .aviso-fin.oculto {

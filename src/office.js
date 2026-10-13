@@ -25,6 +25,7 @@ import {
   POS_CENICERO,
   POS_TAZA,
   POS_VENTANA,
+  POS_PLANTA,
   POS_PILA,
   ROT_TAZA,
   ALTO_POSAVASOS,
@@ -345,37 +346,76 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
   oficina.add(reloj);
 
   // ---------- Planta ----------
+  // Maceta de greda con borde más claro y la tierra hundida adentro (no
+  // encima como una tapa). Las hojas nacen de la tierra y se abren hacia
+  // afuera sin atravesar la maceta. Siempre la misma forma al recargar.
   const planta = new THREE.Group();
-  planta.position.set(1.7, 0, -1.6);
-  const maceta = malla(
-    new THREE.CylinderGeometry(0.26, 0.2, 0.38, 20),
-    new THREE.MeshStandardMaterial({ color: '#c9774f', roughness: 0.85 }),
-    { y: 0.19, recibe: true }
-  );
-  planta.add(maceta);
+  planta.position.copy(POS_PLANTA);
+  let semilla = 11;
+  const azar = () => (semilla = (semilla * 16807) % 2147483647) / 2147483647;
+
+  const perfilMaceta = [
+    [0, 0],
+    [0.19, 0],
+    [0.2, 0.012],
+    [0.253, 0.345],
+  ].map(([r, y]) => new THREE.Vector2(r, y));
   planta.add(
-    malla(new THREE.CylinderGeometry(0.27, 0.27, 0.06, 20), new THREE.MeshStandardMaterial({ color: '#d98a61' }), {
-      y: 0.37,
-    })
+    malla(
+      new THREE.LatheGeometry(perfilMaceta, 40),
+      new THREE.MeshStandardMaterial({ color: '#c9774f', roughness: 0.85 }),
+      { recibe: true }
+    )
   );
+  // Borde: anillo grueso redondeado, abierto al centro
+  const perfilBorde = [
+    [0.248, 0.338],
+    [0.268, 0.34],
+    [0.276, 0.35],
+    [0.276, 0.392],
+    [0.268, 0.402],
+    [0.246, 0.402],
+    [0.238, 0.392],
+    [0.236, 0.34],
+  ].map(([r, y]) => new THREE.Vector2(r, y));
   planta.add(
-    malla(new THREE.CylinderGeometry(0.23, 0.23, 0.04, 20), new THREE.MeshStandardMaterial({ color: '#4a3a2c' }), {
-      y: 0.39,
-    })
+    malla(
+      new THREE.LatheGeometry(perfilBorde, 40),
+      new THREE.MeshStandardMaterial({ color: '#d98a61', roughness: 0.8, side: THREE.DoubleSide }),
+      { recibe: true }
+    )
   );
-  const hojaGeo = new THREE.SphereGeometry(1, 14, 10);
+  const ALTO_TIERRA = 0.375;
+  planta.add(
+    malla(
+      new THREE.CylinderGeometry(0.238, 0.238, 0.02, 40),
+      new THREE.MeshStandardMaterial({ color: '#4a3a2c', roughness: 1 }),
+      { y: ALTO_TIERRA - 0.01, sombra: false, recibe: true }
+    )
+  );
+
+  // Hojas largas en roseta (como una sansevieria): la base queda enterrada
+  // y la cara plana mira hacia afuera.
+  const hojaGeo = new THREE.SphereGeometry(1, 20, 14);
   hojaGeo.scale(0.075, 0.46, 0.035);
+  hojaGeo.translate(0, 0.46, 0); // el giro es desde la base de la hoja
   const verdes = ['#5f9e5c', '#74b06c', '#528f52'];
-  for (let i = 0; i < 9; i++) {
+  const N_HOJAS = 9;
+  for (let i = 0; i < N_HOJAS; i++) {
+    const ang = (i / N_HOJAS) * Math.PI * 2 + (azar() - 0.5) * 0.4;
+    const desdeCentro = 0.05 + azar() * 0.05;
     const hoja = malla(hojaGeo, new THREE.MeshStandardMaterial({ color: verdes[i % 3], roughness: 0.75 }), {
-      y: 0.78,
+      x: Math.cos(ang) * desdeCentro,
+      y: ALTO_TIERRA - 0.06,
+      z: Math.sin(ang) * desdeCentro,
     });
-    hoja.rotation.z = (Math.random() - 0.5) * 0.9;
-    hoja.rotation.x = (Math.random() - 0.5) * 0.7;
-    hoja.rotation.y = (i / 9) * Math.PI * 2;
-    hoja.position.x = Math.cos((i / 9) * Math.PI * 2) * 0.09;
-    hoja.position.z = Math.sin((i / 9) * Math.PI * 2) * 0.09;
-    hoja.position.y = 0.72 + Math.random() * 0.18;
+    hoja.rotation.order = 'YXZ';
+    hoja.rotation.y = Math.atan2(Math.cos(ang), Math.sin(ang)) + (azar() - 0.5) * 0.6;
+    // Se abre hacia afuera; las que apuntan a la pared se abren poco para
+    // no meterse en ella
+    const haciaPared = Math.min(0, Math.cos(hoja.rotation.y));
+    hoja.rotation.x = (0.12 + azar() * 0.28) * (1 + haciaPared * 0.7);
+    hoja.scale.setScalar(0.88 + azar() * 0.24);
     planta.add(hoja);
   }
   oficina.add(planta);

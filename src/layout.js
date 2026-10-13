@@ -64,6 +64,11 @@ export const ESCALA_MONITOR = 1.22;
 
 // Ventana en la pared del fondo, justo detrás del monitor
 export const POS_VENTANA = new THREE.Vector3(MOSCA.x - 0.35, 2.0, -2.06);
+// Planta en el piso, en la esquina derecha, pegada a la pared y medio detrás
+// de la esquina del escritorio: así se ve entera con los paneles ocultos y,
+// con el panel de Controles abierto, la maceta asoma completa bajo el panel
+// (antes quedaba cortada en el borde de la pantalla).
+export const POS_PLANTA = new THREE.Vector3(1.2, 0, -1.72);
 
 export const CAMARA_INICIAL = {
   posicion: new THREE.Vector3(1.55, 2.7, 3.45),
