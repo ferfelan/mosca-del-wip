@@ -30,6 +30,7 @@ const elBarraDia = document.getElementById('barra-dia-relleno');
 const elHechas = document.getElementById('m-hechas');
 const elColillas = document.getElementById('m-colillas');
 const elCafes = document.getElementById('m-cafes');
+const elTiempo = document.getElementById('m-tiempo');
 const elEstres = document.getElementById('m-estres');
 const elBarraEstres = document.getElementById('barra-estres-relleno');
 const elTablaBody = document.getElementById('tabla-dias-body');
@@ -62,6 +63,7 @@ const elExHora = document.getElementById('ex-hora');
 const elExHechas = document.getElementById('ex-hechas');
 const elExColillas = document.getElementById('ex-colillas');
 const elExCafes = document.getElementById('ex-cafes');
+const elExTiempo = document.getElementById('ex-tiempo');
 const elExEstres = document.getElementById('ex-estres');
 const elExRitmo = document.getElementById('ex-ritmo');
 const elRotulo = document.querySelector('.rotulo-escena');
@@ -110,7 +112,7 @@ function pintarTabla(dias) {
   elTablaBody.innerHTML = '';
   elBtnBorrar.hidden = !dias.length;
   if (!dias.length) {
-    elTablaBody.innerHTML = '<tr class="vacia"><td colspan="6">Juega un día completo para comparar</td></tr>';
+    elTablaBody.innerHTML = '<tr class="vacia"><td colspan="7">Juega un día completo para comparar</td></tr>';
     return;
   }
   // El mejor día (más tareas terminadas) se destaca: ayuda a comparar
@@ -121,7 +123,7 @@ function pintarTabla(dias) {
       tr.className = 'mejor-dia';
       tr.title = 'El día con más tareas terminadas';
     }
-    tr.innerHTML = `<td>${d.wip}</td><td>${d.hechas}</td><td>${d.colillas}</td><td>${d.cafes ?? '–'}</td><td>${d.estresMax}%</td>`;
+    tr.innerHTML = `<td>${d.wip}</td><td>${d.hechas}</td><td>${d.tiempoPorTarea ?? '–'}</td><td>${d.colillas}</td><td>${d.cafes ?? '–'}</td><td>${d.estresMax}%</td>`;
     const celda = document.createElement('td');
     const quitar = document.createElement('button');
     quitar.type = 'button';
@@ -233,6 +235,9 @@ function refrescarUI(estado, cigarroEnMano) {
   elHechas.textContent = estado.hechas;
   elColillas.textContent = estado.colillas;
   elCafes.textContent = estado.cafes;
+  // Tiempo por tarea: "–" hasta que termine la primera tarea del día
+  const minPorTarea = estado.tiempoPorTarea === null ? '–' : Math.round(estado.tiempoPorTarea);
+  elTiempo.textContent = `${minPorTarea} min`;
   elEstres.textContent = estado.nivel.nombre;
   elEstres.style.color = estado.nivel.color;
   elBarraEstres.style.width = `${Math.round(estado.estres)}%`;
@@ -262,6 +267,7 @@ function refrescarUI(estado, cigarroEnMano) {
   elExHechas.textContent = plural(estado.hechas, 'terminada', 'terminadas');
   elExColillas.textContent = plural(estado.colillas, 'colilla', 'colillas');
   elExCafes.textContent = plural(estado.cafes, 'café', 'cafés');
+  elExTiempo.textContent = minPorTarea;
   elExEstres.textContent = estado.nivel.nombre;
   elExEstres.style.color = estado.nivel.color;
   // Tarjeta "Estado de la mosca" (exhibición): nivel, barra de estrés y qué
@@ -304,7 +310,7 @@ function llenarResumenDelDia() {
   dias.slice(-3).forEach((d, i, lista) => {
     const tr = document.createElement('tr');
     if (i === lista.length - 1) tr.className = 'actual';
-    tr.innerHTML = `<th>WIP ${d.wip}</th><td>${d.hechas}</td><td>${d.colillas}</td><td>${d.cafes ?? '–'}</td><td>${d.estresMax}%</td>`;
+    tr.innerHTML = `<th>WIP ${d.wip}</th><td>${d.hechas}</td><td>${d.tiempoPorTarea ?? '–'}</td><td>${d.colillas}</td><td>${d.cafes ?? '–'}</td><td>${d.estresMax}%</td>`;
     elExFinFilas.appendChild(tr);
   });
   pintarSiguienteDia();
@@ -876,6 +882,12 @@ if (import.meta.env.DEV) {
     // Juega el resto del día de una vez (para probar resúmenes)
     completarDia: () => {
       while (!juego.terminado) juego.tick(1);
+    },
+    // Juega N minutos del día de una vez, con las reglas normales (para
+    // capturas a media jornada sin forzar nada)
+    adelantar: (minutos) => {
+      const fin = juego.minutoActual + minutos;
+      while (!juego.terminado && juego.minutoActual < fin) juego.tick(0.15);
     },
     casiFin: () => (juego.minutoActual = 18 * 60 - 2),
     camaraInfo: () => ({ pos: camera.position.toArray(), obj: controls.target.toArray(), aspect: camera.aspect }),
