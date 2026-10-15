@@ -1317,6 +1317,10 @@ body.cerebro-oculto:not(.exhibicion) #btn-mostrar-cerebro {
   color: #e8c38a;
 }
 
+#c-estado.espera {
+  color: #ff8f8f;
+}
+
 /* ---------- Ocultar / mostrar el panel de controles (sólo en Control) ---------- */
 
 .boton-icono-claro {
@@ -1429,6 +1433,14 @@ tr.mejor-dia td:last-child {
   margin: 10px 0 0;
   font-size: 10.5px;
   line-height: 1.7;
+  color: var(--tinta-tenue);
+  text-align: center;
+}
+
+.nota-ilustrativa {
+  margin: 6px 0 0;
+  font-size: 10px;
+  line-height: 1.45;
   color: var(--tinta-tenue);
   text-align: center;
 }

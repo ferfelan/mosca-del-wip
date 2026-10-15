@@ -933,7 +933,7 @@ export function crearMosca(scene, { taza = null } = {}) {
   let exhalando = 0;
   let pesoBocaAntes = 0;
   let faseTipeo = 0;
-  let ganasTeclear = 1; // 0 = descansa (pausa o fin del día), 1 = teclea
+  let ganasTeclear = 1; // 0 = descansa (pausa o fin del día), 0,3 = espera, 1 = teclea
   let faseAlas = 0;
   let acumHumo = 0;
   let acumExhalo = 0;
@@ -1133,8 +1133,10 @@ export function crearMosca(scene, { taza = null } = {}) {
     });
 
     // --- Patas delanteras: tipean; la derecha además fuma ---
-    // En pausa o al terminar el día deja de teclear (de a poco)
-    ganasTeclear = amortiguar(ganasTeclear, estado.descansa ? 0 : 1, 3, dt);
+    // En pausa o al terminar el día deja de teclear (de a poco). Si espera
+    // (todas sus tareas bloqueadas) tamborilea despacio sobre el teclado:
+    // el mismo gesto de teclear, más lento y más chico.
+    ganasTeclear = amortiguar(ganasTeclear, estado.descansa ? 0 : estado.espera ? 0.3 : 1, 3, dt);
     faseTipeo += dt * (7 + 7 * s) * (1 - mezclaFumar * 0.8) * ganasTeclear;
     const desdeMundo = (v) => cuerpo.worldToLocal(v);
     [0, 1].forEach((i) => {

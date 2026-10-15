@@ -234,11 +234,11 @@ export function crearCerebro(canvas, datos) {
   let hechasAntes = null;
   let saltar = false; // día nuevo: la actividad parte en su valor, sin arrastrar
 
-  function objetivos({ enCurso, estres, fumando, cafe, terminado, hechas }) {
+  function objetivos({ enCurso, estres, fumando, cafe, esperando, terminado, hechas }) {
     if (hechasAntes !== null && hechas > hechasAntes) pulsoTarea = 1;
     hechasAntes = hechas;
     if (terminado) return Object.fromEntries(ids.map((id) => [id, 0.03]));
-    const trabajando = fumando ? 0 : 1;
+    const trabajando = fumando || esperando ? 0 : 1;
     // Mucho contraste: con WIP bajo y sin estrés casi todo queda apagado; con
     // WIP alto, estrés o fumando, las zonas se encienden fuerte.
     const wip = Math.min(enCurso, 10) / 10;

@@ -10,6 +10,26 @@ const COLUMNAS = [
   { clave: 'hechas', titulo: 'HECHO', color: '#1f9d62', tarjeta: '#d7f2e3', barra: '#1f9d62' },
 ];
 
+// Candado simple (tarea bloqueada esperando a otra persona)
+function candado(ctx, cx, cy, color) {
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 5;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.arc(cx, cy - 4, 8, Math.PI, 0);
+  ctx.lineTo(cx + 8, cy + 2);
+  ctx.moveTo(cx - 8, cy - 4);
+  ctx.lineTo(cx - 8, cy + 2);
+  ctx.stroke();
+  ctx.fillStyle = color;
+  rectRedondo(ctx, cx - 13, cy, 26, 20, 4);
+  ctx.fill();
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.arc(cx, cy + 9, 3, 0, Math.PI * 2);
+  ctx.fill();
+}
+
 function rectRedondo(ctx, x, y, w, h, r) {
   ctx.beginPath();
   ctx.moveTo(x + r, y);
@@ -92,19 +112,29 @@ export function dibujarKanban(ctx, estado) {
 
     for (let t = 0; t < visibles; t++) {
       const ty = colY + 78 + t * (altoTarjeta + sep);
+      // En curso: la tarjeta bloqueada (espera a otra persona) va en rojo y
+      // con candado
+      const bloqueada = col.clave === 'enCurso' && estado.enCursoBloqueadas?.[t];
       ctx.fillStyle = 'rgba(31,42,58,0.10)';
       rectRedondo(ctx, x + 16, ty + 4, colW - 32, altoTarjeta, 12);
       ctx.fill();
-      ctx.fillStyle = col.tarjeta;
+      ctx.fillStyle = bloqueada ? '#fde2e2' : col.tarjeta;
       rectRedondo(ctx, x + 14, ty, colW - 32, altoTarjeta, 12);
       ctx.fill();
-      ctx.fillStyle = col.barra;
+      if (bloqueada) {
+        ctx.strokeStyle = '#e03b3b';
+        ctx.lineWidth = 3;
+        rectRedondo(ctx, x + 15.5, ty + 1.5, colW - 35, altoTarjeta - 3, 11);
+        ctx.stroke();
+      }
+      ctx.fillStyle = bloqueada ? '#e03b3b' : col.barra;
       rectRedondo(ctx, x + 14, ty, 10, altoTarjeta, 5);
       ctx.fill();
 
-      ctx.fillStyle = 'rgba(31,42,58,0.42)';
-      ctx.fillRect(x + 40, ty + 17, colW - 90, 9);
+      ctx.fillStyle = bloqueada ? 'rgba(160,40,40,0.45)' : 'rgba(31,42,58,0.42)';
+      ctx.fillRect(x + 40, ty + 17, colW - (bloqueada ? 110 : 90), 9);
       ctx.fillRect(x + 40, ty + 34, (colW - 90) * 0.55, 9);
+      if (bloqueada) candado(ctx, x + colW - 46, ty + altoTarjeta / 2 - 8, '#e03b3b');
 
       if (col.clave === 'hechas') {
         ctx.strokeStyle = '#1f9d62';

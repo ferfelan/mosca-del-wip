@@ -250,6 +250,8 @@ function estadoMosca(estado) {
     tomandoCafe: estado.tomandoCafe && !descansa,
     estres: estado.estres / 100,
     descansa,
+    // Todas sus tareas en curso están bloqueadas: espera sin teclear
+    espera: estado.esperando && !descansa,
   };
 }
 
@@ -685,6 +687,7 @@ const QUE_HACE = {
   Trabaja: 'Trabajando en el kanban',
   Fuma: 'Salió a fumar: pierde tiempo',
   Café: 'Pausa sana: toma café',
+  Espera: 'Espera: sus tareas están bloqueadas',
   'En pausa': 'Juego en pausa',
   Descansa: 'Día terminado: descansa',
 };
@@ -721,13 +724,14 @@ const graficoDia = crearGraficoDia({
 // Lectura en palabras simples de lo que se enciende más ahora
 const elLectura = document.getElementById('cerebro-lectura');
 let grupoDestacado = null;
-function frasePara(id, { fumando, cafe }) {
+function frasePara(id, { fumando, cafe, espera }) {
   if (id === 'vision') return 've muchas tareas abiertas en la pantalla';
   if (id === 'central') return 'el estrés la tiene pensando de más';
   if (id === 'memoria') return 'guarda lo que acaba de terminar';
   if (id === 'mando') return fumando ? 'el cerebro ordena al cuerpo ir por el cigarro' : 'el cerebro le da órdenes al cuerpo';
   if (fumando) return 'mueve la pata para fumar';
   if (cafe) return 'mueve la pata para tomar café';
+  if (espera) return 'tamborilea mientras espera';
   return 'mueve las patas para teclear';
 }
 function escribirLectura(l, estado, fumando, cafe) {
@@ -741,7 +745,7 @@ function escribirLectura(l, estado, fumando, cafe) {
     const actual = l.porGrupo.find((g) => g.id === grupoDestacado);
     if (!actual || orden[0].actividad > actual.actividad + 0.06) grupoDestacado = orden[0].id;
     const g = l.porGrupo.find((x) => x.id === grupoDestacado);
-    html = `Se enciende más <span class="lectura-zona" style="--c: ${GRUPOS_VISUALES[g.id].color}"><span class="grupo-punto"></span>${g.nombre}</span>: ${frasePara(g.id, { fumando, cafe })}.`;
+    html = `Se enciende más <span class="lectura-zona" style="--c: ${GRUPOS_VISUALES[g.id].color}"><span class="grupo-punto"></span>${g.nombre}</span>: ${frasePara(g.id, { fumando, cafe, espera: estado.esperando })}.`;
   }
   if (elLectura.innerHTML !== html) elLectura.innerHTML = html;
 }
@@ -752,6 +756,7 @@ function refrescarCerebro(dt, estado, fumandoVisible, cafeVisible, ahora) {
     estres: estado.estres / 100,
     fumando: fumandoVisible,
     cafe: cafeVisible,
+    esperando: estado.esperando,
     terminado: estado.terminado || pausado,
     hechas: estado.hechas,
   });
@@ -774,11 +779,14 @@ function refrescarCerebro(dt, estado, fumandoVisible, cafeVisible, ahora) {
         ? 'Fuma'
         : cafeVisible
           ? 'Café'
-          : 'Trabaja';
+          : estado.esperando
+            ? 'Espera'
+            : 'Trabaja';
   elEstado.textContent = estadoTexto;
   elExMoscaHace.textContent = QUE_HACE[estadoTexto];
   elEstado.classList.toggle('fuma', estadoTexto === 'Fuma');
   elEstado.classList.toggle('cafe', estadoTexto === 'Café');
+  elEstado.classList.toggle('espera', estadoTexto === 'Espera');
   escribirLectura(l, estado, fumandoVisible, cafeVisible);
   if (!pausado) graficoDia.registrar(estado.fraccionDelDia, l.nivel, estado.wip);
   graficoDia.dibujar();
@@ -855,8 +863,15 @@ if (import.meta.env.DEV) {
     setWip(v) {
       ponerWip(v);
     },
-    forzar({ estres, fumando, cafe, colillas, hechas } = {}) {
+    // bloqueadas: n bloquea las n tareas en curso más antiguas por `minutosBloqueo`
+    forzar({ estres, fumando, cafe, colillas, hechas, bloqueadas, minutosBloqueo = 45 } = {}) {
+      if (bloqueadas !== undefined) {
+        juego.enCurso.forEach((t, i) => {
+          t.minutosBloqueada = i < bloqueadas ? minutosBloqueo : 0;
+        });
+      }
       if (estres !== undefined) {
+        juego.estresBase = estres;
         juego.estres = estres;
         juego.estresMax = Math.max(juego.estresMax, estres);
       }
