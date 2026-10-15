@@ -1,7 +1,8 @@
 // Juega días normales (sin forzar nada) con WIP 2, 5, 7 y 10 y saca capturas
 // a media jornada (13:30) en Control y Exhibición, y al final del día (panel
 // con "Días jugados" y resumen de la exhibición). Después juega un día con
-// WIP 10 que a las 12:00 baja a 2 (capturas a las 12, 13, 14 y 15 h).
+// WIP 10 que a las 12:00 baja a 2 (capturas a las 12, 13, 14 y 15 h) y un
+// día con WIP 3 y tareas bloqueadas (una, y después todas: la mosca espera).
 // Imprime lo que marca el juego y los choques.
 // Requiere npm run dev. Uso: node scripts/capturas-wip.mjs  (WIPS=2,10 para elegir)
 import { chromium } from 'playwright';
@@ -78,6 +79,39 @@ if (!process.env.WIPS) {
   await p.evaluate(() => window.__mosca.vista('exhibicion'));
   await p.waitForTimeout(1800);
   await p.screenshot({ path: 'capturas/bajar-wip-1500-exhibicion.png' });
+  await p.evaluate(() => { window.__mosca.congelar(false); window.__mosca.completarDia(); });
+}
+
+// Bloqueos: WIP 3 a las 11:00 con una tarea bloqueada (tarjeta roja con
+// candado) y después con las tres (la mosca espera tamborileando)
+if (!process.env.WIPS) {
+  await p.evaluate(() => window.__mosca.vista('control'));
+  await p.waitForTimeout(800);
+  for (const n of [1, 3]) {
+    await p.evaluate((n) => {
+      const m = window.__mosca;
+      m.congelar(false);
+      m.diaExhibicion(3);
+      m.adelantar(120);
+      m.forzar({ bloqueadas: n, minutosBloqueo: 600 });
+      m.adelantar(0.5);
+      m.congelar(true);
+      m.avanzar(0);
+      m.avanzar(4);
+    }, n);
+    await p.waitForTimeout(300);
+    const e = await p.evaluate(() => { const e = window.__mosca.estado(); return `bloqueadas ${e.bloqueadas} de ${e.enCurso} · esperando: ${e.esperando} · cerebro: "${document.getElementById('c-estado').textContent}"`; });
+    console.log(`Bloqueos (WIP 3, ${n} bloqueada${n > 1 ? 's' : ''}): ${await leer()} · ${e} · choques: ${await choques()}`);
+    await p.screenshot({ path: `capturas/bloqueo-${n}.png` });
+    await p.evaluate(() => window.__mosca.camara([-0.25, 1.75, 1.1], [-0.9, 1.72, -0.35]));
+    await p.waitForTimeout(600);
+    await p.screenshot({ path: `capturas/bloqueo-${n}-monitor.png` });
+    await p.evaluate(() => window.__mosca.reencuadrar());
+  }
+  await p.evaluate(() => window.__mosca.vista('exhibicion'));
+  await p.waitForTimeout(1800);
+  await p.screenshot({ path: 'capturas/bloqueo-3-exhibicion.png' });
+  console.log(`Exhibición con todas bloqueadas: "${await p.evaluate(() => document.getElementById('ex-mosca-hace')?.textContent ?? document.querySelector('#ex-mosca').textContent)}"`);
   await p.evaluate(() => { window.__mosca.congelar(false); window.__mosca.completarDia(); });
 }
 

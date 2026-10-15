@@ -6,6 +6,7 @@
 // Uso: node scripts/documento.mjs          → PDF en el Escritorio
 //      FOTOS=1 node scripts/documento.mjs  → antes saca imágenes nuevas del
 //                                            juego (requiere npm run dev)
+//      FOTOS=monitor-bloqueo node …        → sólo esas (separadas por coma)
 import { chromium } from 'playwright';
 import { mkdirSync } from 'node:fs';
 import { homedir } from 'node:os';
@@ -58,11 +59,13 @@ const jugar = (p, { wip, minutos, hasta = null, bajarA = null, segundos = 20 }) 
     { wip, minutos, hasta, bajarA, segundos },
   );
 
+// FOTOS=1 saca todas; FOTOS=a,b sólo esas
+const quiero = (nombre) => process.env.FOTOS === '1' || (process.env.FOTOS ?? '').split(',').includes(nombre);
 if (process.env.FOTOS) {
   mkdirSync(IMG, { recursive: true });
 
   // Portada: la mosca en holograma con su cerebro real (docs/contexto/arte/)
-  {
+  if (quiero('holograma')) {
     const p = await b.newPage({ viewport: { width: 1240, height: 1754 } });
     p.on('pageerror', (e) => console.log('ERROR', e.message));
     await p.goto(`${JUEGO}/docs/contexto/arte/holograma.html?w=1240&h=1754&dpr=2`, { waitUntil: 'networkidle' });
@@ -73,7 +76,7 @@ if (process.env.FOTOS) {
   }
 
   // Escenas del juego con los paneles (cómo se ve)
-  {
+  if (quiero('control-wip2') || quiero('control-wip9') || quiero('exhibicion')) {
     const p = await b.newPage({ viewport: { width: 1500, height: 853 } });
     p.on('pageerror', (e) => console.log('ERROR', e.message));
     await abrirJuego(p);
@@ -94,7 +97,7 @@ if (process.env.FOTOS) {
   }
 
   // Monitor mientras drena: WIP 10, a las 12:00 baja a 2 (foto a las 12:45)
-  {
+  if (quiero('monitor-limite')) {
     const p = await b.newPage({ viewport: { width: 1200, height: 760 }, deviceScaleFactor: 2 });
     await abrirJuego(p, { sinPaneles: true });
     await jugar(p, { wip: 10, minutos: 180, bajarA: 2 });
@@ -106,8 +109,21 @@ if (process.env.FOTOS) {
     await p.close();
   }
 
+  // Monitor con una tarea bloqueada (WIP 3 a las 11:00; tarjeta roja con candado)
+  if (quiero('monitor-bloqueo')) {
+    const p = await b.newPage({ viewport: { width: 1200, height: 760 }, deviceScaleFactor: 2 });
+    await abrirJuego(p, { sinPaneles: true });
+    await jugar(p, { wip: 3, minutos: 120 });
+    await p.evaluate(() => { const m = window.__mosca; m.congelar(false); m.forzar({ bloqueadas: 1, minutosBloqueo: 600 }); m.adelantar(0.5); m.congelar(true); m.avanzar(0); m.avanzar(4); });
+    await p.evaluate(() => window.__mosca.camara([-0.25, 1.75, 1.1], [-0.9, 1.72, -0.35]));
+    await p.waitForTimeout(900);
+    await p.screenshot({ path: join(IMG, 'monitor-bloqueo.jpg'), type: 'jpeg', quality: 88, clip: { x: 250, y: 80, width: 760, height: 560 } });
+    console.log('foto monitor-bloqueo');
+    await p.close();
+  }
+
   // Cierre: fin de un buen día (WIP 2), tomando café frente al kanban
-  {
+  if (quiero('cierre')) {
     const p = await b.newPage({ viewport: { width: 1400, height: 1120 }, deviceScaleFactor: 2 });
     await abrirJuego(p, { sinPaneles: true });
     await jugar(p, { wip: 2, minutos: 455, hasta: 'tomandoCafe' });
