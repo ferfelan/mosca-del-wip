@@ -1,4 +1,4 @@
-// Arma el documento de contexto en PDF (22 páginas; máximo 25), para Felipe,
+// Arma el documento de contexto en PDF (24 páginas; máximo 25), para Felipe,
 // un amigo técnico o para pasárselo a otro Claude.
 // Fuente editable: docs/contexto/contexto.html (+ imágenes en docs/contexto/img/
 // y el arte de portada en docs/contexto/arte/).
