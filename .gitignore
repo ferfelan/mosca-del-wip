@@ -9,3 +9,6 @@ referencias/
 # Datos crudos descargados y herramientas de Python (se regeneran con scripts/datos/)
 datos-crudos/
 .venv-datos/
+
+# Archivos grandes de MaleCNS (conexiones 508 MB, neurotransmisores 43 MB): nunca a git
+*.feather
