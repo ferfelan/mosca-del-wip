@@ -1,9 +1,17 @@
 # Etapa 3.2 · Bajar el mapa de conexiones y probar el cerebro
 
-**Estado:** HECHA (2026-10-18). **El juego no se tocó.** La 3.3 parte sólo
-con el OK de Felipe.
+**Estado:** 3.2 y 3.2b HECHAS (2026-10-18). **El juego no se tocó.** La 3.3
+parte sólo con el OK de Felipe.
 
-## En pocas líneas
+> **Lo último (3.2b, al final de este documento):** con el azúcar completo
+> (LB3b + LB3c, 17 sensores) y la escalera fijada antes de correr, quedó el
+> peso **0,090 mV**, el más alto sin eco. Con él la limpieza funciona y se
+> parece al juego (0 con WIP 1–3, sube desde WIP 4), pero el azúcar no llega
+> a MN9. Según la escalera: **el cigarro usa el circuito real y el café
+> queda ilustrativo** (se dice en pantalla). Tabla en
+> `docs/etapa3-2b-tabla-wip.json`.
+
+## En pocas líneas (3.2)
 
 - **Descarga:** los 2 archivos llegaron completos (tamaño y huella iguales
   al servidor). Todas las neuronas clave tienen sus conexiones, así que no
@@ -262,6 +270,9 @@ la antena dispara el eco.
 
 ## 9. Opciones para decidir (planes B y C)
 
+*(Superado: Felipe encontró la causa probable y pidió la 3.2b con una
+escalera fija; ver al final.)*
+
 Nada de esto está hecho. La traducción al juego se decide en la 3.3.
 
 1. **Recalibrar evitando el eco (la que recomiendo).** Una regla nueva,
@@ -291,6 +302,9 @@ MN9 dispara sin azúcar y no se podría decir que el circuito real decide.
 - Página 20 ("Qué hay que verificar"): poner esta tabla (SAD093, trío LB23,
   GNG380 descartada, aDN2 → aDN1, camino del azúcar, Dandelion frena).
 - Agregar el hallazgo del eco y la decisión que se tome.
+- De la 3.2b: el azúcar es LB3b + LB3c (17 sensores; Shiu usa 21), la
+  prueba 7 (eco), la escalera y su resultado (0,090 mV: cigarro real, café
+  ilustrativo), y la tabla del WIP nueva.
 
 ## 11. Cómo repetirlo
 
@@ -315,7 +329,8 @@ exactamente lo mismo.
 
 # Etapa 3.2b · Más azúcar, prueba del eco y escalera para elegir el peso
 
-**Estado:** en curso (2026-10-18). El juego no se tocó.
+**Estado:** HECHA (2026-10-18). El juego no se tocó. Reglas guardadas en
+git antes de correr (commit `a8854b4`). ~55 minutos de cálculo en total.
 
 ## Por qué (la causa probable que encontró Felipe)
 
@@ -390,3 +405,106 @@ así leí tu escalera):
 JO-C + JO-E + JO-F, 20 → 220 Hz en línea recta), sin cambiarla. Si la
 escalera termina en la opción 3, la tabla igual se calcula, sólo como
 información. Queda en `docs/etapa3-2b-tabla-wip.json`.
+
+## Resultados de la 3.2b
+
+### Los dos pesos que pediste, y el que quedó
+
+| # | Prueba | (a) Shiu 0,275 | (b) Calibrado 1,342 | Elegido 0,090 |
+|---|--------|----------------|---------------------|---------------|
+| 1 | Azúcar → MN9 | ✅ sigue al azúcar: 4 → 43 → 84 → 113 → 164 Hz (10 a 200 Hz) | ⚠️ 171 a 305 Hz sin seguir al azúcar | ❌ 0 Hz con cualquier cantidad |
+| 2 | Antena → aBN1, aDN1, aDN2 | ✅ 229 / 21 / 17 Hz | ⚠️ 357 / 4 / 3,5 Hz | ✅ 128 / 71 / 36 Hz |
+| 3 | JO-F sola → aBN1 casi apagada | ✅ 0 Hz | ✅ 1,8 Hz | ✅ 0 Hz |
+| 4 | Cada circuito hace lo suyo | ⚠️ la antena le da 4 Hz a MN9 | ❌ antena → MN9 79 Hz; azúcar → aBN1 47 Hz | ✅ todo en 0 |
+| 5 | Sin estímulo → todo apagado | ✅ | ✅ | ✅ |
+| 6 | Conexiones barajadas → MN9 casi apagada | ✅ MN9 en 0 en las 20 redes | ❌ sólo 2 y 1 de 10 | ❌ no se puede evaluar (ver abajo) |
+| 7 | **Eco** | ❌ en las 30 repeticiones, con los 3 estímulos | ❌ en las 30, con los 3 | ✅ ninguno |
+
+(Los Hz de la prueba 2: aBN1 izquierda / aDN1 y aDN2 del lado que más
+responde, el derecho.)
+
+**Escalera:** el calibrado (b) tiene eco → el de Shiu (a) también → **paso
+3: el peso más alto sin eco = 0,090 mV.**
+- Prueba 2 ✅ → **el cigarro usa el circuito real** (limpieza de antenas).
+- Prueba 1 ❌ → **el café queda ilustrativo** y se dice en pantalla.
+- No se llega a la opción 3.
+
+### Cómo se buscó el peso sin eco
+
+| Peso | Azúcar 100 Hz | Azúcar 200 Hz | Antena 220 Hz (WIP 10) |
+|------|---------------|---------------|------------------------|
+| 0,275 | eco 30/30 | eco 30/30 | eco 30/30 |
+| 0,250 | eco 30/30 | eco 30/30 | eco 30/30 |
+| 0,225 | eco 30/30 | eco 30/30 | eco 30/30 |
+| 0,200 | eco 13/30 | eco 29/30 | eco 30/30 |
+| 0,175 | eco 12/30 | eco 5/30 | eco 30/30 |
+| 0,150 | sin eco | sin eco | eco 30/30 |
+| 0,125 | sin eco | sin eco | eco 30/30 |
+| 0,100 | sin eco | sin eco | eco 14/30 |
+| 0,075 | sin eco | sin eco | sin eco |
+| 0,095 | sin eco | sin eco | eco 1/30 |
+| **0,090** | **sin eco** | **sin eco** | **sin eco** |
+
+Lo que pone el límite es la antena fuerte: con el azúcar el eco desaparece
+desde 0,150 hacia abajo, pero con la antena a 220 Hz sigue hasta 0,095. Con
+0,095 apareció en 1 de 30 repeticiones (un resto muy chico), y el criterio
+pedía las 30.
+
+### Tabla del WIP con 0,090 mV (misma regla 20–220 Hz)
+
+| WIP | Antena | aDN1 izq/der | aDN2 izq/der | MN9 | Limpieza | aBN1 izq | Colillas del juego |
+|----:|-------:|-------------:|-------------:|----:|---------:|---------:|-------------------:|
+| 1 | 20 Hz | 0 / 0 | 0 / 0 | 0 | 0,0 | 5 | 0 |
+| 2 | 42 Hz | 0 / 0 | 0 / 0 | 0 | 0,0 | 43 | 0 |
+| 3 | 64 Hz | 0 / 0,3 | 0 / 0 | 0 | 0,1 | 67 | 0 |
+| 4 | 87 Hz | 0 / 13,3 | 0 / 0 | 0 | 3,3 | 85 | 1 |
+| 5 | 109 Hz | 23,4 / 56,9 | 8,3 / 23,7 | 0 | 28,1 | 105 | 3 |
+| 6 | 131 Hz | 67,2 / 97,6 | 27,1 / 53,5 | 0 | 61,4 | 121 | 6 |
+| 7 | 153 Hz | 72,8 / 104,5 | 30,6 / 59,8 | 0 | 66,9 | 135 | 8 |
+| 8 | 176 Hz | 75,4 / 110,0 | 32,7 / 64,3 | 0 | 70,6 | 147 | 11 |
+| 9 | 198 Hz | 78,5 / 114,2 | 35,3 / 69,1 | 0 | 74,3 | 158 | 13 |
+| 10 | 220 Hz | 80,6 / 118,6 | 37,5 / 73,9 | 0 | 77,7 | 168 | 15 |
+
+- ¿Sube con el WIP? ✅ (en cada escalón).
+- ¿Casi nada con WIP 1–3, como el juego? ✅ (0; 0; 0,1).
+- Parecido con las colillas del juego: correlación 0,95.
+- MN9 queda en 0: la antena no hace "comer".
+- El cerebro no se enciende entero: entre 273 y 1.077 neuronas sobre 10 Hz.
+
+### Lo que no calza (tal cual)
+
+- **El azúcar no llega a MN9 con 0,090.** Se enciende la primera parte del
+  camino (Clavicle der 47 Hz, ANXXX462b 16, FMIn 12, y Dandelion, que frena,
+  41), pero DNge062, Roundup y Roundtree quedan en 0. Por eso el café queda
+  ilustrativo.
+- **La prueba 6 sale ❌ sin significar nada malo.** Pide que, al barajar,
+  MN9 quede bajo el 10 % de lo que da la red real; como la red real ya da 0,
+  no hay contra qué comparar. Las 20 redes barajadas también dan 0. No cambia
+  la decisión (la escalera sólo mira las pruebas 1, 2 y 7).
+- **El trío aBN2 casi no participa con 0,090** (0 a 2 Hz). La limpieza pasa
+  por SAD093 (aBN1) → aDN1 / aDN2 directo.
+- **La forma de la tabla no es una recta como las colillas.** Parte en WIP
+  4–5, salta hasta WIP 6 y después casi se aplana (61 → 78). En el juego,
+  de WIP 6 a 10 las colillas siguen subiendo (6 → 15). Cómo traducirlo se
+  decide en la 3.3.
+- **Tu hipótesis se cumplió a medias.** Con 17 sensores y el peso de Shiu,
+  las pruebas 1, 4 y 6 pasan o casi pasan (1 ✅, 4 ⚠️, 6 ✅): el poco azúcar sí
+  explicaba esos fallos. Pero el eco no se va: con 0,275 aparece con
+  cualquier estímulo, incluida la antena sola. El eco es del mapa de MaleCNS
+  con ese peso, no sólo del azúcar.
+- **La regla "80 % del techo" no funciona en este mapa.** Con más azúcar,
+  el peso calibrado subió a 1,342 (antes 0,692), porque el techo de la
+  rejilla lo pone el propio eco (MN9 llega a 339 Hz). Antes del eco, MN9 ya
+  daba 81–85 Hz con pesos de 0,20 a 0,275.
+
+### Cómo repetirlo
+
+    .venv-datos/bin/python scripts/datos/pruebas_etapa3b.py calibrar          # ~6 min
+    .venv-datos/bin/python scripts/datos/pruebas_etapa3b.py pesos shiu        # ~7 min
+    .venv-datos/bin/python scripts/datos/pruebas_etapa3b.py pesos calibrado   # ~31 min
+    .venv-datos/bin/python scripts/datos/pruebas_etapa3b.py escalera          # ~5 min
+    .venv-datos/bin/python scripts/datos/pruebas_etapa3b.py pesos elegido     # ~4 min
+    .venv-datos/bin/python scripts/datos/pruebas_etapa3b.py wip               # ~2 min
+    .venv-datos/bin/python scripts/datos/pruebas_etapa3b.py resumen
+
+Resultados completos en `scripts/datos/resultados_etapa3_2b.json`.

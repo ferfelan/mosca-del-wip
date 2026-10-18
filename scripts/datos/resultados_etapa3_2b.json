@@ -1,0 +1,9102 @@
+{
+ "azucar": {
+  "por_tipo": {
+   "LB3b_R": 6,
+   "LB3c_R": 11
+  },
+  "total": 17,
+  "shiu": 21,
+  "sinapsis_de_salida": {
+   "LB3b_R": 2245,
+   "LB3c_R": 6031
+  },
+  "conexiones_de_salida": {
+   "LB3b_R": 481,
+   "LB3c_R": 921
+  }
+ },
+ "calibracion": {
+  "curva": [
+   {
+    "w_syn": 0.05,
+    "MN9_L": 0.0,
+    "MN9_L_de": 0.0,
+    "MN9_R": 0.0,
+    "neuronas_sobre_10hz": 25,
+    "neuronas_con_algo": 29,
+    "kenyon_sobre_10hz": 0,
+    "kenyon_total": 4064
+   },
+   {
+    "w_syn": 0.075,
+    "MN9_L": 0.0,
+    "MN9_L_de": 0.0,
+    "MN9_R": 0.0,
+    "neuronas_sobre_10hz": 28,
+    "neuronas_con_algo": 34,
+    "kenyon_sobre_10hz": 0,
+    "kenyon_total": 4064
+   },
+   {
+    "w_syn": 0.1,
+    "MN9_L": 0.0,
+    "MN9_L_de": 0.0,
+    "MN9_R": 0.0,
+    "neuronas_sobre_10hz": 42,
+    "neuronas_con_algo": 67,
+    "kenyon_sobre_10hz": 0,
+    "kenyon_total": 4064
+   },
+   {
+    "w_syn": 0.15,
+    "MN9_L": 7.33,
+    "MN9_L_de": 3.47,
+    "MN9_R": 0.0,
+    "neuronas_sobre_10hz": 96,
+    "neuronas_con_algo": 301,
+    "kenyon_sobre_10hz": 0,
+    "kenyon_total": 4064
+   },
+   {
+    "w_syn": 0.2,
+    "MN9_L": 80.57,
+    "MN9_L_de": 8.6,
+    "MN9_R": 0.7,
+    "neuronas_sobre_10hz": 1895,
+    "neuronas_con_algo": 17204,
+    "kenyon_sobre_10hz": 0,
+    "kenyon_total": 4064
+   },
+   {
+    "w_syn": 0.25,
+    "MN9_L": 85.53,
+    "MN9_L_de": 29.24,
+    "MN9_R": 12.7,
+    "neuronas_sobre_10hz": 12636,
+    "neuronas_con_algo": 21134,
+    "kenyon_sobre_10hz": 4064,
+    "kenyon_total": 4064
+   },
+   {
+    "w_syn": 0.275,
+    "MN9_L": 84.37,
+    "MN9_L_de": 50.62,
+    "MN9_R": 16.37,
+    "neuronas_sobre_10hz": 15192,
+    "neuronas_con_algo": 23343,
+    "kenyon_sobre_10hz": 4064,
+    "kenyon_total": 4064
+   },
+   {
+    "w_syn": 0.3,
+    "MN9_L": 47.87,
+    "MN9_L_de": 32.27,
+    "MN9_R": 10.5,
+    "neuronas_sobre_10hz": 16356,
+    "neuronas_con_algo": 24915,
+    "kenyon_sobre_10hz": 4064,
+    "kenyon_total": 4064
+   },
+   {
+    "w_syn": 0.35,
+    "MN9_L": 40.47,
+    "MN9_L_de": 4.42,
+    "MN9_R": 10.5,
+    "neuronas_sobre_10hz": 18231,
+    "neuronas_con_algo": 27929,
+    "kenyon_sobre_10hz": 4064,
+    "kenyon_total": 4064
+   },
+   {
+    "w_syn": 0.4,
+    "MN9_L": 53.57,
+    "MN9_L_de": 10.31,
+    "MN9_R": 14.2,
+    "neuronas_sobre_10hz": 20172,
+    "neuronas_con_algo": 30885,
+    "kenyon_sobre_10hz": 4064,
+    "kenyon_total": 4064
+   },
+   {
+    "w_syn": 0.45,
+    "MN9_L": 98.97,
+    "MN9_L_de": 7.16,
+    "MN9_R": 18.07,
+    "neuronas_sobre_10hz": 21796,
+    "neuronas_con_algo": 33974,
+    "kenyon_sobre_10hz": 4064,
+    "kenyon_total": 4064
+   },
+   {
+    "w_syn": 0.5,
+    "MN9_L": 125.1,
+    "MN9_L_de": 7.63,
+    "MN9_R": 31.67,
+    "neuronas_sobre_10hz": 23365,
+    "neuronas_con_algo": 36932,
+    "kenyon_sobre_10hz": 4064,
+    "kenyon_total": 4064
+   },
+   {
+    "w_syn": 0.55,
+    "MN9_L": 150.33,
+    "MN9_L_de": 6.67,
+    "MN9_R": 50.93,
+    "neuronas_sobre_10hz": 24844,
+    "neuronas_con_algo": 39271,
+    "kenyon_sobre_10hz": 4064,
+    "kenyon_total": 4064
+   },
+   {
+    "w_syn": 0.6,
+    "MN9_L": 166.23,
+    "MN9_L_de": 13.39,
+    "MN9_R": 63.27,
+    "neuronas_sobre_10hz": 26050,
+    "neuronas_con_algo": 42480,
+    "kenyon_sobre_10hz": 4064,
+    "kenyon_total": 4064
+   },
+   {
+    "w_syn": 0.7,
+    "MN9_L": 177.17,
+    "MN9_L_de": 13.85,
+    "MN9_R": 77.7,
+    "neuronas_sobre_10hz": 28289,
+    "neuronas_con_algo": 46537,
+    "kenyon_sobre_10hz": 4064,
+    "kenyon_total": 4064
+   },
+   {
+    "w_syn": 0.8,
+    "MN9_L": 178.8,
+    "MN9_L_de": 13.95,
+    "MN9_R": 87.87,
+    "neuronas_sobre_10hz": 30553,
+    "neuronas_con_algo": 50182,
+    "kenyon_sobre_10hz": 4064,
+    "kenyon_total": 4064
+   },
+   {
+    "w_syn": 1.0,
+    "MN9_L": 171.13,
+    "MN9_L_de": 47.75,
+    "MN9_R": 107.67,
+    "neuronas_sobre_10hz": 32669,
+    "neuronas_con_algo": 54441,
+    "kenyon_sobre_10hz": 4064,
+    "kenyon_total": 4064
+   },
+   {
+    "w_syn": 1.25,
+    "MN9_L": 231.93,
+    "MN9_L_de": 101.06,
+    "MN9_R": 115.13,
+    "neuronas_sobre_10hz": 35095,
+    "neuronas_con_algo": 59371,
+    "kenyon_sobre_10hz": 4064,
+    "kenyon_total": 4064
+   },
+   {
+    "w_syn": 1.5,
+    "MN9_L": 339.43,
+    "MN9_L_de": 129.2,
+    "MN9_R": 180.57,
+    "neuronas_sobre_10hz": 36652,
+    "neuronas_con_algo": 63020,
+    "kenyon_sobre_10hz": 4064,
+    "kenyon_total": 4064
+   },
+   {
+    "w_syn": 2.0,
+    "MN9_L": 296.07,
+    "MN9_L_de": 161.96,
+    "MN9_R": 195.57,
+    "neuronas_sobre_10hz": 39045,
+    "neuronas_con_algo": 68014,
+    "kenyon_sobre_10hz": 4064,
+    "kenyon_total": 4064
+   }
+  ],
+  "maximo_hz": 339.43,
+  "meta_hz": 271.54,
+  "w_syn": 1.342,
+  "mn9_izq_con_w": 286.5,
+  "porcentaje_del_maximo": 0.844,
+  "w_syn_shiu": 0.275,
+  "regla": "techo de la MN9 izq. en la rejilla; cruce del 80 %"
+ },
+ "pesos": {
+  "0.275": {
+   "etiqueta": "shiu",
+   "eco": {
+    "veredicto": "❌",
+    "tiene_eco": true,
+    "estimulos": {
+     "azúcar der 100 Hz": {
+      "sin_eco": false,
+      "repeticiones_con_eco": 30,
+      "actividad_con_estimulo": 1311420.3,
+      "actividad_despues": 1581768.3,
+      "proporcion": 1.2061,
+      "neuronas_disparando_por_ventana": [
+       6567.6,
+       12577.5,
+       11866.9,
+       12148.6,
+       11999.6,
+       12155.4,
+       12608.5,
+       13773.3,
+       14646.0,
+       15568.2
+      ],
+      "segundos": 12.1
+     },
+     "azúcar der 200 Hz": {
+      "sin_eco": false,
+      "repeticiones_con_eco": 30,
+      "actividad_con_estimulo": 1688437.7,
+      "actividad_despues": 1806183.8,
+      "proporcion": 1.0697,
+      "neuronas_disparando_por_ventana": [
+       7528.2,
+       14691.2,
+       14320.2,
+       14374.2,
+       14324.0,
+       14472.7,
+       14409.4,
+       14488.9,
+       15943.5,
+       15892.6
+      ],
+      "segundos": 14.0
+     },
+     "antena izq 220 Hz (WIP 10)": {
+      "sin_eco": false,
+      "repeticiones_con_eco": 30,
+      "actividad_con_estimulo": 2081428.3,
+      "actividad_despues": 1949654.6,
+      "proporcion": 0.9367,
+      "neuronas_disparando_por_ventana": [
+       18262.5,
+       17768.6,
+       17594.3,
+       17539.6,
+       17498.0,
+       16789.5,
+       15996.0,
+       16013.4,
+       16046.3,
+       16016.6
+      ],
+      "segundos": 14.1
+     }
+    }
+   },
+   "pruebas": {
+    "1": {
+     "veredicto": "✅",
+     "MN9_L": 84.37,
+     "MN9_R": 16.37,
+     "curva_MN9_L": [
+      4.03,
+      43.0,
+      84.37,
+      113.27,
+      164.2
+     ],
+     "sube": true,
+     "detalle": {
+      "10": {
+       "grupos": {
+        "MN9": {
+         "L": {
+          "hz": 4.03,
+          "de": 3.01,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.07,
+          "de": 0.25,
+          "n": 1
+         }
+        },
+        "aDN1 (DNg62)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aDN2 (DNge078)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aBN1 (SAD093)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aBN2 (trío LB23)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         }
+        },
+        "GNG380": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         },
+         "R": {
+          "hz": 5.29,
+          "de": 2.19,
+          "n": 3
+         }
+        },
+        "plan B: 5 que más reciben de la antena": {
+         "L": {
+          "hz": 26.86,
+          "de": 9.1,
+          "n": 5
+         },
+         "R": {
+          "hz": 0.75,
+          "de": 0.54,
+          "n": 5
+         }
+        },
+        "Dandelion (AN13B002)": {
+         "L": {
+          "hz": 27.67,
+          "de": 8.95,
+          "n": 1
+         },
+         "R": {
+          "hz": 23.8,
+          "de": 8.81,
+          "n": 1
+         }
+        },
+        "DNge062": {
+         "L": {
+          "hz": 0.63,
+          "de": 0.67,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.93,
+          "de": 1.23,
+          "n": 1
+         }
+        },
+        "Roundup (GNG108)": {
+         "L": {
+          "hz": 1.7,
+          "de": 1.66,
+          "n": 1
+         },
+         "R": {
+          "hz": 4.53,
+          "de": 2.97,
+          "n": 1
+         }
+        },
+        "Roundtree (GNG120)": {
+         "L": {
+          "hz": 2.07,
+          "de": 1.05,
+          "n": 1
+         },
+         "R": {
+          "hz": 1.23,
+          "de": 1.1,
+          "n": 1
+         }
+        },
+        "ANXXX462b": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.1,
+          "de": 0.31,
+          "n": 1
+         }
+        },
+        "Clavicle (ANXXX462a)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 1.37,
+          "de": 1.52,
+          "n": 1
+         }
+        },
+        "FMIn (GNG197)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.1,
+          "de": 0.31,
+          "n": 1
+         }
+        },
+        "Fdg (GNG588)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.07,
+          "de": 0.37,
+          "n": 1
+         }
+        }
+       },
+       "esparcido": {
+        "neuronas_sobre_10hz": 14777,
+        "neuronas_con_algo": 24388,
+        "kenyon_sobre_10hz": 4064,
+        "kenyon_total": 4064
+       },
+       "segundos": 12.6
+      },
+      "50": {
+       "grupos": {
+        "MN9": {
+         "L": {
+          "hz": 43.0,
+          "de": 35.09,
+          "n": 1
+         },
+         "R": {
+          "hz": 8.63,
+          "de": 7.97,
+          "n": 1
+         }
+        },
+        "aDN1 (DNg62)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aDN2 (DNge078)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aBN1 (SAD093)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aBN2 (trío LB23)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         }
+        },
+        "GNG380": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         },
+         "R": {
+          "hz": 1.44,
+          "de": 1.37,
+          "n": 3
+         }
+        },
+        "plan B: 5 que más reciben de la antena": {
+         "L": {
+          "hz": 35.26,
+          "de": 1.85,
+          "n": 5
+         },
+         "R": {
+          "hz": 0.73,
+          "de": 0.46,
+          "n": 5
+         }
+        },
+        "Dandelion (AN13B002)": {
+         "L": {
+          "hz": 73.6,
+          "de": 15.5,
+          "n": 1
+         },
+         "R": {
+          "hz": 22.67,
+          "de": 15.74,
+          "n": 1
+         }
+        },
+        "DNge062": {
+         "L": {
+          "hz": 19.4,
+          "de": 17.15,
+          "n": 1
+         },
+         "R": {
+          "hz": 27.47,
+          "de": 25.25,
+          "n": 1
+         }
+        },
+        "Roundup (GNG108)": {
+         "L": {
+          "hz": 33.73,
+          "de": 31.13,
+          "n": 1
+         },
+         "R": {
+          "hz": 34.23,
+          "de": 29.34,
+          "n": 1
+         }
+        },
+        "Roundtree (GNG120)": {
+         "L": {
+          "hz": 4.6,
+          "de": 2.22,
+          "n": 1
+         },
+         "R": {
+          "hz": 10.13,
+          "de": 6.6,
+          "n": 1
+         }
+        },
+        "ANXXX462b": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 1.07,
+          "de": 1.01,
+          "n": 1
+         }
+        },
+        "Clavicle (ANXXX462a)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 12.8,
+          "de": 10.66,
+          "n": 1
+         }
+        },
+        "FMIn (GNG197)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 6.17,
+          "de": 2.46,
+          "n": 1
+         }
+        },
+        "Fdg (GNG588)": {
+         "L": {
+          "hz": 0.23,
+          "de": 0.5,
+          "n": 1
+         },
+         "R": {
+          "hz": 13.2,
+          "de": 12.23,
+          "n": 1
+         }
+        }
+       },
+       "esparcido": {
+        "neuronas_sobre_10hz": 15283,
+        "neuronas_con_algo": 23950,
+        "kenyon_sobre_10hz": 4064,
+        "kenyon_total": 4064
+       },
+       "segundos": 14.1
+      },
+      "100": {
+       "grupos": {
+        "MN9": {
+         "L": {
+          "hz": 84.37,
+          "de": 50.62,
+          "n": 1
+         },
+         "R": {
+          "hz": 16.37,
+          "de": 12.35,
+          "n": 1
+         }
+        },
+        "aDN1 (DNg62)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aDN2 (DNge078)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aBN1 (SAD093)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aBN2 (trío LB23)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         }
+        },
+        "GNG380": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         },
+         "R": {
+          "hz": 0.2,
+          "de": 0.41,
+          "n": 3
+         }
+        },
+        "plan B: 5 que más reciben de la antena": {
+         "L": {
+          "hz": 36.63,
+          "de": 1.44,
+          "n": 5
+         },
+         "R": {
+          "hz": 0.79,
+          "de": 0.47,
+          "n": 5
+         }
+        },
+        "Dandelion (AN13B002)": {
+         "L": {
+          "hz": 113.8,
+          "de": 6.61,
+          "n": 1
+         },
+         "R": {
+          "hz": 17.93,
+          "de": 15.39,
+          "n": 1
+         }
+        },
+        "DNge062": {
+         "L": {
+          "hz": 34.67,
+          "de": 26.09,
+          "n": 1
+         },
+         "R": {
+          "hz": 50.5,
+          "de": 38.92,
+          "n": 1
+         }
+        },
+        "Roundup (GNG108)": {
+         "L": {
+          "hz": 54.63,
+          "de": 42.13,
+          "n": 1
+         },
+         "R": {
+          "hz": 59.6,
+          "de": 40.06,
+          "n": 1
+         }
+        },
+        "Roundtree (GNG120)": {
+         "L": {
+          "hz": 8.03,
+          "de": 4.42,
+          "n": 1
+         },
+         "R": {
+          "hz": 41.0,
+          "de": 20.23,
+          "n": 1
+         }
+        },
+        "ANXXX462b": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 9.5,
+          "de": 3.26,
+          "n": 1
+         }
+        },
+        "Clavicle (ANXXX462a)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 54.07,
+          "de": 14.04,
+          "n": 1
+         }
+        },
+        "FMIn (GNG197)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 16.3,
+          "de": 8.26,
+          "n": 1
+         }
+        },
+        "Fdg (GNG588)": {
+         "L": {
+          "hz": 0.5,
+          "de": 0.78,
+          "n": 1
+         },
+         "R": {
+          "hz": 24.8,
+          "de": 19.86,
+          "n": 1
+         }
+        }
+       },
+       "esparcido": {
+        "neuronas_sobre_10hz": 15192,
+        "neuronas_con_algo": 23343,
+        "kenyon_sobre_10hz": 4064,
+        "kenyon_total": 4064
+       },
+       "segundos": 14.0
+      },
+      "150": {
+       "grupos": {
+        "MN9": {
+         "L": {
+          "hz": 113.27,
+          "de": 51.17,
+          "n": 1
+         },
+         "R": {
+          "hz": 17.0,
+          "de": 15.4,
+          "n": 1
+         }
+        },
+        "aDN1 (DNg62)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aDN2 (DNge078)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aBN1 (SAD093)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aBN2 (trío LB23)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         }
+        },
+        "GNG380": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         }
+        },
+        "plan B: 5 que más reciben de la antena": {
+         "L": {
+          "hz": 37.81,
+          "de": 0.97,
+          "n": 5
+         },
+         "R": {
+          "hz": 1.03,
+          "de": 0.68,
+          "n": 5
+         }
+        },
+        "Dandelion (AN13B002)": {
+         "L": {
+          "hz": 143.33,
+          "de": 3.07,
+          "n": 1
+         },
+         "R": {
+          "hz": 19.8,
+          "de": 12.59,
+          "n": 1
+         }
+        },
+        "DNge062": {
+         "L": {
+          "hz": 35.13,
+          "de": 29.49,
+          "n": 1
+         },
+         "R": {
+          "hz": 58.77,
+          "de": 41.35,
+          "n": 1
+         }
+        },
+        "Roundup (GNG108)": {
+         "L": {
+          "hz": 61.13,
+          "de": 48.44,
+          "n": 1
+         },
+         "R": {
+          "hz": 82.93,
+          "de": 44.25,
+          "n": 1
+         }
+        },
+        "Roundtree (GNG120)": {
+         "L": {
+          "hz": 14.9,
+          "de": 4.86,
+          "n": 1
+         },
+         "R": {
+          "hz": 80.7,
+          "de": 23.76,
+          "n": 1
+         }
+        },
+        "ANXXX462b": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 29.33,
+          "de": 8.52,
+          "n": 1
+         }
+        },
+        "Clavicle (ANXXX462a)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 93.0,
+          "de": 11.61,
+          "n": 1
+         }
+        },
+        "FMIn (GNG197)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 10.67,
+          "de": 2.83,
+          "n": 1
+         }
+        },
+        "Fdg (GNG588)": {
+         "L": {
+          "hz": 0.1,
+          "de": 0.31,
+          "n": 1
+         },
+         "R": {
+          "hz": 30.37,
+          "de": 22.26,
+          "n": 1
+         }
+        }
+       },
+       "esparcido": {
+        "neuronas_sobre_10hz": 15166,
+        "neuronas_con_algo": 22607,
+        "kenyon_sobre_10hz": 4064,
+        "kenyon_total": 4064
+       },
+       "segundos": 13.5
+      },
+      "200": {
+       "grupos": {
+        "MN9": {
+         "L": {
+          "hz": 164.2,
+          "de": 29.22,
+          "n": 1
+         },
+         "R": {
+          "hz": 17.5,
+          "de": 12.46,
+          "n": 1
+         }
+        },
+        "aDN1 (DNg62)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aDN2 (DNge078)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aBN1 (SAD093)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aBN2 (trío LB23)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         }
+        },
+        "GNG380": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         },
+         "R": {
+          "hz": 0.01,
+          "de": 0.06,
+          "n": 3
+         }
+        },
+        "plan B: 5 que más reciben de la antena": {
+         "L": {
+          "hz": 38.83,
+          "de": 1.09,
+          "n": 5
+         },
+         "R": {
+          "hz": 1.32,
+          "de": 0.56,
+          "n": 5
+         }
+        },
+        "Dandelion (AN13B002)": {
+         "L": {
+          "hz": 169.03,
+          "de": 2.58,
+          "n": 1
+         },
+         "R": {
+          "hz": 28.83,
+          "de": 11.05,
+          "n": 1
+         }
+        },
+        "DNge062": {
+         "L": {
+          "hz": 41.9,
+          "de": 19.98,
+          "n": 1
+         },
+         "R": {
+          "hz": 85.17,
+          "de": 23.59,
+          "n": 1
+         }
+        },
+        "Roundup (GNG108)": {
+         "L": {
+          "hz": 69.6,
+          "de": 35.58,
+          "n": 1
+         },
+         "R": {
+          "hz": 107.87,
+          "de": 32.24,
+          "n": 1
+         }
+        },
+        "Roundtree (GNG120)": {
+         "L": {
+          "hz": 30.13,
+          "de": 8.58,
+          "n": 1
+         },
+         "R": {
+          "hz": 122.87,
+          "de": 30.35,
+          "n": 1
+         }
+        },
+        "ANXXX462b": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 51.93,
+          "de": 7.62,
+          "n": 1
+         }
+        },
+        "Clavicle (ANXXX462a)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 136.53,
+          "de": 6.88,
+          "n": 1
+         }
+        },
+        "FMIn (GNG197)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 18.13,
+          "de": 3.28,
+          "n": 1
+         }
+        },
+        "Fdg (GNG588)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 33.4,
+          "de": 18.09,
+          "n": 1
+         }
+        }
+       },
+       "esparcido": {
+        "neuronas_sobre_10hz": 15209,
+        "neuronas_con_algo": 22580,
+        "kenyon_sobre_10hz": 4064,
+        "kenyon_total": 4064
+       },
+       "segundos": 14.0
+      }
+     },
+     "empujan_MN9_L": [
+      {
+       "bodyId": 10833,
+       "tipo": "DNge062",
+       "lado": "R",
+       "hz": 50.5,
+       "sinapsis": 464,
+       "signo": "+"
+      },
+      {
+       "bodyId": 26764,
+       "tipo": "GNG108",
+       "lado": "R",
+       "hz": 59.6,
+       "sinapsis": 348,
+       "signo": "+"
+      },
+      {
+       "bodyId": 10881,
+       "tipo": "GNG120",
+       "lado": "R",
+       "hz": 41.0,
+       "sinapsis": 359,
+       "signo": "+"
+      },
+      {
+       "bodyId": 10673,
+       "tipo": "GNG002",
+       "lado": "L",
+       "hz": 149.0,
+       "sinapsis": 92,
+       "signo": "+"
+      },
+      {
+       "bodyId": 12752,
+       "tipo": "DNge080",
+       "lado": "L",
+       "hz": 71.2,
+       "sinapsis": 101,
+       "signo": "+"
+      },
+      {
+       "bodyId": 12364,
+       "tipo": "DNge080",
+       "lado": "R",
+       "hz": 63.3,
+       "sinapsis": 96,
+       "signo": "+"
+      },
+      {
+       "bodyId": 11127,
+       "tipo": "DNge059",
+       "lado": "L",
+       "hz": 68.0,
+       "sinapsis": 46,
+       "signo": "+"
+      },
+      {
+       "bodyId": 519839,
+       "tipo": "DNge062",
+       "lado": "L",
+       "hz": 34.7,
+       "sinapsis": 56,
+       "signo": "+"
+      }
+     ],
+     "frenan_MN9_L": [
+      {
+       "bodyId": 13754,
+       "tipo": "GNG130",
+       "lado": "L",
+       "hz": 93.5,
+       "sinapsis": 357,
+       "signo": "−"
+      },
+      {
+       "bodyId": 523679,
+       "tipo": "DNge051",
+       "lado": "L",
+       "hz": 32.6,
+       "sinapsis": 142,
+       "signo": "−"
+      },
+      {
+       "bodyId": 11179,
+       "tipo": "DNge051",
+       "lado": "R",
+       "hz": 57.9,
+       "sinapsis": 70,
+       "signo": "−"
+      },
+      {
+       "bodyId": 511989,
+       "tipo": "GNG130",
+       "lado": "R",
+       "hz": 88.2,
+       "sinapsis": 16,
+       "signo": "−"
+      },
+      {
+       "bodyId": 92829,
+       "tipo": "GNG262",
+       "lado": "L",
+       "hz": 60.9,
+       "sinapsis": 22,
+       "signo": "−"
+      },
+      {
+       "bodyId": 10160,
+       "tipo": "DNg90",
+       "lado": "L",
+       "hz": 26.8,
+       "sinapsis": 34,
+       "signo": "−"
+      }
+     ]
+    },
+    "2": {
+     "veredicto": "✅",
+     "aBN1_L": 228.57,
+     "aDN1_max_lado": 20.6,
+     "aDN2_max_lado": 16.9,
+     "detalle": {
+      "grupos": {
+       "MN9": {
+        "L": {
+         "hz": 4.13,
+         "de": 1.48,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "aDN1 (DNg62)": {
+        "L": {
+         "hz": 11.07,
+         "de": 4.62,
+         "n": 1
+        },
+        "R": {
+         "hz": 20.6,
+         "de": 7.82,
+         "n": 1
+        }
+       },
+       "aDN2 (DNge078)": {
+        "L": {
+         "hz": 8.8,
+         "de": 4.15,
+         "n": 1
+        },
+        "R": {
+         "hz": 16.9,
+         "de": 6.45,
+         "n": 1
+        }
+       },
+       "aBN1 (SAD093)": {
+        "L": {
+         "hz": 228.57,
+         "de": 1.65,
+         "n": 1
+        },
+        "R": {
+         "hz": 5.53,
+         "de": 3.42,
+         "n": 1
+        }
+       },
+       "aBN2 (trío LB23)": {
+        "L": {
+         "hz": 46.42,
+         "de": 1.06,
+         "n": 3
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        }
+       },
+       "GNG380": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        },
+        "R": {
+         "hz": 10.01,
+         "de": 0.55,
+         "n": 3
+        }
+       },
+       "plan B: 5 que más reciben de la antena": {
+        "L": {
+         "hz": 144.3,
+         "de": 2.62,
+         "n": 5
+        },
+        "R": {
+         "hz": 8.73,
+         "de": 1.4,
+         "n": 5
+        }
+       },
+       "Dandelion (AN13B002)": {
+        "L": {
+         "hz": 17.37,
+         "de": 1.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 29.73,
+         "de": 1.41,
+         "n": 1
+        }
+       },
+       "DNge062": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Roundup (GNG108)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Roundtree (GNG120)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.03,
+         "de": 0.18,
+         "n": 1
+        }
+       },
+       "ANXXX462b": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Clavicle (ANXXX462a)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "FMIn (GNG197)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Fdg (GNG588)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       }
+      },
+      "esparcido": {
+       "neuronas_sobre_10hz": 16606,
+       "neuronas_con_algo": 23590,
+       "kenyon_sobre_10hz": 4064,
+       "kenyon_total": 4064
+      },
+      "segundos": 14.9
+     },
+     "detalle_220hz": {
+      "grupos": {
+       "MN9": {
+        "L": {
+         "hz": 6.07,
+         "de": 1.57,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "aDN1 (DNg62)": {
+        "L": {
+         "hz": 8.23,
+         "de": 1.59,
+         "n": 1
+        },
+        "R": {
+         "hz": 30.9,
+         "de": 4.39,
+         "n": 1
+        }
+       },
+       "aDN2 (DNge078)": {
+        "L": {
+         "hz": 6.3,
+         "de": 1.37,
+         "n": 1
+        },
+        "R": {
+         "hz": 17.97,
+         "de": 4.18,
+         "n": 1
+        }
+       },
+       "aBN1 (SAD093)": {
+        "L": {
+         "hz": 279.53,
+         "de": 1.38,
+         "n": 1
+        },
+        "R": {
+         "hz": 3.4,
+         "de": 1.25,
+         "n": 1
+        }
+       },
+       "aBN2 (trío LB23)": {
+        "L": {
+         "hz": 73.98,
+         "de": 1.11,
+         "n": 3
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        }
+       },
+       "GNG380": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        },
+        "R": {
+         "hz": 10.61,
+         "de": 0.4,
+         "n": 3
+        }
+       },
+       "plan B: 5 que más reciben de la antena": {
+        "L": {
+         "hz": 218.25,
+         "de": 2.32,
+         "n": 5
+        },
+        "R": {
+         "hz": 20.2,
+         "de": 1.65,
+         "n": 5
+        }
+       },
+       "Dandelion (AN13B002)": {
+        "L": {
+         "hz": 11.53,
+         "de": 0.97,
+         "n": 1
+        },
+        "R": {
+         "hz": 28.8,
+         "de": 1.19,
+         "n": 1
+        }
+       },
+       "DNge062": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Roundup (GNG108)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Roundtree (GNG120)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "ANXXX462b": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Clavicle (ANXXX462a)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "FMIn (GNG197)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Fdg (GNG588)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       }
+      },
+      "esparcido": {
+       "neuronas_sobre_10hz": 17001,
+       "neuronas_con_algo": 22659,
+       "kenyon_sobre_10hz": 4064,
+       "kenyon_total": 4064
+      },
+      "segundos": 16.5
+     }
+    },
+    "3": {
+     "veredicto": "✅",
+     "aBN1_L_JOF": 0.0,
+     "aBN1_L_JOCE": 228.57,
+     "proporcion": 0.0,
+     "aBN1_L_JOF_220hz": 0.0,
+     "detalle": {
+      "grupos": {
+       "MN9": {
+        "L": {
+         "hz": 0.97,
+         "de": 1.73,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "aDN1 (DNg62)": {
+        "L": {
+         "hz": 0.17,
+         "de": 0.46,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.37,
+         "de": 0.76,
+         "n": 1
+        }
+       },
+       "aDN2 (DNge078)": {
+        "L": {
+         "hz": 0.03,
+         "de": 0.18,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.03,
+         "de": 0.18,
+         "n": 1
+        }
+       },
+       "aBN1 (SAD093)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "aBN2 (trío LB23)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        }
+       },
+       "GNG380": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        },
+        "R": {
+         "hz": 10.83,
+         "de": 0.78,
+         "n": 3
+        }
+       },
+       "plan B: 5 que más reciben de la antena": {
+        "L": {
+         "hz": 22.37,
+         "de": 0.99,
+         "n": 5
+        },
+        "R": {
+         "hz": 1.41,
+         "de": 0.38,
+         "n": 5
+        }
+       },
+       "Dandelion (AN13B002)": {
+        "L": {
+         "hz": 21.47,
+         "de": 2.46,
+         "n": 1
+        },
+        "R": {
+         "hz": 9.53,
+         "de": 1.81,
+         "n": 1
+        }
+       },
+       "DNge062": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Roundup (GNG108)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Roundtree (GNG120)": {
+        "L": {
+         "hz": 0.03,
+         "de": 0.18,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "ANXXX462b": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Clavicle (ANXXX462a)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "FMIn (GNG197)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Fdg (GNG588)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       }
+      },
+      "esparcido": {
+       "neuronas_sobre_10hz": 15386,
+       "neuronas_con_algo": 23253,
+       "kenyon_sobre_10hz": 4064,
+       "kenyon_total": 4064
+      },
+      "segundos": 15.3
+     },
+     "detalle_220hz": {
+      "grupos": {
+       "MN9": {
+        "L": {
+         "hz": 0.1,
+         "de": 0.31,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "aDN1 (DNg62)": {
+        "L": {
+         "hz": 0.97,
+         "de": 1.3,
+         "n": 1
+        },
+        "R": {
+         "hz": 2.2,
+         "de": 1.13,
+         "n": 1
+        }
+       },
+       "aDN2 (DNge078)": {
+        "L": {
+         "hz": 0.67,
+         "de": 1.3,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.5,
+         "de": 0.82,
+         "n": 1
+        }
+       },
+       "aBN1 (SAD093)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.17,
+         "de": 0.91,
+         "n": 1
+        }
+       },
+       "aBN2 (trío LB23)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        }
+       },
+       "GNG380": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        },
+        "R": {
+         "hz": 11.5,
+         "de": 0.46,
+         "n": 3
+        }
+       },
+       "plan B: 5 que más reciben de la antena": {
+        "L": {
+         "hz": 19.23,
+         "de": 0.7,
+         "n": 5
+        },
+        "R": {
+         "hz": 1.22,
+         "de": 0.42,
+         "n": 5
+        }
+       },
+       "Dandelion (AN13B002)": {
+        "L": {
+         "hz": 20.2,
+         "de": 0.66,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.03,
+         "de": 0.18,
+         "n": 1
+        }
+       },
+       "DNge062": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Roundup (GNG108)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Roundtree (GNG120)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "ANXXX462b": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Clavicle (ANXXX462a)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "FMIn (GNG197)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Fdg (GNG588)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       }
+      },
+      "esparcido": {
+       "neuronas_sobre_10hz": 15404,
+       "neuronas_con_algo": 23137,
+       "kenyon_sobre_10hz": 4064,
+       "kenyon_total": 4064
+      },
+      "segundos": 17.3
+     }
+    },
+    "4": {
+     "veredicto": "⚠️",
+     "limpieza_con_azucar": {
+      "aBN1 (SAD093)": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aBN2 (trío LB23)": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN1 (DNg62)": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2 (DNge078)": {
+       "L": 0.0,
+       "R": 0.0
+      }
+     },
+     "MN9_con_antena": {
+      "L": 4.13,
+      "R": 0.0
+     },
+     "partes": {
+      "azucar_no_limpia": "✅",
+      "antena_no_come": "⚠️"
+     }
+    },
+    "5": {
+     "veredicto": "✅",
+     "disparos_totales": 0
+    },
+    "6": {
+     "referencia_MN9_L": 84.37,
+     "destinos": {
+      "redes": [
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 48
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 58
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 49
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 46
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 48
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 55
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 53
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 65
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 71
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 46
+       }
+      ],
+      "fraccion_casi_apagada": 1.0
+     },
+     "pesos": {
+      "redes": [
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 45
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 33
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 26
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 32
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 44
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 41
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 36
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 31
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 35
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 46
+       }
+      ],
+      "fraccion_casi_apagada": 1.0
+     },
+     "veredicto": "✅"
+    }
+   }
+  },
+  "1.342": {
+   "etiqueta": "calibrado",
+   "eco": {
+    "veredicto": "❌",
+    "tiene_eco": true,
+    "estimulos": {
+     "azúcar der 100 Hz": {
+      "sin_eco": false,
+      "repeticiones_con_eco": 30,
+      "actividad_con_estimulo": 5710460.0,
+      "actividad_despues": 5713103.6,
+      "proporcion": 1.0005,
+      "neuronas_disparando_por_ventana": [
+       44513.0,
+       36347.0,
+       35633.8,
+       35531.7,
+       35445.0,
+       35454.4,
+       35461.5,
+       35485.7,
+       35526.6,
+       35437.1
+      ],
+      "segundos": 23.7
+     },
+     "azúcar der 200 Hz": {
+      "sin_eco": false,
+      "repeticiones_con_eco": 30,
+      "actividad_con_estimulo": 5677572.3,
+      "actividad_despues": 5681958.3,
+      "proporcion": 1.0008,
+      "neuronas_disparando_por_ventana": [
+       43925.3,
+       36257.6,
+       35722.5,
+       35450.7,
+       35364.3,
+       35366.9,
+       35461.2,
+       35497.0,
+       35369.7,
+       35500.9
+      ],
+      "segundos": 26.5
+     },
+     "antena izq 220 Hz (WIP 10)": {
+      "sin_eco": false,
+      "repeticiones_con_eco": 30,
+      "actividad_con_estimulo": 5760695.3,
+      "actividad_despues": 5694326.0,
+      "proporcion": 0.9885,
+      "neuronas_disparando_por_ventana": [
+       46382.2,
+       36771.7,
+       36146.8,
+       36028.1,
+       36112.9,
+       36665.9,
+       35693.9,
+       35604.9,
+       35584.0,
+       35460.4
+      ],
+      "segundos": 27.7
+     }
+    }
+   },
+   "pruebas": {
+    "1": {
+     "veredicto": "⚠️",
+     "MN9_L": 286.5,
+     "MN9_R": 134.5,
+     "curva_MN9_L": [
+      202.1,
+      304.77,
+      286.5,
+      220.9,
+      171.13
+     ],
+     "sube": false,
+     "detalle": {
+      "10": {
+       "grupos": {
+        "MN9": {
+         "L": {
+          "hz": 202.1,
+          "de": 168.21,
+          "n": 1
+         },
+         "R": {
+          "hz": 106.87,
+          "de": 55.14,
+          "n": 1
+         }
+        },
+        "aDN1 (DNg62)": {
+         "L": {
+          "hz": 1.93,
+          "de": 2.69,
+          "n": 1
+         },
+         "R": {
+          "hz": 1.97,
+          "de": 2.16,
+          "n": 1
+         }
+        },
+        "aDN2 (DNge078)": {
+         "L": {
+          "hz": 4.53,
+          "de": 6.14,
+          "n": 1
+         },
+         "R": {
+          "hz": 4.1,
+          "de": 3.56,
+          "n": 1
+         }
+        },
+        "aBN1 (SAD093)": {
+         "L": {
+          "hz": 7.1,
+          "de": 3.27,
+          "n": 1
+         },
+         "R": {
+          "hz": 48.5,
+          "de": 24.89,
+          "n": 1
+         }
+        },
+        "aBN2 (trío LB23)": {
+         "L": {
+          "hz": 1.52,
+          "de": 0.66,
+          "n": 3
+         },
+         "R": {
+          "hz": 2.28,
+          "de": 2.01,
+          "n": 3
+         }
+        },
+        "GNG380": {
+         "L": {
+          "hz": 72.79,
+          "de": 22.29,
+          "n": 3
+         },
+         "R": {
+          "hz": 114.49,
+          "de": 36.33,
+          "n": 3
+         }
+        },
+        "plan B: 5 que más reciben de la antena": {
+         "L": {
+          "hz": 107.14,
+          "de": 3.58,
+          "n": 5
+         },
+         "R": {
+          "hz": 9.8,
+          "de": 2.26,
+          "n": 5
+         }
+        },
+        "Dandelion (AN13B002)": {
+         "L": {
+          "hz": 179.03,
+          "de": 147.08,
+          "n": 1
+         },
+         "R": {
+          "hz": 95.2,
+          "de": 46.41,
+          "n": 1
+         }
+        },
+        "DNge062": {
+         "L": {
+          "hz": 19.97,
+          "de": 9.42,
+          "n": 1
+         },
+         "R": {
+          "hz": 32.4,
+          "de": 24.01,
+          "n": 1
+         }
+        },
+        "Roundup (GNG108)": {
+         "L": {
+          "hz": 13.33,
+          "de": 5.29,
+          "n": 1
+         },
+         "R": {
+          "hz": 11.7,
+          "de": 4.38,
+          "n": 1
+         }
+        },
+        "Roundtree (GNG120)": {
+         "L": {
+          "hz": 3.4,
+          "de": 2.09,
+          "n": 1
+         },
+         "R": {
+          "hz": 7.03,
+          "de": 5.71,
+          "n": 1
+         }
+        },
+        "ANXXX462b": {
+         "L": {
+          "hz": 0.07,
+          "de": 0.25,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.33,
+          "de": 0.48,
+          "n": 1
+         }
+        },
+        "Clavicle (ANXXX462a)": {
+         "L": {
+          "hz": 0.1,
+          "de": 0.4,
+          "n": 1
+         },
+         "R": {
+          "hz": 1.03,
+          "de": 0.89,
+          "n": 1
+         }
+        },
+        "FMIn (GNG197)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.67,
+          "de": 0.76,
+          "n": 1
+         }
+        },
+        "Fdg (GNG588)": {
+         "L": {
+          "hz": 0.2,
+          "de": 0.41,
+          "n": 1
+         },
+         "R": {
+          "hz": 2.23,
+          "de": 1.72,
+          "n": 1
+         }
+        }
+       },
+       "esparcido": {
+        "neuronas_sobre_10hz": 36107,
+        "neuronas_con_algo": 63838,
+        "kenyon_sobre_10hz": 4064,
+        "kenyon_total": 4064
+       },
+       "segundos": 24.8
+      },
+      "50": {
+       "grupos": {
+        "MN9": {
+         "L": {
+          "hz": 304.77,
+          "de": 144.05,
+          "n": 1
+         },
+         "R": {
+          "hz": 136.53,
+          "de": 45.05,
+          "n": 1
+         }
+        },
+        "aDN1 (DNg62)": {
+         "L": {
+          "hz": 1.53,
+          "de": 1.53,
+          "n": 1
+         },
+         "R": {
+          "hz": 2.27,
+          "de": 1.57,
+          "n": 1
+         }
+        },
+        "aDN2 (DNge078)": {
+         "L": {
+          "hz": 4.77,
+          "de": 3.68,
+          "n": 1
+         },
+         "R": {
+          "hz": 4.67,
+          "de": 2.09,
+          "n": 1
+         }
+        },
+        "aBN1 (SAD093)": {
+         "L": {
+          "hz": 7.4,
+          "de": 2.14,
+          "n": 1
+         },
+         "R": {
+          "hz": 54.97,
+          "de": 26.81,
+          "n": 1
+         }
+        },
+        "aBN2 (trío LB23)": {
+         "L": {
+          "hz": 1.34,
+          "de": 0.52,
+          "n": 3
+         },
+         "R": {
+          "hz": 2.12,
+          "de": 1.35,
+          "n": 3
+         }
+        },
+        "GNG380": {
+         "L": {
+          "hz": 52.47,
+          "de": 20.03,
+          "n": 3
+         },
+         "R": {
+          "hz": 111.81,
+          "de": 32.18,
+          "n": 3
+         }
+        },
+        "plan B: 5 que más reciben de la antena": {
+         "L": {
+          "hz": 107.52,
+          "de": 3.71,
+          "n": 5
+         },
+         "R": {
+          "hz": 10.33,
+          "de": 1.9,
+          "n": 5
+         }
+        },
+        "Dandelion (AN13B002)": {
+         "L": {
+          "hz": 160.57,
+          "de": 113.43,
+          "n": 1
+         },
+         "R": {
+          "hz": 131.3,
+          "de": 46.96,
+          "n": 1
+         }
+        },
+        "DNge062": {
+         "L": {
+          "hz": 30.57,
+          "de": 6.77,
+          "n": 1
+         },
+         "R": {
+          "hz": 38.33,
+          "de": 13.88,
+          "n": 1
+         }
+        },
+        "Roundup (GNG108)": {
+         "L": {
+          "hz": 20.13,
+          "de": 3.16,
+          "n": 1
+         },
+         "R": {
+          "hz": 17.33,
+          "de": 4.04,
+          "n": 1
+         }
+        },
+        "Roundtree (GNG120)": {
+         "L": {
+          "hz": 2.67,
+          "de": 1.35,
+          "n": 1
+         },
+         "R": {
+          "hz": 8.87,
+          "de": 2.4,
+          "n": 1
+         }
+        },
+        "ANXXX462b": {
+         "L": {
+          "hz": 0.03,
+          "de": 0.18,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.67,
+          "de": 0.55,
+          "n": 1
+         }
+        },
+        "Clavicle (ANXXX462a)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 5.07,
+          "de": 1.53,
+          "n": 1
+         }
+        },
+        "FMIn (GNG197)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 2.17,
+          "de": 2.1,
+          "n": 1
+         }
+        },
+        "Fdg (GNG588)": {
+         "L": {
+          "hz": 0.03,
+          "de": 0.18,
+          "n": 1
+         },
+         "R": {
+          "hz": 1.97,
+          "de": 1.07,
+          "n": 1
+         }
+        }
+       },
+       "esparcido": {
+        "neuronas_sobre_10hz": 35824,
+        "neuronas_con_algo": 61803,
+        "kenyon_sobre_10hz": 4064,
+        "kenyon_total": 4064
+       },
+       "segundos": 23.0
+      },
+      "100": {
+       "grupos": {
+        "MN9": {
+         "L": {
+          "hz": 286.5,
+          "de": 142.07,
+          "n": 1
+         },
+         "R": {
+          "hz": 134.5,
+          "de": 45.5,
+          "n": 1
+         }
+        },
+        "aDN1 (DNg62)": {
+         "L": {
+          "hz": 0.73,
+          "de": 1.39,
+          "n": 1
+         },
+         "R": {
+          "hz": 1.3,
+          "de": 1.44,
+          "n": 1
+         }
+        },
+        "aDN2 (DNge078)": {
+         "L": {
+          "hz": 2.67,
+          "de": 2.59,
+          "n": 1
+         },
+         "R": {
+          "hz": 3.33,
+          "de": 2.23,
+          "n": 1
+         }
+        },
+        "aBN1 (SAD093)": {
+         "L": {
+          "hz": 6.37,
+          "de": 1.97,
+          "n": 1
+         },
+         "R": {
+          "hz": 46.5,
+          "de": 25.05,
+          "n": 1
+         }
+        },
+        "aBN2 (trío LB23)": {
+         "L": {
+          "hz": 1.27,
+          "de": 0.56,
+          "n": 3
+         },
+         "R": {
+          "hz": 2.12,
+          "de": 1.09,
+          "n": 3
+         }
+        },
+        "GNG380": {
+         "L": {
+          "hz": 55.61,
+          "de": 25.85,
+          "n": 3
+         },
+         "R": {
+          "hz": 128.57,
+          "de": 21.66,
+          "n": 3
+         }
+        },
+        "plan B: 5 que más reciben de la antena": {
+         "L": {
+          "hz": 107.68,
+          "de": 3.9,
+          "n": 5
+         },
+         "R": {
+          "hz": 9.88,
+          "de": 1.55,
+          "n": 5
+         }
+        },
+        "Dandelion (AN13B002)": {
+         "L": {
+          "hz": 133.23,
+          "de": 47.48,
+          "n": 1
+         },
+         "R": {
+          "hz": 132.77,
+          "de": 40.62,
+          "n": 1
+         }
+        },
+        "DNge062": {
+         "L": {
+          "hz": 38.37,
+          "de": 8.06,
+          "n": 1
+         },
+         "R": {
+          "hz": 42.43,
+          "de": 12.82,
+          "n": 1
+         }
+        },
+        "Roundup (GNG108)": {
+         "L": {
+          "hz": 23.9,
+          "de": 3.51,
+          "n": 1
+         },
+         "R": {
+          "hz": 21.57,
+          "de": 5.02,
+          "n": 1
+         }
+        },
+        "Roundtree (GNG120)": {
+         "L": {
+          "hz": 3.33,
+          "de": 1.4,
+          "n": 1
+         },
+         "R": {
+          "hz": 9.87,
+          "de": 2.79,
+          "n": 1
+         }
+        },
+        "ANXXX462b": {
+         "L": {
+          "hz": 0.07,
+          "de": 0.25,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.97,
+          "de": 0.56,
+          "n": 1
+         }
+        },
+        "Clavicle (ANXXX462a)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 8.4,
+          "de": 1.98,
+          "n": 1
+         }
+        },
+        "FMIn (GNG197)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 27.03,
+          "de": 12.51,
+          "n": 1
+         }
+        },
+        "Fdg (GNG588)": {
+         "L": {
+          "hz": 0.37,
+          "de": 0.49,
+          "n": 1
+         },
+         "R": {
+          "hz": 2.77,
+          "de": 1.3,
+          "n": 1
+         }
+        }
+       },
+       "esparcido": {
+        "neuronas_sobre_10hz": 35595,
+        "neuronas_con_algo": 60881,
+        "kenyon_sobre_10hz": 4064,
+        "kenyon_total": 4064
+       },
+       "segundos": 22.8
+      },
+      "150": {
+       "grupos": {
+        "MN9": {
+         "L": {
+          "hz": 220.9,
+          "de": 130.28,
+          "n": 1
+         },
+         "R": {
+          "hz": 115.5,
+          "de": 43.09,
+          "n": 1
+         }
+        },
+        "aDN1 (DNg62)": {
+         "L": {
+          "hz": 0.13,
+          "de": 0.43,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.5,
+          "de": 1.04,
+          "n": 1
+         }
+        },
+        "aDN2 (DNge078)": {
+         "L": {
+          "hz": 0.6,
+          "de": 1.19,
+          "n": 1
+         },
+         "R": {
+          "hz": 1.47,
+          "de": 2.0,
+          "n": 1
+         }
+        },
+        "aBN1 (SAD093)": {
+         "L": {
+          "hz": 4.63,
+          "de": 1.73,
+          "n": 1
+         },
+         "R": {
+          "hz": 31.47,
+          "de": 9.36,
+          "n": 1
+         }
+        },
+        "aBN2 (trío LB23)": {
+         "L": {
+          "hz": 1.11,
+          "de": 0.5,
+          "n": 3
+         },
+         "R": {
+          "hz": 2.44,
+          "de": 1.03,
+          "n": 3
+         }
+        },
+        "GNG380": {
+         "L": {
+          "hz": 74.94,
+          "de": 25.47,
+          "n": 3
+         },
+         "R": {
+          "hz": 137.12,
+          "de": 19.04,
+          "n": 3
+         }
+        },
+        "plan B: 5 que más reciben de la antena": {
+         "L": {
+          "hz": 109.31,
+          "de": 3.48,
+          "n": 5
+         },
+         "R": {
+          "hz": 10.34,
+          "de": 1.69,
+          "n": 5
+         }
+        },
+        "Dandelion (AN13B002)": {
+         "L": {
+          "hz": 170.03,
+          "de": 13.94,
+          "n": 1
+         },
+         "R": {
+          "hz": 111.8,
+          "de": 26.51,
+          "n": 1
+         }
+        },
+        "DNge062": {
+         "L": {
+          "hz": 48.8,
+          "de": 9.09,
+          "n": 1
+         },
+         "R": {
+          "hz": 52.7,
+          "de": 19.15,
+          "n": 1
+         }
+        },
+        "Roundup (GNG108)": {
+         "L": {
+          "hz": 27.13,
+          "de": 3.73,
+          "n": 1
+         },
+         "R": {
+          "hz": 27.97,
+          "de": 7.18,
+          "n": 1
+         }
+        },
+        "Roundtree (GNG120)": {
+         "L": {
+          "hz": 3.07,
+          "de": 1.82,
+          "n": 1
+         },
+         "R": {
+          "hz": 11.2,
+          "de": 2.99,
+          "n": 1
+         }
+        },
+        "ANXXX462b": {
+         "L": {
+          "hz": 0.1,
+          "de": 0.31,
+          "n": 1
+         },
+         "R": {
+          "hz": 1.3,
+          "de": 0.53,
+          "n": 1
+         }
+        },
+        "Clavicle (ANXXX462a)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 22.93,
+          "de": 6.1,
+          "n": 1
+         }
+        },
+        "FMIn (GNG197)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 58.13,
+          "de": 7.44,
+          "n": 1
+         }
+        },
+        "Fdg (GNG588)": {
+         "L": {
+          "hz": 0.43,
+          "de": 0.5,
+          "n": 1
+         },
+         "R": {
+          "hz": 3.33,
+          "de": 0.92,
+          "n": 1
+         }
+        }
+       },
+       "esparcido": {
+        "neuronas_sobre_10hz": 35367,
+        "neuronas_con_algo": 59587,
+        "kenyon_sobre_10hz": 4064,
+        "kenyon_total": 4064
+       },
+       "segundos": 22.8
+      },
+      "200": {
+       "grupos": {
+        "MN9": {
+         "L": {
+          "hz": 171.13,
+          "de": 87.67,
+          "n": 1
+         },
+         "R": {
+          "hz": 97.77,
+          "de": 24.28,
+          "n": 1
+         }
+        },
+        "aDN1 (DNg62)": {
+         "L": {
+          "hz": 0.03,
+          "de": 0.18,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.23,
+          "de": 0.77,
+          "n": 1
+         }
+        },
+        "aDN2 (DNge078)": {
+         "L": {
+          "hz": 0.33,
+          "de": 1.03,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.7,
+          "de": 1.49,
+          "n": 1
+         }
+        },
+        "aBN1 (SAD093)": {
+         "L": {
+          "hz": 3.83,
+          "de": 1.32,
+          "n": 1
+         },
+         "R": {
+          "hz": 32.07,
+          "de": 9.05,
+          "n": 1
+         }
+        },
+        "aBN2 (trío LB23)": {
+         "L": {
+          "hz": 0.9,
+          "de": 0.34,
+          "n": 3
+         },
+         "R": {
+          "hz": 3.08,
+          "de": 1.01,
+          "n": 3
+         }
+        },
+        "GNG380": {
+         "L": {
+          "hz": 84.24,
+          "de": 21.9,
+          "n": 3
+         },
+         "R": {
+          "hz": 139.78,
+          "de": 11.36,
+          "n": 3
+         }
+        },
+        "plan B: 5 que más reciben de la antena": {
+         "L": {
+          "hz": 110.59,
+          "de": 2.86,
+          "n": 5
+         },
+         "R": {
+          "hz": 10.25,
+          "de": 1.62,
+          "n": 5
+         }
+        },
+        "Dandelion (AN13B002)": {
+         "L": {
+          "hz": 211.6,
+          "de": 10.5,
+          "n": 1
+         },
+         "R": {
+          "hz": 115.93,
+          "de": 12.85,
+          "n": 1
+         }
+        },
+        "DNge062": {
+         "L": {
+          "hz": 54.1,
+          "de": 8.99,
+          "n": 1
+         },
+         "R": {
+          "hz": 61.63,
+          "de": 12.99,
+          "n": 1
+         }
+        },
+        "Roundup (GNG108)": {
+         "L": {
+          "hz": 31.53,
+          "de": 4.67,
+          "n": 1
+         },
+         "R": {
+          "hz": 34.4,
+          "de": 6.59,
+          "n": 1
+         }
+        },
+        "Roundtree (GNG120)": {
+         "L": {
+          "hz": 3.73,
+          "de": 1.46,
+          "n": 1
+         },
+         "R": {
+          "hz": 17.07,
+          "de": 4.86,
+          "n": 1
+         }
+        },
+        "ANXXX462b": {
+         "L": {
+          "hz": 0.23,
+          "de": 0.43,
+          "n": 1
+         },
+         "R": {
+          "hz": 1.73,
+          "de": 0.58,
+          "n": 1
+         }
+        },
+        "Clavicle (ANXXX462a)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 78.13,
+          "de": 15.37,
+          "n": 1
+         }
+        },
+        "FMIn (GNG197)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 61.13,
+          "de": 10.35,
+          "n": 1
+         }
+        },
+        "Fdg (GNG588)": {
+         "L": {
+          "hz": 0.6,
+          "de": 0.5,
+          "n": 1
+         },
+         "R": {
+          "hz": 3.77,
+          "de": 0.63,
+          "n": 1
+         }
+        }
+       },
+       "esparcido": {
+        "neuronas_sobre_10hz": 35304,
+        "neuronas_con_algo": 58879,
+        "kenyon_sobre_10hz": 4064,
+        "kenyon_total": 4064
+       },
+       "segundos": 23.1
+      }
+     },
+     "empujan_MN9_L": [
+      {
+       "bodyId": 10849,
+       "tipo": "GNG117",
+       "lado": "L",
+       "hz": 243.3,
+       "sinapsis": 241,
+       "signo": "+"
+      },
+      {
+       "bodyId": 11755,
+       "tipo": "GNG117",
+       "lado": "R",
+       "hz": 243.4,
+       "sinapsis": 160,
+       "signo": "+"
+      },
+      {
+       "bodyId": 10673,
+       "tipo": "GNG002",
+       "lado": "L",
+       "hz": 230.2,
+       "sinapsis": 92,
+       "signo": "+"
+      },
+      {
+       "bodyId": 10833,
+       "tipo": "DNge062",
+       "lado": "R",
+       "hz": 42.4,
+       "sinapsis": 464,
+       "signo": "+"
+      },
+      {
+       "bodyId": 14891,
+       "tipo": "GNG234",
+       "lado": "L",
+       "hz": 75.0,
+       "sinapsis": 198,
+       "signo": "+"
+      },
+      {
+       "bodyId": 16142,
+       "tipo": "GNG234",
+       "lado": "R",
+       "hz": 73.4,
+       "sinapsis": 136,
+       "signo": "+"
+      },
+      {
+       "bodyId": 26764,
+       "tipo": "GNG108",
+       "lado": "R",
+       "hz": 21.6,
+       "sinapsis": 348,
+       "signo": "+"
+      },
+      {
+       "bodyId": 10881,
+       "tipo": "GNG120",
+       "lado": "R",
+       "hz": 9.9,
+       "sinapsis": 359,
+       "signo": "+"
+      }
+     ],
+     "frenan_MN9_L": [
+      {
+       "bodyId": 13402,
+       "tipo": "GNG281",
+       "lado": "L",
+       "hz": 220.2,
+       "sinapsis": 78,
+       "signo": "−"
+      },
+      {
+       "bodyId": 513655,
+       "tipo": "GNG180",
+       "lado": "L",
+       "hz": 43.9,
+       "sinapsis": 214,
+       "signo": "−"
+      },
+      {
+       "bodyId": 17782,
+       "tipo": "GNG184",
+       "lado": "L",
+       "hz": 38.9,
+       "sinapsis": 187,
+       "signo": "−"
+      },
+      {
+       "bodyId": 13754,
+       "tipo": "GNG130",
+       "lado": "L",
+       "hz": 18.7,
+       "sinapsis": 357,
+       "signo": "−"
+      },
+      {
+       "bodyId": 523679,
+       "tipo": "DNge051",
+       "lado": "L",
+       "hz": 32.9,
+       "sinapsis": 142,
+       "signo": "−"
+      },
+      {
+       "bodyId": 16595,
+       "tipo": "GNG184",
+       "lado": "R",
+       "hz": 52.0,
+       "sinapsis": 74,
+       "signo": "−"
+      }
+     ]
+    },
+    "2": {
+     "veredicto": "⚠️",
+     "aBN1_L": 357.3,
+     "aDN1_max_lado": 4.03,
+     "aDN2_max_lado": 3.5,
+     "detalle": {
+      "grupos": {
+       "MN9": {
+        "L": {
+         "hz": 78.6,
+         "de": 71.73,
+         "n": 1
+        },
+        "R": {
+         "hz": 60.33,
+         "de": 43.08,
+         "n": 1
+        }
+       },
+       "aDN1 (DNg62)": {
+        "L": {
+         "hz": 2.47,
+         "de": 0.51,
+         "n": 1
+        },
+        "R": {
+         "hz": 4.03,
+         "de": 0.18,
+         "n": 1
+        }
+       },
+       "aDN2 (DNge078)": {
+        "L": {
+         "hz": 1.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 3.5,
+         "de": 0.63,
+         "n": 1
+        }
+       },
+       "aBN1 (SAD093)": {
+        "L": {
+         "hz": 357.3,
+         "de": 2.74,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.37,
+         "de": 0.56,
+         "n": 1
+        }
+       },
+       "aBN2 (trío LB23)": {
+        "L": {
+         "hz": 143.46,
+         "de": 6.11,
+         "n": 3
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        }
+       },
+       "GNG380": {
+        "L": {
+         "hz": 115.49,
+         "de": 17.11,
+         "n": 3
+        },
+        "R": {
+         "hz": 146.27,
+         "de": 30.04,
+         "n": 3
+        }
+       },
+       "plan B: 5 que más reciben de la antena": {
+        "L": {
+         "hz": 59.61,
+         "de": 2.99,
+         "n": 5
+        },
+        "R": {
+         "hz": 4.43,
+         "de": 1.32,
+         "n": 5
+        }
+       },
+       "Dandelion (AN13B002)": {
+        "L": {
+         "hz": 143.17,
+         "de": 167.4,
+         "n": 1
+        },
+        "R": {
+         "hz": 30.13,
+         "de": 22.45,
+         "n": 1
+        }
+       },
+       "DNge062": {
+        "L": {
+         "hz": 5.0,
+         "de": 5.64,
+         "n": 1
+        },
+        "R": {
+         "hz": 39.17,
+         "de": 35.41,
+         "n": 1
+        }
+       },
+       "Roundup (GNG108)": {
+        "L": {
+         "hz": 1.33,
+         "de": 1.15,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Roundtree (GNG120)": {
+        "L": {
+         "hz": 0.9,
+         "de": 0.31,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "ANXXX462b": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Clavicle (ANXXX462a)": {
+        "L": {
+         "hz": 0.47,
+         "de": 0.51,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "FMIn (GNG197)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Fdg (GNG588)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       }
+      },
+      "esparcido": {
+       "neuronas_sobre_10hz": 35694,
+       "neuronas_con_algo": 59703,
+       "kenyon_sobre_10hz": 4064,
+       "kenyon_total": 4064
+      },
+      "segundos": 24.3
+     },
+     "detalle_220hz": {
+      "grupos": {
+       "MN9": {
+        "L": {
+         "hz": 89.53,
+         "de": 55.22,
+         "n": 1
+        },
+        "R": {
+         "hz": 67.2,
+         "de": 33.86,
+         "n": 1
+        }
+       },
+       "aDN1 (DNg62)": {
+        "L": {
+         "hz": 2.2,
+         "de": 0.41,
+         "n": 1
+        },
+        "R": {
+         "hz": 4.0,
+         "de": 0.37,
+         "n": 1
+        }
+       },
+       "aDN2 (DNge078)": {
+        "L": {
+         "hz": 0.9,
+         "de": 0.31,
+         "n": 1
+        },
+        "R": {
+         "hz": 3.8,
+         "de": 0.81,
+         "n": 1
+        }
+       },
+       "aBN1 (SAD093)": {
+        "L": {
+         "hz": 395.33,
+         "de": 1.18,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.13,
+         "de": 0.35,
+         "n": 1
+        }
+       },
+       "aBN2 (trío LB23)": {
+        "L": {
+         "hz": 165.63,
+         "de": 4.46,
+         "n": 3
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        }
+       },
+       "GNG380": {
+        "L": {
+         "hz": 118.0,
+         "de": 8.47,
+         "n": 3
+        },
+        "R": {
+         "hz": 163.33,
+         "de": 24.56,
+         "n": 3
+        }
+       },
+       "plan B: 5 que más reciben de la antena": {
+        "L": {
+         "hz": 139.03,
+         "de": 6.1,
+         "n": 5
+        },
+        "R": {
+         "hz": 0.45,
+         "de": 0.33,
+         "n": 5
+        }
+       },
+       "Dandelion (AN13B002)": {
+        "L": {
+         "hz": 52.07,
+         "de": 125.62,
+         "n": 1
+        },
+        "R": {
+         "hz": 13.27,
+         "de": 5.67,
+         "n": 1
+        }
+       },
+       "DNge062": {
+        "L": {
+         "hz": 3.0,
+         "de": 2.67,
+         "n": 1
+        },
+        "R": {
+         "hz": 51.83,
+         "de": 32.05,
+         "n": 1
+        }
+       },
+       "Roundup (GNG108)": {
+        "L": {
+         "hz": 0.83,
+         "de": 0.38,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Roundtree (GNG120)": {
+        "L": {
+         "hz": 0.8,
+         "de": 0.41,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "ANXXX462b": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Clavicle (ANXXX462a)": {
+        "L": {
+         "hz": 0.1,
+         "de": 0.31,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "FMIn (GNG197)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Fdg (GNG588)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       }
+      },
+      "esparcido": {
+       "neuronas_sobre_10hz": 35741,
+       "neuronas_con_algo": 58806,
+       "kenyon_sobre_10hz": 4064,
+       "kenyon_total": 4064
+      },
+      "segundos": 23.3
+     }
+    },
+    "3": {
+     "veredicto": "✅",
+     "aBN1_L_JOF": 1.8,
+     "aBN1_L_JOCE": 357.3,
+     "proporcion": 0.005,
+     "aBN1_L_JOF_220hz": 0.43,
+     "detalle": {
+      "grupos": {
+       "MN9": {
+        "L": {
+         "hz": 43.43,
+         "de": 31.78,
+         "n": 1
+        },
+        "R": {
+         "hz": 58.6,
+         "de": 28.26,
+         "n": 1
+        }
+       },
+       "aDN1 (DNg62)": {
+        "L": {
+         "hz": 0.6,
+         "de": 0.62,
+         "n": 1
+        },
+        "R": {
+         "hz": 2.23,
+         "de": 0.63,
+         "n": 1
+        }
+       },
+       "aDN2 (DNge078)": {
+        "L": {
+         "hz": 1.2,
+         "de": 0.81,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.73,
+         "de": 0.69,
+         "n": 1
+        }
+       },
+       "aBN1 (SAD093)": {
+        "L": {
+         "hz": 1.8,
+         "de": 2.04,
+         "n": 1
+        },
+        "R": {
+         "hz": 29.5,
+         "de": 13.82,
+         "n": 1
+        }
+       },
+       "aBN2 (trío LB23)": {
+        "L": {
+         "hz": 1.93,
+         "de": 1.64,
+         "n": 3
+        },
+        "R": {
+         "hz": 0.09,
+         "de": 0.17,
+         "n": 3
+        }
+       },
+       "GNG380": {
+        "L": {
+         "hz": 93.37,
+         "de": 20.26,
+         "n": 3
+        },
+        "R": {
+         "hz": 120.0,
+         "de": 24.7,
+         "n": 3
+        }
+       },
+       "plan B: 5 que más reciben de la antena": {
+        "L": {
+         "hz": 95.91,
+         "de": 8.44,
+         "n": 5
+        },
+        "R": {
+         "hz": 11.69,
+         "de": 3.37,
+         "n": 5
+        }
+       },
+       "Dandelion (AN13B002)": {
+        "L": {
+         "hz": 271.23,
+         "de": 153.91,
+         "n": 1
+        },
+        "R": {
+         "hz": 51.0,
+         "de": 42.97,
+         "n": 1
+        }
+       },
+       "DNge062": {
+        "L": {
+         "hz": 4.93,
+         "de": 5.6,
+         "n": 1
+        },
+        "R": {
+         "hz": 3.8,
+         "de": 4.89,
+         "n": 1
+        }
+       },
+       "Roundup (GNG108)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Roundtree (GNG120)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "ANXXX462b": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Clavicle (ANXXX462a)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "FMIn (GNG197)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Fdg (GNG588)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       }
+      },
+      "esparcido": {
+       "neuronas_sobre_10hz": 35904,
+       "neuronas_con_algo": 61662,
+       "kenyon_sobre_10hz": 4064,
+       "kenyon_total": 4064
+      },
+      "segundos": 22.7
+     },
+     "detalle_220hz": {
+      "grupos": {
+       "MN9": {
+        "L": {
+         "hz": 26.27,
+         "de": 20.29,
+         "n": 1
+        },
+        "R": {
+         "hz": 46.97,
+         "de": 22.56,
+         "n": 1
+        }
+       },
+       "aDN1 (DNg62)": {
+        "L": {
+         "hz": 0.87,
+         "de": 0.57,
+         "n": 1
+        },
+        "R": {
+         "hz": 2.8,
+         "de": 0.55,
+         "n": 1
+        }
+       },
+       "aDN2 (DNge078)": {
+        "L": {
+         "hz": 1.7,
+         "de": 0.53,
+         "n": 1
+        },
+        "R": {
+         "hz": 1.37,
+         "de": 0.67,
+         "n": 1
+        }
+       },
+       "aBN1 (SAD093)": {
+        "L": {
+         "hz": 0.43,
+         "de": 0.63,
+         "n": 1
+        },
+        "R": {
+         "hz": 24.47,
+         "de": 13.86,
+         "n": 1
+        }
+       },
+       "aBN2 (trío LB23)": {
+        "L": {
+         "hz": 5.53,
+         "de": 4.58,
+         "n": 3
+        },
+        "R": {
+         "hz": 0.02,
+         "de": 0.08,
+         "n": 3
+        }
+       },
+       "GNG380": {
+        "L": {
+         "hz": 90.21,
+         "de": 18.89,
+         "n": 3
+        },
+        "R": {
+         "hz": 125.87,
+         "de": 29.73,
+         "n": 3
+        }
+       },
+       "plan B: 5 que más reciben de la antena": {
+        "L": {
+         "hz": 82.95,
+         "de": 3.29,
+         "n": 5
+        },
+        "R": {
+         "hz": 10.59,
+         "de": 2.8,
+         "n": 5
+        }
+       },
+       "Dandelion (AN13B002)": {
+        "L": {
+         "hz": 231.03,
+         "de": 169.47,
+         "n": 1
+        },
+        "R": {
+         "hz": 44.9,
+         "de": 31.27,
+         "n": 1
+        }
+       },
+       "DNge062": {
+        "L": {
+         "hz": 3.47,
+         "de": 4.18,
+         "n": 1
+        },
+        "R": {
+         "hz": 1.47,
+         "de": 2.47,
+         "n": 1
+        }
+       },
+       "Roundup (GNG108)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Roundtree (GNG120)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "ANXXX462b": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Clavicle (ANXXX462a)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "FMIn (GNG197)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.17,
+         "de": 0.65,
+         "n": 1
+        }
+       },
+       "Fdg (GNG588)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       }
+      },
+      "esparcido": {
+       "neuronas_sobre_10hz": 35798,
+       "neuronas_con_algo": 60680,
+       "kenyon_sobre_10hz": 4064,
+       "kenyon_total": 4064
+      },
+      "segundos": 23.5
+     }
+    },
+    "4": {
+     "veredicto": "❌",
+     "limpieza_con_azucar": {
+      "aBN1 (SAD093)": {
+       "L": 6.37,
+       "R": 46.5
+      },
+      "aBN2 (trío LB23)": {
+       "L": 1.27,
+       "R": 2.12
+      },
+      "aDN1 (DNg62)": {
+       "L": 0.73,
+       "R": 1.3
+      },
+      "aDN2 (DNge078)": {
+       "L": 2.67,
+       "R": 3.33
+      }
+     },
+     "MN9_con_antena": {
+      "L": 78.6,
+      "R": 60.33
+     },
+     "partes": {
+      "azucar_no_limpia": "❌",
+      "antena_no_come": "❌"
+     }
+    },
+    "5": {
+     "veredicto": "✅",
+     "disparos_totales": 0
+    },
+    "6": {
+     "referencia_MN9_L": 286.5,
+     "destinos": {
+      "redes": [
+       {
+        "MN9_L": 166.97,
+        "MN9_R": 342.73,
+        "neuronas_sobre_10hz": 121583
+       },
+       {
+        "MN9_L": 276.17,
+        "MN9_R": 62.53,
+        "neuronas_sobre_10hz": 123184
+       },
+       {
+        "MN9_L": 37.53,
+        "MN9_R": 317.5,
+        "neuronas_sobre_10hz": 121743
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 122269
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.1,
+        "neuronas_sobre_10hz": 121190
+       },
+       {
+        "MN9_L": 382.53,
+        "MN9_R": 271.4,
+        "neuronas_sobre_10hz": 122451
+       },
+       {
+        "MN9_L": 373.87,
+        "MN9_R": 328.93,
+        "neuronas_sobre_10hz": 121344
+       },
+       {
+        "MN9_L": 52.9,
+        "MN9_R": 200.9,
+        "neuronas_sobre_10hz": 121338
+       },
+       {
+        "MN9_L": 380.03,
+        "MN9_R": 316.17,
+        "neuronas_sobre_10hz": 122039
+       },
+       {
+        "MN9_L": 352.7,
+        "MN9_R": 179.43,
+        "neuronas_sobre_10hz": 122328
+       }
+      ],
+      "fraccion_casi_apagada": 0.2
+     },
+     "pesos": {
+      "redes": [
+       {
+        "MN9_L": 361.63,
+        "MN9_R": 379.03,
+        "neuronas_sobre_10hz": 134719
+       },
+       {
+        "MN9_L": 394.87,
+        "MN9_R": 375.83,
+        "neuronas_sobre_10hz": 134852
+       },
+       {
+        "MN9_L": 379.73,
+        "MN9_R": 200.3,
+        "neuronas_sobre_10hz": 134733
+       },
+       {
+        "MN9_L": 399.73,
+        "MN9_R": 322.43,
+        "neuronas_sobre_10hz": 134718
+       },
+       {
+        "MN9_L": 0.03,
+        "MN9_R": 188.03,
+        "neuronas_sobre_10hz": 134767
+       },
+       {
+        "MN9_L": 375.0,
+        "MN9_R": 278.93,
+        "neuronas_sobre_10hz": 134889
+       },
+       {
+        "MN9_L": 387.8,
+        "MN9_R": 241.77,
+        "neuronas_sobre_10hz": 134794
+       },
+       {
+        "MN9_L": 405.47,
+        "MN9_R": 353.5,
+        "neuronas_sobre_10hz": 134909
+       },
+       {
+        "MN9_L": 370.9,
+        "MN9_R": 365.5,
+        "neuronas_sobre_10hz": 134710
+       },
+       {
+        "MN9_L": 396.97,
+        "MN9_R": 267.17,
+        "neuronas_sobre_10hz": 134554
+       }
+      ],
+      "fraccion_casi_apagada": 0.1
+     },
+     "veredicto": "❌"
+    }
+   }
+  },
+  "0.090": {
+   "etiqueta": "elegido",
+   "eco": {
+    "veredicto": "✅",
+    "tiene_eco": false,
+    "estimulos": {
+     "azúcar der 100 Hz": {
+      "sin_eco": true,
+      "repeticiones_con_eco": 0,
+      "actividad_con_estimulo": 560.0,
+      "actividad_despues": 0.0,
+      "proporcion": 0.0,
+      "neuronas_disparando_por_ventana": [
+       16.3,
+       21.6,
+       20.5,
+       19.5,
+       19.1,
+       2.9,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      "segundos": 5.9
+     },
+     "azúcar der 200 Hz": {
+      "sin_eco": true,
+      "repeticiones_con_eco": 0,
+      "actividad_con_estimulo": 1852.3,
+      "actividad_despues": 0.0,
+      "proporcion": 0.0,
+      "neuronas_disparando_por_ventana": [
+       44.5,
+       48.6,
+       48.1,
+       47.8,
+       47.2,
+       12.1,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      "segundos": 6.1
+     },
+     "antena izq 220 Hz (WIP 10)": {
+      "sin_eco": true,
+      "repeticiones_con_eco": 0,
+      "actividad_con_estimulo": 44639.7,
+      "actividad_despues": 0.0,
+      "proporcion": 0.0,
+      "neuronas_disparando_por_ventana": [
+       810.7,
+       907.6,
+       909.6,
+       907.0,
+       911.5,
+       342.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      "segundos": 13.6
+     }
+    }
+   },
+   "pruebas": {
+    "1": {
+     "veredicto": "❌",
+     "MN9_L": 0.0,
+     "MN9_R": 0.0,
+     "curva_MN9_L": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+     ],
+     "sube": true,
+     "detalle": {
+      "10": {
+       "grupos": {
+        "MN9": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aDN1 (DNg62)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aDN2 (DNge078)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aBN1 (SAD093)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aBN2 (trío LB23)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         }
+        },
+        "GNG380": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         }
+        },
+        "plan B: 5 que más reciben de la antena": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 5
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 5
+         }
+        },
+        "Dandelion (AN13B002)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "DNge062": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "Roundup (GNG108)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "Roundtree (GNG120)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "ANXXX462b": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "Clavicle (ANXXX462a)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "FMIn (GNG197)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "Fdg (GNG588)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        }
+       },
+       "esparcido": {
+        "neuronas_sobre_10hz": 11,
+        "neuronas_con_algo": 17,
+        "kenyon_sobre_10hz": 0,
+        "kenyon_total": 4064
+       },
+       "segundos": 5.3
+      },
+      "50": {
+       "grupos": {
+        "MN9": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aDN1 (DNg62)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aDN2 (DNge078)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aBN1 (SAD093)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aBN2 (trío LB23)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         }
+        },
+        "GNG380": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         }
+        },
+        "plan B: 5 que más reciben de la antena": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 5
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 5
+         }
+        },
+        "Dandelion (AN13B002)": {
+         "L": {
+          "hz": 8.27,
+          "de": 1.8,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "DNge062": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "Roundup (GNG108)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "Roundtree (GNG120)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "ANXXX462b": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.33,
+          "de": 0.55,
+          "n": 1
+         }
+        },
+        "Clavicle (ANXXX462a)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 16.77,
+          "de": 2.18,
+          "n": 1
+         }
+        },
+        "FMIn (GNG197)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.03,
+          "de": 0.18,
+          "n": 1
+         }
+        },
+        "Fdg (GNG588)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        }
+       },
+       "esparcido": {
+        "neuronas_sobre_10hz": 24,
+        "neuronas_con_algo": 31,
+        "kenyon_sobre_10hz": 0,
+        "kenyon_total": 4064
+       },
+       "segundos": 5.6
+      },
+      "100": {
+       "grupos": {
+        "MN9": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aDN1 (DNg62)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aDN2 (DNge078)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aBN1 (SAD093)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aBN2 (trío LB23)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         }
+        },
+        "GNG380": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         }
+        },
+        "plan B: 5 que más reciben de la antena": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 5
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 5
+         }
+        },
+        "Dandelion (AN13B002)": {
+         "L": {
+          "hz": 40.63,
+          "de": 1.5,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "DNge062": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "Roundup (GNG108)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "Roundtree (GNG120)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "ANXXX462b": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 15.97,
+          "de": 1.96,
+          "n": 1
+         }
+        },
+        "Clavicle (ANXXX462a)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 46.83,
+          "de": 1.72,
+          "n": 1
+         }
+        },
+        "FMIn (GNG197)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 12.07,
+          "de": 1.8,
+          "n": 1
+         }
+        },
+        "Fdg (GNG588)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        }
+       },
+       "esparcido": {
+        "neuronas_sobre_10hz": 33,
+        "neuronas_con_algo": 52,
+        "kenyon_sobre_10hz": 0,
+        "kenyon_total": 4064
+       },
+       "segundos": 5.8
+      },
+      "150": {
+       "grupos": {
+        "MN9": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aDN1 (DNg62)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aDN2 (DNge078)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aBN1 (SAD093)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aBN2 (trío LB23)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         }
+        },
+        "GNG380": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         }
+        },
+        "plan B: 5 que más reciben de la antena": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 5
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 5
+         }
+        },
+        "Dandelion (AN13B002)": {
+         "L": {
+          "hz": 63.0,
+          "de": 1.84,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "DNge062": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "Roundup (GNG108)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "Roundtree (GNG120)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "ANXXX462b": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 33.6,
+          "de": 1.73,
+          "n": 1
+         }
+        },
+        "Clavicle (ANXXX462a)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 70.43,
+          "de": 1.63,
+          "n": 1
+         }
+        },
+        "FMIn (GNG197)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 27.67,
+          "de": 1.3,
+          "n": 1
+         }
+        },
+        "Fdg (GNG588)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        }
+       },
+       "esparcido": {
+        "neuronas_sobre_10hz": 49,
+        "neuronas_con_algo": 65,
+        "kenyon_sobre_10hz": 0,
+        "kenyon_total": 4064
+       },
+       "segundos": 6.0
+      },
+      "200": {
+       "grupos": {
+        "MN9": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aDN1 (DNg62)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aDN2 (DNge078)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aBN1 (SAD093)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "aBN2 (trío LB23)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         }
+        },
+        "GNG380": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 3
+         }
+        },
+        "plan B: 5 que más reciben de la antena": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 5
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 5
+         }
+        },
+        "Dandelion (AN13B002)": {
+         "L": {
+          "hz": 80.8,
+          "de": 1.69,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "DNge062": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "Roundup (GNG108)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 1.23,
+          "de": 1.17,
+          "n": 1
+         }
+        },
+        "Roundtree (GNG120)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        },
+        "ANXXX462b": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 48.43,
+          "de": 1.96,
+          "n": 1
+         }
+        },
+        "Clavicle (ANXXX462a)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 89.1,
+          "de": 2.11,
+          "n": 1
+         }
+        },
+        "FMIn (GNG197)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 37.47,
+          "de": 1.38,
+          "n": 1
+         }
+        },
+        "Fdg (GNG588)": {
+         "L": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         },
+         "R": {
+          "hz": 0.0,
+          "de": 0.0,
+          "n": 1
+         }
+        }
+       },
+       "esparcido": {
+        "neuronas_sobre_10hz": 63,
+        "neuronas_con_algo": 79,
+        "kenyon_sobre_10hz": 0,
+        "kenyon_total": 4064
+       },
+       "segundos": 6.1
+      }
+     },
+     "empujan_MN9_L": [
+      {
+       "bodyId": 12807,
+       "tipo": "GNG029",
+       "lado": "L",
+       "hz": 5.5,
+       "sinapsis": 1,
+       "signo": "+"
+      }
+     ],
+     "frenan_MN9_L": [
+      {
+       "bodyId": 10313,
+       "tipo": "DNge031",
+       "lado": "R",
+       "hz": 5.4,
+       "sinapsis": 3,
+       "signo": "−"
+      },
+      {
+       "bodyId": 43293,
+       "tipo": "GNG041",
+       "lado": "L",
+       "hz": 2.4,
+       "sinapsis": 1,
+       "signo": "−"
+      },
+      {
+       "bodyId": 511989,
+       "tipo": "GNG130",
+       "lado": "R",
+       "hz": 0.1,
+       "sinapsis": 16,
+       "signo": "−"
+      }
+     ]
+    },
+    "2": {
+     "veredicto": "✅",
+     "aBN1_L": 127.67,
+     "aDN1_max_lado": 70.5,
+     "aDN2_max_lado": 36.37,
+     "detalle": {
+      "grupos": {
+       "MN9": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "aDN1 (DNg62)": {
+        "L": {
+         "hz": 31.6,
+         "de": 24.43,
+         "n": 1
+        },
+        "R": {
+         "hz": 70.5,
+         "de": 18.29,
+         "n": 1
+        }
+       },
+       "aDN2 (DNge078)": {
+        "L": {
+         "hz": 11.53,
+         "de": 9.89,
+         "n": 1
+        },
+        "R": {
+         "hz": 36.37,
+         "de": 12.5,
+         "n": 1
+        }
+       },
+       "aBN1 (SAD093)": {
+        "L": {
+         "hz": 127.67,
+         "de": 1.83,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "aBN2 (trío LB23)": {
+        "L": {
+         "hz": 0.02,
+         "de": 0.08,
+         "n": 3
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        }
+       },
+       "GNG380": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        }
+       },
+       "plan B: 5 que más reciben de la antena": {
+        "L": {
+         "hz": 149.31,
+         "de": 1.1,
+         "n": 5
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 5
+        }
+       },
+       "Dandelion (AN13B002)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "DNge062": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Roundup (GNG108)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Roundtree (GNG120)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "ANXXX462b": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Clavicle (ANXXX462a)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "FMIn (GNG197)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Fdg (GNG588)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       }
+      },
+      "esparcido": {
+       "neuronas_sobre_10hz": 714,
+       "neuronas_con_algo": 1050,
+       "kenyon_sobre_10hz": 0,
+       "kenyon_total": 4064
+      },
+      "segundos": 14.5
+     },
+     "detalle_220hz": {
+      "grupos": {
+       "MN9": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "aDN1 (DNg62)": {
+        "L": {
+         "hz": 76.13,
+         "de": 1.43,
+         "n": 1
+        },
+        "R": {
+         "hz": 110.87,
+         "de": 1.5,
+         "n": 1
+        }
+       },
+       "aDN2 (DNge078)": {
+        "L": {
+         "hz": 32.8,
+         "de": 1.52,
+         "n": 1
+        },
+        "R": {
+         "hz": 68.23,
+         "de": 2.87,
+         "n": 1
+        }
+       },
+       "aBN1 (SAD093)": {
+        "L": {
+         "hz": 168.47,
+         "de": 1.28,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "aBN2 (trío LB23)": {
+        "L": {
+         "hz": 0.49,
+         "de": 0.27,
+         "n": 3
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        }
+       },
+       "GNG380": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        }
+       },
+       "plan B: 5 que más reciben de la antena": {
+        "L": {
+         "hz": 197.28,
+         "de": 1.23,
+         "n": 5
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 5
+        }
+       },
+       "Dandelion (AN13B002)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "DNge062": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Roundup (GNG108)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Roundtree (GNG120)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "ANXXX462b": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Clavicle (ANXXX462a)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "FMIn (GNG197)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Fdg (GNG588)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       }
+      },
+      "esparcido": {
+       "neuronas_sobre_10hz": 976,
+       "neuronas_con_algo": 1260,
+       "kenyon_sobre_10hz": 0,
+       "kenyon_total": 4064
+      },
+      "segundos": 13.2
+     }
+    },
+    "3": {
+     "veredicto": "✅",
+     "aBN1_L_JOF": 0.0,
+     "aBN1_L_JOCE": 127.67,
+     "proporcion": 0.0,
+     "aBN1_L_JOF_220hz": 0.0,
+     "detalle": {
+      "grupos": {
+       "MN9": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "aDN1 (DNg62)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "aDN2 (DNge078)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "aBN1 (SAD093)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "aBN2 (trío LB23)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        }
+       },
+       "GNG380": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        }
+       },
+       "plan B: 5 que más reciben de la antena": {
+        "L": {
+         "hz": 6.34,
+         "de": 0.37,
+         "n": 5
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 5
+        }
+       },
+       "Dandelion (AN13B002)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "DNge062": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Roundup (GNG108)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Roundtree (GNG120)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "ANXXX462b": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Clavicle (ANXXX462a)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "FMIn (GNG197)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Fdg (GNG588)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       }
+      },
+      "esparcido": {
+       "neuronas_sobre_10hz": 81,
+       "neuronas_con_algo": 115,
+       "kenyon_sobre_10hz": 0,
+       "kenyon_total": 4064
+      },
+      "segundos": 6.8
+     },
+     "detalle_220hz": {
+      "grupos": {
+       "MN9": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "aDN1 (DNg62)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "aDN2 (DNge078)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "aBN1 (SAD093)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "aBN2 (trío LB23)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        }
+       },
+       "GNG380": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 3
+        }
+       },
+       "plan B: 5 que más reciben de la antena": {
+        "L": {
+         "hz": 9.93,
+         "de": 0.47,
+         "n": 5
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 5
+        }
+       },
+       "Dandelion (AN13B002)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "DNge062": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Roundup (GNG108)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Roundtree (GNG120)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "ANXXX462b": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Clavicle (ANXXX462a)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "FMIn (GNG197)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       },
+       "Fdg (GNG588)": {
+        "L": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        },
+        "R": {
+         "hz": 0.0,
+         "de": 0.0,
+         "n": 1
+        }
+       }
+      },
+      "esparcido": {
+       "neuronas_sobre_10hz": 116,
+       "neuronas_con_algo": 158,
+       "kenyon_sobre_10hz": 0,
+       "kenyon_total": 4064
+      },
+      "segundos": 7.1
+     }
+    },
+    "4": {
+     "veredicto": "✅",
+     "limpieza_con_azucar": {
+      "aBN1 (SAD093)": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aBN2 (trío LB23)": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN1 (DNg62)": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2 (DNge078)": {
+       "L": 0.0,
+       "R": 0.0
+      }
+     },
+     "MN9_con_antena": {
+      "L": 0.0,
+      "R": 0.0
+     },
+     "partes": {
+      "azucar_no_limpia": "✅",
+      "antena_no_come": "✅"
+     }
+    },
+    "5": {
+     "veredicto": "✅",
+     "disparos_totales": 0
+    },
+    "6": {
+     "referencia_MN9_L": 0.0,
+     "destinos": {
+      "redes": [
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 17
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 17
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 17
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 17
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 17
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 17
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 17
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 17
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 17
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 17
+       }
+      ],
+      "fraccion_casi_apagada": 0.0
+     },
+     "pesos": {
+      "redes": [
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 19
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 17
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 17
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 18
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 21
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 19
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 18
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 18
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 18
+       },
+       {
+        "MN9_L": 0.0,
+        "MN9_R": 0.0,
+        "neuronas_sobre_10hz": 18
+       }
+      ],
+      "fraccion_casi_apagada": 0.0
+     },
+     "veredicto": "❌"
+    }
+   }
+  }
+ },
+ "escalera": {
+  "paso": 3,
+  "w": 0.09,
+  "razon": "los dos tienen eco; el más alto sin eco es 0.09 mV",
+  "eco_shiu": true,
+  "eco_calibrado": true,
+  "busqueda": [
+   {
+    "w": 0.25,
+    "tiene_eco": true,
+    "detalle": {
+     "azúcar der 100 Hz": {
+      "sin_eco": false,
+      "repeticiones_con_eco": 30,
+      "actividad_con_estimulo": 675392.0,
+      "actividad_despues": 728167.8,
+      "proporcion": 1.0781,
+      "neuronas_disparando_por_ventana": [
+       4091.9,
+       9010.3,
+       7912.4,
+       7852.1,
+       7776.3,
+       7850.7,
+       7883.7,
+       8127.0,
+       8257.7,
+       8772.9
+      ],
+      "segundos": 11.4
+     },
+     "azúcar der 200 Hz": {
+      "sin_eco": false,
+      "repeticiones_con_eco": 30,
+      "actividad_con_estimulo": 1132190.0,
+      "actividad_despues": 1170933.6,
+      "proporcion": 1.0342,
+      "neuronas_disparando_por_ventana": [
+       5523.3,
+       11563.4,
+       10829.1,
+       10774.7,
+       10767.5,
+       10880.7,
+       10818.5,
+       11087.9,
+       11108.3,
+       11360.9
+      ],
+      "segundos": 12.1
+     },
+     "antena izq 220 Hz (WIP 10)": {
+      "sin_eco": false,
+      "repeticiones_con_eco": 30,
+      "actividad_con_estimulo": 1901519.7,
+      "actividad_despues": 1774508.8,
+      "proporcion": 0.9332,
+      "neuronas_disparando_por_ventana": [
+       16848.9,
+       16674.5,
+       16539.3,
+       16540.8,
+       16545.5,
+       15868.4,
+       15148.6,
+       15138.4,
+       15142.6,
+       15114.4
+      ],
+      "segundos": 14.8
+     }
+    }
+   },
+   {
+    "w": 0.225,
+    "tiene_eco": true,
+    "detalle": {
+     "azúcar der 100 Hz": {
+      "sin_eco": false,
+      "repeticiones_con_eco": 30,
+      "actividad_con_estimulo": 393890.3,
+      "actividad_despues": 406494.2,
+      "proporcion": 1.032,
+      "neuronas_disparando_por_ventana": [
+       1531.3,
+       6141.2,
+       6001.1,
+       5701.8,
+       5626.6,
+       5624.2,
+       5718.8,
+       5727.6,
+       5676.9,
+       5735.3
+      ],
+      "segundos": 10.0
+     },
+     "azúcar der 200 Hz": {
+      "sin_eco": false,
+      "repeticiones_con_eco": 30,
+      "actividad_con_estimulo": 230714.3,
+      "actividad_despues": 217365.4,
+      "proporcion": 0.9421,
+      "neuronas_disparando_por_ventana": [
+       2677.8,
+       5583.8,
+       4696.1,
+       4605.6,
+       4470.1,
+       4501.0,
+       4192.4,
+       4231.4,
+       4205.7,
+       4243.7
+      ],
+      "segundos": 8.9
+     },
+     "antena izq 220 Hz (WIP 10)": {
+      "sin_eco": false,
+      "repeticiones_con_eco": 30,
+      "actividad_con_estimulo": 1704450.0,
+      "actividad_despues": 1587915.9,
+      "proporcion": 0.9316,
+      "neuronas_disparando_por_ventana": [
+       15410.5,
+       15734.8,
+       15584.7,
+       15567.5,
+       15577.3,
+       14889.2,
+       14227.9,
+       14227.1,
+       14220.1,
+       14202.4
+      ],
+      "segundos": 13.3
+     }
+    }
+   },
+   {
+    "w": 0.2,
+    "tiene_eco": true,
+    "detalle": {
+     "azúcar der 100 Hz": {
+      "sin_eco": false,
+      "repeticiones_con_eco": 13,
+      "actividad_con_estimulo": 55276.3,
+      "actividad_despues": 93940.4,
+      "proporcion": 1.6995,
+      "neuronas_disparando_por_ventana": [
+       514.3,
+       928.7,
+       1320.1,
+       1424.1,
+       1595.6,
+       1574.5,
+       1619.7,
+       1630.4,
+       1605.4,
+       1609.7
+      ],
+      "segundos": 12.8
+     },
+     "azúcar der 200 Hz": {
+      "sin_eco": false,
+      "repeticiones_con_eco": 29,
+      "actividad_con_estimulo": 380353.7,
+      "actividad_despues": 384470.8,
+      "proporcion": 1.0108,
+      "neuronas_disparando_por_ventana": [
+       878.4,
+       1762.1,
+       3740.3,
+       4689.4,
+       5006.9,
+       4949.3,
+       4966.2,
+       4978.2,
+       4970.0,
+       4990.6
+      ],
+      "segundos": 11.2
+     },
+     "antena izq 220 Hz (WIP 10)": {
+      "sin_eco": false,
+      "repeticiones_con_eco": 30,
+      "actividad_con_estimulo": 1492178.3,
+      "actividad_despues": 1386059.4,
+      "proporcion": 0.9289,
+      "neuronas_disparando_por_ventana": [
+       13934.3,
+       14665.1,
+       14549.0,
+       14539.2,
+       14542.3,
+       13832.2,
+       13192.4,
+       13224.0,
+       13213.2,
+       13202.4
+      ],
+      "segundos": 12.3
+     }
+    }
+   },
+   {
+    "w": 0.175,
+    "tiene_eco": true,
+    "detalle": {
+     "azúcar der 100 Hz": {
+      "sin_eco": false,
+      "repeticiones_con_eco": 12,
+      "actividad_con_estimulo": 8227.3,
+      "actividad_despues": 502.3,
+      "proporcion": 0.0611,
+      "neuronas_disparando_por_ventana": [
+       145.4,
+       373.4,
+       358.2,
+       353.6,
+       356.7,
+       166.8,
+       18.0,
+       17.8,
+       17.4,
+       17.1
+      ],
+      "segundos": 15.4
+     },
+     "azúcar der 200 Hz": {
+      "sin_eco": false,
+      "repeticiones_con_eco": 5,
+      "actividad_con_estimulo": 17284.7,
+      "actividad_despues": 222.8,
+      "proporcion": 0.0129,
+      "neuronas_disparando_por_ventana": [
+       501.4,
+       580.1,
+       593.3,
+       600.1,
+       578.1,
+       346.2,
+       8.0,
+       7.7,
+       7.7,
+       7.5
+      ],
+      "segundos": 15.3
+     },
+     "antena izq 220 Hz (WIP 10)": {
+      "sin_eco": false,
+      "repeticiones_con_eco": 30,
+      "actividad_con_estimulo": 1247693.7,
+      "actividad_despues": 1149940.5,
+      "proporcion": 0.9217,
+      "neuronas_disparando_por_ventana": [
+       11498.3,
+       13146.1,
+       13099.2,
+       13167.3,
+       13192.5,
+       12485.7,
+       11851.8,
+       11860.5,
+       11862.9,
+       11844.2
+      ],
+      "segundos": 13.4
+     }
+    }
+   },
+   {
+    "w": 0.15,
+    "tiene_eco": true,
+    "detalle": {
+     "azúcar der 100 Hz": {
+      "sin_eco": true,
+      "repeticiones_con_eco": 0,
+      "actividad_con_estimulo": 3270.0,
+      "actividad_despues": 0.0,
+      "proporcion": 0.0,
+      "neuronas_disparando_por_ventana": [
+       83.9,
+       95.8,
+       93.7,
+       95.4,
+       92.4,
+       38.2,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      "segundos": 7.2
+     },
+     "azúcar der 200 Hz": {
+      "sin_eco": true,
+      "repeticiones_con_eco": 0,
+      "actividad_con_estimulo": 8236.7,
+      "actividad_despues": 0.0,
+      "proporcion": 0.0,
+      "neuronas_disparando_por_ventana": [
+       160.7,
+       269.3,
+       257.3,
+       272.6,
+       254.2,
+       155.2,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      "segundos": 17.2
+     },
+     "antena izq 220 Hz (WIP 10)": {
+      "sin_eco": false,
+      "repeticiones_con_eco": 30,
+      "actividad_con_estimulo": 869723.0,
+      "actividad_despues": 783125.2,
+      "proporcion": 0.9004,
+      "neuronas_disparando_por_ventana": [
+       5687.0,
+       9551.1,
+       10352.0,
+       10676.1,
+       10675.3,
+       9968.1,
+       9333.0,
+       9324.2,
+       9321.9,
+       9335.9
+      ],
+      "segundos": 10.7
+     }
+    }
+   },
+   {
+    "w": 0.125,
+    "tiene_eco": true,
+    "detalle": {
+     "azúcar der 100 Hz": {
+      "sin_eco": true,
+      "repeticiones_con_eco": 0,
+      "actividad_con_estimulo": 1706.3,
+      "actividad_despues": 0.0,
+      "proporcion": 0.0,
+      "neuronas_disparando_por_ventana": [
+       48.9,
+       59.1,
+       58.6,
+       59.3,
+       54.4,
+       15.4,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      "segundos": 6.4
+     },
+     "azúcar der 200 Hz": {
+      "sin_eco": true,
+      "repeticiones_con_eco": 0,
+      "actividad_con_estimulo": 4070.3,
+      "actividad_despues": 0.0,
+      "proporcion": 0.0,
+      "neuronas_disparando_por_ventana": [
+       95.7,
+       103.5,
+       100.7,
+       103.0,
+       101.4,
+       37.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      "segundos": 7.0
+     },
+     "antena izq 220 Hz (WIP 10)": {
+      "sin_eco": false,
+      "repeticiones_con_eco": 30,
+      "actividad_con_estimulo": 553357.3,
+      "actividad_despues": 503276.7,
+      "proporcion": 0.9095,
+      "neuronas_disparando_por_ventana": [
+       1513.0,
+       4372.4,
+       6931.3,
+       7655.1,
+       7834.5,
+       7233.5,
+       6789.4,
+       6807.2,
+       6809.4,
+       6808.8
+      ],
+      "segundos": 10.9
+     }
+    }
+   },
+   {
+    "w": 0.1,
+    "tiene_eco": true,
+    "detalle": {
+     "azúcar der 100 Hz": {
+      "sin_eco": true,
+      "repeticiones_con_eco": 0,
+      "actividad_con_estimulo": 754.0,
+      "actividad_despues": 0.0,
+      "proporcion": 0.0,
+      "neuronas_disparando_por_ventana": [
+       23.8,
+       29.1,
+       27.7,
+       28.8,
+       26.2,
+       5.4,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      "segundos": 6.2
+     },
+     "azúcar der 200 Hz": {
+      "sin_eco": true,
+      "repeticiones_con_eco": 0,
+      "actividad_con_estimulo": 2408.7,
+      "actividad_despues": 0.0,
+      "proporcion": 0.0,
+      "neuronas_disparando_por_ventana": [
+       54.8,
+       62.8,
+       62.9,
+       63.0,
+       60.6,
+       15.5,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      "segundos": 6.5
+     },
+     "antena izq 220 Hz (WIP 10)": {
+      "sin_eco": false,
+      "repeticiones_con_eco": 14,
+      "actividad_con_estimulo": 55098.0,
+      "actividad_despues": 1653.2,
+      "proporcion": 0.03,
+      "neuronas_disparando_por_ventana": [
+       1015.9,
+       1079.8,
+       1088.6,
+       1080.0,
+       1092.1,
+       468.2,
+       131.2,
+       56.1,
+       21.6,
+       8.9
+      ],
+      "segundos": 11.4
+     }
+    }
+   },
+   {
+    "w": 0.075,
+    "tiene_eco": false,
+    "detalle": {
+     "azúcar der 100 Hz": {
+      "sin_eco": true,
+      "repeticiones_con_eco": 0,
+      "actividad_con_estimulo": 366.0,
+      "actividad_despues": 0.0,
+      "proporcion": 0.0,
+      "neuronas_disparando_por_ventana": [
+       11.3,
+       12.5,
+       12.0,
+       12.2,
+       12.0,
+       1.1,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      "segundos": 6.6
+     },
+     "azúcar der 200 Hz": {
+      "sin_eco": true,
+      "repeticiones_con_eco": 0,
+      "actividad_con_estimulo": 1287.7,
+      "actividad_despues": 0.0,
+      "proporcion": 0.0,
+      "neuronas_disparando_por_ventana": [
+       33.2,
+       36.6,
+       35.8,
+       36.0,
+       35.0,
+       6.3,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      "segundos": 6.3
+     },
+     "antena izq 220 Hz (WIP 10)": {
+      "sin_eco": true,
+      "repeticiones_con_eco": 0,
+      "actividad_con_estimulo": 28506.3,
+      "actividad_despues": 0.0,
+      "proporcion": 0.0,
+      "neuronas_disparando_por_ventana": [
+       518.3,
+       551.8,
+       555.2,
+       550.8,
+       558.1,
+       129.7,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      "segundos": 13.3
+     }
+    }
+   },
+   {
+    "w": 0.095,
+    "tiene_eco": true,
+    "detalle": {
+     "azúcar der 100 Hz": {
+      "sin_eco": true,
+      "repeticiones_con_eco": 0,
+      "actividad_con_estimulo": 645.3,
+      "actividad_despues": 0.0,
+      "proporcion": 0.0,
+      "neuronas_disparando_por_ventana": [
+       20.2,
+       25.8,
+       23.4,
+       23.9,
+       22.9,
+       3.9,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      "segundos": 6.0
+     },
+     "azúcar der 200 Hz": {
+      "sin_eco": true,
+      "repeticiones_con_eco": 0,
+      "actividad_con_estimulo": 2092.3,
+      "actividad_despues": 0.0,
+      "proporcion": 0.0,
+      "neuronas_disparando_por_ventana": [
+       48.4,
+       54.1,
+       53.2,
+       54.9,
+       52.6,
+       13.7,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      "segundos": 6.4
+     },
+     "antena izq 220 Hz (WIP 10)": {
+      "sin_eco": false,
+      "repeticiones_con_eco": 1,
+      "actividad_con_estimulo": 50024.3,
+      "actividad_despues": 30.4,
+      "proporcion": 0.0006,
+      "neuronas_disparando_por_ventana": [
+       924.2,
+       999.0,
+       999.6,
+       996.0,
+       1004.5,
+       401.2,
+       8.5,
+       0.0,
+       0.0,
+       0.0
+      ],
+      "segundos": 12.3
+     }
+    }
+   },
+   {
+    "w": 0.09,
+    "tiene_eco": false,
+    "detalle": {
+     "azúcar der 100 Hz": {
+      "sin_eco": true,
+      "repeticiones_con_eco": 0,
+      "actividad_con_estimulo": 560.0,
+      "actividad_despues": 0.0,
+      "proporcion": 0.0,
+      "neuronas_disparando_por_ventana": [
+       16.3,
+       21.6,
+       20.5,
+       19.5,
+       19.1,
+       2.9,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      "segundos": 6.2
+     },
+     "azúcar der 200 Hz": {
+      "sin_eco": true,
+      "repeticiones_con_eco": 0,
+      "actividad_con_estimulo": 1852.3,
+      "actividad_despues": 0.0,
+      "proporcion": 0.0,
+      "neuronas_disparando_por_ventana": [
+       44.5,
+       48.6,
+       48.1,
+       47.8,
+       47.2,
+       12.1,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      "segundos": 6.4
+     },
+     "antena izq 220 Hz (WIP 10)": {
+      "sin_eco": true,
+      "repeticiones_con_eco": 0,
+      "actividad_con_estimulo": 44639.7,
+      "actividad_despues": 0.0,
+      "proporcion": 0.0,
+      "neuronas_disparando_por_ventana": [
+       810.7,
+       907.6,
+       909.6,
+       907.0,
+       911.5,
+       342.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ],
+      "segundos": 13.5
+     }
+    }
+   }
+  ]
+ },
+ "wip": {
+  "w_syn": 0.09,
+  "tabla": [
+   {
+    "wip": 1,
+    "hz_antena": 20.0,
+    "aDN1_L": 0.0,
+    "aDN1_R": 0.0,
+    "aDN2_L": 0.0,
+    "aDN2_R": 0.0,
+    "MN9_L": 0.0,
+    "MN9_R": 0.0,
+    "limpieza": 0.0
+   },
+   {
+    "wip": 2,
+    "hz_antena": 42.2,
+    "aDN1_L": 0.0,
+    "aDN1_R": 0.0,
+    "aDN2_L": 0.0,
+    "aDN2_R": 0.0,
+    "MN9_L": 0.0,
+    "MN9_R": 0.0,
+    "limpieza": 0.0
+   },
+   {
+    "wip": 3,
+    "hz_antena": 64.4,
+    "aDN1_L": 0.0,
+    "aDN1_R": 0.3,
+    "aDN2_L": 0.0,
+    "aDN2_R": 0.0,
+    "MN9_L": 0.0,
+    "MN9_R": 0.0,
+    "limpieza": 0.07
+   },
+   {
+    "wip": 4,
+    "hz_antena": 86.7,
+    "aDN1_L": 0.0,
+    "aDN1_R": 13.27,
+    "aDN2_L": 0.0,
+    "aDN2_R": 0.03,
+    "MN9_L": 0.0,
+    "MN9_R": 0.0,
+    "limpieza": 3.32
+   },
+   {
+    "wip": 5,
+    "hz_antena": 108.9,
+    "aDN1_L": 23.37,
+    "aDN1_R": 56.93,
+    "aDN2_L": 8.33,
+    "aDN2_R": 23.73,
+    "MN9_L": 0.0,
+    "MN9_R": 0.0,
+    "limpieza": 28.09
+   },
+   {
+    "wip": 6,
+    "hz_antena": 131.1,
+    "aDN1_L": 67.17,
+    "aDN1_R": 97.63,
+    "aDN2_L": 27.1,
+    "aDN2_R": 53.5,
+    "MN9_L": 0.0,
+    "MN9_R": 0.0,
+    "limpieza": 61.35
+   },
+   {
+    "wip": 7,
+    "hz_antena": 153.3,
+    "aDN1_L": 72.77,
+    "aDN1_R": 104.5,
+    "aDN2_L": 30.57,
+    "aDN2_R": 59.77,
+    "MN9_L": 0.0,
+    "MN9_R": 0.0,
+    "limpieza": 66.9
+   },
+   {
+    "wip": 8,
+    "hz_antena": 175.6,
+    "aDN1_L": 75.43,
+    "aDN1_R": 110.03,
+    "aDN2_L": 32.7,
+    "aDN2_R": 64.33,
+    "MN9_L": 0.0,
+    "MN9_R": 0.0,
+    "limpieza": 70.62
+   },
+   {
+    "wip": 9,
+    "hz_antena": 197.8,
+    "aDN1_L": 78.53,
+    "aDN1_R": 114.23,
+    "aDN2_L": 35.27,
+    "aDN2_R": 69.07,
+    "MN9_L": 0.0,
+    "MN9_R": 0.0,
+    "limpieza": 74.28
+   },
+   {
+    "wip": 10,
+    "hz_antena": 220.0,
+    "aDN1_L": 80.6,
+    "aDN1_R": 118.6,
+    "aDN2_L": 37.5,
+    "aDN2_R": 73.93,
+    "MN9_L": 0.0,
+    "MN9_R": 0.0,
+    "limpieza": 77.66
+   }
+  ],
+  "comparacion": {
+   "sube_con_el_wip": "✅",
+   "casi_nada_con_wip_1_a_3": "✅",
+   "correlacion_con_colillas": 0.948
+  },
+  "detalle": {
+   "1": {
+    "grupos": {
+     "MN9": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "aDN1 (DNg62)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "aDN2 (DNge078)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "aBN1 (SAD093)": {
+      "L": {
+       "hz": 4.73,
+       "de": 1.96,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "aBN2 (trío LB23)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      }
+     },
+     "GNG380": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      }
+     },
+     "plan B: 5 que más reciben de la antena": {
+      "L": {
+       "hz": 35.67,
+       "de": 1.35,
+       "n": 5
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 5
+      }
+     },
+     "Dandelion (AN13B002)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "DNge062": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Roundup (GNG108)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Roundtree (GNG120)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "ANXXX462b": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Clavicle (ANXXX462a)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "FMIn (GNG197)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Fdg (GNG588)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     }
+    },
+    "esparcido": {
+     "neuronas_sobre_10hz": 273,
+     "neuronas_con_algo": 330,
+     "kenyon_sobre_10hz": 0,
+     "kenyon_total": 4064
+    },
+    "segundos": 6.8
+   },
+   "2": {
+    "grupos": {
+     "MN9": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "aDN1 (DNg62)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "aDN2 (DNge078)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "aBN1 (SAD093)": {
+      "L": {
+       "hz": 42.6,
+       "de": 1.3,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "aBN2 (trío LB23)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      }
+     },
+     "GNG380": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      }
+     },
+     "plan B: 5 que más reciben de la antena": {
+      "L": {
+       "hz": 63.92,
+       "de": 1.54,
+       "n": 5
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 5
+      }
+     },
+     "Dandelion (AN13B002)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "DNge062": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Roundup (GNG108)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Roundtree (GNG120)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "ANXXX462b": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Clavicle (ANXXX462a)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "FMIn (GNG197)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Fdg (GNG588)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     }
+    },
+    "esparcido": {
+     "neuronas_sobre_10hz": 330,
+     "neuronas_con_algo": 423,
+     "kenyon_sobre_10hz": 0,
+     "kenyon_total": 4064
+    },
+    "segundos": 7.2
+   },
+   "3": {
+    "grupos": {
+     "MN9": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "aDN1 (DNg62)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.3,
+       "de": 0.53,
+       "n": 1
+      }
+     },
+     "aDN2 (DNge078)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "aBN1 (SAD093)": {
+      "L": {
+       "hz": 66.9,
+       "de": 1.37,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "aBN2 (trío LB23)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      }
+     },
+     "GNG380": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      }
+     },
+     "plan B: 5 que más reciben de la antena": {
+      "L": {
+       "hz": 90.25,
+       "de": 1.28,
+       "n": 5
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 5
+      }
+     },
+     "Dandelion (AN13B002)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "DNge062": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Roundup (GNG108)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Roundtree (GNG120)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "ANXXX462b": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Clavicle (ANXXX462a)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "FMIn (GNG197)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Fdg (GNG588)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     }
+    },
+    "esparcido": {
+     "neuronas_sobre_10hz": 395,
+     "neuronas_con_algo": 532,
+     "kenyon_sobre_10hz": 0,
+     "kenyon_total": 4064
+    },
+    "segundos": 7.9
+   },
+   "4": {
+    "grupos": {
+     "MN9": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "aDN1 (DNg62)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 13.27,
+       "de": 1.76,
+       "n": 1
+      }
+     },
+     "aDN2 (DNge078)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.03,
+       "de": 0.18,
+       "n": 1
+      }
+     },
+     "aBN1 (SAD093)": {
+      "L": {
+       "hz": 85.43,
+       "de": 1.5,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "aBN2 (trío LB23)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      }
+     },
+     "GNG380": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      }
+     },
+     "plan B: 5 que más reciben de la antena": {
+      "L": {
+       "hz": 111.77,
+       "de": 1.23,
+       "n": 5
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 5
+      }
+     },
+     "Dandelion (AN13B002)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "DNge062": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Roundup (GNG108)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Roundtree (GNG120)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "ANXXX462b": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Clavicle (ANXXX462a)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "FMIn (GNG197)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Fdg (GNG588)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     }
+    },
+    "esparcido": {
+     "neuronas_sobre_10hz": 477,
+     "neuronas_con_algo": 633,
+     "kenyon_sobre_10hz": 0,
+     "kenyon_total": 4064
+    },
+    "segundos": 9.7
+   },
+   "5": {
+    "grupos": {
+     "MN9": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "aDN1 (DNg62)": {
+      "L": {
+       "hz": 23.37,
+       "de": 24.37,
+       "n": 1
+      },
+      "R": {
+       "hz": 56.93,
+       "de": 21.51,
+       "n": 1
+      }
+     },
+     "aDN2 (DNge078)": {
+      "L": {
+       "hz": 8.33,
+       "de": 9.44,
+       "n": 1
+      },
+      "R": {
+       "hz": 23.73,
+       "de": 14.72,
+       "n": 1
+      }
+     },
+     "aBN1 (SAD093)": {
+      "L": {
+       "hz": 104.83,
+       "de": 2.51,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "aBN2 (trío LB23)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      }
+     },
+     "GNG380": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      }
+     },
+     "plan B: 5 que más reciben de la antena": {
+      "L": {
+       "hz": 130.4,
+       "de": 1.27,
+       "n": 5
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 5
+      }
+     },
+     "Dandelion (AN13B002)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "DNge062": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Roundup (GNG108)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Roundtree (GNG120)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "ANXXX462b": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Clavicle (ANXXX462a)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "FMIn (GNG197)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Fdg (GNG588)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     }
+    },
+    "esparcido": {
+     "neuronas_sobre_10hz": 624,
+     "neuronas_con_algo": 1026,
+     "kenyon_sobre_10hz": 0,
+     "kenyon_total": 4064
+    },
+    "segundos": 13.9
+   },
+   "6": {
+    "grupos": {
+     "MN9": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "aDN1 (DNg62)": {
+      "L": {
+       "hz": 67.17,
+       "de": 3.28,
+       "n": 1
+      },
+      "R": {
+       "hz": 97.63,
+       "de": 2.08,
+       "n": 1
+      }
+     },
+     "aDN2 (DNge078)": {
+      "L": {
+       "hz": 27.1,
+       "de": 2.04,
+       "n": 1
+      },
+      "R": {
+       "hz": 53.5,
+       "de": 2.0,
+       "n": 1
+      }
+     },
+     "aBN1 (SAD093)": {
+      "L": {
+       "hz": 121.33,
+       "de": 1.54,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "aBN2 (trío LB23)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      }
+     },
+     "GNG380": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      }
+     },
+     "plan B: 5 que más reciben de la antena": {
+      "L": {
+       "hz": 147.74,
+       "de": 1.4,
+       "n": 5
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 5
+      }
+     },
+     "Dandelion (AN13B002)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "DNge062": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Roundup (GNG108)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Roundtree (GNG120)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "ANXXX462b": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Clavicle (ANXXX462a)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "FMIn (GNG197)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Fdg (GNG588)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     }
+    },
+    "esparcido": {
+     "neuronas_sobre_10hz": 819,
+     "neuronas_con_algo": 1114,
+     "kenyon_sobre_10hz": 0,
+     "kenyon_total": 4064
+    },
+    "segundos": 14.5
+   },
+   "7": {
+    "grupos": {
+     "MN9": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "aDN1 (DNg62)": {
+      "L": {
+       "hz": 72.77,
+       "de": 1.41,
+       "n": 1
+      },
+      "R": {
+       "hz": 104.5,
+       "de": 1.89,
+       "n": 1
+      }
+     },
+     "aDN2 (DNge078)": {
+      "L": {
+       "hz": 30.57,
+       "de": 1.17,
+       "n": 1
+      },
+      "R": {
+       "hz": 59.77,
+       "de": 1.17,
+       "n": 1
+      }
+     },
+     "aBN1 (SAD093)": {
+      "L": {
+       "hz": 134.63,
+       "de": 1.27,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "aBN2 (trío LB23)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      }
+     },
+     "GNG380": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      }
+     },
+     "plan B: 5 que más reciben de la antena": {
+      "L": {
+       "hz": 163.51,
+       "de": 1.0,
+       "n": 5
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 5
+      }
+     },
+     "Dandelion (AN13B002)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "DNge062": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Roundup (GNG108)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Roundtree (GNG120)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "ANXXX462b": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Clavicle (ANXXX462a)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "FMIn (GNG197)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Fdg (GNG588)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     }
+    },
+    "esparcido": {
+     "neuronas_sobre_10hz": 910,
+     "neuronas_con_algo": 1184,
+     "kenyon_sobre_10hz": 0,
+     "kenyon_total": 4064
+    },
+    "segundos": 14.7
+   },
+   "8": {
+    "grupos": {
+     "MN9": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "aDN1 (DNg62)": {
+      "L": {
+       "hz": 75.43,
+       "de": 1.17,
+       "n": 1
+      },
+      "R": {
+       "hz": 110.03,
+       "de": 1.54,
+       "n": 1
+      }
+     },
+     "aDN2 (DNge078)": {
+      "L": {
+       "hz": 32.7,
+       "de": 1.21,
+       "n": 1
+      },
+      "R": {
+       "hz": 64.33,
+       "de": 1.54,
+       "n": 1
+      }
+     },
+     "aBN1 (SAD093)": {
+      "L": {
+       "hz": 146.77,
+       "de": 1.48,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "aBN2 (trío LB23)": {
+      "L": {
+       "hz": 0.02,
+       "de": 0.08,
+       "n": 3
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      }
+     },
+     "GNG380": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      }
+     },
+     "plan B: 5 que más reciben de la antena": {
+      "L": {
+       "hz": 177.99,
+       "de": 0.97,
+       "n": 5
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 5
+      }
+     },
+     "Dandelion (AN13B002)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "DNge062": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Roundup (GNG108)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Roundtree (GNG120)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "ANXXX462b": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Clavicle (ANXXX462a)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "FMIn (GNG197)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Fdg (GNG588)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     }
+    },
+    "esparcido": {
+     "neuronas_sobre_10hz": 961,
+     "neuronas_con_algo": 1247,
+     "kenyon_sobre_10hz": 0,
+     "kenyon_total": 4064
+    },
+    "segundos": 13.6
+   },
+   "9": {
+    "grupos": {
+     "MN9": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "aDN1 (DNg62)": {
+      "L": {
+       "hz": 78.53,
+       "de": 1.66,
+       "n": 1
+      },
+      "R": {
+       "hz": 114.23,
+       "de": 1.72,
+       "n": 1
+      }
+     },
+     "aDN2 (DNge078)": {
+      "L": {
+       "hz": 35.27,
+       "de": 1.28,
+       "n": 1
+      },
+      "R": {
+       "hz": 69.07,
+       "de": 1.93,
+       "n": 1
+      }
+     },
+     "aBN1 (SAD093)": {
+      "L": {
+       "hz": 157.63,
+       "de": 1.25,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "aBN2 (trío LB23)": {
+      "L": {
+       "hz": 0.49,
+       "de": 0.34,
+       "n": 3
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      }
+     },
+     "GNG380": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      }
+     },
+     "plan B: 5 que más reciben de la antena": {
+      "L": {
+       "hz": 191.25,
+       "de": 0.97,
+       "n": 5
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 5
+      }
+     },
+     "Dandelion (AN13B002)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "DNge062": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Roundup (GNG108)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Roundtree (GNG120)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "ANXXX462b": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Clavicle (ANXXX462a)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "FMIn (GNG197)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Fdg (GNG588)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     }
+    },
+    "esparcido": {
+     "neuronas_sobre_10hz": 1017,
+     "neuronas_con_algo": 1328,
+     "kenyon_sobre_10hz": 0,
+     "kenyon_total": 4064
+    },
+    "segundos": 13.8
+   },
+   "10": {
+    "grupos": {
+     "MN9": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "aDN1 (DNg62)": {
+      "L": {
+       "hz": 80.6,
+       "de": 1.28,
+       "n": 1
+      },
+      "R": {
+       "hz": 118.6,
+       "de": 1.71,
+       "n": 1
+      }
+     },
+     "aDN2 (DNge078)": {
+      "L": {
+       "hz": 37.5,
+       "de": 1.22,
+       "n": 1
+      },
+      "R": {
+       "hz": 73.93,
+       "de": 2.39,
+       "n": 1
+      }
+     },
+     "aBN1 (SAD093)": {
+      "L": {
+       "hz": 168.03,
+       "de": 1.35,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "aBN2 (trío LB23)": {
+      "L": {
+       "hz": 2.42,
+       "de": 0.44,
+       "n": 3
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      }
+     },
+     "GNG380": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 3
+      }
+     },
+     "plan B: 5 que más reciben de la antena": {
+      "L": {
+       "hz": 203.42,
+       "de": 1.07,
+       "n": 5
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 5
+      }
+     },
+     "Dandelion (AN13B002)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "DNge062": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Roundup (GNG108)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Roundtree (GNG120)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "ANXXX462b": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Clavicle (ANXXX462a)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "FMIn (GNG197)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     },
+     "Fdg (GNG588)": {
+      "L": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      },
+      "R": {
+       "hz": 0.0,
+       "de": 0.0,
+       "n": 1
+      }
+     }
+    },
+    "esparcido": {
+     "neuronas_sobre_10hz": 1077,
+     "neuronas_con_algo": 1398,
+     "kenyon_sobre_10hz": 0,
+     "kenyon_total": 4064
+    },
+    "segundos": 12.9
+   }
+  }
+ },
+ "decision": {
+  "paso": 3,
+  "w": 0.09,
+  "razon": "los dos tienen eco; el más alto sin eco es 0.09 mV",
+  "cigarro": "circuito real",
+  "cafe": "ilustrativo (se dice en pantalla)"
+ }
+}
