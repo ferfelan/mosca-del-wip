@@ -1,0 +1,815 @@
+{
+ "densidad": {
+  "MaleCNS (todo el sistema nervioso, trazadas)": {
+   "neuronas": 164587,
+   "sinapsis": 124025046,
+   "sinapsis_por_neurona": 753.6,
+   "conexiones_5_o_mas": 6235682,
+   "conexiones_5_o_mas_por_neurona": 37.9,
+   "sinapsis_por_conexion_5_o_mas": 14.4
+  },
+  "MaleCNS (sólo cerebro, aproximado)": {
+   "neuronas": 142239,
+   "sinapsis": 96958287,
+   "sinapsis_por_neurona": 681.7,
+   "conexiones_5_o_mas": 5018211,
+   "conexiones_5_o_mas_por_neurona": 35.3,
+   "sinapsis_por_conexion_5_o_mas": 13.6
+  },
+  "FlyWire (cifras publicadas)": {
+   "neuronas": 139255,
+   "sinapsis": 54500000,
+   "sinapsis_por_neurona": 391.4,
+   "conexiones_5_o_mas": 2700513,
+   "conexiones_5_o_mas_por_neurona": 19.4
+  },
+  "razon_sinapsis_por_neurona_cerebro": 1.74,
+  "peso_shiu_ajustado_por_densidad": 0.158
+ },
+ "sensibilidad": {
+  "0.070": {
+   "tabla": [
+    {
+     "wip": 1,
+     "hz_antena": 20.0,
+     "aDN1_L": 0.0,
+     "aDN1_R": 0.0,
+     "aDN2_L": 0.0,
+     "aDN2_R": 0.0,
+     "MN9_L": 0.0,
+     "MN9_R": 0.0,
+     "limpieza": 0.0
+    },
+    {
+     "wip": 2,
+     "hz_antena": 42.2,
+     "aDN1_L": 0.0,
+     "aDN1_R": 0.0,
+     "aDN2_L": 0.0,
+     "aDN2_R": 0.0,
+     "MN9_L": 0.0,
+     "MN9_R": 0.0,
+     "limpieza": 0.0
+    },
+    {
+     "wip": 3,
+     "hz_antena": 64.4,
+     "aDN1_L": 0.0,
+     "aDN1_R": 0.0,
+     "aDN2_L": 0.0,
+     "aDN2_R": 0.0,
+     "MN9_L": 0.0,
+     "MN9_R": 0.0,
+     "limpieza": 0.0
+    },
+    {
+     "wip": 4,
+     "hz_antena": 86.7,
+     "aDN1_L": 0.0,
+     "aDN1_R": 0.0,
+     "aDN2_L": 0.0,
+     "aDN2_R": 0.0,
+     "MN9_L": 0.0,
+     "MN9_R": 0.0,
+     "limpieza": 0.0
+    },
+    {
+     "wip": 5,
+     "hz_antena": 108.9,
+     "aDN1_L": 0.0,
+     "aDN1_R": 1.37,
+     "aDN2_L": 0.0,
+     "aDN2_R": 0.0,
+     "MN9_L": 0.0,
+     "MN9_R": 0.0,
+     "limpieza": 0.34
+    },
+    {
+     "wip": 6,
+     "hz_antena": 131.1,
+     "aDN1_L": 0.0,
+     "aDN1_R": 10.8,
+     "aDN2_L": 0.0,
+     "aDN2_R": 0.0,
+     "MN9_L": 0.0,
+     "MN9_R": 0.0,
+     "limpieza": 2.7
+    },
+    {
+     "wip": 7,
+     "hz_antena": 153.3,
+     "aDN1_L": 0.0,
+     "aDN1_R": 17.27,
+     "aDN2_L": 0.0,
+     "aDN2_R": 0.0,
+     "MN9_L": 0.0,
+     "MN9_R": 0.0,
+     "limpieza": 4.32
+    },
+    {
+     "wip": 8,
+     "hz_antena": 175.6,
+     "aDN1_L": 0.0,
+     "aDN1_R": 23.57,
+     "aDN2_L": 0.0,
+     "aDN2_R": 0.5,
+     "MN9_L": 0.0,
+     "MN9_R": 0.0,
+     "limpieza": 6.02
+    },
+    {
+     "wip": 9,
+     "hz_antena": 197.8,
+     "aDN1_L": 0.0,
+     "aDN1_R": 31.97,
+     "aDN2_L": 0.0,
+     "aDN2_R": 8.1,
+     "MN9_L": 0.0,
+     "MN9_R": 0.0,
+     "limpieza": 10.02
+    },
+    {
+     "wip": 10,
+     "hz_antena": 220.0,
+     "aDN1_L": 0.0,
+     "aDN1_R": 42.03,
+     "aDN2_L": 0.0,
+     "aDN2_R": 14.23,
+     "MN9_L": 0.0,
+     "MN9_R": 0.0,
+     "limpieza": 14.07
+    }
+   ],
+   "comparacion": {
+    "sube_con_el_wip": "✅",
+    "casi_nada_con_wip_1_a_3": "✅",
+    "correlacion_con_colillas": 0.956
+   },
+   "limpieza": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.34,
+    2.7,
+    4.32,
+    6.02,
+    10.02,
+    14.07
+   ],
+   "inicio_mas_de_1hz": 6,
+   "primero_10hz_o_mas": 9,
+   "nota": "⚠️"
+  },
+  "0.080": {
+   "tabla": [
+    {
+     "wip": 1,
+     "hz_antena": 20.0,
+     "aDN1_L": 0.0,
+     "aDN1_R": 0.0,
+     "aDN2_L": 0.0,
+     "aDN2_R": 0.0,
+     "MN9_L": 0.0,
+     "MN9_R": 0.0,
+     "limpieza": 0.0
+    },
+    {
+     "wip": 2,
+     "hz_antena": 42.2,
+     "aDN1_L": 0.0,
+     "aDN1_R": 0.0,
+     "aDN2_L": 0.0,
+     "aDN2_R": 0.0,
+     "MN9_L": 0.0,
+     "MN9_R": 0.0,
+     "limpieza": 0.0
+    },
+    {
+     "wip": 3,
+     "hz_antena": 64.4,
+     "aDN1_L": 0.0,
+     "aDN1_R": 0.0,
+     "aDN2_L": 0.0,
+     "aDN2_R": 0.0,
+     "MN9_L": 0.0,
+     "MN9_R": 0.0,
+     "limpieza": 0.0
+    },
+    {
+     "wip": 4,
+     "hz_antena": 86.7,
+     "aDN1_L": 0.0,
+     "aDN1_R": 2.7,
+     "aDN2_L": 0.0,
+     "aDN2_R": 0.0,
+     "MN9_L": 0.0,
+     "MN9_R": 0.0,
+     "limpieza": 0.68
+    },
+    {
+     "wip": 5,
+     "hz_antena": 108.9,
+     "aDN1_L": 0.0,
+     "aDN1_R": 15.67,
+     "aDN2_L": 0.0,
+     "aDN2_R": 0.03,
+     "MN9_L": 0.0,
+     "MN9_R": 0.0,
+     "limpieza": 3.92
+    },
+    {
+     "wip": 6,
+     "hz_antena": 131.1,
+     "aDN1_L": 0.0,
+     "aDN1_R": 26.3,
+     "aDN2_L": 0.0,
+     "aDN2_R": 3.63,
+     "MN9_L": 0.0,
+     "MN9_R": 0.0,
+     "limpieza": 7.48
+    },
+    {
+     "wip": 7,
+     "hz_antena": 153.3,
+     "aDN1_L": 0.0,
+     "aDN1_R": 42.7,
+     "aDN2_L": 0.0,
+     "aDN2_R": 13.37,
+     "MN9_L": 0.0,
+     "MN9_R": 0.0,
+     "limpieza": 14.02
+    },
+    {
+     "wip": 8,
+     "hz_antena": 175.6,
+     "aDN1_L": 6.07,
+     "aDN1_R": 56.97,
+     "aDN2_L": 0.0,
+     "aDN2_R": 20.53,
+     "MN9_L": 0.0,
+     "MN9_R": 0.0,
+     "limpieza": 20.89
+    },
+    {
+     "wip": 9,
+     "hz_antena": 197.8,
+     "aDN1_L": 23.9,
+     "aDN1_R": 71.77,
+     "aDN2_L": 0.07,
+     "aDN2_R": 27.5,
+     "MN9_L": 0.0,
+     "MN9_R": 0.0,
+     "limpieza": 30.81
+    },
+    {
+     "wip": 10,
+     "hz_antena": 220.0,
+     "aDN1_L": 37.0,
+     "aDN1_R": 83.0,
+     "aDN2_L": 1.9,
+     "aDN2_R": 35.4,
+     "MN9_L": 0.0,
+     "MN9_R": 0.0,
+     "limpieza": 39.33
+    }
+   ],
+   "comparacion": {
+    "sube_con_el_wip": "✅",
+    "casi_nada_con_wip_1_a_3": "✅",
+    "correlacion_con_colillas": 0.975
+   },
+   "limpieza": [
+    0.0,
+    0.0,
+    0.0,
+    0.68,
+    3.92,
+    7.48,
+    14.02,
+    20.89,
+    30.81,
+    39.33
+   ],
+   "inicio_mas_de_1hz": 5,
+   "primero_10hz_o_mas": 7,
+   "nota": "✅"
+  },
+  "veredicto": "⚠️"
+ },
+ "barajadas": {
+  "WIP 10": {
+   "hz": 220.0,
+   "limpieza_red_real": 77.66,
+   "destinos": {
+    "redes": [
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 300
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 303
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 294
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 300
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 299
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 300
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 298
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 296
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 298
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 295
+     }
+    ],
+    "fraccion_mucho_mas_baja": 1.0,
+    "limpieza_promedio": 0.0
+   },
+   "pesos": {
+    "redes": [
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 467
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 438
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 458
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 455
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 450
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 471
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 468
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 450
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 463
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 448
+     }
+    ],
+    "fraccion_mucho_mas_baja": 1.0,
+    "limpieza_promedio": 0.0
+   }
+  },
+  "WIP 6": {
+   "hz": 131.1,
+   "limpieza_red_real": 61.35,
+   "destinos": {
+    "redes": [
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 248
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 248
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 248
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 248
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 249
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 247
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 247
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 249
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 248
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 248
+     }
+    ],
+    "fraccion_mucho_mas_baja": 1.0,
+    "limpieza_promedio": 0.0
+   },
+   "pesos": {
+    "redes": [
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 342
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 345
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 338
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 340
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 339
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 371
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 363
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 343
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 342
+     },
+     {
+      "limpieza": 0.0,
+      "aDN1": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "aDN2": {
+       "L": 0.0,
+       "R": 0.0
+      },
+      "neuronas_sobre_10hz": 346
+     }
+    ],
+    "fraccion_mucho_mas_baja": 1.0,
+    "limpieza_promedio": 0.0
+   }
+  },
+  "veredicto": "✅"
+ }
+}

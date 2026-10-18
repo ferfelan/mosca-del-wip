@@ -1,0 +1,326 @@
+{
+ "actividad_real": [
+  0,
+  0,
+  0,
+  0.001,
+  0.043,
+  0.362,
+  0.79,
+  0.861,
+  0.909,
+  0.956,
+  1
+ ],
+ "ganas_max": 4.199999999999999,
+ "opciones": {
+  "A": {
+   "nombre": "El cerebro muestra, el juego decide",
+   "regla": "Sin cambios en las reglas; en la 3.3 las luces del panel saldrían de la actividad real.",
+   "linea": "this.urgenciaFumar += sobra * URGENCIA_FUMAR_FACTOR * curva * dt;",
+   "frase": "Las luces del cerebro vienen de un circuito real de la mosca (MaleCNS), simulado: limpiarse las antenas. El cigarro es un disfraz de esa limpieza. Las colillas y el estrés siguen reglas del juego basadas en estudios. El café es ilustrativo.",
+   "filas": [
+    {
+     "wip": 1,
+     "terminadas": 15.9,
+     "tiempo_min": 34,
+     "colillas": 0,
+     "cafes": 6,
+     "estres": 5,
+     "nivel": "Tranqui"
+    },
+    {
+     "wip": 2,
+     "terminadas": 17.9,
+     "tiempo_min": 60,
+     "colillas": 0,
+     "cafes": 5,
+     "estres": 10,
+     "nivel": "Tranqui"
+    },
+    {
+     "wip": 3,
+     "terminadas": 16.7,
+     "tiempo_min": 96,
+     "colillas": 0,
+     "cafes": 4,
+     "estres": 17,
+     "nivel": "Tranqui"
+    },
+    {
+     "wip": 4,
+     "terminadas": 15.4,
+     "tiempo_min": 141,
+     "colillas": 1,
+     "cafes": 3,
+     "estres": 30,
+     "nivel": "Ocupada"
+    },
+    {
+     "wip": 5,
+     "terminadas": 13.9,
+     "tiempo_min": 193,
+     "colillas": 3,
+     "cafes": 1,
+     "estres": 41,
+     "nivel": "Ocupada"
+    },
+    {
+     "wip": 6,
+     "terminadas": 12.4,
+     "tiempo_min": 262,
+     "colillas": 6,
+     "cafes": 0,
+     "estres": 54,
+     "nivel": "Estresada"
+    },
+    {
+     "wip": 7,
+     "terminadas": 10.9,
+     "tiempo_min": 339,
+     "colillas": 8,
+     "cafes": 0,
+     "estres": 64,
+     "nivel": "Estresada"
+    },
+    {
+     "wip": 8,
+     "terminadas": 9.8,
+     "tiempo_min": 431,
+     "colillas": 11,
+     "cafes": 0,
+     "estres": 79,
+     "nivel": "Colapsada"
+    },
+    {
+     "wip": 9,
+     "terminadas": 9.1,
+     "tiempo_min": 540,
+     "colillas": 13,
+     "cafes": 0,
+     "estres": 86,
+     "nivel": "Colapsada"
+    },
+    {
+     "wip": 10,
+     "terminadas": 8.5,
+     "tiempo_min": 643,
+     "colillas": 15,
+     "cafes": 0,
+     "estres": 93,
+     "nivel": "Colapsada"
+    }
+   ],
+   "forma_todo_bien": true,
+   "problemas": [],
+   "bajar_wip_tranqui": "15:10"
+  },
+  "B": {
+   "nombre": "El cerebro decide si dan ganas, el estrés decide cuántas",
+   "regla": "Ganas por minuto = fórmula actual × actividad real (normalizada) según las tareas abiertas.",
+   "linea": "this.urgenciaFumar += sobra * URGENCIA_FUMAR_FACTOR * curva * dt * __ACTIVIDAD_REAL[Math.min(this.enCurso.length, 10)];",
+   "frase": "Las ganas de \"fumar\" las enciende un circuito real de la mosca (MaleCNS, simulado): limpiarse las antenas. Cuántas veces fuma lo decide el estrés del juego, basado en estudios. El café es ilustrativo.",
+   "filas": [
+    {
+     "wip": 1,
+     "terminadas": 15.9,
+     "tiempo_min": 34,
+     "colillas": 0,
+     "cafes": 6,
+     "estres": 5,
+     "nivel": "Tranqui"
+    },
+    {
+     "wip": 2,
+     "terminadas": 17.9,
+     "tiempo_min": 60,
+     "colillas": 0,
+     "cafes": 5,
+     "estres": 10,
+     "nivel": "Tranqui"
+    },
+    {
+     "wip": 3,
+     "terminadas": 16.7,
+     "tiempo_min": 96,
+     "colillas": 0,
+     "cafes": 4,
+     "estres": 17,
+     "nivel": "Tranqui"
+    },
+    {
+     "wip": 4,
+     "terminadas": 15.7,
+     "tiempo_min": 139,
+     "colillas": 0,
+     "cafes": 3,
+     "estres": 30,
+     "nivel": "Ocupada"
+    },
+    {
+     "wip": 5,
+     "terminadas": 14.4,
+     "tiempo_min": 187,
+     "colillas": 1,
+     "cafes": 1,
+     "estres": 41,
+     "nivel": "Ocupada"
+    },
+    {
+     "wip": 6,
+     "terminadas": 12.9,
+     "tiempo_min": 253,
+     "colillas": 4,
+     "cafes": 0,
+     "estres": 54,
+     "nivel": "Estresada"
+    },
+    {
+     "wip": 7,
+     "terminadas": 11.3,
+     "tiempo_min": 333,
+     "colillas": 7,
+     "cafes": 0,
+     "estres": 64,
+     "nivel": "Estresada"
+    },
+    {
+     "wip": 8,
+     "terminadas": 10,
+     "tiempo_min": 424,
+     "colillas": 10,
+     "cafes": 0,
+     "estres": 79,
+     "nivel": "Colapsada"
+    },
+    {
+     "wip": 9,
+     "terminadas": 9.1,
+     "tiempo_min": 540,
+     "colillas": 13,
+     "cafes": 0,
+     "estres": 86,
+     "nivel": "Colapsada"
+    },
+    {
+     "wip": 10,
+     "terminadas": 8.5,
+     "tiempo_min": 643,
+     "colillas": 15,
+     "cafes": 0,
+     "estres": 93,
+     "nivel": "Colapsada"
+    }
+   ],
+   "forma_todo_bien": false,
+   "problemas": [
+    "WIP 3→4: las colillas no suben"
+   ],
+   "bajar_wip_tranqui": "15:05"
+  },
+  "C": {
+   "nombre": "El cerebro decide todo",
+   "regla": "Ganas por minuto = 4.2 × actividad real (normalizada) según las tareas abiertas, sin depender del estrés (4.2 = las ganas máximas de la fórmula actual).",
+   "linea": "this.urgenciaFumar += __GANAS_MAX * __ACTIVIDAD_REAL[Math.min(this.enCurso.length, 10)] * dt;",
+   "frase": "Las colillas siguen directo a un circuito real de la mosca (MaleCNS, simulado): limpiarse las antenas. El café es ilustrativo.",
+   "filas": [
+    {
+     "wip": 1,
+     "terminadas": 15.9,
+     "tiempo_min": 34,
+     "colillas": 0,
+     "cafes": 6,
+     "estres": 5,
+     "nivel": "Tranqui"
+    },
+    {
+     "wip": 2,
+     "terminadas": 17.9,
+     "tiempo_min": 60,
+     "colillas": 0,
+     "cafes": 5,
+     "estres": 10,
+     "nivel": "Tranqui"
+    },
+    {
+     "wip": 3,
+     "terminadas": 16.7,
+     "tiempo_min": 96,
+     "colillas": 0,
+     "cafes": 4,
+     "estres": 17,
+     "nivel": "Tranqui"
+    },
+    {
+     "wip": 4,
+     "terminadas": 15.7,
+     "tiempo_min": 139,
+     "colillas": 0,
+     "cafes": 3,
+     "estres": 30,
+     "nivel": "Ocupada"
+    },
+    {
+     "wip": 5,
+     "terminadas": 13,
+     "tiempo_min": 206,
+     "colillas": 7,
+     "cafes": 1,
+     "estres": 41,
+     "nivel": "Ocupada"
+    },
+    {
+     "wip": 6,
+     "terminadas": 10.6,
+     "tiempo_min": 300,
+     "colillas": 14,
+     "cafes": 0,
+     "estres": 54,
+     "nivel": "Estresada"
+    },
+    {
+     "wip": 7,
+     "terminadas": 9.9,
+     "tiempo_min": 388,
+     "colillas": 15,
+     "cafes": 0,
+     "estres": 64,
+     "nivel": "Estresada"
+    },
+    {
+     "wip": 8,
+     "terminadas": 9.2,
+     "tiempo_min": 469,
+     "colillas": 16,
+     "cafes": 0,
+     "estres": 79,
+     "nivel": "Colapsada"
+    },
+    {
+     "wip": 9,
+     "terminadas": 8.5,
+     "tiempo_min": 569,
+     "colillas": 16,
+     "cafes": 0,
+     "estres": 86,
+     "nivel": "Colapsada"
+    },
+    {
+     "wip": 10,
+     "terminadas": 7.9,
+     "tiempo_min": 671,
+     "colillas": 17,
+     "cafes": 0,
+     "estres": 93,
+     "nivel": "Colapsada"
+    }
+   ],
+   "forma_todo_bien": false,
+   "problemas": [
+    "WIP 3→4: las colillas no suben",
+    "WIP 8→9: las colillas no suben"
+   ],
+   "bajar_wip_tranqui": "15:20"
+  }
+ }
+}

@@ -85,7 +85,7 @@ for (const [clave, op] of Object.entries(OPCIONES)) {
     if (m) filas.push({ wip: +m[1], terminadas: numero(m[2]), tiempo_min: +m[3], colillas: numero(m[5]), cafes: numero(m[6]), estres: +m[7], nivel: m[8] });
   }
   const forma = texto.includes('Forma: todo bien');
-  const problemas = texto.includes('PROBLEMAS:') ? texto.split('PROBLEMAS:')[1].trim().split('\n').map((s) => s.replace(/^ - /, '')) : [];
+  const problemas = texto.includes('PROBLEMAS:') ? texto.split('PROBLEMAS:')[1].trim().split('\n').map((s) => s.replace(/^\s*-\s*/, '')) : [];
   const tranqui = (texto.match(/llega a "Tranqui": ~(\d\d:\d\d)/) || [])[1] ?? null;
   resultados.opciones[clave] = { ...op, filas, forma_todo_bien: forma, problemas, bajar_wip_tranqui: tranqui };
   console.log(`\n=== Opción ${clave}: ${op.nombre} ===`);
