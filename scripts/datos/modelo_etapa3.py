@@ -207,6 +207,91 @@ def _repeticiones(indptr, post, pesos, w_syn, estim, prob, n_pasos, semillas,
     return salida
 
 
+@njit(cache=True)
+def _una_con_corte(indptr, post, pesos, w_syn, estim, prob, n_pasos, pasos_estim, semilla,
+                   v0, v_rst, v_th, a_mbr, c_g, a_tau, pasos_rfc, pasos_dly, empujon, pasos_ventana):
+    # Igual que _una_repeticion, con dos diferencias: el estímulo dura sólo
+    # pasos_estim y los disparos se cuentan por ventanas de tiempo.
+    n = len(indptr) - 1
+    v = np.full(n, v0)
+    g = np.zeros(n)
+    libre_desde = np.full(n, -1, dtype=np.int64)
+    rfc = np.full(n, pasos_rfc, dtype=np.int64)
+    for j in range(len(estim)):
+        rfc[estim[j]] = 0
+    ranuras = pasos_dly + 1
+    disparos = np.empty((ranuras, n), dtype=np.int32)
+    n_disp = np.zeros(ranuras, dtype=np.int64)
+    cuenta = np.zeros((n_pasos // pasos_ventana, n), dtype=np.int16)
+    estado = np.empty(1, dtype=np.uint64)
+    estado[0] = np.uint64(semilla) * np.uint64(0x9E3779B97F4A7C15) + np.uint64(0x2545F4914F6CDD1D)
+    for _ in range(10):
+        _siguiente(estado)
+    for k in range(n_pasos):
+        r = k % ranuras
+        m = 0
+        for i in range(n):
+            if k >= libre_desde[i]:
+                gi = g[i]
+                if gi != 0.0 or v[i] != v0:
+                    v[i] = v0 + (v[i] - v0) * a_mbr + gi * c_g
+                    g[i] = gi * a_tau
+                if v[i] > v_th:
+                    disparos[r, m] = i
+                    m += 1
+        n_disp[r] = m
+        if k >= pasos_dly:
+            s = (k - pasos_dly) % ranuras
+            for j in range(n_disp[s]):
+                p = disparos[s, j]
+                for e in range(indptr[p], indptr[p + 1]):
+                    g[post[e]] += pesos[e] * w_syn
+        if k < pasos_estim:
+            for j in range(len(estim)):
+                if _siguiente(estado) < prob[j]:
+                    v[estim[j]] += empujon
+        for j in range(m):
+            i = disparos[r, j]
+            v[i] = v_rst
+            g[i] = 0.0
+            libre_desde[i] = k + rfc[i]
+            cuenta[k // pasos_ventana, i] += 1
+    return cuenta
+
+
+@njit(parallel=True, cache=True)
+def _repeticiones_con_corte(indptr, post, pesos, w_syn, estim, prob, n_pasos, pasos_estim, semillas,
+                            v0, v_rst, v_th, a_mbr, c_g, a_tau, pasos_rfc, pasos_dly, empujon, pasos_ventana):
+    n = len(indptr) - 1
+    salida = np.zeros((len(semillas), n_pasos // pasos_ventana, n), dtype=np.int16)
+    for r in prange(len(semillas)):
+        salida[r] = _una_con_corte(indptr, post, pesos, w_syn, estim, prob, n_pasos, pasos_estim, semillas[r],
+                                   v0, v_rst, v_th, a_mbr, c_g, a_tau, pasos_rfc, pasos_dly, empujon, pasos_ventana)
+    return salida
+
+
+def simular_con_corte(red, w_syn, estimulos, ms_estimulo, ms_ventana=100.0, n_rep=SHIU["n_run"],
+                      t_ms=SHIU["t_run"], semilla=SEMILLA):
+    """Como simular(), pero el estímulo se apaga a los ms_estimulo.
+
+    Devuelve los disparos de cada neurona por ventana de tiempo:
+    matriz n_rep × n_ventanas × n_neuronas.
+    """
+    p = SHIU
+    dt = p["dt"]
+    estim = np.concatenate([np.asarray(ix, dtype=np.int64) for ix, _ in estimulos])
+    prob = np.concatenate([np.full(len(ix), hz * dt / 1000.0) for ix, hz in estimulos])
+    a_mbr = np.exp(-dt / p["t_mbr"])
+    a_tau = np.exp(-dt / p["tau"])
+    c_g = p["tau"] / (p["tau"] - p["t_mbr"]) * (a_tau - a_mbr)
+    return _repeticiones_con_corte(red["indptr"], red["post"], red["pesos"], float(w_syn), estim, prob,
+                                   int(round(t_ms / dt)), int(round(ms_estimulo / dt)),
+                                   np.arange(semilla, semilla + n_rep, dtype=np.int64),
+                                   p["v0"], p["v_rst"], p["v_th"], a_mbr, c_g, a_tau,
+                                   int(round(p["t_rfc"] / dt)), int(round(p["t_dly"] / dt)),
+                                   float(w_syn) * p["f_poi"], int(round(ms_ventana / dt)))
+
+
 def simular(red, w_syn, estimulos, n_rep=SHIU["n_run"], t_ms=SHIU["t_run"], semilla=SEMILLA):
     """Corre n_rep repeticiones. estimulos = lista de (índices, Hz).
 

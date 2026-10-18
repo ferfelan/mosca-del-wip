@@ -140,6 +140,12 @@ para esto.
 | LB3b → MN9 | ⚠️ existe, indirecto | Sin conexión directa. Los caminos más fuertes (de 3 pasos): LB3b der → **ANXXX462b** / **Clavicle** / **FMIn** → **DNge062** / **Roundup** / **Roundtree** → MN9 izq. La MN9 izquierda recibe sobre todo del lado derecho, calza con "el azúcar enciende más la del lado contrario". No se buscó el plan B (pata) porque el camino sí apareció. |
 | Dandelion (AN13B002) | dato nuevo | Recibe mucho del azúcar (251 sinapsis desde LB3b der), pero **frena** (GABA) y no le habla a MN9. |
 
+**Conclusión de la verificación:**
+- **SAD093 = aBN1** (encontrada por sus conexiones).
+- **GNG380 no era aBN2.** aBN2 es el trío sin nombre de LB23.
+- **El azúcar de la trompita no es sólo LB3b: también LB3c** (Tastekin y
+  otros). En la 3.2 faltó LB3c; se suma en la 3.2b (ver al final).
+
 ## 4. Calibración
 
 Azúcar derecha (6 LB3b) a 100 Hz, MN9 izquierda, 30 repeticiones por peso:
@@ -304,3 +310,83 @@ Resultados completos en `scripts/datos/resultados_etapa3_2.json` y
 red de juguete de 2 neuronas: dispara justo sobre el umbral teórico, su techo
 es 454 Hz (teoría 454,5) y frenar deja todo en 0. Con la misma semilla da
 exactamente lo mismo.
+
+---
+
+# Etapa 3.2b · Más azúcar, prueba del eco y escalera para elegir el peso
+
+**Estado:** en curso (2026-10-18). El juego no se tocó.
+
+## Por qué (la causa probable que encontró Felipe)
+
+- En el código de Shiu (`example.ipynb`) se estimulan **21 sensores de
+  azúcar del hemisferio derecho** con el modelo de siempre (0,275 mV).
+  Comprobado: la lista `neu_sugar` tiene 21 y el texto dice "in the right
+  hemisphere". (Detalle: el artículo dice que estimularon el hemisferio
+  izquierdo; para nosotros no cambia nada.)
+- En la 3.2 usamos sólo 6 (LB3b). Con tan poca entrada, la calibración subió
+  el peso 2,5 veces y el cerebro entró en eco.
+- Según Tastekin y otros (bioRxiv 2025.08.25.671814), el azúcar de la
+  trompita también es **LB3c**: "Both LB3b and LB3c projection patterns
+  matched the Gr64f-GAL4 positive neurons" (Gr64f = receptor de dulce).
+  Comprobado en el texto. Ojo: lo deducen por la forma de los axones, no lo
+  midieron directamente.
+
+## LB3c en la tabla
+
+LB3c sí está: **23 sensores** (12 izq / 11 der), todos trazados,
+activadores (acetilcolina) y del tipo "labellar bristle gustatory".
+
+| Azúcar del lado derecho | Sensores | Sinapsis de salida |
+|-------------------------|---------:|-------------------:|
+| LB3b | 6 | ~2.200 |
+| LB3c | 11 | ~6.000 |
+| **Total 3.2b** | **17** | **~8.300** (3,7 veces lo de la 3.2) |
+| Shiu (FlyWire) | 21 | — |
+
+## Reglas de la 3.2b fijadas ANTES de ver los resultados
+
+Escritas y guardadas en git antes de correr (también arriba de todo en
+`scripts/datos/pruebas_etapa3b.py`). Lo que no se nombra aquí queda igual que
+en la 3.2 (modelo, 30 repeticiones, semilla, criterios de las pruebas 1–6,
+lados).
+
+**Azúcar:** LB3b + LB3c del lado derecho (17 sensores) en las pruebas 1, 4
+y 6 y en la calibración.
+
+**Dos pesos:** (a) el de Shiu, **0,275 mV**, sin ajustar nada; (b) el
+**calibrado** como Shiu: azúcar a 100 Hz → MN9 izquierda ≈ 80 % de su techo
+(misma regla de la 3.2; la rejilla ahora parte en 0,05).
+
+**Prueba 7 · eco.** Cada repetición dura 1 s: estímulo encendido de 0 a
+500 ms y apagado de 500 a 1.000 ms. Actividad = disparos por segundo de todo
+el cerebro, sin contar las neuronas estimuladas.
+- **Sin eco** = en las 30 repeticiones, desde 100 ms después de apagar
+  (600–1.000 ms), la actividad queda en **1 % o menos** de la que había en
+  los últimos 100 ms con estímulo (400–500 ms).
+- Se prueba con los 3 estímulos más fuertes que usaría el juego: azúcar der.
+  a 100 Hz, azúcar der. a 200 Hz (el tope de Shiu) y la antena izq. completa a
+  220 Hz (WIP 10). **Un peso tiene eco si lo tiene con cualquiera de los 3.**
+  La prueba 7 pasa ✅ sólo si no hay eco en ninguno.
+
+**Escalera para elegir el peso:**
+1. Si el calibrado (b) no tiene eco → se usa (b).
+2. Si (b) tiene eco y el de Shiu (a) no → se usa (a).
+3. Si los dos tienen eco → **el peso más alto SIN eco** según la prueba 7,
+   nunca "el que más se parezca al juego". Se revisa de 0,025 en 0,025
+   (0,275, 0,250 … 0,025) de arriba hacia abajo hasta el primero sin eco, y
+   se afina de 0,005 en 0,005 entre ese y el siguiente (de arriba hacia
+   abajo). Queda el más alto sin eco, y con él se corren las pruebas 1–6.
+
+**Qué usa el juego con el peso que quede** (en cualquiera de los 3 pasos;
+así leí tu escalera):
+- El cigarro usa el circuito real si la prueba 2 (limpieza) pasa ✅.
+- El café usa el circuito real sólo si la prueba 1 (azúcar → MN9) pasa ✅.
+  Si no, queda ilustrativo y se dice en pantalla.
+- Si la prueba 2 no pasa (⚠️ o ❌) → **opción 3** (el mapa sin simulación).
+- "Pasar" es ✅; ⚠️ no cuenta como pasar.
+
+**Tabla del WIP:** con el peso elegido, misma regla de la 3.2 (antena izq.
+JO-C + JO-E + JO-F, 20 → 220 Hz en línea recta), sin cambiarla. Si la
+escalera termina en la opción 3, la tabla igual se calcula, sólo como
+información. Queda en `docs/etapa3-2b-tabla-wip.json`.

@@ -127,11 +127,15 @@ def w_calibrado():
 
 
 def calibrar(red, circuito):
-    azucar = M.indices(red, circuito["sensores"]["LB3b_R"])
+    guardar("calibracion", calibrar_con(red, circuito, M.indices(red, circuito["sensores"]["LB3b_R"])))
+
+
+def calibrar_con(red, circuito, azucar, rejilla=REJILLA_W, nombre="LB3b derecha"):
+    """La calibración de la 3.2 con cualquier grupo de sensores de azúcar."""
     mn9 = {l: M.indices(red, circuito["medir"]["MN9"][l])[0] for l in "LR"}
     curva = []
-    print(f"Calibración: LB3b derecha a {HZ_AZUCAR:.0f} Hz, {M.SHIU['n_run']} repeticiones por peso")
-    for w in REJILLA_W:
+    print(f"Calibración: {nombre} ({len(azucar)}) a {HZ_AZUCAR:.0f} Hz, {M.SHIU['n_run']} repeticiones por peso")
+    for w in rejilla:
         t0 = time.time()
         tasas = M.simular(red, w, [(azucar, HZ_AZUCAR)])
         fila = {"w_syn": w, "MN9_L": round(float(tasas[:, mn9["L"]].mean()), 2),
@@ -152,15 +156,20 @@ def calibrar(red, circuito):
     logrado = float(tasas[:, mn9["L"]].mean())
     print(f"   Techo de la MN9 izq: {maximo:.1f} Hz → meta 80 % = {meta:.1f} Hz → w_syn = {w_cal} mV "
           f"(Shiu usó {M.SHIU['w_syn_shiu']}) → con ese peso MN9 izq = {logrado:.1f} Hz ({logrado / maximo:.0%} del techo)")
-    guardar("calibracion", {"curva": curva, "maximo_hz": maximo, "meta_hz": round(meta, 2), "w_syn": w_cal,
-                            "mn9_izq_con_w": round(logrado, 2), "porcentaje_del_maximo": round(logrado / maximo, 3),
-                            "w_syn_shiu": M.SHIU["w_syn_shiu"], "regla": "techo de la MN9 izq. en la rejilla; cruce del 80 %"})
+    return {"curva": curva, "maximo_hz": maximo, "meta_hz": round(meta, 2), "w_syn": w_cal,
+            "mn9_izq_con_w": round(logrado, 2), "porcentaje_del_maximo": round(logrado / maximo, 3),
+            "w_syn_shiu": M.SHIU["w_syn_shiu"], "regla": "techo de la MN9 izq. en la rejilla; cruce del 80 %"}
 
 
 def pruebas(red, circuito):
     w = w_calibrado()
+    res = seis_pruebas(red, circuito, w, M.indices(red, circuito["sensores"]["LB3b_R"]))
+    guardar("pruebas", {"w_syn": w, **res})
+
+
+def seis_pruebas(red, circuito, w, azucar):
+    """Las 6 pruebas de la 3.2 con un peso y un grupo de sensores de azúcar dados."""
     S = circuito["sensores"]
-    azucar = M.indices(red, S["LB3b_R"])
     antena_ce = M.indices(red, S["JO-C_L"] + S["JO-E_L"])
     antena_f = M.indices(red, S["JO-F_L"])
     print(f"Pruebas con w_syn = {w} mV")
@@ -254,14 +263,21 @@ def pruebas(red, circuito):
     v6 = OK if all(ambos) else (DUDA if any(ambos) or min(pasan.values()) >= 0.7 else NO)
     res["6"]["veredicto"] = v6
 
-    guardar("pruebas", {"w_syn": w, **res})
     print("\nResumen:")
     for k in "123456":
         print(f"   prueba {k}: {res[k]['veredicto']}")
+    return res
 
 
 def wip(red, circuito):
     w = w_calibrado()
+    filas, comparacion, detalle = tabla_wip(red, circuito, w)
+    guardar("wip", {"w_syn": w, "tabla": filas, "comparacion": comparacion, "detalle": detalle})
+    escribir_tabla_chica(TABLA_WIP, w, filas, comparacion, "Etapa 3.2")
+
+
+def tabla_wip(red, circuito, w):
+    """La tabla por WIP (regla fija 20–220 Hz) con un peso dado."""
     S = circuito["sensores"]
     antena = M.indices(red, S["JO-C_L"] + S["JO-E_L"] + S["JO-F_L"])
     print(f"Tabla por WIP con w_syn = {w} mV (antena izq JO-C+E+F, {len(antena)} sensores)")
@@ -287,19 +303,25 @@ def wip(red, circuito):
               f"  {f['MN9_L']:5.1f}/{f['MN9_R']:<5.1f}  {f['limpieza']:6.1f}")
     print(f" ¿sube con el WIP? {comparacion['sube_con_el_wip']} · ¿casi nada con WIP 1–3, como el juego? "
           f"{comparacion['casi_nada_con_wip_1_a_3']} · parecido con las colillas del juego (correlación): {comparacion['correlacion_con_colillas']}")
-    guardar("wip", {"w_syn": w, "tabla": filas, "comparacion": comparacion, "detalle": detalle})
-    TABLA_WIP.write_text(json.dumps({
-        "que_es": "Etapa 3.2: respuesta del circuito real de limpieza de antenas (MaleCNS v1.0) para cada WIP. "
+    return filas, comparacion, detalle
+
+
+def escribir_tabla_chica(ruta, w, filas, comparacion, etapa,
+                         modelo=None):
+    modelo = modelo or (f"LIF como Shiu et al. 2024; w_syn = {w} mV calibrado con azúcar (LB3b der.) "
+                        "a 100 Hz → MN9 izq. al 80 % de su máximo")
+    ruta.write_text(json.dumps({
+        "que_es": f"{etapa}: respuesta del circuito real de limpieza de antenas (MaleCNS v1.0) para cada WIP. "
                   "Todavía NO la usa el juego: cómo se traduce se decide en la Etapa 3.3.",
         "fuente": "Male CNS connectome v1.0 (FlyEM / HHMI Janelia, Cambridge, MRC LMB, Google Research), CC BY 4.0",
-        "modelo": f"LIF como Shiu et al. 2024; w_syn = {w} mV calibrado con azúcar (LB3b der.) a 100 Hz → MN9 izq. al 80 % de su máximo",
+        "modelo": modelo,
         "regla_wip": "antena izquierda (JO-C + JO-E + JO-F) a 20 + (WIP − 1) × 200/9 Hz (20 → 220 Hz), fijada antes de ver resultados",
         "unidades": "Hz (disparos por segundo), promedio de 30 repeticiones de 1 s",
         "columnas": "aDN1 = DNg62, aDN2 = DNge078, MN9 = sacar la trompita; _L izquierda, _R derecha; limpieza = promedio de las 4 aDN",
         "tabla": filas,
         "comparacion_con_el_juego": comparacion,
     }, indent=1, ensure_ascii=False) + "\n")
-    print(f" Tabla chica guardada en {TABLA_WIP.relative_to(RAIZ)}")
+    print(f" Tabla chica guardada en {ruta.relative_to(RAIZ)}")
 
 
 def extra(red, circuito):

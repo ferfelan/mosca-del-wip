@@ -197,7 +197,9 @@ def main():
         print(f"   no se pudo consultar ({e})")
 
     circuito = {
-        "sensores": {"LB3b_R": C["LB3b"]["R"], "LB3b_L": C["LB3b"]["L"], **JO},
+        # LB3c se sumó en la 3.2b (Tastekin: LB3b y LB3c coinciden con Gr64f, dulce)
+        "sensores": {"LB3b_R": C["LB3b"]["R"], "LB3b_L": C["LB3b"]["L"],
+                     "LB3c_R": ids_tipo("LB3c", "R"), "LB3c_L": ids_tipo("LB3c", "L"), **JO},
         "medir": {
             "MN9": {l: ids_tipo("MN9", l) for l in "LR"},
             "aDN1 (DNg62)": {l: ids_tipo("DNg62", l) for l in "LR"},
