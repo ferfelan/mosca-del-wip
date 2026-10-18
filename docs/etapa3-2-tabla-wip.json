@@ -1,0 +1,125 @@
+{
+ "que_es": "Etapa 3.2: respuesta del circuito real de limpieza de antenas (MaleCNS v1.0) para cada WIP. Todavía NO la usa el juego: cómo se traduce se decide en la Etapa 3.3.",
+ "fuente": "Male CNS connectome v1.0 (FlyEM / HHMI Janelia, Cambridge, MRC LMB, Google Research), CC BY 4.0",
+ "modelo": "LIF como Shiu et al. 2024; w_syn = 0.692 mV calibrado con azúcar (LB3b der.) a 100 Hz → MN9 izq. al 80 % de su máximo",
+ "regla_wip": "antena izquierda (JO-C + JO-E + JO-F) a 20 + (WIP − 1) × 200/9 Hz (20 → 220 Hz), fijada antes de ver resultados",
+ "unidades": "Hz (disparos por segundo), promedio de 30 repeticiones de 1 s",
+ "columnas": "aDN1 = DNg62, aDN2 = DNge078, MN9 = sacar la trompita; _L izquierda, _R derecha; limpieza = promedio de las 4 aDN",
+ "tabla": [
+  {
+   "wip": 1,
+   "hz_antena": 20.0,
+   "aDN1_L": 1.83,
+   "aDN1_R": 3.67,
+   "aDN2_L": 1.77,
+   "aDN2_R": 2.67,
+   "MN9_L": 114.57,
+   "MN9_R": 53.93,
+   "limpieza": 2.48
+  },
+  {
+   "wip": 2,
+   "hz_antena": 42.2,
+   "aDN1_L": 2.3,
+   "aDN1_R": 4.17,
+   "aDN2_L": 1.73,
+   "aDN2_R": 3.43,
+   "MN9_L": 114.43,
+   "MN9_R": 54.6,
+   "limpieza": 2.91
+  },
+  {
+   "wip": 3,
+   "hz_antena": 64.4,
+   "aDN1_L": 2.73,
+   "aDN1_R": 4.17,
+   "aDN2_L": 1.73,
+   "aDN2_R": 4.33,
+   "MN9_L": 121.1,
+   "MN9_R": 59.47,
+   "limpieza": 3.24
+  },
+  {
+   "wip": 4,
+   "hz_antena": 86.7,
+   "aDN1_L": 2.8,
+   "aDN1_R": 4.67,
+   "aDN2_L": 1.9,
+   "aDN2_R": 5.53,
+   "MN9_L": 103.17,
+   "MN9_R": 52.27,
+   "limpieza": 3.72
+  },
+  {
+   "wip": 5,
+   "hz_antena": 108.9,
+   "aDN1_L": 2.77,
+   "aDN1_R": 5.27,
+   "aDN2_L": 2.17,
+   "aDN2_R": 7.07,
+   "MN9_L": 96.77,
+   "MN9_R": 49.37,
+   "limpieza": 4.32
+  },
+  {
+   "wip": 6,
+   "hz_antena": 131.1,
+   "aDN1_L": 2.67,
+   "aDN1_R": 7.6,
+   "aDN2_L": 2.67,
+   "aDN2_R": 9.97,
+   "MN9_L": 65.0,
+   "MN9_R": 38.43,
+   "limpieza": 5.73
+  },
+  {
+   "wip": 7,
+   "hz_antena": 153.3,
+   "aDN1_L": 2.4,
+   "aDN1_R": 6.43,
+   "aDN2_L": 1.6,
+   "aDN2_R": 8.23,
+   "MN9_L": 61.33,
+   "MN9_R": 37.87,
+   "limpieza": 4.67
+  },
+  {
+   "wip": 8,
+   "hz_antena": 175.6,
+   "aDN1_L": 2.33,
+   "aDN1_R": 7.77,
+   "aDN2_L": 1.67,
+   "aDN2_R": 10.9,
+   "MN9_L": 53.17,
+   "MN9_R": 34.93,
+   "limpieza": 5.67
+  },
+  {
+   "wip": 9,
+   "hz_antena": 197.8,
+   "aDN1_L": 2.17,
+   "aDN1_R": 13.47,
+   "aDN2_L": 4.33,
+   "aDN2_R": 17.5,
+   "MN9_L": 39.67,
+   "MN9_R": 29.83,
+   "limpieza": 9.37
+  },
+  {
+   "wip": 10,
+   "hz_antena": 220.0,
+   "aDN1_L": 2.1,
+   "aDN1_R": 12.4,
+   "aDN2_L": 2.37,
+   "aDN2_R": 16.83,
+   "MN9_L": 25.57,
+   "MN9_R": 25.23,
+   "limpieza": 8.43
+  }
+ ],
+ "comparacion_con_el_juego": {
+  "sube_con_el_wip": "❌",
+  "casi_nada_con_wip_1_a_3": "❌",
+  "correlacion_con_colillas": 0.926
+ }
+}

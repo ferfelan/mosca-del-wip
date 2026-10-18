@@ -12,3 +12,6 @@ datos-crudos/
 
 # Archivos grandes de MaleCNS (conexiones 508 MB, neurotransmisores 43 MB): nunca a git
 *.feather
+
+# Python y numba guardan aquí archivos temporales
+__pycache__/
