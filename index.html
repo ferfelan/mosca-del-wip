@@ -151,7 +151,6 @@
         <div>
           <h2>Cerebro en vivo</h2>
           <p class="cerebro-sub" title="Posiciones reales del conectoma MaleCNS. Las luces son la actividad simulada del cableado real (modelo de Shiu y otros 2024, peso 0,090 mV), precalculada para cada cantidad de tareas abiertas.">Neuronas reales<span class="solo-exhibicion-inline"> de la mosca · Male CNS v1.0 · cerebro + cordón nervioso</span></p>
-          <p class="cerebro-aviso-ex">Las luces son actividad simulada del cableado real (MaleCNS). El cigarro es un disfraz de la limpieza de antenas, pero cuándo fuma lo deciden reglas basadas en estudios de estrés. El café es ilustrativo.</p>
         </div>
         <div class="cerebro-acciones solo-control">
           <button id="btn-exhibicion" class="boton-exhibicion" type="button" title="Vista exhibición: pantalla completa para mostrar (tecla E)">
@@ -165,52 +164,90 @@
       </header>
       <div class="cerebro-cuerpo">
         <div class="cerebro-lienzo">
-          <canvas id="lienzo-cerebro" aria-label="Cerebro de la mosca: arrastra para girarlo, rueda o pellizco para acercar, doble clic para centrar"></canvas>
-          <div class="cerebro-etiquetas" id="cerebro-etiquetas" aria-hidden="true"></div>
-          <button id="btn-centrar-cerebro" class="boton-centrar" type="button" title="Volver a la vista inicial y a girar solo (también doble clic en el cerebro)">Centrar</button>
-        </div>
-        <div class="cerebro-dia">
-          <div class="cerebro-dia-cabecera">
-            <span class="etiqueta-oscura">Actividad del día</span>
-            <span class="cerebro-dia-pico" id="cerebro-dia-pico">empieza a las 09:00</span>
-          </div>
-          <div class="cerebro-dia-grafico">
-            <canvas id="lienzo-dia" role="img" aria-label="Actividad del cerebro durante el día"></canvas>
-            <div class="cerebro-dia-tooltip" id="cerebro-dia-tooltip" hidden></div>
+          <canvas id="lienzo-cerebro" aria-label="Cerebro de la mosca: gira solo; un clic lo detiene y otro lo hace girar; detenido, arrastra para girarlo; rueda o pellizco para acercar"></canvas>
+          <div class="cerebro-botones">
+            <button id="btn-girar-cerebro" class="boton-centrar" type="button" aria-pressed="false" title="Detener el giro del cerebro (también con un clic en el cerebro)">
+              <svg class="icono-detener" viewBox="0 0 16 16" width="10" height="10" aria-hidden="true"><path d="M5 3.5v9M11 3.5v9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+              <svg class="icono-girar" viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.6-3.7M13 2.5v3h-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span id="btn-girar-texto">Detener</span>
+            </button>
+            <button id="btn-centrar-cerebro" class="boton-centrar" type="button" title="Volver a la vista inicial y a girar solo (también doble clic en el cerebro)">Centrar</button>
           </div>
         </div>
         <div class="cerebro-lado">
           <div class="cerebro-contadores">
+            <div class="contador contador-limpieza" title="Qué tan encendido está el circuito que manda a limpiar las antenas (aDN1 y aDN2), comparado con su máximo en el juego: 10 tareas en curso = 100%.">
+              <span class="contador-cabeza">
+                <span class="contador-label">Limpieza de antenas</span>
+                <span class="contador-valor" id="c-limpieza">0%</span>
+              </span>
+              <span class="limpieza-barra" aria-hidden="true"><span id="c-limpieza-barra"></span></span>
+            </div>
             <div class="contador">
               <span class="contador-valor" id="c-activas">0</span>
               <span class="contador-label">neuronas activas</span>
-            </div>
-            <div class="contador">
-              <span class="contador-valor" id="c-nivel">0%</span>
-              <span class="contador-label">del cerebro</span>
             </div>
             <div class="contador">
               <span class="contador-valor" id="c-estado">Trabaja</span>
               <span class="contador-label">estado</span>
             </div>
           </div>
-          <ul class="cerebro-grupos" id="cerebro-grupos"></ul>
+          <p class="cerebro-curioso" id="c-curioso"></p>
+          <div class="cerebro-zonas">
+            <span class="etiqueta-oscura">De dónde viene la actividad</span>
+            <ul class="cerebro-grupos" id="cerebro-grupos"></ul>
+          </div>
+        </div>
+        <div class="cerebro-dia">
+          <div class="cerebro-dia-cabecera">
+            <span class="etiqueta-oscura" title="La línea muestra la Limpieza de antenas durante el día (0 a 100%)">Actividad del día · limpieza</span>
+            <span class="cerebro-dia-pico" id="cerebro-dia-pico">empieza a las 09:00</span>
+          </div>
+          <div class="cerebro-dia-grafico">
+            <canvas id="lienzo-dia" role="img" aria-label="Limpieza de antenas durante el día"></canvas>
+            <div class="cerebro-dia-tooltip" id="cerebro-dia-tooltip" hidden></div>
+          </div>
         </div>
         <div class="cerebro-pie">
+          <ol class="cerebro-cadena" id="cerebro-cadena" aria-label="Hasta dónde llega la señal">
+            <li data-paso="tareas"><span class="paso-nombre">Tareas</span><span class="paso-detalle"></span></li>
+            <li data-paso="antena"><span class="paso-nombre">Antena</span><span class="paso-detalle"></span></li>
+            <li data-paso="relevo"><span class="paso-nombre">Relevo</span><span class="paso-detalle"></span></li>
+            <li data-paso="limpieza"><span class="paso-nombre">Limpieza</span><span class="paso-detalle"></span></li>
+          </ol>
           <p class="cerebro-nota" id="cerebro-lectura" aria-live="polite">Cada punto es una neurona real de la mosca.</p>
+          <p class="cerebro-detalle" id="cerebro-detalle"></p>
           <ul class="cerebro-leyenda" aria-label="Cómo leer el cerebro">
-            <li><span class="ley-punto ley-gris" aria-hidden="true"></span><span>gris = en reposo <span class="ley-detalle">(posición real)</span></span></li>
-            <li><span class="ley-punto ley-color" aria-hidden="true"></span><span>color = dispara <span class="ley-detalle">(más brillo = más rápido)</span></span></li>
-            <li><span class="ley-punto ley-anillo" aria-hidden="true"></span><span>anillo = circuito de limpieza</span></li>
-            <li><span class="ley-linea" aria-hidden="true"></span><span>recorrido real <span class="ley-detalle">(su velocidad es sólo para que se vea)</span></span></li>
+            <li><span class="ley-punto ley-gris" aria-hidden="true"></span>reposo</li>
+            <li><span class="ley-punto ley-color" aria-hidden="true"></span>dispara</li>
+            <li><span class="ley-punto ley-anillo" aria-hidden="true"></span>circuito</li>
+            <li><span class="ley-linea" aria-hidden="true"></span>recorrido</li>
           </ul>
-          <p class="cerebro-aviso">Luces: actividad simulada del cableado real (MaleCNS), en posiciones reales; el recorrido es real y su velocidad es sólo para que se vea. El cigarro disfraza la limpieza de antenas; cuándo fuma lo deciden reglas basadas en estudios. El café es ilustrativo.</p>
+          <p class="cerebro-aviso">
+            Luces simuladas del cableado real. <span class="sin-corte">El cigarro es un disfraz.<button id="btn-info-cerebro" class="boton-info" type="button" aria-expanded="false" aria-controls="cerebro-info" title="Qué es real y qué es juego en el cerebro">i</button></span>
+          </p>
           <p class="cerebro-credito" id="cerebro-credito"><span class="solo-control-inline">Datos: Male CNS v1.0 · CC BY 4.0</span><span class="credito-largo">Datos: Male CNS v1.0 (Janelia, Cambridge, MRC LMB y Google) · CC BY 4.0</span></p>
         </div>
       </div>
     </section>
 
     <div id="cerebro-ficha" class="cerebro-ficha" role="tooltip" hidden></div>
+
+    <div id="cerebro-info" class="cerebro-info" role="dialog" aria-labelledby="cerebro-info-titulo" hidden>
+      <div class="cerebro-info-cabeza">
+        <strong id="cerebro-info-titulo">Qué es real y qué es juego</strong>
+        <button id="btn-cerrar-info" class="boton-info-cerrar" type="button" aria-label="Cerrar">×</button>
+      </div>
+      <p><b>Las neuronas son reales.</b> Cada punto es una neurona de la mosca en su posición real, y las líneas del recorrido son conexiones reales (Male CNS v1.0).</p>
+      <p><b>Las luces son simuladas.</b> Con ese cableado real, un modelo calcula cuánto dispara cada neurona (modelo de Shiu y otros 2024, peso 0,090 mV). Se calculó una vez para cada cantidad de tareas en curso: el juego sólo lee la tabla.</p>
+      <p><b>La cadena.</b> Las tareas en curso mueven la <b>antena</b> (sensores JO-C, JO-E y JO-F, de 20 a 220 Hz según las tareas). El <b>relevo</b> es aBN1 (SAD093). La <b>limpieza</b> son aDN1 (DNg62) y aDN2 (DNge078): mandan a las patas a limpiar las antenas.</p>
+      <p><b>Limpieza de antenas, de 0 a 100%.</b> Cuánto disparan aDN1 y aDN2, comparado con su máximo en el juego: 10 tareas en curso = 100% (<span data-info="limpieza-max">78</span> Hz en promedio).</p>
+      <p><b>El cigarro es un disfraz</b> de la limpieza de antenas. Pero cuándo fuma lo deciden las reglas del juego, basadas en estudios de estrés, no estas luces.</p>
+      <p><b>El café es ilustrativo.</b> En la simulación el azúcar enciende sus sensores, pero la señal no llega a la trompita (MN9 queda en 0 Hz).</p>
+      <p><b>El recorrido.</b> El pulso que viaja por las líneas va lento sólo para que se vea; una señal real tarda milésimas de segundo.</p>
+      <p><b>Dato curioso.</b> Aun con 10 tareas se encienden <span data-info="activas-max">1.398</span> de <span data-info="simuladas">164.587</span> neuronas simuladas (<span data-info="pct-max">0,8%</span>): la señal no prende todo el cerebro, viaja por un camino.</p>
+      <p class="cerebro-info-credito">Datos: Male CNS v1.0 (FlyEM / HHMI Janelia, Univ. de Cambridge, MRC LMB y Google Research), licencia CC BY 4.0.</p>
+    </div>
 
     <button id="btn-mostrar-cerebro" type="button" title="Mostrar el cerebro (tecla B)" aria-controls="cerebro">
       <span class="icono-cerebro" aria-hidden="true">

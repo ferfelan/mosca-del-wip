@@ -1,15 +1,20 @@
-// Mini gráfico "Actividad del día": cuántas neuronas dispararon en la
-// simulación del cableado real desde las 09:00 hasta ahora (arriba del todo =
-// lo más que se enciende en el juego). Una sola serie (línea de 2 px + relleno suave), un
-// punto en "ahora", eje con 09:00 · 13:30 · 18:00 y, al pasar el mouse, una
-// línea vertical con la hora, la actividad y el WIP de ese momento.
+// Mini gráfico "Actividad del día": la Limpieza de antenas (qué tan encendidas
+// están aDN1 y aDN2 en la simulación del cableado real, de 0 a 100 %, con
+// 10 tareas en curso = 100 %) desde las 09:00 hasta ahora. Así se ve cuándo
+// se encendió. Una sola serie (línea de 2 px + relleno suave), un punto en
+// "ahora", eje con 09:00 · 13:30 · 18:00 y, al pasar el mouse, una línea
+// vertical con la hora, la limpieza y el WIP de ese momento. Si la limpieza
+// no se enciende en todo el día, lo dice en palabras.
 
 const COLOR_LINEA = '#6a86ec'; // validado contra el fondo oscuro del panel
 const SUPERFICIE = '#0c1122';
 const TINTA_TENUE = '#6e778d';
+const TINTA_SUAVE = '#9aa3b8';
 const LINEA_GUIA = 'rgba(255, 255, 255, 0.08)';
 const MUESTRAS = 108; // una cada 5 minutos simulados (09:00 → 18:00)
+const ENCENDIDA = 0.01; // desde el 1 % se cuenta como encendida
 const numero = new Intl.NumberFormat('es-CL');
+const pct = (x) => `${Math.round(x * 100)}%`;
 
 function horaDeFraccion(f) {
   const min = 9 * 60 + Math.round(f * 540);
@@ -18,10 +23,11 @@ function horaDeFraccion(f) {
 
 export function crearGraficoDia({ lienzo, tooltip, elPico }) {
   const ctx = lienzo.getContext('2d');
-  let datos = new Array(MUESTRAS).fill(null); // { nivel, wip, activas }
+  let datos = new Array(MUESTRAS).fill(null); // { limpieza, wip, tareas, activas }
   let ultimaFraccion = -1;
   let hover = null;
   let sucio = true;
+  let diaTerminado = false;
 
   function reiniciar() {
     datos = new Array(MUESTRAS).fill(null);
@@ -29,13 +35,12 @@ export function crearGraficoDia({ lienzo, tooltip, elPico }) {
     sucio = true;
   }
 
-  // Guarda la actividad del momento. Si el reloj volvió atrás, es otro día.
-  // nivel: de 0 a 1 (alto del gráfico); activas: neuronas que disparan.
-  function registrar(fraccion, nivel, wip, activas) {
+  // Guarda la limpieza del momento (0 a 1). Si el reloj volvió atrás, es otro día.
+  function registrar(fraccion, dato) {
     if (fraccion + 1e-6 < ultimaFraccion) reiniciar();
     ultimaFraccion = fraccion;
     const i = Math.min(MUESTRAS - 1, Math.floor(fraccion * MUESTRAS));
-    datos[i] = { nivel, wip, activas };
+    datos[i] = dato;
     sucio = true;
   }
 
@@ -43,13 +48,15 @@ export function crearGraficoDia({ lienzo, tooltip, elPico }) {
     let pico = null;
     let suma = 0;
     let n = 0;
+    let primera = null; // primera vez que se encendió
     datos.forEach((d, i) => {
       if (!d) return;
-      suma += d.activas;
+      suma += d.limpieza;
       n++;
-      if (!pico || d.activas > pico.activas) pico = { ...d, i };
+      if (!pico || d.limpieza > pico.limpieza) pico = { ...d, i };
+      if (primera === null && d.limpieza >= ENCENDIDA) primera = i;
     });
-    return { pico, promedio: n ? suma / n : 0, n };
+    return { pico, promedio: n ? suma / n : 0, n, primera };
   }
 
   function geometria() {
@@ -72,7 +79,11 @@ export function crearGraficoDia({ lienzo, tooltip, elPico }) {
     };
   }
 
-  function dibujar() {
+  function dibujar(terminado = diaTerminado) {
+    if (terminado !== diaTerminado) {
+      diaTerminado = terminado;
+      sucio = true;
+    }
     if (!sucio) return;
     sucio = false;
     const g = geometria();
@@ -82,17 +93,17 @@ export function crearGraficoDia({ lienzo, tooltip, elPico }) {
     const xDe = (i) => g.x0 + ((i + 0.5) / MUESTRAS) * (g.x1 - g.x0);
     const yDe = (v) => g.y1 - Math.min(1, Math.max(0, v)) * (g.y1 - g.y0);
 
-    // Línea base (hairline) y guía del 50 %
+    // Línea base (hairline), guía del 50 % y del 100 % (lo más que se enciende en el juego)
     ctx.lineWidth = 1;
     ctx.strokeStyle = LINEA_GUIA;
     ctx.beginPath();
-    ctx.moveTo(g.x0, Math.round(g.y1) + 0.5);
-    ctx.lineTo(g.x1, Math.round(g.y1) + 0.5);
-    ctx.moveTo(g.x0, Math.round(yDe(0.5)) + 0.5);
-    ctx.lineTo(g.x1, Math.round(yDe(0.5)) + 0.5);
+    for (const v of [0, 0.5, 1]) {
+      ctx.moveTo(g.x0, Math.round(yDe(v)) + 0.5);
+      ctx.lineTo(g.x1, Math.round(yDe(v)) + 0.5);
+    }
     ctx.stroke();
 
-    // Eje: 09:00 · 13:30 · 18:00 (texto tenue)
+    // Eje: 09:00 · 13:30 · 18:00 (texto tenue) y "100%" arriba a la derecha
     ctx.fillStyle = TINTA_TENUE;
     ctx.font = '10px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
     ctx.textBaseline = 'bottom';
@@ -102,12 +113,14 @@ export function crearGraficoDia({ lienzo, tooltip, elPico }) {
     ctx.fillText('13:30', (g.x0 + g.x1) / 2, g.h);
     ctx.textAlign = 'right';
     ctx.fillText('18:00', g.x1, g.h);
+    ctx.textBaseline = 'top';
+    ctx.fillText('100%', g.x1, Math.round(yDe(1)) + 2);
 
     // Tramos con datos (la línea se corta si falta un pedazo)
     const tramos = [];
     let actual = [];
     datos.forEach((d, i) => {
-      if (d) actual.push([xDe(i), yDe(d.nivel)]);
+      if (d) actual.push([xDe(i), yDe(d.limpieza)]);
       else if (actual.length) {
         tramos.push(actual);
         actual = [];
@@ -135,6 +148,17 @@ export function crearGraficoDia({ lienzo, tooltip, elPico }) {
       ctx.stroke();
     });
 
+    // Si la limpieza sigue en 0, se dice en palabras (sobre la línea apagada)
+    const r = resumen();
+    if (r.n && r.primera === null) {
+      ctx.fillStyle = TINTA_SUAVE;
+      ctx.font = '11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      const texto = diaTerminado ? 'La limpieza no se encendió en todo el día (0%)' : 'La limpieza sigue apagada (0%)';
+      ctx.fillText(texto, (g.x0 + g.x1) / 2, (g.y0 + g.y1) / 2);
+    }
+
     // Punto de "ahora" con anillo del color del fondo
     const ultimo = tramos.length ? tramos[tramos.length - 1].at(-1) : null;
     if (ultimo) {
@@ -157,7 +181,7 @@ export function crearGraficoDia({ lienzo, tooltip, elPico }) {
       ctx.strokeStyle = 'rgba(233, 237, 247, 0.45)';
       ctx.stroke();
       ctx.beginPath();
-      ctx.arc(xDe(hover), yDe(datos[hover].nivel), 4, 0, Math.PI * 2);
+      ctx.arc(xDe(hover), yDe(datos[hover].limpieza), 4, 0, Math.PI * 2);
       ctx.fillStyle = COLOR_LINEA;
       ctx.fill();
       ctx.lineWidth = 2;
@@ -166,16 +190,18 @@ export function crearGraficoDia({ lienzo, tooltip, elPico }) {
     }
 
     // Resumen: pico y promedio (texto en tinta normal, no del color de la línea)
-    const r = resumen();
     if (r.pico) {
       const hora = horaDeFraccion(r.pico.i / MUESTRAS);
-      const pico = numero.format(r.pico.activas);
-      const prom = numero.format(Math.round(r.promedio));
-      elPico.textContent = `pico ${pico} (${hora}) · prom. ${prom}`;
-      elPico.title = `Neuronas que disparan en la simulación: pico de ${pico} a las ${hora}; promedio del día ${prom}.`;
-      lienzo.setAttribute('aria-label', `Neuronas que disparan durante el día: pico de ${pico} a las ${hora}, promedio ${prom}.`);
+      elPico.textContent = `pico ${pct(r.pico.limpieza)} · prom. ${pct(r.promedio)}`;
+      elPico.title = r.primera === null
+        ? 'La limpieza de antenas no se ha encendido: con 1 a 3 tareas en curso la señal llega al relevo, pero no a la limpieza.'
+        : `Limpieza de antenas: pico de ${pct(r.pico.limpieza)} a las ${hora}; promedio del día ${pct(r.promedio)}. Se encendió por primera vez a las ${horaDeFraccion(r.primera / MUESTRAS)}.`;
+      lienzo.setAttribute('aria-label', r.primera === null
+        ? 'Limpieza de antenas durante el día: apagada (0%).'
+        : `Limpieza de antenas durante el día: pico de ${pct(r.pico.limpieza)} a las ${hora}, promedio ${pct(r.promedio)}.`);
     } else {
       elPico.textContent = 'empieza a las 09:00';
+      elPico.title = '';
     }
   }
 
@@ -205,7 +231,9 @@ export function crearGraficoDia({ lienzo, tooltip, elPico }) {
       return;
     }
     const dato = datos[mejor];
-    tooltip.innerHTML = `<strong>${horaDeFraccion(mejor / MUESTRAS)}</strong> · ${numero.format(dato.activas)} neuronas disparan · WIP ${dato.wip}`;
+    // Si estaba terminando lo empezado (más tareas abiertas que el WIP), se dice
+    const tareas = dato.tareas !== dato.wip && dato.tareas > 0 ? `${dato.tareas} en curso (WIP ${dato.wip})` : `WIP ${dato.wip}`;
+    tooltip.innerHTML = `<strong>${horaDeFraccion(mejor / MUESTRAS)}</strong> · limpieza ${pct(dato.limpieza)} · ${tareas} · ${numero.format(dato.activas)} neuronas`;
     tooltip.hidden = false;
     const xPunto = g.x0 + ((mejor + 0.5) / MUESTRAS) * (g.x1 - g.x0);
     const ancho = tooltip.offsetWidth;

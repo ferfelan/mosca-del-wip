@@ -653,6 +653,11 @@ window.addEventListener('keydown', (e) => {
   if (e.target instanceof HTMLInputElement && e.key !== 'Escape') {
     if (e.target.type !== 'range') return;
   }
+  // Con la explicación ⓘ abierta, Esc sólo la cierra (no cambia de vista)
+  if (e.key === 'Escape' && !elInfo.hidden) {
+    alternarInfo(false);
+    return;
+  }
   if (e.key === 'e' || e.key === 'E') cambiarVista();
   if (e.key === 'b' || e.key === 'B') alternarCerebro();
   if (e.key === 'c' || e.key === 'C') alternarControles();
@@ -680,7 +685,9 @@ window.addEventListener('mousemove', () => {
 // ---------- Cerebro ----------
 let cerebro = null;
 const elActivas = document.getElementById('c-activas');
-const elNivel = document.getElementById('c-nivel');
+const elLimpieza = document.getElementById('c-limpieza');
+const elLimpiezaBarra = document.getElementById('c-limpieza-barra');
+const elCurioso = document.getElementById('c-curioso');
 const elEstado = document.getElementById('c-estado');
 // Lo que está haciendo la mosca, en palabras (tarjeta de la exhibición)
 const QUE_HACE = {
@@ -702,22 +709,28 @@ const formatoHz = new Intl.NumberFormat('es-CL', { maximumFractionDigits: 0 });
 cargarDatosCerebro()
   .then(async (datos) => {
     const real = await cargarActividadReal(datos);
-    cerebro = crearCerebro(document.getElementById('lienzo-cerebro'), datos, real, {
-      etiquetas: document.getElementById('cerebro-etiquetas'),
-    });
+    cerebro = crearCerebro(document.getElementById('lienzo-cerebro'), datos, real);
     const { info } = datos;
     nombresZona = Object.fromEntries(info.grupos.map((g) => [g.id, g.nombre]));
     datos.info.grupos.forEach((g) => {
       const li = document.createElement('li');
       li.className = 'grupo';
       li.style.setProperty('--c', GRUPOS_VISUALES[g.id].color);
-      li.innerHTML = `<span class="grupo-nombre"><span class="grupo-punto"></span>${g.nombre}</span><span class="grupo-valor">0%</span><span class="grupo-barra"><span></span></span><span class="grupo-detalle">${g.detalle}</span>`;
+      li.innerHTML = `<span class="grupo-nombre"><span class="grupo-punto"></span>${g.nombre}</span><span class="grupo-valor">–</span><span class="grupo-barra"><span></span></span><span class="grupo-detalle">${g.detalle}</span>`;
       elGrupos.appendChild(li);
       filasGrupo[g.id] = { li, valor: li.querySelector('.grupo-valor'), barra: li.querySelector('.grupo-barra span') };
     });
-    const simuladas = formato.format(real.meta.neuronas_simuladas);
+    const { meta } = real;
+    const simuladas = formato.format(meta.neuronas_simuladas);
     document.getElementById('chip-datos').textContent =
       `Male CNS v1.0 · ${simuladas} neuronas simuladas · se dibujan ${formato.format(real.n)} (todas las que se encienden)`;
+    // Los números de la explicación (ⓘ) salen de los mismos datos
+    const maxima = meta.situaciones.antena_10;
+    const info$ = (clave, texto) => document.querySelectorAll(`[data-info="${clave}"]`).forEach((el) => (el.textContent = texto));
+    info$('limpieza-max', formatoHz.format(maxima.limpieza));
+    info$('activas-max', formato.format(maxima.activas));
+    info$('simuladas', simuladas);
+    info$('pct-max', `${formatoPct.format((maxima.activas / meta.neuronas_simuladas) * 100)}%`);
   })
   .catch((err) => console.error('No se pudo cargar el cerebro', err));
 
@@ -728,7 +741,58 @@ const graficoDia = crearGraficoDia({
   elPico: document.getElementById('cerebro-dia-pico'),
 });
 // Botón "Centrar": vuelve a la vista inicial y a girar solo
-document.getElementById('btn-centrar-cerebro').addEventListener('click', () => cerebro?.centrar());
+document.getElementById('btn-centrar-cerebro').addEventListener('click', () => {
+  cerebro?.centrar();
+  soltarFicha();
+});
+// Botón "Detener / Girar" (lo mismo que un clic en el cerebro). Detener el
+// giro no pausa el juego.
+const elBtnGirar = document.getElementById('btn-girar-cerebro');
+const elBtnGirarTexto = document.getElementById('btn-girar-texto');
+elBtnGirar.addEventListener('click', () => {
+  if (!cerebro) return;
+  if (cerebro.girando()) cerebro.detener();
+  else {
+    cerebro.girar();
+    soltarFicha();
+  }
+});
+let giroPintado = null;
+function pintarBotonGiro() {
+  const girando = cerebro.girando();
+  if (girando === giroPintado) return;
+  giroPintado = girando;
+  elBtnGirar.classList.toggle('detenido', !girando);
+  elBtnGirar.setAttribute('aria-pressed', String(!girando));
+  elBtnGirarTexto.textContent = girando ? 'Detener' : 'Girar';
+  elBtnGirar.title = girando
+    ? 'Detener el giro del cerebro (también con un clic en el cerebro)'
+    : 'Volver a girar el cerebro (también con un clic en el cerebro)';
+}
+
+// ---------- ⓘ: qué es real y qué es juego en el cerebro ----------
+const elInfo = document.getElementById('cerebro-info');
+const elBtnInfo = document.getElementById('btn-info-cerebro');
+function alternarInfo(abrir = elInfo.hidden) {
+  elInfo.hidden = !abrir;
+  elBtnInfo.setAttribute('aria-expanded', String(abrir));
+  if (!abrir) return;
+  // Al lado del botón, sin salirse de la pantalla
+  const r = elBtnInfo.getBoundingClientRect();
+  const w = elInfo.offsetWidth;
+  const h = elInfo.offsetHeight;
+  const izq = r.right + 12 + w < window.innerWidth - 8 ? r.right + 12 : r.left - 12 - w;
+  elInfo.style.left = `${Math.max(8, izq)}px`;
+  elInfo.style.top = `${Math.max(8, Math.min(window.innerHeight - h - 8, r.bottom - h))}px`;
+}
+elBtnInfo.addEventListener('click', (e) => {
+  e.stopPropagation();
+  alternarInfo();
+});
+document.getElementById('btn-cerrar-info').addEventListener('click', () => alternarInfo(false));
+document.addEventListener('pointerdown', (e) => {
+  if (!elInfo.hidden && !elInfo.contains(e.target) && e.target !== elBtnInfo) alternarInfo(false);
+});
 
 // ---------- Tarjetita de una neurona (al pasar el cursor o hacer clic) ----------
 const elFicha = document.getElementById('cerebro-ficha');
@@ -736,7 +800,7 @@ const lienzoCerebro = document.getElementById('lienzo-cerebro');
 let nombresZona = {};
 let fichaFija = null; // la que se dejó abierta con un clic
 const APODOS = { ANXXX462a: 'Clavicle', GNG197: 'FMIn', AN13B002: 'Dandelion', GNG108: 'Roundup', GNG120: 'Roundtree', GNG588: 'Fdg' };
-const ROL_CORTO = ['', 'sensor de la antena', 'aBN1', 'aBN2', 'aDN1', 'aDN2', 'sensor de azúcar', 'camino del azúcar', 'trompita'];
+const ROL_CORTO = ['', 'antena', 'relevo · aBN1', 'aBN2', 'limpieza · aDN1', 'limpieza · aDN2', 'sensor de azúcar', 'camino del azúcar', 'trompita'];
 const LADOS = { L: 'lado izquierdo', R: 'lado derecho', M: 'al centro' };
 function queHace(n) {
   if (n.rol === 1) return 'Siente cuando algo mueve la antena (en el juego: las tareas abiertas).';
@@ -764,9 +828,13 @@ function escribirFicha(n) {
   const nota = n.rol === 1 || n.rol === 6
     ? `<span class="ficha-linea ficha-suave">Se dibuja en el centro de sus terminales en el cerebro: su cuerpo está en ${n.rol === 1 ? 'la antena' : 'la trompita'}.</span>`
     : '';
-  elFicha.innerHTML = `<strong>${nombre}${rol}</strong><span class="ficha-linea">${queHace(n)}</span>` +
+  const html = `<strong>${nombre}${rol}</strong><span class="ficha-linea">${queHace(n)}</span>` +
     `<span class="ficha-linea">${hz}${lado}</span>${nota}<span class="ficha-linea ficha-suave">MaleCNS · ID ${n.bodyId}</span>`;
+  if (html === fichaEscrita) return;
+  fichaEscrita = html;
+  elFicha.innerHTML = html;
 }
+let fichaEscrita = '';
 function ponerFicha(n, x, y) {
   if (!n) {
     elFicha.hidden = true;
@@ -776,9 +844,16 @@ function ponerFicha(n, x, y) {
   elFicha.hidden = false;
   const w = elFicha.offsetWidth;
   const h = elFicha.offsetHeight;
-  const izq = x + 16 + w > window.innerWidth - 8 ? x - 16 - w : x + 16;
+  // A la derecha del cursor, salvo que se salga de la pantalla o (en
+  // Exhibición) tape los números de la columna derecha: ahí va a la izquierda
+  const lado = vista === 'exhibicion' ? document.querySelector('.cerebro-lado').getBoundingClientRect().left : Infinity;
+  const izq = x + 16 + w > Math.min(window.innerWidth - 8, lado) ? x - 16 - w : x + 16;
   elFicha.style.left = `${Math.max(8, izq)}px`;
   elFicha.style.top = `${Math.min(window.innerHeight - h - 8, Math.max(8, y - h / 2))}px`;
+}
+function soltarFicha() {
+  fichaFija = null;
+  elFicha.hidden = true;
 }
 lienzoCerebro.addEventListener('pointermove', (e) => {
   if (!cerebro || fichaFija || e.buttons) return;
@@ -791,43 +866,96 @@ lienzoCerebro.addEventListener('pointerleave', () => {
 lienzoCerebro.addEventListener('pointerdown', () => {
   if (!fichaFija) elFicha.hidden = true;
 });
+// Un clic detiene el giro (y si fue sobre una neurona, su tarjetita queda
+// fija); el clic siguiente lo vuelve a poner a girar y suelta la tarjetita.
+// Soltar después de arrastrar no cuenta como clic.
 lienzoCerebro.addEventListener('click', (e) => {
   if (!cerebro || cerebro.fueArrastre()) return;
-  const n = cerebro.neuronaEn(e.clientX, e.clientY);
-  fichaFija = n && (!fichaFija || fichaFija.punto !== n.punto) ? { ...n, x: e.clientX, y: e.clientY } : null;
-  ponerFicha(fichaFija ?? n, e.clientX, e.clientY);
+  if (cerebro.girando()) {
+    cerebro.detener();
+    const n = cerebro.neuronaEn(e.clientX, e.clientY);
+    fichaFija = n ? { ...n, x: e.clientX, y: e.clientY } : null;
+    ponerFicha(n, e.clientX, e.clientY);
+  } else {
+    cerebro.girar();
+    soltarFicha();
+  }
 });
 
-// Lectura en palabras simples, con los números de la simulación (y su lado)
+// ---------- Lo que se lee bajo el cerebro: cadena, frase y números ----------
+// La cadena muestra hasta dónde llega la señal: Tareas → Antena → Relevo
+// (aBN1) → Limpieza (aDN1 y aDN2). La frase lo dice en simple, sin Hz ni
+// nombres técnicos (esos van en la tarjetita, en ⓘ y, en Exhibición, en
+// letra chica bajo cada paso).
 const elLectura = document.getElementById('cerebro-lectura');
+const elDetalle = document.getElementById('cerebro-detalle');
+const pasos = Object.fromEntries(
+  [...document.querySelectorAll('#cerebro-cadena li')].map((li) => [li.dataset.paso, { li, detalle: li.querySelector('.paso-detalle') }])
+);
 const masAlto = (v) => Math.max(v.L, v.R);
-const ladoDe = (v) => (v.R > v.L ? 'der.' : 'izq.');
-// "aDN1 der. 114 Hz" (el lado que más dispara); sin lado si está en 0
-const parte = (nombre, v) => (masAlto(v) > 0 ? `${nombre} ${ladoDe(v)} ${formatoHz.format(masAlto(v))} Hz` : `${nombre} en 0 Hz`);
+const LIMPIEZA_DEBIL = 0.2; // bajo el 20 % de su máximo, la limpieza "apenas se enciende"
+const tareasEnCurso = (n) => `${n} ${n === 1 ? 'tarea' : 'tareas'} en curso`;
 function escribirLectura(l, estado) {
   const c = l.datos.circuito;
-  const hz = (x) => formatoHz.format(x);
-  let html;
-  if (estado.terminado) html = 'Día terminado: sin estímulo, el cerebro queda apagado.';
-  else if (pausado) html = 'En pausa: sin estímulo, el cerebro queda apagado.';
+  const hz = (x) => `${formatoHz.format(x)} Hz`;
+  const relevoHz = masAlto(c['aBN1 (SAD093)']);
+  const limpieza = l.limpiezaObjetivo;
+  const llega = {
+    tareas: l.tareas > 0,
+    antena: c.sensores_antena > 0,
+    relevo: relevoHz > 1,
+    limpieza: limpieza >= 0.01,
+  };
+  for (const [paso, { li }] of Object.entries(pasos)) li.classList.toggle('encendido', llega[paso]);
+  pasos.limpieza.li.classList.toggle('debil', llega.limpieza && limpieza < LIMPIEZA_DEBIL);
+  // Exhibición: un poco más de detalle bajo cada paso
+  const detalle = {
+    tareas: l.tareas > 0 ? `${l.tareas} en curso` : '0',
+    antena: hz(c.sensores_antena),
+    relevo: `aBN1 ${hz(relevoHz)}`,
+    limpieza: `aDN ${hz(l.limpiezaHz)}`,
+  };
+  for (const [paso, { detalle: el }] of Object.entries(pasos)) if (el.textContent !== detalle[paso]) el.textContent = detalle[paso];
+
+  let frase;
+  let extra = '';
+  if (estado.terminado) frase = 'Día terminado: sin estímulo, el cerebro queda apagado.';
+  else if (pausado) frase = 'En pausa: sin estímulo, el cerebro queda apagado.';
   else if (l.cafe) {
-    html = `Café: el azúcar (lado der.) enciende sus sensores y ${parte('Clavicle', c['Clavicle (ANXXX462a)'])}, ` +
-      `pero la señal no llega a la trompita (MN9 en ${hz(masAlto(c.MN9))} Hz): el café es ilustrativo.`;
-  } else if (l.tareas === 0) html = 'Sin tareas abiertas: la antena no recibe nada y el cerebro queda apagado.';
-  else {
-    const antena = `${l.tareas} ${l.tareas === 1 ? 'tarea abierta' : 'tareas abiertas'} = antena a ${hz(20 + ((l.tareas - 1) * 200) / 9)} Hz`;
-    const abn1 = hz(masAlto(c['aBN1 (SAD093)']));
-    html = l.datos.limpieza < 1
-      ? `${antena}: se enciende aBN1 ${ladoDe(c['aBN1 (SAD093)'])} (${abn1} Hz), pero la limpieza (aDN1 y aDN2) sigue apagada.`
-      : `${antena}: se enciende la limpieza de antenas, ${parte('aBN1', c['aBN1 (SAD093)'])} → ${parte('aDN1', c['aDN1 (DNg62)'])} y ${parte('aDN2', c['aDN2 (DNge078)'])}.`;
-  }
-  if (elLectura.innerHTML !== html) elLectura.innerHTML = html;
+    frase = 'Café: el azúcar enciende sus sensores, pero la señal no llega a la trompita (por eso el café es ilustrativo).';
+    extra = `Azúcar ${hz(c.sensores_azucar)} → Clavicle ${hz(masAlto(c['Clavicle (ANXXX462a)']))} · trompita (MN9) ${hz(masAlto(c.MN9))}`;
+  } else if (!llega.tareas) frase = 'Sin tareas en curso: la antena no recibe nada y el cerebro queda apagado.';
+  else if (!llega.relevo) frase = `${tareasEnCurso(l.tareas)}: la señal llega a la antena, pero no pasa al relevo.`;
+  else if (!llega.limpieza) frase = `${tareasEnCurso(l.tareas)}: la señal llega al relevo, pero la limpieza sigue apagada.`;
+  else if (limpieza < LIMPIEZA_DEBIL) frase = `${tareasEnCurso(l.tareas)}: la señal recorre todo el circuito, pero la limpieza apenas se enciende.`;
+  else frase = `${tareasEnCurso(l.tareas)}: la señal recorre todo el circuito y se enciende la limpieza.`;
+  if (elLectura.textContent !== frase) elLectura.textContent = frase;
+  if (elDetalle.textContent !== extra) elDetalle.textContent = extra;
 }
+
+// Porcentajes enteros que suman exactamente 100 (el resto va a los que más
+// perdieron al redondear)
+function repartirCien(partes) {
+  const base = partes.map((p) => Math.floor(p * 100));
+  let falta = 100 - base.reduce((a, b) => a + b, 0);
+  partes
+    .map((p, i) => [p * 100 - base[i], i])
+    .sort((a, b) => b[0] - a[0])
+    .forEach(([, i]) => {
+      if (falta > 0) {
+        base[i]++;
+        falta--;
+      }
+    });
+  return base;
+}
+
 function refrescarCerebro(dt, estado, fumandoVisible, cafeVisible, ahora) {
   if (!cerebro) return;
   // El cerebro sólo mira lo que le llega a la antena (las tareas abiertas) y
   // el azúcar del café; las reglas del juego deciden lo demás.
   cerebro.actualizar(dt, { enCurso: estado.enCurso, cafe: cafeVisible, apagado: estado.terminado || pausado });
+  pintarBotonGiro();
   // Oculto (y ya fuera de la pantalla): no se dibuja, así no gasta nada
   if (vista === 'control' && cerebroOculto && factorIzq === 0) return;
   cerebro.renderizar();
@@ -835,8 +963,15 @@ function refrescarCerebro(dt, estado, fumandoVisible, cafeVisible, ahora) {
   if (ahora - ultimaLectura < 125) return;
   ultimaLectura = ahora;
   const l = cerebro.lectura();
+  // Lo principal: qué tan encendida está la limpieza de antenas (0 a 100 %)
+  const pctLimpieza = Math.round(l.limpieza * 100);
+  elLimpieza.textContent = `${pctLimpieza}%`;
+  elLimpiezaBarra.style.width = `${(l.limpieza * 100).toFixed(1)}%`;
   elActivas.textContent = formato.format(l.activas);
-  elNivel.textContent = `${formatoPct.format(l.nivel * 100)}%`;
+  const curioso = l.activas
+    ? `Dato curioso: son el ${formatoPct.format(l.nivel * 100)}% del cerebro. La señal no lo prende todo: viaja por un camino.`
+    : 'Sin estímulo: ninguna neurona dispara.';
+  if (elCurioso.textContent !== curioso) elCurioso.textContent = curioso;
   // El borde del panel también brilla más mientras más neuronas disparan
   elCerebro.style.setProperty('--actividad', l.intensidad.toFixed(3));
   const estadoTexto = estado.terminado
@@ -856,17 +991,22 @@ function refrescarCerebro(dt, estado, fumandoVisible, cafeVisible, ahora) {
   elEstado.classList.toggle('cafe', estadoTexto === 'Café');
   elEstado.classList.toggle('espera', estadoTexto === 'Espera');
   escribirLectura(l, estado);
-  if (!pausado) graficoDia.registrar(estado.fraccionDelDia, l.intensidad, estado.wip, l.activas);
-  graficoDia.dibujar();
-  // Zonas: cuántas de sus neuronas disparan (la barra es la parte de la zona
-  // que dispara; si casi todo queda oscuro, la barra casi no se ve: es lo real)
-  l.porGrupo.forEach((g) => {
+  if (!pausado) graficoDia.registrar(estado.fraccionDelDia, { limpieza: l.limpieza, wip: estado.wip, tareas: l.tareas, activas: l.activas });
+  graficoDia.dibujar(estado.terminado);
+  // Zonas: de dónde viene la actividad (qué parte de las neuronas activas
+  // está en cada zona; suman 100 %)
+  const partes = repartirCien(l.porGrupo.map((g) => g.parte));
+  l.porGrupo.forEach((g, i) => {
     const fila = filasGrupo[g.id];
     if (!fila) return;
-    fila.valor.textContent = formato.format(g.activas);
-    fila.barra.style.width = `${(g.actividad * 100).toFixed(2)}%`;
-    fila.li.title = `${formato.format(g.activas)} de ${formato.format(g.total)} neuronas de la zona disparan (${formatoPct.format(g.actividad * 100)}%)`;
+    fila.valor.textContent = l.activas ? `${partes[i]}%` : '–';
+    fila.barra.style.width = `${(g.parte * 100).toFixed(1)}%`;
+    fila.li.title = l.activas
+      ? `${formato.format(g.activas)} de las ${formato.format(l.activas)} neuronas activas están en ${g.nombre} (${partes[i]}%)`
+      : 'Sin neuronas activas';
   });
+  // La tarjetita fija se mantiene al día (sus Hz cambian con las tareas)
+  if (fichaFija) escribirFicha(cerebro.neurona(fichaFija.punto));
 }
 
 // ---------- Bucle principal (máximo 60 cuadros por segundo: fluido y sin calentar) ----------
@@ -1009,6 +1149,7 @@ if (import.meta.env.DEV) {
     casiFin: () => (juego.minutoActual = 18 * 60 - 2),
     camaraInfo: () => ({ pos: camera.position.toArray(), obj: controls.target.toArray(), aspect: camera.aspect }),
     cerebro: () => cerebro?.lectura(),
+    cerebroVista: () => cerebro?.vista(),
     reencuadrar() {
       camera.position.copy(CAMARA_INICIAL.posicion);
       controls.target.copy(CAMARA_INICIAL.objetivo);

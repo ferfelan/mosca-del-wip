@@ -13,7 +13,11 @@
 // zona = neurona que dispara, más grande y brillante mientras más Hz, con un
 // pulso más rápido mientras más dispara; anillo = circuito de limpieza; líneas
 // = recorrido real de la señal (conexiones de MaleCNS) con un pulso que viaja
-// (su velocidad es sólo para que se vea).
+// (su velocidad es sólo para que se vea). Los nombres sólo en la tarjetita.
+//
+// Métrica principal: "Limpieza de antenas" = qué tan encendidas están aDN1 y
+// aDN2 (promedio de sus Hz) comparado con su máximo en el juego (10 tareas
+// abiertas = 100 %).
 import * as THREE from 'three';
 
 // Un color neón por zona, como en las imágenes de referencia.
@@ -31,7 +35,8 @@ const VUELTA_SEGUNDOS = 40; // una vuelta completa cada 40 s
 const INCLINACION = 0.32; // inclinado hacia la cámara para que se vea en 3D
 const SEGUNDOS_TRANSICION = 1.2; // paso suave de una situación a otra
 const SEGUNDOS_POR_TRAMO = 0.75; // el pulso del recorrido avanza un tramo cada 0,75 s
-const SEGUNDOS_PARA_VOLVER_A_GIRAR = 8; // sin tocarlo, vuelve a girar solo
+const GIRO_CON_CURSOR = 0.25; // con el cursor encima gira 4 veces más lento (para apuntar)
+const MARGEN_ENCUADRE = 1.05; // un 5 % de aire alrededor del cerebro y su cordón
 const ZOOM_MIN = 0.7;
 const ZOOM_MAX = 3.5;
 const HZ_MINIMO = 1; // un tramo del recorrido se enciende si sus dos neuronas pasan de 1 Hz
@@ -240,7 +245,7 @@ function texturaResplandor() {
   return t;
 }
 
-export function crearCerebro(canvas, datos, real, { etiquetas: contenedorEtiquetas = null } = {}) {
+export function crearCerebro(canvas, datos, real) {
   const { info } = datos;
   const { meta, n, posiciones, grupos, tonos, roles, indices, brillo, hz10 } = real;
   const ids = info.grupos.map((g) => g.id);
@@ -377,7 +382,7 @@ export function crearCerebro(canvas, datos, real, { etiquetas: contenedorEtiquet
     tx += posiciones[i * 3];
     tz += posiciones[i * 3 + 2];
   }
-  const [anchoTotal, altoTotal, fondoTotal] = info.tamano_um;
+  const altoTotal = info.tamano_um[1];
   const inclinado = new THREE.Group();
   inclinado.rotation.x = INCLINACION;
   const giratorio = new THREE.Group();
@@ -387,36 +392,99 @@ export function crearCerebro(canvas, datos, real, { etiquetas: contenedorEtiquet
   nube.add(lineas);
   nube.add(pulsos);
   giratorio.add(nube);
-  const radioGiro = Math.hypot(anchoTotal, fondoTotal) / 2;
-  const encuadre = {
-    mitadAncho: radioGiro,
-    mitadAlto: (altoTotal * Math.cos(INCLINACION) + fondoTotal * Math.sin(INCLINACION)) / 2,
-    cercania: radioGiro,
-  };
   resplandor.scale.set(1500, 1500, 1);
 
-  // ---------- Vista: girar solo, arrastrar, zoom y centrar ----------
+  // ---------- Encuadre: el cerebro y su cordón centrados y llenando su espacio ----------
+  // Se miran los puntos (todos los de los bordes y uno de cada cinco del
+  // resto) en 16 ángulos de la vuelta, ya inclinados como se ven. La cámara
+  // queda a la altura del centro de lo que se ve y a la distancia justa para
+  // que nada se salga en ninguna parte de la vuelta (con un 5 % de aire).
+  let muestra = [];
+  {
+    let maxY = 0;
+    let maxR = 0;
+    for (let i = 0; i < n; i++) {
+      maxY = Math.max(maxY, Math.abs(posiciones[i * 3 + 1]));
+      maxR = Math.max(maxR, Math.hypot(posiciones[i * 3] - tx / info.puntos, posiciones[i * 3 + 2] - tz / info.puntos));
+    }
+    const m = new THREE.Matrix4();
+    const rx = new THREE.Matrix4().makeRotationX(INCLINACION);
+    const p = new THREE.Vector3();
+    for (let i = 0; i < n; i++) {
+      const x = posiciones[i * 3] - tx / info.puntos;
+      const y = posiciones[i * 3 + 1];
+      const z = posiciones[i * 3 + 2] - tz / info.puntos;
+      const borde = Math.abs(y) > 0.94 * maxY || Math.hypot(x, z) > 0.9 * maxR;
+      if (!borde && i % 5) continue;
+      for (let a = 0; a < 16; a++) {
+        m.makeRotationY((a / 16) * Math.PI * 2).premultiply(rx);
+        p.set(x, y, z).applyMatrix4(m);
+        muestra.push(p.x, p.y, p.z);
+      }
+    }
+    muestra = Float32Array.from(muestra);
+  }
+  // Distancia mínima de la cámara si se pone a la altura yc: cada punto debe
+  // quedar dentro del cuadro (arriba/abajo y a los lados) estando más cerca o
+  // más lejos según el giro.
+  function distanciaPara(yc, tanAlto, tanAncho) {
+    let d = 0;
+    for (let j = 0; j < muestra.length; j += 3) {
+      const necesita = muestra[j + 2] + Math.max(Math.abs(muestra[j + 1] - yc) / tanAlto, Math.abs(muestra[j]) / tanAncho);
+      if (necesita > d) d = necesita;
+    }
+    return d;
+  }
+  function encuadrar(aspecto) {
+    const tanAlto = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) / MARGEN_ENCUADRE;
+    const tanAncho = tanAlto * aspecto;
+    // La distancia necesaria según la altura es una curva con un solo mínimo:
+    // se busca acortando el intervalo (búsqueda ternaria)
+    let lo = -altoTotal / 2;
+    let hi = altoTotal / 2;
+    for (let k = 0; k < 40; k++) {
+      const a = lo + (hi - lo) / 3;
+      const b = hi - (hi - lo) / 3;
+      if (distanciaPara(a, tanAlto, tanAncho) < distanciaPara(b, tanAlto, tanAncho)) hi = b;
+      else lo = a;
+    }
+    const yc = (lo + hi) / 2;
+    return { yc, distancia: distanciaPara(yc, tanAlto, tanAncho) };
+  }
+
+  // ---------- Vista: gira solo; un clic lo detiene u otro lo hace girar ----------
   let distanciaBase = 2000;
+  let alturaCamara = 0;
   let zoom = 1;
   let zoomSuave = 1;
+  // Corrimiento de la vista al hacer zoom hacia el cursor (en µm del cerebro)
+  const corrido = { x: 0, y: 0 };
+  const corridoSuave = { x: 0, y: 0 };
   let anguloY = 0;
   let inclinacion = INCLINACION;
   let autoGiro = true;
-  let ultimoToque = -Infinity;
+  let cursorEncima = false;
+  let velocidadGiro = 1;
   let arrastre = null;
-  let ultimoFueArrastre = false; // el clic que sigue a un arrastre no abre la tarjetita
+  let ultimoFueArrastre = false; // el clic que sigue a un arrastre no cuenta como clic
   let tiempo = 0;
 
-  function tocar() {
+  function detener() {
     autoGiro = false;
-    ultimoToque = tiempo;
   }
+  function girar() {
+    autoGiro = true;
+  }
+  // "Centrar": vuelve a la vista inicial (sin zoom ni inclinación propia) y a girar
   function centrar() {
     zoom = 1;
+    corrido.x = corrido.y = 0;
     inclinacion = INCLINACION;
     autoGiro = true;
   }
   canvas.style.touchAction = 'none';
+  canvas.addEventListener('pointerenter', () => (cursorEncima = true));
+  canvas.addEventListener('pointerleave', () => (cursorEncima = false));
   canvas.addEventListener('pointerdown', (e) => {
     if (e.button !== 0) return;
     canvas.setPointerCapture(e.pointerId);
@@ -431,9 +499,10 @@ export function crearCerebro(canvas, datos, real, { etiquetas: contenedorEtiquet
     arrastre.movio = true;
     arrastre.x = e.clientX;
     arrastre.y = e.clientY;
+    // Arrastrar lo gira a mano (y si estaba girando solo, se detiene)
+    autoGiro = false;
     anguloY += dx * 0.008;
     inclinacion = clamp(inclinacion + dy * 0.006, -0.9, 1.3);
-    tocar();
   });
   const soltar = (e) => {
     if (canvas.hasPointerCapture?.(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
@@ -442,15 +511,28 @@ export function crearCerebro(canvas, datos, real, { etiquetas: contenedorEtiquet
   };
   canvas.addEventListener('pointerup', soltar);
   canvas.addEventListener('pointercancel', soltar);
-  // Rueda o pellizco del trackpad (en el Mac llega como rueda con Ctrl)
+  // Rueda o pellizco del trackpad (en el Mac llega como rueda con Ctrl): el
+  // zoom funciona siempre, gire o no
   canvas.addEventListener(
     'wheel',
     (e) => {
       e.preventDefault();
       e.stopPropagation();
       const paso = e.ctrlKey ? 0.012 : 0.0016;
+      const antes = zoom;
       zoom = clamp(zoom * Math.exp(-e.deltaY * paso), ZOOM_MIN, ZOOM_MAX);
-      tocar();
+      // Se acerca hacia donde apunta el cursor: ese punto queda bajo el cursor
+      const r = canvas.getBoundingClientRect();
+      const nx = ((e.clientX - r.left) / r.width) * 2 - 1;
+      const ny = 1 - ((e.clientY - r.top) / r.height) * 2;
+      const tanMedio = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+      const cambio = distanciaBase * (1 / antes - 1 / zoom);
+      corrido.x += nx * tanMedio * camera.aspect * cambio;
+      corrido.y += ny * tanMedio * cambio;
+      // Sin alejarse del cerebro: el corrimiento se achica al alejar (en zoom 1 o menos, centrado)
+      const libre = Math.max(0, 1 - 1 / zoom);
+      corrido.x = clamp(corrido.x, -libre * distanciaBase * tanMedio * camera.aspect, libre * distanciaBase * tanMedio * camera.aspect);
+      corrido.y = clamp(corrido.y, -libre * distanciaBase * tanMedio, libre * distanciaBase * tanMedio);
     },
     { passive: false }
   );
@@ -468,9 +550,10 @@ export function crearCerebro(canvas, datos, real, { etiquetas: contenedorEtiquet
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     const tanMedio = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
-    const porAlto = encuadre.mitadAlto / tanMedio;
-    const porAncho = encuadre.mitadAncho / (tanMedio * camera.aspect);
-    distanciaBase = Math.max(porAlto, porAncho) * 1.06 + encuadre.cercania;
+    const { yc, distancia } = encuadrar(camera.aspect);
+    distanciaBase = distancia;
+    alturaCamara = yc;
+    resplandor.position.y = yc;
     camera.updateProjectionMatrix();
     uniforms.uEscalaVista.value = (h * ratio) / (2 * tanMedio);
     // En el panel chico los puntos quedan muy juntos y se suman: bajo la
@@ -484,6 +567,8 @@ export function crearCerebro(canvas, datos, real, { etiquetas: contenedorEtiquet
   const posEnActivos = new Int32Array(n).fill(-1);
   for (let j = 0; j < k; j++) posEnActivos[indices[j]] = j;
   const maxActivas = Math.max(...nombres.map((s) => meta.situaciones[s].activas));
+  // El máximo de la limpieza en el juego: con 10 tareas abiertas (≈ 78 Hz)
+  const limpiezaMaxima = meta.situaciones.antena_10.limpieza;
   let actual = 0; // situación que se muestra (índice en meta.condiciones)
   let previa = 0;
   let mezcla = 1;
@@ -542,73 +627,7 @@ export function crearCerebro(canvas, datos, real, { etiquetas: contenedorEtiquet
     brilloPulsos.needsUpdate = true;
   }
 
-  // ---------- Nombres cortos del circuito (vista Exhibición) ----------
-  // Un nombre por tipo: los grupos (antena, trío aBN2) en su centro; aDN1 y
-  // aDN2 (una por lado) junto a la que más dispara ahora. Una línea fina une
-  // cada nombre con su neurona.
-  const centro = (puntos) => {
-    const p = new THREE.Vector3();
-    puntos.forEach((i) => p.add(new THREE.Vector3(posiciones[i * 3], posiciones[i * 3 + 1], posiciones[i * 3 + 2])));
-    return p.divideScalar(puntos.length);
-  };
-  const porTexto = new Map();
-  for (const et of meta.etiquetas || []) {
-    if (!porTexto.has(et.texto)) porTexto.set(et.texto, []);
-    porTexto.get(et.texto).push({ puntos: et.puntos, p: centro(et.puntos) });
-  }
-  const NS = 'http://www.w3.org/2000/svg';
-  let svg = null;
-  if (contenedorEtiquetas) {
-    svg = document.createElementNS(NS, 'svg');
-    svg.setAttribute('class', 'lineas-etiquetas');
-    contenedorEtiquetas.appendChild(svg);
-  }
-  const anclas = [...porTexto].map(([texto, opciones]) => {
-    let el = null;
-    let linea = null;
-    if (contenedorEtiquetas) {
-      el = document.createElement('span');
-      el.className = 'etiqueta-circuito';
-      el.textContent = texto;
-      contenedorEtiquetas.appendChild(el);
-      linea = document.createElementNS(NS, 'line');
-      svg.appendChild(linea);
-    }
-    return { texto, opciones, el, linea };
-  });
   const v = new THREE.Vector3();
-  const maxHz = (puntos) => Math.max(...puntos.map((i) => hzDe(i)));
-  function moverEtiquetas() {
-    if (!contenedorEtiquetas || contenedorEtiquetas.offsetParent === null) return;
-    nube.updateWorldMatrix(true, false);
-    const cajas = anclas.map((a) => {
-      const elegida = a.opciones.reduce((m, o) => (maxHz(o.puntos) > maxHz(m.puntos) ? o : m));
-      v.copy(elegida.p).applyMatrix4(nube.matrixWorld).project(camera);
-      a.el.classList.toggle('apagada', maxHz(elegida.puntos) <= HZ_MINIMO);
-      a.ancho ||= a.el.offsetWidth;
-      a.alto ||= a.el.offsetHeight;
-      const ax = ((v.x + 1) / 2) * tamano.w;
-      const ay = ((1 - v.y) / 2) * tamano.h;
-      return { a, ax, ay, x: ax + 12, y: ay - a.alto / 2 };
-    });
-    // Si dos nombres quedan uno encima del otro, el de más abajo se corre hacia abajo
-    cajas.sort((p, q) => p.y - q.y);
-    cajas.forEach((c, i) => {
-      for (let j = 0; j < i; j++) {
-        const o = cajas[j];
-        const chocan = c.x < o.x + o.a.ancho + 4 && o.x < c.x + c.a.ancho + 4 && c.y < o.y + o.a.alto + 2;
-        if (chocan) c.y = o.y + o.a.alto + 2;
-      }
-      const x = clamp(c.x, 2, tamano.w - c.a.ancho - 2);
-      const y = clamp(c.y, 2, tamano.h - c.a.alto - 2);
-      c.a.el.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px)`;
-      c.a.linea.setAttribute('x1', c.ax.toFixed(1));
-      c.a.linea.setAttribute('y1', c.ay.toFixed(1));
-      c.a.linea.setAttribute('x2', x.toFixed(1));
-      c.a.linea.setAttribute('y2', (y + c.a.alto / 2).toFixed(1));
-      c.a.linea.classList.toggle('apagada', c.a.el.classList.contains('apagada'));
-    });
-  }
 
   function actualizar(dt, estadoJuego) {
     tiempo += dt;
@@ -626,23 +645,25 @@ export function crearCerebro(canvas, datos, real, { etiquetas: contenedorEtiquet
     const activas = lerp(meta.situaciones[nombres[previa]].activas, meta.situaciones[nombres[actual]].activas, uniforms.uMezcla.value);
     resplandor.material.opacity = 0.2 + 0.7 * (activas / maxActivas);
     resplandor.material.transparent = true;
-    // Gira solo, salvo que lo estén moviendo (vuelve a girar tras unos segundos)
-    if (!autoGiro && !arrastre && tiempo - ultimoToque > SEGUNDOS_PARA_VOLVER_A_GIRAR) autoGiro = true;
+    // Gira solo hasta que lo detengan (un clic o arrastrarlo); con el cursor
+    // encima gira más lento, para poder apuntar a una neurona
+    velocidadGiro = amortiguar(velocidadGiro, cursorEncima ? GIRO_CON_CURSOR : 1, 4, dt);
     if (autoGiro) {
-      anguloY += (dt / VUELTA_SEGUNDOS) * Math.PI * 2;
+      anguloY += (dt / VUELTA_SEGUNDOS) * Math.PI * 2 * velocidadGiro;
       inclinacion = amortiguar(inclinacion, INCLINACION, 1.5, dt);
     }
     giratorio.rotation.y = anguloY;
     inclinado.rotation.x = inclinacion;
     zoomSuave = amortiguar(zoomSuave, zoom, 8, dt);
-    camera.position.set(0, 0, distanciaBase / zoomSuave);
-    camera.lookAt(0, 0, 0);
+    corridoSuave.x = amortiguar(corridoSuave.x, corrido.x, 8, dt);
+    corridoSuave.y = amortiguar(corridoSuave.y, corrido.y, 8, dt);
+    camera.position.set(corridoSuave.x, alturaCamara + corridoSuave.y, distanciaBase / zoomSuave);
+    camera.lookAt(corridoSuave.x, alturaCamara + corridoSuave.y, 0);
   }
 
   function renderizar() {
     redimensionar();
     renderer.render(scene, camera);
-    moverEtiquetas();
   }
 
   // Contadores sobre TODA la red simulada (164.587 neuronas), no sólo los puntos
@@ -650,23 +671,27 @@ export function crearCerebro(canvas, datos, real, { etiquetas: contenedorEtiquet
     const s0 = meta.situaciones[nombres[previa]];
     const s1 = meta.situaciones[nombres[actual]];
     const t = uniforms.uMezcla.value;
-    const activas = Math.round(lerp(s0.activas, s1.activas, t));
+    const activasExactas = lerp(s0.activas, s1.activas, t);
+    const activas = Math.round(activasExactas);
+    // Zonas: qué parte de las neuronas activas está en cada una (suman 100 %)
     const porGrupo = info.grupos.map((g) => {
       const a = lerp(s0.zonas[g.id].activas, s1.zonas[g.id].activas, t);
-      const total = s1.zonas[g.id].total;
-      return { id: g.id, nombre: g.nombre, detalle: g.detalle, activas: Math.round(a), total, actividad: a / total };
+      return { id: g.id, nombre: g.nombre, detalle: g.detalle, activas: Math.round(a), parte: activasExactas > 0 ? a / activasExactas : 0 };
     });
     return {
       activas,
       total: meta.neuronas_simuladas,
       nivel: activas / meta.neuronas_simuladas,
       intensidad: activas / maxActivas,
+      // Limpieza de antenas: aDN1 y aDN2 comparadas con su máximo (10 tareas = 100 %)
+      limpieza: clamp(lerp(s0.limpieza, s1.limpieza, t) / limpiezaMaxima, 0, 1),
+      limpiezaObjetivo: clamp(s1.limpieza / limpiezaMaxima, 0, 1), // sin el paso suave (para las palabras)
+      limpiezaHz: s1.limpieza,
       porGrupo,
       situacion: nombres[actual],
       cafe: actual >= 11,
       tareas: actual % 11,
       datos: s1,
-      girandoSolo: autoGiro,
     };
   }
 
@@ -689,15 +714,21 @@ export function crearCerebro(canvas, datos, real, { etiquetas: contenedorEtiquet
       if (v.z > 1) continue;
       const dx = ((v.x + 1) / 2) * r.width - x;
       const dy = ((1 - v.y) / 2) * r.height - y;
-      const d = dx * dx + dy * dy;
+      // aBN1, aBN2, aDN1 y aDN2 se dibujan 3 veces más grandes: se pueden
+      // tomar desde un poco más lejos
+      const d = (dx * dx + dy * dy) * (roles[i] >= 2 && roles[i] <= 5 ? 0.35 : 1);
       if (d < mejorD) {
         mejorD = d;
         mejor = i;
       }
     }
-    if (mejor < 0) return null;
-    const [bodyId, tipo, lado, superclase, zona] = fichas[mejor];
-    return { punto: mejor, bodyId, tipo, lado, superclase, zona, rol: roles[mejor], hz: hzDe(mejor) };
+    return mejor < 0 ? null : neurona(mejor);
+  }
+  // La ficha de un punto con sus Hz de ahora (sirve también para refrescar la
+  // tarjetita fija si cambia la situación)
+  function neurona(punto) {
+    const [bodyId, tipo, lado, superclase, zona] = fichas[punto];
+    return { punto, bodyId, tipo, lado, superclase, zona, rol: roles[punto], hz: hzDe(punto) };
   }
 
   // Dónde se ve en pantalla la neurona del circuito con ese papel que más
@@ -717,5 +748,21 @@ export function crearCerebro(canvas, datos, real, { etiquetas: contenedorEtiquet
   }
 
   return {
-    dondeEsta, actualizar, renderizar, lectura, info, meta, reiniciar, centrar, neuronaEn, fueArrastre: () => ultimoFueArrastre };
+    dondeEsta,
+    actualizar,
+    renderizar,
+    lectura,
+    info,
+    meta,
+    reiniciar,
+    centrar,
+    detener,
+    girar,
+    girando: () => autoGiro,
+    // Para las pruebas automáticas: ángulo, zoom y velocidad del giro
+    vista: () => ({ angulo: anguloY, zoom, velocidad: velocidadGiro, girando: autoGiro }),
+    neuronaEn,
+    neurona,
+    fueArrastre: () => ultimoFueArrastre,
+  };
 }
