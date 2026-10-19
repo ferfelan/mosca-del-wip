@@ -557,9 +557,9 @@ tr.vacia td {
 /* =========================================================
    Panel del cerebro (variante oscura del mismo panel)
    La pantalla habla el idioma de la oficina: aquí van el cerebro, "neuronas
-   encendidas", una frase simple y el estrés del día. La neurociencia
-   (limpieza de antenas, relevos, Hz, zonas) va al informe. En Exhibición se
-   suman los números de la oficina en grande (más abajo).
+   encendidas", una frase simple, de qué zonas viene la actividad y el estrés
+   del día. La neurociencia (limpieza de antenas, relevos, Hz) va al informe.
+   En Exhibición se suman los números de la oficina en grande (más abajo).
    ========================================================= */
 
 #cerebro {
@@ -567,6 +567,7 @@ tr.vacia td {
   top: 16px;
   left: 16px;
   width: 360px;
+  max-height: calc(100vh - 32px);
   display: flex;
   flex-direction: column;
   transition: transform var(--transicion), opacity 0.35s ease, visibility 0s linear 0s, box-shadow 0.6s ease, border-color 0.6s ease;
@@ -685,6 +686,18 @@ body.exhibicion .solo-control-inline {
   /* cerebro en vertical: el panel se alarga hacia abajo */
   height: clamp(190px, calc(100vh - 440px), 400px);
   background: #060a16;
+  /* si lo de abajo no cabe (resumen del día con los números), el cerebro se
+     achica un poco en vez de cortar el panel */
+  flex: 0 1 auto;
+  min-height: 170px;
+}
+
+body.dia-terminado .cerebro-lienzo {
+  min-height: 120px;
+}
+
+.cerebro-cuerpo > .cerebro-lienzo {
+  flex-shrink: 1;
 }
 
 #lienzo-cerebro {
@@ -694,12 +707,19 @@ body.exhibicion .solo-control-inline {
 }
 
 /* En Control todo va en una columna: cerebro, neuronas encendidas y frase
-   (o, al terminar el día, el resumen), estrés del día, leyenda, "¿Es real?" y
-   crédito. (En Exhibición se reparte en dos columnas, más abajo.) */
+   (o, al terminar el día, el resumen), zonas, estrés del día, leyenda, "¿Es
+   real?" y crédito. (En Exhibición se reparte en dos columnas, más abajo.) */
 .cerebro-cuerpo {
   display: flex;
+  flex: 0 1 auto;
   flex-direction: column;
+  min-height: 0;
   padding-bottom: 12px;
+}
+
+.cerebro-cuerpo > *,
+.cerebro-cabecera {
+  flex-shrink: 0;
 }
 
 /* ---------- Un solo número: neuronas encendidas, y una frase simple ---------- */
@@ -747,13 +767,19 @@ body.dia-terminado .cifra-carga {
   display: none;
 }
 
+/* Con el panel de controles abierto los números ya están a la derecha: el
+   resumen muestra sólo las zonas y el estrés del día. Si se oculta (tecla
+   C), también los números. */
+body.dia-terminado:not(.exhibicion):not(.controles-oculto) .cifra {
+  display: none;
+}
+
 .cifras-titulo {
   margin: 0 0 1px;
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--oscuro-suave);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--oscuro-tinta);
 }
 
 .cifra {
@@ -761,7 +787,7 @@ body.dia-terminado .cifra-carga {
   align-items: baseline;
   justify-content: space-between;
   gap: 8px;
-  padding: 5px 10px;
+  padding: 4px 10px;
   border-radius: 8px;
   background: var(--oscuro-superficie);
 }
@@ -788,6 +814,86 @@ body.dia-terminado .cifra-carga {
 .cifra-sub,
 .eficiencia-barra {
   display: none;
+}
+
+/* ---------- Zonas: de dónde viene la actividad (suman 100 %) ----------
+   Qué parte de las neuronas encendidas está en cada zona; al terminar el
+   día, el promedio del día. En Control, dos columnas; en Exhibición, las
+   cinco en una fila (más abajo). */
+.cerebro-zonas {
+  margin: 10px 16px 0;
+}
+
+.zonas-cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0 8px;
+  margin: 0 0 5px;
+}
+
+.zonas-sub {
+  font-size: 10.5px;
+  color: var(--oscuro-tenue);
+  white-space: nowrap;
+}
+
+.cerebro-grupos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.grupo {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  row-gap: 3px;
+  font-size: 11px;
+  color: var(--oscuro-suave);
+}
+
+.grupo-punto {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--c);
+  box-shadow: 0 0 6px var(--c);
+}
+
+.grupo-nombre {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.grupo-valor {
+  font-variant-numeric: tabular-nums;
+}
+
+.grupo-barra {
+  grid-column: 1 / 3;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+}
+
+.grupo-barra span {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--c);
+  box-shadow: 0 0 8px var(--c);
+  transition: width 0.3s linear;
 }
 
 /* ---------- Estrés del día (mini gráfico) ---------- */
@@ -1406,9 +1512,9 @@ body.exhibicion #escena {
 }
 
 /* Exhibición: el panel de la derecha junta el cerebro y los números de la
-   oficina en grande, con el estrés del día abajo. Columna izquierda: el
-   cerebro, "neuronas encendidas" y la frase. Columna derecha: carga,
-   terminadas, colillas, cafés, tiempo por tarea y eficiencia. */
+   oficina en grande, con las zonas y el estrés del día abajo. Columna
+   izquierda: el cerebro, "neuronas encendidas" y la frase. Columna derecha:
+   carga, terminadas, colillas, cafés, tiempo por tarea y eficiencia. */
 body.exhibicion #cerebro {
   top: 68px;
   right: 24px;
@@ -1417,11 +1523,12 @@ body.exhibicion #cerebro {
   width: calc(40% - 36px);
   display: grid;
   grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
-  grid-template-rows: auto minmax(0, 1fr) auto auto auto;
+  grid-template-rows: auto minmax(0, 1fr) auto auto auto auto;
   grid-template-areas:
     'cabeza  cifras'
     'lienzo  cifras'
     'lectura cifras'
+    'zonas   zonas'
     'dia     dia'
     'pie     pie';
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35), 0 0 calc(50px * var(--actividad)) rgba(110, 150, 255, calc(0.45 * var(--actividad)));
@@ -1619,6 +1726,66 @@ body.exhibicion .eficiencia-barra {
   border-radius: 3px;
   background: #8fa6f5;
   transition: width 0.4s linear;
+}
+
+/* Zonas: las cinco en una fila (nombre arriba; porcentaje y barra abajo) */
+body.exhibicion .cerebro-zonas {
+  grid-area: zonas;
+  margin: 12px 22px 0;
+  padding: 10px 14px 12px;
+  border-radius: 10px;
+  background: var(--oscuro-superficie);
+}
+
+body.exhibicion .zonas-cabecera {
+  margin-bottom: 8px;
+}
+
+body.exhibicion .zonas-cabecera .etiqueta-oscura,
+body.exhibicion .zonas-sub {
+  font-size: 11.5px;
+}
+
+body.exhibicion .cerebro-grupos {
+  /* iguales, salvo que un nombre largo ("Movimiento") necesite más */
+  grid-template-columns: repeat(5, minmax(min-content, 1fr));
+  gap: 6px 16px;
+}
+
+body.exhibicion .grupo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: space-between;
+  gap: 5px 8px;
+}
+
+body.exhibicion .grupo-nombre {
+  flex: 1 0 100%;
+  align-items: flex-start;
+  gap: 7px;
+  white-space: normal;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--oscuro-tinta);
+}
+
+body.exhibicion .grupo-punto {
+  margin-top: 0.3em;
+}
+
+body.exhibicion .grupo-valor {
+  flex: none;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--oscuro-tinta);
+}
+
+body.exhibicion .grupo-barra {
+  flex: 1 1 0;
+  min-width: 10px;
+  height: 4px;
 }
 
 body.exhibicion .cerebro-dia {
@@ -1998,7 +2165,26 @@ tr.mejor-dia td:last-child {
 .comparacion tr.actual th,
 .comparacion tr.actual td {
   color: #fff;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(143, 166, 245, 0.16);
+}
+
+/* La fila de hoy: borde de color a la izquierda y la etiqueta "hoy" */
+.comparacion tr.actual th {
+  box-shadow: inset 3px 0 0 #8fa6f5;
+  white-space: nowrap;
+}
+
+.fila-hoy {
+  margin-left: 4px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: #8fa6f5;
+  color: #0c1122;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  vertical-align: 1px;
 }
 
 .aviso-fin-sigue {
@@ -2039,6 +2225,13 @@ tr.mejor-dia td:last-child {
   }
   body.exhibicion .cifra {
     padding: 7px 11px 8px;
+  }
+  body.exhibicion .cerebro-zonas {
+    margin: 9px 18px 0;
+    padding: 8px 12px 10px;
+  }
+  body.exhibicion .zonas-cabecera {
+    margin-bottom: 6px;
   }
   body.exhibicion .cerebro-dia {
     padding: 8px 18px 0;
@@ -2099,6 +2292,22 @@ tr.mejor-dia td:last-child {
   body.exhibicion .cifra-label {
     font-size: 9.5px;
   }
+  body.exhibicion .cerebro-zonas {
+    margin-right: 14px;
+    margin-left: 16px;
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+  body.exhibicion .cerebro-grupos {
+    column-gap: 8px;
+  }
+  body.exhibicion .grupo-nombre {
+    gap: 5px;
+    font-size: 11.5px;
+  }
+  body.exhibicion .grupo-valor {
+    font-size: 14px;
+  }
   body.exhibicion .cerebro-dia {
     padding-left: 16px;
     padding-right: 14px;
@@ -2125,6 +2334,17 @@ tr.mejor-dia td:last-child {
   }
   .marca-sub {
     display: none;
+  }
+}
+
+/* Ventana angosta o baja: con las zonas abajo, los números de la oficina van
+   más juntos */
+@media (max-width: 1100px), (max-height: 760px) {
+  body.exhibicion .cifras {
+    gap: 6px;
+  }
+  body.exhibicion .cifra {
+    padding: 5px 10px 6px;
   }
 }
 

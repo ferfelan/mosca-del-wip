@@ -1,16 +1,17 @@
-// Capturas del panel (Etapa 3.3, v3: la pantalla habla el idioma de la
-// oficina) en el tamaño de la ventana de Felipe (1906×830): WIP 2, WIP 9, el
-// café y el fin del día, en Control y en Exhibición. Además: la tarjetita de
-// una neurona, "¿Es real?" abierto y la oficina girada con el botón "Vista
-// inicial". Juega los días de verdad (con las reglas normales) para que el
-// gráfico del estrés tenga sus marcas; el café es uno real del día, sólo se
-// sostiene un rato para la foto. Imprime lo que muestra cada vista.
+// Capturas del panel (Etapa 3.3, v4: vuelven las zonas "De dónde viene la
+// actividad") en el tamaño de la ventana de Felipe (1906×830): WIP 2, WIP 9,
+// el café y el fin del día, en Control y en Exhibición; al final del día en
+// Control también con los controles ocultos (tecla C), la tabla con la fila
+// de hoy marcada y "¿Es real?" abierto. Juega los días de verdad (con las
+// reglas normales) para que el gráfico del estrés tenga sus marcas y el
+// promedio del día de las zonas sea el real; el café es uno real del día, sólo
+// se sostiene un rato para la foto. Imprime lo que muestra cada vista.
 // Requiere npm run dev.
-// Uso: ETIQUETA=v3 node scripts/capturas-cerebro.mjs   (carpeta capturas/etapa3-3/<ETIQUETA>)
+// Uso: ETIQUETA=v4 node scripts/capturas-cerebro.mjs   (carpeta capturas/etapa3-3/<ETIQUETA>)
 import { chromium } from 'playwright';
 import { mkdirSync } from 'node:fs';
 
-const ETIQUETA = process.env.ETIQUETA ?? 'v3';
+const ETIQUETA = process.env.ETIQUETA ?? 'v4';
 const DIR = `capturas/etapa3-3/${ETIQUETA}`;
 mkdirSync(DIR, { recursive: true });
 const b = await chromium.launch({ args: ['--enable-unsafe-swiftshader', '--use-gl=angle', '--ignore-gpu-blocklist'] });
@@ -31,8 +32,10 @@ const leer = () => p.evaluate(() => {
   const control = `slider ${t('wip-valor')} (${t('wip-nota')}) · terminadas ${t('m-hechas')} · colillas ${t('m-colillas')} · cafés ${t('m-cafes')} · tiempo ${t('m-tiempo')} · eficiencia ${t('m-eficiencia')} de cada hora · estrés ${t('m-estres')}`;
   const visibles = getComputedStyle(document.querySelector('.cifras')).display !== 'none';
   const cifras = [...document.querySelectorAll('.cifra')].filter((c) => visibles && getComputedStyle(c).display !== 'none').map((c) => `${c.querySelector('.cifra-label').textContent} ${c.querySelector('.cifra-valor').textContent.replace(/\s+/g, ' ').trim()}`);
-  const panel = cifras.length ? `${t('cifras-titulo')}: ${cifras.join(' · ')}` : `${t('c-activas')} neuronas encendidas`;
-  return `${ex ? `aviso "${t('ex-inicio')}" · mosca "${t('ex-mosca-hace')}" ${t('ex-mosca-nivel')} ${t('ex-mosca-pct')} · rótulo "${document.querySelector('.rotulo-escena').innerText.replace(/\s+/g, ' ')}"` : control}\n     panel del cerebro → ${panel}\n     gráfico → ${document.getElementById('lienzo-dia').getAttribute('aria-label')}`;
+  const lectura = getComputedStyle(document.querySelector('.cerebro-lectura')).display !== 'none' ? `${t('c-activas')} neuronas encendidas` : '';
+  const panel = [lectura, visibles ? `${t('cifras-titulo')}${cifras.length ? `: ${cifras.join(' · ')}` : ' (sin números)'}` : ''].filter(Boolean).join(' · ');
+  const zonas = `${t('zonas-titulo')} (${t('zonas-sub')}): ${[...document.querySelectorAll('.grupo')].map((li) => li.innerText.replace(/\s+/g, ' ')).join(' · ')}`;
+  return `${ex ? `aviso "${t('ex-inicio')}" · mosca "${t('ex-mosca-hace')}" ${t('ex-mosca-nivel')} ${t('ex-mosca-pct')} · rótulo "${document.querySelector('.rotulo-escena').innerText.replace(/\s+/g, ' ')}"` : control}\n     panel del cerebro → ${panel}\n     zonas → ${zonas}\n     gráfico → ${document.getElementById('lienzo-dia').getAttribute('aria-label')}`;
 });
 const foto = async (nombre) => {
   await p.mouse.move(700, 790); // sobre la escena, lejos del cerebro (no lo frena)
@@ -83,7 +86,12 @@ console.log(`Café (WIP 2) · control\n     ${await leer()}`);
 await p.evaluate(() => { window.__mosca.forzar({ cafe: false }); window.__mosca.detenerReloj(false); });
 // El resto del día con WIP 2 (queda en "Días jugados" para comparar)
 await jugarHasta('18:00');
-await p.waitForTimeout(1200);
+await foto('fin-wip2-control');
+console.log(`Fin del día con WIP 2 · control\n     ${await leer()}`);
+await enVista('exhibicion');
+await foto('fin-wip2-exhibicion');
+console.log(`Fin del día con WIP 2 · exhibición\n     ${await leer()}`);
+await enVista('control');
 
 // ---- Día con WIP 9 ----
 await p.evaluate(() => window.__mosca.diaExhibicion(9));
@@ -94,16 +102,6 @@ await enVista('exhibicion');
 await foto('wip9-exhibicion');
 console.log(`WIP 9 · exhibición\n     ${await leer()}`);
 
-// Tarjetita de una neurona (Exhibición, WIP 9): el cursor sobre aBN1
-const donde = await p.evaluate(() => window.__mosca.cerebroDonde(2));
-await p.mouse.move(donde.x, donde.y);
-await p.waitForTimeout(150);
-const donde2 = await p.evaluate(() => window.__mosca.cerebroDonde(2));
-await p.mouse.move(donde2.x, donde2.y);
-await p.waitForTimeout(300);
-console.log(`tarjetita: "${await p.evaluate(() => document.getElementById('cerebro-ficha').innerText.replace(/\n/g, ' | '))}"`);
-await p.screenshot({ path: `${DIR}/tarjetita-exhibicion.png` });
-
 // Fin del día con WIP 9 (después del de WIP 2)
 await jugarHasta('18:00');
 await foto('fin-exhibicion');
@@ -111,25 +109,19 @@ console.log(`Fin del día · exhibición\n     ${await leer()}\n     tabla: ${aw
 await enVista('control');
 await foto('fin-control');
 console.log(`Fin del día · control\n     ${await leer()}`);
+// Con los controles ocultos (tecla C), el resumen suma los números
+await p.keyboard.press('c');
+await p.waitForTimeout(1400);
+await foto('fin-control-sin-controles');
+console.log(`Fin del día · control sin controles\n     ${await leer()}`);
+await p.keyboard.press('c');
+await p.waitForTimeout(1200);
 
 // "¿Es real?" abierto (Control)
 await p.click('#btn-es-real');
 await p.waitForTimeout(400);
 await p.screenshot({ path: `${DIR}/es-real-control.png` });
+console.log(`¿Es real?: ${await p.evaluate(() => document.getElementById('cerebro-info').innerText.replace(/\n+/g, ' | '))}`);
 await p.keyboard.press('Escape');
-
-// La oficina girada con el mouse: aparece "Vista inicial" (doble clic o el botón la devuelven)
-await p.keyboard.press('r');
-await p.evaluate(() => window.__mosca.adelantar(60));
-await p.mouse.move(1000, 700);
-await p.mouse.down();
-await p.mouse.move(1260, 660, { steps: 12 });
-await p.mouse.up();
-await p.waitForTimeout(1200);
-await p.screenshot({ path: `${DIR}/oficina-girada-control.png` });
-await p.mouse.dblclick(1000, 700);
-await p.waitForTimeout(1600);
-await p.screenshot({ path: `${DIR}/oficina-vuelta-control.png` });
-console.log(`vista inicial: botón ${await p.evaluate(() => (document.getElementById('btn-vista-inicial').hidden ? 'oculto' : 'visible'))} tras el doble clic`);
 await b.close();
 console.log(`Capturas en ${DIR}/`);

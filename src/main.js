@@ -5,7 +5,7 @@ import { crearOficina } from './office.js';
 import { crearMosca } from './fly.js';
 import { DayBrain } from './brain.js';
 import { revisarChoques } from './choques.js';
-import { cargarDatosCerebro, cargarActividadReal, crearCerebro } from './cerebro.js';
+import { cargarDatosCerebro, cargarActividadReal, crearCerebro, GRUPOS_VISUALES } from './cerebro.js';
 import { sacarFoto } from './foto.js';
 import { crearGraficoDia } from './grafico.js';
 import { POS_CENICERO, POS_PILA, CENTRO_PANTALLA, ESCALA_MONITOR } from './layout.js';
@@ -403,8 +403,10 @@ function llenarResumenDelDia() {
   elExFinFilas.innerHTML = '';
   dias.slice(-3).forEach((d, i, lista) => {
     const tr = document.createElement('tr');
-    if (i === lista.length - 1) tr.className = 'actual';
-    tr.innerHTML = `<th>WIP ${d.wip}</th><td>${d.hechas}</td><td>${formatoTiempo(d.tiempoPorTarea, true)}</td><td>${d.colillas}</td><td>${d.cafes ?? '–'}</td><td>${d.estresMax}%</td>`;
+    // La fila de hoy se marca para distinguirla de los días anteriores
+    const hoy = i === lista.length - 1;
+    if (hoy) tr.className = 'actual';
+    tr.innerHTML = `<th>WIP ${d.wip}${hoy ? ' <span class="fila-hoy">hoy</span>' : ''}</th><td>${d.hechas}</td><td>${formatoTiempo(d.tiempoPorTarea, true)}</td><td>${d.colillas}</td><td>${d.cafes ?? '–'}</td><td>${d.estresMax}%</td>`;
     elExFinFilas.appendChild(tr);
   });
   pintarSiguienteDia();
@@ -698,6 +700,9 @@ function empezarLimpio() {
   graficoDia.reiniciar();
   colillasMarcadas = 0;
   cafesMarcados = 0;
+  zonasDia = {};
+  encendidasDia = 0;
+  fraccionZonas = juego.fraccionDelDia;
   registrarDia();
 }
 
@@ -789,9 +794,9 @@ window.addEventListener('mousemove', () => {
 });
 
 // ---------- Cerebro ----------
-// La pantalla habla el idioma de la oficina: aquí sólo "neuronas
-// encendidas" y una frase simple. La neurociencia (limpieza de antenas,
-// relevos, Hz, zonas) va al informe.
+// La pantalla habla el idioma de la oficina: aquí "neuronas encendidas", una
+// frase simple y de qué zonas viene la actividad (de vuelta por pedido de
+// Felipe). La neurociencia (limpieza de antenas, relevos, Hz) va al informe.
 let cerebro = null;
 const elActivas = document.getElementById('c-activas');
 const elFrase = document.getElementById('cerebro-frase');
@@ -807,6 +812,12 @@ const QUE_HACE = {
   Descansa: 'Día terminado: descansa',
 };
 const formato = new Intl.NumberFormat('es-CL');
+// Zonas: qué parte de las neuronas encendidas está en cada una (suman 100 %).
+// Durante el día, en vivo; al terminar, el promedio del día.
+const elZonasTitulo = document.getElementById('zonas-titulo');
+const elZonasSub = document.getElementById('zonas-sub');
+const elGrupos = document.getElementById('cerebro-grupos');
+const filasGrupo = {};
 
 // Las luces salen de la actividad simulada del cableado real (Etapa 3.3,
 // opción A): el cerebro muestra, el juego decide.
@@ -814,6 +825,14 @@ cargarDatosCerebro()
   .then(async (datos) => {
     const real = await cargarActividadReal(datos);
     cerebro = crearCerebro(document.getElementById('lienzo-cerebro'), datos, real);
+    datos.info.grupos.forEach((g) => {
+      const li = document.createElement('li');
+      li.className = 'grupo';
+      li.style.setProperty('--c', GRUPOS_VISUALES[g.id].color);
+      li.innerHTML = `<span class="grupo-nombre"><span class="grupo-punto"></span>${g.nombre}</span><span class="grupo-valor">–</span><span class="grupo-barra"><span></span></span>`;
+      elGrupos.appendChild(li);
+      filasGrupo[g.id] = { g, li, valor: li.querySelector('.grupo-valor'), barra: li.querySelector('.grupo-barra span') };
+    });
   })
   .catch((err) => console.error('No se pudo cargar el cerebro', err));
 
@@ -825,12 +844,70 @@ const graficoDia = crearGraficoDia({
 });
 let colillasMarcadas = 0;
 let cafesMarcados = 0;
+// Promedio del día por zona: neuronas encendidas en cada zona, sumadas por
+// cada minuto del juego (lo simulado para las tareas abiertas y el café de
+// ese minuto). Así no depende de la pantalla ni de si el cerebro está oculto.
+let zonasDia = {};
+let encendidasDia = 0;
+let fraccionZonas = 0;
 // Se llama después de cada paso del reloj del juego (no depende de cuántos
 // cuadros por segundo dibuje la pantalla)
 function registrarDia() {
   graficoDia.registrar(juego.fraccionDelDia, { estres: juego.estres, enCurso: juego.enCurso.length, wip: juego.wip });
   for (; colillasMarcadas < juego.colillas; colillasMarcadas++) graficoDia.marcar(juego.fraccionDelDia, 'cigarro');
   for (; cafesMarcados < juego.cafes; cafesMarcados++) graficoDia.marcar(juego.fraccionDelDia, 'cafe');
+  const minutos = (juego.fraccionDelDia - fraccionZonas) * 540;
+  fraccionZonas = juego.fraccionDelDia;
+  if (minutos < 0) {
+    // el reloj volvió atrás: es otro día
+    zonasDia = {};
+    encendidasDia = 0;
+  }
+  if (!cerebro || minutos <= 0) return;
+  const s = cerebro.situacion({ enCurso: juego.enCurso.length, cafe: juego.tomandoCafe });
+  encendidasDia += s.activas * minutos;
+  for (const id in s.zonas) zonasDia[id] = (zonasDia[id] ?? 0) + s.zonas[id].activas * minutos;
+}
+
+// Porcentajes enteros que suman exactamente 100 (el resto va a los que más
+// perdieron al redondear)
+function repartirCien(partes) {
+  const base = partes.map((p) => Math.floor(p * 100));
+  let falta = 100 - base.reduce((a, b) => a + b, 0);
+  partes
+    .map((p, i) => [p * 100 - base[i], i])
+    .sort((a, b) => b[0] - a[0])
+    .forEach(([, i]) => {
+      if (falta > 0) {
+        base[i]++;
+        falta--;
+      }
+    });
+  return base;
+}
+
+// En vivo (lectura del cerebro) o, con el día terminado, el promedio del día
+function pintarZonas(l, terminado) {
+  const filas = Object.values(filasGrupo);
+  if (!filas.length) return;
+  escribir(elZonasTitulo, terminado ? 'De dónde vino la actividad' : 'De dónde viene la actividad');
+  escribir(elZonasSub, terminado ? 'promedio del día' : '% de las neuronas encendidas');
+  const hay = terminado ? encendidasDia > 0 : l.activas > 0;
+  const partes = filas.map(({ g }) => {
+    if (!hay) return 0;
+    return terminado ? (zonasDia[g.id] ?? 0) / encendidasDia : l.porGrupo.find((z) => z.id === g.id).parte;
+  });
+  const enteros = hay ? repartirCien(partes) : partes;
+  filas.forEach(({ g, li, valor, barra }, i) => {
+    escribir(valor, hay ? `${enteros[i]}%` : '–');
+    barra.style.width = `${(partes[i] * 100).toFixed(1)}%`;
+    const z = l.porGrupo.find((x) => x.id === g.id);
+    li.title = !hay
+      ? `${g.nombre} (${g.detalle}): sin neuronas encendidas`
+      : terminado
+        ? `${g.nombre} (${g.detalle}): ${enteros[i]}% de las neuronas encendidas, en promedio durante el día`
+        : `${g.nombre} (${g.detalle}): ${formato.format(z.activas)} de las ${formato.format(l.activas)} neuronas encendidas`;
+  });
 }
 // Botón "Centrar": vuelve a la vista inicial y a girar solo
 document.getElementById('btn-centrar-cerebro').addEventListener('click', () => {
@@ -987,6 +1064,7 @@ function refrescarCerebro(dt, estado, cafeVisible, ahora) {
   const l = cerebro.lectura();
   escribir(elActivas, formato.format(l.activas));
   escribir(elFrase, estado.terminado ? FRASE_FIN : FRASE);
+  pintarZonas(l, estado.terminado);
   // El borde del panel también brilla más mientras más neuronas disparan
   elCerebro.style.setProperty('--actividad', l.intensidad.toFixed(3));
   // La tarjetita fija se mantiene al día (se enciende y se apaga)

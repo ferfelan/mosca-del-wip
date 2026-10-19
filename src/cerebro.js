@@ -15,10 +15,10 @@
 // = recorrido real de la señal (conexiones de MaleCNS) con un pulso que viaja
 // (su velocidad es sólo para que se vea). Los nombres sólo en la tarjetita.
 //
-// En pantalla sólo se muestra "neuronas encendidas" (la pantalla habla el
-// idioma de la oficina, pedido de Felipe 2026-10-19). lectura() también da la
-// "limpieza de antenas" (aDN1 y aDN2 contra su máximo con 10 tareas) y las
-// zonas: van al informe, no a la pantalla.
+// En pantalla se muestran "neuronas encendidas" y las zonas ("De dónde viene
+// la actividad", de vuelta por pedido de Felipe el 2026-10-19). lectura()
+// también da la "limpieza de antenas" (aDN1 y aDN2 contra su máximo con 10
+// tareas): va al informe, no a la pantalla.
 import * as THREE from 'three';
 
 // Un color neón por zona, como en las imágenes de referencia.
@@ -587,6 +587,9 @@ export function crearCerebro(canvas, datos, real) {
     return cafe ? 11 + tareas : tareas;
   }
 
+  // Lo simulado para esa situación, sin el paso suave (para el promedio del día)
+  const situacion = (estadoJuego) => meta.situaciones[nombres[situacionPara(estadoJuego)]];
+
   function ir(s, inmediato) {
     const A = actA.array;
     const B = actB.array;
@@ -753,6 +756,7 @@ export function crearCerebro(canvas, datos, real) {
     actualizar,
     renderizar,
     lectura,
+    situacion,
     info,
     meta,
     reiniciar,

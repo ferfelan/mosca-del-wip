@@ -1,8 +1,10 @@
 // Capturas de ambas vistas en varias pantallas (tele 1920x1080, la ventana de
 // Felipe 1906x830, Mac 1512x860, proyector 1280x720, ventana 1024x700) y
 // revisa que nada se salga de su lugar ni quede cortado: con WIP 9, con café
-// y al terminar el día. También que el panel de controles no necesite
-// barra de desplazamiento y que el cerebro tenga espacio para verse.
+// y al terminar el día (en Control, también con los controles ocultos, cuando
+// el resumen suma los números). También que el panel de controles no necesite
+// barra de desplazamiento, que el cerebro tenga espacio para verse y que las
+// zonas ("De dónde viene la actividad") quepan enteras y sumen 100 %.
 // Requiere npm run dev.
 import { chromium } from 'playwright';
 const b = await chromium.launch({ args: ['--enable-unsafe-swiftshader', '--use-gl=angle', '--ignore-gpu-blocklist'] });
@@ -46,9 +48,32 @@ for (const [w, h] of [[1920, 1080], [1906, 830], [1512, 860], [1280, 720], [1024
         if (v.right > r.right - 4) fuera.push(`${vista}: el número de "${el.querySelector('.cifra-label').textContent}" se sale de su caja`);
       });
     }
-    // El cerebro necesita espacio para verse
+    // Zonas: cada una entera dentro de su caja, sin montarse ni cortarse, y
+    // los porcentajes suman 100
+    const zonas = document.querySelector('.cerebro-zonas');
+    if (getComputedStyle(zonas).display === 'none') fuera.push(`${vista}: no se ven las zonas`);
+    else {
+      const z = zonas.getBoundingClientRect();
+      const filas = [...zonas.querySelectorAll('.grupo')];
+      if (filas.length !== 5) fuera.push(`${vista}: hay ${filas.length} zonas (deberían ser 5)`);
+      filas.forEach((li, i) => {
+        const r = li.getBoundingClientRect();
+        const nombre = li.querySelector('.grupo-nombre');
+        const n = nombre.getBoundingClientRect();
+        if (r.right > z.right + 1 || r.bottom > z.bottom + 1 || r.left < z.left - 1) fuera.push(`${vista}: la zona "${nombre.textContent}" se sale de su caja`);
+        if (nombre.scrollWidth > nombre.clientWidth + 1 || n.right > r.right + 1) fuera.push(`${vista}: el nombre "${nombre.textContent}" no cabe`);
+        const otra = filas[i + 1]?.getBoundingClientRect();
+        if (otra && Math.abs(otra.top - r.top) < 2 && otra.left < r.right) fuera.push(`${vista}: las zonas "${nombre.textContent}" y la siguiente se montan`);
+      });
+      const valores = filas.map((li) => li.querySelector('.grupo-valor').textContent);
+      const suma = valores.reduce((a, v) => a + (parseInt(v, 10) || 0), 0);
+      if (!valores.every((v) => v === '–') && suma !== 100) fuera.push(`${vista}: las zonas suman ${suma}%`);
+    }
+    // El cerebro necesita espacio para verse (al terminar el día está apagado
+    // y puede achicarse un poco para que quepa el resumen)
     const lienzo = document.getElementById('lienzo-cerebro').getBoundingClientRect();
-    if (lienzo.height < 170) fuera.push(`${vista}: el cerebro queda muy bajo (${Math.round(lienzo.height)} px)`);
+    const minimo = vista.includes('fin del día') ? 120 : 170;
+    if (lienzo.height < minimo) fuera.push(`${vista}: el cerebro queda muy bajo (${Math.round(lienzo.height)} px)`);
     if (vista.startsWith('control')) {
       const panel = document.getElementById('panel');
       if (panel.scrollHeight > panel.clientHeight + 1) fuera.push(`${vista}: el panel de controles necesita barra (${panel.scrollHeight} > ${panel.clientHeight})`);
@@ -80,7 +105,16 @@ for (const [w, h] of [[1920, 1080], [1906, 830], [1512, 860], [1280, 720], [1024
   await p.evaluate(() => window.__mosca.vista('control'));
   await p.waitForTimeout(1500);
   problemas.push(...(await revisar('control fin del día')));
+  const sinNumeros = await p.evaluate(() => [...document.querySelectorAll('.cifra')].filter((c) => getComputedStyle(c).display !== 'none').length);
+  if (sinNumeros) problemas.push(`control fin del día: el resumen repite ${sinNumeros} números del panel derecho`);
   await p.screenshot({ path: `capturas/pantalla-${w}-control-fin.png` });
+  // Con los controles ocultos (tecla C), el resumen suma los números
+  await p.keyboard.press('c');
+  await p.waitForTimeout(1200);
+  const conNumeros = await p.evaluate(() => [...document.querySelectorAll('.cifra')].filter((c) => getComputedStyle(c).display !== 'none').length);
+  if (conNumeros !== 5) problemas.push(`control fin del día sin controles: se ven ${conNumeros} números (deberían ser 5)`);
+  problemas.push(...(await revisar('control fin del día sin controles')));
+  await p.screenshot({ path: `capturas/pantalla-${w}-control-fin-sin-controles.png` });
   total += problemas.length;
   console.log(`${w}x${h}: ${problemas.length ? 'se sale: ' + problemas.join(', ') : 'todo dentro'}`);
   await p.close();
