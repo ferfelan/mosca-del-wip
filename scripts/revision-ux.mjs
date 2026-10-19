@@ -50,14 +50,14 @@ revisar(await p.isVisible('#banner-fin-dia'), 'el aviso de fin del día no apare
 await p.waitForTimeout(1500);
 const fin = await p.evaluate(() => ({
   hora: document.getElementById('reloj-texto').textContent,
-  estado: document.getElementById('c-estado').textContent,
+  estado: document.getElementById('ex-mosca').dataset.hace,
   filas: document.querySelectorAll('#tabla-dias-body tr:not(.vacia)').length,
-  pico: document.getElementById('cerebro-dia-pico').textContent,
+  grafico: document.getElementById('lienzo-dia').getAttribute('aria-label'),
 }));
 revisar(fin.hora === '18:00', `hora al final: ${fin.hora}`);
-revisar(fin.estado === 'Descansa', `cerebro al final: ${fin.estado}`);
+revisar(fin.estado === 'Descansa', `la mosca al final: ${fin.estado}`);
 revisar(fin.filas === 1, `filas en días jugados: ${fin.filas}`);
-revisar(/pico/.test(fin.pico), `resumen del gráfico: ${fin.pico}`);
+revisar(/^Estrés de la mosca durante el día: ahora/.test(fin.grafico), `resumen del gráfico: ${fin.grafico}`);
 await p.screenshot({ path: 'capturas/ux-fin-del-dia.png' });
 
 // 4. Solapes: el aviso de fin no debe quedar bajo los paneles
@@ -79,7 +79,7 @@ await p.keyboard.press('Space');
 const h1 = await p.textContent('#reloj-texto');
 await p.waitForTimeout(1200);
 revisar(h1 === (await p.textContent('#reloj-texto')), 'Espacio no pausó');
-revisar((await p.textContent('#c-estado')) === 'En pausa', 'el cerebro no dice "En pausa"');
+revisar((await p.evaluate(() => document.getElementById('ex-mosca').dataset.hace)) === 'En pausa', 'la mosca no queda "En pausa"');
 await p.keyboard.press('Space');
 const inicio2 = Date.now();
 while (Date.now() - inicio2 < 30000) {

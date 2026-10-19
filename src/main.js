@@ -5,7 +5,7 @@ import { crearOficina } from './office.js';
 import { crearMosca } from './fly.js';
 import { DayBrain } from './brain.js';
 import { revisarChoques } from './choques.js';
-import { cargarDatosCerebro, cargarActividadReal, crearCerebro, GRUPOS_VISUALES } from './cerebro.js';
+import { cargarDatosCerebro, cargarActividadReal, crearCerebro } from './cerebro.js';
 import { sacarFoto } from './foto.js';
 import { crearGraficoDia } from './grafico.js';
 import { POS_CENICERO, POS_PILA, CENTRO_PANTALLA, ESCALA_MONITOR } from './layout.js';
@@ -31,6 +31,7 @@ const elHechas = document.getElementById('m-hechas');
 const elColillas = document.getElementById('m-colillas');
 const elCafes = document.getElementById('m-cafes');
 const elTiempo = document.getElementById('m-tiempo');
+const elEficiencia = document.getElementById('m-eficiencia');
 const elEstres = document.getElementById('m-estres');
 const elBarraEstres = document.getElementById('barra-estres-relleno');
 const elTablaBody = document.getElementById('tabla-dias-body');
@@ -41,6 +42,7 @@ const VELOCIDADES = [1, 2, 4];
 let indiceVelocidad = 0;
 let pausado = false;
 let congelado = false; // sólo para capturas: deja la animación quieta
+let relojDetenido = false; // sólo para capturas: el reloj del juego no avanza (la mosca sí se anima)
 let diaYaRegistrado = false;
 let colillasPintadas = 0;
 
@@ -58,14 +60,7 @@ let esperaDemo = 0;
 
 const elEscena = document.getElementById('escena');
 const elVelo = document.getElementById('velo');
-const elExWip = document.getElementById('ex-wip');
 const elExHora = document.getElementById('ex-hora');
-const elExHechas = document.getElementById('ex-hechas');
-const elExColillas = document.getElementById('ex-colillas');
-const elExCafes = document.getElementById('ex-cafes');
-const elExTiempo = document.getElementById('ex-tiempo');
-const elExTiempoCorto = document.getElementById('ex-tiempo-corto');
-const elExEstres = document.getElementById('ex-estres');
 const elExRitmo = document.getElementById('ex-ritmo');
 const elRotulo = document.querySelector('.rotulo-escena');
 const elExFin = document.getElementById('ex-fin');
@@ -74,9 +69,7 @@ const elExFinTitulo = document.getElementById('ex-fin-titulo');
 const elExFinFilas = document.getElementById('ex-fin-filas');
 const elExInicio = document.getElementById('ex-inicio');
 const elExInicioTipo = document.getElementById('ex-inicio-tipo');
-const elExInicioWip = document.getElementById('ex-inicio-wip');
 const elExInicioTexto = document.getElementById('ex-inicio-texto');
-const elExPausa = document.getElementById('ex-pausa');
 const elExMosca = document.getElementById('ex-mosca');
 const elExMoscaNivel = document.getElementById('ex-mosca-nivel');
 const elExMoscaPct = document.getElementById('ex-mosca-pct');
@@ -183,33 +176,46 @@ elBtnBorrar.addEventListener('click', () => {
 
 escribirDias(cargarDias());
 
+// Carga: tareas a la vez contra el límite sano (3). Verde hasta 3, amarillo
+// con 4 o 5 y rojo desde 6 (los mismos cortes del estrés: Tranqui, Ocupada,
+// Estresada o más).
+const LIMITE_SANO = 3;
+const nivelCarga = (n) => (n <= LIMITE_SANO ? 'ok' : n <= 5 ? 'medio' : 'alto');
+
 function pintarWip() {
   const v = Number(elWip.value);
   elWipValor.textContent = v;
   elWip.style.setProperty('--relleno', `${((v - 1) / 9) * 100}%`);
-  document.getElementById('panel').classList.toggle('wip-alto', v > 3);
+  document.getElementById('panel').dataset.carga = nivelCarga(v);
   pintarNotaWip(v, juego.enCurso.length);
 }
 
-// Bajo el slider: si bajaron el límite y todavía tiene más tareas abiertas,
-// avisa que está terminando lo empezado (no toma nuevas hasta quedar bajo él)
+// Bajo el slider: dentro o sobre el límite sano. Si bajaron el límite y
+// todavía tiene más tareas abiertas, avisa que está terminando lo empezado (no
+// toma nuevas hasta quedar bajo él)
 function pintarNotaWip(limite, enCurso) {
   const drenando = enCurso > limite;
+  const carga = drenando ? enCurso : limite;
   const texto = drenando
     ? `Terminando lo empezado: ${enCurso} en curso`
-    : limite <= 3
-      ? 'Dentro del límite sano'
-      : 'Sobre el límite sano (3)';
+    : limite <= LIMITE_SANO
+      ? `Dentro del límite sano (${LIMITE_SANO})`
+      : `Sobre el límite sano (${LIMITE_SANO})`;
   if (elWipNota.textContent !== texto) elWipNota.textContent = texto;
-  elWipNota.classList.toggle('alerta', drenando || limite > 3);
+  elWipNota.dataset.carga = nivelCarga(carga);
 }
 
-// Un solo lugar para cambiar el WIP (slider, teclas 1–9/0 o modo demo)
+// Un solo lugar para cambiar el WIP (slider, teclas 1–9/0 o modo demo).
+// Cambiarlo antes de las 09:15 rearma el día con ese WIP (con sus propias
+// tareas de ayer); después, es un cambio a mitad del día. Así un día anotado
+// como "WIP 10" de verdad partió con 10 tareas de ayer.
+const MINUTO_ELEGIR_WIP = 9 * 60 + 15;
 function ponerWip(valor) {
   const v = Math.min(10, Math.max(1, Math.round(valor)));
   elWip.value = String(v);
+  if (v !== juego.wip && !juego.terminado && juego.minutoActual <= MINUTO_ELEGIR_WIP) armarDia({ reanudar: false });
+  else juego.setWip(v);
   pintarWip();
-  juego.setWip(v);
 }
 elWip.addEventListener('input', () => ponerWip(Number(elWip.value)));
 pintarWip();
@@ -226,9 +232,11 @@ elBtnVelocidad.addEventListener('click', () => {
   elBtnVelocidad.textContent = `x${VELOCIDADES[indiceVelocidad]}`;
 });
 
-function reiniciarDia() {
-  // Un día nuevo parte corriendo (si estaba en pausa, se reanuda)
-  if (pausado) alternarPausa();
+// Día nuevo con el WIP del slider. Con R (y en el modo demo) parte corriendo:
+// si estaba en pausa, se reanuda. Al elegir el WIP antes de las 09:15 se
+// respeta la pausa.
+function armarDia({ reanudar = true } = {}) {
+  if (reanudar && pausado) alternarPausa();
   juego = new DayBrain(Number(elWip.value));
   diaYaRegistrado = false;
   esperaDemo = 0;
@@ -238,6 +246,7 @@ function reiniciarDia() {
   oficina.limpiarColillas();
   empezarLimpio();
 }
+const reiniciarDia = () => armarDia();
 elBtnReiniciar.addEventListener('click', reiniciarDia);
 
 // Lo que la animación de la mosca necesita saber del juego
@@ -263,6 +272,7 @@ function refrescarUI(estado, cigarroEnMano) {
   elCafes.textContent = estado.cafes;
   // Tiempo por tarea: "–" hasta que termine la primera tarea del día
   elTiempo.textContent = formatoTiempo(estado.tiempoPorTarea);
+  elEficiencia.textContent = formatoEficiencia(estado.eficiencia);
   elEstres.textContent = estado.nivel.nombre;
   elEstres.style.color = estado.nivel.color;
   elBarraEstres.style.width = `${Math.round(estado.estres)}%`;
@@ -285,41 +295,50 @@ function refrescarUI(estado, cigarroEnMano) {
     colillasPintadas++;
   }
 
-  // Rótulo y avisos de la exhibición: siempre al día con la misma partida
-  elExWip.textContent = `WIP ${estado.wip}`;
+  // Rótulo de la exhibición: sólo la hora (los números de la oficina van
+  // grandes en el panel de la derecha; cada número aparece una sola vez)
   elExHora.textContent = estado.hora;
-  const plural = (n, uno, varios) => `${n} ${n === 1 ? uno : varios}`;
-  elExHechas.textContent = plural(estado.hechas, 'terminada', 'terminadas');
-  elExColillas.textContent = plural(estado.colillas, 'colilla', 'colillas');
-  elExCafes.textContent = plural(estado.cafes, 'café', 'cafés');
-  elExTiempo.textContent = formatoTiempo(estado.tiempoPorTarea);
-  elExTiempoCorto.textContent = formatoTiempo(estado.tiempoPorTarea, true);
-  elExEstres.textContent = estado.nivel.nombre;
-  elExEstres.style.color = estado.nivel.color;
   // Tarjeta "Estado de la mosca" (exhibición): nivel, barra de estrés y qué
-  // está haciendo (esto último se escribe junto al estado del cerebro)
+  // está haciendo
   elExMosca.style.setProperty('--nivel', estado.nivel.color);
   elExMoscaNivel.textContent = estado.nivel.nombre;
   elExMoscaPct.textContent = `${Math.round(estado.estres)}%`;
   elExMoscaBarra.style.width = `${Math.round(estado.estres)}%`;
   elExMosca.classList.toggle('fin', estado.terminado);
+  const queHace = estado.terminado
+    ? 'Descansa'
+    : pausado
+      ? 'En pausa'
+      : cigarroEnMano
+        ? 'Fuma'
+        : mosca.tomandoCafe()
+          ? 'Café'
+          : estado.esperando
+            ? 'Espera'
+            : 'Trabaja';
+  if (elExMosca.dataset.hace !== queHace) {
+    elExMosca.dataset.hace = queHace;
+    elExMoscaHace.textContent = QUE_HACE[queHace];
+  }
   const velocidad = VELOCIDADES[indiceVelocidad];
   elExRitmo.hidden = velocidad === 1;
   elExRitmo.textContent = `x${velocidad}`;
   const situacion = estado.terminado ? 'terminado' : pausado ? 'pausa' : 'vivo';
   elRotulo.dataset.estado = situacion;
-  elExPausa.hidden = situacion !== 'pausa';
+  // Aviso de arriba: en vivo o en pausa, y si son pocas o muchas tareas a la
+  // vez (el número está en la Carga)
   elExInicioTipo.textContent = modoDemo ? 'Modo demo' : pausado ? 'En pausa' : 'En vivo';
-  elExInicioWip.textContent = `WIP ${estado.wip}`;
   const drenando = estado.enCurso > estado.wip && !estado.terminado;
   pintarNotaWip(estado.wip, estado.terminado ? 0 : estado.enCurso);
-  elExInicioTexto.textContent = drenando
-    ? `Terminando lo empezado · ${estado.enCurso} en curso`
-    : estado.wip > 3
+  const textoAviso = drenando
+    ? `Terminando lo empezado · nuevo límite ${estado.wip}`
+    : estado.wip > LIMITE_SANO
       ? 'Muchas tareas a la vez'
       : 'Pocas tareas a la vez';
-  elExInicio.classList.toggle('alto', estado.wip > 3 || drenando);
+  if (elExInicioTexto.textContent !== textoAviso) elExInicioTexto.textContent = textoAviso;
+  elExInicio.dataset.carga = nivelCarga(drenando ? estado.enCurso : estado.wip);
   elExInicio.classList.toggle('oculto', estado.terminado);
+  pintarCifras(estado);
 
   // Fin del día (en cualquier vista): se guarda en "Días jugados" y se
   // muestra el resumen
@@ -328,8 +347,51 @@ function refrescarUI(estado, cigarroEnMano) {
     guardarDia(juego.resumenFinal());
     llenarResumenDelDia();
   }
+  document.body.classList.toggle('dia-terminado', estado.terminado);
   elBanner.classList.toggle('oculto', !estado.terminado);
   elExFin.classList.toggle('oculto', !estado.terminado);
+}
+
+// Eficiencia: de cada hora, cuántos minutos rinden de verdad ("38 min")
+function formatoEficiencia(e) {
+  return e === null || e === undefined ? '–' : `${Math.round(e * 60)} min`;
+}
+
+// ---------- Números de la oficina en el panel del cerebro ----------
+// En Exhibición van grandes junto al cerebro (todo el día). En Control ya
+// están en el panel de la derecha: aquí sólo aparecen al terminar el día,
+// como resumen, en lugar del cerebro apagado.
+const elCifrasTitulo = document.getElementById('cifras-titulo');
+const elCifraCarga = document.getElementById('cifra-carga');
+const cifras = {
+  carga: document.getElementById('cf-carga'),
+  hechas: document.getElementById('cf-hechas'),
+  tiempo: document.getElementById('cf-tiempo'),
+  eficiencia: document.getElementById('cf-eficiencia'),
+  colillas: document.getElementById('cf-colillas'),
+  cafes: document.getElementById('cf-cafes'),
+};
+const elEficienciaBarra = document.getElementById('cf-eficiencia-barra');
+const segmentosCarga = [...document.querySelectorAll('#carga-segmentos i')];
+const conUnidades = (el, texto) => {
+  const html = texto.replace(/ ?([a-z]+)/g, '<small> $1</small>');
+  if (el.innerHTML !== html) el.innerHTML = html;
+};
+const escribir = (el, texto) => {
+  if (el.textContent !== texto) el.textContent = texto;
+};
+function pintarCifras(estado) {
+  escribir(elCifrasTitulo, estado.terminado ? 'Resumen del día' : 'Hoy en la oficina');
+  escribir(cifras.carga, String(estado.enCurso));
+  elCifraCarga.dataset.carga = nivelCarga(estado.enCurso);
+  segmentosCarga.forEach((s, i) => s.classList.toggle('lleno', i < estado.enCurso));
+  escribir(cifras.hechas, String(estado.hechas));
+  // En grande, las unidades van más chicas que los números ("7 h 46 min")
+  conUnidades(cifras.tiempo, estado.tiempoPorTarea === null ? '–' : formatoTiempo(estado.tiempoPorTarea));
+  conUnidades(cifras.eficiencia, formatoEficiencia(estado.eficiencia));
+  elEficienciaBarra.style.width = `${Math.round((estado.eficiencia ?? 0) * 100)}%`;
+  escribir(cifras.colillas, String(estado.colillas));
+  escribir(cifras.cafes, String(estado.cafes));
 }
 
 // Resumen del día en la exhibición: el día recién jugado y los anteriores
@@ -585,6 +647,46 @@ function encuadrarExhibicion() {
   camera.lookAt(centro);
   controls.target.copy(centro);
   controls.update();
+  guardarCasa();
+}
+
+// ---------- Volver la oficina a su vista inicial ----------
+// Arrastrar sobre la escena gira la oficina (para mirarla desde otro lado;
+// arrastrar el cerebro NO la mueve). Doble clic en la escena, o el botón
+// "Vista inicial" (aparece sólo si se movió), la devuelve suave a su vista
+// inicial: la oficial en Control y el encuadre de la mosca en Exhibición.
+const elBtnVistaInicial = document.getElementById('btn-vista-inicial');
+let casa = { pos: CAMARA_INICIAL.posicion.clone(), obj: CAMARA_INICIAL.objetivo.clone() };
+let volviendo = null;
+function guardarCasa() {
+  casa = { pos: camera.position.clone(), obj: controls.target.clone() };
+  volviendo = null;
+}
+function volverAVistaInicial() {
+  // corta la inercia que dejó el mouse (si no, la oficina seguiría girando
+  // un poco después de volver)
+  controls.enableDamping = false;
+  controls.update();
+  controls.enableDamping = true;
+  volviendo = casa;
+}
+canvas.addEventListener('dblclick', volverAVistaInicial);
+elBtnVistaInicial.addEventListener('click', volverAVistaInicial);
+// Si la toman con el mouse mientras vuelve, manda el mouse
+controls.addEventListener('start', () => (volviendo = null));
+function moverCamaraACasa(dt) {
+  if (volviendo) {
+    const k = 1 - Math.exp(-7 * dt);
+    camera.position.lerp(volviendo.pos, k);
+    controls.target.lerp(volviendo.obj, k);
+    if (camera.position.distanceTo(volviendo.pos) < 0.003 && controls.target.distanceTo(volviendo.obj) < 0.003) {
+      camera.position.copy(volviendo.pos);
+      controls.target.copy(volviendo.obj);
+      volviendo = null;
+    }
+  }
+  const lejos = camera.position.distanceTo(casa.pos) > 0.05 || controls.target.distanceTo(casa.obj) > 0.05;
+  if (elBtnVistaInicial.hidden === lejos) elBtnVistaInicial.hidden = !lejos;
 }
 
 // ---------- Día nuevo ----------
@@ -593,7 +695,10 @@ function encuadrarExhibicion() {
 function empezarLimpio() {
   mosca.reiniciar(juego.estado().estres / 100);
   cerebro?.reiniciar();
-  graficoDia?.reiniciar();
+  graficoDia.reiniciar();
+  colillasMarcadas = 0;
+  cafesMarcados = 0;
+  registrarDia();
 }
 
 // ---------- Cambio de vista: sólo cambia cómo se ve, no la partida ----------
@@ -620,6 +725,7 @@ function aplicarVista(nueva) {
   ajustarEscena();
   if (nueva === 'exhibicion') encuadrarExhibicion();
   controls.update();
+  if (nueva === 'control') guardarCasa();
   if (juego.terminado) pintarSiguienteDia();
 }
 
@@ -683,12 +789,14 @@ window.addEventListener('mousemove', () => {
 });
 
 // ---------- Cerebro ----------
+// La pantalla habla el idioma de la oficina: aquí sólo "neuronas
+// encendidas" y una frase simple. La neurociencia (limpieza de antenas,
+// relevos, Hz, zonas) va al informe.
 let cerebro = null;
 const elActivas = document.getElementById('c-activas');
-const elLimpieza = document.getElementById('c-limpieza');
-const elLimpiezaBarra = document.getElementById('c-limpieza-barra');
-const elCurioso = document.getElementById('c-curioso');
-const elEstado = document.getElementById('c-estado');
+const elFrase = document.getElementById('cerebro-frase');
+const FRASE = 'Neuronas reales de una mosca. Mientras más tareas tiene encima, más se enciende.';
+const FRASE_FIN = 'Día terminado: la mosca descansa y su cerebro se apaga.';
 // Lo que está haciendo la mosca, en palabras (tarjeta de la exhibición)
 const QUE_HACE = {
   Trabaja: 'Trabajando en el kanban',
@@ -698,11 +806,7 @@ const QUE_HACE = {
   'En pausa': 'Juego en pausa',
   Descansa: 'Día terminado: descansa',
 };
-const elGrupos = document.getElementById('cerebro-grupos');
-const filasGrupo = {};
 const formato = new Intl.NumberFormat('es-CL');
-const formatoPct = new Intl.NumberFormat('es-CL', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-const formatoHz = new Intl.NumberFormat('es-CL', { maximumFractionDigits: 0 });
 
 // Las luces salen de la actividad simulada del cableado real (Etapa 3.3,
 // opción A): el cerebro muestra, el juego decide.
@@ -710,36 +814,24 @@ cargarDatosCerebro()
   .then(async (datos) => {
     const real = await cargarActividadReal(datos);
     cerebro = crearCerebro(document.getElementById('lienzo-cerebro'), datos, real);
-    const { info } = datos;
-    nombresZona = Object.fromEntries(info.grupos.map((g) => [g.id, g.nombre]));
-    datos.info.grupos.forEach((g) => {
-      const li = document.createElement('li');
-      li.className = 'grupo';
-      li.style.setProperty('--c', GRUPOS_VISUALES[g.id].color);
-      li.innerHTML = `<span class="grupo-nombre"><span class="grupo-punto"></span>${g.nombre}</span><span class="grupo-valor">–</span><span class="grupo-barra"><span></span></span><span class="grupo-detalle">${g.detalle}</span>`;
-      elGrupos.appendChild(li);
-      filasGrupo[g.id] = { li, valor: li.querySelector('.grupo-valor'), barra: li.querySelector('.grupo-barra span') };
-    });
-    const { meta } = real;
-    const simuladas = formato.format(meta.neuronas_simuladas);
-    document.getElementById('chip-datos').textContent =
-      `Male CNS v1.0 · ${simuladas} neuronas simuladas · se dibujan ${formato.format(real.n)} (todas las que se encienden)`;
-    // Los números de la explicación (ⓘ) salen de los mismos datos
-    const maxima = meta.situaciones.antena_10;
-    const info$ = (clave, texto) => document.querySelectorAll(`[data-info="${clave}"]`).forEach((el) => (el.textContent = texto));
-    info$('limpieza-max', formatoHz.format(maxima.limpieza));
-    info$('activas-max', formato.format(maxima.activas));
-    info$('simuladas', simuladas);
-    info$('pct-max', `${formatoPct.format((maxima.activas / meta.neuronas_simuladas) * 100)}%`);
   })
   .catch((err) => console.error('No se pudo cargar el cerebro', err));
 
 let ultimaLectura = 0;
+// Gráfico del día: el estrés, con una marca por cada cigarro y cada café
 const graficoDia = crearGraficoDia({
   lienzo: document.getElementById('lienzo-dia'),
   tooltip: document.getElementById('cerebro-dia-tooltip'),
-  elPico: document.getElementById('cerebro-dia-pico'),
 });
+let colillasMarcadas = 0;
+let cafesMarcados = 0;
+// Se llama después de cada paso del reloj del juego (no depende de cuántos
+// cuadros por segundo dibuje la pantalla)
+function registrarDia() {
+  graficoDia.registrar(juego.fraccionDelDia, { estres: juego.estres, enCurso: juego.enCurso.length, wip: juego.wip });
+  for (; colillasMarcadas < juego.colillas; colillasMarcadas++) graficoDia.marcar(juego.fraccionDelDia, 'cigarro');
+  for (; cafesMarcados < juego.cafes; cafesMarcados++) graficoDia.marcar(juego.fraccionDelDia, 'cafe');
+}
 // Botón "Centrar": vuelve a la vista inicial y a girar solo
 document.getElementById('btn-centrar-cerebro').addEventListener('click', () => {
   cerebro?.centrar();
@@ -770,9 +862,9 @@ function pintarBotonGiro() {
     : 'Volver a girar el cerebro (también con un clic en el cerebro)';
 }
 
-// ---------- ⓘ: qué es real y qué es juego en el cerebro ----------
+// ---------- "¿Es real?": qué es real y qué es juego, en pocas líneas ----------
 const elInfo = document.getElementById('cerebro-info');
-const elBtnInfo = document.getElementById('btn-info-cerebro');
+const elBtnInfo = document.getElementById('btn-es-real');
 function alternarInfo(abrir = elInfo.hidden) {
   elInfo.hidden = !abrir;
   elBtnInfo.setAttribute('aria-expanded', String(abrir));
@@ -795,41 +887,35 @@ document.addEventListener('pointerdown', (e) => {
 });
 
 // ---------- Tarjetita de una neurona (al pasar el cursor o hacer clic) ----------
+// Para curiosos y en palabras simples: su nombre y su rol general, y si está
+// encendida ahora. Sin Hz ni detalles del circuito (van al informe).
 const elFicha = document.getElementById('cerebro-ficha');
 const lienzoCerebro = document.getElementById('lienzo-cerebro');
-let nombresZona = {};
 let fichaFija = null; // la que se dejó abierta con un clic
 const APODOS = { ANXXX462a: 'Clavicle', GNG197: 'FMIn', AN13B002: 'Dandelion', GNG108: 'Roundup', GNG120: 'Roundtree', GNG588: 'Fdg' };
-const ROL_CORTO = ['', 'antena', 'relevo · aBN1', 'aBN2', 'limpieza · aDN1', 'limpieza · aDN2', 'sensor de azúcar', 'camino del azúcar', 'trompita'];
-const LADOS = { L: 'lado izquierdo', R: 'lado derecho', M: 'al centro' };
-function queHace(n) {
-  if (n.rol === 1) return 'Siente cuando algo mueve la antena (en el juego: las tareas abiertas).';
-  if (n.rol === 2) return 'Recibe la señal de la antena y avisa al circuito de limpieza.';
-  if (n.rol === 3) return 'Junta avisos de la antena y de los pelitos de la cabeza.';
-  if (n.rol === 4 || n.rol === 5) return 'Manda a las patas delanteras a limpiar las antenas.';
-  if (n.rol === 6) return 'Siente el dulce en la trompita.';
-  if (n.rol === 7) return n.tipo === 'AN13B002' ? 'Recibe el dulce, pero frena: no sigue hacia la trompita.' : 'Lleva la señal del dulce hacia la trompita.';
-  if (n.rol === 8) return 'Mueve la trompita para comer.';
+// [rol general, qué hace]
+function rolGeneral(n) {
+  if (n.rol === 1) return ['Sensor', 'siente lo que mueve la antena.'];
+  if (n.rol === 2 || n.rol === 3) return ['Relevo', 'pasa la señal de la antena a otras neuronas.'];
+  if (n.rol === 4 || n.rol === 5) return ['Lleva órdenes al cuerpo', 'le manda una orden a las patas.'];
+  if (n.rol === 6) return ['Sensor', 'siente el dulce.'];
+  if (n.rol === 7) return ['Relevo', 'pasa la señal del dulce.'];
+  if (n.rol === 8) return ['Mueve un músculo', 'el de la trompita.'];
   const s = n.superclase;
-  if (s === 'descending_neuron') return 'Lleva órdenes del cerebro al cuerpo.';
-  if (s === 'ascending_neuron') return 'Lleva información del cuerpo al cerebro.';
-  if (s.endsWith('motor')) return 'Mueve un músculo (en el cordón: de una pata o del cuerpo).';
-  if (s === 'vnc_intrinsic') return 'Parte del cordón nervioso: coordina patas y cuerpo.';
-  if (s.includes('sensory')) return 'Sensor: trae información del cuerpo.';
-  if (s.startsWith('ol_') || s.startsWith('visual')) return 'Procesa lo que ve.';
-  if (s === 'cb_intrinsic') return 'Procesa información dentro del cerebro.';
-  return 'Neurona del sistema nervioso de la mosca.';
+  if (s === 'descending_neuron') return ['Lleva órdenes al cuerpo', 'conecta el cerebro con el cuerpo.'];
+  if (s === 'ascending_neuron') return ['Trae avisos del cuerpo', 'conecta el cuerpo con el cerebro.'];
+  if (s.endsWith('motor')) return ['Mueve un músculo', 'de una pata o del cuerpo.'];
+  if (s === 'vnc_intrinsic') return ['Coordina el cuerpo', 'parte del cordón nervioso.'];
+  if (s.includes('sensory')) return ['Sensor', 'trae información del cuerpo.'];
+  if (s.startsWith('ol_') || s.startsWith('visual')) return ['Visión', 'procesa lo que ve.'];
+  if (s === 'cb_intrinsic') return ['Procesa', 'junta información dentro del cerebro.'];
+  return ['Neurona', 'parte del sistema nervioso de la mosca.'];
 }
 function escribirFicha(n) {
-  const nombre = n.tipo ? `${n.tipo}${APODOS[n.tipo] ? ` (${APODOS[n.tipo]})` : ''}` : `Neurona sin nombre · ${nombresZona[n.zona] ?? n.zona}`;
-  const rol = n.rol ? `<span class="ficha-rol">${ROL_CORTO[n.rol]}</span>` : '';
-  const hz = n.hz > 0 ? `Dispara ${formatoHz.format(n.hz)} Hz en la simulación` : 'En reposo ahora (0 Hz)';
-  const lado = LADOS[n.lado] ? ` · ${LADOS[n.lado]}` : '';
-  const nota = n.rol === 1 || n.rol === 6
-    ? `<span class="ficha-linea ficha-suave">Se dibuja en el centro de sus terminales en el cerebro: su cuerpo está en ${n.rol === 1 ? 'la antena' : 'la trompita'}.</span>`
-    : '';
-  const html = `<strong>${nombre}${rol}</strong><span class="ficha-linea">${queHace(n)}</span>` +
-    `<span class="ficha-linea">${hz}${lado}</span>${nota}<span class="ficha-linea ficha-suave">MaleCNS · ID ${n.bodyId}</span>`;
+  const nombre = n.tipo ? `${n.tipo}${APODOS[n.tipo] ? ` (${APODOS[n.tipo]})` : ''}` : 'Neurona sin nombre';
+  const [rol, que] = rolGeneral(n);
+  const ahora = n.hz > 0 ? 'Encendida ahora' : 'En reposo ahora';
+  const html = `<strong>${nombre}</strong><span class="ficha-linea"><b>${rol}:</b> ${que}</span><span class="ficha-linea ficha-suave">${ahora}</span>`;
   if (html === fichaEscrita) return;
   fichaEscrita = html;
   elFicha.innerHTML = html;
@@ -845,8 +931,8 @@ function ponerFicha(n, x, y) {
   const w = elFicha.offsetWidth;
   const h = elFicha.offsetHeight;
   // A la derecha del cursor, salvo que se salga de la pantalla o (en
-  // Exhibición) tape los números de la columna derecha: ahí va a la izquierda
-  const lado = vista === 'exhibicion' ? document.querySelector('.cerebro-lado').getBoundingClientRect().left : Infinity;
+  // Exhibición) tape los números de la oficina: ahí va a la izquierda
+  const lado = vista === 'exhibicion' ? document.querySelector('.cifras').getBoundingClientRect().left : Infinity;
   const izq = x + 16 + w > Math.min(window.innerWidth - 8, lado) ? x - 16 - w : x + 16;
   elFicha.style.left = `${Math.max(8, izq)}px`;
   elFicha.style.top = `${Math.min(window.innerHeight - h - 8, Math.max(8, y - h / 2))}px`;
@@ -882,75 +968,13 @@ lienzoCerebro.addEventListener('click', (e) => {
   }
 });
 
-// ---------- Lo que se lee bajo el cerebro: cadena, frase y números ----------
-// La cadena muestra hasta dónde llega la señal: Tareas → Antena → Relevo
-// (aBN1) → Limpieza (aDN1 y aDN2). La frase lo dice en simple, sin Hz ni
-// nombres técnicos (esos van en la tarjetita, en ⓘ y, en Exhibición, en
-// letra chica bajo cada paso).
-const elLectura = document.getElementById('cerebro-lectura');
-const elDetalle = document.getElementById('cerebro-detalle');
-const pasos = Object.fromEntries(
-  [...document.querySelectorAll('#cerebro-cadena li')].map((li) => [li.dataset.paso, { li, detalle: li.querySelector('.paso-detalle') }])
-);
-const masAlto = (v) => Math.max(v.L, v.R);
-const LIMPIEZA_DEBIL = 0.2; // bajo el 20 % de su máximo, la limpieza "apenas se enciende"
-const tareasEnCurso = (n) => `${n} ${n === 1 ? 'tarea' : 'tareas'} en curso`;
-function escribirLectura(l, estado) {
-  const c = l.datos.circuito;
-  const hz = (x) => `${formatoHz.format(x)} Hz`;
-  const relevoHz = masAlto(c['aBN1 (SAD093)']);
-  const limpieza = l.limpiezaObjetivo;
-  const llega = {
-    tareas: l.tareas > 0,
-    antena: c.sensores_antena > 0,
-    relevo: relevoHz > 1,
-    limpieza: limpieza >= 0.01,
-  };
-  for (const [paso, { li }] of Object.entries(pasos)) li.classList.toggle('encendido', llega[paso]);
-  pasos.limpieza.li.classList.toggle('debil', llega.limpieza && limpieza < LIMPIEZA_DEBIL);
-  // Exhibición: un poco más de detalle bajo cada paso
-  const detalle = {
-    tareas: l.tareas > 0 ? `${l.tareas} en curso` : '0',
-    antena: hz(c.sensores_antena),
-    relevo: `aBN1 ${hz(relevoHz)}`,
-    limpieza: `aDN ${hz(l.limpiezaHz)}`,
-  };
-  for (const [paso, { detalle: el }] of Object.entries(pasos)) if (el.textContent !== detalle[paso]) el.textContent = detalle[paso];
-
-  let frase;
-  let extra = '';
-  if (estado.terminado) frase = 'Día terminado: sin estímulo, el cerebro queda apagado.';
-  else if (pausado) frase = 'En pausa: sin estímulo, el cerebro queda apagado.';
-  else if (l.cafe) {
-    frase = 'Café: el azúcar enciende sus sensores, pero la señal no llega a la trompita (por eso el café es ilustrativo).';
-    extra = `Azúcar ${hz(c.sensores_azucar)} → Clavicle ${hz(masAlto(c['Clavicle (ANXXX462a)']))} · trompita (MN9) ${hz(masAlto(c.MN9))}`;
-  } else if (!llega.tareas) frase = 'Sin tareas en curso: la antena no recibe nada y el cerebro queda apagado.';
-  else if (!llega.relevo) frase = `${tareasEnCurso(l.tareas)}: la señal llega a la antena, pero no pasa al relevo.`;
-  else if (!llega.limpieza) frase = `${tareasEnCurso(l.tareas)}: la señal llega al relevo, pero la limpieza sigue apagada.`;
-  else if (limpieza < LIMPIEZA_DEBIL) frase = `${tareasEnCurso(l.tareas)}: la señal recorre todo el circuito, pero la limpieza apenas se enciende.`;
-  else frase = `${tareasEnCurso(l.tareas)}: la señal recorre todo el circuito y se enciende la limpieza.`;
-  if (elLectura.textContent !== frase) elLectura.textContent = frase;
-  if (elDetalle.textContent !== extra) elDetalle.textContent = extra;
-}
-
-// Porcentajes enteros que suman exactamente 100 (el resto va a los que más
-// perdieron al redondear)
-function repartirCien(partes) {
-  const base = partes.map((p) => Math.floor(p * 100));
-  let falta = 100 - base.reduce((a, b) => a + b, 0);
-  partes
-    .map((p, i) => [p * 100 - base[i], i])
-    .sort((a, b) => b[0] - a[0])
-    .forEach(([, i]) => {
-      if (falta > 0) {
-        base[i]++;
-        falta--;
-      }
-    });
-  return base;
-}
-
-function refrescarCerebro(dt, estado, fumandoVisible, cafeVisible, ahora) {
+function refrescarCerebro(dt, estado, cafeVisible, ahora) {
+  // Los números se actualizan unas 8 veces por segundo (más se vería nervioso)
+  const toca = ahora - ultimaLectura >= 125;
+  if (toca) {
+    ultimaLectura = ahora;
+    graficoDia.dibujar();
+  }
   if (!cerebro) return;
   // El cerebro sólo mira lo que le llega a la antena (las tareas abiertas) y
   // el azúcar del café; las reglas del juego deciden lo demás.
@@ -959,53 +983,13 @@ function refrescarCerebro(dt, estado, fumandoVisible, cafeVisible, ahora) {
   // Oculto (y ya fuera de la pantalla): no se dibuja, así no gasta nada
   if (vista === 'control' && cerebroOculto && factorIzq === 0) return;
   cerebro.renderizar();
-  // Los números se actualizan unas 8 veces por segundo (más se vería nervioso)
-  if (ahora - ultimaLectura < 125) return;
-  ultimaLectura = ahora;
+  if (!toca) return;
   const l = cerebro.lectura();
-  // Lo principal: qué tan encendida está la limpieza de antenas (0 a 100 %)
-  const pctLimpieza = Math.round(l.limpieza * 100);
-  elLimpieza.textContent = `${pctLimpieza}%`;
-  elLimpiezaBarra.style.width = `${(l.limpieza * 100).toFixed(1)}%`;
-  elActivas.textContent = formato.format(l.activas);
-  const curioso = l.activas
-    ? `Dato curioso: son el ${formatoPct.format(l.nivel * 100)}% del cerebro. La señal no lo prende todo: viaja por un camino.`
-    : 'Sin estímulo: ninguna neurona dispara.';
-  if (elCurioso.textContent !== curioso) elCurioso.textContent = curioso;
+  escribir(elActivas, formato.format(l.activas));
+  escribir(elFrase, estado.terminado ? FRASE_FIN : FRASE);
   // El borde del panel también brilla más mientras más neuronas disparan
   elCerebro.style.setProperty('--actividad', l.intensidad.toFixed(3));
-  const estadoTexto = estado.terminado
-    ? 'Descansa'
-    : pausado
-      ? 'En pausa'
-      : fumandoVisible
-        ? 'Fuma'
-        : cafeVisible
-          ? 'Café'
-          : estado.esperando
-            ? 'Espera'
-            : 'Trabaja';
-  elEstado.textContent = estadoTexto;
-  elExMoscaHace.textContent = QUE_HACE[estadoTexto];
-  elEstado.classList.toggle('fuma', estadoTexto === 'Fuma');
-  elEstado.classList.toggle('cafe', estadoTexto === 'Café');
-  elEstado.classList.toggle('espera', estadoTexto === 'Espera');
-  escribirLectura(l, estado);
-  if (!pausado) graficoDia.registrar(estado.fraccionDelDia, { limpieza: l.limpieza, wip: estado.wip, tareas: l.tareas, activas: l.activas });
-  graficoDia.dibujar(estado.terminado);
-  // Zonas: de dónde viene la actividad (qué parte de las neuronas activas
-  // está en cada zona; suman 100 %)
-  const partes = repartirCien(l.porGrupo.map((g) => g.parte));
-  l.porGrupo.forEach((g, i) => {
-    const fila = filasGrupo[g.id];
-    if (!fila) return;
-    fila.valor.textContent = l.activas ? `${partes[i]}%` : '–';
-    fila.barra.style.width = `${(g.parte * 100).toFixed(1)}%`;
-    fila.li.title = l.activas
-      ? `${formato.format(g.activas)} de las ${formato.format(l.activas)} neuronas activas están en ${g.nombre} (${partes[i]}%)`
-      : 'Sin neuronas activas';
-  });
-  // La tarjetita fija se mantiene al día (sus Hz cambian con las tareas)
+  // La tarjetita fija se mantiene al día (se enciende y se apaga)
   if (fichaFija) escribirFicha(cerebro.neurona(fichaFija.punto));
 }
 
@@ -1026,9 +1010,10 @@ function animar(ahora = performance.now()) {
   const enExhibicion = vista === 'exhibicion';
 
   // Un solo reloj para las dos vistas (respeta la pausa y la velocidad)
-  if (!pausado && !juego.terminado) {
+  if (!pausado && !juego.terminado && !relojDetenido) {
     juego.tick(dtReal * MIN_SIM_POR_SEG_REAL * VELOCIDADES[indiceVelocidad]);
   }
+  registrarDia();
   // Modo demo: al terminar el día, espera un poco y juega el siguiente con el
   // WIP contrario
   if (modoDemo && juego.terminado && !pausado) {
@@ -1046,6 +1031,7 @@ function animar(ahora = performance.now()) {
   }
   refrescarUI(estado, mosca.cigarroEnMano());
 
+  moverCamaraACasa(dtReal);
   controls.update();
   // La foto del escritorio se saca una vez, cuando la mosca ya tiene su pose
   if (!fotoLista) {
@@ -1061,7 +1047,7 @@ function animar(ahora = performance.now()) {
   factorDer = acercar(factorDer, enExhibicion || controlesOculto ? 0 : 1);
   aplicarEspacioPanel();
   renderer.render(scene, camera);
-  refrescarCerebro(dtReal, estado, mosca.cigarroEnMano(), mosca.tomandoCafe(), ahora);
+  refrescarCerebro(dtReal, estado, mosca.tomandoCafe(), ahora);
 }
 
 animar();
@@ -1104,6 +1090,11 @@ if (import.meta.env.DEV) {
     congelar(v) {
       congelado = v;
     },
+    // Detiene sólo el reloj del juego (no es la pausa: la mosca sigue lo que
+    // hacía). Sirve para sostener un momento en una captura sin cambiar el día.
+    detenerReloj(v) {
+      relojDetenido = v;
+    },
     camara(pos, objetivo) {
       camera.position.set(...pos);
       controls.target.set(...(objetivo ?? CAMARA_INICIAL.objetivo.toArray()));
@@ -1138,13 +1129,19 @@ if (import.meta.env.DEV) {
     pausado: () => pausado,
     // Juega el resto del día de una vez (para probar resúmenes)
     completarDia: () => {
-      while (!juego.terminado) juego.tick(1);
+      while (!juego.terminado) {
+        juego.tick(1);
+        registrarDia();
+      }
     },
     // Juega N minutos del día de una vez, con las reglas normales (para
     // capturas a media jornada sin forzar nada)
     adelantar: (minutos) => {
       const fin = juego.minutoActual + minutos;
-      while (!juego.terminado && juego.minutoActual < fin) juego.tick(0.15);
+      while (!juego.terminado && juego.minutoActual < fin) {
+        juego.tick(0.15);
+        registrarDia();
+      }
     },
     casiFin: () => (juego.minutoActual = 18 * 60 - 2),
     camaraInfo: () => ({ pos: camera.position.toArray(), obj: controls.target.toArray(), aspect: camera.aspect }),

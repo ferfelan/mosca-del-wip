@@ -1,62 +1,56 @@
-// Mini gráfico "Actividad del día": la Limpieza de antenas (qué tan encendidas
-// están aDN1 y aDN2 en la simulación del cableado real, de 0 a 100 %, con
-// 10 tareas en curso = 100 %) desde las 09:00 hasta ahora. Así se ve cuándo
-// se encendió. Una sola serie (línea de 2 px + relleno suave), un punto en
-// "ahora", eje con 09:00 · 13:30 · 18:00 y, al pasar el mouse, una línea
-// vertical con la hora, la limpieza y el WIP de ese momento. Si la limpieza
-// no se enciende en todo el día, lo dice en palabras.
+// Mini gráfico "Estrés del día": el estrés de la mosca desde las 09:00 hasta
+// ahora (0 a 100 %, el mismo de la tarjeta "Estado de la mosca"), con la línea
+// del color de su nivel (Tranqui, Ocupada, Estresada, Colapsada) y una marca
+// por cada cigarro y cada café, en una franja bajo la línea. Así se ve en
+// 3 segundos que con más estrés fuma más. Al pasar el mouse: la hora, el
+// nivel y las tareas a la vez de ese momento.
+// Los datos vienen del juego (main.js los registra en cada paso del reloj).
+import { nivelDeEstres, NIVELES_ESTRES } from './brain.js';
 
-const COLOR_LINEA = '#6a86ec'; // validado contra el fondo oscuro del panel
 const SUPERFICIE = '#0c1122';
 const TINTA_TENUE = '#6e778d';
-const TINTA_SUAVE = '#9aa3b8';
 const LINEA_GUIA = 'rgba(255, 255, 255, 0.08)';
-const MUESTRAS = 108; // una cada 5 minutos simulados (09:00 → 18:00)
-const ENCENDIDA = 0.01; // desde el 1 % se cuenta como encendida
-const numero = new Intl.NumberFormat('es-CL');
-const pct = (x) => `${Math.round(x * 100)}%`;
+const COLOR_PAPEL = '#ece6dc'; // el cigarro (igual que en la leyenda)
+const COLOR_BRASA = '#ff7043';
+const COLOR_CAFE = '#c8915e';
+const MUESTRAS = 180; // una cada 3 minutos del juego (09:00 → 18:00)
+const FUENTE = '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
 
 function horaDeFraccion(f) {
   const min = 9 * 60 + Math.round(f * 540);
   return `${String(Math.floor(min / 60)).padStart(2, '0')}:${String(min % 60).padStart(2, '0')}`;
 }
 
-export function crearGraficoDia({ lienzo, tooltip, elPico }) {
+export function crearGraficoDia({ lienzo, tooltip }) {
   const ctx = lienzo.getContext('2d');
-  let datos = new Array(MUESTRAS).fill(null); // { limpieza, wip, tareas, activas }
+  let datos = new Array(MUESTRAS).fill(null); // { estres, enCurso, wip }
+  let marcas = []; // { f, tipo: 'cigarro' | 'cafe' }
   let ultimaFraccion = -1;
   let hover = null;
   let sucio = true;
-  let diaTerminado = false;
 
   function reiniciar() {
     datos = new Array(MUESTRAS).fill(null);
+    marcas = [];
     ultimaFraccion = -1;
     sucio = true;
   }
 
-  // Guarda la limpieza del momento (0 a 1). Si el reloj volvió atrás, es otro día.
+  // El estrés del momento. Si el reloj volvió atrás, es otro día.
   function registrar(fraccion, dato) {
     if (fraccion + 1e-6 < ultimaFraccion) reiniciar();
     ultimaFraccion = fraccion;
     const i = Math.min(MUESTRAS - 1, Math.floor(fraccion * MUESTRAS));
+    const antes = datos[i];
+    if (antes && antes.estres === dato.estres && antes.enCurso === dato.enCurso) return;
     datos[i] = dato;
     sucio = true;
   }
 
-  function resumen() {
-    let pico = null;
-    let suma = 0;
-    let n = 0;
-    let primera = null; // primera vez que se encendió
-    datos.forEach((d, i) => {
-      if (!d) return;
-      suma += d.limpieza;
-      n++;
-      if (!pico || d.limpieza > pico.limpieza) pico = { ...d, i };
-      if (primera === null && d.limpieza >= ENCENDIDA) primera = i;
-    });
-    return { pico, promedio: n ? suma / n : 0, n, primera };
+  // Un cigarro o un café que empieza en ese momento del día
+  function marcar(fraccion, tipo) {
+    marcas.push({ f: fraccion, tipo });
+    sucio = true;
   }
 
   function geometria() {
@@ -67,45 +61,88 @@ export function crearGraficoDia({ lienzo, tooltip, elPico }) {
       lienzo.width = Math.round(w * ratio);
       lienzo.height = Math.round(h * ratio);
     }
-    const margen = { izq: 2, der: 6, arr: 6, aba: 16 };
-    return {
-      ratio,
-      w,
-      h,
-      x0: margen.izq,
-      x1: w - margen.der,
-      y0: margen.arr,
-      y1: h - margen.aba,
-    };
+    // Con espacio (Exhibición), los nombres de los niveles a la derecha
+    const nombres = h >= 90 && w >= 360;
+    const franja = h >= 90 ? 16 : 12; // donde van los cigarros y los cafés
+    const eje = 13;
+    return { ratio, w, h, nombres, x0: 2, x1: w - (nombres ? 66 : 4), y0: 5, y1: h - eje - franja, franja: h - eje - franja / 2 };
   }
 
-  function dibujar(terminado = diaTerminado) {
-    if (terminado !== diaTerminado) {
-      diaTerminado = terminado;
-      sucio = true;
-    }
+  function dibujarCigarro(x, y, escala) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(escala, escala);
+    ctx.fillStyle = COLOR_PAPEL;
+    ctx.beginPath();
+    ctx.roundRect(-5.5, -1.6, 8.5, 3.2, 1);
+    ctx.fill();
+    ctx.fillStyle = COLOR_BRASA;
+    ctx.beginPath();
+    ctx.roundRect(3, -1.6, 2.8, 3.2, 1);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function dibujarCafe(x, y, escala) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(escala, escala);
+    ctx.fillStyle = COLOR_CAFE;
+    ctx.beginPath();
+    ctx.moveTo(-4, -3);
+    ctx.lineTo(2.6, -3);
+    ctx.lineTo(2.6, 1);
+    ctx.arcTo(2.6, 3.4, 0.2, 3.4, 2.2);
+    ctx.lineTo(-1.6, 3.4);
+    ctx.arcTo(-4, 3.4, -4, 1, 2.2);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = COLOR_CAFE;
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.arc(3.4, 0, 1.6, -Math.PI / 2, Math.PI / 2);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function dibujar() {
     if (!sucio) return;
     sucio = false;
     const g = geometria();
     if (g.w < 10 || g.h < 10) return;
     ctx.setTransform(g.ratio, 0, 0, g.ratio, 0, 0);
     ctx.clearRect(0, 0, g.w, g.h);
-    const xDe = (i) => g.x0 + ((i + 0.5) / MUESTRAS) * (g.x1 - g.x0);
-    const yDe = (v) => g.y1 - Math.min(1, Math.max(0, v)) * (g.y1 - g.y0);
+    const xDe = (f) => g.x0 + f * (g.x1 - g.x0);
+    const xMuestra = (i) => xDe((i + 0.5) / MUESTRAS);
+    const yDe = (e) => g.y1 - (Math.min(100, Math.max(0, e)) / 100) * (g.y1 - g.y0);
 
-    // Línea base (hairline), guía del 50 % y del 100 % (lo más que se enciende en el juego)
+    // Guías en el cambio de cada nivel (25, 50 y 75 %) y línea base
     ctx.lineWidth = 1;
     ctx.strokeStyle = LINEA_GUIA;
     ctx.beginPath();
-    for (const v of [0, 0.5, 1]) {
-      ctx.moveTo(g.x0, Math.round(yDe(v)) + 0.5);
-      ctx.lineTo(g.x1, Math.round(yDe(v)) + 0.5);
+    for (const e of [0, 25, 50, 75]) {
+      ctx.moveTo(g.x0, Math.round(yDe(e)) + 0.5);
+      ctx.lineTo(g.x1, Math.round(yDe(e)) + 0.5);
     }
     ctx.stroke();
+    if (g.nombres) {
+      ctx.font = `10px ${FUENTE}`;
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      let desde = 0;
+      for (const n of NIVELES_ESTRES) {
+        const hasta = Math.min(100, n.max);
+        ctx.fillStyle = n.color;
+        ctx.globalAlpha = 0.85;
+        ctx.fillText(n.nombre, g.x1 + 8, yDe((desde + hasta) / 2));
+        desde = hasta;
+      }
+      ctx.globalAlpha = 1;
+    }
 
-    // Eje: 09:00 · 13:30 · 18:00 (texto tenue) y "100%" arriba a la derecha
+    // Eje: 09:00 · 13:30 · 18:00
     ctx.fillStyle = TINTA_TENUE;
-    ctx.font = '10px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+    ctx.font = `10px ${FUENTE}`;
     ctx.textBaseline = 'bottom';
     ctx.textAlign = 'left';
     ctx.fillText('09:00', g.x0, g.h);
@@ -113,14 +150,12 @@ export function crearGraficoDia({ lienzo, tooltip, elPico }) {
     ctx.fillText('13:30', (g.x0 + g.x1) / 2, g.h);
     ctx.textAlign = 'right';
     ctx.fillText('18:00', g.x1, g.h);
-    ctx.textBaseline = 'top';
-    ctx.fillText('100%', g.x1, Math.round(yDe(1)) + 2);
 
     // Tramos con datos (la línea se corta si falta un pedazo)
     const tramos = [];
     let actual = [];
     datos.forEach((d, i) => {
-      if (d) actual.push([xDe(i), yDe(d.limpieza)]);
+      if (d) actual.push({ x: xMuestra(i), y: yDe(d.estres), d });
       else if (actual.length) {
         tramos.push(actual);
         actual = [];
@@ -128,81 +163,65 @@ export function crearGraficoDia({ lienzo, tooltip, elPico }) {
     });
     if (actual.length) tramos.push(actual);
 
-    tramos.forEach((t) => {
-      if (t.length < 2) return;
-      // Relleno suave (~12 %)
+    for (const t of tramos) {
+      if (t.length < 2) continue;
+      // Relleno suave bajo la línea
       ctx.beginPath();
-      ctx.moveTo(t[0][0], g.y1);
-      t.forEach(([x, y]) => ctx.lineTo(x, y));
-      ctx.lineTo(t[t.length - 1][0], g.y1);
+      ctx.moveTo(t[0].x, g.y1);
+      t.forEach((p) => ctx.lineTo(p.x, p.y));
+      ctx.lineTo(t[t.length - 1].x, g.y1);
       ctx.closePath();
-      ctx.fillStyle = 'rgba(106, 134, 236, 0.14)';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
       ctx.fill();
-      // Línea de 2 px
-      ctx.beginPath();
-      t.forEach(([x, y], k) => (k ? ctx.lineTo(x, y) : ctx.moveTo(x, y)));
+      // Línea de 2 px del color del nivel de cada momento
       ctx.lineWidth = 2;
       ctx.lineJoin = 'round';
       ctx.lineCap = 'round';
-      ctx.strokeStyle = COLOR_LINEA;
-      ctx.stroke();
-    });
+      for (let k = 1; k < t.length; k++) {
+        ctx.beginPath();
+        ctx.moveTo(t[k - 1].x, t[k - 1].y);
+        ctx.lineTo(t[k].x, t[k].y);
+        ctx.strokeStyle = nivelDeEstres(t[k].d.estres).color;
+        ctx.stroke();
+      }
+    }
 
-    // Si la limpieza sigue en 0, se dice en palabras (sobre la línea apagada)
-    const r = resumen();
-    if (r.n && r.primera === null) {
-      ctx.fillStyle = TINTA_SUAVE;
-      ctx.font = '11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      const texto = diaTerminado ? 'La limpieza no se encendió en todo el día (0%)' : 'La limpieza sigue apagada (0%)';
-      ctx.fillText(texto, (g.x0 + g.x1) / 2, (g.y0 + g.y1) / 2);
+    // Una marca por cada cigarro y cada café, en la franja bajo la línea
+    const escala = g.h >= 90 ? 1.5 : 1.1;
+    for (const m of marcas) {
+      if (m.tipo === 'cigarro') dibujarCigarro(xDe(m.f), g.franja, escala);
+      else dibujarCafe(xDe(m.f), g.franja, escala);
     }
 
     // Punto de "ahora" con anillo del color del fondo
     const ultimo = tramos.length ? tramos[tramos.length - 1].at(-1) : null;
-    if (ultimo) {
+    const punto = (p) => {
       ctx.beginPath();
-      ctx.arc(ultimo[0], ultimo[1], 4, 0, Math.PI * 2);
-      ctx.fillStyle = COLOR_LINEA;
+      ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+      ctx.fillStyle = nivelDeEstres(p.d.estres).color;
       ctx.fill();
       ctx.lineWidth = 2;
       ctx.strokeStyle = SUPERFICIE;
       ctx.stroke();
-    }
+    };
+    if (ultimo) punto(ultimo);
 
     // Línea del mouse
     if (hover !== null && datos[hover]) {
-      const x = Math.round(xDe(hover)) + 0.5;
+      const x = Math.round(xMuestra(hover)) + 0.5;
       ctx.beginPath();
       ctx.moveTo(x, g.y0);
       ctx.lineTo(x, g.y1);
       ctx.lineWidth = 1;
       ctx.strokeStyle = 'rgba(233, 237, 247, 0.45)';
       ctx.stroke();
-      ctx.beginPath();
-      ctx.arc(xDe(hover), yDe(datos[hover].limpieza), 4, 0, Math.PI * 2);
-      ctx.fillStyle = COLOR_LINEA;
-      ctx.fill();
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = SUPERFICIE;
-      ctx.stroke();
+      punto({ x: xMuestra(hover), y: yDe(datos[hover].estres), d: datos[hover] });
     }
 
-    // Resumen: pico y promedio (texto en tinta normal, no del color de la línea)
-    if (r.pico) {
-      const hora = horaDeFraccion(r.pico.i / MUESTRAS);
-      elPico.textContent = `pico ${pct(r.pico.limpieza)} · prom. ${pct(r.promedio)}`;
-      elPico.title = r.primera === null
-        ? 'La limpieza de antenas no se ha encendido: con 1 a 3 tareas en curso la señal llega al relevo, pero no a la limpieza.'
-        : `Limpieza de antenas: pico de ${pct(r.pico.limpieza)} a las ${hora}; promedio del día ${pct(r.promedio)}. Se encendió por primera vez a las ${horaDeFraccion(r.primera / MUESTRAS)}.`;
-      lienzo.setAttribute('aria-label', r.primera === null
-        ? 'Limpieza de antenas durante el día: apagada (0%).'
-        : `Limpieza de antenas durante el día: pico de ${pct(r.pico.limpieza)} a las ${hora}, promedio ${pct(r.promedio)}.`);
-    } else {
-      elPico.textContent = 'empieza a las 09:00';
-      elPico.title = '';
-    }
+    const cigarros = marcas.filter((m) => m.tipo === 'cigarro').length;
+    const cafes = marcas.length - cigarros;
+    const ahora = ultimo ? `ahora ${nivelDeEstres(ultimo.d.estres).nombre}` : 'el día empieza a las 09:00';
+    lienzo.setAttribute('aria-label', `Estrés de la mosca durante el día: ${ahora}; ${cigarros} ${cigarros === 1 ? 'cigarro' : 'cigarros'} y ${cafes} ${cafes === 1 ? 'café' : 'cafés'}.`);
   }
 
   // ---- Mouse: la línea vertical busca la muestra más cercana con datos ----
@@ -212,7 +231,6 @@ export function crearGraficoDia({ lienzo, tooltip, elPico }) {
     const x = e.clientX - r.left;
     let i = Math.round(((x - g.x0) / (g.x1 - g.x0)) * MUESTRAS - 0.5);
     i = Math.max(0, Math.min(MUESTRAS - 1, i));
-    // la más cercana con datos
     let mejor = null;
     for (let d = 0; d < MUESTRAS; d++) {
       if (datos[i - d]) {
@@ -231,9 +249,11 @@ export function crearGraficoDia({ lienzo, tooltip, elPico }) {
       return;
     }
     const dato = datos[mejor];
-    // Si estaba terminando lo empezado (más tareas abiertas que el WIP), se dice
-    const tareas = dato.tareas !== dato.wip && dato.tareas > 0 ? `${dato.tareas} en curso (WIP ${dato.wip})` : `WIP ${dato.wip}`;
-    tooltip.innerHTML = `<strong>${horaDeFraccion(mejor / MUESTRAS)}</strong> · limpieza ${pct(dato.limpieza)} · ${tareas} · ${numero.format(dato.activas)} neuronas`;
+    const nivel = nivelDeEstres(dato.estres).nombre;
+    // ¿empezó un cigarro o un café cerca de esa hora? (± 6 minutos)
+    const cerca = marcas.filter((m) => Math.abs(m.f - (mejor + 0.5) / MUESTRAS) < 6 / 540);
+    const evento = cerca.some((m) => m.tipo === 'cigarro') ? ' · sale a fumar' : cerca.length ? ' · toma café' : '';
+    tooltip.innerHTML = `<strong>${horaDeFraccion(mejor / MUESTRAS)}</strong> · ${nivel} (${Math.round(dato.estres)}%) · ${dato.enCurso} a la vez${evento}`;
     tooltip.hidden = false;
     const xPunto = g.x0 + ((mejor + 0.5) / MUESTRAS) * (g.x1 - g.x0);
     const ancho = tooltip.offsetWidth;
@@ -249,5 +269,5 @@ export function crearGraficoDia({ lienzo, tooltip, elPico }) {
   lienzo.addEventListener('pointerleave', alSalir);
   new ResizeObserver(() => (sucio = true)).observe(lienzo);
 
-  return { registrar, reiniciar, dibujar };
+  return { registrar, marcar, reiniciar, dibujar };
 }

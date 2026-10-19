@@ -13,8 +13,7 @@
         <span class="marca-sub">La misma partida, en grande</span>
       </div>
       <div class="barra-datos">
-        <span class="chip-datos" id="chip-datos">Male CNS v1.0 · cerebro + cordón nervioso</span>
-        <span class="atajo"><kbd>Espacio</kbd> pausa <kbd>R</kbd> otro día <kbd>1–9</kbd> WIP <kbd>D</kbd> demo <kbd>E</kbd> volver</span>
+        <span class="atajo"><kbd>Espacio</kbd> pausa <kbd>R</kbd> otro día <kbd>1–9</kbd> WIP <kbd>D</kbd> demo <kbd>E</kbd> volver <span class="atajo-extra">· doble clic: vista inicial</span></span>
       </div>
     </header>
 
@@ -22,28 +21,18 @@
       <canvas id="lienzo-3d"></canvas>
       <div class="rotulo-escena solo-exhibicion">
         <span class="punto-vivo" aria-hidden="true"></span>
-        <span class="ex-situacion" id="ex-pausa" hidden>En pausa</span>
-        <span class="ex-situacion ex-terminado">Día terminado</span>
-        <span id="ex-wip">WIP 9</span>
-        <span class="ex-ritmo" id="ex-ritmo" hidden>x1</span>
-        <span class="sep">·</span>
+        <span class="ex-situacion ex-terminado">Día terminado ·</span>
         <span id="ex-hora">09:00</span>
-        <span class="sep">·</span>
-        <span id="ex-hechas">0 terminadas</span>
-        <span class="sep">·</span>
-        <span id="ex-colillas">0 colillas</span>
-        <span class="sep">·</span>
-        <span id="ex-cafes">0 cafés</span>
-        <span class="sep">·</span>
-        <span title="Tiempo por tarea: tiempo promedio desde que una tarea entra a «En curso» hasta que se termina"><span class="rotulo-largo"><span id="ex-tiempo">– min</span> por tarea</span><span class="rotulo-corto"><span id="ex-tiempo-corto">–</span>/tarea</span></span>
-        <span class="sep">·</span>
-        <span id="ex-estres">Tranqui</span>
+        <span class="ex-ritmo" id="ex-ritmo" hidden>x1</span>
       </div>
       <div id="ex-inicio" class="aviso-inicio" role="status">
         <span class="aviso-inicio-tipo" id="ex-inicio-tipo">En vivo</span>
-        <span class="aviso-inicio-wip" id="ex-inicio-wip">WIP 9</span>
-        <span id="ex-inicio-texto">Muchas tareas a la vez</span>
+        <span class="aviso-inicio-carga" id="ex-inicio-texto">Muchas tareas a la vez</span>
       </div>
+      <button id="btn-vista-inicial" class="boton-vista-inicial" type="button" title="Volver la oficina a su vista inicial (también con doble clic en la escena)" hidden>
+        <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7M3 2.5v3h3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Vista inicial
+      </button>
       <div id="ex-mosca" class="estado-mosca solo-exhibicion" aria-label="Estado de la mosca">
         <span class="estado-mosca-titulo">Estado de la mosca</span>
         <div class="estado-mosca-fila">
@@ -118,6 +107,10 @@
           <span class="etiqueta">Tiempo por tarea</span>
           <span class="tiempo-tarea-valor" id="m-tiempo">–</span>
         </div>
+        <div class="bloque-fila eficiencia" title="De cada hora, cuántos minutos rinden de verdad: descuenta los cambios de tarea, el tiempo fumando o tomando café y las esperas por bloqueos (promedio desde las 09:00).">
+          <span class="etiqueta">Eficiencia</span>
+          <span class="tiempo-tarea-valor"><span id="m-eficiencia">–</span> <span class="eficiencia-de">de cada hora</span></span>
+        </div>
         <div class="estres">
           <div class="bloque-fila">
             <span class="etiqueta">Estrés</span>
@@ -150,7 +143,7 @@
       <header class="cerebro-cabecera">
         <div>
           <h2>Cerebro en vivo</h2>
-          <p class="cerebro-sub" title="Posiciones reales del conectoma MaleCNS. Las luces son la actividad simulada del cableado real (modelo de Shiu y otros 2024, peso 0,090 mV), precalculada para cada cantidad de tareas abiertas.">Neuronas reales<span class="solo-exhibicion-inline"> de la mosca · Male CNS v1.0 · cerebro + cordón nervioso</span></p>
+          <p class="cerebro-sub">Arriba el cerebro; abajo, el cordón nervioso</p>
         </div>
         <div class="cerebro-acciones solo-control">
           <button id="btn-exhibicion" class="boton-exhibicion" type="button" title="Vista exhibición: pantalla completa para mostrar (tecla E)">
@@ -174,59 +167,63 @@
             <button id="btn-centrar-cerebro" class="boton-centrar" type="button" title="Volver a la vista inicial y a girar solo (también doble clic en el cerebro)">Centrar</button>
           </div>
         </div>
-        <div class="cerebro-lado">
-          <div class="cerebro-contadores">
-            <div class="contador contador-limpieza" title="Qué tan encendido está el circuito que manda a limpiar las antenas (aDN1 y aDN2), comparado con su máximo en el juego: 10 tareas en curso = 100%.">
-              <span class="contador-cabeza">
-                <span class="contador-label">Limpieza de antenas</span>
-                <span class="contador-valor" id="c-limpieza">0%</span>
-              </span>
-              <span class="limpieza-barra" aria-hidden="true"><span id="c-limpieza-barra"></span></span>
-            </div>
-            <div class="contador">
-              <span class="contador-valor" id="c-activas">0</span>
-              <span class="contador-label">neuronas activas</span>
-            </div>
-            <div class="contador">
-              <span class="contador-valor" id="c-estado">Trabaja</span>
-              <span class="contador-label">estado</span>
-            </div>
-          </div>
-          <p class="cerebro-curioso" id="c-curioso"></p>
-          <div class="cerebro-zonas">
-            <span class="etiqueta-oscura">De dónde viene la actividad</span>
-            <ul class="cerebro-grupos" id="cerebro-grupos"></ul>
-          </div>
+        <div class="cerebro-lectura">
+          <p class="cerebro-contador"><strong id="c-activas">0</strong> neuronas encendidas</p>
+          <p class="cerebro-frase" id="cerebro-frase">Neuronas reales de una mosca. Mientras más tareas tiene encima, más se enciende.</p>
         </div>
+        <section class="cifras" aria-labelledby="cifras-titulo">
+          <h3 class="cifras-titulo" id="cifras-titulo">Hoy en la oficina</h3>
+          <div class="cifra cifra-carga" id="cifra-carga" data-carga="ok" title="Tareas abiertas a la vez, contra el límite sano (3)">
+            <span class="cifra-label">Carga</span>
+            <span class="cifra-valor"><span id="cf-carga">3</span> <small>a la vez</small></span>
+            <span class="carga-segmentos" id="carga-segmentos" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+            <span class="cifra-sub">límite sano 3</span>
+          </div>
+          <div class="cifra cifra-hechas">
+            <span class="cifra-label">Terminadas</span>
+            <span class="cifra-valor" id="cf-hechas">0</span>
+          </div>
+          <div class="cifra cifra-tiempo" title="Tiempo promedio desde que una tarea entra a «En curso» hasta que se termina">
+            <span class="cifra-label">Tiempo por tarea</span>
+            <span class="cifra-valor" id="cf-tiempo">–</span>
+          </div>
+          <div class="cifra cifra-eficiencia" title="De cada hora, cuántos minutos rinden de verdad: descuenta los cambios de tarea, el tiempo fumando o tomando café y las esperas por bloqueos">
+            <span class="cifra-label">Eficiencia</span>
+            <span class="cifra-valor"><span id="cf-eficiencia">–</span> <small>de cada hora</small></span>
+            <span class="eficiencia-barra" aria-hidden="true"><span id="cf-eficiencia-barra"></span></span>
+          </div>
+          <div class="cifra cifra-colillas">
+            <span class="cifra-label">Colillas</span>
+            <span class="cifra-valor" id="cf-colillas">0</span>
+          </div>
+          <div class="cifra cifra-cafes">
+            <span class="cifra-label">Cafés</span>
+            <span class="cifra-valor" id="cf-cafes">0</span>
+          </div>
+        </section>
         <div class="cerebro-dia">
           <div class="cerebro-dia-cabecera">
-            <span class="etiqueta-oscura" title="La línea muestra la Limpieza de antenas durante el día (0 a 100%)">Actividad del día · limpieza</span>
-            <span class="cerebro-dia-pico" id="cerebro-dia-pico">empieza a las 09:00</span>
+            <span class="etiqueta-oscura">Estrés del día</span>
+            <span class="dia-leyenda" aria-hidden="true">
+              <span><svg viewBox="0 0 14 8" width="14" height="8"><rect x="1" y="2.5" width="9" height="3" rx="1" fill="#ece6dc"/><rect x="10" y="2.5" width="3" height="3" rx="1" fill="#ff7043"/></svg>cigarro</span>
+              <span><svg viewBox="0 0 12 10" width="12" height="10"><path d="M1.5 2h6.5v4a2.5 2.5 0 0 1-2.5 2.5h-1.5A2.5 2.5 0 0 1 1.5 6z" fill="#c8915e"/><path d="M8 3.2h1a1.6 1.6 0 0 1 0 3.2H8" fill="none" stroke="#c8915e" stroke-width="1.2"/></svg>café</span>
+            </span>
           </div>
           <div class="cerebro-dia-grafico">
-            <canvas id="lienzo-dia" role="img" aria-label="Limpieza de antenas durante el día"></canvas>
+            <canvas id="lienzo-dia" role="img" aria-label="Estrés de la mosca durante el día"></canvas>
             <div class="cerebro-dia-tooltip" id="cerebro-dia-tooltip" hidden></div>
           </div>
         </div>
         <div class="cerebro-pie">
-          <ol class="cerebro-cadena" id="cerebro-cadena" aria-label="Hasta dónde llega la señal">
-            <li data-paso="tareas"><span class="paso-nombre">Tareas</span><span class="paso-detalle"></span></li>
-            <li data-paso="antena"><span class="paso-nombre">Antena</span><span class="paso-detalle"></span></li>
-            <li data-paso="relevo"><span class="paso-nombre">Relevo</span><span class="paso-detalle"></span></li>
-            <li data-paso="limpieza"><span class="paso-nombre">Limpieza</span><span class="paso-detalle"></span></li>
-          </ol>
-          <p class="cerebro-nota" id="cerebro-lectura" aria-live="polite">Cada punto es una neurona real de la mosca.</p>
-          <p class="cerebro-detalle" id="cerebro-detalle"></p>
           <ul class="cerebro-leyenda" aria-label="Cómo leer el cerebro">
-            <li><span class="ley-punto ley-gris" aria-hidden="true"></span>reposo</li>
-            <li><span class="ley-punto ley-color" aria-hidden="true"></span>dispara</li>
-            <li><span class="ley-punto ley-anillo" aria-hidden="true"></span>circuito</li>
-            <li><span class="ley-linea" aria-hidden="true"></span>recorrido</li>
+            <li><span class="ley-punto ley-gris" aria-hidden="true"></span>en reposo</li>
+            <li><span class="ley-punto ley-color" aria-hidden="true"></span>encendida</li>
+            <li><span class="ley-punto ley-anillo" aria-hidden="true"></span>camino de la señal</li>
           </ul>
-          <p class="cerebro-aviso">
-            Luces simuladas del cableado real. <span class="sin-corte">El cigarro es un disfraz.<button id="btn-info-cerebro" class="boton-info" type="button" aria-expanded="false" aria-controls="cerebro-info" title="Qué es real y qué es juego en el cerebro">i</button></span>
+          <p class="cerebro-pie-fila">
+            <button id="btn-es-real" class="boton-es-real" type="button" aria-expanded="false" aria-controls="cerebro-info">¿Es real?</button>
+            <span class="cerebro-credito">Datos: Male CNS v1.0 · CC BY 4.0</span>
           </p>
-          <p class="cerebro-credito" id="cerebro-credito"><span class="solo-control-inline">Datos: Male CNS v1.0 · CC BY 4.0</span><span class="credito-largo">Datos: Male CNS v1.0 (Janelia, Cambridge, MRC LMB y Google) · CC BY 4.0</span></p>
         </div>
       </div>
     </section>
@@ -235,17 +232,13 @@
 
     <div id="cerebro-info" class="cerebro-info" role="dialog" aria-labelledby="cerebro-info-titulo" hidden>
       <div class="cerebro-info-cabeza">
-        <strong id="cerebro-info-titulo">Qué es real y qué es juego</strong>
+        <strong id="cerebro-info-titulo">¿Es real?</strong>
         <button id="btn-cerrar-info" class="boton-info-cerrar" type="button" aria-label="Cerrar">×</button>
       </div>
-      <p><b>Las neuronas son reales.</b> Cada punto es una neurona de la mosca en su posición real, y las líneas del recorrido son conexiones reales (Male CNS v1.0).</p>
-      <p><b>Las luces son simuladas.</b> Con ese cableado real, un modelo calcula cuánto dispara cada neurona (modelo de Shiu y otros 2024, peso 0,090 mV). Se calculó una vez para cada cantidad de tareas en curso: el juego sólo lee la tabla.</p>
-      <p><b>La cadena.</b> Las tareas en curso mueven la <b>antena</b> (sensores JO-C, JO-E y JO-F, de 20 a 220 Hz según las tareas). El <b>relevo</b> es aBN1 (SAD093). La <b>limpieza</b> son aDN1 (DNg62) y aDN2 (DNge078): mandan a las patas a limpiar las antenas.</p>
-      <p><b>Limpieza de antenas, de 0 a 100%.</b> Cuánto disparan aDN1 y aDN2, comparado con su máximo en el juego: 10 tareas en curso = 100% (<span data-info="limpieza-max">78</span> Hz en promedio).</p>
-      <p><b>El cigarro es un disfraz</b> de la limpieza de antenas. Pero cuándo fuma lo deciden las reglas del juego, basadas en estudios de estrés, no estas luces.</p>
-      <p><b>El café es ilustrativo.</b> En la simulación el azúcar enciende sus sensores, pero la señal no llega a la trompita (MN9 queda en 0 Hz).</p>
-      <p><b>El recorrido.</b> El pulso que viaja por las líneas va lento sólo para que se vea; una señal real tarda milésimas de segundo.</p>
-      <p><b>Dato curioso.</b> Aun con 10 tareas se encienden <span data-info="activas-max">1.398</span> de <span data-info="simuladas">164.587</span> neuronas simuladas (<span data-info="pct-max">0,8%</span>): la señal no prende todo el cerebro, viaja por un camino.</p>
+      <p><b>Las neuronas y sus conexiones son de una mosca real.</b></p>
+      <p>Las tareas las traducimos en una señal y simulamos cómo responde su cerebro.</p>
+      <p>Las moscas no fuman: el cigarro es un disfraz.</p>
+      <p>Los números de la oficina son ilustrativos; la tendencia tiene respaldo en estudios.</p>
       <p class="cerebro-info-credito">Datos: Male CNS v1.0 (FlyEM / HHMI Janelia, Univ. de Cambridge, MRC LMB y Google Research), licencia CC BY 4.0.</p>
     </div>
 

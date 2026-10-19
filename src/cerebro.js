@@ -15,9 +15,10 @@
 // = recorrido real de la señal (conexiones de MaleCNS) con un pulso que viaja
 // (su velocidad es sólo para que se vea). Los nombres sólo en la tarjetita.
 //
-// Métrica principal: "Limpieza de antenas" = qué tan encendidas están aDN1 y
-// aDN2 (promedio de sus Hz) comparado con su máximo en el juego (10 tareas
-// abiertas = 100 %).
+// En pantalla sólo se muestra "neuronas encendidas" (la pantalla habla el
+// idioma de la oficina, pedido de Felipe 2026-10-19). lectura() también da la
+// "limpieza de antenas" (aDN1 y aDN2 contra su máximo con 10 tareas) y las
+// zonas: van al informe, no a la pantalla.
 import * as THREE from 'three';
 
 // Un color neón por zona, como en las imágenes de referencia.

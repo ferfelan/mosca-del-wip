@@ -33,7 +33,7 @@ async function abrirJuego(p, { sinPaneles = false } = {}) {
   await p.waitForFunction(() => window.__mosca && window.__mosca.cerebro());
   if (sinPaneles) {
     // sólo la escena: sin botones ni avisos encima
-    await p.addStyleTag({ content: '#btn-mostrar-cerebro,#btn-mostrar-controles,#banner-fin-dia,#ex-inicio{display:none!important}' });
+    await p.addStyleTag({ content: '#btn-mostrar-cerebro,#btn-mostrar-controles,#banner-fin-dia,#ex-inicio,#btn-vista-inicial{display:none!important}' });
   }
 }
 

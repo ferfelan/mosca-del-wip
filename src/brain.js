@@ -123,6 +123,10 @@ export class DayBrain {
     this.tareasMedidas = 0;
     this.areaEnCurso = 0; // tareas en curso × minutos (para el WIP promedio)
     this.areaEstres = 0; // estrés × minutos (para el estrés promedio)
+    // Eficiencia: minutos que rinden de verdad (el mismo avance que reciben
+    // las tareas). No rinden los cambios de tarea, fumar, el café ni esperar
+    // por bloqueos.
+    this.minutosRinden = 0;
     this.estresBase = 10; // el estrés que ponen las tareas abiertas
     this.estres = 10; // el que se siente: el de base más el alivio o rebote de fumar
     this.estresMax = 10;
@@ -182,6 +186,12 @@ export class DayBrain {
   // terminó (si venía de ayer, cuenta lo de ayer; la noche no cuenta).
   get tiempoPorTarea() {
     return this.tareasMedidas ? this.sumaTiempoPorTarea / this.tareasMedidas : null;
+  }
+
+  // Eficiencia: de cada hora, qué parte rinde de verdad (0 a 1; × 60 = minutos
+  // de cada hora). Promedio desde las 09:00.
+  get eficiencia() {
+    return this.minutosDeDia >= 1 ? this.minutosRinden / this.minutosDeDia : null;
   }
 
   horaTexto() {
@@ -252,6 +262,8 @@ export class DayBrain {
       const tarea = trabajables[this.punteroRoundRobin % enfoque];
       const rinde = porWip(RENDIMIENTO_POR_WIP, enfoque) * (1 - RESIDUO_POR_TAREA_ESPERANDO) ** esperando;
       tarea.minutosRestantes -= dt * rinde;
+      // (si la terminó a mitad del paso, lo que sobra no cuenta)
+      this.minutosRinden += dt * rinde + Math.min(0, tarea.minutosRestantes);
 
       // A veces, a mitad de camino, queda esperando a otra persona
       if (tarea.bloqueo && tarea.minutosRestantes > 0 && tarea.minutosRestantes <= tarea.bloqueo.cuandoQuedan) {
@@ -354,6 +366,7 @@ export class DayBrain {
       cafes: this.cafes,
       tomandoCafe: this.tomandoCafe,
       tiempoPorTarea: this.tiempoPorTarea,
+      eficiencia: this.eficiencia,
       terminado: this.terminado,
       evento: this.eventoEsteTick,
     };
@@ -366,6 +379,7 @@ export class DayBrain {
       colillas: this.colillas,
       cafes: this.cafes,
       tiempoPorTarea: this.tiempoPorTarea === null ? null : Math.round(this.tiempoPorTarea),
+      eficiencia: this.eficiencia === null ? null : Math.round(this.eficiencia * 60), // minutos de cada hora
       estresMax: Math.round(this.estresMax), // siempre en % (0 a 100)
     };
   }
@@ -383,6 +397,7 @@ export class DayBrain {
       colillas: this.colillas,
       cafes: this.cafes,
       minutosEsperando: this.minutosEsperando,
+      minutosRinden: this.minutosRinden,
     };
   }
 }

@@ -10,6 +10,10 @@
 //  - bajar el WIP a mitad del día (10 → 2 a las 12:00): las tareas empezadas
 //    drenan de a poco y el estrés pasa de Colapsada a Tranqui en 2 a 3,5
 //    horas (con bloqueos, unas 3 h 10 min).
+//  - la Eficiencia (de cada hora, cuántos minutos rinden de verdad): sale del
+//    mismo cálculo del juego (los minutos que rinden = el avance que recibieron
+//    las tareas en el día, diferencia < 0,5 %), es más alta en el mejor WIP y
+//    baja en cada escalón desde ahí.
 //
 // Uso: node scripts/simular-dias.mjs            (200 días por WIP)
 //      DIAS=500 node scripts/simular-dias.mjs
@@ -21,11 +25,16 @@ const PASO = Number(process.env.PASO ?? 0.15); // minutos simulados por cuadro: 
 
 const filas = [];
 for (let wip = 1; wip <= 10; wip++) {
-  const t = { hechas: 0, medidas: 0, sumaTiempo: 0, minutos: 0, areaWip: 0, colillas: 0, cafes: 0, estres: 0, estresMax: 0, espera: 0 };
+  const t = { hechas: 0, medidas: 0, sumaTiempo: 0, minutos: 0, areaWip: 0, colillas: 0, cafes: 0, estres: 0, estresMax: 0, espera: 0, rinden: 0, avance: 0 };
+  // Trabajo que les falta a todas las tareas (en curso y por hacer)
+  const pendiente = (dia) => [...dia.enCurso, ...dia.porHacer].reduce((s, x) => s + Math.max(0, x.minutosRestantes), 0);
   for (let d = 0; d < DIAS; d++) {
     const dia = new DayBrain(wip);
+    const alEmpezar = pendiente(dia);
     while (!dia.terminado) dia.tick(PASO);
     const m = dia.medidas();
+    t.rinden += m.minutosRinden;
+    t.avance += alEmpezar - pendiente(dia); // lo que avanzaron las tareas hoy
     t.hechas += m.hechas;
     t.medidas += m.tareasMedidas;
     t.sumaTiempo += m.sumaTiempoPorTarea;
@@ -49,6 +58,8 @@ for (let wip = 1; wip <= 10; wip++) {
     estres: t.estres / DIAS,
     estresMax: t.estresMax / DIAS,
     espera: t.espera / DIAS,
+    eficiencia: (t.rinden / t.minutos) * 60, // minutos de cada hora
+    calce: (t.rinden - t.avance) / t.avance,
     wipPromedio,
     little: porMinuto * tiempoPorTarea,
   });
@@ -57,15 +68,18 @@ for (let wip = 1; wip <= 10; wip++) {
 const f1 = (n) => n.toFixed(1).replace('.', ',');
 const pad = (s, n) => String(s).padStart(n);
 console.log(`\n${DIAS} días por cada WIP (promedio por día)\n`);
-console.log(' WIP  Terminadas  Tiempo/tarea  Espera*  Colillas  Cafés  Estrés prom.  Nivel       │ Little: WIP prom.  terminadas/min × tiempo  diferencia');
+console.log(' WIP  Terminadas  Tiempo/tarea  Eficiencia**  Espera*  Colillas  Cafés  Estrés prom.  Nivel       │ Little: WIP prom.  terminadas/min × tiempo  diferencia');
 for (const r of filas) {
   const dif = ((r.little - r.wipPromedio) / r.wipPromedio) * 100;
   console.log(
-    `${pad(r.wip, 4)}  ${pad(f1(r.hechas), 10)}  ${pad(Math.round(r.tiempoPorTarea) + ' min', 12)}  ${pad(Math.round(r.espera) + ' min', 7)}  ${pad(f1(r.colillas), 8)}  ${pad(f1(r.cafes), 5)}  ${pad(Math.round(r.estres) + '%', 12)}  ${nivelDeEstres(r.estres).nombre.padEnd(10)}  │ ${pad(f1(r.wipPromedio), 17)}  ${pad(f1(r.little), 23)}  ${pad((dif >= 0 ? '+' : '') + f1(dif) + '%', 10)}`,
+    `${pad(r.wip, 4)}  ${pad(f1(r.hechas), 10)}  ${pad(Math.round(r.tiempoPorTarea) + ' min', 12)}  ${pad(Math.round(r.eficiencia) + ' min/h', 12)}  ${pad(Math.round(r.espera) + ' min', 7)}  ${pad(f1(r.colillas), 8)}  ${pad(f1(r.cafes), 5)}  ${pad(Math.round(r.estres) + '%', 12)}  ${nivelDeEstres(r.estres).nombre.padEnd(10)}  │ ${pad(f1(r.wipPromedio), 17)}  ${pad(f1(r.little), 23)}  ${pad((dif >= 0 ? '+' : '') + f1(dif) + '%', 10)}`,
   );
 }
 
 console.log(' * Espera: minutos al día sin poder trabajar porque todas sus tareas en curso estaban bloqueadas.');
+console.log(' ** Eficiencia: de cada hora, cuántos minutos rinden de verdad (descuenta cambios de tarea, fumar, café y esperas).');
+const peorCalce = filas.reduce((a, b) => (Math.abs(b.calce) > Math.abs(a.calce) ? b : a));
+console.log(`    Calza con el avance de las tareas en todos los WIP (la mayor diferencia: ${f1(Math.abs(peorCalce.calce) * 100)}%, WIP ${peorCalce.wip}).`);
 const mejor = filas.reduce((a, b) => (b.hechas > a.hechas ? b : a));
 console.log(`\n Mejor WIP: ${mejor.wip} (${f1(mejor.hechas)} terminadas al día). WIP 1: ${f1(filas[0].hechas)} · WIP 10: ${f1(filas[9].hechas)}.`);
 
@@ -82,6 +96,13 @@ for (let i = 1; i < filas.length; i++) {
   if (a.wip >= 3 && !(b.colillas > a.colillas)) problemas.push(`WIP ${a.wip}→${b.wip}: las colillas no suben`);
   if (!(b.estres > a.estres)) problemas.push(`WIP ${a.wip}→${b.wip}: el estrés promedio no sube`);
 }
+// Eficiencia: sale del mismo cálculo del juego y sigue la misma U invertida
+const mejorEficiencia = filas.reduce((a, b) => (b.eficiencia > a.eficiencia ? b : a));
+if (mejorEficiencia.wip !== mejor.wip) problemas.push(`la eficiencia es más alta con WIP ${mejorEficiencia.wip}, no con el mejor WIP (${mejor.wip})`);
+for (let i = mejor.wip; i < filas.length; i++) {
+  if (!(filas[i].eficiencia < filas[i - 1].eficiencia)) problemas.push(`WIP ${filas[i - 1].wip}→${filas[i].wip}: la eficiencia no baja`);
+}
+for (const r of filas) if (Math.abs(r.calce) > 0.005) problemas.push(`WIP ${r.wip}: la eficiencia no calza con el avance de las tareas (${f1(r.calce * 100)}%)`);
 for (const r of filas.slice(0, 3)) {
   if (r.colillas > 0) problemas.push(`WIP ${r.wip} fuma (${f1(r.colillas)} colillas)`);
   if (nivelDeEstres(r.estres).nombre !== 'Tranqui') problemas.push(`WIP ${r.wip} no queda Tranqui`);
@@ -173,5 +194,6 @@ if (problemas.length) {
 } else {
   console.log(`Forma: todo bien (U invertida: el mejor WIP es ${mejor.wip}; desde ahí cada tarea extra suma costo).`);
   console.log('Ley de Little: se cumple en todos los WIP (diferencia < 5%).');
+  console.log(`Eficiencia: sale del mismo cálculo del juego y es más alta en el mejor WIP (${Math.round(mejorEficiencia.eficiencia)} min de cada hora con WIP ${mejorEficiencia.wip}).`);
   console.log('Bajar el WIP: lo empezado drena de a poco y el estrés baja más lento de lo que sube (2 a 3,5 h).');
 }

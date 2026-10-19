@@ -18,9 +18,11 @@ const leer = () => p.evaluate(() => ({
   hora: window.__mosca.estado().hora,
   wip: window.__mosca.estado().wip,
   slider: document.getElementById('wip').value,
-  cerebro: document.getElementById('c-estado').textContent,
+  cerebro: document.getElementById('ex-mosca').dataset.hace, // qué hace la mosca (Trabaja, En pausa, Descansa…)
   rotuloEstado: document.querySelector('.rotulo-escena').dataset.estado,
-  rotuloWip: document.getElementById('ex-wip').textContent,
+  carga: document.getElementById('cf-carga').textContent,
+  enCurso: window.__mosca.estado().enCurso,
+  pausado: window.__mosca.pausado(),
   aviso: document.getElementById('ex-inicio').textContent.replace(/\s+/g, ' ').trim(),
   finVisible: !document.getElementById('ex-fin').classList.contains('oculto'),
   bannerVisible: !document.getElementById('banner-fin-dia').classList.contains('oculto'),
@@ -41,7 +43,7 @@ let x = await leer();
 revisar(x.vista === 'exhibición', 'E abre la exhibición');
 revisar(x.hora === c.hora, `misma hora en ambas vistas (${c.hora} / ${x.hora})`);
 revisar(x.cerebro === 'En pausa' && x.rotuloEstado === 'pausa', `exhibición en pausa (cerebro: ${x.cerebro}, rótulo: ${x.rotuloEstado})`);
-revisar(x.wip === 7 && x.rotuloWip === 'WIP 7', `mismo WIP 7 (${x.rotuloWip})`);
+revisar(x.wip === 7 && x.carga === '7', `mismo WIP 7 (carga ${x.carga} a la vez)`);
 revisar(x.sinColilla === 0, `en pausa la mosca no sigue fumando (${x.sinColilla})`);
 await esperar(1500);
 revisar((await leer()).hora === c.hora, 'la hora no avanza en pausa');
@@ -55,7 +57,7 @@ revisar(x.hora !== c.hora && x.cerebro !== 'En pausa' && x.rotuloEstado === 'viv
 await p.keyboard.press('3');
 await esperar(300);
 x = await leer();
-revisar(x.wip === 3 && x.aviso.includes('WIP 3'), `tecla 3 cambia el WIP en exhibición (${x.aviso})`);
+revisar(x.wip === 3 && x.aviso.includes('nuevo límite 3'), `tecla 3 cambia el WIP en exhibición (${x.aviso})`);
 await p.keyboard.press('Escape');
 await esperar(1000);
 c = await leer();
@@ -102,6 +104,23 @@ await p.keyboard.press('Escape');
 await esperar(900);
 c = await leer();
 revisar(c.slider === '2' && !c.aviso.startsWith('Modo demo'), 'al volver a control la demo se apaga y el slider muestra WIP 2');
+
+// 6. Elegir el WIP antes de las 09:15 rearma el día con ese WIP (con sus
+//    tareas de ayer) y respeta la pausa; después de las 09:15 es un cambio a
+//    mitad del día (lo empezado sigue abierto)
+await p.keyboard.press('r');
+await p.keyboard.press('Space');
+await esperar(200);
+await p.keyboard.press('0');
+await esperar(300);
+c = await leer();
+revisar(c.wip === 10 && c.enCurso === 10 && c.hora === '09:00' && c.pausado, `antes de las 09:15, el WIP 10 rearma el día (hora ${c.hora}, ${c.enCurso} en curso, en pausa: ${c.pausado})`);
+await p.keyboard.press('Space');
+await p.evaluate(() => window.__mosca.adelantar(30));
+await p.keyboard.press('2');
+await esperar(300);
+c = await leer();
+revisar(c.wip === 2 && c.enCurso > 2 && c.hora >= '09:30', `después de las 09:15 no se rearma: lo empezado sigue abierto (hora ${c.hora}, ${c.enCurso} en curso)`);
 
 console.log(fallas.length ? `\n${fallas.length} FALLAS` : '\nsincronía: todo bien');
 console.log('errores:', errores.length ? errores : 'ninguno');

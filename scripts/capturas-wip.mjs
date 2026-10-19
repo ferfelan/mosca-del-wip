@@ -100,7 +100,7 @@ if (!process.env.WIPS) {
       m.avanzar(4);
     }, n);
     await p.waitForTimeout(300);
-    const e = await p.evaluate(() => { const e = window.__mosca.estado(); return `bloqueadas ${e.bloqueadas} de ${e.enCurso} · esperando: ${e.esperando} · cerebro: "${document.getElementById('c-estado').textContent}"`; });
+    const e = await p.evaluate(() => { const e = window.__mosca.estado(); return `bloqueadas ${e.bloqueadas} de ${e.enCurso} · esperando: ${e.esperando} · mosca: "${document.getElementById('ex-mosca').dataset.hace}"`; });
     console.log(`Bloqueos (WIP 3, ${n} bloqueada${n > 1 ? 's' : ''}): ${await leer()} · ${e} · choques: ${await choques()}`);
     await p.screenshot({ path: `capturas/bloqueo-${n}.png` });
     await p.evaluate(() => window.__mosca.camara([-0.25, 1.75, 1.1], [-0.9, 1.72, -0.35]));

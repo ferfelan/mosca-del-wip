@@ -3,8 +3,12 @@
 // (ya no vuelve solo); arrastrar mientras gira también lo detiene; el zoom
 // funciona siempre; un clic sobre una neurona deja su tarjetita fija hasta el
 // próximo clic; con el cursor encima gira más lento; botón Detener/Girar y
-// Centrar; detener NO pausa el juego y los atajos siguen funcionando; ⓘ abre
-// y cierra (Esc sólo la cierra). Requiere npm run dev.
+// Centrar; detener NO pausa el juego y los atajos siguen funcionando;
+// "¿Es real?" abre y cierra (Esc sólo la cierra). Además (2026-10-19, v3):
+// arrastrar o hacer zoom en el cerebro NO mueve la oficina; arrastrar la
+// escena sí, y el doble clic (o el botón "Vista inicial") la devuelve; la
+// tarjetita habla simple (nombre y rol, sin Hz ni limpieza).
+// Requiere npm run dev.
 // Uso: node scripts/probar-giro.mjs   → debe decir "giro: todo bien"
 import { chromium } from 'playwright';
 
@@ -26,6 +30,7 @@ const vista = () => p.evaluate(() => window.__mosca.cerebroVista());
 const boton = () => p.textContent('#btn-girar-texto');
 const ficha = () => p.evaluate(() => !document.getElementById('cerebro-ficha').hidden);
 const caja = async () => p.locator('#lienzo-cerebro').boundingBox();
+const camara = () => p.evaluate(() => window.__mosca.camaraInfo().pos.map((v) => v.toFixed(4)).join(','));
 // Un lugar del cerebro sin neuronas encendidas cerca (esquina de arriba a la izquierda)
 const vacio = async () => {
   const r = await caja();
@@ -70,6 +75,7 @@ for (const nombre of ['control', 'exhibicion']) {
   revisar(hora1 !== hora0 && !(await p.evaluate(() => window.__mosca.pausado())), `detenerlo no pausa el juego (${hora0} → ${hora1})`);
 
   // 4. Detenido, arrastrar lo gira a mano
+  const oficina0 = await camara();
   await p.mouse.move(r.x + r.width / 2, r.y + r.height / 2);
   await p.mouse.down();
   await p.mouse.move(r.x + r.width / 2 + 80, r.y + r.height / 2, { steps: 8 });
@@ -103,6 +109,8 @@ for (const nombre of ['control', 'exhibicion']) {
   await p.mouse.up();
   await p.waitForTimeout(200);
   revisar(!(await vista()).girando, 'arrastrar mientras gira lo detiene');
+  // y hasta aquí (arrastrar, rueda y clics en el cerebro) la oficina no se movió
+  revisar((await camara()) === oficina0, 'arrastrar, hacer zoom o clic en el cerebro NO mueve la oficina');
 
   // 9. Botón Detener/Girar
   await p.click('#btn-girar-cerebro');
@@ -141,7 +149,8 @@ for (const nombre of ['control', 'exhibicion']) {
   await p.mouse.click(donde2.x, donde2.y);
   await p.waitForTimeout(300);
   const texto = await p.evaluate(() => document.getElementById('cerebro-ficha').innerText.replace(/\n/g, ' | '));
-  revisar(!(await vista()).girando && (await ficha()) && texto.includes('SAD093'), `clic en aBN1: se detiene y su tarjetita queda fija ("${texto.slice(0, 70)}…")`);
+  revisar(!(await vista()).girando && (await ficha()) && texto.includes('SAD093'), `clic en aBN1: se detiene y su tarjetita queda fija ("${texto}")`);
+  revisar(texto.includes('Relevo') && !/Hz|limpi/i.test(texto), 'la tarjetita habla simple: nombre y rol, sin Hz ni limpieza');
   await p.mouse.move(r.x + r.width - 20, r.y + r.height / 2, { steps: 4 });
   await p.waitForTimeout(300);
   revisar((await ficha()) && (await p.evaluate(() => document.getElementById('cerebro-ficha').innerText)).includes('SAD093'), 'al mover el cursor, la tarjetita fija no cambia');
@@ -155,8 +164,8 @@ for (const nombre of ['control', 'exhibicion']) {
   // 13. Sin nombres fijos sobre el cerebro
   revisar((await p.locator('.etiqueta-circuito').count()) === 0, 'no hay nombres fijos sobre el cerebro');
 
-  // 14. ⓘ abre y cierra; Esc sólo la cierra
-  await p.click('#btn-info-cerebro');
+  // 14. "¿Es real?" abre y cierra; Esc sólo la cierra
+  await p.click('#btn-es-real');
   await p.waitForTimeout(200);
   const abierta = await p.evaluate(() => !document.getElementById('cerebro-info').hidden);
   const dentro = await p.evaluate(() => {
@@ -167,7 +176,35 @@ for (const nombre of ['control', 'exhibicion']) {
   await p.waitForTimeout(200);
   const cerrada = await p.evaluate(() => document.getElementById('cerebro-info').hidden);
   const sigue = await p.evaluate(() => document.body.classList.contains('exhibicion'));
-  revisar(abierta && dentro && cerrada && sigue === (nombre === 'exhibicion'), 'ⓘ se abre dentro de la pantalla y Esc sólo la cierra');
+  revisar(abierta && dentro && cerrada && sigue === (nombre === 'exhibicion'), '"¿Es real?" se abre dentro de la pantalla y Esc sólo la cierra');
+
+  // 15. La oficina: arrastrar la escena la gira y aparece "Vista inicial";
+  //     el doble clic la devuelve (y el botón se esconde)
+  const e = await p.locator('#lienzo-3d').boundingBox();
+  const punto = nombre === 'control' ? { x: e.x + e.width * 0.53, y: e.y + e.height * 0.82 } : { x: e.x + e.width * 0.3, y: e.y + e.height * 0.85 };
+  const casa = await camara();
+  await p.mouse.move(punto.x, punto.y);
+  await p.mouse.down();
+  await p.mouse.move(punto.x + 160, punto.y - 20, { steps: 10 });
+  await p.mouse.up();
+  await p.waitForTimeout(800);
+  const girada = await camara();
+  const botonVisible = await p.evaluate(() => !document.getElementById('btn-vista-inicial').hidden);
+  revisar(girada !== casa && botonVisible, 'arrastrar la escena gira la oficina y aparece "Vista inicial"');
+  await p.mouse.dblclick(punto.x, punto.y);
+  await p.waitForTimeout(1500);
+  const vuelta = await p.evaluate(() => window.__mosca.camaraInfo().pos);
+  const dist = Math.hypot(...vuelta.map((v, i) => v - Number(casa.split(',')[i])));
+  const botonOculto = await p.evaluate(() => document.getElementById('btn-vista-inicial').hidden);
+  revisar(dist < 0.01 && botonOculto, `doble clic en la escena: vuelve a la vista inicial (a ${dist.toFixed(4)}) y el botón se esconde`);
+  await p.mouse.move(punto.x, punto.y);
+  await p.mouse.down();
+  await p.mouse.move(punto.x - 140, punto.y, { steps: 10 });
+  await p.mouse.up();
+  await p.waitForTimeout(600);
+  await p.click('#btn-vista-inicial');
+  await p.waitForTimeout(1500);
+  revisar((await camara()) === casa, 'el botón "Vista inicial" también la devuelve');
 }
 
 await p.evaluate(() => window.__mosca.vista('control'));

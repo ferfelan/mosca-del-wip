@@ -17,6 +17,7 @@
   --acento: #b8582a;
   --acento-hover: #9f4a22;
   --ok: #4f9d6a;
+  --medio: #a87c0c;
   --alerta: #cc4a43;
   --anillo: rgba(184, 88, 42, 0.28);
 }
@@ -98,6 +99,17 @@ body {
   border-bottom: none;
 }
 
+/* Pantallas bajas (proyector, ventanas chicas): el panel más compacto para
+   que no necesite barra */
+@media (max-height: 760px) {
+  .cabecera {
+    padding: 12px 16px 9px;
+  }
+  .bloque {
+    padding: 10px 16px;
+  }
+}
+
 .bloque-fila {
   display: flex;
   align-items: baseline;
@@ -123,7 +135,16 @@ body {
   transition: color 0.3s;
 }
 
-#panel.wip-alto .wip-numero {
+/* Carga: verde hasta 3, amarillo con 4 o 5 y rojo desde 6 */
+#panel[data-carga='ok'] .wip-numero {
+  color: var(--ok);
+}
+
+#panel[data-carga='medio'] .wip-numero {
+  color: var(--medio);
+}
+
+#panel[data-carga='alto'] .wip-numero {
   color: var(--alerta);
 }
 
@@ -134,7 +155,11 @@ body {
   transition: color 0.3s;
 }
 
-.nota.alerta {
+.nota[data-carga='medio'] {
+  color: var(--medio);
+}
+
+.nota[data-carga='alto'] {
   color: var(--alerta);
 }
 
@@ -342,6 +367,16 @@ input[type='range']:focus-visible::-moz-range-thumb {
   font-variant-numeric: tabular-nums;
 }
 
+.eficiencia {
+  margin-top: 8px;
+}
+
+.eficiencia-de {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--tinta-suave);
+}
+
 .estres {
   margin-top: 10px;
 }
@@ -521,6 +556,10 @@ tr.vacia td {
 
 /* =========================================================
    Panel del cerebro (variante oscura del mismo panel)
+   La pantalla habla el idioma de la oficina: aquí van el cerebro, "neuronas
+   encendidas", una frase simple y el estrés del día. La neurociencia
+   (limpieza de antenas, relevos, Hz, zonas) va al informe. En Exhibición se
+   suman los números de la oficina en grande (más abajo).
    ========================================================= */
 
 #cerebro {
@@ -535,6 +574,9 @@ tr.vacia td {
   border: 1px solid var(--oscuro-borde);
   border-radius: 16px;
   --actividad: 0;
+  --carga-ok: #5cc483;
+  --carga-medio: #e3b341;
+  --carga-alto: #f0675c;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 12px 32px rgba(20, 22, 40, 0.28),
     0 0 calc(36px * var(--actividad)) rgba(110, 150, 255, calc(0.55 * var(--actividad)));
   border-color: rgba(140, 170, 255, calc(0.08 + 0.3 * var(--actividad)));
@@ -557,7 +599,9 @@ tr.vacia td {
   letter-spacing: -0.01em;
 }
 
+/* "Arriba el cerebro; abajo, el cordón nervioso": sólo en Exhibición */
 .cerebro-sub {
+  display: none;
   margin: 2px 0 0;
   font-size: 11.5px;
   color: var(--oscuro-suave);
@@ -598,16 +642,11 @@ tr.vacia td {
   box-shadow: 0 0 0 3px rgba(47, 227, 255, 0.35);
 }
 
-.credito-largo,
 .solo-exhibicion-inline {
   display: none;
 }
 
 body.exhibicion .solo-exhibicion-inline {
-  display: inline;
-}
-
-body.exhibicion .credito-largo {
   display: inline;
 }
 
@@ -644,7 +683,7 @@ body.exhibicion .solo-control-inline {
 .cerebro-lienzo {
   position: relative;
   /* cerebro en vertical: el panel se alarga hacia abajo */
-  height: clamp(170px, calc(100vh - 560px), 340px);
+  height: clamp(190px, calc(100vh - 440px), 400px);
   background: #060a16;
 }
 
@@ -654,308 +693,250 @@ body.exhibicion .solo-control-inline {
   height: 100%;
 }
 
-/* En Control todo va en una columna, en este orden: cerebro, Limpieza de
-   antenas (lo principal), cadena y frase, gráfico del día, zonas, leyenda,
-   nota y crédito. (En Exhibición se reparte en dos columnas, más abajo.) */
+/* En Control todo va en una columna: cerebro, neuronas encendidas y frase
+   (o, al terminar el día, el resumen), estrés del día, leyenda, "¿Es real?" y
+   crédito. (En Exhibición se reparte en dos columnas, más abajo.) */
 .cerebro-cuerpo {
   display: flex;
   flex-direction: column;
-  padding-bottom: 13px;
+  padding-bottom: 12px;
 }
 
-.cerebro-lado,
-.cerebro-pie {
-  display: contents;
+/* ---------- Un solo número: neuronas encendidas, y una frase simple ---------- */
+.cerebro-lectura {
+  margin: 11px 16px 0;
 }
 
-.cerebro-lienzo { order: 1; }
-.cerebro-contadores { order: 2; }
-.cerebro-curioso { order: 3; }
-.cerebro-cadena { order: 4; }
-#cerebro-lectura { order: 5; }
-.cerebro-detalle { order: 6; }
-.cerebro-dia { order: 7; }
-.cerebro-zonas { order: 8; }
-.cerebro-leyenda { order: 9; }
-.cerebro-aviso { order: 10; }
-.cerebro-credito { order: 11; }
-
-.cerebro-contadores {
-  display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr;
-  gap: 6px;
-  margin: 12px 16px 0;
-}
-
-.contador {
-  padding: 7px 10px;
-  border-radius: 9px;
-  background: var(--oscuro-superficie);
-}
-
-.contador-valor {
-  display: block;
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 1.15;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-.contador-label {
-  display: block;
-  margin-top: 1px;
-  font-size: 10px;
+.cerebro-contador {
+  margin: 0;
+  font-size: 12.5px;
   color: var(--oscuro-suave);
 }
 
-#c-estado.fuma {
-  color: #ff9a85;
-}
-
-/* Lo principal: Limpieza de antenas (0 a 100 %), con su barra. Mismo azul
-   que la línea del gráfico del día, que muestra lo mismo. */
-.contador-limpieza {
-  background: rgba(106, 134, 236, 0.12);
-  box-shadow: inset 0 0 0 1px rgba(140, 165, 255, 0.28);
-}
-
-.contador-cabeza {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 6px;
-}
-
-.contador-limpieza .contador-label {
-  margin: 0;
+.cerebro-contador strong {
+  margin-right: 4px;
+  font-size: 20px;
+  font-weight: 700;
   color: var(--oscuro-tinta);
-  font-weight: 600;
-  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
-.contador-limpieza .contador-valor {
-  font-size: 17px;
-}
-
-.limpieza-barra {
-  display: block;
-  height: 5px;
-  margin-top: 6px;
-  border-radius: 3px;
-  background: rgba(255, 255, 255, 0.08);
-  overflow: hidden;
-}
-
-.limpieza-barra span {
-  display: block;
-  width: 0;
-  height: 100%;
-  border-radius: 3px;
-  background: #6a86ec;
-  box-shadow: 0 0 8px rgba(106, 134, 236, 0.7);
-  transition: width 0.3s linear;
-}
-
-/* El "% del cerebro", como dato curioso en letra chica */
-.cerebro-curioso {
-  margin: 5px 16px 0;
-  font-size: 10.5px;
-  line-height: 1.4;
-  color: var(--oscuro-tenue);
-}
-
-/* Cadena de 4 pasos: se encienden hasta donde llega la señal */
-.cerebro-cadena {
-  display: flex;
-  margin: 10px 16px 0;
-  padding: 0;
-  list-style: none;
-}
-
-.cerebro-cadena li {
-  position: relative;
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-left: 15px;
-  padding: 4px 2px;
-  border-radius: 8px;
-  background: var(--oscuro-superficie);
-  color: var(--oscuro-tenue);
-  font-size: 11.5px;
-  font-weight: 600;
-  line-height: 1.3;
-  text-align: center;
-  transition: background 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
-}
-
-.cerebro-cadena li:first-child {
-  margin-left: 0;
-}
-
-.cerebro-cadena li > span {
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.cerebro-cadena li + li::before {
-  content: '→';
-  position: absolute;
-  top: 50%;
-  left: -13px;
-  transform: translateY(-50%);
-  color: rgba(255, 255, 255, 0.18);
-  font-weight: 400;
-  transition: color 0.4s ease;
-}
-
-.cerebro-cadena li.encendido {
-  background: rgba(106, 134, 236, 0.24);
-  color: #f1f4ff;
-  box-shadow: inset 0 0 0 1px rgba(150, 175, 255, 0.5), 0 0 10px rgba(106, 134, 236, 0.35);
-}
-
-.cerebro-cadena li.encendido::before {
-  color: #b9c8ff;
-}
-
-.cerebro-cadena li.encendido.debil {
-  background: rgba(106, 134, 236, 0.1);
-  box-shadow: inset 0 0 0 1px rgba(150, 175, 255, 0.32);
-}
-
-.paso-detalle {
-  display: none;
-}
-
-#cerebro-lectura {
-  min-height: 2.8em;
-  margin: 6px 16px 0;
+.cerebro-frase {
+  margin: 3px 0 0;
   font-size: 12px;
   line-height: 1.4;
   color: var(--oscuro-tinta);
 }
 
-.cerebro-detalle {
+/* ---------- Números de la oficina ----------
+   En Control ya están en el panel de la derecha: aquí sólo aparecen al
+   terminar el día, como resumen (en filas), en lugar del cerebro apagado. */
+.cifras {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  margin: 11px 16px 0;
+}
+
+body.dia-terminado .cifras {
+  display: flex;
+}
+
+body.dia-terminado:not(.exhibicion) .cerebro-lectura,
+body.dia-terminado .cifra-carga {
   display: none;
 }
 
-/* Zonas: qué parte de las neuronas activas está en cada una (suman 100 %) */
-.cerebro-zonas {
-  margin: 10px 16px 0;
-}
-
-.cerebro-zonas .etiqueta-oscura {
-  display: block;
-  margin-bottom: 5px;
-}
-
-.cerebro-grupos {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5px 16px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.grupo {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  row-gap: 3px;
-  font-size: 11px;
+.cifras-titulo {
+  margin: 0 0 1px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   color: var(--oscuro-suave);
 }
 
-.grupo-punto {
-  width: 7px;
-  height: 7px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background: var(--c);
-  box-shadow: 0 0 6px var(--c);
+.cifra {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: var(--oscuro-superficie);
 }
 
-.grupo-nombre {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.cifra-label {
+  font-size: 11.5px;
+  color: var(--oscuro-suave);
 }
 
-.grupo-valor {
+.cifra-valor {
+  font-size: 14px;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
-}
-
-.grupo-barra {
-  grid-column: 1 / 3;
-  height: 3px;
-  border-radius: 2px;
-  background: rgba(255, 255, 255, 0.07);
-  overflow: hidden;
-}
-
-.grupo-barra span {
-  display: block;
-  width: 0;
-  height: 100%;
-  border-radius: 2px;
-  background: var(--c);
-  box-shadow: 0 0 8px var(--c);
-  transition: width 0.3s linear;
-}
-
-.grupo-detalle {
-  display: none;
-}
-
-/* Nota honesta en una línea + botón ⓘ con la explicación completa */
-.sin-corte {
   white-space: nowrap;
 }
 
-.cerebro-aviso {
-  margin: 4px 16px 0;
-  font-size: 10.5px;
-  line-height: 1.4;
+.cifra-valor small {
+  font-size: 11px;
+  font-weight: 500;
   color: var(--oscuro-suave);
 }
 
-.boton-info {
-  display: inline-grid;
-  place-items: center;
-  margin-left: 5px;
-  vertical-align: -3px;
-  width: 17px;
-  height: 17px;
-  padding: 0;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 50%;
-  background: transparent;
-  color: var(--oscuro-tinta);
-  font: italic 700 11px/1 Georgia, 'Times New Roman', serif;
-  cursor: pointer;
+.carga-segmentos,
+.cifra-sub,
+.eficiencia-barra {
+  display: none;
 }
 
-.boton-info:hover,
-.boton-info[aria-expanded='true'] {
+/* ---------- Estrés del día (mini gráfico) ---------- */
+.cerebro-dia {
+  padding: 11px 16px 0;
+}
+
+.cerebro-dia-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.etiqueta-oscura {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--oscuro-suave);
+  white-space: nowrap;
+}
+
+/* Leyenda de las marcas: cigarro y café (los mismos dibujos del gráfico) */
+.dia-leyenda {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10.5px;
+  color: var(--oscuro-suave);
+  white-space: nowrap;
+}
+
+.dia-leyenda > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cerebro-dia-grafico {
+  position: relative;
+  height: 70px;
+}
+
+#lienzo-dia {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+}
+
+.cerebro-dia-tooltip {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  padding: 5px 9px;
+  border: 1px solid var(--oscuro-borde);
+  border-radius: 8px;
+  background: #141a2e;
+  color: var(--oscuro-tinta);
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+
+.cerebro-dia-tooltip[hidden] {
+  display: none;
+}
+
+/* ---------- Pie: leyenda en una línea, "¿Es real?" y crédito ---------- */
+.cerebro-pie {
+  margin: 10px 16px 0;
+}
+
+.cerebro-leyenda {
+  display: flex;
+  gap: 3px 13px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 10.5px;
+  line-height: 1.35;
+  color: var(--oscuro-suave);
+}
+
+.cerebro-leyenda li {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.ley-punto {
+  width: 9px;
+  height: 9px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.ley-gris {
+  background: #7f879c;
+}
+
+.ley-color {
+  background: radial-gradient(circle, #ffd6f5 0, #ff4fd8 50%, #8b5cff 100%);
+  box-shadow: 0 0 6px #ff4fd8;
+}
+
+.ley-anillo {
+  border: 1.6px solid rgba(225, 232, 255, 0.9);
+}
+
+.cerebro-pie-fila {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0 0;
+}
+
+.boton-es-real {
+  flex-shrink: 0;
+  padding: 3px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--oscuro-tinta);
+  font: inherit;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.boton-es-real:hover,
+.boton-es-real[aria-expanded='true'] {
   background: rgba(255, 255, 255, 0.12);
 }
 
-.boton-info:focus {
+.boton-es-real:focus {
   outline: none;
 }
 
-.boton-info:focus-visible {
+.boton-es-real:focus-visible {
   box-shadow: 0 0 0 3px rgba(143, 176, 255, 0.45);
 }
 
 .cerebro-credito {
-  margin: 2px 16px 0;
   font-size: 10px;
   line-height: 1.4;
   color: var(--oscuro-tenue);
@@ -1020,59 +1001,11 @@ body.exhibicion .solo-control-inline {
   background: rgba(40, 54, 110, 0.85);
 }
 
-/* ---------- Leyenda: cómo leer el cerebro (una sola línea) ---------- */
-.cerebro-leyenda {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 3px 13px;
-  margin: 9px 16px 0;
-  padding: 0;
-  list-style: none;
-  font-size: 10.5px;
-  line-height: 1.35;
-  color: var(--oscuro-suave);
-}
-
-.cerebro-leyenda li {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  white-space: nowrap;
-}
-
-.ley-punto {
-  width: 9px;
-  height: 9px;
-  flex-shrink: 0;
-  border-radius: 50%;
-}
-
-.ley-gris {
-  background: #7f879c;
-}
-
-.ley-color {
-  background: radial-gradient(circle, #ffd6f5 0, #ff4fd8 50%, #8b5cff 100%);
-  box-shadow: 0 0 6px #ff4fd8;
-}
-
-.ley-anillo {
-  border: 1.6px solid rgba(225, 232, 255, 0.9);
-}
-
-.ley-linea {
-  width: 14px;
-  height: 2px;
-  flex-shrink: 0;
-  border-radius: 1px;
-  background: linear-gradient(90deg, rgba(158, 189, 255, 0.3), #d4e2ff, rgba(158, 189, 255, 0.3));
-}
-
-/* ---------- ⓘ: qué es real y qué es juego ---------- */
+/* ---------- "¿Es real?": pocas líneas ---------- */
 .cerebro-info {
   position: fixed;
   z-index: 70;
-  width: min(360px, calc(100vw - 16px));
+  width: min(330px, calc(100vw - 16px));
   max-height: calc(100vh - 16px);
   overflow-y: auto;
   padding: 13px 16px 14px;
@@ -1081,7 +1014,7 @@ body.exhibicion .solo-control-inline {
   background: rgba(10, 14, 28, 0.98);
   box-shadow: 0 14px 36px rgba(0, 0, 0, 0.5);
   color: var(--oscuro-suave);
-  font-size: 12.5px;
+  font-size: 13px;
   line-height: 1.45;
 }
 
@@ -1095,7 +1028,7 @@ body.exhibicion .solo-control-inline {
   justify-content: space-between;
   gap: 10px;
   color: var(--oscuro-tinta);
-  font-size: 13.5px;
+  font-size: 14px;
 }
 
 .boton-info-cerrar {
@@ -1133,7 +1066,7 @@ body.exhibicion .solo-control-inline {
 .cerebro-ficha {
   position: fixed;
   z-index: 60;
-  max-width: 270px;
+  max-width: 260px;
   padding: 9px 12px 10px;
   border: 1px solid rgba(160, 180, 255, 0.32);
   border-radius: 10px;
@@ -1154,15 +1087,13 @@ body.exhibicion .solo-control-inline {
   font-size: 13.5px;
 }
 
-.cerebro-ficha .ficha-rol {
-  margin-left: 6px;
-  color: #c9d8ff;
-  font-weight: 600;
-}
-
 .cerebro-ficha .ficha-linea {
   display: block;
   margin-top: 3px;
+}
+
+.cerebro-ficha .ficha-linea b {
+  color: #c9d8ff;
 }
 
 .cerebro-ficha .ficha-suave {
@@ -1249,14 +1180,6 @@ body.exhibicion #banner-fin-dia {
   color: var(--oscuro-suave);
 }
 
-.chip-datos {
-  padding: 6px 11px;
-  border: 1px solid var(--oscuro-borde);
-  border-radius: 999px;
-  background: var(--oscuro-superficie);
-  font-variant-numeric: tabular-nums;
-}
-
 .atajo kbd {
   display: inline-block;
   min-width: 20px;
@@ -1301,21 +1224,6 @@ body.exhibicion #escena {
 
 .rotulo-escena > span {
   white-space: nowrap;
-}
-
-/* Tiempo por tarea: "10 h 37 min por tarea" en pantallas grandes;
-   "10h 37m/tarea" en las más chicas (para que el rótulo quepa) */
-.rotulo-corto {
-  display: none;
-}
-
-@media (max-width: 1400px) {
-  .rotulo-largo {
-    display: none;
-  }
-  .rotulo-corto {
-    display: inline;
-  }
 }
 
 .punto-vivo {
@@ -1497,20 +1405,35 @@ body.exhibicion #escena {
   pointer-events: none;
 }
 
-/* Cerebro grande en exhibición: el lienzo ocupa todo el recuadro y la
-   información flota a los costados del cordón nervioso (que es angosto). */
+/* Exhibición: el panel de la derecha junta el cerebro y los números de la
+   oficina en grande, con el estrés del día abajo. Columna izquierda: el
+   cerebro, "neuronas encendidas" y la frase. Columna derecha: carga,
+   terminadas, colillas, cafés, tiempo por tarea y eficiencia. */
 body.exhibicion #cerebro {
   top: 68px;
   right: 24px;
   bottom: 24px;
   left: auto;
   width: calc(40% - 36px);
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto auto auto;
+  grid-template-areas:
+    'cabeza  cifras'
+    'lienzo  cifras'
+    'lectura cifras'
+    'dia     dia'
+    'pie     pie';
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35), 0 0 calc(50px * var(--actividad)) rgba(110, 150, 255, calc(0.45 * var(--actividad)));
 }
 
+body.exhibicion .cerebro-cuerpo {
+  display: contents;
+}
+
 body.exhibicion .cerebro-cabecera {
-  padding: 18px 22px 14px;
-  border-bottom: 1px solid var(--oscuro-borde);
+  grid-area: cabeza;
+  padding: 18px 10px 12px 22px;
 }
 
 body.exhibicion .cerebro-cabecera h2 {
@@ -1518,229 +1441,232 @@ body.exhibicion .cerebro-cabecera h2 {
 }
 
 body.exhibicion .cerebro-sub {
+  display: block;
   font-size: 12.5px;
-}
-
-body.exhibicion .cerebro-cuerpo {
-  flex: 1;
-  min-height: 0;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 188px;
-  grid-template-rows: minmax(0, 1fr) auto auto;
-  grid-template-areas:
-    'lienzo lado'
-    'dia lado'
-    'pie lado';
-  padding-bottom: 0;
 }
 
 body.exhibicion .cerebro-lienzo {
   grid-area: lienzo;
   height: auto;
   min-height: 0;
+  margin-left: 14px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+body.exhibicion .cerebro-lectura {
+  grid-area: lectura;
+  margin: 0;
+  padding: 12px 8px 4px 22px;
+}
+
+body.exhibicion .cerebro-contador {
+  font-size: 14px;
+}
+
+body.exhibicion .cerebro-contador strong {
+  font-size: 26px;
+}
+
+body.exhibicion .cerebro-frase {
+  margin-top: 4px;
+  font-size: 13.5px;
+}
+
+/* Números de la oficina, grandes (todo el día; al terminar, "Resumen del día") */
+body.exhibicion .cifras {
+  grid-area: cifras;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  align-content: start;
+  gap: 10px;
+  margin: 0;
+  padding: 18px 22px 8px 14px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+body.exhibicion .cifras-titulo {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--oscuro-tinta);
+}
+
+body.exhibicion .cifra {
+  grid-column: span 6;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 2px;
+  padding: 10px 13px 11px;
+  border-radius: 11px;
+}
+
+/* terminadas, colillas y cafés en una fila; tiempo por tarea y eficiencia debajo */
+body.exhibicion .cifra-hechas,
+body.exhibicion .cifra-colillas,
+body.exhibicion .cifra-cafes {
+  grid-column: span 2;
+}
+
+body.exhibicion .cifra-colillas {
+  order: 1;
+}
+
+body.exhibicion .cifra-cafes {
+  order: 2;
+}
+
+body.exhibicion .cifra-tiempo {
+  order: 3;
+}
+
+body.exhibicion .cifra-eficiencia {
+  order: 4;
+}
+
+body.exhibicion .cifra-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+body.exhibicion .cifra-valor {
+  font-size: clamp(22px, 3.6vh, 38px);
+  line-height: 1.1;
+}
+
+body.exhibicion .cifra-valor small {
+  font-size: 0.48em;
+  font-weight: 600;
+}
+
+/* Carga: tareas a la vez contra el límite sano, en verde, amarillo o rojo */
+.cifra-carga {
+  --c: var(--carga-ok);
+}
+
+body.exhibicion .cifra-carga {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 45%, transparent);
+  background: color-mix(in srgb, var(--c) 12%, transparent);
+}
+
+.cifra-carga[data-carga='medio'] {
+  --c: var(--carga-medio);
+}
+
+.cifra-carga[data-carga='alto'] {
+  --c: var(--carga-alto);
+}
+
+body.exhibicion .cifra-carga .cifra-valor {
+  color: var(--c);
+  font-size: clamp(28px, 4.6vh, 48px);
+  transition: color 0.4s ease;
+}
+
+body.exhibicion .carga-segmentos {
+  display: flex;
+  gap: 3px;
+  width: 100%;
+  margin-top: 5px;
+}
+
+.carga-segmentos i {
+  flex: 1;
+  height: 7px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  transition: background 0.4s ease;
+}
+
+/* el límite sano: un poco de aire después de la tercera */
+.carga-segmentos i:nth-child(4) {
+  margin-left: 6px;
+}
+
+.carga-segmentos i.lleno {
+  background: var(--c);
+}
+
+body.exhibicion .cifra-sub {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+  color: var(--oscuro-suave);
+}
+
+body.exhibicion .eficiencia-barra {
+  display: block;
+  width: 100%;
+  height: 6px;
+  margin-top: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.eficiencia-barra span {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: 3px;
+  background: #8fa6f5;
+  transition: width 0.4s linear;
 }
 
 body.exhibicion .cerebro-dia {
   grid-area: dia;
-  padding: 0 14px 12px 22px;
+  padding: 12px 22px 0;
+}
+
+body.exhibicion .cerebro-dia-cabecera .etiqueta-oscura,
+body.exhibicion .dia-leyenda {
+  font-size: 11.5px;
 }
 
 body.exhibicion .cerebro-dia-grafico {
-  height: 76px;
+  height: clamp(80px, 14vh, 150px);
 }
 
-/* Columna derecha: Limpieza de antenas, neuronas activas, estado y zonas */
-body.exhibicion .cerebro-lado {
-  grid-area: lado;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  min-height: 0;
-  padding: 18px 20px 16px 4px;
-}
-
-body.exhibicion .cerebro-contadores {
-  grid-template-columns: 1fr;
-  gap: 8px;
-  margin: 0;
-}
-
-body.exhibicion .contador {
-  padding: 10px 12px;
-  border-radius: 10px;
-}
-
-body.exhibicion .contador-valor {
-  font-size: 22px;
-}
-
-body.exhibicion .contador-label {
-  margin-top: 2px;
-  font-size: 11.5px;
-}
-
-body.exhibicion .contador-cabeza {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
-}
-
-body.exhibicion .contador-limpieza {
-  padding: 12px 12px 13px;
-}
-
-body.exhibicion .contador-limpieza .contador-label {
-  font-size: 12px;
-}
-
-body.exhibicion .contador-limpieza .contador-valor {
-  font-size: 34px;
-  line-height: 1.05;
-}
-
-body.exhibicion .limpieza-barra {
-  height: 7px;
-  margin-top: 8px;
-  border-radius: 4px;
-}
-
-body.exhibicion .cerebro-curioso {
-  margin: -4px 2px 0;
-  font-size: 11px;
-}
-
-body.exhibicion .cerebro-zonas {
-  margin: 0;
-  padding: 12px 12px 12px;
-  border-radius: 10px;
-  background: var(--oscuro-superficie);
-}
-
-body.exhibicion .cerebro-zonas .etiqueta-oscura {
-  margin-bottom: 10px;
-  white-space: normal;
-}
-
-body.exhibicion .cerebro-grupos {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-body.exhibicion .grupo {
-  row-gap: 4px;
-  font-size: 12.5px;
-}
-
-.grupo-nombre {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-body.exhibicion .grupo-nombre {
-  white-space: nowrap;
-  font-size: 12px;
-  gap: 7px;
-  color: var(--oscuro-tinta);
-  font-weight: 600;
-}
-
-body.exhibicion .grupo-valor {
-  font-size: 12px;
-  color: var(--oscuro-suave);
-}
-
-body.exhibicion .grupo-barra {
-  height: 4px;
-}
-
-body.exhibicion .grupo-detalle {
-  display: block;
-  grid-column: 1 / 3;
-  font-size: 10.5px;
-  color: var(--oscuro-tenue);
-}
-
-/* Abajo del cerebro: cadena (con un poco de detalle), frase, leyenda, nota y crédito */
 body.exhibicion .cerebro-pie {
   grid-area: pie;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
   margin: 0;
-  padding: 0 18px 14px 22px;
-}
-
-body.exhibicion .cerebro-cadena,
-body.exhibicion #cerebro-lectura,
-body.exhibicion .cerebro-leyenda,
-body.exhibicion .cerebro-aviso,
-body.exhibicion .cerebro-credito {
-  margin-left: 0;
-  margin-right: 0;
-}
-
-body.exhibicion .cerebro-cadena {
-  margin-top: 0;
-}
-
-body.exhibicion .cerebro-cadena li {
-  padding: 6px 4px;
-  font-size: 13px;
-}
-
-body.exhibicion .paso-detalle {
-  display: block;
-  margin-top: 1px;
-  font-size: 10px;
-  font-weight: 500;
-  color: var(--oscuro-tenue);
-  white-space: nowrap;
-}
-
-body.exhibicion .cerebro-cadena li.encendido .paso-detalle {
-  color: #c4cff0;
-}
-
-body.exhibicion #cerebro-lectura {
-  min-height: 0;
-  margin-top: 8px;
-  font-size: 14px;
-}
-
-body.exhibicion .cerebro-detalle {
-  display: block;
-  margin: 2px 0 0;
-  font-size: 11.5px;
-  color: var(--oscuro-suave);
-}
-
-body.exhibicion .cerebro-detalle:empty {
-  display: none;
+  padding: 10px 22px 15px;
 }
 
 body.exhibicion .cerebro-leyenda {
-  margin-top: 10px;
   font-size: 11.5px;
 }
 
-body.exhibicion .cerebro-aviso {
-  margin-top: 5px;
-  font-size: 11.5px;
+body.exhibicion .cerebro-pie-fila {
+  margin: 0;
+}
+
+body.exhibicion .boton-es-real {
+  font-size: 12.5px;
+  padding: 4px 12px;
 }
 
 body.exhibicion .cerebro-credito {
-  margin-top: 3px;
   font-size: 11px;
 }
 
-@media (max-width: 1100px) {
-  .marca-sub {
-    display: none;
-  }
-  body.exhibicion .cerebro-cuerpo {
-    grid-template-columns: minmax(0, 1fr) 186px;
-  }
+/* Al terminar el día el cerebro se apaga: la columna dice que descansa */
+body.exhibicion.dia-terminado .cerebro-contador {
+  display: none;
 }
+
 
 /* ---------- Ocultar / mostrar el panel del cerebro (sólo en Control) ---------- */
 
@@ -1980,17 +1906,59 @@ tr.mejor-dia td:last-child {
   pointer-events: none;
 }
 
-.aviso-inicio-wip {
-  padding: 3px 10px;
+.aviso-inicio-carga {
+  padding: 3px 11px;
   border-radius: 999px;
   background: var(--ok);
   color: #fff;
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 700;
+  transition: background 0.4s ease;
 }
 
-.aviso-inicio.alto .aviso-inicio-wip {
+.aviso-inicio[data-carga='medio'] .aviso-inicio-carga {
+  background: #b8870f;
+}
+
+.aviso-inicio[data-carga='alto'] .aviso-inicio-carga {
   background: var(--alerta);
+}
+
+/* "Vista inicial": aparece sólo si giraron la oficina con el mouse */
+.boton-vista-inicial {
+  position: absolute;
+  top: 68px;
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 13px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(10, 14, 28, 0.82);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+  color: var(--oscuro-tinta);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transform: translateX(-50%);
+}
+
+.boton-vista-inicial:hover {
+  background: rgba(32, 42, 84, 0.92);
+}
+
+.boton-vista-inicial:focus {
+  outline: none;
+}
+
+.boton-vista-inicial:focus-visible {
+  box-shadow: 0 0 0 3px rgba(143, 176, 255, 0.55);
+}
+
+.boton-vista-inicial[hidden] {
+  display: none;
 }
 
 .comparacion {
@@ -2040,51 +2008,8 @@ tr.mejor-dia td:last-child {
 
 /* ---------- Exhibición en pantallas más chicas (proyector, ventana) ---------- */
 
-body.exhibicion .cerebro-lado {
-  overflow: hidden;
-}
-
+/* Pantallas bajas: todo un poco más compacto */
 @media (max-height: 800px) {
-  body.exhibicion .grupo-detalle {
-    display: none;
-  }
-  body.exhibicion #cerebro-lectura {
-    margin-top: 6px;
-    font-size: 12.5px;
-  }
-  body.exhibicion .cerebro-leyenda {
-    margin-top: 7px;
-    font-size: 10.5px;
-  }
-  body.exhibicion .cerebro-aviso {
-    font-size: 10.5px;
-  }
-  body.exhibicion .cerebro-credito {
-    font-size: 10px;
-  }
-  body.exhibicion .contador-limpieza .contador-valor {
-    font-size: 28px;
-  }
-  body.exhibicion .cerebro-curioso {
-    font-size: 10.5px;
-  }
-  body.exhibicion .cerebro-dia-grafico {
-    height: 64px;
-  }
-  body.exhibicion .contador {
-    padding: 7px 10px;
-  }
-  body.exhibicion .contador-valor {
-    font-size: 19px;
-  }
-  body.exhibicion .cerebro-lado {
-    gap: 10px;
-    padding-top: 14px;
-    padding-bottom: 12px;
-  }
-  body.exhibicion .cerebro-cabecera {
-    padding: 12px 18px 10px;
-  }
   #barra-exhibicion {
     height: 56px;
   }
@@ -2093,52 +2018,100 @@ body.exhibicion .cerebro-lado {
     top: 56px;
     bottom: 16px;
   }
+  body.exhibicion .cerebro-cabecera {
+    padding: 13px 10px 9px 18px;
+  }
+  body.exhibicion .cerebro-lectura {
+    padding: 9px 8px 2px 18px;
+  }
+  body.exhibicion .cerebro-contador strong {
+    font-size: 22px;
+  }
+  body.exhibicion .cerebro-frase {
+    font-size: 12.5px;
+  }
+  body.exhibicion .cifras {
+    gap: 8px;
+    padding-top: 13px;
+  }
+  body.exhibicion .cifras-titulo {
+    font-size: 14px;
+  }
+  body.exhibicion .cifra {
+    padding: 7px 11px 8px;
+  }
+  body.exhibicion .cerebro-dia {
+    padding: 8px 18px 0;
+  }
+  body.exhibicion .cerebro-pie {
+    padding: 8px 18px 11px;
+  }
+}
+
+/* Menos ancho: los números de la oficina en filas (nombre a la izquierda y
+   número a la derecha), uno bajo el otro */
+@media (max-width: 1600px) {
+  body.exhibicion .cifra,
+  body.exhibicion .cifra-hechas,
+  body.exhibicion .cifra-colillas,
+  body.exhibicion .cifra-cafes {
+    grid-column: span 6;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0 8px;
+  }
+  body.exhibicion .cifra-valor {
+    font-size: clamp(17px, 2.7vh, 24px);
+  }
+  body.exhibicion .cifra-carga .cifra-valor {
+    font-size: clamp(22px, 3.4vh, 32px);
+  }
+  body.exhibicion .cifra-sub {
+    margin-top: 2px;
+  }
+  body.exhibicion .cerebro-pie {
+    flex-wrap: wrap;
+  }
 }
 
 @media (max-width: 1280px) {
-  body.exhibicion .cerebro-cuerpo {
-    grid-template-columns: minmax(0, 1fr) 168px;
+  body.exhibicion .cerebro-cabecera {
+    padding-left: 16px;
   }
-  /* Menos espacio: primero lo simple (los Hz quedan en la tarjetita y en ⓘ) */
-  body.exhibicion .paso-detalle,
-  body.exhibicion .cerebro-detalle {
+  body.exhibicion .cerebro-lienzo {
+    margin-left: 10px;
+  }
+  body.exhibicion .cerebro-lectura {
+    padding-left: 16px;
+  }
+  body.exhibicion .cerebro-contador {
+    font-size: 12.5px;
+  }
+  body.exhibicion .cerebro-frase {
+    font-size: 12px;
+  }
+  body.exhibicion .cifras {
+    padding-right: 14px;
+    padding-left: 10px;
+  }
+  body.exhibicion .cifra-label {
+    font-size: 9.5px;
+  }
+  body.exhibicion .cerebro-dia {
+    padding-left: 16px;
+    padding-right: 14px;
+  }
+  body.exhibicion .cerebro-pie {
+    padding-left: 16px;
+    padding-right: 14px;
+  }
+  body.exhibicion .cerebro-leyenda {
+    font-size: 10.5px;
+  }
+  .atajo-extra {
     display: none;
-  }
-  body.exhibicion .cerebro-cadena li {
-    margin-left: 12px;
-    padding: 5px 2px;
-    font-size: 11.5px;
-  }
-  body.exhibicion .cerebro-cadena li:first-child {
-    margin-left: 0;
-  }
-  body.exhibicion .cerebro-cadena li + li::before {
-    left: -11px;
-  }
-  body.exhibicion #cerebro-lectura {
-    font-size: 13px;
-  }
-  body.exhibicion .cerebro-lado {
-    padding-right: 12px;
-  }
-  body.exhibicion .cerebro-zonas {
-    padding: 10px 9px;
-  }
-  body.exhibicion .solo-exhibicion-inline,
-  body.exhibicion .credito-largo {
-    display: none;
-  }
-  body.exhibicion .solo-control-inline {
-    display: inline;
-  }
-  .chip-datos {
-    display: none;
-  }
-  body.exhibicion .grupo {
-    font-size: 11.5px;
-  }
-  body.exhibicion .grupo-nombre {
-    font-size: 11.5px;
   }
 }
 
@@ -2150,115 +2123,9 @@ body.exhibicion .cerebro-lado {
   body.exhibicion #cerebro {
     width: calc(45% - 36px);
   }
-  body.exhibicion .cerebro-cuerpo {
-    grid-template-columns: minmax(0, 1fr) 156px;
+  .marca-sub {
+    display: none;
   }
-  body.exhibicion .cerebro-lado {
-    padding-right: 12px;
-  }
-  body.exhibicion .cerebro-grupos {
-    padding: 10px 8px;
-  }
-  body.exhibicion .grupo,
-  body.exhibicion .grupo-nombre,
-  body.exhibicion .grupo-valor {
-    font-size: 11px;
-  }
-  body.exhibicion .cerebro-lado {
-    padding-right: 8px;
-  }
-  body.exhibicion .cerebro-zonas {
-    padding: 9px 4px;
-  }
-  body.exhibicion .grupo-nombre {
-    gap: 5px;
-    font-size: 10.5px;
-  }
-  body.exhibicion .cerebro-cadena li {
-    margin-left: 9px;
-    padding: 5px 0;
-    font-size: 10.5px;
-  }
-  body.exhibicion .cerebro-cadena li:first-child {
-    margin-left: 0;
-  }
-  body.exhibicion .cerebro-cadena li + li::before {
-    left: -9px;
-    font-size: 10px;
-  }
-  .rotulo-escena {
-    font-size: 12px;
-    gap: 6px;
-    padding: 7px 11px;
-    /* si no cabe (fin del día), pasa a dos líneas; aquí el resumen va
-       arriba, así que no choca con nada */
-    flex-wrap: wrap;
-    row-gap: 2px;
-    max-width: calc(100% - 32px);
-    border-radius: 15px;
-  }
-}
-
-/* ---------- Actividad del día (mini gráfico) ---------- */
-
-.cerebro-dia {
-  padding: 10px 16px 0;
-}
-
-.cerebro-dia-cabecera {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0 8px;
-  margin-bottom: 4px;
-}
-
-.etiqueta-oscura {
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--oscuro-suave);
-  white-space: nowrap;
-}
-
-.cerebro-dia-pico {
-  font-size: 11px;
-  color: var(--oscuro-suave);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap; /* si no cabe al lado del título, pasa entero a la línea de abajo */
-}
-
-.cerebro-dia-grafico {
-  position: relative;
-  height: 58px;
-}
-
-#lienzo-dia {
-  display: block;
-  width: 100%;
-  height: 100%;
-  cursor: crosshair;
-}
-
-.cerebro-dia-tooltip {
-  position: absolute;
-  bottom: calc(100% + 4px);
-  padding: 5px 9px;
-  border: 1px solid var(--oscuro-borde);
-  border-radius: 8px;
-  background: #141a2e;
-  color: var(--oscuro-tinta);
-  font-size: 11.5px;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-  pointer-events: none;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
-}
-
-.cerebro-dia-tooltip[hidden] {
-  display: none;
 }
 
 /* aviso "Día de ejemplo" */
@@ -2288,14 +2155,6 @@ body.exhibicion .cerebro-lado {
   background: var(--oscuro-tenue);
   box-shadow: none;
   animation: none;
-}
-
-#ex-pausa {
-  color: #ffd27a;
-}
-
-#ex-pausa[hidden] {
-  display: none;
 }
 
 .ex-ritmo {
