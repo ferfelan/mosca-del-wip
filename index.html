@@ -151,7 +151,7 @@
         <div>
           <h2>Cerebro en vivo</h2>
           <p class="cerebro-sub" title="Posiciones reales del conectoma MaleCNS. Las luces son la actividad simulada del cableado real (modelo de Shiu y otros 2024, peso 0,090 mV), precalculada para cada cantidad de tareas abiertas.">Neuronas reales<span class="solo-exhibicion-inline"> de la mosca · Male CNS v1.0 · cerebro + cordón nervioso</span></p>
-          <p class="cerebro-aviso-ex"><span class="anillo-leyenda" aria-hidden="true"></span>Circuito de limpieza de antenas. Las luces son actividad simulada del cableado real (MaleCNS). El cigarro es un disfraz de esa limpieza, pero cuándo fuma lo deciden reglas basadas en estudios de estrés. El café es ilustrativo.</p>
+          <p class="cerebro-aviso-ex">Las luces son actividad simulada del cableado real (MaleCNS). El cigarro es un disfraz de la limpieza de antenas, pero cuándo fuma lo deciden reglas basadas en estudios de estrés. El café es ilustrativo.</p>
         </div>
         <div class="cerebro-acciones solo-control">
           <button id="btn-exhibicion" class="boton-exhibicion" type="button" title="Vista exhibición: pantalla completa para mostrar (tecla E)">
@@ -164,7 +164,11 @@
         </div>
       </header>
       <div class="cerebro-cuerpo">
-        <div class="cerebro-lienzo"><canvas id="lienzo-cerebro"></canvas></div>
+        <div class="cerebro-lienzo">
+          <canvas id="lienzo-cerebro" aria-label="Cerebro de la mosca: arrastra para girarlo, rueda o pellizco para acercar, doble clic para centrar"></canvas>
+          <div class="cerebro-etiquetas" id="cerebro-etiquetas" aria-hidden="true"></div>
+          <button id="btn-centrar-cerebro" class="boton-centrar" type="button" title="Volver a la vista inicial y a girar solo (también doble clic en el cerebro)">Centrar</button>
+        </div>
         <div class="cerebro-dia">
           <div class="cerebro-dia-cabecera">
             <span class="etiqueta-oscura">Actividad del día</span>
@@ -191,17 +195,22 @@
             </div>
           </div>
           <ul class="cerebro-grupos" id="cerebro-grupos"></ul>
-          <div class="cerebro-pie">
-            <p class="cerebro-nota" id="cerebro-lectura" aria-live="polite">Cada punto es una neurona real de la mosca.</p>
-            <p class="cerebro-aviso"><span class="anillo-leyenda" aria-hidden="true"></span>Circuito de limpieza de antenas. Luces: actividad simulada del cableado real (MaleCNS). El cigarro disfraza esa limpieza; cuándo fuma lo deciden reglas basadas en estudios. El café es ilustrativo.</p>
-            <p class="cerebro-credito">
-              <span class="solo-control-inline">Datos: Male CNS v1.0 · CC BY 4.0</span>
-              <span class="credito-largo" id="cerebro-credito">Datos: Male CNS v1.0 · CC BY 4.0</span>
-            </p>
-          </div>
+        </div>
+        <div class="cerebro-pie">
+          <p class="cerebro-nota" id="cerebro-lectura" aria-live="polite">Cada punto es una neurona real de la mosca.</p>
+          <ul class="cerebro-leyenda" aria-label="Cómo leer el cerebro">
+            <li><span class="ley-punto ley-gris" aria-hidden="true"></span><span>gris = en reposo <span class="ley-detalle">(posición real)</span></span></li>
+            <li><span class="ley-punto ley-color" aria-hidden="true"></span><span>color = dispara <span class="ley-detalle">(más brillo = más rápido)</span></span></li>
+            <li><span class="ley-punto ley-anillo" aria-hidden="true"></span><span>anillo = circuito de limpieza</span></li>
+            <li><span class="ley-linea" aria-hidden="true"></span><span>recorrido real <span class="ley-detalle">(su velocidad es sólo para que se vea)</span></span></li>
+          </ul>
+          <p class="cerebro-aviso">Luces: actividad simulada del cableado real (MaleCNS), en posiciones reales; el recorrido es real y su velocidad es sólo para que se vea. El cigarro disfraza la limpieza de antenas; cuándo fuma lo deciden reglas basadas en estudios. El café es ilustrativo.</p>
+          <p class="cerebro-credito" id="cerebro-credito"><span class="solo-control-inline">Datos: Male CNS v1.0 · CC BY 4.0</span><span class="credito-largo">Datos: Male CNS v1.0 (Janelia, Cambridge, MRC LMB y Google) · CC BY 4.0</span></p>
         </div>
       </div>
     </section>
+
+    <div id="cerebro-ficha" class="cerebro-ficha" role="tooltip" hidden></div>
 
     <button id="btn-mostrar-cerebro" type="button" title="Mostrar el cerebro (tecla B)" aria-controls="cerebro">
       <span class="icono-cerebro" aria-hidden="true">

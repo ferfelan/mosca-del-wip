@@ -53,5 +53,27 @@ await p.waitForTimeout(1500);
 console.log(`WIP 2 · café            → ${await leer()}`);
 await p.screenshot({ path: `${DIR}/wip2-cafe-control.png` });
 await panel('wip2-cafe-control');
+await p.evaluate(() => window.__mosca.vista('exhibicion'));
+await p.waitForTimeout(2500);
+await p.evaluate(() => window.__mosca.forzar({ cafe: true }));
+await p.waitForTimeout(1500);
+console.log(`WIP 2 · café exhibición → ${await leer()}`);
+await p.screenshot({ path: `${DIR}/wip2-cafe-exhibicion.png` });
+await panel('wip2-cafe-exhibicion');
+// La tarjetita de una neurona del circuito (aBN1), en Exhibición con WIP 9
+await p.evaluate(() => window.__mosca.vista('exhibicion'));
+await p.waitForTimeout(800);
+await p.evaluate(() => { window.__mosca.diaExhibicion(9); window.__mosca.adelantar(270); window.__mosca.avanzar(2); });
+await p.waitForTimeout(2500);
+await p.evaluate(() => window.__mosca.congelar(true));
+await p.waitForTimeout(300);
+const donde = await p.evaluate(() => window.__mosca.cerebroDonde(2));
+if (donde) {
+  await p.mouse.click(donde.x, donde.y);
+  await p.waitForTimeout(400);
+  console.log(`tarjetita: "${await p.evaluate(() => document.getElementById('cerebro-ficha').innerText.replace(/\n/g, ' | '))}"`);
+  await p.screenshot({ path: `${DIR}/tarjetita-exhibicion.png` });
+  await p.locator('#cerebro').screenshot({ path: `${DIR}/tarjetita-exhibicion-panel.png` });
+}
 await b.close();
 console.log(`Capturas en ${DIR}/`);

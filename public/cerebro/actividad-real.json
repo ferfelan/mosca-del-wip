@@ -1878,5 +1878,11083 @@
    },
    "limpieza": 77.7
   }
- }
+ },
+ "fichas": {
+  "30": [
+   10592,
+   "AN08B012",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "90": [
+   25537,
+   "WED204",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "207": [
+   20822,
+   "SAD077",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "339": [
+   26873,
+   "",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "411": [
+   523040,
+   "GNG108",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "473": [
+   10162,
+   "DNp20",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "525": [
+   15703,
+   "GNG524",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "570": [
+   16119,
+   "DNpe014",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "588": [
+   16741,
+   "DNge019",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "593": [
+   905003,
+   "IN19A011",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "597": [
+   77245,
+   "AN06B051",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "913": [
+   19474,
+   "PS314",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "982": [
+   15673,
+   "DNg20",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "1045": [
+   522352,
+   "GNG636",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "1129": [
+   10124,
+   "DNg105",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "1139": [
+   25474,
+   "DNg07",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "1189": [
+   10727,
+   "DNpe002",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "1208": [
+   800373,
+   "IN23B001",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "1422": [
+   512720,
+   "DNge016",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "1427": [
+   15575,
+   "DNge030",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "1450": [
+   15734,
+   "GNG042",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "1664": [
+   12092,
+   "DNge027",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "1701": [
+   19913,
+   "WED201",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "1730": [
+   801267,
+   "MNhl02",
+   "R",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "1799": [
+   805487,
+   "w-cHIN",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "1843": [
+   11950,
+   "CB0591",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "1948": [
+   581131,
+   "PS306",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "1975": [
+   42061,
+   "AMMC018",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "2015": [
+   17868,
+   "PS242",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "2020": [
+   24022,
+   "AN09B024",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "2170": [
+   21668,
+   "DNge019",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "2207": [
+   801611,
+   "IN21A011",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "2218": [
+   20129,
+   "DNg12_e",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "2260": [
+   800426,
+   "IN07B006",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "2262": [
+   12493,
+   "DNge060",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "2275": [
+   23628,
+   "DNg12_a",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "2284": [
+   11961,
+   "DNp57",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "2320": [
+   326964,
+   "DNg12_a",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "2336": [
+   29547,
+   "CB1314",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "2372": [
+   515110,
+   "GNG529",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "2458": [
+   10536,
+   "DNg29",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "2512": [
+   905792,
+   "MNhl01",
+   "R",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "2681": [
+   19450,
+   "DNge091",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "2744": [
+   16079,
+   "DNge068",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "2826": [
+   11193,
+   "ALIN6",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "2944": [
+   14106,
+   "CB2664",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "2987": [
+   31421,
+   "DNg07",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "2994": [
+   26452,
+   "DNg07",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "3015": [
+   21644,
+   "Mi18",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "3388": [
+   931203,
+   "IN08A007",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "3478": [
+   800685,
+   "IN09A002",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "3480": [
+   45311,
+   "ANXXX084",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "3528": [
+   11072,
+   "DNp12",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "3532": [
+   28519,
+   "DNg08",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "3542": [
+   10318,
+   "MeVC4b",
+   "R",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "3563": [
+   800392,
+   "IN19A004",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "3606": [
+   15063,
+   "DNg50",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "3617": [
+   902790,
+   "w-cHIN",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "3681": [
+   14961,
+   "WEDPN11",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "3685": [
+   22080,
+   "DNg12_g",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "3696": [
+   21624,
+   "DNg12_a",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "3710": [
+   800446,
+   "IN13A009",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "3725": [
+   518849,
+   "CB2800",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "3731": [
+   34434,
+   "CB3745",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "3753": [
+   802402,
+   "IN06B024",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "3754": [
+   12105,
+   "MeVC7b",
+   "L",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "3762": [
+   29310,
+   "DNg06",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "3767": [
+   10661,
+   "WED210",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "3904": [
+   10030,
+   "pIP1",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "3926": [
+   174810,
+   "CvN5",
+   "L",
+   "cb_motor",
+   "movimiento"
+  ],
+  "3981": [
+   11231,
+   "GNG107",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "3983": [
+   12238,
+   "DNg32",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "4009": [
+   17333,
+   "DNg106",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "4073": [
+   18278,
+   "AN05B029",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "4088": [
+   800117,
+   "IN19A015",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "4098": [
+   58903,
+   "AMMC007",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "4132": [
+   801890,
+   "IN09A001",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "4147": [
+   800381,
+   "i2 MN",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "4238": [
+   24880,
+   "DNg12_f",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "4245": [
+   23784,
+   "AN09B024",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "4285": [
+   12386,
+   "DNg84",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "4303": [
+   807177,
+   "IN13A038",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "4361": [
+   800163,
+   "IN19A002",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "4381": [
+   807020,
+   "IN13A035",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "4443": [
+   524656,
+   "AMMC037",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "4489": [
+   520386,
+   "ANXXX108",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "4491": [
+   22757,
+   "DNge019",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "4616": [
+   114795,
+   "AN08B031",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "4678": [
+   32463,
+   "CB2000",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "4889": [
+   15796,
+   "DNg106",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "4913": [
+   22758,
+   "DNg67",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "4920": [
+   514485,
+   "DNg106",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "4936": [
+   800917,
+   "hg1 MN",
+   "R",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "4953": [
+   10952,
+   "DNge107",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "4974": [
+   19631,
+   "DNg12_h",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "4975": [
+   801752,
+   "IN03B019",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "4990": [
+   12089,
+   "DNde006",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "5065": [
+   13364,
+   "DNge022",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "5081": [
+   801773,
+   "IN16B014",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "5128": [
+   12170,
+   "DNge044",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "5141": [
+   11156,
+   "GNG102",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "5259": [
+   19573,
+   "DNg08",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "5313": [
+   10775,
+   "AN01A089",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "5345": [
+   29161,
+   "",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "5367": [
+   800845,
+   "DNp12",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "5464": [
+   575669,
+   "DNg71",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "5501": [
+   50012,
+   "CB1094",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "5503": [
+   10131,
+   "DNg74_a",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "5512": [
+   12376,
+   "PLP209",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "5519": [
+   21801,
+   "CB2380",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "5656": [
+   10833,
+   "DNge062",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "5679": [
+   904736,
+   "IN13A009",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "5738": [
+   41939,
+   "CB1094",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "5795": [
+   801684,
+   "IN06B019",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "5818": [
+   556793,
+   "DNge111",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "5823": [
+   15321,
+   "GNG042",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "5879": [
+   20788,
+   "DNg12_c",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "5911": [
+   15365,
+   "GNG342",
+   "M",
+   "cb_intrinsic",
+   "central"
+  ],
+  "5954": [
+   13130,
+   "DNg105",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "5993": [
+   803582,
+   "MNnm10",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "6104": [
+   533748,
+   "GNG633",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "6127": [
+   11718,
+   "SAD093",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "6171": [
+   903689,
+   "Sternal anterior rotator MN",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "6238": [
+   11304,
+   "DNge042",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "6246": [
+   524363,
+   "GNG031",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "6247": [
+   800354,
+   "IN07B002",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "6265": [
+   244400,
+   "DNge020",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "6389": [
+   10827,
+   "GNG651",
+   "L",
+   "cb_motor",
+   "movimiento"
+  ],
+  "6476": [
+   14213,
+   "DNge060",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "6479": [
+   19924,
+   "CB2664",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "6781": [
+   14110,
+   "GNG342",
+   "M",
+   "cb_intrinsic",
+   "central"
+  ],
+  "6821": [
+   19084,
+   "DNge029",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "6890": [
+   10135,
+   "DNge031",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "6911": [
+   199331,
+   "AN06B042",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "7029": [
+   26764,
+   "GNG108",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "7033": [
+   19664,
+   "DNge019",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "7131": [
+   801319,
+   "MNnm13",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "7134": [
+   14278,
+   "DNg73",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "7162": [
+   802442,
+   "IN06B022",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "7175": [
+   800702,
+   "IN26X001",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "7429": [
+   12151,
+   "DNge138",
+   "M",
+   "descending_neuron",
+   "mando"
+  ],
+  "7432": [
+   812878,
+   "EN21X001",
+   "L",
+   "vnc_efferent",
+   "movimiento"
+  ],
+  "7449": [
+   15503,
+   "DNge019",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "7460": [
+   10447,
+   "DNge138",
+   "M",
+   "descending_neuron",
+   "mando"
+  ],
+  "7612": [
+   525143,
+   "AMMC025",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "7645": [
+   22596,
+   "DNg12_e",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "7721": [
+   531434,
+   "DNg12_a",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "7724": [
+   13492,
+   "DNge019",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "7911": [
+   20288,
+   "DNg12_c",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "7915": [
+   10336,
+   "DNg22",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "8024": [
+   10060,
+   "MeVPOL1",
+   "L",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "8055": [
+   29440,
+   "AMMC005",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "8058": [
+   902672,
+   "IN13A051",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "8145": [
+   36541,
+   "DNge078",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "8215": [
+   19214,
+   "DNge019",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "8260": [
+   12068,
+   "SAD113",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "8330": [
+   524190,
+   "DNge012",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "8372": [
+   800520,
+   "IN11A028",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "8390": [
+   517936,
+   "CB1702",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "8423": [
+   21783,
+   "AN27X008",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "8452": [
+   516898,
+   "AMMC022",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "8466": [
+   803210,
+   "IN07B002",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "8522": [
+   23985,
+   "CB3024",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "8564": [
+   909612,
+   "DNg11",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "8669": [
+   23608,
+   "SAD078",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "8730": [
+   28000,
+   "DNg07",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "8734": [
+   802046,
+   "IN13B006",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "8745": [
+   30088,
+   "AN13B002",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "8781": [
+   15681,
+   "DNge113",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "8842": [
+   26413,
+   "DNg07",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "8848": [
+   26512,
+   "DNg07",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "8934": [
+   805190,
+   "IN13A035",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "9023": [
+   12046,
+   "WED006",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "9187": [
+   19247,
+   "DNg106",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "9188": [
+   518123,
+   "AN06B090",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "9200": [
+   10686,
+   "DNge132",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "9222": [
+   902982,
+   "IN17A025",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "9329": [
+   27369,
+   "AMMC025",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "9357": [
+   14973,
+   "AN19A018",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "9433": [
+   810209,
+   "IN00A057",
+   "M",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "9497": [
+   11881,
+   "DNge023",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "9518": [
+   26146,
+   "ANXXX154",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "9615": [
+   520898,
+   "DNb04",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "9621": [
+   22696,
+   "PS281",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "9694": [
+   10038,
+   "pIP1",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "9705": [
+   14909,
+   "PS320",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "9740": [
+   26441,
+   "DNg12_f",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "9845": [
+   904826,
+   "IN17A052",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "9880": [
+   13065,
+   "DNge084",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "9915": [
+   10221,
+   "DNge037",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "10036": [
+   530345,
+   "",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "10083": [
+   382580,
+   "AN08B031",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "10128": [
+   15653,
+   "DNge012",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "10162": [
+   22000,
+   "AMMC021",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "10184": [
+   11445,
+   "AOTU064",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "10198": [
+   11916,
+   "DNbe005",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "10330": [
+   22564,
+   "DNg12_e",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "10337": [
+   11427,
+   "DNge101",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "10430": [
+   12622,
+   "DNge022",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "10450": [
+   79206,
+   "IB026",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "10460": [
+   83661,
+   "DNge046",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "10464": [
+   556512,
+   "GNG089",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "10477": [
+   40773,
+   "AN01A014",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "10478": [
+   21763,
+   "AN13B002",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "10480": [
+   25634,
+   "DNge091",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "10576": [
+   516424,
+   "SAD004",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "10611": [
+   36947,
+   "WED102",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "10640": [
+   800573,
+   "i2 MN",
+   "R",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "10784": [
+   10341,
+   "DNp19",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "10818": [
+   11811,
+   "WED207",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "10833": [
+   801246,
+   "LBL40",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "10947": [
+   22187,
+   "CB1314",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "11072": [
+   10469,
+   "DNbe001",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "11117": [
+   90051,
+   "AN07B003",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "11247": [
+   59195,
+   "CB3437",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "11263": [
+   800115,
+   "IN13B004",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "11303": [
+   800081,
+   "IN08A002",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "11319": [
+   28332,
+   "GNG150",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "11377": [
+   24619,
+   "DNg12_c",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "11404": [
+   39431,
+   "AMMC004",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "11570": [
+   802399,
+   "IN03B008",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "11600": [
+   18265,
+   "DNge019",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "11761": [
+   812511,
+   "DNge019",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "11826": [
+   10687,
+   "OA-AL2i3",
+   "R",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "11847": [
+   27702,
+   "ANXXX013",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "11995": [
+   11048,
+   "DNge068",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "12002": [
+   818789,
+   "DNg12_f",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "12013": [
+   11071,
+   "CB0530",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "12033": [
+   31381,
+   "DNg08",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "12075": [
+   16221,
+   "DNg21",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "12128": [
+   10180,
+   "AN02A002",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "12164": [
+   22931,
+   "ANXXX006",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "12259": [
+   15966,
+   "WED106",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "12286": [
+   10033,
+   "DNg56",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "12412": [
+   12781,
+   "DNge104",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "12437": [
+   800051,
+   "IN07B001",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "12475": [
+   905170,
+   "IN10B012",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "12547": [
+   25188,
+   "DNg08",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "12588": [
+   11751,
+   "GNG294",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "12676": [
+   224753,
+   "DNg05_b",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "12766": [
+   14801,
+   "DNge111",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "12777": [
+   904685,
+   "IN13A001",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "12892": [
+   933913,
+   "IN19A004",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "12949": [
+   10383,
+   "PS349",
+   "R",
+   "cb_motor",
+   "movimiento"
+  ],
+  "12992": [
+   13004,
+   "GNG316",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "13071": [
+   801193,
+   "IN21A016",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "13174": [
+   19455,
+   "DNg12_h",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "13184": [
+   20743,
+   "DNge019",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "13235": [
+   800597,
+   "IN13A011",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "13263": [
+   11889,
+   "DNge065",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "13281": [
+   15148,
+   "DNg62",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "13475": [
+   803938,
+   "IN00A025",
+   "M",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "13488": [
+   10664,
+   "DNp33",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "13557": [
+   44865,
+   "WED099",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "13570": [
+   61324,
+   "CB0986",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "13589": [
+   13799,
+   "GNG115",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "13666": [
+   520899,
+   "AMMC015",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "13710": [
+   19962,
+   "DNge181",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "13880": [
+   800213,
+   "IN12B003",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "13943": [
+   22474,
+   "DNg12_e",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "13972": [
+   10676,
+   "DNg49",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "13978": [
+   29558,
+   "AMMC019",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "14041": [
+   924901,
+   "IN06A002",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "14065": [
+   10658,
+   "OA-AL2i3",
+   "L",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "14079": [
+   26012,
+   "AN03B011",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "14142": [
+   10888,
+   "DNb06",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "14155": [
+   24038,
+   "DNg08",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "14156": [
+   19871,
+   "DNg06",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "14213": [
+   18373,
+   "AN17B007",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "14300": [
+   11977,
+   "GNG636",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "14318": [
+   32413,
+   "DNg12_f",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "14335": [
+   10048,
+   "DNp18",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "14399": [
+   15825,
+   "DNg21",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "14442": [
+   12485,
+   "DNge125",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "14475": [
+   11485,
+   "MeVPLo1",
+   "L",
+   "visual_projection",
+   "vision"
+  ],
+  "14489": [
+   10587,
+   "DNge011",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "14494": [
+   10259,
+   "DNp11",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "14541": [
+   800116,
+   "IN13A001",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "14553": [
+   802166,
+   "IN05B032",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "14579": [
+   12307,
+   "DNg59",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "14662": [
+   115983,
+   "WEDPN8C",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "14737": [
+   512550,
+   "GNG038",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "14752": [
+   11438,
+   "DNp33",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "14820": [
+   20473,
+   "DNg12_c",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "14826": [
+   33400,
+   "AN08B016",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "14827": [
+   13295,
+   "DNge033",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "14830": [
+   523875,
+   "CB0397",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "14930": [
+   25589,
+   "DNg07",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "15179": [
+   801021,
+   "hg3 MN",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "15235": [
+   33892,
+   "AN03B011",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "15292": [
+   800931,
+   "IN13A009",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "15368": [
+   803197,
+   "IN07B019",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "15370": [
+   27837,
+   "CB3870",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "15372": [
+   805362,
+   "AN27X011",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "15400": [
+   10740,
+   "DNge143",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "15528": [
+   11552,
+   "CB1076",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "15546": [
+   12583,
+   "DNg87",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "15550": [
+   12169,
+   "DNg87",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "15563": [
+   19749,
+   "DNge091",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "15609": [
+   23178,
+   "DNge111",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "15635": [
+   803575,
+   "w-cHIN",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "15638": [
+   10856,
+   "DNge129",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "15660": [
+   12180,
+   "GNG653",
+   "L",
+   "cb_motor",
+   "movimiento"
+  ],
+  "15678": [
+   123532,
+   "AMMC006",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "15701": [
+   13178,
+   "DNge039",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "15703": [
+   15790,
+   "Mi18",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "15818": [
+   810639,
+   "Tr flexor MN",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "15951": [
+   513114,
+   "AN01A055",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "15960": [
+   802781,
+   "MNnm08",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "16018": [
+   12566,
+   "WED080",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "16019": [
+   558926,
+   "ANXXX462b",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "16145": [
+   43682,
+   "AN19A019",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "16155": [
+   10313,
+   "DNge031",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "16172": [
+   519839,
+   "DNge062",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "16263": [
+   23826,
+   "AN05B005",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "16503": [
+   800747,
+   "IN19A012",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "16511": [
+   10858,
+   "GNG666",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "16517": [
+   512002,
+   "AN12B005",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "16562": [
+   14157,
+   "DNge173",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "16781": [
+   12268,
+   "GNG143",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "16825": [
+   905617,
+   "MNnm09",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "16916": [
+   14306,
+   "DNg89",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "17125": [
+   907315,
+   "IN13A035",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "17232": [
+   512412,
+   "SAD014",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "17279": [
+   17967,
+   "DNde006",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "17280": [
+   57861,
+   "WED143_d",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "17292": [
+   801736,
+   "MNhl62",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "17307": [
+   801401,
+   "IN00A004",
+   "M",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "17356": [
+   12933,
+   "AN08B014",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "17382": [
+   11663,
+   "PS126",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "17422": [
+   11458,
+   "DNge043",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "17449": [
+   802232,
+   "Tr flexor MN",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "17478": [
+   13306,
+   "AMMC038",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "17483": [
+   14034,
+   "AN06B004",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "17563": [
+   50939,
+   "CB1908",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "17602": [
+   14214,
+   "DNg106",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "17610": [
+   57335,
+   "INXXX063",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "17657": [
+   12976,
+   "AN05B007",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "17692": [
+   121055,
+   "WED100",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "17897": [
+   10184,
+   "CL366",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "17916": [
+   10433,
+   "DNp10",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "17969": [
+   800737,
+   "IN03B022",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "18069": [
+   10612,
+   "Pm12",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "18121": [
+   19215,
+   "PS261",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "18146": [
+   26232,
+   "DNg08",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "18173": [
+   801382,
+   "IN09A002",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "18205": [
+   13499,
+   "DNge106",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "18372": [
+   35440,
+   "AN08B016",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "18425": [
+   22128,
+   "DNg12_g",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "18435": [
+   803891,
+   "hg2 MN",
+   "R",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "18452": [
+   15065,
+   "DNge016",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "18458": [
+   801820,
+   "IN06A096",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "18499": [
+   11667,
+   "WED119",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "18508": [
+   517165,
+   "CB4176",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "18565": [
+   83968,
+   "CB2228",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "18568": [
+   26284,
+   "AN05B005",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "18610": [
+   811524,
+   "IN08A046",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "18623": [
+   52931,
+   "AMMC019",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "18634": [
+   10040,
+   "Dm17",
+   "L",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "18763": [
+   514625,
+   "ANXXX462a",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "18769": [
+   924167,
+   "STTMm",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "18773": [
+   11566,
+   "ALIN4",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "18840": [
+   39880,
+   "IN27X001",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "18892": [
+   526708,
+   "WED204",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "18902": [
+   55021,
+   "DNg12_e",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "19084": [
+   14537,
+   "DNge078",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "19228": [
+   11600,
+   "DNge084",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "19236": [
+   20652,
+   "GNG124",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "19320": [
+   13624,
+   "DNg62",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "19410": [
+   800430,
+   "IN19A005",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "19413": [
+   800269,
+   "IN19A004",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "19484": [
+   522311,
+   "GNG516",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "19500": [
+   556767,
+   "WED106",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "19552": [
+   13827,
+   "AN08B018",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "19798": [
+   30532,
+   "CB2558",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "19812": [
+   530938,
+   "PVLP149",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "19881": [
+   521190,
+   "DNae007",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "20257": [
+   11951,
+   "DNg38",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "20334": [
+   12228,
+   "AMMC028",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "20401": [
+   520194,
+   "PS304",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "20440": [
+   36944,
+   "CB0324",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "20461": [
+   904042,
+   "IN12A012",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "20485": [
+   525407,
+   "DNge128",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "20512": [
+   12034,
+   "CB1076",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "20579": [
+   904022,
+   "IN19B010",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "20757": [
+   242405,
+   "DNge046",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "20810": [
+   1052002184,
+   "IN06A065",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "20875": [
+   805501,
+   "IN03A045",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "20905": [
+   13403,
+   "DNp21",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "20963": [
+   12822,
+   "SAD114",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "21075": [
+   803586,
+   "IN00A025",
+   "M",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "21233": [
+   800053,
+   "IN07B001",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "21330": [
+   12894,
+   "DNge011",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "21332": [
+   133879,
+   "WED163",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "21398": [
+   802506,
+   "IN11B002",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "21448": [
+   19946,
+   "DNg12_c",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "21564": [
+   11797,
+   "DNge041",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "21595": [
+   558778,
+   "AN08B012",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "21661": [
+   10499,
+   "DNge039",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "21679": [
+   934092,
+   "IN19A016",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "21936": [
+   18616,
+   "DNg12_a",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "21938": [
+   10425,
+   "DNp10",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "21948": [
+   516820,
+   "GNG127",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "22098": [
+   21863,
+   "DNg106",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "22134": [
+   14098,
+   "DNge044",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "22240": [
+   11014,
+   "AN01A089",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "22339": [
+   12251,
+   "GNG282",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "22340": [
+   18455,
+   "AN17B008",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "22346": [
+   10601,
+   "DNpe025",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "22410": [
+   92601,
+   "CB2440",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "22429": [
+   73753,
+   "AN07B003",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "22533": [
+   24273,
+   "CB2380",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "22549": [
+   11241,
+   "DNge143",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "22786": [
+   517861,
+   "GNG041",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "22805": [
+   801918,
+   "Sternal anterior rotator MN",
+   "R",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "22811": [
+   803544,
+   "IN07B032",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "22820": [
+   16063,
+   "AN07B017",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "23076": [
+   12601,
+   "DNge122",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "23127": [
+   23960,
+   "DNg12_c",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "23161": [
+   46778,
+   "AMMC005",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "23190": [
+   10482,
+   "DNg35",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "23215": [
+   12787,
+   "DNge033",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "23245": [
+   801534,
+   "IN06B006",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "23349": [
+   523329,
+   "DNa10",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "23364": [
+   11081,
+   "aMe17c",
+   "R",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "23418": [
+   10347,
+   "LHPV6q1",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "23423": [
+   17727,
+   "DNg09_a",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "23457": [
+   800118,
+   "INXXX089",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "23525": [
+   16878,
+   "DNge019",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "23624": [
+   20354,
+   "DNg57",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "23824": [
+   14964,
+   "DNge113",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "23838": [
+   903090,
+   "MNhl62",
+   "R",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "23871": [
+   802499,
+   "IN13A019",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "23872": [
+   20844,
+   "",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "23922": [
+   24803,
+   "AMMC026",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "23995": [
+   43293,
+   "GNG041",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "24055": [
+   11265,
+   "PS349",
+   "L",
+   "cb_motor",
+   "movimiento"
+  ],
+  "24108": [
+   37942,
+   "AN08B049",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "24115": [
+   11179,
+   "DNge051",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "24142": [
+   805096,
+   "IN06A020",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "24213": [
+   14998,
+   "CB1538",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "24253": [
+   14113,
+   "AN19A018",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "24337": [
+   10846,
+   "DNge107",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "24476": [
+   20558,
+   "AVLP120",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "24576": [
+   20234,
+   "DNge175",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "24644": [
+   556450,
+   "DNge045",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "24678": [
+   801909,
+   "IN03A045",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "24708": [
+   10699,
+   "GNG648",
+   "L",
+   "cb_motor",
+   "movimiento"
+  ],
+  "24823": [
+   524245,
+   "AN09B014",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "24923": [
+   22190,
+   "DNg12_e",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "24975": [
+   802500,
+   "MNad40",
+   "R",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "24999": [
+   12301,
+   "PS326",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25000": [
+   10011,
+   "OA-AL2i1",
+   "L",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25001": [
+   10017,
+   "AMMC-A1",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25002": [
+   10020,
+   "AMMC-A1",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25003": [
+   10046,
+   "MeVC11",
+   "L",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25004": [
+   10050,
+   "5-HTPMPV03",
+   "R",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25005": [
+   10051,
+   "Li39",
+   "L",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25006": [
+   10072,
+   "OA-AL2i1",
+   "R",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25007": [
+   10078,
+   "MeVC1",
+   "L",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25008": [
+   10085,
+   "Am1",
+   "L",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25009": [
+   10088,
+   "MeVC1",
+   "R",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25010": [
+   10093,
+   "Am1",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25011": [
+   10094,
+   "AVLP597",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25012": [
+   10101,
+   "PS100",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25013": [
+   10107,
+   "MeVCMe1",
+   "L",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25014": [
+   10114,
+   "Cm34",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25015": [
+   10118,
+   "DNb05",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25016": [
+   10119,
+   "Dm17",
+   "L",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25017": [
+   10128,
+   "SAD103",
+   "M",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25018": [
+   10132,
+   "LoVC1",
+   "R",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25019": [
+   10136,
+   "PS304",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25020": [
+   10165,
+   "AN05B101",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "25021": [
+   10168,
+   "OA-VUMa6",
+   "M",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25022": [
+   10170,
+   "MeVPMe2",
+   "R",
+   "visual_projection",
+   "vision"
+  ],
+  "25023": [
+   10175,
+   "OA-VUMa6",
+   "M",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25024": [
+   10190,
+   "MeVPMe2",
+   "R",
+   "visual_projection",
+   "vision"
+  ],
+  "25025": [
+   10202,
+   "GNG103",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25026": [
+   10203,
+   "PS100",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25027": [
+   10204,
+   "OA-AL2i2",
+   "L",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25028": [
+   10205,
+   "GNG003",
+   "M",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25029": [
+   10222,
+   "MeVCMe1",
+   "R",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25030": [
+   10226,
+   "OA-AL2i3",
+   "L",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25031": [
+   10242,
+   "Dm17",
+   "L",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25032": [
+   10251,
+   "MeVP53",
+   "L",
+   "visual_projection",
+   "vision"
+  ],
+  "25033": [
+   10255,
+   "MeVCMe1",
+   "L",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25034": [
+   10260,
+   "MeVC11",
+   "R",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25035": [
+   10263,
+   "GNG300",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25036": [
+   10265,
+   "OA-AL2i2",
+   "L",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25037": [
+   10269,
+   "OA-AL2i2",
+   "R",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25038": [
+   10271,
+   "Pm11",
+   "L",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25039": [
+   10272,
+   "MeVPMe2",
+   "L",
+   "visual_projection",
+   "vision"
+  ],
+  "25040": [
+   10276,
+   "aMe17c",
+   "L",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25041": [
+   10278,
+   "5-HTPMPV03",
+   "L",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25042": [
+   10279,
+   "SAD113",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25043": [
+   10282,
+   "Dm17",
+   "L",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25044": [
+   10302,
+   "Li38",
+   "L",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25045": [
+   10312,
+   "MeVPMe2",
+   "R",
+   "visual_projection",
+   "vision"
+  ],
+  "25046": [
+   10314,
+   "MeVC4b",
+   "L",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25047": [
+   10317,
+   "LPT59",
+   "L",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25048": [
+   10322,
+   "OA-AL2i2",
+   "R",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25049": [
+   10330,
+   "MeVPOL1",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25050": [
+   10333,
+   "PS306",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25051": [
+   10371,
+   "WED203",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25052": [
+   10377,
+   "DNge054",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25053": [
+   10414,
+   "LT33",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25054": [
+   10428,
+   "MeVCMe1",
+   "R",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25055": [
+   10446,
+   "DNp73",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25056": [
+   10468,
+   "GNG144",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25057": [
+   10480,
+   "MeVP53",
+   "R",
+   "visual_projection",
+   "vision"
+  ],
+  "25058": [
+   10488,
+   "Pm11",
+   "L",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25059": [
+   10490,
+   "GNG671",
+   "M",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25060": [
+   10501,
+   "GNG284",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25061": [
+   10518,
+   "Cm31b",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25062": [
+   10527,
+   "DNpe017",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25063": [
+   10531,
+   "Pm12",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25064": [
+   10551,
+   "aMe17c",
+   "L",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25065": [
+   10554,
+   "GNG648",
+   "R",
+   "cb_motor",
+   "movimiento"
+  ],
+  "25066": [
+   10608,
+   "MeVC4a",
+   "R",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25067": [
+   10611,
+   "Li39",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25068": [
+   10627,
+   "CvN5",
+   "R",
+   "cb_motor",
+   "movimiento"
+  ],
+  "25069": [
+   10646,
+   "AVLP597",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25070": [
+   10649,
+   "DNp38",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25071": [
+   10671,
+   "AN02A002",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "25072": [
+   10692,
+   "AN05B101",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "25073": [
+   10696,
+   "aMe17c",
+   "R",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25074": [
+   10728,
+   "WED116",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25075": [
+   10731,
+   "SAD107",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25076": [
+   10738,
+   "GNG641",
+   "L",
+   "cb_motor",
+   "movimiento"
+  ],
+  "25077": [
+   10743,
+   "SAD001",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25078": [
+   10751,
+   "GNG507",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25079": [
+   10754,
+   "CvN7",
+   "L",
+   "cb_motor",
+   "movimiento"
+  ],
+  "25080": [
+   10787,
+   "LT35",
+   "L",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25081": [
+   10791,
+   "CB3024",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25082": [
+   10807,
+   "Pm11",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25083": [
+   10825,
+   "OA-AL2i3",
+   "R",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25084": [
+   10831,
+   "WED195",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25085": [
+   10839,
+   "Dm17",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25086": [
+   10845,
+   "Dm17",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25087": [
+   10863,
+   "",
+   "R",
+   "cb_motor",
+   "movimiento"
+  ],
+  "25088": [
+   10872,
+   "CB0677",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25089": [
+   10949,
+   "GNG506",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25090": [
+   10950,
+   "Pm11",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25091": [
+   10964,
+   "GNG115",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25092": [
+   10999,
+   "GNG700m",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25093": [
+   11006,
+   "DNge129",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25094": [
+   11027,
+   "Pm13",
+   "L",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25095": [
+   11029,
+   "Pm13",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25096": [
+   11044,
+   "AMMC034_a",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25097": [
+   11075,
+   "DNg99",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25098": [
+   11085,
+   "Li38",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25099": [
+   11146,
+   "MeVPMe2",
+   "R",
+   "visual_projection",
+   "vision"
+  ],
+  "25100": [
+   11155,
+   "OLVC5",
+   "R",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25101": [
+   11164,
+   "GNG124",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25102": [
+   11188,
+   "Dm17",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25103": [
+   11234,
+   "GNG423",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25104": [
+   11245,
+   "LAL156_a",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25105": [
+   11260,
+   "MeVC4a",
+   "L",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25106": [
+   11271,
+   "LHCENT14",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25107": [
+   11287,
+   "WED108",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25108": [
+   11295,
+   "CB0517",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25109": [
+   11312,
+   "Dm17",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25110": [
+   11321,
+   "WED006",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25111": [
+   11344,
+   "MeVC6",
+   "L",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25112": [
+   11352,
+   "DNge027",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25113": [
+   11375,
+   "MeVPLo1",
+   "R",
+   "visual_projection",
+   "vision"
+  ],
+  "25114": [
+   11389,
+   "CB1074",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25115": [
+   11403,
+   "GNG641",
+   "R",
+   "cb_motor",
+   "movimiento"
+  ],
+  "25116": [
+   11406,
+   "LoVC1",
+   "L",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25117": [
+   11408,
+   "CB0758",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25118": [
+   11440,
+   "PLP060",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25119": [
+   11441,
+   "PS322",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25120": [
+   11476,
+   "SAD112_b",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25121": [
+   11477,
+   "LHPV6q1",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25122": [
+   11500,
+   "DNge043",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "25123": [
+   11511,
+   "PLP034",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25124": [
+   11558,
+   "ALIN5",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25125": [
+   11561,
+   "SAD112_a",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25126": [
+   11635,
+   "SAD077",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25127": [
+   11644,
+   "ALIN4",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25128": [
+   11646,
+   "SAD112_c",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25129": [
+   11764,
+   "AOTU064",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25130": [
+   11790,
+   "CB0397",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25131": [
+   11818,
+   "CB0758",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25132": [
+   11906,
+   "GNG126",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25133": [
+   11947,
+   "MeVPLo1",
+   "R",
+   "visual_projection",
+   "vision"
+  ],
+  "25134": [
+   11960,
+   "AMMC012",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25135": [
+   11968,
+   "GNG665",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25136": [
+   11979,
+   "GNG651",
+   "R",
+   "cb_motor",
+   "movimiento"
+  ],
+  "25137": [
+   12071,
+   "PVLP149",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25138": [
+   12093,
+   "GNG579",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25139": [
+   12123,
+   "GNG316",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25140": [
+   12140,
+   "MeVPLo1",
+   "L",
+   "visual_projection",
+   "vision"
+  ],
+  "25141": [
+   12141,
+   "CvN4",
+   "R",
+   "cb_motor",
+   "movimiento"
+  ],
+  "25142": [
+   12143,
+   "AN01A055",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "25143": [
+   12159,
+   "Cm34",
+   "L",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25144": [
+   12173,
+   "GNG314",
+   "L",
+   "cb_motor",
+   "movimiento"
+  ],
+  "25145": [
+   12270,
+   "GNG126",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25146": [
+   12371,
+   "ALIN2",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25147": [
+   12402,
+   "GNG585",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25148": [
+   12420,
+   "CB2153",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25149": [
+   12438,
+   "ATL030",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25150": [
+   12452,
+   "PLP209",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25151": [
+   12459,
+   "WED109",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25152": [
+   12497,
+   "GNG102",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25153": [
+   12508,
+   "PVLP149",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25154": [
+   12514,
+   "SAD076",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25155": [
+   12590,
+   "DNg22",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25156": [
+   12594,
+   "WED069",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25157": [
+   12595,
+   "GNG557",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25158": [
+   12621,
+   "DNg56",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25159": [
+   12631,
+   "GNG314",
+   "R",
+   "cb_motor",
+   "movimiento"
+  ],
+  "25160": [
+   12655,
+   "CB3207",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25161": [
+   12657,
+   "GNG668",
+   "R",
+   "cb_motor",
+   "movimiento"
+  ],
+  "25162": [
+   12693,
+   "PS180",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25163": [
+   12710,
+   "LoVC14",
+   "R",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25164": [
+   12734,
+   "GNG281",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25165": [
+   12742,
+   "AMMC038",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25166": [
+   12743,
+   "DNge101",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25167": [
+   12759,
+   "ALIN6",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25168": [
+   12768,
+   "SAD110",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25169": [
+   12803,
+   "CB0432",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25170": [
+   12807,
+   "GNG029",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25171": [
+   12880,
+   "MeVC8",
+   "R",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25172": [
+   12901,
+   "GNG557",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25173": [
+   12904,
+   "PS180",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25174": [
+   12906,
+   "GNG423",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25175": [
+   12917,
+   "SAD078",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25176": [
+   12972,
+   "GNG301",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25177": [
+   13072,
+   "WED080",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25178": [
+   13079,
+   "Pm12",
+   "L",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25179": [
+   13118,
+   "GNG154",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25180": [
+   13145,
+   "GNG149",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25181": [
+   13166,
+   "AN08B012",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "25182": [
+   13179,
+   "GNG166",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25183": [
+   13181,
+   "ANXXX027",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "25184": [
+   13232,
+   "ALIN7",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25185": [
+   13263,
+   "WED108",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25186": [
+   13291,
+   "PS230",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25187": [
+   13426,
+   "AMMC020",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25188": [
+   13472,
+   "SAD053",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25189": [
+   13475,
+   "GNG294",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25190": [
+   13510,
+   "GNG029",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25191": [
+   13539,
+   "",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25192": [
+   13622,
+   "DNg73",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25193": [
+   13689,
+   "AMMC026",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25194": [
+   13771,
+   "AN06B004",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "25195": [
+   13783,
+   "GNG499",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25196": [
+   13791,
+   "CB0598",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25197": [
+   13841,
+   "CB1055",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25198": [
+   13854,
+   "DNg89",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25199": [
+   13891,
+   "DNg106",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "25200": [
+   13939,
+   "GNG312",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25201": [
+   13963,
+   "CB2521",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25202": [
+   14017,
+   "CL022_c",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25203": [
+   14055,
+   "CB4176",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25204": [
+   14075,
+   "GNG529",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25205": [
+   14087,
+   "CB3588",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25206": [
+   14140,
+   "GNG286",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25207": [
+   14149,
+   "PVLP031",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25208": [
+   14252,
+   "CB3682",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25209": [
+   14262,
+   "OCG06",
+   "L",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25210": [
+   14299,
+   "Mi18",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25211": [
+   14315,
+   "PS052",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25212": [
+   14327,
+   "PS052",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25213": [
+   14486,
+   "Pm12",
+   "L",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25214": [
+   14511,
+   "CB3588",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25215": [
+   14516,
+   "GNG559",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25216": [
+   14563,
+   "Mi18",
+   "L",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25217": [
+   14604,
+   "CB1076",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25218": [
+   14644,
+   "CB0607",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25219": [
+   14733,
+   "CB3746",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25220": [
+   14873,
+   "GNG251",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25221": [
+   14942,
+   "ATL030",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25222": [
+   14953,
+   "GNG128",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25223": [
+   14983,
+   "AMMC037",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25224": [
+   15064,
+   "DNg05_a",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25225": [
+   15140,
+   "GNG668",
+   "L",
+   "cb_motor",
+   "movimiento"
+  ],
+  "25226": [
+   15259,
+   "GNG132",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25227": [
+   15336,
+   "CB1538",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25228": [
+   15397,
+   "SAD034",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25229": [
+   15420,
+   "SAD001",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25230": [
+   15436,
+   "AMMC028",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25231": [
+   15440,
+   "Li17",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25232": [
+   15470,
+   "WED207",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25233": [
+   15482,
+   "WED207",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25234": [
+   15602,
+   "GNG515",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25235": [
+   15622,
+   "CB1074",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25236": [
+   15719,
+   "Mi18",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25237": [
+   15920,
+   "LHAV2b2_d",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25238": [
+   15925,
+   "Mi18",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25239": [
+   15952,
+   "SAD004",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25240": [
+   15965,
+   "CB4118",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25241": [
+   15993,
+   "",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25242": [
+   16068,
+   "CB3710",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25243": [
+   16069,
+   "Mi18",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25244": [
+   16073,
+   "AMMC035",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25245": [
+   16098,
+   "DNge029",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "25246": [
+   16117,
+   "Mi18",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25247": [
+   16146,
+   "GNG582",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25248": [
+   16150,
+   "Mi18",
+   "L",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25249": [
+   16172,
+   "GNG423",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25250": [
+   16182,
+   "OCC01b",
+   "L",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25251": [
+   16370,
+   "GNG166",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25252": [
+   16568,
+   "WED207",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25253": [
+   16603,
+   "CB4176",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25254": [
+   16644,
+   "CB2824",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25255": [
+   16645,
+   "Mi18",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25256": [
+   16899,
+   "AMMC024",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25257": [
+   16948,
+   "Mi18",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25258": [
+   17022,
+   "CB3692",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25259": [
+   17063,
+   "GNG340",
+   "M",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25260": [
+   17084,
+   "CB1145",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25261": [
+   17095,
+   "SAD079",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25262": [
+   17168,
+   "CB3710",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25263": [
+   17234,
+   "SAD021_a",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25264": [
+   17386,
+   "DNg12_d",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "25265": [
+   17513,
+   "AN05B009",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "25266": [
+   17536,
+   "WED202",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25267": [
+   17629,
+   "AMMC020",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25268": [
+   17709,
+   "GNG175",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25269": [
+   17815,
+   "CB4118",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25270": [
+   17846,
+   "LHCENT14",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25271": [
+   17908,
+   "WED125",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25272": [
+   17956,
+   "SAD021_a",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25273": [
+   18000,
+   "CB3673b",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25274": [
+   18082,
+   "CB1538",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25275": [
+   18111,
+   "SAD021_a",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25276": [
+   18167,
+   "CB1948",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25277": [
+   18173,
+   "CB1948",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25278": [
+   18211,
+   "CB4118",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25279": [
+   18255,
+   "CB0224",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25280": [
+   18269,
+   "AMMC021",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25281": [
+   18431,
+   "SAD077",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25282": [
+   18512,
+   "CB1948",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25283": [
+   18590,
+   "GNG229",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25284": [
+   18665,
+   "AMMC004",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25285": [
+   18821,
+   "AMMC023",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25286": [
+   18850,
+   "SAD021",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25287": [
+   18880,
+   "GNG197",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25288": [
+   18940,
+   "AN05B006",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "25289": [
+   19030,
+   "DNge091",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25290": [
+   19038,
+   "DNg106",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25291": [
+   19115,
+   "CB2270",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25292": [
+   19124,
+   "AN03A002",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "25293": [
+   19165,
+   "AMMC022",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25294": [
+   19268,
+   "DNg12_c",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "25295": [
+   19363,
+   "Mi18",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25296": [
+   19441,
+   "DNg12_a",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25297": [
+   19480,
+   "ANXXX462a",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "25298": [
+   19496,
+   "CB4118",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25299": [
+   19590,
+   "AMMC029",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25300": [
+   19622,
+   "SAD077",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25301": [
+   19638,
+   "CB1314",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25302": [
+   19698,
+   "AMMC010",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25303": [
+   19799,
+   "WED127",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25304": [
+   19835,
+   "AMMC030",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25305": [
+   19937,
+   "AMMC006",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25306": [
+   20039,
+   "AMMC026",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25307": [
+   20054,
+   "DNge091",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25308": [
+   20060,
+   "CB1942",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25309": [
+   20061,
+   "CB3870",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25310": [
+   20080,
+   "WED093",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25311": [
+   20102,
+   "DNge178",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25312": [
+   20307,
+   "CB4118",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25313": [
+   20364,
+   "CB3024",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25314": [
+   20729,
+   "WED084",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25315": [
+   20747,
+   "AOTU043",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25316": [
+   20750,
+   "CB3024",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25317": [
+   20877,
+   "AMMC021",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25318": [
+   20996,
+   "AMMC036",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25319": [
+   21026,
+   "CB2371",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25320": [
+   21146,
+   "DNge091",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25321": [
+   21184,
+   "CB3024",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25322": [
+   21235,
+   "AMMC026",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25323": [
+   21324,
+   "CB4118",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25324": [
+   21581,
+   "DNge178",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "25325": [
+   21623,
+   "CB4118",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25326": [
+   21687,
+   "CB2228",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25327": [
+   21746,
+   "GNG038",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25328": [
+   21828,
+   "GNG215",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25329": [
+   21989,
+   "WED166_d",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25330": [
+   22033,
+   "DNg12_c",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25331": [
+   22085,
+   "Mi18",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25332": [
+   22151,
+   "Mi18",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25333": [
+   22395,
+   "CB2228",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25334": [
+   22441,
+   "CB2228",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25335": [
+   22590,
+   "CB3320",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25336": [
+   23046,
+   "WED056",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25337": [
+   23191,
+   "SAD078",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25338": [
+   23327,
+   "CB2000",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25339": [
+   23412,
+   "DNge181",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25340": [
+   23477,
+   "lLN2X04",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25341": [
+   23764,
+   "WED082",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25342": [
+   23860,
+   "",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25343": [
+   23893,
+   "LT35",
+   "R",
+   "visual_centrifugal",
+   "vision"
+  ],
+  "25344": [
+   23993,
+   "CB3320",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25345": [
+   24058,
+   "DNge014",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25346": [
+   24096,
+   "AMMC022",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25347": [
+   24374,
+   "DNg08",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25348": [
+   24572,
+   "AMMC026",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25349": [
+   24626,
+   "WED127",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25350": [
+   24728,
+   "AMMC026",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25351": [
+   24961,
+   "DNg12_a",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "25352": [
+   25403,
+   "PS282",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25353": [
+   25436,
+   "SAD004",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25354": [
+   25438,
+   "SAD064",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25355": [
+   25715,
+   "AMMC022",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25356": [
+   25831,
+   "WED083",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25357": [
+   25901,
+   "AMMC020",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25358": [
+   25992,
+   "GNG228",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25359": [
+   26126,
+   "AMMC027",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25360": [
+   26134,
+   "CB3739",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25361": [
+   26402,
+   "WED055_a",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25362": [
+   26434,
+   "AMMC032",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25363": [
+   26470,
+   "GNG452",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25364": [
+   26630,
+   "AMMC006",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25365": [
+   26923,
+   "AMMC004",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25366": [
+   26927,
+   "PS284",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25367": [
+   27021,
+   "AMMC025",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25368": [
+   27118,
+   "DNg08",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25369": [
+   27478,
+   "w-cHIN",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25370": [
+   27905,
+   "CB4094",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25371": [
+   28105,
+   "ANXXX154",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "25372": [
+   28313,
+   "SAD030",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25373": [
+   28331,
+   "CB2558",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25374": [
+   28665,
+   "CB3631",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25375": [
+   28770,
+   "CB4038",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25376": [
+   28993,
+   "",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25377": [
+   29124,
+   "AMMC019",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25378": [
+   29142,
+   "AMMC008",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25379": [
+   29408,
+   "AMMC030",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25380": [
+   29434,
+   "AMMC020",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25381": [
+   29570,
+   "AMMC033",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25382": [
+   29584,
+   "AMMC019",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25383": [
+   29673,
+   "AMMC020",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25384": [
+   29805,
+   "AMMC004",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25385": [
+   29818,
+   "AMMC019",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25386": [
+   29852,
+   "AMMC025",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25387": [
+   29976,
+   "GNG611",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25388": [
+   30119,
+   "AN06B023",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "25389": [
+   30194,
+   "SAD013",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25390": [
+   30358,
+   "AMMC006",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25391": [
+   30738,
+   "SAD003",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25392": [
+   30777,
+   "AN19B004",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "25393": [
+   31018,
+   "GNG232",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25394": [
+   31124,
+   "PVLP149",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25395": [
+   31674,
+   "AMMC033",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25396": [
+   32033,
+   "",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25397": [
+   32042,
+   "",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25398": [
+   32056,
+   "AMMC003",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25399": [
+   32163,
+   "",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25400": [
+   32255,
+   "AN08B034",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "25401": [
+   32267,
+   "AMMC036",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25402": [
+   32792,
+   "CB1145",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25403": [
+   32824,
+   "VES001",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25404": [
+   32907,
+   "SAD030",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25405": [
+   32912,
+   "JO-EV6",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25406": [
+   32916,
+   "SAD004",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25407": [
+   32967,
+   "CB2228",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25408": [
+   32971,
+   "CB4037",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25409": [
+   33021,
+   "SAD003",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25410": [
+   33334,
+   "CB4037",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25411": [
+   33401,
+   "CB1145",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25412": [
+   33409,
+   "CB0986",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25413": [
+   33794,
+   "GNG440",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25414": [
+   33970,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25415": [
+   34299,
+   "CB0986",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25416": [
+   34312,
+   "CB3739",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25417": [
+   34388,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25418": [
+   35044,
+   "",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25419": [
+   35332,
+   "JO-EV2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25420": [
+   35757,
+   "CB3646",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25421": [
+   35930,
+   "CB0533",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25422": [
+   36076,
+   "PS281",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25423": [
+   36115,
+   "PS096",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25424": [
+   36136,
+   "PS174",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25425": [
+   36303,
+   "WED201",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25426": [
+   36532,
+   "CB0986",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25427": [
+   36925,
+   "CB0591",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25428": [
+   37313,
+   "PS326",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25429": [
+   37426,
+   "WED201",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25430": [
+   37553,
+   "CB3381",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25431": [
+   38093,
+   "AMMC003",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25432": [
+   38160,
+   "JO-FD1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25433": [
+   38423,
+   "CB2940",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25434": [
+   38637,
+   "CB2558",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25435": [
+   38727,
+   "JO-EV3",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25436": [
+   38733,
+   "AMMC025",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25437": [
+   38914,
+   "PS282",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25438": [
+   39102,
+   "GNG507",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25439": [
+   39119,
+   "AMMC004",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25440": [
+   39461,
+   "CB2431",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25441": [
+   39562,
+   "AMMC025",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25442": [
+   40399,
+   "CB2912",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25443": [
+   40980,
+   "CB2351",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25444": [
+   42121,
+   "JO-ED2_c",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25445": [
+   42570,
+   "AMMC005",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25446": [
+   43208,
+   "PS037",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25447": [
+   43324,
+   "CB0986",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25448": [
+   44775,
+   "CB1094",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25449": [
+   45694,
+   "AMMC036",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25450": [
+   46194,
+   "WEDPN8C",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25451": [
+   46645,
+   "CB2440",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25452": [
+   46984,
+   "CB1265",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25453": [
+   46990,
+   "AMMC018",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25454": [
+   47160,
+   "CB2558",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25455": [
+   47636,
+   "CB2440",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25456": [
+   47856,
+   "AMMC018",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25457": [
+   48158,
+   "AMMC007",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25458": [
+   48413,
+   "CB1145",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25459": [
+   48470,
+   "CB1265",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25460": [
+   49138,
+   "AMMC006",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25461": [
+   49513,
+   "JO-ED2_a",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25462": [
+   49856,
+   "GNG183",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25463": [
+   50254,
+   "CB1055",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25464": [
+   50353,
+   "CB0986",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25465": [
+   51029,
+   "JO-ED2_c",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25466": [
+   51361,
+   "GNG308",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25467": [
+   55759,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25468": [
+   57797,
+   "SAD080",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25469": [
+   58414,
+   "SAD077",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25470": [
+   59803,
+   "CB1265",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25471": [
+   60135,
+   "",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25472": [
+   60335,
+   "JO-FD1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25473": [
+   60534,
+   "JO-EV3",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25474": [
+   61670,
+   "CB4104",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25475": [
+   61840,
+   "CB3870",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25476": [
+   62410,
+   "CB2558",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25477": [
+   62434,
+   "JO-CL",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25478": [
+   62868,
+   "JO-EV3",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25479": [
+   63539,
+   "ANXXX023",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "25480": [
+   64293,
+   "JO-ED2_b",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25481": [
+   65100,
+   "JO-CL",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25482": [
+   65250,
+   "CB1268",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25483": [
+   65522,
+   "AMMC005",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25484": [
+   66268,
+   "CB3673b",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25485": [
+   66302,
+   "JO-EV6",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25486": [
+   66414,
+   "AMMC003",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25487": [
+   66603,
+   "CB1394_b",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25488": [
+   66752,
+   "SAD079",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25489": [
+   67186,
+   "JO-EV6",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25490": [
+   68291,
+   "JO-CM",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25491": [
+   68750,
+   "JO-ED2_b",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25492": [
+   69797,
+   "JO-CM",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25493": [
+   70685,
+   "SAD011",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25494": [
+   71352,
+   "JO-EV2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25495": [
+   72059,
+   "LB3c",
+   "R",
+   "cb_sensory",
+   "central"
+  ],
+  "25496": [
+   72475,
+   "CB3741",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25497": [
+   73005,
+   "JO-EV3",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25498": [
+   74384,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25499": [
+   75373,
+   "JO-CL",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25500": [
+   75970,
+   "JO-EV3",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25501": [
+   77273,
+   "JO-EV3",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25502": [
+   77370,
+   "JO-EV2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25503": [
+   77969,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25504": [
+   79237,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25505": [
+   79513,
+   "JO-EV3",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25506": [
+   80085,
+   "CL022_b",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25507": [
+   80492,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25508": [
+   80808,
+   "CB2270",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25509": [
+   81201,
+   "SAD080",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25510": [
+   81376,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25511": [
+   82178,
+   "JO-ED2_c",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25512": [
+   82928,
+   "JO-ED2_b",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25513": [
+   83648,
+   "JO-ED1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25514": [
+   83741,
+   "JO-CL",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25515": [
+   83873,
+   "CB1394_a",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25516": [
+   84153,
+   "JO-CL",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25517": [
+   84184,
+   "JO-CM",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25518": [
+   84533,
+   "AMMC022",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25519": [
+   85399,
+   "CB3743",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25520": [
+   85904,
+   "JO-ED2_a",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25521": [
+   86133,
+   "JO-EV3",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25522": [
+   86281,
+   "JO-EV5",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25523": [
+   86679,
+   "CB3865",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25524": [
+   87594,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25525": [
+   87778,
+   "JO-CL",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25526": [
+   88270,
+   "AMMC007",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25527": [
+   88941,
+   "CB2431",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25528": [
+   89017,
+   "JO-EV2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25529": [
+   89103,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25530": [
+   90773,
+   "JO-ED1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25531": [
+   92035,
+   "JO-EV3",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25532": [
+   92440,
+   "LB3c",
+   "R",
+   "cb_sensory",
+   "central"
+  ],
+  "25533": [
+   92735,
+   "",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25534": [
+   92767,
+   "JO-FD1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25535": [
+   92768,
+   "JO-CL",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25536": [
+   93383,
+   "JO-EV2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25537": [
+   94723,
+   "JO-EV6",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25538": [
+   95144,
+   "JO-EV3",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25539": [
+   96320,
+   "WED102",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25540": [
+   96418,
+   "JO-EV5",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25541": [
+   97025,
+   "JO-EV2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25542": [
+   97354,
+   "JO-CA2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25543": [
+   98485,
+   "JO-ED2_b",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25544": [
+   98583,
+   "JO-EV3",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25545": [
+   98638,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25546": [
+   98832,
+   "AMMC006",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25547": [
+   99367,
+   "JO-CA2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25548": [
+   100487,
+   "JO-ED2_a",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25549": [
+   101087,
+   "LB3c",
+   "R",
+   "cb_sensory",
+   "central"
+  ],
+  "25550": [
+   101240,
+   "JO-ED1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25551": [
+   101279,
+   "JO-EV5",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25552": [
+   101548,
+   "JO-EV5",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25553": [
+   101797,
+   "JO-EV5",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25554": [
+   104113,
+   "JO-ED2_b",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25555": [
+   105377,
+   "v2LN34C",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25556": [
+   107100,
+   "CB1213",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25557": [
+   107672,
+   "JO-EV5",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25558": [
+   107847,
+   "JO-CL",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25559": [
+   108298,
+   "JO-CM",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25560": [
+   109189,
+   "JO-CM",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25561": [
+   111529,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25562": [
+   112103,
+   "WED103",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25563": [
+   112427,
+   "JO-ED1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25564": [
+   112824,
+   "JO-ED1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25565": [
+   113345,
+   "JO-EV3",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25566": [
+   114151,
+   "SAD079",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25567": [
+   115297,
+   "AMMC005",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25568": [
+   115392,
+   "JO-ED2_a",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25569": [
+   116906,
+   "JO-CA2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25570": [
+   117698,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25571": [
+   118191,
+   "JO-ED2_a",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25572": [
+   119378,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25573": [
+   119531,
+   "JO-EV6",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25574": [
+   120303,
+   "LB3c",
+   "R",
+   "cb_sensory",
+   "central"
+  ],
+  "25575": [
+   121251,
+   "JO-CA2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25576": [
+   122112,
+   "AN01A014",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "25577": [
+   123422,
+   "WED167",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25578": [
+   123879,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25579": [
+   126081,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25580": [
+   126511,
+   "JO-EV5",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25581": [
+   126654,
+   "JO-EV6",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25582": [
+   126859,
+   "JO-ED2_c",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25583": [
+   127912,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25584": [
+   128729,
+   "JO-EV3",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25585": [
+   130622,
+   "JO-EV4",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25586": [
+   133527,
+   "JO-CL",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25587": [
+   133748,
+   "JO-ED2_a",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25588": [
+   133896,
+   "PS037",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25589": [
+   133917,
+   "CB3745",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25590": [
+   134244,
+   "CB2081_b",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25591": [
+   135060,
+   "CB1585",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25592": [
+   135324,
+   "CB1394_b",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25593": [
+   136401,
+   "CB1394_a",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25594": [
+   138403,
+   "JO-EV2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25595": [
+   140015,
+   "LB3c",
+   "R",
+   "cb_sensory",
+   "central"
+  ],
+  "25596": [
+   140357,
+   "JO-CL",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25597": [
+   141266,
+   "JO-CA1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25598": [
+   142804,
+   "JO-EV6",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25599": [
+   142818,
+   "JO-CM",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25600": [
+   142827,
+   "LB3c",
+   "R",
+   "cb_sensory",
+   "central"
+  ],
+  "25601": [
+   145000,
+   "JO-CL",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25602": [
+   145198,
+   "JO-EV6",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25603": [
+   146314,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25604": [
+   147029,
+   "JO-EV2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25605": [
+   148451,
+   "JO-ED2_a",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25606": [
+   149321,
+   "AMMC007",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25607": [
+   154152,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25608": [
+   155912,
+   "JO-EV2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25609": [
+   156929,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25610": [
+   159517,
+   "JO-ED2_c",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25611": [
+   162166,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25612": [
+   162684,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25613": [
+   163141,
+   "CB1268",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25614": [
+   163597,
+   "LB3b",
+   "R",
+   "cb_sensory",
+   "central"
+  ],
+  "25615": [
+   163625,
+   "JO-EV2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25616": [
+   165814,
+   "AMMC007",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25617": [
+   168510,
+   "PS037",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25618": [
+   169407,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25619": [
+   170014,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25620": [
+   171008,
+   "JO-CA1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25621": [
+   176004,
+   "JO-EV3",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25622": [
+   179637,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25623": [
+   181666,
+   "JO-ED2_a",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25624": [
+   183084,
+   "LB3b",
+   "R",
+   "cb_sensory",
+   "central"
+  ],
+  "25625": [
+   187492,
+   "LB3b",
+   "R",
+   "cb_sensory",
+   "central"
+  ],
+  "25626": [
+   188780,
+   "JO-FD2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25627": [
+   190501,
+   "JO-ED2_a",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25628": [
+   192306,
+   "CvN6",
+   "L",
+   "cb_motor",
+   "movimiento"
+  ],
+  "25629": [
+   192450,
+   "JO-CM",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25630": [
+   194348,
+   "JO-EV2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25631": [
+   200259,
+   "JO-FD2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25632": [
+   202888,
+   "LB3c",
+   "R",
+   "cb_sensory",
+   "central"
+  ],
+  "25633": [
+   207190,
+   "JO-ED2_a",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25634": [
+   208968,
+   "JO-EV3",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25635": [
+   209155,
+   "LB3b",
+   "R",
+   "cb_sensory",
+   "central"
+  ],
+  "25636": [
+   210632,
+   "JO-ED2_c",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25637": [
+   215110,
+   "JO-ED2_a",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25638": [
+   215556,
+   "LB3c",
+   "R",
+   "cb_sensory",
+   "central"
+  ],
+  "25639": [
+   217036,
+   "JO-EV5",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25640": [
+   218203,
+   "JO-EV6",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25641": [
+   219501,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25642": [
+   220799,
+   "JO-CL",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25643": [
+   223861,
+   "JO-CM",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25644": [
+   224261,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25645": [
+   225878,
+   "JO-CA2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25646": [
+   227655,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25647": [
+   231936,
+   "JO-FD1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25648": [
+   237833,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25649": [
+   238938,
+   "JO-EV2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25650": [
+   240644,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25651": [
+   241065,
+   "JO-ED1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25652": [
+   241662,
+   "JO-ED2_a",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25653": [
+   243520,
+   "JO-ED2_b",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25654": [
+   246484,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25655": [
+   247028,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25656": [
+   249842,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25657": [
+   252053,
+   "JO-ED2_a",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25658": [
+   256622,
+   "JO-ED2_b",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25659": [
+   260581,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25660": [
+   261211,
+   "JO-CA1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25661": [
+   263492,
+   "JO-CM",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25662": [
+   265416,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25663": [
+   275117,
+   "JO-EV6",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25664": [
+   276829,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25665": [
+   277683,
+   "JO-CA2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25666": [
+   277760,
+   "JO-ED2_a",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25667": [
+   279391,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25668": [
+   287167,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25669": [
+   301867,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25670": [
+   303968,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25671": [
+   308970,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25672": [
+   320740,
+   "JO-ED2_c",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25673": [
+   322016,
+   "JO-CA1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25674": [
+   324453,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25675": [
+   324669,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25676": [
+   325276,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25677": [
+   325429,
+   "JO-ED1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25678": [
+   330394,
+   "JO-ED1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25679": [
+   331081,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25680": [
+   333886,
+   "WED207",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25681": [
+   336332,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25682": [
+   343346,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25683": [
+   345335,
+   "JO-EV5",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25684": [
+   360461,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25685": [
+   366857,
+   "JO-EV2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25686": [
+   382609,
+   "JO-ED1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25687": [
+   391272,
+   "JO-CA2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25688": [
+   403040,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25689": [
+   407092,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25690": [
+   426515,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25691": [
+   426803,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25692": [
+   433834,
+   "JO-EV2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25693": [
+   482280,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25694": [
+   491302,
+   "JO-EV3",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25695": [
+   495313,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25696": [
+   511752,
+   "CB0307",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25697": [
+   511784,
+   "PS112",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25698": [
+   511989,
+   "GNG130",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25699": [
+   512000,
+   "AMMC022",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25700": [
+   512060,
+   "GNG286",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25701": [
+   512176,
+   "CB2824",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25702": [
+   512241,
+   "WED099",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25703": [
+   512324,
+   "SAD052",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25704": [
+   512617,
+   "CB2153",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25705": [
+   512633,
+   "AMMC003",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25706": [
+   512690,
+   "GNG516",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25707": [
+   512861,
+   "GNG527",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25708": [
+   513052,
+   "DNg15",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "25709": [
+   513112,
+   "CB1942",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25710": [
+   513113,
+   "JO-CA2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25711": [
+   513202,
+   "CB1222",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25712": [
+   513222,
+   "SAD110",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25713": [
+   513223,
+   "JO-EV5",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25714": [
+   513258,
+   "AMMC020",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25715": [
+   513483,
+   "CB2431",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25716": [
+   513485,
+   "WEDPN14",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25717": [
+   513499,
+   "GNG114",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25718": [
+   513709,
+   "CB4118",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25719": [
+   513904,
+   "SAD049",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25720": [
+   513970,
+   "GNG423",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25721": [
+   514486,
+   "CB1030",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25722": [
+   514766,
+   "GNG161",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25723": [
+   514979,
+   "CB3673a",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25724": [
+   515027,
+   "AMMC027",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25725": [
+   515140,
+   "GNG161",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25726": [
+   515337,
+   "CB1557",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25727": [
+   515381,
+   "CB3742",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25728": [
+   515512,
+   "JO-ED2_b",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25729": [
+   515513,
+   "JO-ED2_b",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25730": [
+   515514,
+   "JO-ED2_b",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25731": [
+   515559,
+   "CB3742",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25732": [
+   515842,
+   "WED082",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25733": [
+   516060,
+   "Mi18",
+   "L",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25734": [
+   516217,
+   "LB3c",
+   "R",
+   "cb_sensory",
+   "central"
+  ],
+  "25735": [
+   516871,
+   "CB3870",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25736": [
+   516911,
+   "PS230",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25737": [
+   517233,
+   "WED143_c",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25738": [
+   517832,
+   "CB3646",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25739": [
+   517833,
+   "",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25740": [
+   517937,
+   "SAD004",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25741": [
+   518039,
+   "WED055_a",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25742": [
+   518540,
+   "GNG175",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25743": [
+   518563,
+   "DNg85",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25744": [
+   518847,
+   "AMMC015",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25745": [
+   518887,
+   "JO-ED2_c",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25746": [
+   519043,
+   "AMMC031",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25747": [
+   519454,
+   "WED210",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25748": [
+   519514,
+   "GNG633",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25749": [
+   519817,
+   "PS080",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25750": [
+   520119,
+   "mALD3",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25751": [
+   520122,
+   "GNG282",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25752": [
+   520178,
+   "AMMC010",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25753": [
+   520339,
+   "AMMC014",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25754": [
+   520341,
+   "CB0540",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25755": [
+   520655,
+   "WED208",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25756": [
+   520659,
+   "JO-CM",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25757": [
+   520660,
+   "JO-CM",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25758": [
+   520664,
+   "CB1074",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25759": [
+   520792,
+   "WED104",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25760": [
+   520816,
+   "GNG298",
+   "M",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25761": [
+   520862,
+   "GNG031",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25762": [
+   520900,
+   "CB2084",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25763": [
+   521005,
+   "AMMC003",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25764": [
+   521009,
+   "AMMC003",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25765": [
+   521025,
+   "CB3746",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25766": [
+   521235,
+   "AMMC014",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25767": [
+   521297,
+   "GNG149",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25768": [
+   521306,
+   "GNG150",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25769": [
+   521358,
+   "SAD093",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25770": [
+   521463,
+   "CB3201",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25771": [
+   521698,
+   "LAL156_a",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25772": [
+   522304,
+   "JO-ED2_a",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25773": [
+   522975,
+   "ANXXX006",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "25774": [
+   523062,
+   "MeVP26",
+   "R",
+   "visual_projection",
+   "vision"
+  ],
+  "25775": [
+   523350,
+   "AMMC020",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25776": [
+   523482,
+   "GNG633",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25777": [
+   523640,
+   "AMMC013",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25778": [
+   523641,
+   "CB3024",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25779": [
+   523642,
+   "WED100",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25780": [
+   523644,
+   "SAD072",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25781": [
+   523938,
+   "WED119",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25782": [
+   524138,
+   "SAD111",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25783": [
+   524140,
+   "JO-ED1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25784": [
+   524284,
+   "ALIN7",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25785": [
+   524470,
+   "DNbe001",
+   "R",
+   "descending_neuron",
+   "mando"
+  ],
+  "25786": [
+   525142,
+   "CB3581",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25787": [
+   525401,
+   "WED201",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25788": [
+   526948,
+   "ANXXX462b",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "25789": [
+   527638,
+   "AMMC032",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25790": [
+   529029,
+   "GNG633",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25791": [
+   529031,
+   "GNG300",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25792": [
+   529072,
+   "JO-EV3",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25793": [
+   529073,
+   "JO-EV3",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25794": [
+   529105,
+   "JO-EV5",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25795": [
+   529602,
+   "ALIN5",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25796": [
+   529712,
+   "SAD030",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25797": [
+   529750,
+   "CB1268",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25798": [
+   529814,
+   "SAD030",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25799": [
+   530572,
+   "JO-ED2_a",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25800": [
+   530860,
+   "CB1268",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25801": [
+   531019,
+   "JO-ED1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25802": [
+   531021,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25803": [
+   531425,
+   "GNG506",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25804": [
+   531712,
+   "JO-EV3",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25805": [
+   532198,
+   "WED196",
+   "M",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25806": [
+   532560,
+   "AMMC026",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25807": [
+   532627,
+   "JO-EV3",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25808": [
+   533713,
+   "JO-ED1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25809": [
+   533996,
+   "JO-CM",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25810": [
+   534097,
+   "JO-ED2_a",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25811": [
+   534098,
+   "JO-EV6",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25812": [
+   535087,
+   "",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25813": [
+   535272,
+   "SAD030",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25814": [
+   535523,
+   "WED031",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25815": [
+   537032,
+   "LT33",
+   "L",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25816": [
+   537520,
+   "CB0390",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25817": [
+   542878,
+   "CB2558",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25818": [
+   542935,
+   "AMMC031",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25819": [
+   544361,
+   "DNg12_d",
+   "L",
+   "descending_neuron",
+   "mando"
+  ],
+  "25820": [
+   547267,
+   "SAD079",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25821": [
+   548337,
+   "WED167",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25822": [
+   552568,
+   "JO-CM",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25823": [
+   554017,
+   "JO-CA1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25824": [
+   555759,
+   "GNG505",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25825": [
+   555855,
+   "PS234",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25826": [
+   556037,
+   "WEDPN9",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25827": [
+   556449,
+   "CvN7",
+   "R",
+   "cb_motor",
+   "movimiento"
+  ],
+  "25828": [
+   556570,
+   "AN05B010",
+   "L",
+   "ascending_neuron",
+   "mando"
+  ],
+  "25829": [
+   556681,
+   "AMMC015",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25830": [
+   557215,
+   "Mi18",
+   "R",
+   "ol_intrinsic",
+   "vision"
+  ],
+  "25831": [
+   557646,
+   "LB3b",
+   "R",
+   "cb_sensory",
+   "central"
+  ],
+  "25832": [
+   557828,
+   "JO-EV3",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25833": [
+   559437,
+   "CB3320",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25834": [
+   559555,
+   "JO-ED2_c",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25835": [
+   567110,
+   "AMMC011",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25836": [
+   581135,
+   "CB2440",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "25837": [
+   800002,
+   "IN07B010",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25838": [
+   800009,
+   "IN17A001",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25839": [
+   800030,
+   "IN12B002",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25840": [
+   800041,
+   "IN27X001",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25841": [
+   800061,
+   "Tergopleural/Pleural promotor MN",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25842": [
+   800072,
+   "INXXX464",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25843": [
+   800073,
+   "IN12A001",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25844": [
+   800085,
+   "IN07B002",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25845": [
+   800153,
+   "IN09A001",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25846": [
+   800157,
+   "IN19A004",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25847": [
+   800162,
+   "IN19A015",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25848": [
+   800167,
+   "IN21A001",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25849": [
+   800171,
+   "IN07B002",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25850": [
+   800173,
+   "IN17A001",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25851": [
+   800174,
+   "IN19A006",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25852": [
+   800183,
+   "IN13A003",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25853": [
+   800188,
+   "IN19A010",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25854": [
+   800203,
+   "IN13A003",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25855": [
+   800206,
+   "IN23B001",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25856": [
+   800216,
+   "IN19B012",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25857": [
+   800226,
+   "IN19A011",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25858": [
+   800233,
+   "IN19A007",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25859": [
+   800239,
+   "IN08A007",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25860": [
+   800241,
+   "hg1 MN",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25861": [
+   800247,
+   "IN07B002",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25862": [
+   800256,
+   "IN08A002",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25863": [
+   800288,
+   "IN17A001",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25864": [
+   800307,
+   "IN13A003",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25865": [
+   800335,
+   "IN19A004",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25866": [
+   800344,
+   "IN19A004",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25867": [
+   800353,
+   "IN08A002",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25868": [
+   800356,
+   "IN13B001",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25869": [
+   800374,
+   "IN19A007",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25870": [
+   800398,
+   "IN07B002",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25871": [
+   800406,
+   "IN13B001",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25872": [
+   800441,
+   "IN06B016",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25873": [
+   800459,
+   "IN03A001",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25874": [
+   800461,
+   "IN19A003",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25875": [
+   800497,
+   "IN19A005",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25876": [
+   800500,
+   "IN03B005",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25877": [
+   800514,
+   "IN13B005",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25878": [
+   800536,
+   "IN19A011",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25879": [
+   800539,
+   "IN03B019",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25880": [
+   800546,
+   "IN13A009",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25881": [
+   800553,
+   "Pleural remotor/abductor MN",
+   "R",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25882": [
+   800560,
+   "IN06B016",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25883": [
+   800587,
+   "IN02A007",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25884": [
+   800589,
+   "Tr flexor MN",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25885": [
+   800596,
+   "IN19A003",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25886": [
+   800622,
+   "IN19A003",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25887": [
+   800675,
+   "IN21A003",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25888": [
+   800687,
+   "IN19A003",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25889": [
+   800837,
+   "IN19B012",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25890": [
+   800842,
+   "IN13A013",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25891": [
+   800860,
+   "IN19A010",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25892": [
+   800863,
+   "INXXX466",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25893": [
+   800898,
+   "IN12B018",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25894": [
+   800967,
+   "w-cHIN",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25895": [
+   800999,
+   "IN07B104",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25896": [
+   801006,
+   "IN19A010",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25897": [
+   801027,
+   "IN19A003",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25898": [
+   801043,
+   "IN02A007",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25899": [
+   801085,
+   "IN12B003",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25900": [
+   801116,
+   "IN14B001",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25901": [
+   801137,
+   "b2 MN",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25902": [
+   801140,
+   "IN18B009",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25903": [
+   801141,
+   "w-cHIN",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25904": [
+   801164,
+   "IN21A016",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25905": [
+   801173,
+   "Tergopleural/Pleural promotor MN",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25906": [
+   801210,
+   "IN21A016",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25907": [
+   801214,
+   "LBL40",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25908": [
+   801252,
+   "IN07B009",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25909": [
+   801280,
+   "IN06B021",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25910": [
+   801283,
+   "IN16B020",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25911": [
+   801310,
+   "b1 MN",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25912": [
+   801347,
+   "INXXX008",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25913": [
+   801350,
+   "b2 MN",
+   "R",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25914": [
+   801371,
+   "INXXX471",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25915": [
+   801387,
+   "IN12B009",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25916": [
+   801391,
+   "STTMm",
+   "R",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25917": [
+   801404,
+   "IN11B002",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25918": [
+   801459,
+   "IN06B019",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25919": [
+   801469,
+   "Sternal anterior rotator MN",
+   "R",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25920": [
+   801500,
+   "IN06B020",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25921": [
+   801506,
+   "INXXX063",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25922": [
+   801530,
+   "IN07B020",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25923": [
+   801548,
+   "Sternal anterior rotator MN",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25924": [
+   801580,
+   "IN21A011",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25925": [
+   801598,
+   "IN03B019",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25926": [
+   801616,
+   "IN03B015",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25927": [
+   801725,
+   "IN19B005",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25928": [
+   801728,
+   "INXXX466",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25929": [
+   801785,
+   "IN21A005",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25930": [
+   801824,
+   "Tergopleural/Pleural promotor MN",
+   "R",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25931": [
+   801865,
+   "IN03B015",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25932": [
+   801974,
+   "IN03B005",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25933": [
+   801982,
+   "IN14B007",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25934": [
+   802038,
+   "IN18B020",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25935": [
+   802072,
+   "Tergopleural/Pleural promotor MN",
+   "R",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25936": [
+   802097,
+   "IN05B032",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25937": [
+   802152,
+   "MNnm08",
+   "R",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25938": [
+   802455,
+   "INXXX008",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25939": [
+   802638,
+   "IN19A016",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25940": [
+   802765,
+   "IN06A009",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25941": [
+   802804,
+   "INXXX270",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25942": [
+   802806,
+   "MNhm03",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25943": [
+   802891,
+   "IN03B008",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25944": [
+   802944,
+   "IN12B018",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25945": [
+   803041,
+   "IN10B012",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25946": [
+   803072,
+   "Ti flexor MN",
+   "R",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25947": [
+   803172,
+   "IN06A009",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25948": [
+   803321,
+   "IN13A038",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25949": [
+   803469,
+   "w-cHIN",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25950": [
+   803829,
+   "Tr flexor MN",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25951": [
+   803869,
+   "INXXX138",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25952": [
+   804106,
+   "IN01A022",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25953": [
+   804129,
+   "IN03A045",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25954": [
+   804222,
+   "IN09B038",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25955": [
+   804304,
+   "INXXX138",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25956": [
+   804647,
+   "IN17A052",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25957": [
+   804941,
+   "Fe reductor MN",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25958": [
+   805598,
+   "Fe reductor MN",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25959": [
+   805689,
+   "IN02A033",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25960": [
+   805822,
+   "IN06A065",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25961": [
+   805992,
+   "AN27X011",
+   "R",
+   "ascending_neuron",
+   "mando"
+  ],
+  "25962": [
+   806816,
+   "IN11A037_a",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25963": [
+   806894,
+   "IN13A051",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25964": [
+   806898,
+   "Fe reductor MN",
+   "R",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25965": [
+   806923,
+   "Sternal anterior rotator MN",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25966": [
+   807759,
+   "IN00A040",
+   "M",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25967": [
+   808289,
+   "IN01A023",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25968": [
+   809317,
+   "IN19A002",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25969": [
+   809685,
+   "IN03B066",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25970": [
+   811652,
+   "Fe reductor MN",
+   "R",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25971": [
+   813845,
+   "EN21X001",
+   "L",
+   "vnc_efferent",
+   "movimiento"
+  ],
+  "25972": [
+   814625,
+   "IN19A005",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25973": [
+   815344,
+   "Ti extensor MN",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25974": [
+   824223,
+   "STTMm",
+   "R",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25975": [
+   830847,
+   "STTMm",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25976": [
+   900949,
+   "JO-EV6",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25977": [
+   900950,
+   "JO-ED2_a",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "25978": [
+   902491,
+   "IN19A020",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25979": [
+   902667,
+   "IN16B016",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25980": [
+   902704,
+   "IN12B009",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25981": [
+   902874,
+   "IN07B020",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25982": [
+   902880,
+   "IN03B019",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25983": [
+   902962,
+   "Fe reductor MN",
+   "R",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25984": [
+   903366,
+   "IN16B016",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25985": [
+   903561,
+   "IN12B002",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25986": [
+   903573,
+   "IN13A006",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25987": [
+   903602,
+   "IN19A003",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25988": [
+   903653,
+   "IN19B003",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25989": [
+   903834,
+   "IN13A005",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25990": [
+   903852,
+   "hg3 MN",
+   "R",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25991": [
+   904036,
+   "IN12B018",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25992": [
+   904246,
+   "IN12B018",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25993": [
+   904280,
+   "IN16B020",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25994": [
+   904639,
+   "IN06A002",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25995": [
+   904707,
+   "IN13A006",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25996": [
+   905210,
+   "MNnm11",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "25997": [
+   905415,
+   "IN07B006",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25998": [
+   905514,
+   "IN14B006",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "25999": [
+   906520,
+   "MNad40",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "26000": [
+   906719,
+   "IN13A038",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "26001": [
+   912020,
+   "IN21A041",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "26002": [
+   912294,
+   "IN00A004",
+   "M",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "26003": [
+   918248,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26004": [
+   919277,
+   "AMMC021",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "26005": [
+   919509,
+   "Sternal anterior rotator MN",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "26006": [
+   919830,
+   "JO-ED2_a",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26007": [
+   924883,
+   "IN11B012",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "26008": [
+   926154,
+   "IN19A011",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "26009": [
+   928274,
+   "INXXX003",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "26010": [
+   929401,
+   "JO-ED2_b",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26011": [
+   929909,
+   "JO-EV2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26012": [
+   930012,
+   "IN21A003",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "26013": [
+   930160,
+   "JO-CL",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26014": [
+   930621,
+   "JO-EV5",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26015": [
+   931656,
+   "w-cHIN",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "26016": [
+   934591,
+   "IN07B009",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "26017": [
+   935927,
+   "IN19A020",
+   "L",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "26018": [
+   942168,
+   "LB3c",
+   "R",
+   "cb_sensory",
+   "central"
+  ],
+  "26019": [
+   944699,
+   "JO-CA2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26020": [
+   957530,
+   "LB3c",
+   "R",
+   "cb_sensory",
+   "central"
+  ],
+  "26021": [
+   104465393,
+   "JO-EV2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26022": [
+   118359732,
+   "JO-CM",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26023": [
+   139925399,
+   "JO-EV2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26024": [
+   146290481,
+   "JO-CA1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26025": [
+   155319080,
+   "JO-CA1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26026": [
+   166331476,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26027": [
+   195470070,
+   "JO-EV2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26028": [
+   197061019,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26029": [
+   209837831,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26030": [
+   211937357,
+   "JO-CM",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26031": [
+   213650853,
+   "LB3b",
+   "R",
+   "cb_sensory",
+   "central"
+  ],
+  "26032": [
+   238817349,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26033": [
+   263851661,
+   "JO-EV6",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26034": [
+   286384065,
+   "JO-ED2_a",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26035": [
+   341173407,
+   "JO-EV6",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26036": [
+   435223099,
+   "JO-CM",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26037": [
+   467266335,
+   "JO-EV1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26038": [
+   572394633,
+   "JO-ED2_a",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26039": [
+   639242246,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26040": [
+   713207029,
+   "JO-ED1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26041": [
+   758504623,
+   "JO-ED2_a",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26042": [
+   767138051,
+   "JO-ED2_a",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26043": [
+   793720445,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26044": [
+   812830130,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26045": [
+   821484380,
+   "JO-EV2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26046": [
+   859985596,
+   "JO-EV3",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26047": [
+   906350022,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26048": [
+   912272687,
+   "JO-EV2",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26049": [
+   975904445,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26050": [
+   987117568,
+   "JO-FV",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26051": [
+   992060213,
+   "JO-CA1",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26052": [
+   1004833528,
+   "JO-EV5",
+   "L",
+   "cb_sensory",
+   "central"
+  ],
+  "26053": [
+   1050111955,
+   "Ta levator MN",
+   "L",
+   "vnc_motor",
+   "movimiento"
+  ],
+  "26054": [
+   1051479717,
+   "IN20A.22A036",
+   "R",
+   "vnc_intrinsic",
+   "movimiento"
+  ],
+  "26055": [
+   24532,
+   "",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "26056": [
+   29485,
+   "",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "26057": [
+   558912,
+   "",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "26058": [
+   26027,
+   "GNG197",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "26059": [
+   513162,
+   "GNG120",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "26060": [
+   10881,
+   "GNG120",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "26061": [
+   12617,
+   "GNG588",
+   "L",
+   "cb_intrinsic",
+   "central"
+  ],
+  "26062": [
+   14321,
+   "GNG588",
+   "R",
+   "cb_intrinsic",
+   "central"
+  ],
+  "26063": [
+   10331,
+   "MN9",
+   "L",
+   "cb_motor",
+   "movimiento"
+  ],
+  "26064": [
+   16949,
+   "MN9",
+   "R",
+   "cb_motor",
+   "movimiento"
+  ]
+ },
+ "recorrido": {
+  "aristas": [
+   [
+    25507,
+    25769,
+    33,
+    0
+   ],
+   [
+    25756,
+    25769,
+    31,
+    0
+   ],
+   [
+    25573,
+    25769,
+    25,
+    0
+   ],
+   [
+    25581,
+    25769,
+    21,
+    0
+   ],
+   [
+    25757,
+    25769,
+    19,
+    0
+   ],
+   [
+    25517,
+    25769,
+    18,
+    0
+   ],
+   [
+    25769,
+    19320,
+    38,
+    1
+   ],
+   [
+    25769,
+    13281,
+    155,
+    1
+   ],
+   [
+    25769,
+    8145,
+    139,
+    1
+   ],
+   [
+    25769,
+    25241,
+    65,
+    1
+   ],
+   [
+    25769,
+    26055,
+    35,
+    1
+   ],
+   [
+    25769,
+    5345,
+    37,
+    1
+   ],
+   [
+    19084,
+    19320,
+    183,
+    2
+   ],
+   [
+    8145,
+    19320,
+    22,
+    2
+   ],
+   [
+    8145,
+    13281,
+    183,
+    2
+   ],
+   [
+    25241,
+    13281,
+    54,
+    2
+   ],
+   [
+    26055,
+    8145,
+    49,
+    2
+   ],
+   [
+    5345,
+    13281,
+    54,
+    2
+   ],
+   [
+    19320,
+    25935,
+    115,
+    3
+   ],
+   [
+    19320,
+    25863,
+    43,
+    3
+   ],
+   [
+    13281,
+    25841,
+    134,
+    3
+   ],
+   [
+    13281,
+    23457,
+    96,
+    3
+   ],
+   [
+    19084,
+    25964,
+    131,
+    3
+   ],
+   [
+    19084,
+    25970,
+    46,
+    3
+   ],
+   [
+    8145,
+    26053,
+    140,
+    3
+   ],
+   [
+    8145,
+    25958,
+    90,
+    3
+   ]
+  ],
+  "columnas": [
+   "desde",
+   "hasta",
+   "sinapsis",
+   "nivel"
+  ],
+  "regla": "sólo conexiones reales de MaleCNS: los 6 sensores de la antena que más le dan a aBN1 izq, y de ahí ≥ 20 sinapsis; nivel 0 antena → aBN1, 1 aBN1 → aDN/aBN2, 2 aDN2 → aDN1 y aBN2 → aDN, 3 aDN → cordón (las 2 del cordón que más reciben y que disparan)"
+ },
+ "etiquetas": [
+  {
+   "texto": "antena",
+   "puntos": [
+    25477,
+    25481,
+    25490,
+    25492,
+    25499,
+    25514,
+    25516,
+    25517,
+    25525,
+    25535,
+    25542,
+    25547,
+    25558,
+    25559,
+    25560,
+    25569,
+    25575,
+    25586,
+    25596,
+    25597,
+    25599,
+    25601,
+    25620,
+    25629,
+    25642,
+    25643,
+    25645,
+    25660,
+    25661,
+    25665,
+    25673,
+    25687,
+    25710,
+    25756,
+    25757,
+    25809,
+    25822,
+    25823,
+    26013,
+    26019,
+    26022,
+    26024,
+    26025,
+    26030,
+    26036,
+    26051,
+    25405,
+    25414,
+    25417,
+    25419,
+    25435,
+    25444,
+    25461,
+    25465,
+    25467,
+    25473,
+    25478,
+    25480,
+    25485,
+    25489,
+    25491,
+    25494,
+    25497,
+    25498,
+    25500,
+    25501,
+    25502,
+    25503,
+    25504,
+    25505,
+    25507,
+    25510,
+    25511,
+    25512,
+    25513,
+    25520,
+    25521,
+    25522,
+    25524,
+    25528,
+    25529,
+    25530,
+    25531,
+    25536,
+    25537,
+    25538,
+    25540,
+    25541,
+    25543,
+    25544,
+    25545,
+    25548,
+    25550,
+    25551,
+    25552,
+    25553,
+    25554,
+    25557,
+    25561,
+    25563,
+    25564,
+    25565,
+    25568,
+    25570,
+    25571,
+    25572,
+    25573,
+    25578,
+    25579,
+    25580,
+    25581,
+    25582,
+    25584,
+    25585,
+    25587,
+    25594,
+    25598,
+    25602,
+    25604,
+    25605,
+    25608,
+    25609,
+    25610,
+    25612,
+    25615,
+    25618,
+    25621,
+    25623,
+    25627,
+    25630,
+    25633,
+    25634,
+    25636,
+    25637,
+    25639,
+    25640,
+    25641,
+    25649,
+    25651,
+    25652,
+    25653,
+    25657,
+    25658,
+    25659,
+    25662,
+    25663,
+    25664,
+    25666,
+    25669,
+    25672,
+    25675,
+    25676,
+    25677,
+    25678,
+    25683,
+    25685,
+    25686,
+    25690,
+    25692,
+    25694,
+    25695,
+    25713,
+    25728,
+    25729,
+    25730,
+    25745,
+    25772,
+    25783,
+    25792,
+    25793,
+    25794,
+    25799,
+    25801,
+    25802,
+    25804,
+    25807,
+    25808,
+    25810,
+    25811,
+    25832,
+    25834,
+    25976,
+    25977,
+    26003,
+    26006,
+    26010,
+    26011,
+    26014,
+    26021,
+    26023,
+    26027,
+    26033,
+    26034,
+    26035,
+    26037,
+    26038,
+    26040,
+    26041,
+    26042,
+    26045,
+    26046,
+    26048,
+    26052,
+    25432,
+    25472,
+    25534,
+    25583,
+    25603,
+    25607,
+    25611,
+    25619,
+    25622,
+    25626,
+    25631,
+    25644,
+    25646,
+    25647,
+    25648,
+    25650,
+    25654,
+    25655,
+    25656,
+    25667,
+    25668,
+    25670,
+    25671,
+    25674,
+    25679,
+    25681,
+    25682,
+    25684,
+    25688,
+    25689,
+    25691,
+    25693,
+    26026,
+    26028,
+    26029,
+    26032,
+    26039,
+    26043,
+    26044,
+    26047,
+    26049,
+    26050
+   ]
+  },
+  {
+   "texto": "aBN1",
+   "puntos": [
+    25769
+   ]
+  },
+  {
+   "texto": "aBN2",
+   "puntos": [
+    25241,
+    26055,
+    5345
+   ]
+  },
+  {
+   "texto": "aDN1",
+   "puntos": [
+    19320
+   ]
+  },
+  {
+   "texto": "aDN1",
+   "puntos": [
+    13281
+   ]
+  },
+  {
+   "texto": "aDN2",
+   "puntos": [
+    19084
+   ]
+  },
+  {
+   "texto": "aDN2",
+   "puntos": [
+    8145
+   ]
+  }
+ ]
 }

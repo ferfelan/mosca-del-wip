@@ -1,6 +1,6 @@
-// Panel del cerebro: nube de neuronas reales (MaleCNS v1.0) que gira lento y
-// se enciende con la ACTIVIDAD SIMULADA del cableado real (Etapa 3.3,
-// opción A: el cerebro muestra, el juego decide).
+// Panel del cerebro: nube de neuronas reales (MaleCNS v1.0) con la ACTIVIDAD
+// SIMULADA del cableado real (Etapa 3.3, opción A: el cerebro muestra, el
+// juego decide).
 //
 // La actividad de cada neurona viene precalculada (scripts/datos/
 // preparar_cerebro_real.py): para cada cantidad de tareas abiertas (0 a 10),
@@ -8,6 +8,12 @@
 // al. 2024 (peso 0,090 mV) dice cuánto dispara cada neurona; en el café se
 // suma el azúcar. El juego sólo lee esos archivos: nada pesado en vivo. Las
 // reglas del juego (brain.js) no usan esta actividad.
+//
+// Cómo se ve: gris = neurona en reposo (su posición es real); color de su
+// zona = neurona que dispara, más grande y brillante mientras más Hz, con un
+// pulso más rápido mientras más dispara; anillo = circuito de limpieza; líneas
+// = recorrido real de la señal (conexiones de MaleCNS) con un pulso que viaja
+// (su velocidad es sólo para que se vea).
 import * as THREE from 'three';
 
 // Un color neón por zona, como en las imágenes de referencia.
@@ -24,6 +30,11 @@ const TAMANO_PUNTO_UM = 6.5; // tamaño de cada punto, en micrómetros del cereb
 const VUELTA_SEGUNDOS = 40; // una vuelta completa cada 40 s
 const INCLINACION = 0.32; // inclinado hacia la cámara para que se vea en 3D
 const SEGUNDOS_TRANSICION = 1.2; // paso suave de una situación a otra
+const SEGUNDOS_POR_TRAMO = 0.75; // el pulso del recorrido avanza un tramo cada 0,75 s
+const SEGUNDOS_PARA_VOLVER_A_GIRAR = 8; // sin tocarlo, vuelve a girar solo
+const ZOOM_MIN = 0.7;
+const ZOOM_MAX = 3.5;
+const HZ_MINIMO = 1; // un tramo del recorrido se enciende si sus dos neuronas pasan de 1 Hz
 
 const lerp = (a, b, t) => a + (b - a) * t;
 const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
@@ -46,8 +57,8 @@ export async function cargarDatosCerebro() {
 }
 
 // La actividad simulada: suma los puntos extra (el circuito y todas las
-// neuronas que se encienden en alguna situación) y el brillo de cada punto en
-// cada situación.
+// neuronas que se encienden en alguna situación), el brillo y los Hz de cada
+// punto en cada situación, las fichas y el recorrido real de la señal.
 export async function cargarActividadReal(datos) {
   const base = import.meta.env.BASE_URL;
   const [meta, extra, act] = await Promise.all([
@@ -69,6 +80,8 @@ export async function cargarActividadReal(datos) {
   tonos.set(datos.tonos);
   tonos.set(new Uint8Array(extra, nExtra * 7, nExtra), nBase);
   const k = meta.puntos_con_actividad;
+  const c = meta.condiciones.length;
+  const inicioHz = n + k * 4 + c * k;
   return {
     meta,
     n,
@@ -76,8 +89,9 @@ export async function cargarActividadReal(datos) {
     grupos,
     tonos,
     roles: new Uint8Array(act, 0, n),
-    indices: new Uint32Array(act.slice(n, n + k * 4)), // copia alineada
-    brillo: new Uint8Array(act, n + k * 4, meta.condiciones.length * k),
+    indices: new Uint32Array(act.slice(n, n + k * 4)), // copias alineadas
+    brillo: new Uint8Array(act, n + k * 4, c * k),
+    hz10: new Uint16Array(act.slice(inicioHz, inicioHz + c * k * 2)),
   };
 }
 
@@ -94,43 +108,37 @@ const VERTICE = /* glsl */ `
   uniform float uEscalaVista;
   varying vec3 vColor;
   varying float vAct;
-  varying float vEncendido;
+  varying float vPulso;
   varying float vAnillo;
-
-  float azar(vec2 p) {
-    return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
-  }
 
   void main() {
     // Actividad simulada de ESTA neurona (0 a 1 = log de sus disparos por
     // segundo), con un paso suave cuando cambia la situación.
     float act = mix(aActA, aActB, uMezcla);
-    // Cada neurona late a su ritmo y en cada latido destella con una
-    // probabilidad que sigue a su actividad: si no dispara, nunca destella.
-    float ritmo = 0.55 + aSemilla * 1.1 + 1.6 * act;
-    float t = uTiempo * ritmo + aSemilla * 17.0;
-    float latido = floor(t);
-    float fase = t - latido;
-    float dispara = step(azar(vec2(aSemilla * 97.0, latido)), act * 0.9) * step(0.001, act);
-    float envolvente = smoothstep(0.0, 0.16, fase) * (1.0 - smoothstep(0.24, 0.8, fase));
-    vEncendido = dispara * envolvente;
+    float dispara = step(0.001, act);
+    // Pulso suave, más rápido mientras más dispara (sólo las que disparan)
+    float frecuencia = 0.35 + 2.2 * act;
+    float pulso = 0.5 + 0.5 * sin(6.2831853 * (uTiempo * frecuencia + aSemilla));
+    vPulso = pulso * dispara;
     vAct = act;
     vColor = aColor;
 
     // Circuito destacado con un anillo: la limpieza de antenas siempre
-    // (sensores de la antena, aBN1, aBN2, aDN1, aDN2); el azúcar sólo en el café.
+    // (sensores de la antena suave; aBN1, aBN2, aDN1 y aDN2 fuerte); el azúcar
+    // sólo en el café.
     float anillo = 0.0;
     float agranda = 1.0;
-    if (aRol > 0.5 && aRol < 1.5) { anillo = 0.15; agranda = 0.9; }
-    else if (aRol > 1.5 && aRol < 5.5) { anillo = 1.0; agranda = 3.4; }
-    else if (aRol > 5.5 && aRol < 6.5) { anillo = 0.15 * uCafe; agranda = 1.0 - 0.1 * uCafe; }
-    else if (aRol > 6.5) { anillo = uCafe; agranda = 1.0 + 2.4 * uCafe; }
+    if (aRol > 0.5 && aRol < 1.5) { anillo = 0.25; agranda = 0.9; }
+    else if (aRol > 1.5 && aRol < 5.5) { anillo = 1.0; agranda = 3.0; }
+    else if (aRol > 5.5 && aRol < 6.5) { anillo = 0.25 * uCafe; agranda = 1.0; }
+    else if (aRol > 6.5) { anillo = uCafe; agranda = 1.0 + 2.0 * uCafe; }
     vAnillo = anillo;
 
     vec4 mv = modelViewMatrix * vec4(position, 1.0);
     gl_Position = projectionMatrix * mv;
-    float tamano = uTamano * (0.6 + 0.9 * act + 1.2 * vEncendido) * agranda;
-    gl_PointSize = max(1.2, tamano * uEscalaVista / -mv.z);
+    // En reposo: chico y fijo. Disparando: más grande mientras más Hz, y late.
+    float tamano = uTamano * mix(0.85, (1.1 + 1.9 * act) * (0.88 + 0.24 * pulso), dispara) * agranda;
+    gl_PointSize = max(1.4, tamano * uEscalaVista / -mv.z);
   }
 `;
 
@@ -138,27 +146,82 @@ const FRAGMENTO = /* glsl */ `
   uniform float uGanancia;
   varying vec3 vColor;
   varying float vAct;
-  varying float vEncendido;
+  varying float vPulso;
   varying float vAnillo;
 
   void main() {
     float d = length(gl_PointCoord - 0.5) * 2.0;
     if (d > 1.0) discard;
-    float nucleo = smoothstep(0.5, 0.0, d);
-    // El halo (glow) crece con la actividad y con cada destello
-    float halo = exp(-d * d * mix(6.0, 2.0, max(vAct, vEncendido)));
-    // Sin actividad: gris tenue, sólo para ver la forma del cerebro (el color
-    // aparece únicamente cuando la neurona dispara). Con actividad: su color,
-    // brillante y con glow.
-    float base = mix(0.2, 0.42, smoothstep(0.0, 0.85, vAct));
-    float brillo = base + 0.85 * vEncendido;
-    vec3 tinta = mix(vec3(0.42, 0.47, 0.62), vColor, smoothstep(0.0, 0.25, vAct));
-    vec3 color = tinta * (nucleo + halo * (0.12 + 0.55 * vEncendido + 0.35 * vAct)) * brillo;
-    color += vec3(1.0) * nucleo * vEncendido * 0.05;
-    // Anillo claro del circuito: tenue si está apagado, más fuerte si dispara
-    float anillo = smoothstep(0.6, 0.72, d) * (1.0 - smoothstep(0.84, 1.0, d));
-    color += vec3(0.86, 0.9, 1.0) * anillo * vAnillo * (0.35 + 0.65 * vAct);
+    float nucleo = smoothstep(0.55, 0.0, d);
+    vec3 color;
+    if (vAct < 0.001) {
+      // En reposo: gris tenue, sin color (su posición es real)
+      color = vec3(0.5, 0.54, 0.66) * nucleo * 0.27;
+    } else {
+      // Disparando: el color de su zona, más brillo y más halo con más Hz
+      float halo = exp(-d * d * mix(5.0, 1.6, vAct));
+      float brillo = (0.45 + 0.6 * vAct) * (0.78 + 0.32 * vPulso);
+      color = vColor * (nucleo + halo * (0.35 + 0.55 * vAct)) * brillo;
+      color += vec3(1.0) * nucleo * 0.08 * vAct * vPulso;
+    }
+    // Anillo claro del circuito: se ve aunque esté en reposo, más fuerte si dispara
+    float anillo = smoothstep(0.58, 0.7, d) * (1.0 - smoothstep(0.84, 1.0, d));
+    color += vec3(0.88, 0.92, 1.0) * anillo * vAnillo * (0.45 + 0.55 * vAct);
     gl_FragColor = vec4(color * uGanancia, 1.0);
+  }
+`;
+
+// Recorrido: líneas suaves entre neuronas que se conectan de verdad, con un
+// pulso que viaja tramo a tramo (nivel 0 antena → aBN1 … nivel 3 aDN → cordón)
+const VERTICE_LINEA = /* glsl */ `
+  attribute float aT;
+  attribute float aNivel;
+  attribute float aEncendida;
+  varying float vT;
+  varying float vNivel;
+  varying float vEncendida;
+  void main() {
+    vT = aT;
+    vNivel = aNivel;
+    vEncendida = aEncendida;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`;
+const FRAGMENTO_LINEA = /* glsl */ `
+  uniform float uFase;
+  uniform float uGanancia;
+  varying float vT;
+  varying float vNivel;
+  varying float vEncendida;
+  void main() {
+    float avance = uFase - vNivel;
+    float viaja = step(0.0, avance) * step(avance, 1.0);
+    float pulso = exp(-pow((vT - clamp(avance, 0.0, 1.0)) / 0.09, 2.0)) * viaja;
+    float base = mix(0.07, 0.3, vEncendida);
+    vec3 color = vec3(0.62, 0.74, 1.0) * (base + 1.1 * pulso * vEncendida);
+    gl_FragColor = vec4(color * uGanancia, 1.0);
+  }
+`;
+const VERTICE_PULSO = /* glsl */ `
+  attribute float aBrillo;
+  uniform float uTamano;
+  uniform float uEscalaVista;
+  varying float vBrillo;
+  void main() {
+    vBrillo = aBrillo;
+    vec4 mv = modelViewMatrix * vec4(position, 1.0);
+    gl_Position = projectionMatrix * mv;
+    gl_PointSize = max(2.0, uTamano * uEscalaVista / -mv.z) * step(0.01, aBrillo);
+  }
+`;
+const FRAGMENTO_PULSO = /* glsl */ `
+  uniform float uGanancia;
+  varying float vBrillo;
+  void main() {
+    float d = length(gl_PointCoord - 0.5) * 2.0;
+    if (d > 1.0) discard;
+    float luz = exp(-d * d * 4.0);
+    gl_FragColor = vec4(vec3(0.8, 0.88, 1.0) * luz * vBrillo * uGanancia, 1.0);
   }
 `;
 
@@ -177,9 +240,9 @@ function texturaResplandor() {
   return t;
 }
 
-export function crearCerebro(canvas, datos, real) {
+export function crearCerebro(canvas, datos, real, { etiquetas: contenedorEtiquetas = null } = {}) {
   const { info } = datos;
-  const { meta, n, posiciones, grupos, tonos, roles, indices, brillo } = real;
+  const { meta, n, posiciones, grupos, tonos, roles, indices, brillo, hz10 } = real;
   const ids = info.grupos.map((g) => g.id);
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'default' });
@@ -247,6 +310,64 @@ export function crearCerebro(canvas, datos, real) {
   const nube = new THREE.Points(geo, material);
   nube.frustumCulled = false;
 
+  // ---------- Recorrido real de la señal ----------
+  const aristas = meta.recorrido.aristas; // [desde, hasta, sinapsis, nivel]
+  const nA = aristas.length;
+  const posLineas = new Float32Array(nA * 6);
+  const tLineas = new Float32Array(nA * 2);
+  const nivelLineas = new Float32Array(nA * 2);
+  const encendida = new THREE.BufferAttribute(new Float32Array(nA * 2), 1);
+  encendida.setUsage(THREE.DynamicDrawUsage);
+  aristas.forEach(([de, a, , nivel], j) => {
+    for (let e = 0; e < 3; e++) {
+      posLineas[j * 6 + e] = posiciones[de * 3 + e];
+      posLineas[j * 6 + 3 + e] = posiciones[a * 3 + e];
+    }
+    tLineas[j * 2 + 1] = 1;
+    nivelLineas[j * 2] = nivelLineas[j * 2 + 1] = nivel;
+  });
+  const geoLineas = new THREE.BufferGeometry();
+  geoLineas.setAttribute('position', new THREE.BufferAttribute(posLineas, 3));
+  geoLineas.setAttribute('aT', new THREE.BufferAttribute(tLineas, 1));
+  geoLineas.setAttribute('aNivel', new THREE.BufferAttribute(nivelLineas, 1));
+  geoLineas.setAttribute('aEncendida', encendida);
+  const uniformsLinea = { uFase: { value: 0 }, uGanancia: uniforms.uGanancia };
+  const lineas = new THREE.LineSegments(
+    geoLineas,
+    new THREE.ShaderMaterial({
+      vertexShader: VERTICE_LINEA,
+      fragmentShader: FRAGMENTO_LINEA,
+      uniforms: uniformsLinea,
+      transparent: true,
+      depthWrite: false,
+      depthTest: false,
+      blending: THREE.AdditiveBlending,
+    })
+  );
+  lineas.frustumCulled = false;
+  // Un punto de luz por tramo que viaja de una neurona a la otra
+  const posPulsos = new THREE.BufferAttribute(new Float32Array(nA * 3), 3);
+  const brilloPulsos = new THREE.BufferAttribute(new Float32Array(nA), 1);
+  posPulsos.setUsage(THREE.DynamicDrawUsage);
+  brilloPulsos.setUsage(THREE.DynamicDrawUsage);
+  const geoPulsos = new THREE.BufferGeometry();
+  geoPulsos.setAttribute('position', posPulsos);
+  geoPulsos.setAttribute('aBrillo', brilloPulsos);
+  const pulsos = new THREE.Points(
+    geoPulsos,
+    new THREE.ShaderMaterial({
+      vertexShader: VERTICE_PULSO,
+      fragmentShader: FRAGMENTO_PULSO,
+      uniforms: { uTamano: { value: TAMANO_PUNTO_UM * 2.6 }, uEscalaVista: uniforms.uEscalaVista, uGanancia: uniforms.uGanancia },
+      transparent: true,
+      depthWrite: false,
+      depthTest: false,
+      blending: THREE.AdditiveBlending,
+    })
+  );
+  pulsos.frustumCulled = false;
+  const encendidaSuave = new Float32Array(nA);
+
   // ---------- Disposición: cerebro arriba y cordón nervioso colgando ----------
   // Ambos giran juntos alrededor de un eje vertical que pasa por el centro de
   // los 25.000 puntos de siempre (así el encuadre no cambia).
@@ -263,6 +384,8 @@ export function crearCerebro(canvas, datos, real) {
   inclinado.add(giratorio);
   scene.add(inclinado);
   nube.position.set(-tx / info.puntos, 0, -tz / info.puntos);
+  nube.add(lineas);
+  nube.add(pulsos);
   giratorio.add(nube);
   const radioGiro = Math.hypot(anchoTotal, fondoTotal) / 2;
   const encuadre = {
@@ -271,6 +394,67 @@ export function crearCerebro(canvas, datos, real) {
     cercania: radioGiro,
   };
   resplandor.scale.set(1500, 1500, 1);
+
+  // ---------- Vista: girar solo, arrastrar, zoom y centrar ----------
+  let distanciaBase = 2000;
+  let zoom = 1;
+  let zoomSuave = 1;
+  let anguloY = 0;
+  let inclinacion = INCLINACION;
+  let autoGiro = true;
+  let ultimoToque = -Infinity;
+  let arrastre = null;
+  let ultimoFueArrastre = false; // el clic que sigue a un arrastre no abre la tarjetita
+  let tiempo = 0;
+
+  function tocar() {
+    autoGiro = false;
+    ultimoToque = tiempo;
+  }
+  function centrar() {
+    zoom = 1;
+    inclinacion = INCLINACION;
+    autoGiro = true;
+  }
+  canvas.style.touchAction = 'none';
+  canvas.addEventListener('pointerdown', (e) => {
+    if (e.button !== 0) return;
+    canvas.setPointerCapture(e.pointerId);
+    arrastre = { x: e.clientX, y: e.clientY, movio: false };
+    ultimoFueArrastre = false;
+  });
+  canvas.addEventListener('pointermove', (e) => {
+    if (!arrastre) return;
+    const dx = e.clientX - arrastre.x;
+    const dy = e.clientY - arrastre.y;
+    if (!arrastre.movio && Math.abs(dx) + Math.abs(dy) < 3) return; // un clic no lo mueve
+    arrastre.movio = true;
+    arrastre.x = e.clientX;
+    arrastre.y = e.clientY;
+    anguloY += dx * 0.008;
+    inclinacion = clamp(inclinacion + dy * 0.006, -0.9, 1.3);
+    tocar();
+  });
+  const soltar = (e) => {
+    if (canvas.hasPointerCapture?.(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
+    ultimoFueArrastre = Boolean(arrastre?.movio);
+    arrastre = null;
+  };
+  canvas.addEventListener('pointerup', soltar);
+  canvas.addEventListener('pointercancel', soltar);
+  // Rueda o pellizco del trackpad (en el Mac llega como rueda con Ctrl)
+  canvas.addEventListener(
+    'wheel',
+    (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const paso = e.ctrlKey ? 0.012 : 0.0016;
+      zoom = clamp(zoom * Math.exp(-e.deltaY * paso), ZOOM_MIN, ZOOM_MAX);
+      tocar();
+    },
+    { passive: false }
+  );
+  canvas.addEventListener('dblclick', centrar);
 
   let tamano = { w: 0, h: 0 };
   function redimensionar() {
@@ -286,8 +470,7 @@ export function crearCerebro(canvas, datos, real) {
     const tanMedio = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
     const porAlto = encuadre.mitadAlto / tanMedio;
     const porAncho = encuadre.mitadAncho / (tanMedio * camera.aspect);
-    camera.position.set(0, 0, Math.max(porAlto, porAncho) * 1.06 + encuadre.cercania);
-    camera.lookAt(0, 0, 0);
+    distanciaBase = Math.max(porAlto, porAncho) * 1.06 + encuadre.cercania;
     camera.updateProjectionMatrix();
     uniforms.uEscalaVista.value = (h * ratio) / (2 * tanMedio);
     // En el panel chico los puntos quedan muy juntos y se suman: bajo la
@@ -298,12 +481,19 @@ export function crearCerebro(canvas, datos, real) {
   // ---------- Actividad simulada (precalculada) ----------
   const nombres = meta.condiciones;
   const k = indices.length;
+  const posEnActivos = new Int32Array(n).fill(-1);
+  for (let j = 0; j < k; j++) posEnActivos[indices[j]] = j;
   const maxActivas = Math.max(...nombres.map((s) => meta.situaciones[s].activas));
   let actual = 0; // situación que se muestra (índice en meta.condiciones)
   let previa = 0;
   let mezcla = 1;
   let saltar = true; // día nuevo: la actividad parte en su valor, sin arrastrar
   let cafeSuave = 0;
+
+  const hzDe = (punto, s = actual) => {
+    const j = posEnActivos[punto];
+    return j < 0 ? 0 : hz10[s * k + j] / 10;
+  };
 
   function situacionPara({ enCurso, cafe, apagado }) {
     if (apagado) return 0; // en pausa o día terminado: sin estímulo
@@ -331,28 +521,128 @@ export function crearCerebro(canvas, datos, real) {
     actual = s;
   }
 
-  let tiempo = 0;
+  function actualizarRecorrido(dt) {
+    const fase = (tiempo / SEGUNDOS_POR_TRAMO) % 4.6; // 4 tramos y una pausa corta
+    uniformsLinea.uFase.value = fase;
+    const enc = encendida.array;
+    const P = posPulsos.array;
+    const B = brilloPulsos.array;
+    aristas.forEach(([de, a, , nivel], j) => {
+      const objetivo = hzDe(de) > HZ_MINIMO && hzDe(a) > HZ_MINIMO ? 1 : 0;
+      encendidaSuave[j] = saltar ? objetivo : amortiguar(encendidaSuave[j], objetivo, 3, dt);
+      enc[j * 2] = enc[j * 2 + 1] = encendidaSuave[j];
+      const avance = fase - nivel;
+      const viaja = avance >= 0 && avance <= 1;
+      const t = clamp(avance, 0, 1);
+      for (let e = 0; e < 3; e++) P[j * 3 + e] = lerp(posiciones[de * 3 + e], posiciones[a * 3 + e], t);
+      B[j] = viaja ? encendidaSuave[j] * Math.sin(Math.PI * t) : 0;
+    });
+    encendida.needsUpdate = true;
+    posPulsos.needsUpdate = true;
+    brilloPulsos.needsUpdate = true;
+  }
+
+  // ---------- Nombres cortos del circuito (vista Exhibición) ----------
+  // Un nombre por tipo: los grupos (antena, trío aBN2) en su centro; aDN1 y
+  // aDN2 (una por lado) junto a la que más dispara ahora. Una línea fina une
+  // cada nombre con su neurona.
+  const centro = (puntos) => {
+    const p = new THREE.Vector3();
+    puntos.forEach((i) => p.add(new THREE.Vector3(posiciones[i * 3], posiciones[i * 3 + 1], posiciones[i * 3 + 2])));
+    return p.divideScalar(puntos.length);
+  };
+  const porTexto = new Map();
+  for (const et of meta.etiquetas || []) {
+    if (!porTexto.has(et.texto)) porTexto.set(et.texto, []);
+    porTexto.get(et.texto).push({ puntos: et.puntos, p: centro(et.puntos) });
+  }
+  const NS = 'http://www.w3.org/2000/svg';
+  let svg = null;
+  if (contenedorEtiquetas) {
+    svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('class', 'lineas-etiquetas');
+    contenedorEtiquetas.appendChild(svg);
+  }
+  const anclas = [...porTexto].map(([texto, opciones]) => {
+    let el = null;
+    let linea = null;
+    if (contenedorEtiquetas) {
+      el = document.createElement('span');
+      el.className = 'etiqueta-circuito';
+      el.textContent = texto;
+      contenedorEtiquetas.appendChild(el);
+      linea = document.createElementNS(NS, 'line');
+      svg.appendChild(linea);
+    }
+    return { texto, opciones, el, linea };
+  });
+  const v = new THREE.Vector3();
+  const maxHz = (puntos) => Math.max(...puntos.map((i) => hzDe(i)));
+  function moverEtiquetas() {
+    if (!contenedorEtiquetas || contenedorEtiquetas.offsetParent === null) return;
+    nube.updateWorldMatrix(true, false);
+    const cajas = anclas.map((a) => {
+      const elegida = a.opciones.reduce((m, o) => (maxHz(o.puntos) > maxHz(m.puntos) ? o : m));
+      v.copy(elegida.p).applyMatrix4(nube.matrixWorld).project(camera);
+      a.el.classList.toggle('apagada', maxHz(elegida.puntos) <= HZ_MINIMO);
+      a.ancho ||= a.el.offsetWidth;
+      a.alto ||= a.el.offsetHeight;
+      const ax = ((v.x + 1) / 2) * tamano.w;
+      const ay = ((1 - v.y) / 2) * tamano.h;
+      return { a, ax, ay, x: ax + 12, y: ay - a.alto / 2 };
+    });
+    // Si dos nombres quedan uno encima del otro, el de más abajo se corre hacia abajo
+    cajas.sort((p, q) => p.y - q.y);
+    cajas.forEach((c, i) => {
+      for (let j = 0; j < i; j++) {
+        const o = cajas[j];
+        const chocan = c.x < o.x + o.a.ancho + 4 && o.x < c.x + c.a.ancho + 4 && c.y < o.y + o.a.alto + 2;
+        if (chocan) c.y = o.y + o.a.alto + 2;
+      }
+      const x = clamp(c.x, 2, tamano.w - c.a.ancho - 2);
+      const y = clamp(c.y, 2, tamano.h - c.a.alto - 2);
+      c.a.el.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px)`;
+      c.a.linea.setAttribute('x1', c.ax.toFixed(1));
+      c.a.linea.setAttribute('y1', c.ay.toFixed(1));
+      c.a.linea.setAttribute('x2', x.toFixed(1));
+      c.a.linea.setAttribute('y2', (y + c.a.alto / 2).toFixed(1));
+      c.a.linea.classList.toggle('apagada', c.a.el.classList.contains('apagada'));
+    });
+  }
+
   function actualizar(dt, estadoJuego) {
     tiempo += dt;
     const s = situacionPara(estadoJuego);
     if (saltar) ir(s, true);
     else if (s !== actual) ir(s, false);
-    saltar = false;
     mezcla = Math.min(1, mezcla + dt / SEGUNDOS_TRANSICION);
     uniforms.uMezcla.value = mezcla * mezcla * (3 - 2 * mezcla);
     cafeSuave = amortiguar(cafeSuave, s >= 11 ? 1 : 0, 3, dt);
     uniforms.uCafe.value = cafeSuave;
     uniforms.uTiempo.value = tiempo;
+    actualizarRecorrido(dt);
+    saltar = false;
     // El resplandor azul de fondo sigue a cuántas neuronas disparan
     const activas = lerp(meta.situaciones[nombres[previa]].activas, meta.situaciones[nombres[actual]].activas, uniforms.uMezcla.value);
     resplandor.material.opacity = 0.2 + 0.7 * (activas / maxActivas);
     resplandor.material.transparent = true;
-    giratorio.rotation.y = (tiempo / VUELTA_SEGUNDOS) * Math.PI * 2;
+    // Gira solo, salvo que lo estén moviendo (vuelve a girar tras unos segundos)
+    if (!autoGiro && !arrastre && tiempo - ultimoToque > SEGUNDOS_PARA_VOLVER_A_GIRAR) autoGiro = true;
+    if (autoGiro) {
+      anguloY += (dt / VUELTA_SEGUNDOS) * Math.PI * 2;
+      inclinacion = amortiguar(inclinacion, INCLINACION, 1.5, dt);
+    }
+    giratorio.rotation.y = anguloY;
+    inclinado.rotation.x = inclinacion;
+    zoomSuave = amortiguar(zoomSuave, zoom, 8, dt);
+    camera.position.set(0, 0, distanciaBase / zoomSuave);
+    camera.lookAt(0, 0, 0);
   }
 
   function renderizar() {
     redimensionar();
     renderer.render(scene, camera);
+    moverEtiquetas();
   }
 
   // Contadores sobre TODA la red simulada (164.587 neuronas), no sólo los puntos
@@ -376,12 +666,56 @@ export function crearCerebro(canvas, datos, real) {
       cafe: actual >= 11,
       tareas: actual % 11,
       datos: s1,
+      girandoSolo: autoGiro,
     };
+  }
+
+  // La neurona (que dispara o del circuito) más cercana al cursor, o null
+  const fichas = meta.fichas;
+  const candidatos = Object.keys(fichas).map(Number);
+  function neuronaEn(clientX, clientY) {
+    if (arrastre?.movio) return null;
+    const r = canvas.getBoundingClientRect();
+    const x = clientX - r.left;
+    const y = clientY - r.top;
+    nube.updateWorldMatrix(true, false);
+    let mejor = -1;
+    let mejorD = 12 * 12;
+    for (const i of candidatos) {
+      const hz = hzDe(i);
+      if (roles[i] === 0 && hz <= 0) continue;
+      if (roles[i] >= 6 && cafeSuave < 0.5 && hz <= 0) continue; // el azúcar se marca sólo en el café
+      v.set(posiciones[i * 3], posiciones[i * 3 + 1], posiciones[i * 3 + 2]).applyMatrix4(nube.matrixWorld).project(camera);
+      if (v.z > 1) continue;
+      const dx = ((v.x + 1) / 2) * r.width - x;
+      const dy = ((1 - v.y) / 2) * r.height - y;
+      const d = dx * dx + dy * dy;
+      if (d < mejorD) {
+        mejorD = d;
+        mejor = i;
+      }
+    }
+    if (mejor < 0) return null;
+    const [bodyId, tipo, lado, superclase, zona] = fichas[mejor];
+    return { punto: mejor, bodyId, tipo, lado, superclase, zona, rol: roles[mejor], hz: hzDe(mejor) };
+  }
+
+  // Dónde se ve en pantalla la neurona del circuito con ese papel que más
+  // dispara (para las pruebas automáticas)
+  function dondeEsta(rol) {
+    let mejor = -1;
+    for (let i = 0; i < n; i++) if (roles[i] === rol && (mejor < 0 || hzDe(i) > hzDe(mejor))) mejor = i;
+    if (mejor < 0) return null;
+    nube.updateWorldMatrix(true, false);
+    v.set(posiciones[mejor * 3], posiciones[mejor * 3 + 1], posiciones[mejor * 3 + 2]).applyMatrix4(nube.matrixWorld).project(camera);
+    const r = canvas.getBoundingClientRect();
+    return { x: r.left + ((v.x + 1) / 2) * r.width, y: r.top + ((1 - v.y) / 2) * r.height };
   }
 
   function reiniciar() {
     saltar = true;
   }
 
-  return { actualizar, renderizar, lectura, info, meta, reiniciar };
+  return {
+    dondeEsta, actualizar, renderizar, lectura, info, meta, reiniciar, centrar, neuronaEn, fueArrastre: () => ultimoFueArrastre };
 }

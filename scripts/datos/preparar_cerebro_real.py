@@ -185,8 +185,65 @@ def armar():
     brillo[:, ~simulado] = 0
     con_algo = np.flatnonzero(brillo.any(axis=0)).astype(np.uint32)
     roles = np.array([rol.get(int(b), 0) for b in todos], dtype=np.uint8)
+    # Los Hz exactos de los puntos con actividad (× 10, para la tarjetita)
+    hz10 = np.round(np.minimum(tasas[:, pos_en_red[con_algo]], 6553) * 10).astype(np.uint16)
+    hz10[:, ~simulado[con_algo]] = 0
     (PUBLICO / "actividad-real.bin").write_bytes(roles.tobytes() + con_algo.tobytes()
-                                                + np.ascontiguousarray(brillo[:, con_algo]).tobytes())
+                                                + np.ascontiguousarray(brillo[:, con_algo]).tobytes()
+                                                + np.ascontiguousarray(hz10).tobytes())
+
+    # Ficha de cada punto que dispara o es del circuito: id, tipo, lado, superclase, zona
+    def texto(v):
+        return v if isinstance(v, str) else ""
+    fichas = {}
+    for i in sorted(set(con_algo.tolist()) | set(np.flatnonzero(roles > 0).tolist())):
+        b = int(todos[i])
+        f = anot_id.loc[b]
+        lado = texto(f["somaSide"]) or texto(f["rootSide"])
+        fichas[str(i)] = [b, texto(f["type"]), lado, texto(f["superclass"]), PC.grupo_de(f) or "central"]
+
+    # Recorrido de la señal: sólo conexiones que existen en MaleCNS (≥ 20 sinapsis,
+    # salvo la entrada de la antena), en orden antena → aBN1 → aDN1/aDN2 → cordón
+    Wc = pd.read_feather(M.PESOS, columns=["body_pre", "body_post", "weight"])
+    punto_de = {int(b): i for i, b in enumerate(todos)}
+    def sinapsis(pre, post):
+        return int(Wc[(Wc.body_pre == pre) & (Wc.body_post == post)].weight.sum())
+    jo_izq = S["JO-C_L"] + S["JO-E_L"] + S["JO-F_L"]
+    abn1 = Med["aBN1 (SAD093)"]["L"][0]          # la del lado estimulado
+    adn = Med["aDN1 (DNg62)"]["L"] + Med["aDN1 (DNg62)"]["R"] + Med["aDN2 (DNge078)"]["L"] + Med["aDN2 (DNge078)"]["R"]
+    adn1 = set(Med["aDN1 (DNg62)"]["L"] + Med["aDN1 (DNg62)"]["R"])
+    trio = Med["aBN2 (trío LB23)"]["L"]
+    aristas = []
+    entrada = Wc[Wc.body_pre.isin(jo_izq) & (Wc.body_post == abn1)].sort_values("weight", ascending=False).head(6)
+    for pre, w in zip(entrada.body_pre, entrada.weight):
+        aristas.append([punto_de[int(pre)], punto_de[abn1], int(w), 0])
+    for b in adn + trio:
+        w = sinapsis(abn1, b)
+        if w >= 20:
+            aristas.append([punto_de[abn1], punto_de[b], w, 1])
+    for b in adn:
+        for b2 in adn1:
+            w = sinapsis(b, b2) if b not in adn1 else 0
+            if w >= 20:
+                aristas.append([punto_de[b], punto_de[b2], w, 2])
+    for t in trio:
+        for b in adn:
+            w = sinapsis(t, b)
+            if w >= 20:
+                aristas.append([punto_de[t], punto_de[b], w, 2])
+    vnc = set(anot_id.index[anot_id["superclass"].fillna("").str.startswith("vnc")])
+    for b in adn:
+        d = Wc[(Wc.body_pre == b) & Wc.body_post.isin(vnc) & (Wc.weight >= 20)].sort_values("weight", ascending=False)
+        d = d[[tasas[:, np.searchsorted(ids, x)].max() > 1 for x in d.body_post]].head(2)
+        for post, w in zip(d.body_post, d.weight):
+            aristas.append([punto_de[b], punto_de[int(post)], int(w), 3])
+    etiquetas = [
+        {"texto": "antena", "puntos": [punto_de[b] for b in jo_izq]},
+        {"texto": "aBN1", "puntos": [punto_de[abn1]]},
+        {"texto": "aBN2", "puntos": [punto_de[b] for b in trio]},
+    ] + [{"texto": n, "puntos": [punto_de[b]]} for n, k in [("aDN1", "aDN1 (DNg62)"), ("aDN2", "aDN2 (DNge078)")] for l in "LR" for b in Med[k][l]]
+    print(f"Recorrido: {len(aristas)} conexiones reales · " +
+          ", ".join(f"nivel {n}: {sum(a[3] == n for a in aristas)}" for n in range(4)))
 
     # Contadores por situación, sobre TODA la red simulada (164.587 neuronas)
     anot_red = anot_id.reindex(ids)
@@ -226,6 +283,12 @@ def armar():
         "roles": ROLES,
         "zonas": zonas,
         "situaciones": situaciones,
+        "fichas": fichas,
+        "recorrido": {"aristas": aristas, "columnas": ["desde", "hasta", "sinapsis", "nivel"],
+                      "regla": "sólo conexiones reales de MaleCNS: los 6 sensores de la antena que más le dan a aBN1 izq, "
+                               "y de ahí ≥ 20 sinapsis; nivel 0 antena → aBN1, 1 aBN1 → aDN/aBN2, 2 aDN2 → aDN1 y "
+                               "aBN2 → aDN, 3 aDN → cordón (las 2 del cordón que más reciben y que disparan)"},
+        "etiquetas": etiquetas,
     }
     (PUBLICO / "actividad-real.json").write_text(json.dumps(meta, ensure_ascii=False, indent=1) + "\n")
     peso = sum((PUBLICO / f).stat().st_size for f in ["puntos-extra.bin", "actividad-real.bin", "actividad-real.json"])

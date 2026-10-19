@@ -702,8 +702,11 @@ const formatoHz = new Intl.NumberFormat('es-CL', { maximumFractionDigits: 0 });
 cargarDatosCerebro()
   .then(async (datos) => {
     const real = await cargarActividadReal(datos);
-    cerebro = crearCerebro(document.getElementById('lienzo-cerebro'), datos, real);
+    cerebro = crearCerebro(document.getElementById('lienzo-cerebro'), datos, real, {
+      etiquetas: document.getElementById('cerebro-etiquetas'),
+    });
     const { info } = datos;
+    nombresZona = Object.fromEntries(info.grupos.map((g) => [g.id, g.nombre]));
     datos.info.grupos.forEach((g) => {
       const li = document.createElement('li');
       li.className = 'grupo';
@@ -713,7 +716,6 @@ cargarDatosCerebro()
       filasGrupo[g.id] = { li, valor: li.querySelector('.grupo-valor'), barra: li.querySelector('.grupo-barra span') };
     });
     const simuladas = formato.format(real.meta.neuronas_simuladas);
-    document.getElementById('cerebro-credito').textContent = 'Datos: Male CNS v1.0 (Janelia, Cambridge, MRC LMB y Google) · CC BY 4.0';
     document.getElementById('chip-datos').textContent =
       `Male CNS v1.0 · ${simuladas} neuronas simuladas · se dibujan ${formato.format(real.n)} (todas las que se encienden)`;
   })
@@ -725,9 +727,83 @@ const graficoDia = crearGraficoDia({
   tooltip: document.getElementById('cerebro-dia-tooltip'),
   elPico: document.getElementById('cerebro-dia-pico'),
 });
-// Lectura en palabras simples, con los números de la simulación
+// Botón "Centrar": vuelve a la vista inicial y a girar solo
+document.getElementById('btn-centrar-cerebro').addEventListener('click', () => cerebro?.centrar());
+
+// ---------- Tarjetita de una neurona (al pasar el cursor o hacer clic) ----------
+const elFicha = document.getElementById('cerebro-ficha');
+const lienzoCerebro = document.getElementById('lienzo-cerebro');
+let nombresZona = {};
+let fichaFija = null; // la que se dejó abierta con un clic
+const APODOS = { ANXXX462a: 'Clavicle', GNG197: 'FMIn', AN13B002: 'Dandelion', GNG108: 'Roundup', GNG120: 'Roundtree', GNG588: 'Fdg' };
+const ROL_CORTO = ['', 'sensor de la antena', 'aBN1', 'aBN2', 'aDN1', 'aDN2', 'sensor de azúcar', 'camino del azúcar', 'trompita'];
+const LADOS = { L: 'lado izquierdo', R: 'lado derecho', M: 'al centro' };
+function queHace(n) {
+  if (n.rol === 1) return 'Siente cuando algo mueve la antena (en el juego: las tareas abiertas).';
+  if (n.rol === 2) return 'Recibe la señal de la antena y avisa al circuito de limpieza.';
+  if (n.rol === 3) return 'Junta avisos de la antena y de los pelitos de la cabeza.';
+  if (n.rol === 4 || n.rol === 5) return 'Manda a las patas delanteras a limpiar las antenas.';
+  if (n.rol === 6) return 'Siente el dulce en la trompita.';
+  if (n.rol === 7) return n.tipo === 'AN13B002' ? 'Recibe el dulce, pero frena: no sigue hacia la trompita.' : 'Lleva la señal del dulce hacia la trompita.';
+  if (n.rol === 8) return 'Mueve la trompita para comer.';
+  const s = n.superclase;
+  if (s === 'descending_neuron') return 'Lleva órdenes del cerebro al cuerpo.';
+  if (s === 'ascending_neuron') return 'Lleva información del cuerpo al cerebro.';
+  if (s.endsWith('motor')) return 'Mueve un músculo (en el cordón: de una pata o del cuerpo).';
+  if (s === 'vnc_intrinsic') return 'Parte del cordón nervioso: coordina patas y cuerpo.';
+  if (s.includes('sensory')) return 'Sensor: trae información del cuerpo.';
+  if (s.startsWith('ol_') || s.startsWith('visual')) return 'Procesa lo que ve.';
+  if (s === 'cb_intrinsic') return 'Procesa información dentro del cerebro.';
+  return 'Neurona del sistema nervioso de la mosca.';
+}
+function escribirFicha(n) {
+  const nombre = n.tipo ? `${n.tipo}${APODOS[n.tipo] ? ` (${APODOS[n.tipo]})` : ''}` : `Neurona sin nombre · ${nombresZona[n.zona] ?? n.zona}`;
+  const rol = n.rol ? `<span class="ficha-rol">${ROL_CORTO[n.rol]}</span>` : '';
+  const hz = n.hz > 0 ? `Dispara ${formatoHz.format(n.hz)} Hz en la simulación` : 'En reposo ahora (0 Hz)';
+  const lado = LADOS[n.lado] ? ` · ${LADOS[n.lado]}` : '';
+  const nota = n.rol === 1 || n.rol === 6
+    ? `<span class="ficha-linea ficha-suave">Se dibuja en el centro de sus terminales en el cerebro: su cuerpo está en ${n.rol === 1 ? 'la antena' : 'la trompita'}.</span>`
+    : '';
+  elFicha.innerHTML = `<strong>${nombre}${rol}</strong><span class="ficha-linea">${queHace(n)}</span>` +
+    `<span class="ficha-linea">${hz}${lado}</span>${nota}<span class="ficha-linea ficha-suave">MaleCNS · ID ${n.bodyId}</span>`;
+}
+function ponerFicha(n, x, y) {
+  if (!n) {
+    elFicha.hidden = true;
+    return;
+  }
+  escribirFicha(n);
+  elFicha.hidden = false;
+  const w = elFicha.offsetWidth;
+  const h = elFicha.offsetHeight;
+  const izq = x + 16 + w > window.innerWidth - 8 ? x - 16 - w : x + 16;
+  elFicha.style.left = `${Math.max(8, izq)}px`;
+  elFicha.style.top = `${Math.min(window.innerHeight - h - 8, Math.max(8, y - h / 2))}px`;
+}
+lienzoCerebro.addEventListener('pointermove', (e) => {
+  if (!cerebro || fichaFija || e.buttons) return;
+  ponerFicha(cerebro.neuronaEn(e.clientX, e.clientY), e.clientX, e.clientY);
+});
+lienzoCerebro.addEventListener('pointerleave', () => {
+  if (!fichaFija) elFicha.hidden = true;
+});
+// Al empezar a arrastrar, la tarjetita que estaba de paso se esconde
+lienzoCerebro.addEventListener('pointerdown', () => {
+  if (!fichaFija) elFicha.hidden = true;
+});
+lienzoCerebro.addEventListener('click', (e) => {
+  if (!cerebro || cerebro.fueArrastre()) return;
+  const n = cerebro.neuronaEn(e.clientX, e.clientY);
+  fichaFija = n && (!fichaFija || fichaFija.punto !== n.punto) ? { ...n, x: e.clientX, y: e.clientY } : null;
+  ponerFicha(fichaFija ?? n, e.clientX, e.clientY);
+});
+
+// Lectura en palabras simples, con los números de la simulación (y su lado)
 const elLectura = document.getElementById('cerebro-lectura');
 const masAlto = (v) => Math.max(v.L, v.R);
+const ladoDe = (v) => (v.R > v.L ? 'der.' : 'izq.');
+// "aDN1 der. 114 Hz" (el lado que más dispara); sin lado si está en 0
+const parte = (nombre, v) => (masAlto(v) > 0 ? `${nombre} ${ladoDe(v)} ${formatoHz.format(masAlto(v))} Hz` : `${nombre} en 0 Hz`);
 function escribirLectura(l, estado) {
   const c = l.datos.circuito;
   const hz = (x) => formatoHz.format(x);
@@ -735,15 +811,15 @@ function escribirLectura(l, estado) {
   if (estado.terminado) html = 'Día terminado: sin estímulo, el cerebro queda apagado.';
   else if (pausado) html = 'En pausa: sin estímulo, el cerebro queda apagado.';
   else if (l.cafe) {
-    html = `Café: el azúcar enciende sus sensores y Clavicle (${hz(masAlto(c['Clavicle (ANXXX462a)']))} Hz), ` +
+    html = `Café: el azúcar (lado der.) enciende sus sensores y ${parte('Clavicle', c['Clavicle (ANXXX462a)'])}, ` +
       `pero la señal no llega a la trompita (MN9 en ${hz(masAlto(c.MN9))} Hz): el café es ilustrativo.`;
   } else if (l.tareas === 0) html = 'Sin tareas abiertas: la antena no recibe nada y el cerebro queda apagado.';
   else {
     const antena = `${l.tareas} ${l.tareas === 1 ? 'tarea abierta' : 'tareas abiertas'} = antena a ${hz(20 + ((l.tareas - 1) * 200) / 9)} Hz`;
     const abn1 = hz(masAlto(c['aBN1 (SAD093)']));
     html = l.datos.limpieza < 1
-      ? `${antena}: se enciende aBN1 (${abn1} Hz), pero la limpieza (aDN1 y aDN2) sigue apagada.`
-      : `${antena}: se enciende la limpieza de antenas, aBN1 ${abn1} Hz → aDN1 ${hz(masAlto(c['aDN1 (DNg62)']))} y aDN2 ${hz(masAlto(c['aDN2 (DNge078)']))} Hz.`;
+      ? `${antena}: se enciende aBN1 ${ladoDe(c['aBN1 (SAD093)'])} (${abn1} Hz), pero la limpieza (aDN1 y aDN2) sigue apagada.`
+      : `${antena}: se enciende la limpieza de antenas, ${parte('aBN1', c['aBN1 (SAD093)'])} → ${parte('aDN1', c['aDN1 (DNg62)'])} y ${parte('aDN2', c['aDN2 (DNge078)'])}.`;
   }
   if (elLectura.innerHTML !== html) elLectura.innerHTML = html;
 }
@@ -904,6 +980,8 @@ if (import.meta.env.DEV) {
       refrescarUI(estado, mosca.cigarroEnMano());
     },
     choques: (opciones) => revisarChoques(scene, opciones),
+    // Dónde está en pantalla una neurona del circuito (2 = aBN1, 4 = aDN1…)
+    cerebroDonde: (rol) => cerebro?.dondeEsta(rol),
     vista: (v) => cambiarVista(v, true),
     ocultarCerebro: (v) => alternarCerebro(v),
     ocultarControles: (v) => alternarControles(v),
