@@ -1,8 +1,13 @@
 // Panel del cerebro: nube de neuronas reales (MaleCNS v1.0) que gira lento y
-// se enciende según lo que pasa en el juego.
+// se enciende con la ACTIVIDAD SIMULADA del cableado real (Etapa 3.3,
+// opción A: el cerebro muestra, el juego decide).
 //
-// Etapa 2: las luces son ilustrativas (un modelo simple de "cuánta actividad
-// tiene cada zona"). En la Etapa 3 las controlará el conectoma real.
+// La actividad de cada neurona viene precalculada (scripts/datos/
+// preparar_cerebro_real.py): para cada cantidad de tareas abiertas (0 a 10),
+// la antena izquierda recibe 20 + (n − 1) × 200/9 Hz y el modelo de Shiu et
+// al. 2024 (peso 0,090 mV) dice cuánto dispara cada neurona; en el café se
+// suma el azúcar. El juego sólo lee esos archivos: nada pesado en vivo. Las
+// reglas del juego (brain.js) no usan esta actividad.
 import * as THREE from 'three';
 
 // Un color neón por zona, como en las imágenes de referencia.
@@ -18,11 +23,13 @@ const FONDO = '#060a16';
 const TAMANO_PUNTO_UM = 6.5; // tamaño de cada punto, en micrómetros del cerebro
 const VUELTA_SEGUNDOS = 40; // una vuelta completa cada 40 s
 const INCLINACION = 0.32; // inclinado hacia la cámara para que se vea en 3D
+const SEGUNDOS_TRANSICION = 1.2; // paso suave de una situación a otra
 
 const lerp = (a, b, t) => a + (b - a) * t;
 const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
 const amortiguar = (actual, objetivo, rapidez, dt) => lerp(actual, objetivo, 1 - Math.exp(-rapidez * dt));
 
+// Los 25.000 puntos de siempre (también los usa la portada holograma del PDF)
 export async function cargarDatosCerebro() {
   const base = import.meta.env.BASE_URL;
   const [info, binario] = await Promise.all([
@@ -38,45 +45,91 @@ export async function cargarDatosCerebro() {
   return { info, posiciones, grupos, tonos };
 }
 
+// La actividad simulada: suma los puntos extra (el circuito y todas las
+// neuronas que se encienden en alguna situación) y el brillo de cada punto en
+// cada situación.
+export async function cargarActividadReal(datos) {
+  const base = import.meta.env.BASE_URL;
+  const [meta, extra, act] = await Promise.all([
+    fetch(`${base}cerebro/actividad-real.json`).then((r) => r.json()),
+    fetch(`${base}cerebro/puntos-extra.bin`).then((r) => r.arrayBuffer()),
+    fetch(`${base}cerebro/actividad-real.bin`).then((r) => r.arrayBuffer()),
+  ]);
+  const nBase = datos.info.puntos;
+  const nExtra = meta.puntos_extra;
+  const n = nBase + nExtra;
+  const posiciones = new Float32Array(n * 3);
+  posiciones.set(datos.posiciones);
+  const enteros = new Int16Array(extra, 0, nExtra * 3);
+  for (let i = 0; i < nExtra * 3; i++) posiciones[nBase * 3 + i] = enteros[i] / datos.info.escala;
+  const grupos = new Uint8Array(n);
+  grupos.set(datos.grupos);
+  grupos.set(new Uint8Array(extra, nExtra * 6, nExtra), nBase);
+  const tonos = new Uint8Array(n);
+  tonos.set(datos.tonos);
+  tonos.set(new Uint8Array(extra, nExtra * 7, nExtra), nBase);
+  const k = meta.puntos_con_actividad;
+  return {
+    meta,
+    n,
+    posiciones,
+    grupos,
+    tonos,
+    roles: new Uint8Array(act, 0, n),
+    indices: new Uint32Array(act.slice(n, n + k * 4)), // copia alineada
+    brillo: new Uint8Array(act, n + k * 4, meta.condiciones.length * k),
+  };
+}
+
 const VERTICE = /* glsl */ `
   attribute vec3 aColor;
-  attribute float aGrupo;
   attribute float aSemilla;
+  attribute float aRol;
+  attribute float aActA;
+  attribute float aActB;
   uniform float uTiempo;
-  uniform float uAct[5];
+  uniform float uMezcla;
+  uniform float uCafe;
   uniform float uTamano;
   uniform float uEscalaVista;
   varying vec3 vColor;
   varying float vAct;
   varying float vEncendido;
+  varying float vAnillo;
 
   float azar(vec2 p) {
     return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
   }
 
   void main() {
-    int g = int(aGrupo + 0.5);
-    float act = 0.0;
-    for (int i = 0; i < 5; i++) {
-      if (i == g) act = uAct[i];
-    }
-    // Cada neurona tiene su propio ritmo. En cada "latido" se enciende con una
-    // probabilidad que sube con la actividad de su zona. El destello sube y
-    // baja de forma suave (sin saltos).
-    float ritmo = 0.55 + aSemilla * 1.1;
+    // Actividad simulada de ESTA neurona (0 a 1 = log de sus disparos por
+    // segundo), con un paso suave cuando cambia la situación.
+    float act = mix(aActA, aActB, uMezcla);
+    // Cada neurona late a su ritmo y en cada latido destella con una
+    // probabilidad que sigue a su actividad: si no dispara, nunca destella.
+    float ritmo = 0.55 + aSemilla * 1.1 + 1.6 * act;
     float t = uTiempo * ritmo + aSemilla * 17.0;
     float latido = floor(t);
     float fase = t - latido;
-    float dispara = step(azar(vec2(aSemilla * 97.0, latido)), act * 0.75);
+    float dispara = step(azar(vec2(aSemilla * 97.0, latido)), act * 0.9) * step(0.001, act);
     float envolvente = smoothstep(0.0, 0.16, fase) * (1.0 - smoothstep(0.24, 0.8, fase));
     vEncendido = dispara * envolvente;
     vAct = act;
     vColor = aColor;
 
+    // Circuito destacado con un anillo: la limpieza de antenas siempre
+    // (sensores de la antena, aBN1, aBN2, aDN1, aDN2); el azúcar sólo en el café.
+    float anillo = 0.0;
+    float agranda = 1.0;
+    if (aRol > 0.5 && aRol < 1.5) { anillo = 0.15; agranda = 0.9; }
+    else if (aRol > 1.5 && aRol < 5.5) { anillo = 1.0; agranda = 3.4; }
+    else if (aRol > 5.5 && aRol < 6.5) { anillo = 0.15 * uCafe; agranda = 1.0 - 0.1 * uCafe; }
+    else if (aRol > 6.5) { anillo = uCafe; agranda = 1.0 + 2.4 * uCafe; }
+    vAnillo = anillo;
+
     vec4 mv = modelViewMatrix * vec4(position, 1.0);
     gl_Position = projectionMatrix * mv;
-    // con poca actividad los puntos se achican; con mucha, crecen
-    float tamano = uTamano * (0.6 + 0.7 * act + 1.35 * vEncendido);
+    float tamano = uTamano * (0.6 + 0.9 * act + 1.2 * vEncendido) * agranda;
     gl_PointSize = max(1.2, tamano * uEscalaVista / -mv.z);
   }
 `;
@@ -86,6 +139,7 @@ const FRAGMENTO = /* glsl */ `
   varying vec3 vColor;
   varying float vAct;
   varying float vEncendido;
+  varying float vAnillo;
 
   void main() {
     float d = length(gl_PointCoord - 0.5) * 2.0;
@@ -93,11 +147,17 @@ const FRAGMENTO = /* glsl */ `
     float nucleo = smoothstep(0.5, 0.0, d);
     // El halo (glow) crece con la actividad y con cada destello
     float halo = exp(-d * d * mix(6.0, 2.0, max(vAct, vEncendido)));
-    // Poca actividad: opaco, casi apagado. Mucha: brillante, con glow.
-    float base = mix(0.035, 0.36, smoothstep(0.05, 0.8, vAct));
+    // Sin actividad: gris tenue, sólo para ver la forma del cerebro (el color
+    // aparece únicamente cuando la neurona dispara). Con actividad: su color,
+    // brillante y con glow.
+    float base = mix(0.2, 0.42, smoothstep(0.0, 0.85, vAct));
     float brillo = base + 0.85 * vEncendido;
-    vec3 color = vColor * (nucleo + halo * (0.12 + 0.55 * vEncendido + 0.35 * vAct)) * brillo;
+    vec3 tinta = mix(vec3(0.42, 0.47, 0.62), vColor, smoothstep(0.0, 0.25, vAct));
+    vec3 color = tinta * (nucleo + halo * (0.12 + 0.55 * vEncendido + 0.35 * vAct)) * brillo;
     color += vec3(1.0) * nucleo * vEncendido * 0.05;
+    // Anillo claro del circuito: tenue si está apagado, más fuerte si dispara
+    float anillo = smoothstep(0.6, 0.72, d) * (1.0 - smoothstep(0.84, 1.0, d));
+    color += vec3(0.86, 0.9, 1.0) * anillo * vAnillo * (0.35 + 0.65 * vAct);
     gl_FragColor = vec4(color * uGanancia, 1.0);
   }
 `;
@@ -117,8 +177,9 @@ function texturaResplandor() {
   return t;
 }
 
-export function crearCerebro(canvas, datos) {
-  const { info, posiciones, grupos, tonos } = datos;
+export function crearCerebro(canvas, datos, real) {
+  const { info } = datos;
+  const { meta, n, posiciones, grupos, tonos, roles, indices, brillo } = real;
   const ids = info.grupos.map((g) => g.id);
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'default' });
@@ -136,7 +197,6 @@ export function crearCerebro(canvas, datos) {
   scene.add(resplandor);
 
   // Colores: el de la zona, con un matiz distinto por tipo de neurona
-  const n = info.puntos;
   const colores = new Float32Array(n * 3);
   const semillas = new Float32Array(n);
   const hsl = {};
@@ -155,7 +215,8 @@ export function crearCerebro(canvas, datos) {
 
   const uniforms = {
     uTiempo: { value: 0 },
-    uAct: { value: [0.1, 0.1, 0.1, 0.1, 0.1] },
+    uMezcla: { value: 1 },
+    uCafe: { value: 0 },
     uTamano: { value: TAMANO_PUNTO_UM },
     uEscalaVista: { value: 500 },
     uGanancia: { value: 1 },
@@ -170,22 +231,28 @@ export function crearCerebro(canvas, datos) {
     blending: THREE.AdditiveBlending,
   });
 
-  const grupoF = new Float32Array(n);
-  for (let i = 0; i < n; i++) grupoF[i] = grupos[i];
+  const rolF = new Float32Array(n);
+  for (let i = 0; i < n; i++) rolF[i] = roles[i];
+  const actA = new THREE.BufferAttribute(new Float32Array(n), 1);
+  const actB = new THREE.BufferAttribute(new Float32Array(n), 1);
+  actA.setUsage(THREE.DynamicDrawUsage);
+  actB.setUsage(THREE.DynamicDrawUsage);
   const geo = new THREE.BufferGeometry();
   geo.setAttribute('position', new THREE.BufferAttribute(posiciones, 3));
   geo.setAttribute('aColor', new THREE.BufferAttribute(colores, 3));
-  geo.setAttribute('aGrupo', new THREE.BufferAttribute(grupoF, 1));
   geo.setAttribute('aSemilla', new THREE.BufferAttribute(semillas, 1));
+  geo.setAttribute('aRol', new THREE.BufferAttribute(rolF, 1));
+  geo.setAttribute('aActA', actA);
+  geo.setAttribute('aActB', actB);
   const nube = new THREE.Points(geo, material);
   nube.frustumCulled = false;
 
   // ---------- Disposición: cerebro arriba y cordón nervioso colgando ----------
   // Ambos giran juntos alrededor de un eje vertical que pasa por el centro de
-  // las neuronas (así no se separan al girar).
+  // los 25.000 puntos de siempre (así el encuadre no cambia).
   let tx = 0;
   let tz = 0;
-  for (let i = 0; i < n; i++) {
+  for (let i = 0; i < info.puntos; i++) {
     tx += posiciones[i * 3];
     tz += posiciones[i * 3 + 2];
   }
@@ -195,7 +262,7 @@ export function crearCerebro(canvas, datos) {
   const giratorio = new THREE.Group();
   inclinado.add(giratorio);
   scene.add(inclinado);
-  nube.position.set(-tx / n, 0, -tz / n);
+  nube.position.set(-tx / info.puntos, 0, -tz / info.puntos);
   giratorio.add(nube);
   const radioGiro = Math.hypot(anchoTotal, fondoTotal) / 2;
   const encuadre = {
@@ -228,54 +295,57 @@ export function crearCerebro(canvas, datos) {
     uniforms.uGanancia.value = clamp((w * h) / 520000, 0.45, 0.9);
   }
 
-  // ---------- Actividad (modelo ilustrativo) ----------
-  const actividad = Object.fromEntries(ids.map((id) => [id, 0.06]));
-  let pulsoTarea = 0;
-  let hechasAntes = null;
-  let saltar = false; // día nuevo: la actividad parte en su valor, sin arrastrar
+  // ---------- Actividad simulada (precalculada) ----------
+  const nombres = meta.condiciones;
+  const k = indices.length;
+  const maxActivas = Math.max(...nombres.map((s) => meta.situaciones[s].activas));
+  let actual = 0; // situación que se muestra (índice en meta.condiciones)
+  let previa = 0;
+  let mezcla = 1;
+  let saltar = true; // día nuevo: la actividad parte en su valor, sin arrastrar
+  let cafeSuave = 0;
 
-  function objetivos({ enCurso, estres, fumando, cafe, esperando, terminado, hechas }) {
-    if (hechasAntes !== null && hechas > hechasAntes) pulsoTarea = 1;
-    hechasAntes = hechas;
-    if (terminado) return Object.fromEntries(ids.map((id) => [id, 0.03]));
-    const trabajando = fumando || esperando ? 0 : 1;
-    // Mucho contraste: con WIP bajo y sin estrés casi todo queda apagado; con
-    // WIP alto, estrés o fumando, las zonas se encienden fuerte.
-    const wip = Math.min(enCurso, 10) / 10;
-    const o = {
-      // "Ve tareas": más tareas abiertas en pantalla = más actividad visual
-      vision: 0.04 + 0.78 * wip * wip * (fumando ? 0.5 : 1) + 0.08 * trabajando,
-      central: 0.03 + 0.72 * estres * estres,
-      memoria: 0.03 + 0.25 * estres + 0.55 * pulsoTarea,
-      mando: 0.03 + 0.06 * trabajando + 0.75 * (fumando ? 1 : 0),
-      movimiento: 0.03 + 0.1 * trabajando + 0.78 * (fumando ? 1 : 0),
-    };
-    // Sorbo de café: mueve una pata (movimiento y mando suben un poco)
-    if (cafe) {
-      o.movimiento = Math.max(o.movimiento, 0.38);
-      o.mando = Math.max(o.mando, 0.3);
+  function situacionPara({ enCurso, cafe, apagado }) {
+    if (apagado) return 0; // en pausa o día terminado: sin estímulo
+    const tareas = clamp(Math.round(enCurso), 0, 10);
+    return cafe ? 11 + tareas : tareas;
+  }
+
+  function ir(s, inmediato) {
+    const A = actA.array;
+    const B = actB.array;
+    // Lo que se ve ahora pasa a ser el punto de partida (sólo cambian los
+    // puntos que alguna vez disparan; el resto está siempre en 0).
+    if (!inmediato) for (let j = 0; j < k; j++) A[indices[j]] = lerp(A[indices[j]], B[indices[j]], mezcla);
+    const desde = s * k;
+    for (let j = 0; j < k; j++) B[indices[j]] = brillo[desde + j] / 255;
+    if (inmediato) {
+      A.set(B);
+      mezcla = 1;
+    } else {
+      mezcla = 0;
     }
-    // El estrés sube un poco todo
-    for (const id of ids) o[id] = clamp(o[id] + 0.12 * estres * estres, 0, 0.95);
-    return o;
+    actA.needsUpdate = true;
+    actB.needsUpdate = true;
+    previa = inmediato ? s : actual;
+    actual = s;
   }
 
   let tiempo = 0;
   function actualizar(dt, estadoJuego) {
     tiempo += dt;
-    pulsoTarea = Math.max(0, pulsoTarea - dt * 0.7);
-    const o = objetivos(estadoJuego);
-    ids.forEach((id, i) => {
-      // sube y baja de a poco (sin cambios bruscos)
-      actividad[id] = saltar ? o[id] : amortiguar(actividad[id], o[id], 1.4, dt);
-      uniforms.uAct.value[i] = actividad[id];
-    });
+    const s = situacionPara(estadoJuego);
+    if (saltar) ir(s, true);
+    else if (s !== actual) ir(s, false);
     saltar = false;
+    mezcla = Math.min(1, mezcla + dt / SEGUNDOS_TRANSICION);
+    uniforms.uMezcla.value = mezcla * mezcla * (3 - 2 * mezcla);
+    cafeSuave = amortiguar(cafeSuave, s >= 11 ? 1 : 0, 3, dt);
+    uniforms.uCafe.value = cafeSuave;
     uniforms.uTiempo.value = tiempo;
-    // El resplandor azul de fondo se enciende con la actividad total
-    let media = 0;
-    ids.forEach((id) => (media += actividad[id] / ids.length));
-    resplandor.material.opacity = 0.2 + 1.1 * media;
+    // El resplandor azul de fondo sigue a cuántas neuronas disparan
+    const activas = lerp(meta.situaciones[nombres[previa]].activas, meta.situaciones[nombres[actual]].activas, uniforms.uMezcla.value);
+    resplandor.material.opacity = 0.2 + 0.7 * (activas / maxActivas);
     resplandor.material.transparent = true;
     giratorio.rotation.y = (tiempo / VUELTA_SEGUNDOS) * Math.PI * 2;
   }
@@ -285,23 +355,33 @@ export function crearCerebro(canvas, datos) {
     renderer.render(scene, camera);
   }
 
-  // Contadores tipo monitor (sobre las neuronas reales con posición)
+  // Contadores sobre TODA la red simulada (164.587 neuronas), no sólo los puntos
   function lectura() {
-    let activas = 0;
-    let total = 0;
+    const s0 = meta.situaciones[nombres[previa]];
+    const s1 = meta.situaciones[nombres[actual]];
+    const t = uniforms.uMezcla.value;
+    const activas = Math.round(lerp(s0.activas, s1.activas, t));
     const porGrupo = info.grupos.map((g) => {
-      activas += actividad[g.id] * g.real;
-      total += g.real;
-      return { id: g.id, nombre: g.nombre, detalle: g.detalle, actividad: actividad[g.id] };
+      const a = lerp(s0.zonas[g.id].activas, s1.zonas[g.id].activas, t);
+      const total = s1.zonas[g.id].total;
+      return { id: g.id, nombre: g.nombre, detalle: g.detalle, activas: Math.round(a), total, actividad: a / total };
     });
-    return { activas: Math.round(activas), total, nivel: activas / total, porGrupo };
+    return {
+      activas,
+      total: meta.neuronas_simuladas,
+      nivel: activas / meta.neuronas_simuladas,
+      intensidad: activas / maxActivas,
+      porGrupo,
+      situacion: nombres[actual],
+      cafe: actual >= 11,
+      tareas: actual % 11,
+      datos: s1,
+    };
   }
 
   function reiniciar() {
     saltar = true;
-    hechasAntes = null;
-    pulsoTarea = 0;
   }
 
-  return { actualizar, renderizar, lectura, info, reiniciar };
+  return { actualizar, renderizar, lectura, info, meta, reiniciar };
 }

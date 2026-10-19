@@ -1,0 +1,1882 @@
+{
+ "que_es": "Etapa 3.3 (opción A): actividad simulada del cableado real para el panel del cerebro. Las reglas del juego no la usan: el cerebro muestra, el juego decide.",
+ "fuente": "Male CNS connectome v1.0 (FlyEM / HHMI Janelia, Cambridge, MRC LMB, Google Research), CC BY 4.0",
+ "modelo": "LIF como Shiu et al. 2024; w_syn = 0.09 mV (Etapa 3.2b); 30 repeticiones de 1 s, semilla fija",
+ "regla_antena": "n tareas abiertas → antena izquierda (JO-C + JO-E + JO-F) a 20 + (n − 1) × 200/9 Hz; 0 tareas = sin estímulo",
+ "cafe": "además, azúcar (LB3b + LB3c derecha, 17 sensores) a 100 Hz",
+ "brillo": "log(1 + Hz) / log(1 + 300), de 0 a 255",
+ "neuronas_simuladas": 164587,
+ "puntos_base": 25000,
+ "puntos_extra": 1065,
+ "puntos_con_actividad": 1497,
+ "condiciones": [
+  "antena_0",
+  "antena_1",
+  "antena_2",
+  "antena_3",
+  "antena_4",
+  "antena_5",
+  "antena_6",
+  "antena_7",
+  "antena_8",
+  "antena_9",
+  "antena_10",
+  "cafe_0",
+  "cafe_1",
+  "cafe_2",
+  "cafe_3",
+  "cafe_4",
+  "cafe_5",
+  "cafe_6",
+  "cafe_7",
+  "cafe_8",
+  "cafe_9",
+  "cafe_10"
+ ],
+ "roles": [
+  "",
+  "sensor de la antena",
+  "aBN1 (SAD093)",
+  "aBN2 (trío LB23)",
+  "aDN1 (DNg62)",
+  "aDN2 (DNge078)",
+  "sensor de azúcar",
+  "camino del azúcar",
+  "MN9 (trompita)"
+ ],
+ "zonas": [
+  "vision",
+  "central",
+  "memoria",
+  "mando",
+  "movimiento"
+ ],
+ "situaciones": {
+  "antena_0": {
+   "activas": 0,
+   "sobre_10hz": 0,
+   "zonas": {
+    "vision": {
+     "activas": 0,
+     "total": 103258
+    },
+    "central": {
+     "activas": 0,
+     "total": 32500
+    },
+    "memoria": {
+     "activas": 0,
+     "total": 4501
+    },
+    "mando": {
+     "activas": 0,
+     "total": 3719
+    },
+    "movimiento": {
+     "activas": 0,
+     "total": 20425
+    }
+   },
+   "circuito": {
+    "sensores_antena": 0.0,
+    "sensores_azucar": 0.0,
+    "aBN1 (SAD093)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "aBN2 (trío LB23)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "aDN1 (DNg62)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "aDN2 (DNge078)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "MN9": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "ANXXX462b": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Clavicle (ANXXX462a)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "FMIn (GNG197)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Dandelion (AN13B002)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "DNge062": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundup (GNG108)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundtree (GNG120)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Fdg (GNG588)": {
+     "L": 0.0,
+     "R": 0.0
+    }
+   },
+   "limpieza": 0.0
+  },
+  "antena_1": {
+   "activas": 330,
+   "sobre_10hz": 273,
+   "zonas": {
+    "vision": {
+     "activas": 0,
+     "total": 103258
+    },
+    "central": {
+     "activas": 301,
+     "total": 32500
+    },
+    "memoria": {
+     "activas": 0,
+     "total": 4501
+    },
+    "mando": {
+     "activas": 18,
+     "total": 3719
+    },
+    "movimiento": {
+     "activas": 11,
+     "total": 20425
+    }
+   },
+   "circuito": {
+    "sensores_antena": 20.0,
+    "sensores_azucar": 0.0,
+    "aBN1 (SAD093)": {
+     "L": 4.7,
+     "R": 0.0
+    },
+    "aBN2 (trío LB23)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "aDN1 (DNg62)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "aDN2 (DNge078)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "MN9": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "ANXXX462b": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Clavicle (ANXXX462a)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "FMIn (GNG197)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Dandelion (AN13B002)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "DNge062": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundup (GNG108)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundtree (GNG120)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Fdg (GNG588)": {
+     "L": 0.0,
+     "R": 0.0
+    }
+   },
+   "limpieza": 0.0
+  },
+  "antena_2": {
+   "activas": 423,
+   "sobre_10hz": 330,
+   "zonas": {
+    "vision": {
+     "activas": 1,
+     "total": 103258
+    },
+    "central": {
+     "activas": 358,
+     "total": 32500
+    },
+    "memoria": {
+     "activas": 0,
+     "total": 4501
+    },
+    "mando": {
+     "activas": 34,
+     "total": 3719
+    },
+    "movimiento": {
+     "activas": 30,
+     "total": 20425
+    }
+   },
+   "circuito": {
+    "sensores_antena": 42.0,
+    "sensores_azucar": 0.0,
+    "aBN1 (SAD093)": {
+     "L": 42.6,
+     "R": 0.0
+    },
+    "aBN2 (trío LB23)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "aDN1 (DNg62)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "aDN2 (DNge078)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "MN9": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "ANXXX462b": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Clavicle (ANXXX462a)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "FMIn (GNG197)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Dandelion (AN13B002)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "DNge062": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundup (GNG108)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundtree (GNG120)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Fdg (GNG588)": {
+     "L": 0.0,
+     "R": 0.0
+    }
+   },
+   "limpieza": 0.0
+  },
+  "antena_3": {
+   "activas": 532,
+   "sobre_10hz": 395,
+   "zonas": {
+    "vision": {
+     "activas": 3,
+     "total": 103258
+    },
+    "central": {
+     "activas": 426,
+     "total": 32500
+    },
+    "memoria": {
+     "activas": 0,
+     "total": 4501
+    },
+    "mando": {
+     "activas": 60,
+     "total": 3719
+    },
+    "movimiento": {
+     "activas": 43,
+     "total": 20425
+    }
+   },
+   "circuito": {
+    "sensores_antena": 63.9,
+    "sensores_azucar": 0.0,
+    "aBN1 (SAD093)": {
+     "L": 66.9,
+     "R": 0.0
+    },
+    "aBN2 (trío LB23)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "aDN1 (DNg62)": {
+     "L": 0.0,
+     "R": 0.3
+    },
+    "aDN2 (DNge078)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "MN9": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "ANXXX462b": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Clavicle (ANXXX462a)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "FMIn (GNG197)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Dandelion (AN13B002)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "DNge062": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundup (GNG108)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundtree (GNG120)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Fdg (GNG588)": {
+     "L": 0.0,
+     "R": 0.0
+    }
+   },
+   "limpieza": 0.1
+  },
+  "antena_4": {
+   "activas": 633,
+   "sobre_10hz": 477,
+   "zonas": {
+    "vision": {
+     "activas": 6,
+     "total": 103258
+    },
+    "central": {
+     "activas": 480,
+     "total": 32500
+    },
+    "memoria": {
+     "activas": 0,
+     "total": 4501
+    },
+    "mando": {
+     "activas": 86,
+     "total": 3719
+    },
+    "movimiento": {
+     "activas": 61,
+     "total": 20425
+    }
+   },
+   "circuito": {
+    "sensores_antena": 85.9,
+    "sensores_azucar": 0.0,
+    "aBN1 (SAD093)": {
+     "L": 85.4,
+     "R": 0.0
+    },
+    "aBN2 (trío LB23)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "aDN1 (DNg62)": {
+     "L": 0.0,
+     "R": 13.3
+    },
+    "aDN2 (DNge078)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "MN9": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "ANXXX462b": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Clavicle (ANXXX462a)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "FMIn (GNG197)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Dandelion (AN13B002)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "DNge062": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundup (GNG108)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundtree (GNG120)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Fdg (GNG588)": {
+     "L": 0.0,
+     "R": 0.0
+    }
+   },
+   "limpieza": 3.3
+  },
+  "antena_5": {
+   "activas": 1026,
+   "sobre_10hz": 624,
+   "zonas": {
+    "vision": {
+     "activas": 73,
+     "total": 103258
+    },
+    "central": {
+     "activas": 578,
+     "total": 32500
+    },
+    "memoria": {
+     "activas": 0,
+     "total": 4501
+    },
+    "mando": {
+     "activas": 193,
+     "total": 3719
+    },
+    "movimiento": {
+     "activas": 182,
+     "total": 20425
+    }
+   },
+   "circuito": {
+    "sensores_antena": 107.6,
+    "sensores_azucar": 0.0,
+    "aBN1 (SAD093)": {
+     "L": 104.8,
+     "R": 0.0
+    },
+    "aBN2 (trío LB23)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "aDN1 (DNg62)": {
+     "L": 23.4,
+     "R": 56.9
+    },
+    "aDN2 (DNge078)": {
+     "L": 8.3,
+     "R": 23.7
+    },
+    "MN9": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "ANXXX462b": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Clavicle (ANXXX462a)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "FMIn (GNG197)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Dandelion (AN13B002)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "DNge062": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundup (GNG108)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundtree (GNG120)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Fdg (GNG588)": {
+     "L": 0.0,
+     "R": 0.0
+    }
+   },
+   "limpieza": 28.1
+  },
+  "antena_6": {
+   "activas": 1114,
+   "sobre_10hz": 819,
+   "zonas": {
+    "vision": {
+     "activas": 79,
+     "total": 103258
+    },
+    "central": {
+     "activas": 622,
+     "total": 32500
+    },
+    "memoria": {
+     "activas": 0,
+     "total": 4501
+    },
+    "mando": {
+     "activas": 213,
+     "total": 3719
+    },
+    "movimiento": {
+     "activas": 200,
+     "total": 20425
+    }
+   },
+   "circuito": {
+    "sensores_antena": 129.3,
+    "sensores_azucar": 0.0,
+    "aBN1 (SAD093)": {
+     "L": 121.3,
+     "R": 0.0
+    },
+    "aBN2 (trío LB23)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "aDN1 (DNg62)": {
+     "L": 67.2,
+     "R": 97.6
+    },
+    "aDN2 (DNge078)": {
+     "L": 27.1,
+     "R": 53.5
+    },
+    "MN9": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "ANXXX462b": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Clavicle (ANXXX462a)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "FMIn (GNG197)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Dandelion (AN13B002)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "DNge062": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundup (GNG108)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundtree (GNG120)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Fdg (GNG588)": {
+     "L": 0.0,
+     "R": 0.0
+    }
+   },
+   "limpieza": 61.4
+  },
+  "antena_7": {
+   "activas": 1184,
+   "sobre_10hz": 910,
+   "zonas": {
+    "vision": {
+     "activas": 85,
+     "total": 103258
+    },
+    "central": {
+     "activas": 664,
+     "total": 32500
+    },
+    "memoria": {
+     "activas": 0,
+     "total": 4501
+    },
+    "mando": {
+     "activas": 224,
+     "total": 3719
+    },
+    "movimiento": {
+     "activas": 211,
+     "total": 20425
+    }
+   },
+   "circuito": {
+    "sensores_antena": 150.9,
+    "sensores_azucar": 0.0,
+    "aBN1 (SAD093)": {
+     "L": 134.6,
+     "R": 0.0
+    },
+    "aBN2 (trío LB23)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "aDN1 (DNg62)": {
+     "L": 72.8,
+     "R": 104.5
+    },
+    "aDN2 (DNge078)": {
+     "L": 30.6,
+     "R": 59.8
+    },
+    "MN9": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "ANXXX462b": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Clavicle (ANXXX462a)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "FMIn (GNG197)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Dandelion (AN13B002)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "DNge062": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundup (GNG108)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundtree (GNG120)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Fdg (GNG588)": {
+     "L": 0.0,
+     "R": 0.0
+    }
+   },
+   "limpieza": 66.9
+  },
+  "antena_8": {
+   "activas": 1247,
+   "sobre_10hz": 961,
+   "zonas": {
+    "vision": {
+     "activas": 86,
+     "total": 103258
+    },
+    "central": {
+     "activas": 699,
+     "total": 32500
+    },
+    "memoria": {
+     "activas": 0,
+     "total": 4501
+    },
+    "mando": {
+     "activas": 240,
+     "total": 3719
+    },
+    "movimiento": {
+     "activas": 222,
+     "total": 20425
+    }
+   },
+   "circuito": {
+    "sensores_antena": 172.3,
+    "sensores_azucar": 0.0,
+    "aBN1 (SAD093)": {
+     "L": 146.8,
+     "R": 0.0
+    },
+    "aBN2 (trío LB23)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "aDN1 (DNg62)": {
+     "L": 75.4,
+     "R": 110.0
+    },
+    "aDN2 (DNge078)": {
+     "L": 32.7,
+     "R": 64.3
+    },
+    "MN9": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "ANXXX462b": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Clavicle (ANXXX462a)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "FMIn (GNG197)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Dandelion (AN13B002)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "DNge062": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundup (GNG108)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundtree (GNG120)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Fdg (GNG588)": {
+     "L": 0.0,
+     "R": 0.0
+    }
+   },
+   "limpieza": 70.6
+  },
+  "antena_9": {
+   "activas": 1328,
+   "sobre_10hz": 1017,
+   "zonas": {
+    "vision": {
+     "activas": 94,
+     "total": 103258
+    },
+    "central": {
+     "activas": 734,
+     "total": 32500
+    },
+    "memoria": {
+     "activas": 0,
+     "total": 4501
+    },
+    "mando": {
+     "activas": 255,
+     "total": 3719
+    },
+    "movimiento": {
+     "activas": 245,
+     "total": 20425
+    }
+   },
+   "circuito": {
+    "sensores_antena": 193.7,
+    "sensores_azucar": 0.0,
+    "aBN1 (SAD093)": {
+     "L": 157.6,
+     "R": 0.0
+    },
+    "aBN2 (trío LB23)": {
+     "L": 0.5,
+     "R": 0.0
+    },
+    "aDN1 (DNg62)": {
+     "L": 78.5,
+     "R": 114.2
+    },
+    "aDN2 (DNge078)": {
+     "L": 35.3,
+     "R": 69.1
+    },
+    "MN9": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "ANXXX462b": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Clavicle (ANXXX462a)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "FMIn (GNG197)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Dandelion (AN13B002)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "DNge062": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundup (GNG108)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundtree (GNG120)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Fdg (GNG588)": {
+     "L": 0.0,
+     "R": 0.0
+    }
+   },
+   "limpieza": 74.3
+  },
+  "antena_10": {
+   "activas": 1398,
+   "sobre_10hz": 1077,
+   "zonas": {
+    "vision": {
+     "activas": 93,
+     "total": 103258
+    },
+    "central": {
+     "activas": 778,
+     "total": 32500
+    },
+    "memoria": {
+     "activas": 0,
+     "total": 4501
+    },
+    "mando": {
+     "activas": 265,
+     "total": 3719
+    },
+    "movimiento": {
+     "activas": 262,
+     "total": 20425
+    }
+   },
+   "circuito": {
+    "sensores_antena": 215.1,
+    "sensores_azucar": 0.0,
+    "aBN1 (SAD093)": {
+     "L": 168.0,
+     "R": 0.0
+    },
+    "aBN2 (trío LB23)": {
+     "L": 2.4,
+     "R": 0.0
+    },
+    "aDN1 (DNg62)": {
+     "L": 80.6,
+     "R": 118.6
+    },
+    "aDN2 (DNge078)": {
+     "L": 37.5,
+     "R": 73.9
+    },
+    "MN9": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "ANXXX462b": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Clavicle (ANXXX462a)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "FMIn (GNG197)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Dandelion (AN13B002)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "DNge062": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundup (GNG108)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundtree (GNG120)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Fdg (GNG588)": {
+     "L": 0.0,
+     "R": 0.0
+    }
+   },
+   "limpieza": 77.7
+  },
+  "cafe_0": {
+   "activas": 52,
+   "sobre_10hz": 33,
+   "zonas": {
+    "vision": {
+     "activas": 0,
+     "total": 103258
+    },
+    "central": {
+     "activas": 45,
+     "total": 32500
+    },
+    "memoria": {
+     "activas": 0,
+     "total": 4501
+    },
+    "mando": {
+     "activas": 7,
+     "total": 3719
+    },
+    "movimiento": {
+     "activas": 0,
+     "total": 20425
+    }
+   },
+   "circuito": {
+    "sensores_antena": 0.0,
+    "sensores_azucar": 100.0,
+    "aBN1 (SAD093)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "aBN2 (trío LB23)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "aDN1 (DNg62)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "aDN2 (DNge078)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "MN9": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "ANXXX462b": {
+     "L": 0.0,
+     "R": 16.0
+    },
+    "Clavicle (ANXXX462a)": {
+     "L": 0.0,
+     "R": 46.8
+    },
+    "FMIn (GNG197)": {
+     "L": 0.0,
+     "R": 12.1
+    },
+    "Dandelion (AN13B002)": {
+     "L": 40.6,
+     "R": 0.0
+    },
+    "DNge062": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundup (GNG108)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundtree (GNG120)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Fdg (GNG588)": {
+     "L": 0.0,
+     "R": 0.0
+    }
+   },
+   "limpieza": 0.0
+  },
+  "cafe_1": {
+   "activas": 382,
+   "sobre_10hz": 307,
+   "zonas": {
+    "vision": {
+     "activas": 0,
+     "total": 103258
+    },
+    "central": {
+     "activas": 346,
+     "total": 32500
+    },
+    "memoria": {
+     "activas": 0,
+     "total": 4501
+    },
+    "mando": {
+     "activas": 27,
+     "total": 3719
+    },
+    "movimiento": {
+     "activas": 9,
+     "total": 20425
+    }
+   },
+   "circuito": {
+    "sensores_antena": 20.0,
+    "sensores_azucar": 99.1,
+    "aBN1 (SAD093)": {
+     "L": 4.7,
+     "R": 0.0
+    },
+    "aBN2 (trío LB23)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "aDN1 (DNg62)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "aDN2 (DNge078)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "MN9": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "ANXXX462b": {
+     "L": 0.0,
+     "R": 16.1
+    },
+    "Clavicle (ANXXX462a)": {
+     "L": 0.0,
+     "R": 47.1
+    },
+    "FMIn (GNG197)": {
+     "L": 0.0,
+     "R": 12.1
+    },
+    "Dandelion (AN13B002)": {
+     "L": 40.7,
+     "R": 0.0
+    },
+    "DNge062": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundup (GNG108)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundtree (GNG120)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Fdg (GNG588)": {
+     "L": 0.0,
+     "R": 0.0
+    }
+   },
+   "limpieza": 0.0
+  },
+  "cafe_2": {
+   "activas": 476,
+   "sobre_10hz": 362,
+   "zonas": {
+    "vision": {
+     "activas": 1,
+     "total": 103258
+    },
+    "central": {
+     "activas": 403,
+     "total": 32500
+    },
+    "memoria": {
+     "activas": 0,
+     "total": 4501
+    },
+    "mando": {
+     "activas": 42,
+     "total": 3719
+    },
+    "movimiento": {
+     "activas": 30,
+     "total": 20425
+    }
+   },
+   "circuito": {
+    "sensores_antena": 42.0,
+    "sensores_azucar": 99.1,
+    "aBN1 (SAD093)": {
+     "L": 43.2,
+     "R": 0.0
+    },
+    "aBN2 (trío LB23)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "aDN1 (DNg62)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "aDN2 (DNge078)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "MN9": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "ANXXX462b": {
+     "L": 0.0,
+     "R": 16.1
+    },
+    "Clavicle (ANXXX462a)": {
+     "L": 0.0,
+     "R": 47.2
+    },
+    "FMIn (GNG197)": {
+     "L": 0.0,
+     "R": 12.2
+    },
+    "Dandelion (AN13B002)": {
+     "L": 40.8,
+     "R": 0.0
+    },
+    "DNge062": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundup (GNG108)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundtree (GNG120)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Fdg (GNG588)": {
+     "L": 0.0,
+     "R": 0.0
+    }
+   },
+   "limpieza": 0.0
+  },
+  "cafe_3": {
+   "activas": 575,
+   "sobre_10hz": 428,
+   "zonas": {
+    "vision": {
+     "activas": 3,
+     "total": 103258
+    },
+    "central": {
+     "activas": 465,
+     "total": 32500
+    },
+    "memoria": {
+     "activas": 0,
+     "total": 4501
+    },
+    "mando": {
+     "activas": 63,
+     "total": 3719
+    },
+    "movimiento": {
+     "activas": 44,
+     "total": 20425
+    }
+   },
+   "circuito": {
+    "sensores_antena": 64.0,
+    "sensores_azucar": 99.1,
+    "aBN1 (SAD093)": {
+     "L": 67.3,
+     "R": 0.0
+    },
+    "aBN2 (trío LB23)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "aDN1 (DNg62)": {
+     "L": 0.0,
+     "R": 0.1
+    },
+    "aDN2 (DNge078)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "MN9": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "ANXXX462b": {
+     "L": 0.0,
+     "R": 16.0
+    },
+    "Clavicle (ANXXX462a)": {
+     "L": 0.0,
+     "R": 47.1
+    },
+    "FMIn (GNG197)": {
+     "L": 0.0,
+     "R": 12.1
+    },
+    "Dandelion (AN13B002)": {
+     "L": 40.7,
+     "R": 0.0
+    },
+    "DNge062": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundup (GNG108)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundtree (GNG120)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Fdg (GNG588)": {
+     "L": 0.0,
+     "R": 0.0
+    }
+   },
+   "limpieza": 0.0
+  },
+  "cafe_4": {
+   "activas": 686,
+   "sobre_10hz": 509,
+   "zonas": {
+    "vision": {
+     "activas": 6,
+     "total": 103258
+    },
+    "central": {
+     "activas": 524,
+     "total": 32500
+    },
+    "memoria": {
+     "activas": 0,
+     "total": 4501
+    },
+    "mando": {
+     "activas": 91,
+     "total": 3719
+    },
+    "movimiento": {
+     "activas": 65,
+     "total": 20425
+    }
+   },
+   "circuito": {
+    "sensores_antena": 85.9,
+    "sensores_azucar": 99.1,
+    "aBN1 (SAD093)": {
+     "L": 85.9,
+     "R": 0.0
+    },
+    "aBN2 (trío LB23)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "aDN1 (DNg62)": {
+     "L": 0.0,
+     "R": 13.2
+    },
+    "aDN2 (DNge078)": {
+     "L": 0.0,
+     "R": 0.1
+    },
+    "MN9": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "ANXXX462b": {
+     "L": 0.0,
+     "R": 16.1
+    },
+    "Clavicle (ANXXX462a)": {
+     "L": 0.0,
+     "R": 47.1
+    },
+    "FMIn (GNG197)": {
+     "L": 0.0,
+     "R": 12.2
+    },
+    "Dandelion (AN13B002)": {
+     "L": 40.4,
+     "R": 0.0
+    },
+    "DNge062": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundup (GNG108)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundtree (GNG120)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Fdg (GNG588)": {
+     "L": 0.0,
+     "R": 0.0
+    }
+   },
+   "limpieza": 3.3
+  },
+  "cafe_5": {
+   "activas": 1075,
+   "sobre_10hz": 604,
+   "zonas": {
+    "vision": {
+     "activas": 73,
+     "total": 103258
+    },
+    "central": {
+     "activas": 630,
+     "total": 32500
+    },
+    "memoria": {
+     "activas": 0,
+     "total": 4501
+    },
+    "mando": {
+     "activas": 205,
+     "total": 3719
+    },
+    "movimiento": {
+     "activas": 167,
+     "total": 20425
+    }
+   },
+   "circuito": {
+    "sensores_antena": 107.6,
+    "sensores_azucar": 99.1,
+    "aBN1 (SAD093)": {
+     "L": 104.0,
+     "R": 0.0
+    },
+    "aBN2 (trío LB23)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "aDN1 (DNg62)": {
+     "L": 12.2,
+     "R": 47.6
+    },
+    "aDN2 (DNge078)": {
+     "L": 4.2,
+     "R": 16.9
+    },
+    "MN9": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "ANXXX462b": {
+     "L": 0.0,
+     "R": 16.1
+    },
+    "Clavicle (ANXXX462a)": {
+     "L": 0.0,
+     "R": 47.1
+    },
+    "FMIn (GNG197)": {
+     "L": 0.0,
+     "R": 12.1
+    },
+    "Dandelion (AN13B002)": {
+     "L": 40.2,
+     "R": 0.0
+    },
+    "DNge062": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundup (GNG108)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundtree (GNG120)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Fdg (GNG588)": {
+     "L": 0.0,
+     "R": 0.0
+    }
+   },
+   "limpieza": 20.2
+  },
+  "cafe_6": {
+   "activas": 1166,
+   "sobre_10hz": 851,
+   "zonas": {
+    "vision": {
+     "activas": 79,
+     "total": 103258
+    },
+    "central": {
+     "activas": 670,
+     "total": 32500
+    },
+    "memoria": {
+     "activas": 0,
+     "total": 4501
+    },
+    "mando": {
+     "activas": 219,
+     "total": 3719
+    },
+    "movimiento": {
+     "activas": 198,
+     "total": 20425
+    }
+   },
+   "circuito": {
+    "sensores_antena": 129.3,
+    "sensores_azucar": 99.1,
+    "aBN1 (SAD093)": {
+     "L": 121.5,
+     "R": 0.0
+    },
+    "aBN2 (trío LB23)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "aDN1 (DNg62)": {
+     "L": 65.6,
+     "R": 96.9
+    },
+    "aDN2 (DNge078)": {
+     "L": 27.1,
+     "R": 53.2
+    },
+    "MN9": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "ANXXX462b": {
+     "L": 0.0,
+     "R": 16.0
+    },
+    "Clavicle (ANXXX462a)": {
+     "L": 0.0,
+     "R": 47.1
+    },
+    "FMIn (GNG197)": {
+     "L": 0.0,
+     "R": 12.2
+    },
+    "Dandelion (AN13B002)": {
+     "L": 39.8,
+     "R": 0.0
+    },
+    "DNge062": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundup (GNG108)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundtree (GNG120)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Fdg (GNG588)": {
+     "L": 0.0,
+     "R": 0.0
+    }
+   },
+   "limpieza": 60.7
+  },
+  "cafe_7": {
+   "activas": 1236,
+   "sobre_10hz": 941,
+   "zonas": {
+    "vision": {
+     "activas": 86,
+     "total": 103258
+    },
+    "central": {
+     "activas": 703,
+     "total": 32500
+    },
+    "memoria": {
+     "activas": 0,
+     "total": 4501
+    },
+    "mando": {
+     "activas": 233,
+     "total": 3719
+    },
+    "movimiento": {
+     "activas": 214,
+     "total": 20425
+    }
+   },
+   "circuito": {
+    "sensores_antena": 150.9,
+    "sensores_azucar": 99.1,
+    "aBN1 (SAD093)": {
+     "L": 135.0,
+     "R": 0.0
+    },
+    "aBN2 (trío LB23)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "aDN1 (DNg62)": {
+     "L": 72.4,
+     "R": 104.7
+    },
+    "aDN2 (DNge078)": {
+     "L": 30.5,
+     "R": 60.0
+    },
+    "MN9": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "ANXXX462b": {
+     "L": 0.0,
+     "R": 15.9
+    },
+    "Clavicle (ANXXX462a)": {
+     "L": 0.0,
+     "R": 47.0
+    },
+    "FMIn (GNG197)": {
+     "L": 0.0,
+     "R": 12.2
+    },
+    "Dandelion (AN13B002)": {
+     "L": 39.7,
+     "R": 0.0
+    },
+    "DNge062": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundup (GNG108)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundtree (GNG120)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Fdg (GNG588)": {
+     "L": 0.0,
+     "R": 0.0
+    }
+   },
+   "limpieza": 66.9
+  },
+  "cafe_8": {
+   "activas": 1302,
+   "sobre_10hz": 994,
+   "zonas": {
+    "vision": {
+     "activas": 89,
+     "total": 103258
+    },
+    "central": {
+     "activas": 745,
+     "total": 32500
+    },
+    "memoria": {
+     "activas": 0,
+     "total": 4501
+    },
+    "mando": {
+     "activas": 245,
+     "total": 3719
+    },
+    "movimiento": {
+     "activas": 223,
+     "total": 20425
+    }
+   },
+   "circuito": {
+    "sensores_antena": 172.3,
+    "sensores_azucar": 99.1,
+    "aBN1 (SAD093)": {
+     "L": 146.7,
+     "R": 0.0
+    },
+    "aBN2 (trío LB23)": {
+     "L": 0.1,
+     "R": 0.0
+    },
+    "aDN1 (DNg62)": {
+     "L": 75.6,
+     "R": 109.8
+    },
+    "aDN2 (DNge078)": {
+     "L": 32.8,
+     "R": 64.3
+    },
+    "MN9": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "ANXXX462b": {
+     "L": 0.0,
+     "R": 15.9
+    },
+    "Clavicle (ANXXX462a)": {
+     "L": 0.0,
+     "R": 47.0
+    },
+    "FMIn (GNG197)": {
+     "L": 0.0,
+     "R": 12.1
+    },
+    "Dandelion (AN13B002)": {
+     "L": 39.3,
+     "R": 0.0
+    },
+    "DNge062": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundup (GNG108)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundtree (GNG120)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Fdg (GNG588)": {
+     "L": 0.0,
+     "R": 0.0
+    }
+   },
+   "limpieza": 70.6
+  },
+  "cafe_9": {
+   "activas": 1370,
+   "sobre_10hz": 1050,
+   "zonas": {
+    "vision": {
+     "activas": 91,
+     "total": 103258
+    },
+    "central": {
+     "activas": 782,
+     "total": 32500
+    },
+    "memoria": {
+     "activas": 0,
+     "total": 4501
+    },
+    "mando": {
+     "activas": 255,
+     "total": 3719
+    },
+    "movimiento": {
+     "activas": 242,
+     "total": 20425
+    }
+   },
+   "circuito": {
+    "sensores_antena": 193.7,
+    "sensores_azucar": 99.1,
+    "aBN1 (SAD093)": {
+     "L": 157.7,
+     "R": 0.0
+    },
+    "aBN2 (trío LB23)": {
+     "L": 0.5,
+     "R": 0.0
+    },
+    "aDN1 (DNg62)": {
+     "L": 78.4,
+     "R": 114.7
+    },
+    "aDN2 (DNge078)": {
+     "L": 35.2,
+     "R": 69.0
+    },
+    "MN9": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "ANXXX462b": {
+     "L": 0.0,
+     "R": 16.0
+    },
+    "Clavicle (ANXXX462a)": {
+     "L": 0.0,
+     "R": 47.0
+    },
+    "FMIn (GNG197)": {
+     "L": 0.0,
+     "R": 12.0
+    },
+    "Dandelion (AN13B002)": {
+     "L": 38.9,
+     "R": 0.0
+    },
+    "DNge062": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundup (GNG108)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundtree (GNG120)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Fdg (GNG588)": {
+     "L": 0.0,
+     "R": 0.0
+    }
+   },
+   "limpieza": 74.3
+  },
+  "cafe_10": {
+   "activas": 1435,
+   "sobre_10hz": 1107,
+   "zonas": {
+    "vision": {
+     "activas": 98,
+     "total": 103258
+    },
+    "central": {
+     "activas": 817,
+     "total": 32500
+    },
+    "memoria": {
+     "activas": 0,
+     "total": 4501
+    },
+    "mando": {
+     "activas": 266,
+     "total": 3719
+    },
+    "movimiento": {
+     "activas": 254,
+     "total": 20425
+    }
+   },
+   "circuito": {
+    "sensores_antena": 215.0,
+    "sensores_azucar": 99.1,
+    "aBN1 (SAD093)": {
+     "L": 167.9,
+     "R": 0.0
+    },
+    "aBN2 (trío LB23)": {
+     "L": 2.3,
+     "R": 0.0
+    },
+    "aDN1 (DNg62)": {
+     "L": 80.6,
+     "R": 118.9
+    },
+    "aDN2 (DNge078)": {
+     "L": 37.4,
+     "R": 74.0
+    },
+    "MN9": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "ANXXX462b": {
+     "L": 0.0,
+     "R": 15.9
+    },
+    "Clavicle (ANXXX462a)": {
+     "L": 0.0,
+     "R": 47.0
+    },
+    "FMIn (GNG197)": {
+     "L": 0.0,
+     "R": 12.1
+    },
+    "Dandelion (AN13B002)": {
+     "L": 38.8,
+     "R": 0.0
+    },
+    "DNge062": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundup (GNG108)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Roundtree (GNG120)": {
+     "L": 0.0,
+     "R": 0.0
+    },
+    "Fdg (GNG588)": {
+     "L": 0.0,
+     "R": 0.0
+    }
+   },
+   "limpieza": 77.7
+  }
+ }
+}

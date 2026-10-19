@@ -5,7 +5,7 @@ import { crearOficina } from './office.js';
 import { crearMosca } from './fly.js';
 import { DayBrain } from './brain.js';
 import { revisarChoques } from './choques.js';
-import { cargarDatosCerebro, crearCerebro, GRUPOS_VISUALES } from './cerebro.js';
+import { cargarDatosCerebro, cargarActividadReal, crearCerebro, GRUPOS_VISUALES } from './cerebro.js';
 import { sacarFoto } from './foto.js';
 import { crearGraficoDia } from './grafico.js';
 import { POS_CENICERO, POS_PILA, CENTRO_PANTALLA, ESCALA_MONITOR } from './layout.js';
@@ -694,10 +694,15 @@ const QUE_HACE = {
 const elGrupos = document.getElementById('cerebro-grupos');
 const filasGrupo = {};
 const formato = new Intl.NumberFormat('es-CL');
+const formatoPct = new Intl.NumberFormat('es-CL', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const formatoHz = new Intl.NumberFormat('es-CL', { maximumFractionDigits: 0 });
 
+// Las luces salen de la actividad simulada del cableado real (Etapa 3.3,
+// opción A): el cerebro muestra, el juego decide.
 cargarDatosCerebro()
-  .then((datos) => {
-    cerebro = crearCerebro(document.getElementById('lienzo-cerebro'), datos);
+  .then(async (datos) => {
+    const real = await cargarActividadReal(datos);
+    cerebro = crearCerebro(document.getElementById('lienzo-cerebro'), datos, real);
     const { info } = datos;
     datos.info.grupos.forEach((g) => {
       const li = document.createElement('li');
@@ -705,13 +710,12 @@ cargarDatosCerebro()
       li.style.setProperty('--c', GRUPOS_VISUALES[g.id].color);
       li.innerHTML = `<span class="grupo-nombre"><span class="grupo-punto"></span>${g.nombre}</span><span class="grupo-valor">0%</span><span class="grupo-barra"><span></span></span><span class="grupo-detalle">${g.detalle}</span>`;
       elGrupos.appendChild(li);
-      filasGrupo[g.id] = { valor: li.querySelector('.grupo-valor'), barra: li.querySelector('.grupo-barra span') };
+      filasGrupo[g.id] = { li, valor: li.querySelector('.grupo-valor'), barra: li.querySelector('.grupo-barra span') };
     });
-    document.getElementById('cerebro-credito').textContent =
-      `Datos: Male CNS v1.0 (Janelia, Cambridge, MRC LMB y Google) · CC BY 4.0 · ` +
-      `${formato.format(info.puntos)} de ${formato.format(info.neuronas_con_posicion)} neuronas`;
+    const simuladas = formato.format(real.meta.neuronas_simuladas);
+    document.getElementById('cerebro-credito').textContent = 'Datos: Male CNS v1.0 (Janelia, Cambridge, MRC LMB y Google) · CC BY 4.0';
     document.getElementById('chip-datos').textContent =
-      `Male CNS v1.0 · ${formato.format(info.neuronas_con_posicion)} neuronas con posición · muestra de ${formato.format(info.puntos)}`;
+      `Male CNS v1.0 · ${simuladas} neuronas simuladas · se dibujan ${formato.format(real.n)} (todas las que se encienden)`;
   })
   .catch((err) => console.error('No se pudo cargar el cerebro', err));
 
@@ -721,45 +725,33 @@ const graficoDia = crearGraficoDia({
   tooltip: document.getElementById('cerebro-dia-tooltip'),
   elPico: document.getElementById('cerebro-dia-pico'),
 });
-// Lectura en palabras simples de lo que se enciende más ahora
+// Lectura en palabras simples, con los números de la simulación
 const elLectura = document.getElementById('cerebro-lectura');
-let grupoDestacado = null;
-function frasePara(id, { fumando, cafe, espera }) {
-  if (id === 'vision') return 've muchas tareas abiertas en la pantalla';
-  if (id === 'central') return 'el estrés la tiene pensando de más';
-  if (id === 'memoria') return 'guarda lo que acaba de terminar';
-  if (id === 'mando') return fumando ? 'el cerebro ordena al cuerpo ir por el cigarro' : 'el cerebro le da órdenes al cuerpo';
-  if (fumando) return 'mueve la pata para fumar';
-  if (cafe) return 'mueve la pata para tomar café';
-  if (espera) return 'tamborilea mientras espera';
-  return 'mueve las patas para teclear';
-}
-function escribirLectura(l, estado, fumando, cafe) {
+const masAlto = (v) => Math.max(v.L, v.R);
+function escribirLectura(l, estado) {
+  const c = l.datos.circuito;
+  const hz = (x) => formatoHz.format(x);
   let html;
-  if (estado.terminado) html = 'Día terminado: el cerebro descansa.';
-  else if (pausado) html = 'En pausa.';
-  else if (l.nivel < 0.16) html = 'Cerebro tranquilo: pocas neuronas encendidas.';
+  if (estado.terminado) html = 'Día terminado: sin estímulo, el cerebro queda apagado.';
+  else if (pausado) html = 'En pausa: sin estímulo, el cerebro queda apagado.';
+  else if (l.cafe) {
+    html = `Café: el azúcar enciende sus sensores y Clavicle (${hz(masAlto(c['Clavicle (ANXXX462a)']))} Hz), ` +
+      `pero la señal no llega a la trompita (MN9 en ${hz(masAlto(c.MN9))} Hz): el café es ilustrativo.`;
+  } else if (l.tareas === 0) html = 'Sin tareas abiertas: la antena no recibe nada y el cerebro queda apagado.';
   else {
-    // cambia de zona sólo si otra la supera claramente (no parpadea)
-    const orden = [...l.porGrupo].sort((a, b) => b.actividad - a.actividad);
-    const actual = l.porGrupo.find((g) => g.id === grupoDestacado);
-    if (!actual || orden[0].actividad > actual.actividad + 0.06) grupoDestacado = orden[0].id;
-    const g = l.porGrupo.find((x) => x.id === grupoDestacado);
-    html = `Se enciende más <span class="lectura-zona" style="--c: ${GRUPOS_VISUALES[g.id].color}"><span class="grupo-punto"></span>${g.nombre}</span>: ${frasePara(g.id, { fumando, cafe, espera: estado.esperando })}.`;
+    const antena = `${l.tareas} ${l.tareas === 1 ? 'tarea abierta' : 'tareas abiertas'} = antena a ${hz(20 + ((l.tareas - 1) * 200) / 9)} Hz`;
+    const abn1 = hz(masAlto(c['aBN1 (SAD093)']));
+    html = l.datos.limpieza < 1
+      ? `${antena}: se enciende aBN1 (${abn1} Hz), pero la limpieza (aDN1 y aDN2) sigue apagada.`
+      : `${antena}: se enciende la limpieza de antenas, aBN1 ${abn1} Hz → aDN1 ${hz(masAlto(c['aDN1 (DNg62)']))} y aDN2 ${hz(masAlto(c['aDN2 (DNge078)']))} Hz.`;
   }
   if (elLectura.innerHTML !== html) elLectura.innerHTML = html;
 }
 function refrescarCerebro(dt, estado, fumandoVisible, cafeVisible, ahora) {
   if (!cerebro) return;
-  cerebro.actualizar(dt, {
-    enCurso: estado.enCurso,
-    estres: estado.estres / 100,
-    fumando: fumandoVisible,
-    cafe: cafeVisible,
-    esperando: estado.esperando,
-    terminado: estado.terminado || pausado,
-    hechas: estado.hechas,
-  });
+  // El cerebro sólo mira lo que le llega a la antena (las tareas abiertas) y
+  // el azúcar del café; las reglas del juego deciden lo demás.
+  cerebro.actualizar(dt, { enCurso: estado.enCurso, cafe: cafeVisible, apagado: estado.terminado || pausado });
   // Oculto (y ya fuera de la pantalla): no se dibuja, así no gasta nada
   if (vista === 'control' && cerebroOculto && factorIzq === 0) return;
   cerebro.renderizar();
@@ -768,9 +760,9 @@ function refrescarCerebro(dt, estado, fumandoVisible, cafeVisible, ahora) {
   ultimaLectura = ahora;
   const l = cerebro.lectura();
   elActivas.textContent = formato.format(l.activas);
-  elNivel.textContent = `${Math.round(l.nivel * 100)}%`;
-  // El borde del panel también brilla más con más actividad
-  elCerebro.style.setProperty('--actividad', l.nivel.toFixed(3));
+  elNivel.textContent = `${formatoPct.format(l.nivel * 100)}%`;
+  // El borde del panel también brilla más mientras más neuronas disparan
+  elCerebro.style.setProperty('--actividad', l.intensidad.toFixed(3));
   const estadoTexto = estado.terminado
     ? 'Descansa'
     : pausado
@@ -787,15 +779,17 @@ function refrescarCerebro(dt, estado, fumandoVisible, cafeVisible, ahora) {
   elEstado.classList.toggle('fuma', estadoTexto === 'Fuma');
   elEstado.classList.toggle('cafe', estadoTexto === 'Café');
   elEstado.classList.toggle('espera', estadoTexto === 'Espera');
-  escribirLectura(l, estado, fumandoVisible, cafeVisible);
-  if (!pausado) graficoDia.registrar(estado.fraccionDelDia, l.nivel, estado.wip);
+  escribirLectura(l, estado);
+  if (!pausado) graficoDia.registrar(estado.fraccionDelDia, l.intensidad, estado.wip, l.activas);
   graficoDia.dibujar();
+  // Zonas: cuántas de sus neuronas disparan (la barra es la parte de la zona
+  // que dispara; si casi todo queda oscuro, la barra casi no se ve: es lo real)
   l.porGrupo.forEach((g) => {
     const fila = filasGrupo[g.id];
     if (!fila) return;
-    const pct = Math.round(g.actividad * 100);
-    fila.valor.textContent = `${pct}%`;
-    fila.barra.style.width = `${pct}%`;
+    fila.valor.textContent = formato.format(g.activas);
+    fila.barra.style.width = `${(g.actividad * 100).toFixed(2)}%`;
+    fila.li.title = `${formato.format(g.activas)} de ${formato.format(g.total)} neuronas de la zona disparan (${formatoPct.format(g.actividad * 100)}%)`;
   });
 }
 

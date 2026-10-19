@@ -740,6 +740,24 @@ body.exhibicion .solo-control-inline {
   color: var(--oscuro-suave);
 }
 
+.cerebro-aviso {
+  margin: 5px 0 0;
+  font-size: 10.5px;
+  line-height: 1.4;
+  color: var(--oscuro-suave);
+}
+
+/* El anillo claro que marca las neuronas del circuito en el cerebro */
+.anillo-leyenda {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 5px;
+  border: 1.5px solid rgba(220, 230, 255, 0.85);
+  border-radius: 50%;
+  vertical-align: -1px;
+}
+
 .cerebro-credito {
   margin: 4px 0 0;
   font-size: 10px;
@@ -1234,6 +1252,24 @@ body.exhibicion .cerebro-nota {
 
 body.exhibicion .cerebro-credito {
   font-size: 10.5px;
+}
+
+/* En la exhibición la nota va en el encabezado del cerebro (hay más ancho) */
+.cerebro-aviso-ex {
+  display: none;
+}
+
+body.exhibicion .cerebro-aviso-ex {
+  display: block;
+  max-width: 62ch;
+  margin: 6px 0 0;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--oscuro-suave);
+}
+
+body.exhibicion .cerebro-pie .cerebro-aviso {
+  display: none;
 }
 
 @media (max-width: 1100px) {

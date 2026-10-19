@@ -150,7 +150,8 @@
       <header class="cerebro-cabecera">
         <div>
           <h2>Cerebro en vivo</h2>
-          <p class="cerebro-sub" title="Posiciones reales del conectoma MaleCNS. Por ahora las luces siguen reglas simples del juego; en la Etapa 3 vendrán del conectoma.">Neuronas reales<span class="solo-exhibicion-inline"> de la mosca · Male CNS v1.0 · cerebro + cordón nervioso</span></p>
+          <p class="cerebro-sub" title="Posiciones reales del conectoma MaleCNS. Las luces son la actividad simulada del cableado real (modelo de Shiu y otros 2024, peso 0,090 mV), precalculada para cada cantidad de tareas abiertas.">Neuronas reales<span class="solo-exhibicion-inline"> de la mosca · Male CNS v1.0 · cerebro + cordón nervioso</span></p>
+          <p class="cerebro-aviso-ex"><span class="anillo-leyenda" aria-hidden="true"></span>Circuito de limpieza de antenas. Las luces son actividad simulada del cableado real (MaleCNS). El cigarro es un disfraz de esa limpieza, pero cuándo fuma lo deciden reglas basadas en estudios de estrés. El café es ilustrativo.</p>
         </div>
         <div class="cerebro-acciones solo-control">
           <button id="btn-exhibicion" class="boton-exhibicion" type="button" title="Vista exhibición: pantalla completa para mostrar (tecla E)">
@@ -182,7 +183,7 @@
             </div>
             <div class="contador">
               <span class="contador-valor" id="c-nivel">0%</span>
-              <span class="contador-label">actividad</span>
+              <span class="contador-label">del cerebro</span>
             </div>
             <div class="contador">
               <span class="contador-valor" id="c-estado">Trabaja</span>
@@ -192,6 +193,7 @@
           <ul class="cerebro-grupos" id="cerebro-grupos"></ul>
           <div class="cerebro-pie">
             <p class="cerebro-nota" id="cerebro-lectura" aria-live="polite">Cada punto es una neurona real de la mosca.</p>
+            <p class="cerebro-aviso"><span class="anillo-leyenda" aria-hidden="true"></span>Circuito de limpieza de antenas. Luces: actividad simulada del cableado real (MaleCNS). El cigarro disfraza esa limpieza; cuándo fuma lo deciden reglas basadas en estudios. El café es ilustrativo.</p>
             <p class="cerebro-credito">
               <span class="solo-control-inline">Datos: Male CNS v1.0 · CC BY 4.0</span>
               <span class="credito-largo" id="cerebro-credito">Datos: Male CNS v1.0 · CC BY 4.0</span>

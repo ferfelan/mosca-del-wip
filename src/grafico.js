@@ -1,5 +1,6 @@
-// Mini gráfico "Actividad del día": cómo fue la actividad del cerebro desde
-// las 09:00 hasta ahora. Una sola serie (línea de 2 px + relleno suave), un
+// Mini gráfico "Actividad del día": cuántas neuronas dispararon en la
+// simulación del cableado real desde las 09:00 hasta ahora (arriba del todo =
+// lo más que se enciende en el juego). Una sola serie (línea de 2 px + relleno suave), un
 // punto en "ahora", eje con 09:00 · 13:30 · 18:00 y, al pasar el mouse, una
 // línea vertical con la hora, la actividad y el WIP de ese momento.
 
@@ -8,6 +9,7 @@ const SUPERFICIE = '#0c1122';
 const TINTA_TENUE = '#6e778d';
 const LINEA_GUIA = 'rgba(255, 255, 255, 0.08)';
 const MUESTRAS = 108; // una cada 5 minutos simulados (09:00 → 18:00)
+const numero = new Intl.NumberFormat('es-CL');
 
 function horaDeFraccion(f) {
   const min = 9 * 60 + Math.round(f * 540);
@@ -16,7 +18,7 @@ function horaDeFraccion(f) {
 
 export function crearGraficoDia({ lienzo, tooltip, elPico }) {
   const ctx = lienzo.getContext('2d');
-  let datos = new Array(MUESTRAS).fill(null); // { nivel, wip }
+  let datos = new Array(MUESTRAS).fill(null); // { nivel, wip, activas }
   let ultimaFraccion = -1;
   let hover = null;
   let sucio = true;
@@ -28,11 +30,12 @@ export function crearGraficoDia({ lienzo, tooltip, elPico }) {
   }
 
   // Guarda la actividad del momento. Si el reloj volvió atrás, es otro día.
-  function registrar(fraccion, nivel, wip) {
+  // nivel: de 0 a 1 (alto del gráfico); activas: neuronas que disparan.
+  function registrar(fraccion, nivel, wip, activas) {
     if (fraccion + 1e-6 < ultimaFraccion) reiniciar();
     ultimaFraccion = fraccion;
     const i = Math.min(MUESTRAS - 1, Math.floor(fraccion * MUESTRAS));
-    datos[i] = { nivel, wip };
+    datos[i] = { nivel, wip, activas };
     sucio = true;
   }
 
@@ -42,9 +45,9 @@ export function crearGraficoDia({ lienzo, tooltip, elPico }) {
     let n = 0;
     datos.forEach((d, i) => {
       if (!d) return;
-      suma += d.nivel;
+      suma += d.activas;
       n++;
-      if (!pico || d.nivel > pico.nivel) pico = { ...d, i };
+      if (!pico || d.activas > pico.activas) pico = { ...d, i };
     });
     return { pico, promedio: n ? suma / n : 0, n };
   }
@@ -165,12 +168,12 @@ export function crearGraficoDia({ lienzo, tooltip, elPico }) {
     // Resumen: pico y promedio (texto en tinta normal, no del color de la línea)
     const r = resumen();
     if (r.pico) {
-      elPico.textContent = `pico ${Math.round(r.pico.nivel * 100)}% (${horaDeFraccion(r.pico.i / MUESTRAS)}) · prom. ${Math.round(r.promedio * 100)}%`;
-      elPico.title = `Pico de actividad: ${Math.round(r.pico.nivel * 100)}% a las ${horaDeFraccion(r.pico.i / MUESTRAS)}. Promedio del día: ${Math.round(r.promedio * 100)}%.`;
-      lienzo.setAttribute(
-        'aria-label',
-        `Actividad del cerebro durante el día: pico de ${Math.round(r.pico.nivel * 100)}% a las ${horaDeFraccion(r.pico.i / MUESTRAS)}, promedio ${Math.round(r.promedio * 100)}%.`
-      );
+      const hora = horaDeFraccion(r.pico.i / MUESTRAS);
+      const pico = numero.format(r.pico.activas);
+      const prom = numero.format(Math.round(r.promedio));
+      elPico.textContent = `pico ${pico} (${hora}) · prom. ${prom}`;
+      elPico.title = `Neuronas que disparan en la simulación: pico de ${pico} a las ${hora}; promedio del día ${prom}.`;
+      lienzo.setAttribute('aria-label', `Neuronas que disparan durante el día: pico de ${pico} a las ${hora}, promedio ${prom}.`);
     } else {
       elPico.textContent = 'empieza a las 09:00';
     }
@@ -202,7 +205,7 @@ export function crearGraficoDia({ lienzo, tooltip, elPico }) {
       return;
     }
     const dato = datos[mejor];
-    tooltip.innerHTML = `<strong>${horaDeFraccion(mejor / MUESTRAS)}</strong> · ${Math.round(dato.nivel * 100)}% de actividad · WIP ${dato.wip}`;
+    tooltip.innerHTML = `<strong>${horaDeFraccion(mejor / MUESTRAS)}</strong> · ${numero.format(dato.activas)} neuronas disparan · WIP ${dato.wip}`;
     tooltip.hidden = false;
     const xPunto = g.x0 + ((mejor + 0.5) / MUESTRAS) * (g.x1 - g.x0);
     const ancho = tooltip.offsetWidth;
