@@ -30,8 +30,7 @@ está sin qué hacer, pero sus tareas esperan su turno casi todo el tiempo;
 con una, la tarea vuela pero ella espera cuando se traba; con 2 o 3 se
 equilibran.
 
-(Esto es lo que mide la parte 4.1. Hasta entonces es lo que esperamos ver,
-no un resultado.)
+(La parte 4.1 lo midió: se cumple, en la simulación.)
 
 ## Propósito
 
@@ -55,9 +54,9 @@ sostenible**.
 
 | | Hipótesis | Se prueba en | Estado |
 |---|---|---|---|
-| **H1** | **La paradoja**: con más tareas nunca le falta qué hacer, pero sus tareas pasan cada vez más tiempo esperando y termina menos. | 4.1 | Por probar |
-| **H2** | **El límite sostenible**: con esperas a otros, el mejor número es bajo pero no 1, y se mantiene aunque cambien los supuestos. Si se mueve según cuánto se espera, eso también es un hallazgo. | 4.2 | Por probar |
-| **H3** | **Lo empezado no desaparece**: al bajar el límite, la mejora tarda horas en notarse. | 4.2 | Por probar |
+| **H1** | **La paradoja**: con más tareas nunca le falta qué hacer, pero sus tareas pasan cada vez más tiempo esperando y termina menos. | 4.1 | Se cumple, en la simulación (2026-10-20) |
+| **H2** | **El límite sostenible**: con esperas a otros, el mejor número es bajo pero no 1, y se mantiene aunque cambien los supuestos. Si se mueve según cuánto se espera, eso también es un hallazgo. | 4.2 | Se cumple, en la simulación (2026-10-20) |
+| **H3** | **Lo empezado no desaparece**: al bajar el límite, la mejora tarda horas en notarse. | 4.2 | Se cumple, en la simulación (2026-10-20) |
 | **H4** | **Con personas**: ver la mosca ayuda a que un equipo entienda la paradoja y se anime a probar un límite. | 4.5 (sólo cuando Felipe lo pida) | Por probar |
 
 Lo que ya se vio en el juego de hoy (con bloqueos, 2 tareas termina más que
@@ -85,15 +84,56 @@ ni H3: para eso están la 4.1 y la 4.2.
 - **Si una hipótesis no se cumple, se dice tal cual.** No se ajusta nada
   para que calce.
 
+## Lo que cambió con la 4.3 (decisiones de Felipe, 2026-10-20)
+
+Tras leer la investigación (`docs/investigacion-etapa4.md`) y el cruce con
+el juego (`docs/etapa4-3.md`). Copia textual en `docs/etapa4-plan.md`.
+
+- **"Desde 3 tareas ya tiene con qué hacer todo el día"** tiene respaldo
+  teórico: el "WIP crítico" de Factory Physics (Hopp y Spearman). Pero según
+  esa teoría, pasado ese punto lo terminado **deja de subir**; que en el
+  juego **baje** sale de nuestros supuestos (costo de cambiar y fumar).
+- **"2 a 4" es resultado de la simulación**, no un número científico. Sin
+  esperas, el mejor límite es 1.
+- **Consejo para equipos** (cambia): DORA aconseja no subir el límite cuando
+  la gente queda esperando, sino atacar las esperas. La mosca necesita un
+  límite un poco más alto cuando espera mucho porque trabaja sola y no puede
+  ayudar a destrabar; un equipo sí puede. Frase (nuestra, inspirada en
+  DORA): **"Reducir las esperas permite bajar el límite; subir el límite no
+  reduce las esperas."**
+- **"Un límite sostenible, no una cosa a la vez" se mantiene**, explicando
+  que vale cuando hay esperas que no se pueden evitar: mientras menos
+  esperas, más cerca de una.
+- **Evidencia con personas reales** (página "No es solo la mosca"): jueces
+  italianos (Coviello y otros), reclutadores con U invertida (Aral y otros),
+  equipos de I+D (Bertolotti y otros) y DORA (los límites ayudan sobre todo
+  con tableros visibles y retroalimentación).
+- **Sostenible**: Principio 8 del Manifiesto […] (texto oficial en español)
+  y Pencavel (2015) sobre horas largas, con sus límites. El juego mide un
+  solo día.
+- **La eficiencia de flujo es casi aritmética**: para explicar, no como
+  hallazgo. Cuánto se pierde con muchas tareas depende de nuestros
+  supuestos; las ~3 h en calmarse dependen del supuesto del estrés (lo firme
+  es que lo empezado tarda más de 2 h en salir).
+- **Nunca** los mitos de la sección 5 de la investigación (40 %, 23 minutos,
+  15 % de eficiencia de flujo, 10 % del cerebro…). Las fuentes "no
+  verificado" no van al informe para compartir hasta verificarlas (DOI o
+  página oficial). Crédito de MaleCNS copiado exacto de la página oficial.
+  Seeds 2014: con polvo, la mosca se limpia **primero los ojos** y después
+  las antenas (nunca "antenas primero").
+- **Café**: sólo con estrés bajo porque la cafeína sube el cortisol, y más
+  con estrés (Lovallo); lo que ayuda a recuperarse es la pausa (Albulescu),
+  no la cafeína. Decirlo así en los informes.
+
 ## Las partes de la Etapa 4
 
 | Parte | Qué | Estado |
 |---|---|---|
-| 4.0 | Orden y norte | Hecha 2026-10-20, espera OK de Felipe |
-| 4.1 | Medir la paradoja (H1) | Espera el OK de la 4.0 |
-| 4.2 | Robustez: ¿se sostiene si cambian los supuestos? (H2 y H3) | Pendiente |
-| 4.3 | Anclar en estudios: la hace Felipe con su asesor fuera de aquí; llega como `docs/investigacion-etapa4.md` | Pendiente (Felipe) |
-| 4.4 | Rehacer el informe para compartir alrededor del norte. Al terminar: etiqueta git `etapa-4` | Pendiente |
+| 4.0 | Orden y norte | Hecha y aprobada 2026-10-20 |
+| 4.1 | Medir la paradoja (H1) | Hecha y aprobada 2026-10-20 |
+| 4.2 | Robustez: ¿se sostiene si cambian los supuestos? (H2 y H3) | Hecha 2026-10-20 |
+| 4.3 | Anclar en estudios: investigación de Felipe con su asesor (`docs/investigacion-etapa4.md`) y cruce con el juego (`docs/etapa4-3.md`) | Hecha 2026-10-20: sin cambios en el juego |
+| 4.4 | Rehacer el informe para compartir alrededor del norte. Al terminar: etiqueta git `etapa-4` | Índice propuesto (`docs/etapa4-4-indice.md`), espera OK de Felipe |
 | 4.5 | Kit para probar con equipos reales (H4) | Sólo cuando Felipe lo pida |
 
 Reglas para todas las partes (detalle en `docs/etapa4-plan.md`):

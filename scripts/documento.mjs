@@ -40,6 +40,7 @@ const DOCUMENTOS = [
   { id: 'norte', html: 'norte.html', nombre: 'Norte del proyecto', version: 'v1', paginas: [1, 2], aparte: true },
   { id: 'etapa4-1', html: 'etapa4-1.html', nombre: 'Etapa 4.1 La paradoja', version: 'v1', paginas: [1, 3], aparte: true },
   { id: 'etapa4-2', html: 'etapa4-2.html', nombre: 'Etapa 4.2 Robustez', version: 'v1', paginas: [1, 3], aparte: true },
+  { id: 'etapa4-3', html: 'etapa4-3.html', nombre: 'Etapa 4.3 Cruce con los estudios', version: 'v1', paginas: [1, 3], aparte: true },
 ];
 const JUEGO = 'http://localhost:5173';
 const b = await chromium.launch({ args: ['--enable-unsafe-swiftshader', '--use-gl=angle', '--ignore-gpu-blocklist'] });

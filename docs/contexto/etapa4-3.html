@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Mosca del WIP · Etapa 4.3 Cruce con los estudios</title>
+<!-- Etapa 4.3 (2026-10-20): PDF corto, 3 páginas, en simple. Resume
+     docs/etapa4-3.md (cruce entre las reglas del juego y
+     docs/investigacion-etapa4.md). No se corrió ninguna simulación: los
+     números son los de la 4.1 y la 4.2. Se arma con:
+     DOC=etapa4-3 node scripts/documento.mjs -->
+<link rel="stylesheet" href="estilo.css" />
+<style>
+  body { font-size: 9.6pt; line-height: 1.52; }
+  h2 { margin-top: 5mm; }
+  .veredicto { display: grid; grid-template-columns: 40mm 1fr; gap: 5mm; align-items: center; background: #eaf3ec; border-left: 1.4mm solid var(--tranqui); border-radius: 0 1.6mm 1.6mm 0; padding: 3.2mm 4.4mm; margin: 3mm 0 0; }
+  .veredicto .sale { font-family: var(--serif); font-size: 17pt; font-weight: 700; color: var(--tranqui); line-height: 1.08; }
+  .veredicto .sale span { display: block; font-family: var(--sans); font-size: 7pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--suave); margin-bottom: 1mm; }
+  .veredicto ul { list-style: none; padding: 0; margin: 0; font-size: 8.8pt; }
+  .veredicto li { margin: 0 0 1mm; }
+  .veredicto li b { color: var(--tranqui); margin-right: 1.2mm; }
+  .alertas { display: grid; grid-template-columns: 1fr; gap: 3mm; margin: 2.5mm 0 0; }
+  .alertas div { background: #fff; border: 0.5pt solid var(--linea); border-radius: 1.6mm; padding: 3mm 3.8mm; font-size: 9pt; color: var(--texto); line-height: 1.48; }
+  .alertas b.tit { display: block; font-family: var(--serif); font-size: 12pt; color: var(--tinta); margin-bottom: 0.8mm; }
+  .et { display: inline-block; font-size: 6.9pt; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.5mm 1.6mm; border-radius: 1mm; white-space: nowrap; vertical-align: 0.3mm; }
+  .calza { background: #e3f1e7; color: #2f7347; }
+  .supuesto { background: #f8efd6; color: #7d5f0c; }
+  .corregir { background: #e4ebf8; color: var(--azul); }
+  .leyenda { font-size: 8.4pt; color: var(--suave); margin: 0 0 2.4mm; }
+  .leyenda .et { margin-right: 1mm; }
+  .tabla td { padding: 1.05mm 1.6mm; font-size: 8.2pt; line-height: 1.34; vertical-align: top; }
+  .h1-chico { font-size: 18pt; }
+  .tabla th { font-size: 7.6pt; }
+  .tabla td:first-child { width: 47mm; color: var(--tinta); }
+  .tabla td:last-child { width: 36mm; }
+  .tabla td:last-child .et { display: block; text-align: center; margin-bottom: 0.6mm; }
+  .tabla td:last-child small { display: block; font-size: 7.4pt; color: var(--suave); line-height: 1.3; text-align: center; }
+  .grupo td { background: #f3efe7; font-size: 7.4pt !important; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--suave) !important; padding: 1mm 1.7mm !important; }
+  .lista li { margin-bottom: 1.25mm; font-size: 8.9pt; }
+  .cambia { background: #fff; border: 0.5pt solid var(--linea); border-radius: 1.6mm; padding: 3mm 4mm; margin-top: 2mm; }
+  .cambia li { margin-bottom: 1.2mm; font-size: 8.9pt; }
+  .frase { font-family: var(--serif); font-size: 12.5pt; color: var(--tinta); border-left: 1.2mm solid var(--teal); padding: 1mm 0 1mm 3.5mm; margin: 2.5mm 0 3mm; }
+</style>
+</head>
+<body>
+
+<!-- =============================== 1 · VEREDICTO Y ALERTAS =============================== -->
+<section class="hoja">
+  <div class="kicker">Etapa 4.3 · Cruce con los estudios <span>·</span>20 de octubre de 2026</div>
+  <h1>Nada obliga a cambiar el juego: la matemática calza y lo demás ya estaba rotulado como supuesto</h1>
+  <p class="bajada">Comparamos cada regla y cada número del juego con la investigación que trajiste con tu asesor. No cambiamos nada ni repetimos ninguna simulación: es una lectura cruzada.</p>
+
+  <div class="veredicto">
+    <div class="sale"><span>Resultado</span>Sin cambios en el juego</div>
+    <ul>
+      <li><b>✓</b>Lo que es matemática o teoría calza: cada tarea tarda más con más abiertas (ley de Little) y desde 3 tareas ya tiene con qué hacer todo el día (el "WIP crítico" de Factory Physics).</li>
+      <li><b>✓</b>Las reglas con números (costo de cambiar, esperas, estrés, residuo) son supuestos nuestros. Ningún estudio los mide, y la 4.2 ya probó qué pasa si cambian.</li>
+      <li><b>✓</b>Lo que hay que corregir son textos: algunas citas dicen más de lo que el estudio dice, y el crédito de MaleCNS no es copia exacta.</li>
+    </ul>
+  </div>
+
+  <h2>Tus tres alertas, revisadas</h2>
+  <div class="alertas">
+    <div><b class="tit">Café y Lovallo <span class="et calza">Calza</span></b>Lovallo y otros (2005, 2006) muestran que la cafeína sube el cortisol, y más junto con estrés. Lo usamos para eso: explicar por qué la mosca solo toma café cuando está tranquila. Lo que la ayuda a recuperarse es la <strong>pausa</strong> (Albulescu y otros, 2022), no la cafeína. En el juego el café no la hace rendir más: le cuesta minutos.</div>
+    <div><b class="tit">JO-F <span class="et calza">Calza</span></b>En moscas reales, JO-F <strong>también provoca limpieza</strong>. Hampel y otros (2020), en su resumen: "activation of each subpopulation elicits antennal grooming". Con JO-F, la limpieza es más corta y además la mosca camina hacia atrás. En el modelo, la señal del circuito viene sobre todo de JO-C y JO-E: le mandan 644 conexiones a la neurona de relevo, y JO-F solo 74. Estimular las tres es fiel a la mosca, y no hay que repetir nada.</div>
+    <div><b class="tit">166.700 y 164.587 neuronas <span class="et calza">Calza</span></b>En la tabla de MaleCNS hay exactamente 166.700 cuerpos clasificados como neurona: es lo que cuenta Berg y otros (2026). Nosotros simulamos el archivo de conexiones "solo trazadas": 164.403 de esas neuronas más 184 trozos trazados sin clase, en total 164.587. Quedan fuera 2.297, casi todas (1.989) sensores de la vista que no están marcados como trazados.</div>
+  </div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Etapa 4.3 · Felipe Fernández</span><span>1 / 3</span></div>
+</section>
+
+<!-- =============================== 2 · TABLA =============================== -->
+<section class="hoja">
+  <div class="kicker">Regla por regla</div>
+  <h1 class="h1-chico">Los números de las reglas son nuestros, y ya sabemos qué pasa si cambian</h1>
+  <p class="leyenda"><span class="et calza">Calza</span> un estudio o la matemática dicen lo mismo · <span class="et supuesto">Supuesto nuestro</span> el número es nuestro · <span class="et corregir">Corregir texto</span> lo explicamos mal</p>
+  <table class="tabla">
+    <tr><th>Regla o resultado del juego</th><th>Qué dicen los estudios</th><th class="c">Veredicto</th></tr>
+    <tbody id="t-cruce"></tbody>
+  </table>
+  <p class="chico">La 4.2 ya cambió las esperas (0 a 40 %; 15 a 120 min), el costo de cambiar, el residuo y el tamaño de las tareas: con esperas, el mejor límite quedó entre 2 y 4 en 16 de 17 escenarios.</p>
+  <div class="pie"><span><b>Mosca del WIP</b> · Etapa 4.3 · Felipe Fernández</span><span>2 / 3</span></div>
+</section>
+
+<!-- =============================== 3 · CORRECCIONES Y MENSAJE =============================== -->
+<section class="hoja">
+  <div class="kicker">Y además</div>
+  <h1>La investigación es útil, pero siete de sus puntos no los tomaría tal cual</h1>
+  <ol class="lista">
+    <li><strong>Lovallo no es "mal uso"</strong>: ya lo resolviste con tu asesor (página 1).</li>
+    <li><strong>JO-F no hay que revisarlo, hay que explicarlo</strong>: en moscas reales también provoca limpieza.</li>
+    <li><strong>"Reducir las esperas permite bajar el límite; subir el límite no reduce las esperas" es nuestra</strong>, inspirada en DORA. Lo que DORA dice: "Don't relax your WIP limits when people are idle", y que esas personas ayuden a resolver lo que traba el trabajo en otra parte.</li>
+    <li><strong>Pencavel</strong>: las cifras 1,002 y 0,172 salen de un blog; no las encontré en su trabajo. En su propio texto sí está: bajo 49 horas a la semana la producción sube parejo con las horas, desde ahí sube cada vez menos, y 70 horas producen casi lo mismo que 56. Eran obreras de fábricas de municiones en la Primera Guerra Mundial, no trabajo de oficina.</li>
+    <li><strong>Jueces italianos</strong>: el estudio dice que hacer malabares no empeoró la calidad. Mejor "y la calidad no cambió" que "sin mejorar la calidad".</li>
+    <li><strong>Factory Physics</strong> habla de líneas de fábrica: para una persona sola es una analogía, no una predicción.</li>
+    <li><strong>"Solos no bastan"</strong> (los límites de WIP) es del libro <em>Accelerate</em>, y solo lo vimos citado por terceros. Para el informe para compartir uso la frase verificada de DORA: los límites ayudan "particularly when they are combined with the use of visual displays and feedback loops".</li>
+  </ol>
+
+  <h2>Lo que cambia en el mensaje (tus decisiones)</h2>
+  <div class="cambia">
+    <ul>
+      <li><strong>Desde 3 tareas ya tiene con qué hacer todo el día</strong>: lo respalda la teoría (WIP crítico). Pasado ese punto, la teoría dice que lo terminado <em>deja de subir</em>; que en el juego <em>baje</em> sale de nuestros supuestos.</li>
+      <li><strong>"2 a 4" es de la simulación</strong>, no un número científico. Sin esperas, el mejor límite es 1.</li>
+      <li><strong>Consejo para equipos</strong>: la mosca sube un poco su límite cuando espera mucho porque trabaja sola. Un equipo puede ayudar a destrabar:</li>
+    </ul>
+    <p class="frase">Reducir las esperas permite bajar el límite; subir el límite no reduce las esperas.</p>
+    <ul>
+      <li><strong>"Un límite sostenible, no una cosa a la vez"</strong> se mantiene: vale cuando hay esperas que no se pueden evitar. Mientras menos esperas, más cerca de una.</li>
+      <li><strong>No es solo la mosca</strong>: jueces, reclutadores, equipos de I+D y DORA. <strong>Sostenible</strong>: Principio 8 del Manifiesto […] y Pencavel. El juego mide un solo día.</li>
+    </ul>
+  </div>
+  <p class="chico" style="margin-top:3mm">Fuentes revisadas hoy por su DOI o en su página oficial: Little 1961, Rubinstein 2001, Leroy 2009, Parrott 1999, Aral 2012, Coviello 2014 y 2015, Tastekin 2026, Berg 2026, Hampel 2020, Pencavel, DORA, Manifiesto […] y MaleCNS. Siguen sin verificar, y no irán al informe para compartir: Meijman y Mulder, Reinertsen, Kingman y los demás marcados así en la investigación. Detalle completo en el informe de la 4.3 del proyecto.</p>
+  <div class="pie"><span><b>Mosca del WIP</b> · Etapa 4.3 · Felipe Fernández</span><span>3 / 3</span></div>
+</section>
+
+<script>
+// Resumen de docs/etapa4-3.md. Etiquetas: c = calza, s = supuesto nuestro, x = corregir texto
+const ET = { c: '<span class="et calza">Calza</span>', s: '<span class="et supuesto">Supuesto nuestro</span>', x: '<span class="et corregir">Corregir texto</span>' };
+const CRUCE = [
+  ['Matemática y teoría'],
+  ['Cada tarea tarda más con más abiertas (1 h con 2; 9 h con 9)', 'Ley de Little: es un teorema, para promedios.', ['c'], 'matemática'],
+  ['Desde 3 tareas tiene con qué hacer todo el día', '"WIP crítico" de Factory Physics (Hopp y Spearman). Para una persona sola, analogía nuestra.', ['c'], 'teoría'],
+  ['Eficiencia de flujo: de 73 % a 8 %', 'Es casi una división: tiempo trabajando ÷ número de tareas.', ['c'], 'para explicar, no es hallazgo'],
+  ['Pasado el mejor límite, termina menos (−55 % con 10)', 'La teoría solo dice que deja de subir. En terreno baja: reclutadores (Aral 2012), jueces (Coviello 2014, 2015).', ['c', 's'], 'dirección: calza · tamaño: nuestro (21 a 79 % en la 4.2)'],
+  ['Reglas del juego'],
+  ['Cambiar de tarea cuesta: rinde 85 % con 2, 50 % con 10', 'Weinberg (1992) es una regla práctica sin datos. En laboratorio, cada cambio cuesta décimas de segundo que se suman (Rubinstein 2001).', ['s'], ''],
+  ['1 de cada 5 tareas se traba 30 a 60 min', 'Ningún estudio da ese número. Bertolotti (2015) mide personas en varios equipos, no esperas.', ['s', 'x'], 'no citar a Bertolotti como origen'],
+  ['Más tareas abiertas, más estrés', 'No hay estudio que lo mida. Mark (2008) mide interrupciones: más rápido, pero con más estrés.', ['s', 'x'], 'decir "inspirado en"'],
+  ['El estrés sube en ~40 min y baja en ~55', 'En laboratorio, el cortisol llega a su máximo entre 21 y 40 min (Dickerson y Kemeny 2004).', ['s'], 'inspiración razonable'],
+  ['Lo que queda a medias resta 3 %', 'El "residuo" existe (Leroy 2009); el 3 % es nuestro.', ['s'], ''],
+  ['Fumar no la calma: alivio breve y rebote', 'Parrott (1999); dejar de fumar mejora el ánimo (Taylor 2014).', ['c'], 'los números son nuestros'],
+  ['Café solo tranquila; acelera la calma', 'La cafeína sube el cortisol (Lovallo); la pausa ayuda (Albulescu 2022).', ['c'], 'decirlo claro en los informes'],
+  ['El cerebro'],
+  ['Modelo de neuronas (vaso con agujerito)', 'En otro mapa acertó 9 de cada 10 predicciones (Shiu 2024). Lo usamos en MaleCNS, con otro peso, sin probarlo en moscas.', ['s'], 'adaptación exploratoria'],
+  ['Crédito de MaleCNS', 'La página oficial nombra "University of Cambridge (Dept. of Zoology)"; el juego lo abrevia.', ['x'], 'informes: copia exacta; pantalla: decides tú'],
+];
+document.getElementById('t-cruce').innerHTML = CRUCE.map((f) => f.length === 1
+  ? `<tr class="grupo"><td colspan="3">${f[0]}</td></tr>`
+  : `<tr><td>${f[0]}</td><td>${f[1]}</td><td>${f[2].map((e) => ET[e]).join('')}${f[3] ? `<small>${f[3]}</small>` : ''}</td></tr>`).join('');
+</script>
+</body>
+</html>
