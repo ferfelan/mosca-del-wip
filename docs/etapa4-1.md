@@ -7,6 +7,24 @@ PDF corto: `~/Desktop/Mosca del WIP/2026-10-20 Etapa 4.1 La paradoja v1.pdf`.
 
 **Veredicto H1: SE CUMPLE** (a ✅, b ✅, c ✅), en la simulación.
 
+## Hallazgo principal (redacción de Felipe, 2026-10-20)
+
+> **"Desde 3 tareas ya tiene con qué hacer todo el día; cada tarea extra no
+> le da más trabajo, solo hace esperar más a las demás."**
+
+(En la simulación: con qué hacer 99,5 % con 3 tareas y 100 % desde 4.)
+
+**La eficiencia de flujo es matemática: trabajando ÷ tareas.** Por eso vale
+para cualquier equipo, no sólo para la mosca: si el tiempo de trabajo se
+reparte entre más tareas abiertas, cada una recibe una parte más chica y
+pasa más tiempo esperando. Es la ley de Little (tareas abiertas = ritmo de
+salida × tiempo por tarea), que se cumple en cualquier sistema estable. En
+un equipo se lee igual, contando personas: eficiencia de flujo = personas
+trabajando ÷ tareas abiertas, en promedio (si cada tarea la trabaja una
+persona a la vez). Lo que sí depende de la mosca y de los supuestos del
+juego es cuánto trabaja (las pausas para fumar) y cuánto rinde (el costo de
+cambiar de tarea); ver "Lo que hay que decir con cuidado".
+
 ## Tabla por WIP (200 días por WIP, semilla 2024)
 
 % del día de oficina, salvo donde dice otra cosa.
