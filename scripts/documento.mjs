@@ -1,12 +1,17 @@
-// Arma el documento de contexto en PDF (24 páginas; máximo 25), para Felipe,
-// un amigo técnico o para pasárselo a otro Claude.
-// Fuente editable: docs/contexto/contexto.html (+ imágenes en docs/contexto/img/
-// y el arte de portada en docs/contexto/arte/).
+// Arma los DOS informes en PDF (regla de Felipe, 2026-10-19):
+//  · "Mosca del WIP - Informe completo.pdf": todo, para Felipe, para entender
+//    y retomar el proyecto (fuente: docs/contexto/completo.html).
+//  · "Mosca del WIP - Para compartir.pdf": la historia corta (10 a 15
+//    páginas), para cualquier persona (fuente: docs/contexto/compartir.html).
+// Los dos usan docs/contexto/estilo.css y las imágenes de docs/contexto/img/
+// (todas sacadas del juego o del arte de portada: nada de referencias/).
 //
-// Uso: node scripts/documento.mjs          → PDF en el Escritorio
-//      FOTOS=1 node scripts/documento.mjs  → antes saca imágenes nuevas del
-//                                            juego (requiere npm run dev)
-//      FOTOS=monitor-bloqueo node …        → sólo esas (separadas por coma)
+// Uso: node scripts/documento.mjs                → los dos PDF en el Escritorio
+//      DOC=compartir node scripts/documento.mjs  → sólo uno (completo o compartir)
+//      FOTOS=1 node scripts/documento.mjs        → antes saca todas las imágenes
+//                                                  del juego (requiere npm run dev)
+//      FOTOS=paneles,cierre node …               → sólo esos grupos: holograma,
+//        paneles, escenas, cerebros, monitor-limite, monitor-bloqueo, cierre
 import { chromium } from 'playwright';
 import { mkdirSync } from 'node:fs';
 import { homedir } from 'node:os';
@@ -15,11 +20,16 @@ import { pathToFileURL } from 'node:url';
 
 const CARPETA = resolve('docs/contexto');
 const IMG = join(CARPETA, 'img');
-const SALIDA = process.env.SALIDA ?? join(homedir(), 'Desktop', 'Mosca del WIP - Contexto completo.pdf');
+const ESCRITORIO = process.env.SALIDA ?? join(homedir(), 'Desktop');
+const DOCUMENTOS = [
+  { id: 'completo', html: 'completo.html', pdf: 'Mosca del WIP - Informe completo.pdf' },
+  { id: 'compartir', html: 'compartir.html', pdf: 'Mosca del WIP - Para compartir.pdf', paginas: [10, 15] },
+];
 const JUEGO = 'http://localhost:5173';
 const b = await chromium.launch({ args: ['--enable-unsafe-swiftshader', '--use-gl=angle', '--ignore-gpu-blocklist'] });
 
 async function abrirJuego(p, { sinPaneles = false } = {}) {
+  p.on('pageerror', (e) => console.log('ERROR', e.message));
   await p.goto(JUEGO, { waitUntil: 'networkidle' });
   await p.waitForFunction(() => window.__mosca && window.__mosca.cerebro());
   await p.evaluate((sin) => {
@@ -37,29 +47,59 @@ async function abrirJuego(p, { sinPaneles = false } = {}) {
   }
 }
 
-// Juega el día de verdad hasta `minutos` (y, si se pide, hasta que salga a
-// fumar o a tomar café) y deja la escena quieta en ese momento.
-const jugar = (p, { wip, minutos, hasta = null, bajarA = null, segundos = 20 }) =>
+// Juega el día de verdad (reglas normales) hasta esa hora y deja el reloj del
+// juego detenido en ese momento. Con `momento` ('fumando' o 'tomandoCafe')
+// espera a que salga a fumar o a tomar café y deja el cigarro o la taza en la
+// trompita; si no, evita quedar a mitad de una pausa. `nuevo: false` sigue el
+// día que ya va.
+const jugar = (p, { wip = null, hora = '13:30', momento = null, segundos = 20 }) =>
   p.evaluate(
-    ({ wip, minutos, hasta, bajarA, segundos }) => {
+    ({ wip, hora, momento, segundos }) => {
       const m = window.__mosca;
+      m.detenerReloj(false);
       m.congelar(false);
-      m.diaExhibicion(wip);
-      m.adelantar(minutos);
-      if (bajarA) m.setWip(bajarA);
+      if (wip) m.diaExhibicion(wip);
+      const [h, mm] = hora.split(':').map(Number);
+      const ahora = () => 540 + m.estado().fraccionDelDia * 540;
+      m.adelantar(Math.max(0, h * 60 + mm - ahora()));
+      if (!momento) {
+        for (let i = 0; i < 40 && !m.estado().terminado && (m.estado().fumando || m.estado().tomandoCafe); i++) m.adelantar(1);
+      }
+      m.detenerReloj(true);
       m.congelar(true);
       m.avanzar(0); // la escena lee el estado nuevo (pila, post-its, estrés)
       m.avanzar(segundos); // y le da tiempo de llegar a su lugar (todo cambia suave)
-      if (hasta) {
-        for (let i = 0; i < 300 && !m.estado()[hasta]; i++) m.adelantar(0.5);
+      if (momento) {
+        for (let i = 0; i < 400 && !m.estado()[momento]; i++) m.adelantar(0.5);
         m.avanzar(0);
-        m.avanzar(hasta === 'fumando' ? 2.3 : 1.9); // cigarro o taza en la trompita
+        m.avanzar(momento === 'fumando' ? 2.3 : 1.9); // cigarro o taza en la trompita
       }
+      return m.estado();
     },
-    { wip, minutos, hasta, bajarA, segundos },
+    { wip, hora, momento, segundos },
   );
 
-// FOTOS=1 saca todas; FOTOS=a,b sólo esas
+const enVista = async (p, v) => {
+  await p.evaluate((v) => window.__mosca.vista(v), v);
+  await p.waitForTimeout(1600);
+};
+const foto = async (p, nombre, opciones = {}) => {
+  await p.mouse.move(8, 450); // lejos del cerebro (con el cursor encima gira más lento)
+  await p.waitForTimeout(1600);
+  const destino = { path: join(IMG, `${nombre}.jpg`), type: 'jpeg', quality: 88 };
+  if (opciones.elemento) await p.locator(opciones.elemento).screenshot(destino);
+  else await p.screenshot({ ...destino, ...(opciones.clip ? { clip: opciones.clip } : {}) });
+  console.log('foto', nombre);
+};
+// El cerebro en su vista inicial y quieto, para comparar dos fotos parejas
+const cerebroQuieto = async (p) => {
+  await p.evaluate(() => document.getElementById('btn-centrar-cerebro').click());
+  await p.waitForTimeout(150);
+  await p.evaluate(() => document.getElementById('btn-girar-cerebro').click());
+  await p.addStyleTag({ content: '.cerebro-botones{visibility:hidden!important}' }); // sin botones en la foto
+};
+
+// FOTOS=1 saca todas; FOTOS=a,b sólo esos grupos
 const quiero = (nombre) => process.env.FOTOS === '1' || (process.env.FOTOS ?? '').split(',').includes(nombre);
 if (process.env.FOTOS) {
   mkdirSync(IMG, { recursive: true });
@@ -75,24 +115,75 @@ if (process.env.FOTOS) {
     await p.close();
   }
 
-  // Escenas del juego con los paneles (cómo se ve)
-  if (quiero('control-wip2') || quiero('control-wip9') || quiero('exhibicion')) {
-    const p = await b.newPage({ viewport: { width: 1500, height: 853 } });
-    p.on('pageerror', (e) => console.log('ERROR', e.message));
+  // Las dos vistas con el panel final (v4), en días jugados de verdad: WIP 2 y
+  // WIP 9 a las 13:30 y al terminar el día, "¿Es real?" y la tarjetita
+  if (quiero('paneles')) {
+    const p = await b.newPage({ viewport: { width: 1600, height: 900 }, deviceScaleFactor: 1.5 });
     await abrirJuego(p);
-    const foto = async (nombre) => {
-      await p.waitForTimeout(1200);
-      await p.screenshot({ path: join(IMG, `${nombre}.jpg`), type: 'jpeg', quality: 86 });
-      console.log('foto', nombre);
-    };
-    await jugar(p, { wip: 2, minutos: 270 });
-    await foto('control-wip2');
-    await jugar(p, { wip: 9, minutos: 300, hasta: 'fumando' });
-    await foto('control-wip9');
-    await p.evaluate(() => window.__mosca.vista('exhibicion'));
-    await p.waitForTimeout(1500);
-    await jugar(p, { wip: 6, minutos: 200, hasta: 'fumando' });
-    await foto('exhibicion');
+    await jugar(p, { wip: 2 });
+    await foto(p, 'control-wip2');
+    await enVista(p, 'exhibicion');
+    await foto(p, 'exhibicion-wip2');
+    await jugar(p, { hora: '18:00' });
+    await enVista(p, 'control');
+    await jugar(p, { wip: 9, momento: 'fumando' });
+    await foto(p, 'control-wip9');
+    await enVista(p, 'exhibicion');
+    await foto(p, 'exhibicion-wip9');
+    await jugar(p, { hora: '18:00' });
+    await foto(p, 'fin-exhibicion');
+    await enVista(p, 'control');
+    await foto(p, 'fin-control');
+    await p.keyboard.press('c'); // sin el panel de la derecha, el resumen suma los números
+    await p.waitForTimeout(1400);
+    await foto(p, 'fin-sin-controles');
+    await p.keyboard.press('c');
+    await p.waitForTimeout(1200);
+    // "¿Es real?" abierto en Control, con el día en curso (WIP 9)
+    await jugar(p, { wip: 9 });
+    await p.click('#btn-es-real');
+    await p.waitForTimeout(500);
+    await foto(p, 'es-real');
+    await p.keyboard.press('Escape');
+    // La tarjetita de aBN1 (clic sobre la neurona: queda fija) en Exhibición
+    await enVista(p, 'exhibicion');
+    const donde = await p.evaluate(() => window.__mosca.cerebroDonde(2));
+    await p.mouse.move(donde.x, donde.y);
+    await p.waitForTimeout(80);
+    const donde2 = await p.evaluate(() => window.__mosca.cerebroDonde(2));
+    await p.mouse.click(donde2.x, donde2.y);
+    await p.waitForTimeout(400);
+    await p.screenshot({ path: join(IMG, 'tarjetita.jpg'), type: 'jpeg', quality: 88 });
+    console.log('foto tarjetita:', await p.evaluate(() => document.getElementById('cerebro-ficha').innerText.replace(/\n/g, ' | ')));
+    await p.close();
+  }
+
+  // Escenas sin paneles (para el informe para compartir): la oficina con WIP 2
+  // y con WIP 9 a la misma hora
+  if (quiero('escenas')) {
+    const p = await b.newPage({ viewport: { width: 1600, height: 1000 }, deviceScaleFactor: 2 });
+    await abrirJuego(p, { sinPaneles: true });
+    await jugar(p, { wip: 2 });
+    await foto(p, 'escena-wip2');
+    await jugar(p, { wip: 9, momento: 'fumando' });
+    await foto(p, 'escena-wip9');
+    await p.close();
+  }
+
+  // El cerebro (vista inicial, quieto) con WIP 2 y WIP 9 a las 13:30, y el
+  // estrés de cada día completo, sacados del panel de Exhibición
+  if (quiero('cerebros')) {
+    const p = await b.newPage({ viewport: { width: 1600, height: 1000 }, deviceScaleFactor: 2 });
+    await abrirJuego(p);
+    await enVista(p, 'exhibicion');
+    for (const wip of [2, 9]) {
+      const e = await jugar(p, { wip });
+      await cerebroQuieto(p);
+      await foto(p, `cerebro-wip${wip}`, { elemento: '#lienzo-cerebro' });
+      console.log(`   WIP ${wip}: ${await p.evaluate(() => document.getElementById('c-activas').textContent)} neuronas encendidas (${e.enCurso.length ?? e.enCurso} abiertas)`);
+      await jugar(p, { hora: '18:00' });
+      await foto(p, `estres-wip${wip}`, { elemento: '.cerebro-dia' });
+    }
     await p.close();
   }
 
@@ -100,12 +191,10 @@ if (process.env.FOTOS) {
   if (quiero('monitor-limite')) {
     const p = await b.newPage({ viewport: { width: 1200, height: 760 }, deviceScaleFactor: 2 });
     await abrirJuego(p, { sinPaneles: true });
-    await jugar(p, { wip: 10, minutos: 180, bajarA: 2 });
-    await p.evaluate(() => { const m = window.__mosca; m.congelar(false); m.adelantar(45); m.congelar(true); m.avanzar(0); m.avanzar(20); });
+    await jugar(p, { wip: 10, hora: '12:00' });
+    await p.evaluate(() => { const m = window.__mosca; m.setWip(2); m.adelantar(45); m.avanzar(0); m.avanzar(20); });
     await p.evaluate(() => window.__mosca.camara([-0.25, 1.75, 1.1], [-0.9, 1.72, -0.35]));
-    await p.waitForTimeout(900);
-    await p.screenshot({ path: join(IMG, 'monitor-limite.jpg'), type: 'jpeg', quality: 88, clip: { x: 250, y: 80, width: 760, height: 560 } });
-    console.log('foto monitor-limite');
+    await foto(p, 'monitor-limite', { clip: { x: 250, y: 80, width: 760, height: 560 } });
     await p.close();
   }
 
@@ -113,38 +202,49 @@ if (process.env.FOTOS) {
   if (quiero('monitor-bloqueo')) {
     const p = await b.newPage({ viewport: { width: 1200, height: 760 }, deviceScaleFactor: 2 });
     await abrirJuego(p, { sinPaneles: true });
-    await jugar(p, { wip: 3, minutos: 120 });
-    await p.evaluate(() => { const m = window.__mosca; m.congelar(false); m.forzar({ bloqueadas: 1, minutosBloqueo: 600 }); m.adelantar(0.5); m.congelar(true); m.avanzar(0); m.avanzar(4); });
+    await jugar(p, { wip: 3, hora: '11:00' });
+    await p.evaluate(() => { const m = window.__mosca; m.forzar({ bloqueadas: 1, minutosBloqueo: 600 }); m.adelantar(0.5); m.avanzar(0); m.avanzar(4); });
     await p.evaluate(() => window.__mosca.camara([-0.25, 1.75, 1.1], [-0.9, 1.72, -0.35]));
-    await p.waitForTimeout(900);
-    await p.screenshot({ path: join(IMG, 'monitor-bloqueo.jpg'), type: 'jpeg', quality: 88, clip: { x: 250, y: 80, width: 760, height: 560 } });
-    console.log('foto monitor-bloqueo');
+    await foto(p, 'monitor-bloqueo', { clip: { x: 250, y: 80, width: 760, height: 560 } });
     await p.close();
   }
 
-  // Cierre: fin de un buen día (WIP 2), tomando café frente al kanban
+  // Cierre: fin de un buen día (WIP 2), tomando café frente al kanban; y su
+  // contraparte con la misma cámara: WIP 9 fumando a la misma hora
   if (quiero('cierre')) {
     const p = await b.newPage({ viewport: { width: 1400, height: 1120 }, deviceScaleFactor: 2 });
     await abrirJuego(p, { sinPaneles: true });
-    await jugar(p, { wip: 2, minutos: 455, hasta: 'tomandoCafe' });
-    await p.evaluate(() => window.__mosca.camara([-2.7, 2.15, 1.45], [-0.62, 1.32, 0.12]));
-    await p.waitForTimeout(900);
-    await p.screenshot({ path: join(IMG, 'cierre.jpg'), type: 'jpeg', quality: 88 });
-    console.log('foto cierre');
+    for (const [nombre, wip, momento] of [['cierre', 2, 'tomandoCafe'], ['fumando', 9, 'fumando']]) {
+      await jugar(p, { wip, hora: '16:35', momento });
+      await p.evaluate(() => window.__mosca.camara([-2.7, 2.15, 1.45], [-0.62, 1.32, 0.12]));
+      await foto(p, nombre);
+    }
     await p.close();
   }
 }
 
-const p = await b.newPage();
-await p.goto(pathToFileURL(join(CARPETA, 'contexto.html')).href, { waitUntil: 'networkidle' });
-await p.evaluate(() => document.fonts.ready);
-// Revisión: ninguna página puede desbordarse (se cortaría el texto)
-const desbordes = await p.evaluate(() =>
-  [...document.querySelectorAll('.hoja')]
-    .map((h, i) => ({ pagina: i + 1, sobra: h.scrollHeight - h.clientHeight }))
-    .filter((x) => x.sobra > 1),
-);
-if (desbordes.length) console.log('OJO, páginas que se desbordan:', JSON.stringify(desbordes));
-await p.pdf({ path: SALIDA, preferCSSPageSize: true, printBackground: true, margin: { top: 0, bottom: 0, left: 0, right: 0 } });
-console.log('PDF listo:', SALIDA, `(${await p.evaluate(() => document.querySelectorAll('.hoja').length)} páginas)`);
+// Los PDF. Revisión: ninguna página puede desbordarse (se cortaría el texto),
+// ninguna imagen puede faltar, y el de compartir debe tener 10 a 15 páginas.
+const pedido = process.env.DOC;
+for (const doc of DOCUMENTOS.filter((d) => !pedido || d.id === pedido)) {
+  const p = await b.newPage();
+  await p.goto(pathToFileURL(join(CARPETA, doc.html)).href, { waitUntil: 'networkidle' });
+  await p.evaluate(() => document.fonts.ready);
+  const revision = await p.evaluate(() => ({
+    desbordes: [...document.querySelectorAll('.hoja')]
+      .map((h, i) => ({ pagina: i + 1, sobra: h.scrollHeight - h.clientHeight }))
+      .filter((x) => x.sobra > 1),
+    sinImagen: [...document.images].filter((i) => !i.complete || !i.naturalWidth).map((i) => i.getAttribute('src')),
+    hojas: document.querySelectorAll('.hoja').length,
+  }));
+  if (revision.desbordes.length) console.log(`OJO (${doc.id}), páginas que se desbordan:`, JSON.stringify(revision.desbordes));
+  if (revision.sinImagen.length) console.log(`OJO (${doc.id}), imágenes que no cargan:`, revision.sinImagen.join(', '));
+  if (doc.paginas && (revision.hojas < doc.paginas[0] || revision.hojas > doc.paginas[1])) {
+    console.log(`OJO (${doc.id}): tiene ${revision.hojas} páginas y debe tener entre ${doc.paginas[0]} y ${doc.paginas[1]}`);
+  }
+  const salida = join(ESCRITORIO, doc.pdf);
+  await p.pdf({ path: salida, preferCSSPageSize: true, printBackground: true, margin: { top: 0, bottom: 0, left: 0, right: 0 } });
+  console.log('PDF listo:', salida, `(${revision.hojas} páginas)`);
+  await p.close();
+}
 await b.close();
