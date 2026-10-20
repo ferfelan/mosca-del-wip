@@ -13,7 +13,8 @@
 // Van a la carpeta "Mosca del WIP" del Escritorio (regla de Felipe,
 // 2026-10-20), con la fecha de hoy al inicio y la versión al final:
 // "2026-10-19 Informe completo v1.pdf". Al cambiar el contenido de un
-// informe, súbele la versión aquí abajo (Etapa 4.4: compartir v3, completo v2).
+// informe, súbele la versión aquí abajo (20 oct., arreglos previos a la revisión
+// independiente: compartir v4, completo v3).
 //
 // Uso: node scripts/documento.mjs                → los dos informes
 //      DOC=compartir node scripts/documento.mjs  → sólo uno (completo, compartir,
@@ -21,7 +22,7 @@
 //      FOTOS=1 node scripts/documento.mjs        → antes saca todas las imágenes
 //                                                  del juego (requiere npm run dev)
 //      FOTOS=paneles,cierre node …               → sólo esos grupos: holograma,
-//        paneles, escenas, cerebros, mundo, monitor-limite, monitor-bloqueo, cierre
+//        paneles, es-real, escenas, cerebros, mundo, monitor-limite, monitor-bloqueo, cierre
 //      SALIDA=/otra/carpeta, FECHA=2026-10-19,   → otra carpeta, fecha o versión
 //      VERSION=v2
 import { chromium } from 'playwright';
@@ -35,8 +36,8 @@ const IMG = join(CARPETA, 'img');
 const SALIDA = process.env.SALIDA ?? join(homedir(), 'Desktop', 'Mosca del WIP');
 const FECHA = process.env.FECHA ?? new Date().toLocaleDateString('sv-SE'); // 2026-10-20
 const DOCUMENTOS = [
-  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v2' },
-  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v3', paginas: [10, 13] },
+  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v3' },
+  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v4', paginas: [10, 13] },
   { id: 'norte', html: 'norte.html', nombre: 'Norte del proyecto', version: 'v1', paginas: [1, 2], aparte: true },
   { id: 'etapa4-1', html: 'etapa4-1.html', nombre: 'Etapa 4.1 La paradoja', version: 'v1', paginas: [1, 3], aparte: true },
   { id: 'etapa4-2', html: 'etapa4-2.html', nombre: 'Etapa 4.2 Robustez', version: 'v1', paginas: [1, 3], aparte: true },
@@ -172,6 +173,19 @@ if (process.env.FOTOS) {
     await p.waitForTimeout(400);
     await p.screenshot({ path: join(IMG, 'tarjetita.jpg'), type: 'jpeg', quality: 88 });
     console.log('foto tarjetita:', await p.evaluate(() => document.getElementById('cerebro-ficha').innerText.replace(/\n/g, ' | ')));
+    await p.close();
+  }
+
+  // Solo el cuadro "¿Es real?" abierto en Control (WIP 9 a las 13:30), para
+  // rehacer esa foto cuando cambia su texto sin repetir todo el grupo "paneles"
+  if (quiero('es-real')) {
+    const p = await b.newPage({ viewport: { width: 1600, height: 900 }, deviceScaleFactor: 1.5 });
+    await abrirJuego(p);
+    await jugar(p, { wip: 9 });
+    await p.click('#btn-es-real');
+    await p.waitForTimeout(500);
+    await foto(p, 'es-real');
+    await p.keyboard.press('Escape');
     await p.close();
   }
 

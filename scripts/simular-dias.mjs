@@ -15,16 +15,32 @@
 //    las tareas en el día, diferencia < 0,5 %), es más alta en el mejor WIP y
 //    baja en cada escalón desde ahí.
 //
-// Uso: node scripts/simular-dias.mjs            (200 días por WIP)
-//      DIAS=500 node scripts/simular-dias.mjs
+// Uso: node scripts/simular-dias.mjs            (200 días por WIP, semilla 2024:
+//                                                 la CORRIDA OFICIAL, la misma de la
+//                                                 4.1 y la 4.2 y de los dos informes;
+//                                                 guarda docs/corrida-oficial.json)
+//      SEMILLA=azar node scripts/simular-dias.mjs (otra semilla, elegida al azar y
+//                                                 mostrada, para ver que la forma no
+//                                                 depende de la semilla)
+//      SEMILLA=7 DIAS=500 node scripts/simular-dias.mjs
 // No necesita el navegador ni el servidor.
+import { writeFileSync } from 'node:fs';
+import { randomInt } from 'node:crypto';
 import { DayBrain, nivelDeEstres } from '../src/brain.js';
+import { sembrar } from './medicion.mjs'; // reemplaza Math.random por un azar con semilla (la misma fórmula de la 4.1 y la 4.2)
 
 const DIAS = Number(process.env.DIAS ?? 200);
 const PASO = Number(process.env.PASO ?? 0.15); // minutos simulados por cuadro: el juego a 60 cuadros/s y x1 (x4 = 0.6)
+// Semilla del azar (Felipe, 2026-10-20: una sola corrida oficial y reproducible).
+// 2024 es la de la Etapa 4; se reinicia en cada WIP (como jugarWip de la 4.1)
+// y antes de la prueba de bajar el WIP (como bajarDe10a2 de la 4.2), así esta
+// corrida da exactamente los mismos días que esas dos.
+const SEMILLA = process.env.SEMILLA === 'azar' ? randomInt(1, 2 ** 31) : Number(process.env.SEMILLA ?? 2024);
+const OFICIAL = SEMILLA === 2024 && DIAS === 200 && PASO === 0.15;
 
 const filas = [];
 for (let wip = 1; wip <= 10; wip++) {
+  sembrar(SEMILLA);
   const t = { hechas: 0, medidas: 0, sumaTiempo: 0, minutos: 0, areaWip: 0, colillas: 0, cafes: 0, estres: 0, estresMax: 0, espera: 0, rinden: 0, avance: 0 };
   // Trabajo que les falta a todas las tareas (en curso y por hacer)
   const pendiente = (dia) => [...dia.enCurso, ...dia.porHacer].reduce((s, x) => s + Math.max(0, x.minutosRestantes), 0);
@@ -67,7 +83,7 @@ for (let wip = 1; wip <= 10; wip++) {
 
 const f1 = (n) => n.toFixed(1).replace('.', ',');
 const pad = (s, n) => String(s).padStart(n);
-console.log(`\n${DIAS} días por cada WIP (promedio por día)\n`);
+console.log(`\n${DIAS} días por cada WIP (promedio por día) · semilla ${SEMILLA}${OFICIAL ? ' (la corrida oficial)' : ''}\n`);
 console.log(' WIP  Terminadas  Tiempo/tarea  Eficiencia**  Espera*  Colillas  Cafés  Estrés prom.  Nivel       │ Little: WIP prom.  terminadas/min × tiempo  diferencia');
 for (const r of filas) {
   const dif = ((r.little - r.wipPromedio) / r.wipPromedio) * 100;
@@ -125,10 +141,15 @@ for (const r of filas) {
 // lo que subió (pero llega a Tranqui dentro del día).
 const MARCAS = [9, 10, 11, 12, 12.5, 13, 13.5, 14, 14.5, 15, 16, 17, 18].map((h) => h * 60);
 const suma = MARCAS.map(() => ({ abiertas: 0, estres: 0, colillas: 0, cafes: 0 }));
+// La curva cada 15 minutos (tareas en curso y estrés) para los gráficos de los informes
+const MARCAS_CURVA = Array.from({ length: 37 }, (_, i) => 540 + 15 * i);
+const curva = MARCAS_CURVA.map(() => ({ abiertas: 0, estres: 0 }));
 const t = { drena: 0, saleColapsada: 0, tranqui: 0, cafeAntesTranqui: 0, subeAlto: false };
+sembrar(SEMILLA);
 for (let d = 0; d < DIAS; d++) {
   const dia = new DayBrain(10);
   let k = 0;
+  let kc = 0;
   let drena = null;
   let sale = null;
   let tranqui = null;
@@ -144,6 +165,11 @@ for (let d = 0; d < DIAS; d++) {
         cafes: suma[k].cafes + dia.cafes,
       });
       k++;
+    }
+    while (kc < MARCAS_CURVA.length && dia.minutoActual >= MARCAS_CURVA[kc] - 1e-9) {
+      curva[kc].abiertas += dia.enCurso.length;
+      curva[kc].estres += dia.estres;
+      kc++;
     }
   };
   anotar();
@@ -196,4 +222,45 @@ if (problemas.length) {
   console.log('Ley de Little: se cumple en todos los WIP (diferencia < 5%).');
   console.log(`Eficiencia: sale del mismo cálculo del juego y es más alta en el mejor WIP (${Math.round(mejorEficiencia.eficiencia)} min de cada hora con WIP ${mejorEficiencia.wip}).`);
   console.log('Bajar el WIP: lo empezado drena de a poco y el estrés baja más lento de lo que sube (2 a 3,5 h).');
+}
+
+// ---- La corrida oficial queda guardada (sólo con la semilla 2024, 200 días y el paso de siempre) ----
+if (OFICIAL) {
+  const r3 = (x) => Number(x.toFixed(3));
+  const salida = {
+    que: 'Corrida oficial de scripts/simular-dias.mjs: la misma de la 4.1 y la 4.2 y la que usan los dos informes. Se repite igual con: node scripts/simular-dias.mjs',
+    semilla: SEMILLA,
+    dias: DIAS,
+    paso: PASO,
+    forma: problemas.length ? problemas : 'todo bien',
+    filas: filas.map((r) => ({
+      wip: r.wip,
+      terminadas: r3(r.hechas),
+      tiempo_por_tarea_min: r3(r.tiempoPorTarea),
+      eficiencia_min_por_hora: r3(r.eficiencia),
+      espera_min: r3(r.espera),
+      colillas: r3(r.colillas),
+      cafes: r3(r.cafes),
+      estres_promedio: r3(r.estres),
+      estres_maximo: r3(r.estresMax),
+      nivel: nivelDeEstres(r.estres).nombre,
+      wip_promedio: r3(r.wipPromedio),
+      little: r3(r.little),
+    })),
+    bajar_de_10_a_2: {
+      vuelve_a_2: hora(mDrena),
+      deja_colapsada: hora(mSale),
+      tranqui: hora(mTranqui),
+      minutos_hasta_volver_a_2: r3(mDrena - 720),
+      minutos_hasta_tranqui: r3(mTranqui - 720),
+      dias_con_cafe_antes_de_tranqui: r3(t.cafeAntesTranqui / DIAS),
+      curva_cada_15_min: {
+        min: MARCAS_CURVA,
+        enCurso: curva.map((c) => Number((c.abiertas / DIAS).toFixed(2))),
+        estres: curva.map((c) => Number((c.estres / DIAS).toFixed(1))),
+      },
+    },
+  };
+  writeFileSync(new URL('../docs/corrida-oficial.json', import.meta.url), JSON.stringify(salida, null, 1) + '\n');
+  console.log('\nGuardado en docs/corrida-oficial.json (la corrida oficial: semilla 2024, 200 días por WIP, paso 0,15).');
 }

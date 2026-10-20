@@ -3,7 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <title>Mosca del WIP · Para compartir</title>
-<!-- Informe para compartir v3 (Etapa 4.4, 2026-10-20; v2 + 9 arreglos de Felipe): 10 páginas + 3 anexos,
+<!-- Informe para compartir v4 (2026-10-20; v3 + los arreglos de Felipe previos a la
+     revisión independiente: título de la pág. 10, "más de un siglo" sin rótulo, los dos
+     sentidos de "sostenible" en la pág. 3 y la curva de la pág. 7 de la corrida oficial): 10 páginas + 3 anexos,
      para alguien que nunca oyó de WIP, kanban ni neuronas. Rehecho alrededor
      del norte (docs/NORTE.md) con las reglas de docs/etapa4-plan.md y las
      decisiones de la 4.3. Sin detalles técnicos, solo imágenes del juego,
@@ -13,7 +15,9 @@
      ~180 palabras y hasta 2 gráficos por página). Los números de los
      gráficos están al final y salen de la 4.1 y la 4.2
      (docs/etapa4-1-resultados.json y etapa4-2-resultados.json: 200 días por
-     cada número de tareas, semilla 2024). La v1 quedó en docs/contexto/v1/. -->
+     cada número de tareas, semilla 2024); la curva de la pág. 7, de
+     docs/corrida-oficial.json (simular-dias con la misma semilla). La v1
+     quedó en docs/contexto/v1/. -->
 <link rel="stylesheet" href="estilo.css" />
 <style>
   body { font-size: 9.9pt; line-height: 1.56; }
@@ -163,7 +167,7 @@
   <figure><img class="foto banda-mundo" src="img/mundo-wip2.jpg" alt="La mosca frente a su tablero: Por hacer, En curso y Hecho" />
     <figcaption><b>Así se ve.</b> La mosca frente a un tablero con tres columnas: <b>Por hacer</b>, <b>En curso</b> y <b>Hecho</b>. Antes de empezar, alguien elige cuántas tareas puede tener <b>en curso a la vez</b>, de 1 a 10. En los equipos eso se llama "límite de trabajo en curso" (WIP, por su sigla en inglés). Al lado de la oficina, el juego muestra su cerebro y los números del día.</figcaption>
   </figure>
-  <p class="contexto-mosca">Según estudios, lleva más de un siglo en los laboratorios: cinco premios Nobel de Medicina premiaron trabajos hechos con moscas (1933, 1946, 1995, 2011 y 2017); unas tres cuartas partes de los genes de enfermedades humanas estudiados tienen un pariente en la mosca; y todo su sistema nervioso tiene 166.700 neuronas, contra unos 86 mil millones solo en el cerebro humano.</p>
+  <p class="contexto-mosca">Lleva más de un siglo en los laboratorios: cinco premios Nobel de Medicina premiaron trabajos hechos con moscas (1933, 1946, 1995, 2011 y 2017); unas tres cuartas partes de los genes de enfermedades humanas estudiados tienen un pariente en la mosca; y todo su sistema nervioso tiene 166.700 neuronas, contra unos 86 mil millones solo en el cerebro humano.</p>
   <h3 style="margin-top:3mm">Las reglas de su mundo, y de dónde sale cada una</h3>
   <table class="reglas">
     <tbody id="t-reglas"></tbody>
@@ -188,7 +192,8 @@
     <div class="que">Minutos de cada hora que rinden de verdad</div><div class="bien"><b>50</b></div><div class="mal"><b>25</b> pierde 35 de cada 60</div>
     <div class="que">Cigarros y cafés</div><div class="bien"><b>0</b> cigarros, 5 cafés</div><div class="mal"><b>13</b> cigarros, 0 cafés</div>
   </div>
-  <p style="margin-top:4mm">Con 9 tareas estuvo en la oficina las mismas horas, ocupada casi todo el tiempo. Pero cada minuto rinde menos: salta de una tarea a otra, pierde un rato en retomar cada una y sale a fumar. Y como avanza un poquito en cada tarea por turnos, todas tardan.</p>
+  <p class="chico" style="margin-top:2mm">Dos sentidos de "sostenible": el juego marca <strong>3</strong> como límite sostenible (hasta 3 tareas a la vez cierra el día tranquila); <strong>2</strong> es, dentro de ese límite, el número con que más termina, y así lo marcan las tablas.</p>
+  <p style="margin-top:3mm">Con 9 tareas estuvo en la oficina las mismas horas, ocupada casi todo el tiempo. Pero cada minuto rinde menos: salta de una tarea a otra, pierde un rato en retomar cada una y sale a fumar. Y como avanza un poquito en cada tarea por turnos, todas tardan.</p>
   <p class="grande">Terminó la mitad, cada tarea tardó nueve veces más y cerró el día <span class="rojo">colapsada</span>. Con 2, cerró <em>tranquila</em>.</p>
   <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span>3 / 13</span></div>
 </section>
@@ -260,9 +265,9 @@
   <h1>Bajar el límite no la calma de inmediato: lo empezado tarda más de 2 horas en salir</h1>
   <p class="bajada">Un día con diez tareas a la vez. A las 12:00 el límite baja a dos. Las diez siguen ahí: la mosca deja de tomar nuevas y cierra las que tiene.</p>
   <figure class="grafico"><div id="g-bajar"></div>
-    <figcaption><b>Tareas en curso y estrés, en el juego,</b> en un día que parte con 10 tareas a la vez y a las 12:00 baja a 2. Promedio de 300 días. Los dientes del estrés son los cigarros: alivian un rato y vuelve a subir.</figcaption>
+    <figcaption><b>Tareas en curso y estrés, en el juego,</b> en un día que parte con 10 tareas a la vez y a las 12:00 baja a 2. Promedio de 200 días. Los dientes del estrés son los cigarros: alivian un rato y vuelve a subir.</figcaption>
   </figure>
-  <p>Recién a las 14:35 vuelve a tener dos abiertas. Eso es lo firme: lo empezado tarda más de 2 horas en salir, y se mantiene al cambiar las reglas (de 2 h 14 min a 3 h 25 min en los cinco casos probados). Que se calme cerca de las 15:10 depende de cómo el juego sube y baja el estrés: rápido para arriba, lento para abajo, inspirado en estudios de laboratorio.</p>
+  <p>Recién a las 14:35 vuelve a tener dos abiertas. Eso es lo firme: lo empezado tarda más de 2 horas en salir, y se mantiene al cambiar las reglas (de 2 h 14 min a 3 h 25 min en los cinco casos probados). Que se calme recién a las 15:07 depende de cómo el juego sube y baja el estrés: rápido para arriba, lento para abajo, inspirado en estudios de laboratorio.</p>
   <p><strong>Sostenible</strong> quiere decir que se mantiene todo el día sin colapsar. El juego mide un solo día; con el mismo límite, cada mañana la mosca vuelve a empezar igual. Para los equipos, la idea tiene años:</p>
   <div class="cita-larga"><q>Los procesos […] promueven el desarrollo sostenible. Los promotores, desarrolladores y usuarios debemos ser capaces de mantener un ritmo constante de forma indefinida.</q><span>Principio 8 del Manifiesto […], texto oficial en español.</span></div>
   <p class="chico" style="margin-top:3mm">Según estudios, también con las horas: en fábricas de hace un siglo, bajo cierta cantidad de horas a la semana la producción subía parejo con las horas; más allá, cada vez menos (Pencavel 2015).</p>
@@ -312,8 +317,8 @@
 <!-- =============================== 10 · QUÉ HACER =============================== -->
 <section class="hoja">
   <div class="kicker">Qué hacer con esto</div>
-  <h1>Un límite sostenible, no una cosa a la vez</h1>
-  <p class="bajada">Cuatro pasos para probarlo con un equipo.</p>
+  <h1>Cuatro pasos para probar un límite con tu equipo</h1>
+  <p class="bajada">Un tablero a la vista, un límite acordado, atacar las esperas y medir dos semanas.</p>
   <div class="practica"><span class="n">1</span><div><h3>Pongan el trabajo a la vista</h3><p>Un tablero con tres columnas basta: por hacer, en curso, hecho. Lo que no se ve no se puede limitar.</p></div></div>
   <div class="practica"><span class="n">2</span><div><h3>Cuenten lo abierto y pónganle un límite</h3><p>Cuenten cuántas cosas tiene abiertas cada persona hoy. Acuerden un límite bajo, escríbanlo en el tablero y respétenlo; con esperas inevitables, no una.</p></div></div>
   <div class="practica"><span class="n">3</span><div><h3>Cuando alguien queda esperando, ataquen la espera</h3><p>No abran otra cosa para "aprovechar el tiempo": ayuden a destrabar lo que espera. Con menos esperas, el límite puede bajar.</p></div></div>
@@ -354,7 +359,7 @@
     <thead><tr><th>Tareas a la vez</th><th>Terminadas</th><th>Tiempo por tarea</th><th>Rinden, de cada hora</th><th>Tiene con qué hacer</th><th>Cuánto avanza cada tarea</th><th>Cigarros</th><th>Cafés</th><th>Estrés al cerrar</th></tr></thead>
     <tbody id="t-dia"></tbody>
   </table>
-  <p class="chico">Verde: el número que más termina (sostenible). Rojo: sobrecarga, el día de las fotos. Tiempo por tarea en horas de oficina, de que empieza a que termina.</p>
+  <p class="chico">Verde: 2, el número que más termina. Rojo: 9, sobrecarga, el día de las fotos. Tiempo por tarea en horas de oficina, de que empieza a que termina.</p>
   <h3>Cambiando las reglas: con cuántas esperas, qué límite conviene</h3>
   <table class="numeros">
     <thead><tr><th>Tareas que se traban esperando a otra persona</th><th>Mejor límite con las reglas de hoy</th><th>Si cambiar de tarea no costara nada</th><th>Si costara mucho más</th><th>Tiene con qué hacer todo el día desde</th></tr></thead>
@@ -434,8 +439,8 @@ const ESPERAS = [
   ['3 de cada 10', '2 (2 a 3)', '3 (3 a 5)', '2', '3'],
   ['2 de cada 5', '3 (2 a 3)', '4 (3 a 5)', '2', '4'],
 ];
-// 10 tareas desde las 09:00 y a las 12:00 baja a 2: promedio de 300 días, cada 15 minutos (misma corrida del Informe completo v1)
-const CURVA = {"min":[540,555,570,585,600,615,630,645,660,675,690,705,720,735,750,765,780,795,810,825,840,855,870,885,900,915,930,945,960,975,990,1005,1020,1035,1050,1065,1080],"enCurso":[10,10,10,10,10,10,10,10,10,10,10,10,10,8.79,8.12,7.11,6.21,5.67,4.93,4.31,3.87,3.28,2.9,2.62,2.38,2.21,2.09,2.03,2.01,2,2,2,2,2,2,2,2],"estres":[10,38.1,57.5,70.8,79.9,91.2,90.5,88.5,95.5,96.9,97.9,98.5,100,98.1,98.2,90.5,81.9,77.9,70.4,63,55.7,48.5,41.5,35.3,29.6,25.2,21.4,18.5,16.3,14.7,13.5,12.6,12,11.5,11.1,10.8,10.6]};
+// 10 tareas desde las 09:00 y a las 12:00 baja a 2: promedio de 200 días, cada 15 minutos (la corrida oficial de simular-dias, semilla 2024: docs/corrida-oficial.json; los mismos días de la 4.2)
+const CURVA = {"min":[540,555,570,585,600,615,630,645,660,675,690,705,720,735,750,765,780,795,810,825,840,855,870,885,900,915,930,945,960,975,990,1005,1020,1035,1050,1065,1080],"enCurso":[10,10,10,10,10,10,10,10,10,10,10,10,10,8.8,8.05,7.11,6.15,5.63,4.93,4.31,3.81,3.31,2.88,2.56,2.29,2.13,2.06,2.03,2,2,2,2,2,2,2,2,2],"estres":[10,38.1,57.5,70.8,79.9,91.2,90.5,88.5,95.5,96.9,97.9,98.5,100,98.1,98.1,90.2,81.8,77.2,70.1,62.5,55.7,48.3,41.5,35,29.2,24.6,20.8,18,16,14.5,13.3,12.5,11.9,11.4,11,10.8,10.6]};
 
 const coma = (x, d = 1) => x.toFixed(d).replace('.', ',');
 const horas = (m) => (m < 60 ? `${m} min` : `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, '0')} min`);
@@ -542,7 +547,7 @@ document.getElementById('t-reglas').innerHTML = [
   s += `<path d="${linea(CURVA.enCurso, yA)}" fill="none" stroke="#1d48b5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
   s += `<path d="${linea(CURVA.estres, yB)}" fill="none" stroke="#1d2532" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
   s += `<circle cx="${x(875)}" cy="${yA(2.8)}" r="4" fill="#1d48b5" stroke="#fcfaf6" stroke-width="2"/><text x="${x(875) + 8}" y="${yA(2.8) - 7}" font-size="9.5" fill="#2c3442">vuelve a 2 · 14:35</text>`;
-  s += `<circle cx="${x(910)}" cy="${yB(25)}" r="4" fill="#1d2532" stroke="#fcfaf6" stroke-width="2"/><text x="${x(910) + 8}" y="${yB(25) - 7}" font-size="9.5" fill="#2c3442">tranquila · 15:10</text>`;
+  s += `<circle cx="${x(907)}" cy="${yB(25)}" r="4" fill="#1d2532" stroke="#fcfaf6" stroke-width="2"/><text x="${x(907) + 8}" y="${yB(25) - 7}" font-size="9.5" fill="#2c3442">tranquila · 15:07</text>`;
   document.getElementById('g-bajar').innerHTML = s + '</svg>';
 })();
 
