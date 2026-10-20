@@ -176,7 +176,7 @@ elBtnBorrar.addEventListener('click', () => {
 
 escribirDias(cargarDias());
 
-// Carga: tareas a la vez contra el límite sano (3). Verde hasta 3, amarillo
+// Carga: tareas a la vez contra el límite sostenible (3). Verde hasta 3, amarillo
 // con 4 o 5 y rojo desde 6 (los mismos cortes del estrés: Tranqui, Ocupada,
 // Estresada o más).
 const LIMITE_SANO = 3;
@@ -190,7 +190,7 @@ function pintarWip() {
   pintarNotaWip(v, juego.enCurso.length);
 }
 
-// Bajo el slider: dentro o sobre el límite sano. Si bajaron el límite y
+// Bajo el slider: dentro o sobre el límite sostenible. Si bajaron el límite y
 // todavía tiene más tareas abiertas, avisa que está terminando lo empezado (no
 // toma nuevas hasta quedar bajo él)
 function pintarNotaWip(limite, enCurso) {
@@ -199,8 +199,8 @@ function pintarNotaWip(limite, enCurso) {
   const texto = drenando
     ? `Terminando lo empezado: ${enCurso} en curso`
     : limite <= LIMITE_SANO
-      ? `Dentro del límite sano (${LIMITE_SANO})`
-      : `Sobre el límite sano (${LIMITE_SANO})`;
+      ? `Dentro del límite sostenible (${LIMITE_SANO})`
+      : `Sobre el límite sostenible (${LIMITE_SANO})`;
   if (elWipNota.textContent !== texto) elWipNota.textContent = texto;
   elWipNota.dataset.carga = nivelCarga(carga);
 }
