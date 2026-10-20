@@ -35,7 +35,7 @@ const IMG = join(CARPETA, 'img');
 const SALIDA = process.env.SALIDA ?? join(homedir(), 'Desktop', 'Mosca del WIP');
 const FECHA = process.env.FECHA ?? new Date().toLocaleDateString('sv-SE'); // 2026-10-20
 const DOCUMENTOS = [
-  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v1' },
+  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v2' },
   { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v3', paginas: [10, 13] },
   { id: 'norte', html: 'norte.html', nombre: 'Norte del proyecto', version: 'v1', paginas: [1, 2], aparte: true },
   { id: 'etapa4-1', html: 'etapa4-1.html', nombre: 'Etapa 4.1 La paradoja', version: 'v1', paginas: [1, 3], aparte: true },

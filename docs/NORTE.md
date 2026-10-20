@@ -47,8 +47,8 @@ sostenible**.
   por Felipe).
 - **Límite sostenible** = el que se mantiene todo el día sin colapsar (el
   juego mide un solo día). En la parte 4.4 (2026-10-20) reemplazó a "límite
-  sano" en el panel de Carga del juego y en el informe para compartir v2; el
-  informe completo v2 viene después.
+  sano" en el panel de Carga del juego y en el informe para compartir (v2 y v3) y en el
+  informe completo v2.
 
 ## Hipótesis (lo que vamos a comprobar)
 
@@ -133,7 +133,7 @@ el juego (`docs/etapa4-3.md`). Copia textual en `docs/etapa4-plan.md`.
 | 4.1 | Medir la paradoja (H1) | Hecha y aprobada 2026-10-20 |
 | 4.2 | Robustez: ¿se sostiene si cambian los supuestos? (H2 y H3) | Hecha 2026-10-20 |
 | 4.3 | Anclar en estudios: investigación de Felipe con su asesor (`docs/investigacion-etapa4.md`) y cruce con el juego (`docs/etapa4-3.md`) | Hecha 2026-10-20: sin cambios en el juego |
-| 4.4 | Rehacer el informe para compartir alrededor del norte. Al terminar: etiqueta git `etapa-4` | En curso: pantalla cambiada y "Para compartir v2" (13 págs.) listo, espera OK de Felipe; después el Informe completo v2 |
+| 4.4 | Rehacer el informe para compartir alrededor del norte. Al terminar: etiqueta git `etapa-4` | Hecha 2026-10-20: pantalla, "Para compartir v3" (13 págs.) e "Informe completo v2" (72 págs.); la etiqueta `etapa-4` va tras una revisión independiente |
 | 4.5 | Kit para probar con equipos reales (H4) | Sólo cuando Felipe lo pida |
 
 Reglas para todas las partes (detalle en `docs/etapa4-plan.md`):
