@@ -3,116 +3,27 @@
 //
 // NO toca el juego: juega los mismos días que scripts/simular-dias.mjs (200
 // por WIP, pasos de 0,15 min, con los 3 días previos de siempre) y sólo
-// OBSERVA cada paso, envolviendo DayBrain.prototype.tick: mira el estado
-// antes y después, sin cambiar números ni llamar al azar. Azar con semilla
-// fija (la de scripts/opciones-3-3.mjs). Control: con la misma semilla, las
-// terminadas salen idénticas con y sin la observación.
+// OBSERVA cada paso (scripts/medicion.mjs, compartido con la 4.2). Azar con
+// semilla fija (la de scripts/opciones-3-3.mjs). Control: con la misma
+// semilla, las terminadas salen idénticas con y sin la observación.
 //
 // Uso: node scripts/medir-paradoja.mjs     (guarda docs/etapa4-1-resultados.json)
 import { writeFileSync } from 'node:fs';
 import { DayBrain } from '../src/brain.js';
+import { jugarWip, revisar, SEMILLA, PASO } from './medicion.mjs';
 
 const DIAS = Number(process.env.DIAS ?? 200);
-const PASO = 0.15; // igual que simular-dias
-const SEMILLA = 2024;
-const FIN_DIA = 18 * 60;
-
-let s = 0;
-const sembrar = (semilla) => { s = semilla >>> 0; };
-Math.random = () => {
-  s = (s + 0x6d2b79f5) >>> 0;
-  let t = s;
-  t = Math.imul(t ^ (t >>> 15), t | 1);
-  t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-};
-
-// ---------- La observación ----------
-let observar = false;
-let obs = null; // lo que se suma en el día principal (null en los días previos)
-const tickDelJuego = DayBrain.prototype.tick;
-DayBrain.prototype.tick = function (dtMin) {
-  if (!observar || this.terminado || dtMin <= 0) return tickDelJuego.call(this, dtMin);
-  // Tamaño de cada tarea antes de que la toque (las de "Por hacer" están enteras)
-  for (const t of this.porHacer) if (t._tamano === undefined) { t._tamano = t.minutosRestantes; t._turnos = 0; }
-  const dt = Math.min(dtMin, Math.max(FIN_DIA - this.minutoActual, 0));
-  const fumaba = this.fumando;
-  const cafe = this.tomandoCafe;
-  // Las que puede avanzar en este paso, con la misma lógica del juego:
-  // primero rellena "En curso" y después descuenta el tiempo a los bloqueos
-  const entran = this.porHacer.slice(0, Math.max(0, this.wip - this.enCurso.length));
-  const tareas = [...this.enCurso, ...entran];
-  const puede = tareas.filter((t) => Math.max(0, t.minutosBloqueada - dt) <= 0).length;
-  const antes = new Map(tareas.map((t) => [t, t.minutosRestantes]));
-
-  tickDelJuego.call(this, dtMin);
-  if (dt <= 0) return;
-
-  let trabajo = false;
-  for (const [t, r] of antes) {
-    if (!(t.minutosRestantes < r)) continue;
-    const avance = r - t.minutosRestantes;
-    t._turnos += dt * Math.min(1, r / avance); // si la terminó a mitad del paso, sólo la parte usada
-    trabajo = true;
-    if (obs && t.minutosRestantes <= 0) {
-      const enCurso = this.minutosDeDia - t.inicio; // el mismo tiempo por tarea del juego
-      obs.tareas += 1;
-      obs.sumaTurnos += t._turnos;
-      obs.sumaEnCurso += enCurso;
-      obs.sumaTamano += t._tamano;
-      obs.promFlujo += t._turnos / enCurso;
-      obs.promTamano += t._tamano / enCurso;
-    }
-  }
-  if (!obs) return;
-  obs.minutos += dt;
-  if (puede > 0) obs.conQueHacer += dt;
-  if (fumaba) obs.fumando += dt;
-  else if (cafe) obs.cafe += dt;
-  else if (this.esperando) obs.esperando += dt;
-  else if (trabajo) obs.trabajando += dt;
-  else obs.otro += dt;
-  if (!fumaba && !cafe && (puede === 0) !== this.esperando) obs.descalces += 1;
-};
-
-function jugar(wip) {
-  sembrar(SEMILLA);
-  const t = {
-    minutos: 0, conQueHacer: 0, trabajando: 0, fumando: 0, cafe: 0, esperando: 0, otro: 0, descalces: 0,
-    tareas: 0, sumaTurnos: 0, sumaEnCurso: 0, sumaTamano: 0, promFlujo: 0, promTamano: 0,
-    hechas: 0, sumaTiempoJuego: 0, medidasJuego: 0, rinden: 0, colillas: 0, cafes: 0,
-  };
-  for (let d = 0; d < DIAS; d++) {
-    obs = null;
-    const dia = new DayBrain(wip); // los días previos: se siguen los turnos, no se suman
-    obs = t;
-    while (!dia.terminado) dia.tick(PASO);
-    obs = null;
-    const m = dia.medidas();
-    t.hechas += m.hechas;
-    t.sumaTiempoJuego += m.sumaTiempoPorTarea;
-    t.medidasJuego += m.tareasMedidas;
-    t.rinden += m.minutosRinden;
-    t.colillas += m.colillas;
-    t.cafes += m.cafes;
-  }
-  return t;
-}
+const jugar = (wip, mirar = true) => jugarWip(DayBrain, wip, { dias: DIAS, mirar });
 
 // ---------- Control: la observación no cambia nada ----------
-observar = false;
 const sinMirar = [];
-for (let wip = 1; wip <= 10; wip++) sinMirar.push(jugar(wip).hechas);
+for (let wip = 1; wip <= 10; wip++) sinMirar.push(jugar(wip, false).hechas);
 
-observar = true;
 const filas = [];
 const avisos = [];
 for (let wip = 1; wip <= 10; wip++) {
   const t = jugar(wip);
-  if (t.hechas !== sinMirar[wip - 1]) avisos.push(`WIP ${wip}: la observación cambió las terminadas (${sinMirar[wip - 1]} → ${t.hechas})`);
-  if (t.descalces) avisos.push(`WIP ${wip}: "con qué hacer" no calza con "espera" del juego en ${t.descalces} pasos`);
-  if (t.otro > 1e-6) avisos.push(`WIP ${wip}: ${t.otro.toFixed(2)} min sin clasificar`);
-  if (t.tareas !== t.medidasJuego || Math.abs(t.sumaEnCurso - t.sumaTiempoJuego) > 1e-6 * t.sumaTiempoJuego) avisos.push(`WIP ${wip}: el tiempo en curso no calza con el del juego`);
+  avisos.push(...revisar(t, wip, sinMirar[wip - 1]));
   const pct = (x) => (100 * x) / t.minutos;
   filas.push({
     wip,

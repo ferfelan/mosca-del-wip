@@ -6,6 +6,7 @@
 // Y los cortos de la Etapa 4, que sólo se arman cuando se piden con DOC:
 //  · "Norte del proyecto" (1 a 2 páginas; fuente: docs/contexto/norte.html).
 //  · "Etapa 4.1 La paradoja" (1 a 3 páginas; fuente: docs/contexto/etapa4-1.html).
+//  · "Etapa 4.2 Robustez" (1 a 3 páginas; fuente: docs/contexto/etapa4-2.html).
 // Todos usan docs/contexto/estilo.css y las imágenes de docs/contexto/img/
 // (todas sacadas del juego o del arte de portada: nada de referencias/).
 //
@@ -16,7 +17,7 @@
 //
 // Uso: node scripts/documento.mjs                → los dos informes
 //      DOC=compartir node scripts/documento.mjs  → sólo uno (completo, compartir,
-//                                                  norte o etapa4-1)
+//                                                  norte, etapa4-1 o etapa4-2)
 //      FOTOS=1 node scripts/documento.mjs        → antes saca todas las imágenes
 //                                                  del juego (requiere npm run dev)
 //      FOTOS=paneles,cierre node …               → sólo esos grupos: holograma,
@@ -38,6 +39,7 @@ const DOCUMENTOS = [
   { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v1', paginas: [10, 15] },
   { id: 'norte', html: 'norte.html', nombre: 'Norte del proyecto', version: 'v1', paginas: [1, 2], aparte: true },
   { id: 'etapa4-1', html: 'etapa4-1.html', nombre: 'Etapa 4.1 La paradoja', version: 'v1', paginas: [1, 3], aparte: true },
+  { id: 'etapa4-2', html: 'etapa4-2.html', nombre: 'Etapa 4.2 Robustez', version: 'v1', paginas: [1, 3], aparte: true },
 ];
 const JUEGO = 'http://localhost:5173';
 const b = await chromium.launch({ args: ['--enable-unsafe-swiftshader', '--use-gl=angle', '--ignore-gpu-blocklist'] });

@@ -1,0 +1,3585 @@
+{
+ "dias": 200,
+ "semilla": 2024,
+ "paso": 0.15,
+ "controles": {
+  "sin_bloqueos_mejor_1": true,
+  "sin_costo_cae_a_lo_mas_la_mitad": true,
+  "tecnico": []
+ },
+ "escenarios": [
+  {
+   "nombre": "bloqueos 0 %",
+   "supuestos": {
+    "bloqueo": 0,
+    "duracion": [
+     30,
+     60
+    ],
+    "costo": "suave",
+    "tamano": [
+     15,
+     35
+    ],
+    "residuo": 0.03
+   },
+   "grupos": [
+    "bloqueos",
+    "cruce"
+   ],
+   "mejor_wip": 1,
+   "zona_buena": [
+    1
+   ],
+   "con_que_hacer_99_desde": 1,
+   "tiempo_sube_con_wip": true,
+   "caida_mejor_a_10": 0.6123555765149729,
+   "filas": [
+    {
+     "wip": 1,
+     "terminadas": 21.205,
+     "tiempo_por_tarea_min": 25.459125206317022,
+     "eficiencia_flujo": 97.88801092499628,
+     "estres": 5.494142586880676,
+     "colillas": 0,
+     "con_que_hacer": 100,
+     "trabajando": 98.16666666671757,
+     "fumando": 0,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 58.72396666061713,
+     "hechas_total": 4241
+    },
+    {
+     "wip": 2,
+     "terminadas": 17.985,
+     "tiempo_por_tarea_min": 59.927773144280614,
+     "eficiencia_flujo": 49.10667138177133,
+     "estres": 10.000000000000696,
+     "colillas": 0,
+     "con_que_hacer": 100,
+     "trabajando": 98.47222222226465,
+     "fumando": 0,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 50.095122604608804,
+     "hechas_total": 3597
+    },
+    {
+     "wip": 3,
+     "terminadas": 16.595,
+     "tiempo_por_tarea_min": 97.68446821330646,
+     "eficiencia_flujo": 32.84849331943105,
+     "estres": 17.40851863497345,
+     "colillas": 0,
+     "con_que_hacer": 100,
+     "trabajando": 98.7777777778117,
+     "fumando": 0,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 46.12201121473167,
+     "hechas_total": 3319
+    },
+    {
+     "wip": 4,
+     "terminadas": 15.12,
+     "tiempo_por_tarea_min": 142.8036871692957,
+     "eficiencia_flujo": 24.35514656318256,
+     "estres": 30.37342624617575,
+     "colillas": 1,
+     "con_que_hacer": 100,
+     "trabajando": 97.58333333340045,
+     "fumando": 1.5000000000167746,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 42.065065223875166,
+     "hechas_total": 3024
+    },
+    {
+     "wip": 5,
+     "terminadas": 13.79,
+     "tiempo_por_tarea_min": 196.20556562724573,
+     "eficiencia_flujo": 18.99814633082248,
+     "estres": 41.48620419863443,
+     "colillas": 3,
+     "con_que_hacer": 100,
+     "trabajando": 95.19444444457788,
+     "fumando": 4.500000000049531,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 38.19024553615007,
+     "hechas_total": 2758
+    },
+    {
+     "wip": 6,
+     "terminadas": 12.175,
+     "tiempo_por_tarea_min": 266.3094455851885,
+     "eficiencia_flujo": 15.149306820404032,
+     "estres": 53.502824758243285,
+     "colillas": 6,
+     "con_que_hacer": 100,
+     "trabajando": 91.11111111135055,
+     "fumando": 8.888888888983452,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 33.83079091407235,
+     "hechas_total": 2435
+    },
+    {
+     "wip": 7,
+     "terminadas": 10.935,
+     "tiempo_por_tarea_min": 342.7309099222359,
+     "eficiencia_flujo": 12.559003190694591,
+     "estres": 63.711760103552955,
+     "colillas": 8,
+     "con_que_hacer": 100,
+     "trabajando": 88.00000000033324,
+     "fumando": 12.00000000011405,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 30.571404437413065,
+     "hechas_total": 2187
+    },
+    {
+     "wip": 8,
+     "terminadas": 9.84,
+     "tiempo_por_tarea_min": 434.7422256097206,
+     "eficiencia_flujo": 10.43327940377322,
+     "estres": 78.5287973734977,
+     "colillas": 11,
+     "con_que_hacer": 100,
+     "trabajando": 83.50000000045819,
+     "fumando": 16.500000000168882,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 27.509942867734853,
+     "hechas_total": 1968
+    },
+    {
+     "wip": 9,
+     "terminadas": 9.115,
+     "tiempo_por_tarea_min": 539.7118760284881,
+     "eficiencia_flujo": 8.94439648813502,
+     "estres": 85.93731600847048,
+     "colillas": 13,
+     "con_que_hacer": 100,
+     "trabajando": 80.50000000054152,
+     "fumando": 19.50000000023107,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 25.076074823773105,
+     "hechas_total": 1823
+    },
+    {
+     "wip": 10,
+     "terminadas": 8.22,
+     "tiempo_por_tarea_min": 636.7980231143174,
+     "eficiencia_flujo": 7.745258788144109,
+     "estres": 92.78873775567777,
+     "colillas": 15,
+     "con_que_hacer": 100,
+     "trabajando": 77.50000000062481,
+     "fumando": 22.500000000293255,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 23.216083491950283,
+     "hechas_total": 1644
+    }
+   ]
+  },
+  {
+   "nombre": "bloqueos 10 %",
+   "supuestos": {
+    "bloqueo": 0.1,
+    "duracion": [
+     30,
+     60
+    ],
+    "costo": "suave",
+    "tamano": [
+     15,
+     35
+    ],
+    "residuo": 0.03
+   },
+   "grupos": [
+    "bloqueos",
+    "cruce"
+   ],
+   "mejor_wip": 2,
+   "zona_buena": [
+    1,
+    2
+   ],
+   "con_que_hacer_99_desde": 2,
+   "tiempo_sube_con_wip": true,
+   "caida_mejor_a_10": 0.5433889953462907,
+   "filas": [
+    {
+     "wip": 1,
+     "terminadas": 18.08,
+     "tiempo_por_tarea_min": 29.93264657079368,
+     "eficiencia_flujo": 83.428067654534,
+     "estres": 5.494142586880676,
+     "colillas": 0,
+     "con_que_hacer": 85.36875000040571,
+     "trabajando": 83.81055555600452,
+     "fumando": 0,
+     "esperando_bloqueos": 14.356111111246049,
+     "minutos_rinden_por_hora": 50.13504374103085,
+     "hechas_total": 3616
+    },
+    {
+     "wip": 2,
+     "terminadas": 18.265,
+     "tiempo_por_tarea_min": 59.303011223645555,
+     "eficiencia_flujo": 48.6170415923775,
+     "estres": 10.000000000000696,
+     "colillas": 0,
+     "con_que_hacer": 99.1308333333574,
+     "trabajando": 97.61680555562167,
+     "fumando": 0,
+     "esperando_bloqueos": 0.8554166666760853,
+     "minutos_rinden_por_hora": 50.584999246580075,
+     "hechas_total": 3653
+    },
+    {
+     "wip": 3,
+     "terminadas": 16.705,
+     "tiempo_por_tarea_min": 96.92868901525394,
+     "eficiencia_flujo": 32.84378456757758,
+     "estres": 17.40851863497345,
+     "colillas": 0,
+     "con_que_hacer": 99.91277777778019,
+     "trabajando": 98.69208333336965,
+     "fumando": 0,
+     "esperando_bloqueos": 0.08569444444539005,
+     "minutos_rinden_por_hora": 46.45348598511719,
+     "hechas_total": 3341
+    },
+    {
+     "wip": 4,
+     "terminadas": 15.255,
+     "tiempo_por_tarea_min": 141.12245165517905,
+     "eficiencia_flujo": 24.36229563905025,
+     "estres": 30.37342624617575,
+     "colillas": 1,
+     "con_que_hacer": 100,
+     "trabajando": 97.58333333340045,
+     "fumando": 1.5000000000167746,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 42.3422263739712,
+     "hechas_total": 3051
+    },
+    {
+     "wip": 5,
+     "terminadas": 14.07,
+     "tiempo_por_tarea_min": 194.45705401561563,
+     "eficiencia_flujo": 18.984308647221624,
+     "estres": 41.48620419863443,
+     "colillas": 3,
+     "con_que_hacer": 100,
+     "trabajando": 95.19444444457788,
+     "fumando": 4.500000000049531,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 38.38172258182161,
+     "hechas_total": 2814
+    },
+    {
+     "wip": 6,
+     "terminadas": 12.27,
+     "tiempo_por_tarea_min": 263.0732273838364,
+     "eficiencia_flujo": 15.156390701086817,
+     "estres": 53.502824758243285,
+     "colillas": 6,
+     "con_que_hacer": 100,
+     "trabajando": 91.11111111135055,
+     "fumando": 8.888888888983452,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 33.998577246408686,
+     "hechas_total": 2454
+    },
+    {
+     "wip": 7,
+     "terminadas": 11.025,
+     "tiempo_por_tarea_min": 340.0904308389702,
+     "eficiencia_flujo": 12.559386371884974,
+     "estres": 63.711760103552955,
+     "colillas": 8,
+     "con_que_hacer": 100,
+     "trabajando": 88.00000000033324,
+     "fumando": 12.00000000011405,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 30.67807295088598,
+     "hechas_total": 2205
+    },
+    {
+     "wip": 8,
+     "terminadas": 9.95,
+     "tiempo_por_tarea_min": 432.6713065326284,
+     "eficiencia_flujo": 10.430401130479488,
+     "estres": 78.5287973734977,
+     "colillas": 11,
+     "con_que_hacer": 100,
+     "trabajando": 83.50000000045819,
+     "fumando": 16.500000000168882,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 27.566810443932575,
+     "hechas_total": 1990
+    },
+    {
+     "wip": 9,
+     "terminadas": 9.255,
+     "tiempo_por_tarea_min": 539.7316585629037,
+     "eficiencia_flujo": 8.947701792533627,
+     "estres": 85.93731600847048,
+     "colillas": 13,
+     "con_que_hacer": 100,
+     "trabajando": 80.50000000054152,
+     "fumando": 19.50000000023107,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 25.128255493017782,
+     "hechas_total": 1851
+    },
+    {
+     "wip": 10,
+     "terminadas": 8.34,
+     "tiempo_por_tarea_min": 639.7571043165084,
+     "eficiencia_flujo": 7.737416629572265,
+     "estres": 92.78873775567777,
+     "colillas": 15,
+     "con_que_hacer": 100,
+     "trabajando": 77.50000000062481,
+     "fumando": 22.500000000293255,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 23.231165910881007,
+     "hechas_total": 1668
+    }
+   ]
+  },
+  {
+   "nombre": "juego de hoy",
+   "supuestos": {
+    "bloqueo": 0.2,
+    "duracion": [
+     30,
+     60
+    ],
+    "costo": "suave",
+    "tamano": [
+     15,
+     35
+    ],
+    "residuo": 0.03
+   },
+   "grupos": [
+    "bloqueos",
+    "duracion",
+    "costo",
+    "tamano",
+    "residuo",
+    "cruce"
+   ],
+   "mejor_wip": 2,
+   "zona_buena": [
+    2
+   ],
+   "con_que_hacer_99_desde": 3,
+   "tiempo_sube_con_wip": true,
+   "caida_mejor_a_10": 0.5461367426347972,
+   "filas": [
+    {
+     "wip": 1,
+     "terminadas": 15.885,
+     "tiempo_por_tarea_min": 34.12791942083395,
+     "eficiencia_flujo": 72.88741999626907,
+     "estres": 5.494142586880676,
+     "colillas": 0,
+     "con_que_hacer": 74.69958333403405,
+     "trabajando": 73.34486111184944,
+     "fumando": 0,
+     "esperando_bloqueos": 24.821805555898816,
+     "minutos_rinden_por_hora": 43.87247100405616,
+     "hechas_total": 3177
+    },
+    {
+     "wip": 2,
+     "terminadas": 17.99,
+     "tiempo_por_tarea_min": 60.06971928848713,
+     "eficiencia_flujo": 47.21010696827132,
+     "estres": 10.000000000000696,
+     "colillas": 0,
+     "con_que_hacer": 96.28138888899154,
+     "trabajando": 94.80902777792132,
+     "fumando": 0,
+     "esperando_bloqueos": 3.663194444487004,
+     "minutos_rinden_por_hora": 49.777211371589104,
+     "hechas_total": 3598
+    },
+    {
+     "wip": 3,
+     "terminadas": 16.895,
+     "tiempo_por_tarea_min": 96.00208641608856,
+     "eficiencia_flujo": 32.69265213786307,
+     "estres": 17.40851863497345,
+     "colillas": 0,
+     "con_que_hacer": 99.54291666667932,
+     "trabajando": 98.32375000004652,
+     "fumando": 0,
+     "esperando_bloqueos": 0.4540277777827944,
+     "minutos_rinden_por_hora": 46.69217894286818,
+     "hechas_total": 3379
+    },
+    {
+     "wip": 4,
+     "terminadas": 15.405,
+     "tiempo_por_tarea_min": 140.38680623172738,
+     "eficiencia_flujo": 24.31029810740465,
+     "estres": 30.37342624617575,
+     "colillas": 1,
+     "con_que_hacer": 99.98791666666699,
+     "trabajando": 97.57125000006745,
+     "fumando": 1.5000000000167746,
+     "esperando_bloqueos": 0.012083333333466601,
+     "minutos_rinden_por_hora": 42.615514593482644,
+     "hechas_total": 3081
+    },
+    {
+     "wip": 5,
+     "terminadas": 13.96,
+     "tiempo_por_tarea_min": 193.7002328080018,
+     "eficiencia_flujo": 19.01383390786516,
+     "estres": 41.48620419863443,
+     "colillas": 3,
+     "con_que_hacer": 100,
+     "trabajando": 95.19444444457788,
+     "fumando": 4.500000000049531,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 38.57383639213186,
+     "hechas_total": 2792
+    },
+    {
+     "wip": 6,
+     "terminadas": 12.315,
+     "tiempo_por_tarea_min": 264.2005481120313,
+     "eficiencia_flujo": 15.128127122197906,
+     "estres": 53.502824758243285,
+     "colillas": 6,
+     "con_que_hacer": 100,
+     "trabajando": 91.11111111135055,
+     "fumando": 8.888888888983452,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 34.15186155618546,
+     "hechas_total": 2463
+    },
+    {
+     "wip": 7,
+     "terminadas": 11.15,
+     "tiempo_por_tarea_min": 340.4709192824797,
+     "eficiencia_flujo": 12.560665422216394,
+     "estres": 63.711760103552955,
+     "colillas": 8,
+     "con_que_hacer": 100,
+     "trabajando": 88.00000000033324,
+     "fumando": 12.00000000011405,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 30.774199218165784,
+     "hechas_total": 2230
+    },
+    {
+     "wip": 8,
+     "terminadas": 9.96,
+     "tiempo_por_tarea_min": 431.03913152606896,
+     "eficiencia_flujo": 10.429155186574796,
+     "estres": 78.5287973734977,
+     "colillas": 11,
+     "con_que_hacer": 100,
+     "trabajando": 83.50000000045819,
+     "fumando": 16.500000000168882,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 27.623099665619424,
+     "hechas_total": 1992
+    },
+    {
+     "wip": 9,
+     "terminadas": 9.14,
+     "tiempo_por_tarea_min": 533.6369529540136,
+     "eficiencia_flujo": 8.94630001608729,
+     "estres": 85.93731600847048,
+     "colillas": 13,
+     "con_que_hacer": 100,
+     "trabajando": 80.50000000054152,
+     "fumando": 19.50000000023107,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 25.17266824530442,
+     "hechas_total": 1828
+    },
+    {
+     "wip": 10,
+     "terminadas": 8.165,
+     "tiempo_por_tarea_min": 633.8051745253779,
+     "eficiencia_flujo": 7.749329381322524,
+     "estres": 92.78873775567777,
+     "colillas": 15,
+     "con_que_hacer": 100,
+     "trabajando": 77.50000000062481,
+     "fumando": 22.500000000293255,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 23.248895666768785,
+     "hechas_total": 1633
+    }
+   ]
+  },
+  {
+   "nombre": "bloqueos 30 %",
+   "supuestos": {
+    "bloqueo": 0.3,
+    "duracion": [
+     30,
+     60
+    ],
+    "costo": "suave",
+    "tamano": [
+     15,
+     35
+    ],
+    "residuo": 0.03
+   },
+   "grupos": [
+    "bloqueos",
+    "cruce"
+   ],
+   "mejor_wip": 2,
+   "zona_buena": [
+    2,
+    3
+   ],
+   "con_que_hacer_99_desde": 3,
+   "tiempo_sube_con_wip": true,
+   "caida_mejor_a_10": 0.5210253456221198,
+   "filas": [
+    {
+     "wip": 1,
+     "terminadas": 14.17,
+     "tiempo_por_tarea_min": 38.24401905433634,
+     "eficiencia_flujo": 65.40538912764218,
+     "estres": 5.494142586880676,
+     "colillas": 0,
+     "con_que_hacer": 66.95638888980397,
+     "trabajando": 65.71875000094944,
+     "fumando": 0,
+     "esperando_bloqueos": 32.44791666716865,
+     "minutos_rinden_por_hora": 39.31218479368309,
+     "hechas_total": 2834
+    },
+    {
+     "wip": 2,
+     "terminadas": 17.36,
+     "tiempo_por_tarea_min": 62.30784850229755,
+     "eficiencia_flujo": 45.59583967814008,
+     "estres": 10.000000000000696,
+     "colillas": 0,
+     "con_que_hacer": 93.03972222241484,
+     "trabajando": 91.61847222245433,
+     "fumando": 0,
+     "esperando_bloqueos": 6.8537500000704314,
+     "minutos_rinden_por_hora": 48.52945599370955,
+     "hechas_total": 3472
+    },
+    {
+     "wip": 3,
+     "terminadas": 16.755,
+     "tiempo_por_tarea_min": 96.40007460458467,
+     "eficiencia_flujo": 32.46947328604931,
+     "estres": 17.40851863497345,
+     "colillas": 0,
+     "con_que_hacer": 99.01125000002735,
+     "trabajando": 97.7970833333944,
+     "fumando": 0,
+     "esperando_bloqueos": 0.9806944444552868,
+     "minutos_rinden_por_hora": 46.864460881921325,
+     "hechas_total": 3351
+    },
+    {
+     "wip": 4,
+     "terminadas": 15.39,
+     "tiempo_por_tarea_min": 139.9436159843899,
+     "eficiencia_flujo": 24.332706651093375,
+     "estres": 30.37342624617575,
+     "colillas": 1,
+     "con_que_hacer": 99.94694444444593,
+     "trabajando": 97.53027777784636,
+     "fumando": 1.5000000000167746,
+     "esperando_bloqueos": 0.05305555555614029,
+     "minutos_rinden_por_hora": 42.87208027286775,
+     "hechas_total": 3078
+    },
+    {
+     "wip": 5,
+     "terminadas": 13.935,
+     "tiempo_por_tarea_min": 193.6346429852683,
+     "eficiencia_flujo": 18.98782450335667,
+     "estres": 41.48620419863443,
+     "colillas": 3,
+     "con_que_hacer": 100,
+     "trabajando": 95.19444444457788,
+     "fumando": 4.500000000049531,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 38.74666199397887,
+     "hechas_total": 2787
+    },
+    {
+     "wip": 6,
+     "terminadas": 12.265,
+     "tiempo_por_tarea_min": 262.5666734610409,
+     "eficiencia_flujo": 15.136822298037895,
+     "estres": 53.502824758243285,
+     "colillas": 6,
+     "con_que_hacer": 100,
+     "trabajando": 91.11111111135055,
+     "fumando": 8.888888888983452,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 34.306024890041456,
+     "hechas_total": 2453
+    },
+    {
+     "wip": 7,
+     "terminadas": 11.18,
+     "tiempo_por_tarea_min": 339.70111806794637,
+     "eficiencia_flujo": 12.533982137870911,
+     "estres": 63.711760103552955,
+     "colillas": 8,
+     "con_que_hacer": 100,
+     "trabajando": 88.00000000033324,
+     "fumando": 12.00000000011405,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 30.890201745582186,
+     "hechas_total": 2236
+    },
+    {
+     "wip": 8,
+     "terminadas": 9.985,
+     "tiempo_por_tarea_min": 431.41629944913916,
+     "eficiencia_flujo": 10.418025838746004,
+     "estres": 78.5287973734977,
+     "colillas": 11,
+     "con_que_hacer": 100,
+     "trabajando": 83.50000000045819,
+     "fumando": 16.500000000168882,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 27.67268859757569,
+     "hechas_total": 1997
+    },
+    {
+     "wip": 9,
+     "terminadas": 9.24,
+     "tiempo_por_tarea_min": 538.1563311687959,
+     "eficiencia_flujo": 8.93514300299845,
+     "estres": 85.93731600847048,
+     "colillas": 13,
+     "con_que_hacer": 100,
+     "trabajando": 80.50000000054152,
+     "fumando": 19.50000000023107,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 25.21813075945337,
+     "hechas_total": 1848
+    },
+    {
+     "wip": 10,
+     "terminadas": 8.315,
+     "tiempo_por_tarea_min": 635.2003307275623,
+     "eficiencia_flujo": 7.734262414865344,
+     "estres": 92.78873775567777,
+     "colillas": 15,
+     "con_que_hacer": 100,
+     "trabajando": 77.50000000062481,
+     "fumando": 22.500000000293255,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 23.263467415037514,
+     "hechas_total": 1663
+    }
+   ]
+  },
+  {
+   "nombre": "bloqueos 40 %",
+   "supuestos": {
+    "bloqueo": 0.4,
+    "duracion": [
+     30,
+     60
+    ],
+    "costo": "suave",
+    "tamano": [
+     15,
+     35
+    ],
+    "residuo": 0.03
+   },
+   "grupos": [
+    "bloqueos",
+    "cruce"
+   ],
+   "mejor_wip": 3,
+   "zona_buena": [
+    2,
+    3
+   ],
+   "con_que_hacer_99_desde": 4,
+   "tiempo_sube_con_wip": true,
+   "caida_mejor_a_10": 0.49970396684428664,
+   "filas": [
+    {
+     "wip": 1,
+     "terminadas": 12.435,
+     "tiempo_por_tarea_min": 43.242018496175525,
+     "eficiencia_flujo": 57.93581954876705,
+     "estres": 5.494142586880676,
+     "colillas": 0,
+     "con_que_hacer": 59.073055556611266,
+     "trabajando": 57.97722222325522,
+     "fumando": 0,
+     "esperando_bloqueos": 40.18944444510715,
+     "minutos_rinden_por_hora": 34.682228045665184,
+     "hechas_total": 2487
+    },
+    {
+     "wip": 2,
+     "terminadas": 16.785,
+     "tiempo_por_tarea_min": 64.57700327672826,
+     "eficiencia_flujo": 43.54886569679092,
+     "estres": 10.000000000000696,
+     "colillas": 0,
+     "con_que_hacer": 88.87861111141922,
+     "trabajando": 87.50791666701285,
+     "fumando": 0,
+     "esperando_bloqueos": 10.964305555661428,
+     "minutos_rinden_por_hora": 46.7681588981295,
+     "hechas_total": 3357
+    },
+    {
+     "wip": 3,
+     "terminadas": 16.89,
+     "tiempo_por_tarea_min": 95.82058910596925,
+     "eficiencia_flujo": 32.34513139232304,
+     "estres": 17.40851863497345,
+     "colillas": 0,
+     "con_que_hacer": 98.33638888893488,
+     "trabajando": 97.14027777785698,
+     "fumando": 0,
+     "esperando_bloqueos": 1.6375000000185929,
+     "minutos_rinden_por_hora": 47.008505407756665,
+     "hechas_total": 3378
+    },
+    {
+     "wip": 4,
+     "terminadas": 15.44,
+     "tiempo_por_tarea_min": 139.4029954663058,
+     "eficiencia_flujo": 24.32750432840611,
+     "estres": 30.37342624617575,
+     "colillas": 1,
+     "con_que_hacer": 99.87736111111451,
+     "trabajando": 97.46069444451497,
+     "fumando": 1.5000000000167746,
+     "esperando_bloqueos": 0.12263888889024328,
+     "minutos_rinden_por_hora": 43.1780578792469,
+     "hechas_total": 3088
+    },
+    {
+     "wip": 5,
+     "terminadas": 13.875,
+     "tiempo_por_tarea_min": 192.95266666664514,
+     "eficiencia_flujo": 18.997252792317838,
+     "estres": 41.48620419863443,
+     "colillas": 3,
+     "con_que_hacer": 99.96513888888987,
+     "trabajando": 95.15958333346775,
+     "fumando": 4.500000000049531,
+     "esperando_bloqueos": 0.034861111111495376,
+     "minutos_rinden_por_hora": 38.964567923643,
+     "hechas_total": 2775
+    },
+    {
+     "wip": 6,
+     "terminadas": 12.34,
+     "tiempo_por_tarea_min": 261.9437601296325,
+     "eficiencia_flujo": 15.121910487775448,
+     "estres": 53.502824758243285,
+     "colillas": 6,
+     "con_que_hacer": 100,
+     "trabajando": 91.11111111135055,
+     "fumando": 8.888888888983452,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 34.487235211402925,
+     "hechas_total": 2468
+    },
+    {
+     "wip": 7,
+     "terminadas": 11.135,
+     "tiempo_por_tarea_min": 337.02851369552235,
+     "eficiencia_flujo": 12.550814025267169,
+     "estres": 63.711760103552955,
+     "colillas": 8,
+     "con_que_hacer": 100,
+     "trabajando": 88.00000000033324,
+     "fumando": 12.00000000011405,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 30.997145709907894,
+     "hechas_total": 2227
+    },
+    {
+     "wip": 8,
+     "terminadas": 10.075,
+     "tiempo_por_tarea_min": 431.20238213396027,
+     "eficiencia_flujo": 10.420906607715962,
+     "estres": 78.5287973734977,
+     "colillas": 11,
+     "con_que_hacer": 100,
+     "trabajando": 83.50000000045819,
+     "fumando": 16.500000000168882,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 27.744532837050468,
+     "hechas_total": 2015
+    },
+    {
+     "wip": 9,
+     "terminadas": 9.275,
+     "tiempo_por_tarea_min": 536.1410512129019,
+     "eficiencia_flujo": 8.939935231855584,
+     "estres": 85.93731600847048,
+     "colillas": 13,
+     "con_que_hacer": 100,
+     "trabajando": 80.50000000054152,
+     "fumando": 19.50000000023107,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 25.275302908862695,
+     "hechas_total": 1855
+    },
+    {
+     "wip": 10,
+     "terminadas": 8.45,
+     "tiempo_por_tarea_min": 630.9916272188965,
+     "eficiencia_flujo": 7.736290824509755,
+     "estres": 92.78873775567777,
+     "colillas": 15,
+     "con_que_hacer": 100,
+     "trabajando": 77.50000000062481,
+     "fumando": 22.500000000293255,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 23.28573632994172,
+     "hechas_total": 1690
+    }
+   ]
+  },
+  {
+   "nombre": "bloqueos de 15–30 min",
+   "supuestos": {
+    "bloqueo": 0.2,
+    "duracion": [
+     15,
+     30
+    ],
+    "costo": "suave",
+    "tamano": [
+     15,
+     35
+    ],
+    "residuo": 0.03
+   },
+   "grupos": [
+    "duracion"
+   ],
+   "mejor_wip": 2,
+   "zona_buena": [
+    1,
+    2
+   ],
+   "con_que_hacer_99_desde": 3,
+   "tiempo_sube_con_wip": true,
+   "caida_mejor_a_10": 0.5520349631248294,
+   "filas": [
+    {
+     "wip": 1,
+     "terminadas": 18.09,
+     "tiempo_por_tarea_min": 29.80189331121889,
+     "eficiencia_flujo": 83.57153386276232,
+     "estres": 5.494142586880676,
+     "colillas": 0,
+     "con_que_hacer": 85.38875000040447,
+     "trabajando": 83.80000000044859,
+     "fumando": 0,
+     "esperando_bloqueos": 14.36666666680232,
+     "minutos_rinden_por_hora": 50.127468825927615,
+     "hechas_total": 3618
+    },
+    {
+     "wip": 2,
+     "terminadas": 18.305,
+     "tiempo_por_tarea_min": 59.16947555312138,
+     "eficiencia_flujo": 48.56014797934622,
+     "estres": 10.000000000000696,
+     "colillas": 0,
+     "con_que_hacer": 98.94569444447365,
+     "trabajando": 97.42958333340464,
+     "fumando": 0,
+     "esperando_bloqueos": 1.0426388889004155,
+     "minutos_rinden_por_hora": 50.454616095002,
+     "hechas_total": 3661
+    },
+    {
+     "wip": 3,
+     "terminadas": 16.725,
+     "tiempo_por_tarea_min": 96.48859491777664,
+     "eficiencia_flujo": 32.808860566136396,
+     "estres": 17.40851863497345,
+     "colillas": 0,
+     "con_que_hacer": 99.93138888889081,
+     "trabajando": 98.71222222225798,
+     "fumando": 0,
+     "esperando_bloqueos": 0.06555555555627832,
+     "minutos_rinden_por_hora": 46.46975977766803,
+     "hechas_total": 3345
+    },
+    {
+     "wip": 4,
+     "terminadas": 15.275,
+     "tiempo_por_tarea_min": 141.37052373157158,
+     "eficiencia_flujo": 24.3263678043964,
+     "estres": 30.37342624617575,
+     "colillas": 1,
+     "con_que_hacer": 100,
+     "trabajando": 97.58333333340045,
+     "fumando": 1.5000000000167746,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 42.32962190110215,
+     "hechas_total": 3055
+    },
+    {
+     "wip": 5,
+     "terminadas": 13.94,
+     "tiempo_por_tarea_min": 194.9946915351298,
+     "eficiencia_flujo": 19.00082439525239,
+     "estres": 41.48620419863443,
+     "colillas": 3,
+     "con_que_hacer": 100,
+     "trabajando": 95.19444444457788,
+     "fumando": 4.500000000049531,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 38.37379177513832,
+     "hechas_total": 2788
+    },
+    {
+     "wip": 6,
+     "terminadas": 12.245,
+     "tiempo_por_tarea_min": 265.21165781949037,
+     "eficiencia_flujo": 15.145354300699013,
+     "estres": 53.502824758243285,
+     "colillas": 6,
+     "con_que_hacer": 100,
+     "trabajando": 91.11111111135055,
+     "fumando": 8.888888888983452,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 33.99580393793984,
+     "hechas_total": 2449
+    },
+    {
+     "wip": 7,
+     "terminadas": 11.115,
+     "tiempo_por_tarea_min": 341.43436797117903,
+     "eficiencia_flujo": 12.556605849906566,
+     "estres": 63.711760103552955,
+     "colillas": 8,
+     "con_que_hacer": 100,
+     "trabajando": 88.00000000033324,
+     "fumando": 12.00000000011405,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 30.674078548899743,
+     "hechas_total": 2223
+    },
+    {
+     "wip": 8,
+     "terminadas": 9.81,
+     "tiempo_por_tarea_min": 433.01062691127817,
+     "eficiencia_flujo": 10.431396089217959,
+     "estres": 78.5287973734977,
+     "colillas": 11,
+     "con_que_hacer": 100,
+     "trabajando": 83.50000000045819,
+     "fumando": 16.500000000168882,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 27.56585818412216,
+     "hechas_total": 1962
+    },
+    {
+     "wip": 9,
+     "terminadas": 9.135,
+     "tiempo_por_tarea_min": 533.9810071154546,
+     "eficiencia_flujo": 8.946722261315465,
+     "estres": 85.93731600847048,
+     "colillas": 13,
+     "con_que_hacer": 100,
+     "trabajando": 80.50000000054152,
+     "fumando": 19.50000000023107,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 25.12243118979951,
+     "hechas_total": 1827
+    },
+    {
+     "wip": 10,
+     "terminadas": 8.2,
+     "tiempo_por_tarea_min": 634.7958841463067,
+     "eficiencia_flujo": 7.745735397077709,
+     "estres": 92.78873775567777,
+     "colillas": 15,
+     "con_que_hacer": 100,
+     "trabajando": 77.50000000062481,
+     "fumando": 22.500000000293255,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 23.231376680639244,
+     "hechas_total": 1640
+    }
+   ]
+  },
+  {
+   "nombre": "bloqueos de 60–120 min",
+   "supuestos": {
+    "bloqueo": 0.2,
+    "duracion": [
+     60,
+     120
+    ],
+    "costo": "suave",
+    "tamano": [
+     15,
+     35
+    ],
+    "residuo": 0.03
+   },
+   "grupos": [
+    "duracion"
+   ],
+   "mejor_wip": 2,
+   "zona_buena": [
+    2,
+    3
+   ],
+   "con_que_hacer_99_desde": 4,
+   "tiempo_sube_con_wip": true,
+   "caida_mejor_a_10": 0.5237253168287651,
+   "filas": [
+    {
+     "wip": 1,
+     "terminadas": 12.615,
+     "tiempo_por_tarea_min": 42.73265953229836,
+     "eficiencia_flujo": 58.171988486458915,
+     "estres": 5.494142586880676,
+     "colillas": 0,
+     "con_que_hacer": 59.38791666772874,
+     "trabajando": 58.297361112150575,
+     "fumando": 0,
+     "esperando_bloqueos": 39.8693055562118,
+     "minutos_rinden_por_hora": 34.87307695967944,
+     "hechas_total": 2523
+    },
+    {
+     "wip": 2,
+     "terminadas": 16.965,
+     "tiempo_por_tarea_min": 63.84809902740266,
+     "eficiencia_flujo": 43.64470097652645,
+     "estres": 10.000000000000696,
+     "colillas": 0,
+     "con_que_hacer": 89.33888888918405,
+     "trabajando": 87.97319444477753,
+     "fumando": 0,
+     "esperando_bloqueos": 10.499027777879826,
+     "minutos_rinden_por_hora": 47.089962198525285,
+     "hechas_total": 3393
+    },
+    {
+     "wip": 3,
+     "terminadas": 16.805,
+     "tiempo_por_tarea_min": 95.81539720320208,
+     "eficiencia_flujo": 32.15057161573034,
+     "estres": 17.40851863497345,
+     "colillas": 0,
+     "con_que_hacer": 97.87791666672537,
+     "trabajando": 96.6762500000921,
+     "fumando": 0,
+     "esperando_bloqueos": 2.101527777801769,
+     "minutos_rinden_por_hora": 46.75771332855986,
+     "hechas_total": 3361
+    },
+    {
+     "wip": 4,
+     "terminadas": 15.495,
+     "tiempo_por_tarea_min": 138.08067118423807,
+     "eficiencia_flujo": 24.388525881619405,
+     "estres": 30.37342624617575,
+     "colillas": 1,
+     "con_que_hacer": 99.70597222223034,
+     "trabajando": 97.3088888889636,
+     "fumando": 1.5000000000167746,
+     "esperando_bloqueos": 0.274444444447508,
+     "minutos_rinden_por_hora": 43.112559166715045,
+     "hechas_total": 3099
+    },
+    {
+     "wip": 5,
+     "terminadas": 14.115,
+     "tiempo_por_tarea_min": 192.3983173928234,
+     "eficiencia_flujo": 18.943448709143805,
+     "estres": 41.48620419863443,
+     "colillas": 3,
+     "con_que_hacer": 99.95555555555678,
+     "trabajando": 95.15000000013468,
+     "fumando": 4.500000000049531,
+     "esperando_bloqueos": 0.044444444444934304,
+     "minutos_rinden_por_hora": 38.95997855204325,
+     "hechas_total": 2823
+    },
+    {
+     "wip": 6,
+     "terminadas": 12.33,
+     "tiempo_por_tarea_min": 261.2863138685865,
+     "eficiencia_flujo": 15.131428697547948,
+     "estres": 53.502824758243285,
+     "colillas": 6,
+     "con_que_hacer": 99.99736111111119,
+     "trabajando": 91.10847222246174,
+     "fumando": 8.888888888983452,
+     "esperando_bloqueos": 0.002638888888917989,
+     "minutos_rinden_por_hora": 34.493620783229154,
+     "hechas_total": 2466
+    },
+    {
+     "wip": 7,
+     "terminadas": 11.205,
+     "tiempo_por_tarea_min": 337.8440205265192,
+     "eficiencia_flujo": 12.563781968047978,
+     "estres": 63.711760103552955,
+     "colillas": 8,
+     "con_que_hacer": 100,
+     "trabajando": 88.00000000033324,
+     "fumando": 12.00000000011405,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 30.999825120522452,
+     "hechas_total": 2241
+    },
+    {
+     "wip": 8,
+     "terminadas": 10.07,
+     "tiempo_por_tarea_min": 429.9721449850691,
+     "eficiencia_flujo": 10.428745143102475,
+     "estres": 78.5287973734977,
+     "colillas": 11,
+     "con_que_hacer": 100,
+     "trabajando": 83.50000000045819,
+     "fumando": 16.500000000168882,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 27.745030533548185,
+     "hechas_total": 2014
+    },
+    {
+     "wip": 9,
+     "terminadas": 9.205,
+     "tiempo_por_tarea_min": 531.371835958682,
+     "eficiencia_flujo": 8.960681205972774,
+     "estres": 85.93731600847048,
+     "colillas": 13,
+     "con_que_hacer": 100,
+     "trabajando": 80.50000000054152,
+     "fumando": 19.50000000023107,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 25.272092127575252,
+     "hechas_total": 1841
+    },
+    {
+     "wip": 10,
+     "terminadas": 8.08,
+     "tiempo_por_tarea_min": 632.6882116336269,
+     "eficiencia_flujo": 7.756891051604238,
+     "estres": 92.78873775567777,
+     "colillas": 15,
+     "con_que_hacer": 100,
+     "trabajando": 77.50000000062481,
+     "fumando": 22.500000000293255,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 23.289672932572863,
+     "hechas_total": 1616
+    }
+   ]
+  },
+  {
+   "nombre": "sin costo de cambio",
+   "supuestos": {
+    "bloqueo": 0.2,
+    "duracion": [
+     30,
+     60
+    ],
+    "costo": "ninguno",
+    "tamano": [
+     15,
+     35
+    ],
+    "residuo": 0.03
+   },
+   "grupos": [
+    "costo",
+    "cruce"
+   ],
+   "mejor_wip": 3,
+   "zona_buena": [
+    2,
+    3,
+    4,
+    5
+   ],
+   "con_que_hacer_99_desde": 3,
+   "tiempo_sube_con_wip": true,
+   "caida_mejor_a_10": 0.21233039752439883,
+   "filas": [
+    {
+     "wip": 1,
+     "terminadas": 15.885,
+     "tiempo_por_tarea_min": 34.12791942083395,
+     "eficiencia_flujo": 72.88741999626907,
+     "estres": 5.494142586880676,
+     "colillas": 0,
+     "con_que_hacer": 74.69958333403405,
+     "trabajando": 73.34486111184944,
+     "fumando": 0,
+     "esperando_bloqueos": 24.821805555898816,
+     "minutos_rinden_por_hora": 43.87247100405616,
+     "hechas_total": 3177
+    },
+    {
+     "wip": 2,
+     "terminadas": 20.245,
+     "tiempo_por_tarea_min": 53.2610521116268,
+     "eficiencia_flujo": 47.005770136579414,
+     "estres": 10.000000000000696,
+     "colillas": 0,
+     "con_que_hacer": 95.73972222234013,
+     "trabajando": 94.29055555571371,
+     "fumando": 0,
+     "esperando_bloqueos": 4.18166666671386,
+     "minutos_rinden_por_hora": 55.9674217198331,
+     "hechas_total": 4049
+    },
+    {
+     "wip": 3,
+     "terminadas": 21.005,
+     "tiempo_por_tarea_min": 77.01236610330027,
+     "eficiencia_flujo": 32.61360029306098,
+     "estres": 17.40851863497345,
+     "colillas": 0,
+     "con_que_hacer": 99.43263888890465,
+     "trabajando": 98.21916666671612,
+     "fumando": 0,
+     "esperando_bloqueos": 0.5586111111172288,
+     "minutos_rinden_por_hora": 58.189814726818824,
+     "hechas_total": 4201
+    },
+    {
+     "wip": 4,
+     "terminadas": 20.955,
+     "tiempo_por_tarea_min": 103.47343116200231,
+     "eficiencia_flujo": 24.281715462900873,
+     "estres": 30.37342624617575,
+     "colillas": 1,
+     "con_que_hacer": 99.94458333333488,
+     "trabajando": 97.52791666673532,
+     "fumando": 1.5000000000167746,
+     "esperando_bloqueos": 0.05541666666727741,
+     "minutos_rinden_por_hora": 57.76055415363279,
+     "hechas_total": 4191
+    },
+    {
+     "wip": 5,
+     "terminadas": 20.355,
+     "tiempo_por_tarea_min": 132.5604888233703,
+     "eficiencia_flujo": 18.95737251811153,
+     "estres": 41.48620419863443,
+     "colillas": 3,
+     "con_que_hacer": 100,
+     "trabajando": 95.19444444457788,
+     "fumando": 4.500000000049531,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 56.381883050347724,
+     "hechas_total": 4071
+    },
+    {
+     "wip": 6,
+     "terminadas": 19.525,
+     "tiempo_por_tarea_min": 166.02012804095438,
+     "eficiencia_flujo": 15.11813698137141,
+     "estres": 53.502824758243285,
+     "colillas": 6,
+     "con_que_hacer": 100,
+     "trabajando": 91.11111111135055,
+     "fumando": 8.888888888983452,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 53.99241141768167,
+     "hechas_total": 3905
+    },
+    {
+     "wip": 7,
+     "terminadas": 18.935,
+     "tiempo_por_tarea_min": 200.33121204117197,
+     "eficiencia_flujo": 12.536778895039776,
+     "estres": 63.711760103552955,
+     "colillas": 8,
+     "con_que_hacer": 100,
+     "trabajando": 88.00000000033324,
+     "fumando": 12.00000000011405,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 52.15754545569716,
+     "hechas_total": 3787
+    },
+    {
+     "wip": 8,
+     "terminadas": 17.875,
+     "tiempo_por_tarea_min": 242.1686713286461,
+     "eficiencia_flujo": 10.411026291802118,
+     "estres": 78.5287973734977,
+     "colillas": 11,
+     "con_que_hacer": 100,
+     "trabajando": 83.50000000045819,
+     "fumando": 16.500000000168882,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 49.51761964950697,
+     "hechas_total": 3575
+    },
+    {
+     "wip": 9,
+     "terminadas": 17.25,
+     "tiempo_por_tarea_min": 282.6181594202616,
+     "eficiencia_flujo": 8.923915551038915,
+     "estres": 85.93731600847048,
+     "colillas": 13,
+     "con_que_hacer": 100,
+     "trabajando": 80.50000000054152,
+     "fumando": 19.50000000023107,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 47.75175927199494,
+     "hechas_total": 3450
+    },
+    {
+     "wip": 10,
+     "terminadas": 16.545,
+     "tiempo_por_tarea_min": 325.62381384100945,
+     "eficiencia_flujo": 7.738154506747709,
+     "estres": 92.78873775567777,
+     "colillas": 15,
+     "con_que_hacer": 100,
+     "trabajando": 77.50000000062481,
+     "fumando": 22.500000000293255,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 45.976566863887605,
+     "hechas_total": 3309
+    }
+   ]
+  },
+  {
+   "nombre": "Weinberg completo",
+   "supuestos": {
+    "bloqueo": 0.2,
+    "duracion": [
+     30,
+     60
+    ],
+    "costo": "weinberg",
+    "tamano": [
+     15,
+     35
+    ],
+    "residuo": 0.03
+   },
+   "grupos": [
+    "costo",
+    "cruce"
+   ],
+   "mejor_wip": 2,
+   "zona_buena": [
+    2
+   ],
+   "con_que_hacer_99_desde": 3,
+   "tiempo_sube_con_wip": true,
+   "caida_mejor_a_10": 0.7933042212518194,
+   "filas": [
+    {
+     "wip": 1,
+     "terminadas": 15.885,
+     "tiempo_por_tarea_min": 34.12791942083395,
+     "eficiencia_flujo": 72.88741999626907,
+     "estres": 5.494142586880676,
+     "colillas": 0,
+     "con_que_hacer": 74.69958333403405,
+     "trabajando": 73.34486111184944,
+     "fumando": 0,
+     "esperando_bloqueos": 24.821805555898816,
+     "minutos_rinden_por_hora": 43.87247100405616,
+     "hechas_total": 3177
+    },
+    {
+     "wip": 2,
+     "terminadas": 17.175,
+     "tiempo_por_tarea_min": 62.86563318776631,
+     "eficiencia_flujo": 47.36908529011702,
+     "estres": 10.000000000000696,
+     "colillas": 0,
+     "con_que_hacer": 96.53791666676261,
+     "trabajando": 95.04944444458174,
+     "fumando": 0,
+     "esperando_bloqueos": 3.422777777817103,
+     "minutos_rinden_por_hora": 47.622673767525555,
+     "hechas_total": 3435
+    },
+    {
+     "wip": 3,
+     "terminadas": 13.605,
+     "tiempo_por_tarea_min": 119.01451672177978,
+     "eficiencia_flujo": 32.79449941697105,
+     "estres": 17.40851863497345,
+     "colillas": 0,
+     "con_que_hacer": 99.71138888889692,
+     "trabajando": 98.49263888893074,
+     "fumando": 0,
+     "esperando_bloqueos": 0.2851388888920323,
+     "minutos_rinden_por_hora": 37.606138634192874,
+     "hechas_total": 2721
+    },
+    {
+     "wip": 4,
+     "terminadas": 8.92,
+     "tiempo_por_tarea_min": 239.81367713001924,
+     "eficiencia_flujo": 24.366284563055714,
+     "estres": 30.37342624617575,
+     "colillas": 1,
+     "con_que_hacer": 100,
+     "trabajando": 97.58333333340045,
+     "fumando": 1.5000000000167746,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 24.928846104505787,
+     "hechas_total": 1784
+    },
+    {
+     "wip": 5,
+     "terminadas": 5.42,
+     "tiempo_por_tarea_min": 498.32218634682704,
+     "eficiencia_flujo": 19.014556929958644,
+     "estres": 41.48620419863443,
+     "colillas": 3,
+     "con_que_hacer": 100,
+     "trabajando": 95.19444444457788,
+     "fumando": 4.500000000049531,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 15.021044999400775,
+     "hechas_total": 1084
+    },
+    {
+     "wip": 6,
+     "terminadas": 4.93,
+     "tiempo_por_tarea_min": 649.9969574036126,
+     "eficiencia_flujo": 15.158729460941764,
+     "estres": 53.502824758243285,
+     "colillas": 6,
+     "con_que_hacer": 100,
+     "trabajando": 91.11111111135055,
+     "fumando": 8.888888888983452,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 13.636540975792201,
+     "hechas_total": 986
+    },
+    {
+     "wip": 7,
+     "terminadas": 4.92,
+     "tiempo_por_tarea_min": 823.3697154471162,
+     "eficiencia_flujo": 12.579691624262695,
+     "estres": 63.711760103552955,
+     "colillas": 8,
+     "con_que_hacer": 100,
+     "trabajando": 88.00000000033324,
+     "fumando": 12.00000000011405,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 13.16113505095702,
+     "hechas_total": 984
+    },
+    {
+     "wip": 8,
+     "terminadas": 4.88,
+     "tiempo_por_tarea_min": 930.619006147502,
+     "eficiencia_flujo": 10.437989271898513,
+     "estres": 78.5287973734977,
+     "colillas": 11,
+     "con_que_hacer": 100,
+     "trabajando": 83.50000000045819,
+     "fumando": 16.500000000168882,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 12.487820418894962,
+     "hechas_total": 976
+    },
+    {
+     "wip": 9,
+     "terminadas": 3.43,
+     "tiempo_por_tarea_min": 962.8038629737171,
+     "eficiencia_flujo": 8.945992190038474,
+     "estres": 85.93731600847048,
+     "colillas": 13,
+     "con_que_hacer": 100,
+     "trabajando": 80.50000000054152,
+     "fumando": 19.50000000023107,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 12.040371654089833,
+     "hechas_total": 686
+    },
+    {
+     "wip": 10,
+     "terminadas": 3.55,
+     "tiempo_por_tarea_min": 1354.485915492931,
+     "eficiencia_flujo": 7.811902818613882,
+     "estres": 92.78873775567777,
+     "colillas": 15,
+     "con_que_hacer": 100,
+     "trabajando": 77.50000000062481,
+     "fumando": 22.500000000293255,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 11.593948664527694,
+     "hechas_total": 710
+    }
+   ]
+  },
+  {
+   "nombre": "tareas de 5–45 min",
+   "supuestos": {
+    "bloqueo": 0.2,
+    "duracion": [
+     30,
+     60
+    ],
+    "costo": "suave",
+    "tamano": [
+     5,
+     45
+    ],
+    "residuo": 0.03
+   },
+   "grupos": [
+    "tamano"
+   ],
+   "mejor_wip": 2,
+   "zona_buena": [
+    2
+   ],
+   "con_que_hacer_99_desde": 3,
+   "tiempo_sube_con_wip": true,
+   "caida_mejor_a_10": 0.5264030964888029,
+   "filas": [
+    {
+     "wip": 1,
+     "terminadas": 15.85,
+     "tiempo_por_tarea_min": 33.88629337539092,
+     "eficiencia_flujo": 72.83372331252123,
+     "estres": 5.494142586880676,
+     "colillas": 0,
+     "con_que_hacer": 74.7413888895884,
+     "trabajando": 73.37680555629296,
+     "fumando": 0,
+     "esperando_bloqueos": 24.78986111145375,
+     "minutos_rinden_por_hora": 43.89200435079,
+     "hechas_total": 3170
+    },
+    {
+     "wip": 2,
+     "terminadas": 18.085,
+     "tiempo_por_tarea_min": 59.634987558743866,
+     "eficiencia_flujo": 47.311940210864755,
+     "estres": 10.000000000000696,
+     "colillas": 0,
+     "con_que_hacer": 96.2890277778805,
+     "trabajando": 94.81611111125473,
+     "fumando": 0,
+     "esperando_bloqueos": 3.656111111153297,
+     "minutos_rinden_por_hora": 49.774262008469854,
+     "hechas_total": 3617
+    },
+    {
+     "wip": 3,
+     "terminadas": 16.95,
+     "tiempo_por_tarea_min": 95.42053097344082,
+     "eficiencia_flujo": 32.7410731228368,
+     "estres": 17.40851863497345,
+     "colillas": 0,
+     "con_que_hacer": 99.62055555556601,
+     "trabajando": 98.40333333337759,
+     "fumando": 0,
+     "esperando_bloqueos": 0.374444444448632,
+     "minutos_rinden_por_hora": 46.77656247661028,
+     "hechas_total": 3390
+    },
+    {
+     "wip": 4,
+     "terminadas": 15.57,
+     "tiempo_por_tarea_min": 138.8684007706974,
+     "eficiencia_flujo": 24.349172681539685,
+     "estres": 30.37342624617575,
+     "colillas": 1,
+     "con_que_hacer": 100,
+     "trabajando": 97.58333333340045,
+     "fumando": 1.5000000000167746,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 42.62923971831803,
+     "hechas_total": 3114
+    },
+    {
+     "wip": 5,
+     "terminadas": 14.07,
+     "tiempo_por_tarea_min": 192.61289978676035,
+     "eficiencia_flujo": 19.00305642502255,
+     "estres": 41.48620419863443,
+     "colillas": 3,
+     "con_que_hacer": 100,
+     "trabajando": 95.19444444457788,
+     "fumando": 4.500000000049531,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 38.56751335190214,
+     "hechas_total": 2814
+    },
+    {
+     "wip": 6,
+     "terminadas": 12.335,
+     "tiempo_por_tarea_min": 263.0187677340643,
+     "eficiencia_flujo": 15.151109287127527,
+     "estres": 53.502824758243285,
+     "colillas": 6,
+     "con_que_hacer": 100,
+     "trabajando": 91.11111111135055,
+     "fumando": 8.888888888983452,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 34.16131382066223,
+     "hechas_total": 2467
+    },
+    {
+     "wip": 7,
+     "terminadas": 11.16,
+     "tiempo_por_tarea_min": 340.98001792111705,
+     "eficiencia_flujo": 12.573198102720427,
+     "estres": 63.711760103552955,
+     "colillas": 8,
+     "con_que_hacer": 100,
+     "trabajando": 88.00000000033324,
+     "fumando": 12.00000000011405,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 30.784827696459978,
+     "hechas_total": 2232
+    },
+    {
+     "wip": 8,
+     "terminadas": 10,
+     "tiempo_por_tarea_min": 431.8222749999677,
+     "eficiencia_flujo": 10.430584845166875,
+     "estres": 78.5287973734977,
+     "colillas": 11,
+     "con_que_hacer": 100,
+     "trabajando": 83.50000000045819,
+     "fumando": 16.500000000168882,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 27.621048410081393,
+     "hechas_total": 2000
+    },
+    {
+     "wip": 9,
+     "terminadas": 9.05,
+     "tiempo_por_tarea_min": 531.2834254143306,
+     "eficiencia_flujo": 8.945774826881818,
+     "estres": 85.93731600847048,
+     "colillas": 13,
+     "con_que_hacer": 100,
+     "trabajando": 80.50000000054152,
+     "fumando": 19.50000000023107,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 25.17458589495353,
+     "hechas_total": 1810
+    },
+    {
+     "wip": 10,
+     "terminadas": 8.565,
+     "tiempo_por_tarea_min": 644.1797723292127,
+     "eficiencia_flujo": 7.763033746945278,
+     "estres": 92.78873775567777,
+     "colillas": 15,
+     "con_que_hacer": 100,
+     "trabajando": 77.50000000062481,
+     "fumando": 22.500000000293255,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 23.247198894527035,
+     "hechas_total": 1713
+    }
+   ]
+  },
+  {
+   "nombre": "residuo 0 %",
+   "supuestos": {
+    "bloqueo": 0.2,
+    "duracion": [
+     30,
+     60
+    ],
+    "costo": "suave",
+    "tamano": [
+     15,
+     35
+    ],
+    "residuo": 0
+   },
+   "grupos": [
+    "residuo"
+   ],
+   "mejor_wip": 2,
+   "zona_buena": [
+    2
+   ],
+   "con_que_hacer_99_desde": 3,
+   "tiempo_sube_con_wip": true,
+   "caida_mejor_a_10": 0.5478021978021977,
+   "filas": [
+    {
+     "wip": 1,
+     "terminadas": 15.885,
+     "tiempo_por_tarea_min": 34.12791942083395,
+     "eficiencia_flujo": 72.88741999626907,
+     "estres": 5.494142586880676,
+     "colillas": 0,
+     "con_que_hacer": 74.69958333403405,
+     "trabajando": 73.34486111184944,
+     "fumando": 0,
+     "esperando_bloqueos": 24.821805555898816,
+     "minutos_rinden_por_hora": 43.87247100405616,
+     "hechas_total": 3177
+    },
+    {
+     "wip": 2,
+     "terminadas": 18.2,
+     "tiempo_por_tarea_min": 59.37548076922441,
+     "eficiencia_flujo": 47.36010230934131,
+     "estres": 10.000000000000696,
+     "colillas": 0,
+     "con_que_hacer": 96.34125000010108,
+     "trabajando": 94.8583333334756,
+     "fumando": 0,
+     "esperando_bloqueos": 3.613888888930766,
+     "minutos_rinden_por_hora": 50.240094248032705,
+     "hechas_total": 3640
+    },
+    {
+     "wip": 3,
+     "terminadas": 17.035,
+     "tiempo_por_tarea_min": 95.24059289696592,
+     "eficiencia_flujo": 32.69582357330622,
+     "estres": 17.40851863497345,
+     "colillas": 0,
+     "con_que_hacer": 99.53583333334619,
+     "trabajando": 98.32083333337992,
+     "fumando": 0,
+     "esperando_bloqueos": 0.45694444444949284,
+     "minutos_rinden_por_hora": 47.11291534035596,
+     "hechas_total": 3407
+    },
+    {
+     "wip": 4,
+     "terminadas": 15.465,
+     "tiempo_por_tarea_min": 139.29072098284894,
+     "eficiencia_flujo": 24.334064761716668,
+     "estres": 30.37342624617575,
+     "colillas": 1,
+     "con_que_hacer": 99.99597222222233,
+     "trabajando": 97.57930555562278,
+     "fumando": 1.5000000000167746,
+     "esperando_bloqueos": 0.0040277777778221936,
+     "minutos_rinden_por_hora": 42.974367997474815,
+     "hechas_total": 3093
+    },
+    {
+     "wip": 5,
+     "terminadas": 14.015,
+     "tiempo_por_tarea_min": 192.3361933642319,
+     "eficiencia_flujo": 19.00602730023417,
+     "estres": 41.48620419863443,
+     "colillas": 3,
+     "con_que_hacer": 100,
+     "trabajando": 95.19444444457788,
+     "fumando": 4.500000000049531,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 38.86765905963995,
+     "hechas_total": 2803
+    },
+    {
+     "wip": 6,
+     "terminadas": 12.47,
+     "tiempo_por_tarea_min": 261.7335204490511,
+     "eficiencia_flujo": 15.141053200750196,
+     "estres": 53.502824758243285,
+     "colillas": 6,
+     "con_que_hacer": 100,
+     "trabajando": 91.11111111135055,
+     "fumando": 8.888888888983452,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 34.37984317155815,
+     "hechas_total": 2494
+    },
+    {
+     "wip": 7,
+     "terminadas": 11.235,
+     "tiempo_por_tarea_min": 338.5809968847029,
+     "eficiencia_flujo": 12.553973793429737,
+     "estres": 63.711760103552955,
+     "colillas": 8,
+     "con_que_hacer": 100,
+     "trabajando": 88.00000000033324,
+     "fumando": 12.00000000011405,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 30.954342128678356,
+     "hechas_total": 2247
+    },
+    {
+     "wip": 8,
+     "terminadas": 10.075,
+     "tiempo_por_tarea_min": 429.1853349875575,
+     "eficiencia_flujo": 10.427610923506258,
+     "estres": 78.5287973734977,
+     "colillas": 11,
+     "con_que_hacer": 100,
+     "trabajando": 83.50000000045819,
+     "fumando": 16.500000000168882,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 27.77551578217124,
+     "hechas_total": 2015
+    },
+    {
+     "wip": 9,
+     "terminadas": 9.225,
+     "tiempo_por_tarea_min": 529.2202981029452,
+     "eficiencia_flujo": 8.949356449067905,
+     "estres": 85.93731600847048,
+     "colillas": 13,
+     "con_que_hacer": 100,
+     "trabajando": 80.50000000054152,
+     "fumando": 19.50000000023107,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 25.29535058121479,
+     "hechas_total": 1845
+    },
+    {
+     "wip": 10,
+     "terminadas": 8.23,
+     "tiempo_por_tarea_min": 631.3655528553703,
+     "eficiencia_flujo": 7.747883635200823,
+     "estres": 92.78873775567777,
+     "colillas": 15,
+     "con_que_hacer": 100,
+     "trabajando": 77.50000000062481,
+     "fumando": 22.500000000293255,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 23.35244847584134,
+     "hechas_total": 1646
+    }
+   ]
+  },
+  {
+   "nombre": "residuo 6 %",
+   "supuestos": {
+    "bloqueo": 0.2,
+    "duracion": [
+     30,
+     60
+    ],
+    "costo": "suave",
+    "tamano": [
+     15,
+     35
+    ],
+    "residuo": 0.06
+   },
+   "grupos": [
+    "residuo"
+   ],
+   "mejor_wip": 2,
+   "zona_buena": [
+    2
+   ],
+   "con_que_hacer_99_desde": 3,
+   "tiempo_sube_con_wip": true,
+   "caida_mejor_a_10": 0.5498607242339832,
+   "filas": [
+    {
+     "wip": 1,
+     "terminadas": 15.885,
+     "tiempo_por_tarea_min": 34.12791942083395,
+     "eficiencia_flujo": 72.88741999626907,
+     "estres": 5.494142586880676,
+     "colillas": 0,
+     "con_que_hacer": 74.69958333403405,
+     "trabajando": 73.34486111184944,
+     "fumando": 0,
+     "esperando_bloqueos": 24.821805555898816,
+     "minutos_rinden_por_hora": 43.87247100405616,
+     "hechas_total": 3177
+    },
+    {
+     "wip": 2,
+     "terminadas": 17.95,
+     "tiempo_por_tarea_min": 60.35856545960357,
+     "eficiencia_flujo": 47.334559079630964,
+     "estres": 10.000000000000696,
+     "colillas": 0,
+     "con_que_hacer": 96.5294444445405,
+     "trabajando": 95.0587500001369,
+     "fumando": 0,
+     "esperando_bloqueos": 3.4134722222615856,
+     "minutos_rinden_por_hora": 49.52786552010556,
+     "hechas_total": 3590
+    },
+    {
+     "wip": 3,
+     "terminadas": 16.68,
+     "tiempo_por_tarea_min": 96.85038968823805,
+     "eficiencia_flujo": 32.67730071751467,
+     "estres": 17.40851863497345,
+     "colillas": 0,
+     "con_que_hacer": 99.59805555556667,
+     "trabajando": 98.38347222226707,
+     "fumando": 0,
+     "esperando_bloqueos": 0.3943055555599227,
+     "minutos_rinden_por_hora": 46.320547925019035,
+     "hechas_total": 3336
+    },
+    {
+     "wip": 4,
+     "terminadas": 15.325,
+     "tiempo_por_tarea_min": 141.40468189231706,
+     "eficiencia_flujo": 24.352773778126252,
+     "estres": 30.37342624617575,
+     "colillas": 1,
+     "con_que_hacer": 99.99305555555576,
+     "trabajando": 97.57638888895619,
+     "fumando": 1.5000000000167746,
+     "esperando_bloqueos": 0.00694444444452103,
+     "minutos_rinden_por_hora": 42.26608600896733,
+     "hechas_total": 3065
+    },
+    {
+     "wip": 5,
+     "terminadas": 13.815,
+     "tiempo_por_tarea_min": 194.99176619614198,
+     "eficiencia_flujo": 19.00837201909024,
+     "estres": 41.48620419863443,
+     "colillas": 3,
+     "con_que_hacer": 100,
+     "trabajando": 95.19444444457788,
+     "fumando": 4.500000000049531,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 38.288086756785574,
+     "hechas_total": 2763
+    },
+    {
+     "wip": 6,
+     "terminadas": 12.365,
+     "tiempo_por_tarea_min": 265.9984634047448,
+     "eficiencia_flujo": 15.138607320412902,
+     "estres": 53.502824758243285,
+     "colillas": 6,
+     "con_que_hacer": 100,
+     "trabajando": 91.11111111135055,
+     "fumando": 8.888888888983452,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 33.93324354079502,
+     "hechas_total": 2473
+    },
+    {
+     "wip": 7,
+     "terminadas": 11.02,
+     "tiempo_por_tarea_min": 342.9028130671178,
+     "eficiencia_flujo": 12.555996726477016,
+     "estres": 63.711760103552955,
+     "colillas": 8,
+     "con_que_hacer": 100,
+     "trabajando": 88.00000000033324,
+     "fumando": 12.00000000011405,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 30.601983308305115,
+     "hechas_total": 2204
+    },
+    {
+     "wip": 8,
+     "terminadas": 9.84,
+     "tiempo_por_tarea_min": 433.8747459349238,
+     "eficiencia_flujo": 10.433684870737096,
+     "estres": 78.5287973734977,
+     "colillas": 11,
+     "con_que_hacer": 100,
+     "trabajando": 83.50000000045819,
+     "fumando": 16.500000000168882,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 27.474381509867644,
+     "hechas_total": 1968
+    },
+    {
+     "wip": 9,
+     "terminadas": 9.105,
+     "tiempo_por_tarea_min": 536.0445359692129,
+     "eficiencia_flujo": 8.947455568229646,
+     "estres": 85.93731600847048,
+     "colillas": 13,
+     "con_que_hacer": 100,
+     "trabajando": 80.50000000054152,
+     "fumando": 19.50000000023107,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 25.054439410760494,
+     "hechas_total": 1821
+    },
+    {
+     "wip": 10,
+     "terminadas": 8.08,
+     "tiempo_por_tarea_min": 637.6979579207558,
+     "eficiencia_flujo": 7.750522107326512,
+     "estres": 92.78873775567777,
+     "colillas": 15,
+     "con_que_hacer": 100,
+     "trabajando": 77.50000000062481,
+     "fumando": 22.500000000293255,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 23.14538313989815,
+     "hechas_total": 1616
+    }
+   ]
+  },
+  {
+   "nombre": "bloqueos 0 % · sin costo de cambio",
+   "supuestos": {
+    "bloqueo": 0,
+    "duracion": [
+     30,
+     60
+    ],
+    "costo": "ninguno",
+    "tamano": [
+     15,
+     35
+    ],
+    "residuo": 0.03
+   },
+   "grupos": [
+    "cruce"
+   ],
+   "mejor_wip": 2,
+   "zona_buena": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "con_que_hacer_99_desde": 1,
+   "tiempo_sube_con_wip": true,
+   "caida_mejor_a_10": 0.22193578626669788,
+   "filas": [
+    {
+     "wip": 1,
+     "terminadas": 21.205,
+     "tiempo_por_tarea_min": 25.459125206317022,
+     "eficiencia_flujo": 97.88801092499628,
+     "estres": 5.494142586880676,
+     "colillas": 0,
+     "con_que_hacer": 100,
+     "trabajando": 98.16666666671757,
+     "fumando": 0,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 58.72396666061713,
+     "hechas_total": 4241
+    },
+    {
+     "wip": 2,
+     "terminadas": 21.335,
+     "tiempo_por_tarea_min": 50.77964612139167,
+     "eficiencia_flujo": 49.08877844257098,
+     "estres": 10.000000000000696,
+     "colillas": 0,
+     "con_que_hacer": 100,
+     "trabajando": 98.47222222226465,
+     "fumando": 0,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 58.90639985845734,
+     "hechas_total": 4267
+    },
+    {
+     "wip": 3,
+     "terminadas": 21.28,
+     "tiempo_por_tarea_min": 76.03126174811167,
+     "eficiencia_flujo": 32.82189256224839,
+     "estres": 17.40851863497345,
+     "colillas": 0,
+     "con_que_hacer": 100,
+     "trabajando": 98.7777777778117,
+     "fumando": 0,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 59.08850018631231,
+     "hechas_total": 4256
+    },
+    {
+     "wip": 4,
+     "terminadas": 21.06,
+     "tiempo_por_tarea_min": 102.72773029438488,
+     "eficiencia_flujo": 24.32526901567945,
+     "estres": 30.37342624617575,
+     "colillas": 1,
+     "con_que_hacer": 100,
+     "trabajando": 97.58333333340045,
+     "fumando": 1.5000000000167746,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 58.37531216829936,
+     "hechas_total": 4212
+    },
+    {
+     "wip": 5,
+     "terminadas": 20.465,
+     "tiempo_por_tarea_min": 131.8358172489483,
+     "eficiencia_flujo": 18.97750056551855,
+     "estres": 41.48620419863443,
+     "colillas": 3,
+     "con_que_hacer": 100,
+     "trabajando": 95.19444444457788,
+     "fumando": 4.500000000049531,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 56.94716786260137,
+     "hechas_total": 4093
+    },
+    {
+     "wip": 6,
+     "terminadas": 19.52,
+     "tiempo_por_tarea_min": 165.50226690571878,
+     "eficiencia_flujo": 15.126609982319003,
+     "estres": 53.502824758243285,
+     "colillas": 6,
+     "con_que_hacer": 100,
+     "trabajando": 91.11111111135055,
+     "fumando": 8.888888888983452,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 54.505517219449715,
+     "hechas_total": 3904
+    },
+    {
+     "wip": 7,
+     "terminadas": 18.93,
+     "tiempo_por_tarea_min": 199.52827522448945,
+     "eficiencia_flujo": 12.53830750447629,
+     "estres": 63.711760103552955,
+     "colillas": 8,
+     "con_que_hacer": 100,
+     "trabajando": 88.00000000033324,
+     "fumando": 12.00000000011405,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 52.64224251225312,
+     "hechas_total": 3786
+    },
+    {
+     "wip": 8,
+     "terminadas": 18.075,
+     "tiempo_por_tarea_min": 241.15820193635096,
+     "eficiencia_flujo": 10.408131607004135,
+     "estres": 78.5287973734977,
+     "colillas": 11,
+     "con_que_hacer": 100,
+     "trabajando": 83.50000000045819,
+     "fumando": 16.500000000168882,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 49.94957104755948,
+     "hechas_total": 3615
+    },
+    {
+     "wip": 9,
+     "terminadas": 17.35,
+     "tiempo_por_tarea_min": 281.7164841498278,
+     "eficiencia_flujo": 8.92270947930776,
+     "estres": 85.93731600847048,
+     "colillas": 13,
+     "con_que_hacer": 100,
+     "trabajando": 80.50000000054152,
+     "fumando": 19.50000000023107,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 48.15433317995104,
+     "hechas_total": 3470
+    },
+    {
+     "wip": 10,
+     "terminadas": 16.6,
+     "tiempo_por_tarea_min": 325.5397289156312,
+     "eficiencia_flujo": 7.7354925022874665,
+     "estres": 92.78873775567777,
+     "colillas": 15,
+     "con_que_hacer": 100,
+     "trabajando": 77.50000000062481,
+     "fumando": 22.500000000293255,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 46.35912577263716,
+     "hechas_total": 3320
+    }
+   ]
+  },
+  {
+   "nombre": "bloqueos 0 % · Weinberg completo",
+   "supuestos": {
+    "bloqueo": 0,
+    "duracion": [
+     30,
+     60
+    ],
+    "costo": "weinberg",
+    "tamano": [
+     15,
+     35
+    ],
+    "residuo": 0.03
+   },
+   "grupos": [
+    "cruce"
+   ],
+   "mejor_wip": 1,
+   "zona_buena": [
+    1
+   ],
+   "con_que_hacer_99_desde": 1,
+   "tiempo_sube_con_wip": true,
+   "caida_mejor_a_10": 0.8349445885404385,
+   "filas": [
+    {
+     "wip": 1,
+     "terminadas": 21.205,
+     "tiempo_por_tarea_min": 25.459125206317022,
+     "eficiencia_flujo": 97.88801092499628,
+     "estres": 5.494142586880676,
+     "colillas": 0,
+     "con_que_hacer": 100,
+     "trabajando": 98.16666666671757,
+     "fumando": 0,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 58.72396666061713,
+     "hechas_total": 4241
+    },
+    {
+     "wip": 2,
+     "terminadas": 17.02,
+     "tiempo_por_tarea_min": 63.66370446532822,
+     "eficiencia_flujo": 49.117510570406836,
+     "estres": 10.000000000000696,
+     "colillas": 0,
+     "con_que_hacer": 100,
+     "trabajando": 98.47222222226465,
+     "fumando": 0,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 47.155031612080315,
+     "hechas_total": 3404
+    },
+    {
+     "wip": 3,
+     "terminadas": 12.91,
+     "tiempo_por_tarea_min": 126.29268009293698,
+     "eficiencia_flujo": 32.86795596296965,
+     "estres": 17.40851863497345,
+     "colillas": 0,
+     "con_que_hacer": 100,
+     "trabajando": 98.7777777778117,
+     "fumando": 0,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 35.49565387927594,
+     "hechas_total": 2582
+    },
+    {
+     "wip": 4,
+     "terminadas": 8.47,
+     "tiempo_por_tarea_min": 256.3448051947788,
+     "eficiencia_flujo": 24.373233470352083,
+     "estres": 30.37342624617575,
+     "colillas": 1,
+     "con_que_hacer": 100,
+     "trabajando": 97.58333333340045,
+     "fumando": 1.5000000000167746,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 23.392078501050896,
+     "hechas_total": 1694
+    },
+    {
+     "wip": 5,
+     "terminadas": 5.265,
+     "tiempo_por_tarea_min": 528.4607312440289,
+     "eficiencia_flujo": 19.030585908405726,
+     "estres": 41.48620419863443,
+     "colillas": 3,
+     "con_que_hacer": 100,
+     "trabajando": 95.19444444457788,
+     "fumando": 4.500000000049531,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 14.26795689522945,
+     "hechas_total": 1053
+    },
+    {
+     "wip": 6,
+     "terminadas": 4.795,
+     "tiempo_por_tarea_min": 655.4309176224856,
+     "eficiencia_flujo": 15.15486140377584,
+     "estres": 53.502824758243285,
+     "colillas": 6,
+     "con_que_hacer": 100,
+     "trabajando": 91.11111111135055,
+     "fumando": 8.888888888983452,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 13.65694883757941,
+     "hechas_total": 959
+    },
+    {
+     "wip": 7,
+     "terminadas": 4.83,
+     "tiempo_por_tarea_min": 828.070962732884,
+     "eficiencia_flujo": 12.586273688351612,
+     "estres": 63.711760103552955,
+     "colillas": 8,
+     "con_que_hacer": 100,
+     "trabajando": 88.00000000033324,
+     "fumando": 12.00000000011405,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 13.18975503645354,
+     "hechas_total": 966
+    },
+    {
+     "wip": 8,
+     "terminadas": 4.925,
+     "tiempo_por_tarea_min": 938.1168020304169,
+     "eficiencia_flujo": 10.438980864516159,
+     "estres": 78.5287973734977,
+     "colillas": 11,
+     "con_que_hacer": 100,
+     "trabajando": 83.50000000045819,
+     "fumando": 16.500000000168882,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 12.515004993055772,
+     "hechas_total": 985
+    },
+    {
+     "wip": 9,
+     "terminadas": 3.415,
+     "tiempo_por_tarea_min": 968.5453879940999,
+     "eficiencia_flujo": 8.94449250430662,
+     "estres": 85.93731600847048,
+     "colillas": 13,
+     "con_que_hacer": 100,
+     "trabajando": 80.50000000054152,
+     "fumando": 19.50000000023107,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 12.067908855307047,
+     "hechas_total": 683
+    },
+    {
+     "wip": 10,
+     "terminadas": 3.5,
+     "tiempo_por_tarea_min": 1335.6787142856867,
+     "eficiencia_flujo": 7.807242041825942,
+     "estres": 92.78873775567777,
+     "colillas": 15,
+     "con_que_hacer": 100,
+     "trabajando": 77.50000000062481,
+     "fumando": 22.500000000293255,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 11.617572095656854,
+     "hechas_total": 700
+    }
+   ]
+  },
+  {
+   "nombre": "bloqueos 10 % · sin costo de cambio",
+   "supuestos": {
+    "bloqueo": 0.1,
+    "duracion": [
+     30,
+     60
+    ],
+    "costo": "ninguno",
+    "tamano": [
+     15,
+     35
+    ],
+    "residuo": 0.03
+   },
+   "grupos": [
+    "cruce"
+   ],
+   "mejor_wip": 3,
+   "zona_buena": [
+    2,
+    3,
+    4,
+    5
+   ],
+   "con_que_hacer_99_desde": 2,
+   "tiempo_sube_con_wip": true,
+   "caida_mejor_a_10": 0.22072710103871582,
+   "filas": [
+    {
+     "wip": 1,
+     "terminadas": 18.08,
+     "tiempo_por_tarea_min": 29.93264657079368,
+     "eficiencia_flujo": 83.428067654534,
+     "estres": 5.494142586880676,
+     "colillas": 0,
+     "con_que_hacer": 85.36875000040571,
+     "trabajando": 83.81055555600452,
+     "fumando": 0,
+     "esperando_bloqueos": 14.356111111246049,
+     "minutos_rinden_por_hora": 50.13504374103085,
+     "hechas_total": 3616
+    },
+    {
+     "wip": 2,
+     "terminadas": 20.88,
+     "tiempo_por_tarea_min": 51.587056992331846,
+     "eficiencia_flujo": 48.637976624954874,
+     "estres": 10.000000000000696,
+     "colillas": 0,
+     "con_que_hacer": 99.13125000002401,
+     "trabajando": 97.60805555562186,
+     "fumando": 0,
+     "esperando_bloqueos": 0.8641666666762169,
+     "minutos_rinden_por_hora": 58.12618284583567,
+     "hechas_total": 4176
+    },
+    {
+     "wip": 3,
+     "terminadas": 21.18,
+     "tiempo_por_tarea_min": 76.61922804531758,
+     "eficiencia_flujo": 32.73486208412558,
+     "estres": 17.40851863497345,
+     "colillas": 0,
+     "con_que_hacer": 99.90833333333588,
+     "trabajando": 98.6861111111476,
+     "fumando": 0,
+     "esperando_bloqueos": 0.09166666666767835,
+     "minutos_rinden_por_hora": 58.73781184887958,
+     "hechas_total": 4236
+    },
+    {
+     "wip": 4,
+     "terminadas": 21.055,
+     "tiempo_por_tarea_min": 103.23946805983171,
+     "eficiencia_flujo": 24.293370674411637,
+     "estres": 30.37342624617575,
+     "colillas": 1,
+     "con_que_hacer": 100,
+     "trabajando": 97.58333333340045,
+     "fumando": 1.5000000000167746,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 58.07686584820979,
+     "hechas_total": 4211
+    },
+    {
+     "wip": 5,
+     "terminadas": 20.47,
+     "tiempo_por_tarea_min": 132.441072300914,
+     "eficiencia_flujo": 18.980934358004703,
+     "estres": 41.48620419863443,
+     "colillas": 3,
+     "con_que_hacer": 100,
+     "trabajando": 95.19444444457788,
+     "fumando": 4.500000000049531,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 56.65662487380213,
+     "hechas_total": 4094
+    },
+    {
+     "wip": 6,
+     "terminadas": 19.48,
+     "tiempo_por_tarea_min": 166.13237936343077,
+     "eficiencia_flujo": 15.128942180807753,
+     "estres": 53.502824758243285,
+     "colillas": 6,
+     "con_que_hacer": 100,
+     "trabajando": 91.11111111135055,
+     "fumando": 8.888888888983452,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 54.23916411671187,
+     "hechas_total": 3896
+    },
+    {
+     "wip": 7,
+     "terminadas": 18.935,
+     "tiempo_por_tarea_min": 199.65879324000926,
+     "eficiencia_flujo": 12.543829907094148,
+     "estres": 63.711760103552955,
+     "colillas": 8,
+     "con_que_hacer": 100,
+     "trabajando": 88.00000000033324,
+     "fumando": 12.00000000011405,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 52.39190947473012,
+     "hechas_total": 3787
+    },
+    {
+     "wip": 8,
+     "terminadas": 17.965,
+     "tiempo_por_tarea_min": 240.53860283882796,
+     "eficiencia_flujo": 10.408220794756986,
+     "estres": 78.5287973734977,
+     "colillas": 11,
+     "con_que_hacer": 100,
+     "trabajando": 83.50000000045819,
+     "fumando": 16.500000000168882,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 49.72986683882641,
+     "hechas_total": 3593
+    },
+    {
+     "wip": 9,
+     "terminadas": 17.45,
+     "tiempo_por_tarea_min": 279.82770773636236,
+     "eficiencia_flujo": 8.925592367065946,
+     "estres": 85.93731600847048,
+     "colillas": 13,
+     "con_que_hacer": 100,
+     "trabajando": 80.50000000054152,
+     "fumando": 19.50000000023107,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 47.954046751726544,
+     "hechas_total": 3490
+    },
+    {
+     "wip": 10,
+     "terminadas": 16.505,
+     "tiempo_por_tarea_min": 323.8656316267484,
+     "eficiencia_flujo": 7.745986435297198,
+     "estres": 92.78873775567777,
+     "colillas": 15,
+     "con_que_hacer": 100,
+     "trabajando": 77.50000000062481,
+     "fumando": 22.500000000293255,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 46.17212609358722,
+     "hechas_total": 3301
+    }
+   ]
+  },
+  {
+   "nombre": "bloqueos 10 % · Weinberg completo",
+   "supuestos": {
+    "bloqueo": 0.1,
+    "duracion": [
+     30,
+     60
+    ],
+    "costo": "weinberg",
+    "tamano": [
+     15,
+     35
+    ],
+    "residuo": 0.03
+   },
+   "grupos": [
+    "cruce"
+   ],
+   "mejor_wip": 1,
+   "zona_buena": [
+    1,
+    2
+   ],
+   "con_que_hacer_99_desde": 2,
+   "tiempo_sube_con_wip": true,
+   "caida_mejor_a_10": 0.8091814159292036,
+   "filas": [
+    {
+     "wip": 1,
+     "terminadas": 18.08,
+     "tiempo_por_tarea_min": 29.93264657079368,
+     "eficiencia_flujo": 83.428067654534,
+     "estres": 5.494142586880676,
+     "colillas": 0,
+     "con_que_hacer": 85.36875000040571,
+     "trabajando": 83.81055555600452,
+     "fumando": 0,
+     "esperando_bloqueos": 14.356111111246049,
+     "minutos_rinden_por_hora": 50.13504374103085,
+     "hechas_total": 3616
+    },
+    {
+     "wip": 2,
+     "terminadas": 17.265,
+     "tiempo_por_tarea_min": 62.337170576303734,
+     "eficiencia_flujo": 48.831768834011676,
+     "estres": 10.000000000000696,
+     "colillas": 0,
+     "con_que_hacer": 99.25513888890956,
+     "trabajando": 97.74416666672931,
+     "fumando": 0,
+     "esperando_bloqueos": 0.7280555555635162,
+     "minutos_rinden_por_hora": 48.059482285671386,
+     "hechas_total": 3453
+    },
+    {
+     "wip": 3,
+     "terminadas": 13.31,
+     "tiempo_por_tarea_min": 122.3158151765449,
+     "eficiencia_flujo": 32.84693228345423,
+     "estres": 17.40851863497345,
+     "colillas": 0,
+     "con_que_hacer": 99.92833333333532,
+     "trabajando": 98.70611111114704,
+     "fumando": 0,
+     "esperando_bloqueos": 0.07166666666745704,
+     "minutos_rinden_por_hora": 36.56003562236644,
+     "hechas_total": 2662
+    },
+    {
+     "wip": 4,
+     "terminadas": 8.785,
+     "tiempo_por_tarea_min": 245.62657939667358,
+     "eficiencia_flujo": 24.384312036585253,
+     "estres": 30.37342624617575,
+     "colillas": 1,
+     "con_que_hacer": 100,
+     "trabajando": 97.58333333340045,
+     "fumando": 1.5000000000167746,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 24.134950999713904,
+     "hechas_total": 1757
+    },
+    {
+     "wip": 5,
+     "terminadas": 5.36,
+     "tiempo_por_tarea_min": 516.4118470148882,
+     "eficiencia_flujo": 19.009917859614156,
+     "estres": 41.48620419863443,
+     "colillas": 3,
+     "con_que_hacer": 100,
+     "trabajando": 95.19444444457788,
+     "fumando": 4.500000000049531,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 14.657482450719103,
+     "hechas_total": 1072
+    },
+    {
+     "wip": 6,
+     "terminadas": 4.8,
+     "tiempo_por_tarea_min": 652.9508854166271,
+     "eficiencia_flujo": 15.153338587128928,
+     "estres": 53.502824758243285,
+     "colillas": 6,
+     "con_que_hacer": 100,
+     "trabajando": 91.11111111135055,
+     "fumando": 8.888888888983452,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 13.639751005032966,
+     "hechas_total": 960
+    },
+    {
+     "wip": 7,
+     "terminadas": 4.83,
+     "tiempo_por_tarea_min": 826.9957556935465,
+     "eficiencia_flujo": 12.583972528101683,
+     "estres": 63.711760103552955,
+     "colillas": 8,
+     "con_que_hacer": 100,
+     "trabajando": 88.00000000033324,
+     "fumando": 12.00000000011405,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 13.171482833366518,
+     "hechas_total": 966
+    },
+    {
+     "wip": 8,
+     "terminadas": 4.93,
+     "tiempo_por_tarea_min": 942.4568458417447,
+     "eficiencia_flujo": 10.440057877652897,
+     "estres": 78.5287973734977,
+     "colillas": 11,
+     "con_que_hacer": 100,
+     "trabajando": 83.50000000045819,
+     "fumando": 16.500000000168882,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 12.499302379369121,
+     "hechas_total": 986
+    },
+    {
+     "wip": 9,
+     "terminadas": 3.41,
+     "tiempo_por_tarea_min": 963.6144428152045,
+     "eficiencia_flujo": 8.946462347976407,
+     "estres": 85.93731600847048,
+     "colillas": 13,
+     "con_que_hacer": 100,
+     "trabajando": 80.50000000054152,
+     "fumando": 19.50000000023107,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 12.052349880392189,
+     "hechas_total": 682
+    },
+    {
+     "wip": 10,
+     "terminadas": 3.45,
+     "tiempo_por_tarea_min": 1345.384565217365,
+     "eficiencia_flujo": 7.812261163576735,
+     "estres": 92.78873775567777,
+     "colillas": 15,
+     "con_que_hacer": 100,
+     "trabajando": 77.50000000062481,
+     "fumando": 22.500000000293255,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 11.602602638632733,
+     "hechas_total": 690
+    }
+   ]
+  },
+  {
+   "nombre": "bloqueos 30 % · sin costo de cambio",
+   "supuestos": {
+    "bloqueo": 0.3,
+    "duracion": [
+     30,
+     60
+    ],
+    "costo": "ninguno",
+    "tamano": [
+     15,
+     35
+    ],
+    "residuo": 0.03
+   },
+   "grupos": [
+    "cruce"
+   ],
+   "mejor_wip": 3,
+   "zona_buena": [
+    3,
+    4,
+    5
+   ],
+   "con_que_hacer_99_desde": 4,
+   "tiempo_sube_con_wip": true,
+   "caida_mejor_a_10": 0.19641993226898896,
+   "filas": [
+    {
+     "wip": 1,
+     "terminadas": 14.17,
+     "tiempo_por_tarea_min": 38.24401905433634,
+     "eficiencia_flujo": 65.40538912764218,
+     "estres": 5.494142586880676,
+     "colillas": 0,
+     "con_que_hacer": 66.95638888980397,
+     "trabajando": 65.71875000094944,
+     "fumando": 0,
+     "esperando_bloqueos": 32.44791666716865,
+     "minutos_rinden_por_hora": 39.31218479368309,
+     "hechas_total": 2834
+    },
+    {
+     "wip": 2,
+     "terminadas": 19.325,
+     "tiempo_por_tarea_min": 56.02191461836404,
+     "eficiencia_flujo": 45.21755341058627,
+     "estres": 10.000000000000696,
+     "colillas": 0,
+     "con_que_hacer": 92.24472222243722,
+     "trabajando": 90.85013888914261,
+     "fumando": 0,
+     "esperando_bloqueos": 7.622083333410085,
+     "minutos_rinden_por_hora": 53.80549082358611,
+     "hechas_total": 3865
+    },
+    {
+     "wip": 3,
+     "terminadas": 20.67,
+     "tiempo_por_tarea_min": 78.53032172229405,
+     "eficiencia_flujo": 32.36650548616024,
+     "estres": 17.40851863497345,
+     "colillas": 0,
+     "con_que_hacer": 98.65597222225946,
+     "trabajando": 97.45208333340402,
+     "fumando": 0,
+     "esperando_bloqueos": 1.325694444459264,
+     "minutos_rinden_por_hora": 57.49838824534066,
+     "hechas_total": 4134
+    },
+    {
+     "wip": 4,
+     "terminadas": 20.56,
+     "tiempo_por_tarea_min": 104.78797422177789,
+     "eficiencia_flujo": 24.284714811828135,
+     "estres": 30.37342624617575,
+     "colillas": 1,
+     "con_que_hacer": 99.88222222222541,
+     "trabajando": 97.47611111118111,
+     "fumando": 1.5000000000167746,
+     "esperando_bloqueos": 0.10722222222347888,
+     "minutos_rinden_por_hora": 57.4547587816314,
+     "hechas_total": 4112
+    },
+    {
+     "wip": 5,
+     "terminadas": 20.15,
+     "tiempo_por_tarea_min": 133.94921836226789,
+     "eficiencia_flujo": 18.97345674749184,
+     "estres": 41.48620419863443,
+     "colillas": 3,
+     "con_que_hacer": 100,
+     "trabajando": 95.19444444457788,
+     "fumando": 4.500000000049531,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 56.11835264148371,
+     "hechas_total": 4030
+    },
+    {
+     "wip": 6,
+     "terminadas": 19.255,
+     "tiempo_por_tarea_min": 167.71952739546282,
+     "eficiencia_flujo": 15.100211908037668,
+     "estres": 53.502824758243285,
+     "colillas": 6,
+     "con_que_hacer": 100,
+     "trabajando": 91.11111111135055,
+     "fumando": 8.888888888983452,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 53.75258194238322,
+     "hechas_total": 3851
+    },
+    {
+     "wip": 7,
+     "terminadas": 18.6,
+     "tiempo_por_tarea_min": 202.58376344083786,
+     "eficiencia_flujo": 12.526202869875148,
+     "estres": 63.711760103552955,
+     "colillas": 8,
+     "con_que_hacer": 100,
+     "trabajando": 88.00000000033324,
+     "fumando": 12.00000000011405,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 51.935539974114484,
+     "hechas_total": 3720
+    },
+    {
+     "wip": 8,
+     "terminadas": 17.69,
+     "tiempo_por_tarea_min": 242.70736291687626,
+     "eficiencia_flujo": 10.4045015897196,
+     "estres": 78.5287973734977,
+     "colillas": 11,
+     "con_que_hacer": 100,
+     "trabajando": 83.50000000045819,
+     "fumando": 16.500000000168882,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 49.31347434371984,
+     "hechas_total": 3538
+    },
+    {
+     "wip": 9,
+     "terminadas": 17.19,
+     "tiempo_por_tarea_min": 283.00271960439375,
+     "eficiencia_flujo": 8.913288239455117,
+     "estres": 85.93731600847048,
+     "colillas": 13,
+     "con_que_hacer": 100,
+     "trabajando": 80.50000000054152,
+     "fumando": 19.50000000023107,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 47.55696850674735,
+     "hechas_total": 3438
+    },
+    {
+     "wip": 10,
+     "terminadas": 16.61,
+     "tiempo_por_tarea_min": 327.0121914509024,
+     "eficiencia_flujo": 7.729657501787931,
+     "estres": 92.78873775567777,
+     "colillas": 15,
+     "con_que_hacer": 100,
+     "trabajando": 77.50000000062481,
+     "fumando": 22.500000000293255,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 45.81881237329941,
+     "hechas_total": 3322
+    }
+   ]
+  },
+  {
+   "nombre": "bloqueos 30 % · Weinberg completo",
+   "supuestos": {
+    "bloqueo": 0.3,
+    "duracion": [
+     30,
+     60
+    ],
+    "costo": "weinberg",
+    "tamano": [
+     15,
+     35
+    ],
+    "residuo": 0.03
+   },
+   "grupos": [
+    "cruce"
+   ],
+   "mejor_wip": 2,
+   "zona_buena": [
+    2
+   ],
+   "con_que_hacer_99_desde": 3,
+   "tiempo_sube_con_wip": true,
+   "caida_mejor_a_10": 0.8025097101882283,
+   "filas": [
+    {
+     "wip": 1,
+     "terminadas": 14.17,
+     "tiempo_por_tarea_min": 38.24401905433634,
+     "eficiencia_flujo": 65.40538912764218,
+     "estres": 5.494142586880676,
+     "colillas": 0,
+     "con_que_hacer": 66.95638888980397,
+     "trabajando": 65.71875000094944,
+     "fumando": 0,
+     "esperando_bloqueos": 32.44791666716865,
+     "minutos_rinden_por_hora": 39.31218479368309,
+     "hechas_total": 2834
+    },
+    {
+     "wip": 2,
+     "terminadas": 16.735,
+     "tiempo_por_tarea_min": 64.67278159545157,
+     "eficiencia_flujo": 45.73686331990984,
+     "estres": 10.000000000000696,
+     "colillas": 0,
+     "con_que_hacer": 93.3231944446295,
+     "trabajando": 91.90388888911335,
+     "fumando": 0,
+     "esperando_bloqueos": 6.5683333334010205,
+     "minutos_rinden_por_hora": 46.63816957336455,
+     "hechas_total": 3347
+    },
+    {
+     "wip": 3,
+     "terminadas": 13.81,
+     "tiempo_por_tarea_min": 117.43828747283219,
+     "eficiencia_flujo": 32.500465543474256,
+     "estres": 17.40851863497345,
+     "colillas": 0,
+     "con_que_hacer": 99.27361111113127,
+     "trabajando": 98.05444444449847,
+     "fumando": 0,
+     "esperando_bloqueos": 0.7233333333412425,
+     "minutos_rinden_por_hora": 38.312477364802895,
+     "hechas_total": 2762
+    },
+    {
+     "wip": 4,
+     "terminadas": 9.26,
+     "tiempo_por_tarea_min": 232.87913066952206,
+     "eficiencia_flujo": 24.349276927089335,
+     "estres": 30.37342624617575,
+     "colillas": 1,
+     "con_que_hacer": 99.95458333333458,
+     "trabajando": 97.53791666673504,
+     "fumando": 1.5000000000167746,
+     "esperando_bloqueos": 0.04541666666716723,
+     "minutos_rinden_por_hora": 25.735762877084955,
+     "hechas_total": 1852
+    },
+    {
+     "wip": 5,
+     "terminadas": 5.43,
+     "tiempo_por_tarea_min": 487.5672651933331,
+     "eficiencia_flujo": 19.012381548837634,
+     "estres": 41.48620419863443,
+     "colillas": 3,
+     "con_que_hacer": 100,
+     "trabajando": 95.19444444457788,
+     "fumando": 4.500000000049531,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 15.328349691537513,
+     "hechas_total": 1086
+    },
+    {
+     "wip": 6,
+     "terminadas": 4.86,
+     "tiempo_por_tarea_min": 652.7344135802101,
+     "eficiencia_flujo": 15.16730226199676,
+     "estres": 53.502824758243285,
+     "colillas": 6,
+     "con_que_hacer": 100,
+     "trabajando": 91.11111111135055,
+     "fumando": 8.888888888983452,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 13.659432897269197,
+     "hechas_total": 972
+    },
+    {
+     "wip": 7,
+     "terminadas": 4.865,
+     "tiempo_por_tarea_min": 819.7838129496051,
+     "eficiencia_flujo": 12.60958245507492,
+     "estres": 63.711760103552955,
+     "colillas": 8,
+     "con_que_hacer": 100,
+     "trabajando": 88.00000000033324,
+     "fumando": 12.00000000011405,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 13.14316847712411,
+     "hechas_total": 973
+    },
+    {
+     "wip": 8,
+     "terminadas": 4.925,
+     "tiempo_por_tarea_min": 946.7980710659498,
+     "eficiencia_flujo": 10.448040880361155,
+     "estres": 78.5287973734977,
+     "colillas": 11,
+     "con_que_hacer": 100,
+     "trabajando": 83.50000000045819,
+     "fumando": 16.500000000168882,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 12.472883240567171,
+     "hechas_total": 985
+    },
+    {
+     "wip": 9,
+     "terminadas": 3.355,
+     "tiempo_por_tarea_min": 967.374664679539,
+     "eficiencia_flujo": 8.940807250998056,
+     "estres": 85.93731600847048,
+     "colillas": 13,
+     "con_que_hacer": 100,
+     "trabajando": 80.50000000054152,
+     "fumando": 19.50000000023107,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 12.026681641473099,
+     "hechas_total": 671
+    },
+    {
+     "wip": 10,
+     "terminadas": 3.305,
+     "tiempo_por_tarea_min": 1363.455295007538,
+     "eficiencia_flujo": 7.818980409497816,
+     "estres": 92.78873775567777,
+     "colillas": 15,
+     "con_que_hacer": 100,
+     "trabajando": 77.50000000062481,
+     "fumando": 22.500000000293255,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 11.581098039511286,
+     "hechas_total": 661
+    }
+   ]
+  },
+  {
+   "nombre": "bloqueos 40 % · sin costo de cambio",
+   "supuestos": {
+    "bloqueo": 0.4,
+    "duracion": [
+     30,
+     60
+    ],
+    "costo": "ninguno",
+    "tamano": [
+     15,
+     35
+    ],
+    "residuo": 0.03
+   },
+   "grupos": [
+    "cruce"
+   ],
+   "mejor_wip": 4,
+   "zona_buena": [
+    3,
+    4,
+    5
+   ],
+   "con_que_hacer_99_desde": 4,
+   "tiempo_sube_con_wip": true,
+   "caida_mejor_a_10": 0.19936554416788665,
+   "filas": [
+    {
+     "wip": 1,
+     "terminadas": 12.435,
+     "tiempo_por_tarea_min": 43.242018496175525,
+     "eficiencia_flujo": 57.93581954876705,
+     "estres": 5.494142586880676,
+     "colillas": 0,
+     "con_que_hacer": 59.073055556611266,
+     "trabajando": 57.97722222325522,
+     "fumando": 0,
+     "esperando_bloqueos": 40.18944444510715,
+     "minutos_rinden_por_hora": 34.682228045665184,
+     "hechas_total": 2487
+    },
+    {
+     "wip": 2,
+     "terminadas": 18.255,
+     "tiempo_por_tarea_min": 58.75576554368032,
+     "eficiencia_flujo": 43.408975146515175,
+     "estres": 10.000000000000696,
+     "colillas": 0,
+     "con_que_hacer": 88.28027777810232,
+     "trabajando": 86.9173611114735,
+     "fumando": 0,
+     "esperando_bloqueos": 11.55486111122228,
+     "minutos_rinden_por_hora": 51.37613543969437,
+     "hechas_total": 3651
+    },
+    {
+     "wip": 3,
+     "terminadas": 20.18,
+     "tiempo_por_tarea_min": 79.85661546084344,
+     "eficiencia_flujo": 31.996199446139723,
+     "estres": 17.40851863497345,
+     "colillas": 0,
+     "con_que_hacer": 97.39069444451661,
+     "trabajando": 96.19236111121656,
+     "fumando": 0,
+     "esperando_bloqueos": 2.5854166666963603,
+     "minutos_rinden_por_hora": 56.53792106772669,
+     "hechas_total": 4036
+    },
+    {
+     "wip": 4,
+     "terminadas": 20.49,
+     "tiempo_por_tarea_min": 105.82130307465854,
+     "eficiencia_flujo": 24.26861597365854,
+     "estres": 30.37342624617575,
+     "colillas": 1,
+     "con_que_hacer": 99.76861111111754,
+     "trabajando": 97.35402777785127,
+     "fumando": 1.5000000000167746,
+     "esperando_bloqueos": 0.22930555555809026,
+     "minutos_rinden_por_hora": 57.11425826747696,
+     "hechas_total": 4098
+    },
+    {
+     "wip": 5,
+     "terminadas": 20.005,
+     "tiempo_por_tarea_min": 134.96163459133703,
+     "eficiencia_flujo": 18.979722675426856,
+     "estres": 41.48620419863443,
+     "colillas": 3,
+     "con_que_hacer": 99.98555555555596,
+     "trabajando": 95.18000000013384,
+     "fumando": 4.500000000049531,
+     "esperando_bloqueos": 0.014444444444603756,
+     "minutos_rinden_por_hora": 55.85515257833565,
+     "hechas_total": 4001
+    },
+    {
+     "wip": 6,
+     "terminadas": 19.2,
+     "tiempo_por_tarea_min": 169.32947916664813,
+     "eficiencia_flujo": 15.11863073606298,
+     "estres": 53.502824758243285,
+     "colillas": 6,
+     "con_que_hacer": 100,
+     "trabajando": 91.11111111135055,
+     "fumando": 8.888888888983452,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 53.507981628443666,
+     "hechas_total": 3840
+    },
+    {
+     "wip": 7,
+     "terminadas": 18.535,
+     "tiempo_por_tarea_min": 203.87112220121887,
+     "eficiencia_flujo": 12.514827866930338,
+     "estres": 63.711760103552955,
+     "colillas": 8,
+     "con_que_hacer": 100,
+     "trabajando": 88.00000000033324,
+     "fumando": 12.00000000011405,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 51.70825955208034,
+     "hechas_total": 3707
+    },
+    {
+     "wip": 8,
+     "terminadas": 17.545,
+     "tiempo_por_tarea_min": 244.8339127956418,
+     "eficiencia_flujo": 10.418261899229337,
+     "estres": 78.5287973734977,
+     "colillas": 11,
+     "con_que_hacer": 100,
+     "trabajando": 83.50000000045819,
+     "fumando": 16.500000000168882,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 49.09361703898925,
+     "hechas_total": 3509
+    },
+    {
+     "wip": 9,
+     "terminadas": 16.9,
+     "tiempo_por_tarea_min": 285.07815088754523,
+     "eficiencia_flujo": 8.927246155187177,
+     "estres": 85.93731600847048,
+     "colillas": 13,
+     "con_que_hacer": 100,
+     "trabajando": 80.50000000054152,
+     "fumando": 19.50000000023107,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 47.35794388270275,
+     "hechas_total": 3380
+    },
+    {
+     "wip": 10,
+     "terminadas": 16.405,
+     "tiempo_por_tarea_min": 329.42421517826847,
+     "eficiencia_flujo": 7.732366435497575,
+     "estres": 92.78873775567777,
+     "colillas": 15,
+     "con_que_hacer": 100,
+     "trabajando": 77.50000000062481,
+     "fumando": 22.500000000293255,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 45.62872742120468,
+     "hechas_total": 3281
+    }
+   ]
+  },
+  {
+   "nombre": "bloqueos 40 % · Weinberg completo",
+   "supuestos": {
+    "bloqueo": 0.4,
+    "duracion": [
+     30,
+     60
+    ],
+    "costo": "weinberg",
+    "tamano": [
+     15,
+     35
+    ],
+    "residuo": 0.03
+   },
+   "grupos": [
+    "cruce"
+   ],
+   "mejor_wip": 2,
+   "zona_buena": [
+    2
+   ],
+   "con_que_hacer_99_desde": 4,
+   "tiempo_sube_con_wip": true,
+   "caida_mejor_a_10": 0.800804206619239,
+   "filas": [
+    {
+     "wip": 1,
+     "terminadas": 12.435,
+     "tiempo_por_tarea_min": 43.242018496175525,
+     "eficiencia_flujo": 57.93581954876705,
+     "estres": 5.494142586880676,
+     "colillas": 0,
+     "con_que_hacer": 59.073055556611266,
+     "trabajando": 57.97722222325522,
+     "fumando": 0,
+     "esperando_bloqueos": 40.18944444510715,
+     "minutos_rinden_por_hora": 34.682228045665184,
+     "hechas_total": 2487
+    },
+    {
+     "wip": 2,
+     "terminadas": 16.165,
+     "tiempo_por_tarea_min": 66.75457779151743,
+     "eficiencia_flujo": 43.76117817381437,
+     "estres": 10.000000000000696,
+     "colillas": 0,
+     "con_que_hacer": 89.10291666696862,
+     "trabajando": 87.73750000033986,
+     "fumando": 0,
+     "esperando_bloqueos": 10.734722222326043,
+     "minutos_rinden_por_hora": 45.15613996008995,
+     "hechas_total": 3233
+    },
+    {
+     "wip": 3,
+     "terminadas": 13.985,
+     "tiempo_por_tarea_min": 114.74765820520665,
+     "eficiencia_flujo": 32.42765846933729,
+     "estres": 17.40851863497345,
+     "colillas": 0,
+     "con_que_hacer": 98.5886111111502,
+     "trabajando": 97.37583333340612,
+     "fumando": 0,
+     "esperando_bloqueos": 1.4019444444601874,
+     "minutos_rinden_por_hora": 39.354166139248086,
+     "hechas_total": 2797
+    },
+    {
+     "wip": 4,
+     "terminadas": 9.565,
+     "tiempo_por_tarea_min": 224.16097752219264,
+     "eficiencia_flujo": 24.330554655556707,
+     "estres": 30.37342624617575,
+     "colillas": 1,
+     "con_que_hacer": 99.92888888889087,
+     "trabajando": 97.51375000006904,
+     "fumando": 1.5000000000167746,
+     "esperando_bloqueos": 0.06958333333410066,
+     "minutos_rinden_por_hora": 26.672987858374963,
+     "hechas_total": 1913
+    },
+    {
+     "wip": 5,
+     "terminadas": 5.655,
+     "tiempo_por_tarea_min": 472.3175508399285,
+     "eficiencia_flujo": 19.048381941269856,
+     "estres": 41.48620419863443,
+     "colillas": 3,
+     "con_que_hacer": 100,
+     "trabajando": 95.19444444457788,
+     "fumando": 4.500000000049531,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 15.863037424843359,
+     "hechas_total": 1131
+    },
+    {
+     "wip": 6,
+     "terminadas": 4.865,
+     "tiempo_por_tarea_min": 642.7122816032492,
+     "eficiencia_flujo": 15.174291897913783,
+     "estres": 53.502824758243285,
+     "colillas": 6,
+     "con_que_hacer": 100,
+     "trabajando": 91.11111111135055,
+     "fumando": 8.888888888983452,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 13.69437834705365,
+     "hechas_total": 973
+    },
+    {
+     "wip": 7,
+     "terminadas": 4.88,
+     "tiempo_por_tarea_min": 823.7777663934054,
+     "eficiencia_flujo": 12.589695894975296,
+     "estres": 63.711760103552955,
+     "colillas": 8,
+     "con_que_hacer": 100,
+     "trabajando": 88.00000000033324,
+     "fumando": 12.00000000011405,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 13.135158406867722,
+     "hechas_total": 976
+    },
+    {
+     "wip": 8,
+     "terminadas": 4.94,
+     "tiempo_por_tarea_min": 933.4720647772896,
+     "eficiencia_flujo": 10.439654847328491,
+     "estres": 78.5287973734977,
+     "colillas": 11,
+     "con_que_hacer": 100,
+     "trabajando": 83.50000000045819,
+     "fumando": 16.500000000168882,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 12.461187482294138,
+     "hechas_total": 988
+    },
+    {
+     "wip": 9,
+     "terminadas": 3.31,
+     "tiempo_por_tarea_min": 970.1993957703476,
+     "eficiencia_flujo": 8.934790438518245,
+     "estres": 85.93731600847048,
+     "colillas": 13,
+     "con_que_hacer": 100,
+     "trabajando": 80.50000000054152,
+     "fumando": 19.50000000023107,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 12.01916986208657,
+     "hechas_total": 662
+    },
+    {
+     "wip": 10,
+     "terminadas": 3.22,
+     "tiempo_por_tarea_min": 1338.0958074533867,
+     "eficiencia_flujo": 7.8085370734336,
+     "estres": 92.78873775567777,
+     "colillas": 15,
+     "con_que_hacer": 100,
+     "trabajando": 77.50000000062481,
+     "fumando": 22.500000000293255,
+     "esperando_bloqueos": 0,
+     "minutos_rinden_por_hora": 11.567568638859095,
+     "hechas_total": 644
+    }
+   ]
+  }
+ ],
+ "h2": {
+  "con_bloqueos": 17,
+  "mejor_entre_2_y_4": 16,
+  "porcentaje": 94.11764705882354,
+  "se_cumple": true,
+  "listados_con_repetidos": {
+   "total": 27,
+   "en_rango": 26
+  },
+  "tiempo_sube_en_todos": true,
+  "tabla_bloqueos": [
+   {
+    "bloqueo": 0,
+    "suave": {
+     "mejor": 1,
+     "zona": [
+      1
+     ]
+    },
+    "ninguno": {
+     "mejor": 2,
+     "zona": [
+      1,
+      2,
+      3,
+      4,
+      5
+     ]
+    },
+    "weinberg": {
+     "mejor": 1,
+     "zona": [
+      1
+     ]
+    },
+    "con99": 1
+   },
+   {
+    "bloqueo": 0.1,
+    "suave": {
+     "mejor": 2,
+     "zona": [
+      1,
+      2
+     ]
+    },
+    "ninguno": {
+     "mejor": 3,
+     "zona": [
+      2,
+      3,
+      4,
+      5
+     ]
+    },
+    "weinberg": {
+     "mejor": 1,
+     "zona": [
+      1,
+      2
+     ]
+    },
+    "con99": 2
+   },
+   {
+    "bloqueo": 0.2,
+    "suave": {
+     "mejor": 2,
+     "zona": [
+      2
+     ]
+    },
+    "ninguno": {
+     "mejor": 3,
+     "zona": [
+      2,
+      3,
+      4,
+      5
+     ]
+    },
+    "weinberg": {
+     "mejor": 2,
+     "zona": [
+      2
+     ]
+    },
+    "con99": 3
+   },
+   {
+    "bloqueo": 0.3,
+    "suave": {
+     "mejor": 2,
+     "zona": [
+      2,
+      3
+     ]
+    },
+    "ninguno": {
+     "mejor": 3,
+     "zona": [
+      3,
+      4,
+      5
+     ]
+    },
+    "weinberg": {
+     "mejor": 2,
+     "zona": [
+      2
+     ]
+    },
+    "con99": 3
+   },
+   {
+    "bloqueo": 0.4,
+    "suave": {
+     "mejor": 3,
+     "zona": [
+      2,
+      3
+     ]
+    },
+    "ninguno": {
+     "mejor": 4,
+     "zona": [
+      3,
+      4,
+      5
+     ]
+    },
+    "weinberg": {
+     "mejor": 2,
+     "zona": [
+      2
+     ]
+    },
+    "con99": 4
+   }
+  ]
+ },
+ "h3": {
+  "filas": [
+   {
+    "escenario": "juego de hoy",
+    "minutos_hasta_tranqui": 186.87749999994438,
+    "dia_mas_rapido_min": 121.19999999995434,
+    "dias_mas_de_1_hora": 1,
+    "minutos_hasta_volver_a_2": 154.5014999999493
+   },
+   {
+    "escenario": "bloqueos 0 %",
+    "minutos_hasta_tranqui": 187.1467499999444,
+    "dia_mas_rapido_min": 123.59999999995398,
+    "dias_mas_de_1_hora": 1,
+    "minutos_hasta_volver_a_2": 153.27224999994954
+   },
+   {
+    "escenario": "bloqueos 40 %",
+    "minutos_hasta_tranqui": 187.94174999994422,
+    "dia_mas_rapido_min": 119.99999999995453,
+    "dias_mas_de_1_hora": 1,
+    "minutos_hasta_volver_a_2": 151.63124999994977
+   },
+   {
+    "escenario": "sin costo de cambio",
+    "minutos_hasta_tranqui": 172.62074999994655,
+    "dia_mas_rapido_min": 114.29999999995539,
+    "dias_mas_de_1_hora": 1,
+    "minutos_hasta_volver_a_2": 133.80899999995248
+   },
+   {
+    "escenario": "Weinberg completo",
+    "minutos_hasta_tranqui": 232.02449999993792,
+    "dia_mas_rapido_min": 138.29999999995175,
+    "dias_mas_de_1_hora": 1,
+    "minutos_hasta_volver_a_2": 205.18349999994186
+   }
+  ],
+  "se_cumple": true
+ },
+ "avisos": []
+}
