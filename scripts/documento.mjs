@@ -1,17 +1,27 @@
-// Arma los DOS informes en PDF (regla de Felipe, 2026-10-19):
-//  · "Mosca del WIP - Informe completo.pdf": todo, para Felipe, para entender
-//    y retomar el proyecto (fuente: docs/contexto/completo.html).
-//  · "Mosca del WIP - Para compartir.pdf": la historia corta (10 a 15
-//    páginas), para cualquier persona (fuente: docs/contexto/compartir.html).
-// Los dos usan docs/contexto/estilo.css y las imágenes de docs/contexto/img/
+// Arma los PDF del proyecto. Los dos informes (regla de Felipe, 2026-10-19):
+//  · "Informe completo": todo, para Felipe, para entender y retomar el
+//    proyecto (fuente: docs/contexto/completo.html).
+//  · "Para compartir": la historia corta (10 a 15 páginas), para cualquier
+//    persona (fuente: docs/contexto/compartir.html).
+// Y los cortos de la Etapa 4, que sólo se arman cuando se piden con DOC:
+//  · "Norte del proyecto" (1 a 2 páginas; fuente: docs/contexto/norte.html).
+// Todos usan docs/contexto/estilo.css y las imágenes de docs/contexto/img/
 // (todas sacadas del juego o del arte de portada: nada de referencias/).
 //
-// Uso: node scripts/documento.mjs                → los dos PDF en el Escritorio
-//      DOC=compartir node scripts/documento.mjs  → sólo uno (completo o compartir)
+// Van a la carpeta "Mosca del WIP" del Escritorio (regla de Felipe,
+// 2026-10-20), con la fecha de hoy al inicio y la versión al final:
+// "2026-10-19 Informe completo v1.pdf". Al cambiar el contenido de un
+// informe, súbele la versión aquí abajo (en la Etapa 4.4 pasan a v2).
+//
+// Uso: node scripts/documento.mjs                → los dos informes
+//      DOC=compartir node scripts/documento.mjs  → sólo uno (completo, compartir
+//                                                  o norte)
 //      FOTOS=1 node scripts/documento.mjs        → antes saca todas las imágenes
 //                                                  del juego (requiere npm run dev)
 //      FOTOS=paneles,cierre node …               → sólo esos grupos: holograma,
 //        paneles, escenas, cerebros, monitor-limite, monitor-bloqueo, cierre
+//      SALIDA=/otra/carpeta, FECHA=2026-10-19,   → otra carpeta, fecha o versión
+//      VERSION=v2
 import { chromium } from 'playwright';
 import { mkdirSync } from 'node:fs';
 import { homedir } from 'node:os';
@@ -20,10 +30,12 @@ import { pathToFileURL } from 'node:url';
 
 const CARPETA = resolve('docs/contexto');
 const IMG = join(CARPETA, 'img');
-const ESCRITORIO = process.env.SALIDA ?? join(homedir(), 'Desktop');
+const SALIDA = process.env.SALIDA ?? join(homedir(), 'Desktop', 'Mosca del WIP');
+const FECHA = process.env.FECHA ?? new Date().toLocaleDateString('sv-SE'); // 2026-10-20
 const DOCUMENTOS = [
-  { id: 'completo', html: 'completo.html', pdf: 'Mosca del WIP - Informe completo.pdf' },
-  { id: 'compartir', html: 'compartir.html', pdf: 'Mosca del WIP - Para compartir.pdf', paginas: [10, 15] },
+  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v1' },
+  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v1', paginas: [10, 15] },
+  { id: 'norte', html: 'norte.html', nombre: 'Norte del proyecto', version: 'v1', paginas: [1, 2], aparte: true },
 ];
 const JUEGO = 'http://localhost:5173';
 const b = await chromium.launch({ args: ['--enable-unsafe-swiftshader', '--use-gl=angle', '--ignore-gpu-blocklist'] });
@@ -224,9 +236,10 @@ if (process.env.FOTOS) {
 }
 
 // Los PDF. Revisión: ninguna página puede desbordarse (se cortaría el texto),
-// ninguna imagen puede faltar, y el de compartir debe tener 10 a 15 páginas.
+// ninguna imagen puede faltar, y cada uno debe quedar en su rango de páginas.
 const pedido = process.env.DOC;
-for (const doc of DOCUMENTOS.filter((d) => !pedido || d.id === pedido)) {
+mkdirSync(SALIDA, { recursive: true });
+for (const doc of DOCUMENTOS.filter((d) => (pedido ? d.id === pedido : !d.aparte))) {
   const p = await b.newPage();
   await p.goto(pathToFileURL(join(CARPETA, doc.html)).href, { waitUntil: 'networkidle' });
   await p.evaluate(() => document.fonts.ready);
@@ -242,7 +255,7 @@ for (const doc of DOCUMENTOS.filter((d) => !pedido || d.id === pedido)) {
   if (doc.paginas && (revision.hojas < doc.paginas[0] || revision.hojas > doc.paginas[1])) {
     console.log(`OJO (${doc.id}): tiene ${revision.hojas} páginas y debe tener entre ${doc.paginas[0]} y ${doc.paginas[1]}`);
   }
-  const salida = join(ESCRITORIO, doc.pdf);
+  const salida = join(SALIDA, `${FECHA} ${doc.nombre} ${process.env.VERSION ?? doc.version}.pdf`);
   await p.pdf({ path: salida, preferCSSPageSize: true, printBackground: true, margin: { top: 0, bottom: 0, left: 0, right: 0 } });
   console.log('PDF listo:', salida, `(${revision.hojas} páginas)`);
   await p.close();

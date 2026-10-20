@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Mosca del WIP · Norte del proyecto</title>
+<!-- Norte del proyecto (Etapa 4.0, 2026-10-20): 2 páginas A4 en simple, con
+     lo mismo que docs/NORTE.md. Sin rutas ni código. Se arma con:
+     DOC=norte node scripts/documento.mjs -->
+<link rel="stylesheet" href="estilo.css" />
+<style>
+  body { font-size: 9.6pt; line-height: 1.52; }
+  h2 { margin-top: 5mm; }
+  .que-es td { padding: 1.7mm 1.8mm; font-size: 9pt; }
+  .que-es td:first-child { font-weight: 600; color: var(--tinta); width: 52mm; }
+  .que-es td:last-child { width: 26mm; }
+
+  .eficiencias { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; margin: 3mm 0 2mm; }
+  .eficiencias div { background: #fff; border: 0.5pt solid var(--linea); border-radius: 1.6mm; padding: 3mm 3.6mm; }
+  .eficiencias b { display: block; font-family: var(--serif); font-size: 12pt; color: var(--tinta); margin-bottom: 0.6mm; }
+  .eficiencias span { font-size: 8.8pt; color: var(--suave); }
+  .destruye { font-family: var(--serif); font-size: 12pt; color: var(--tinta); text-align: center; margin: 2.4mm 0 3.4mm; }
+
+  .tres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3.4mm; margin: 0 0 3mm; }
+  .tres div { background: #fff; border: 0.5pt solid var(--linea); border-top: 1.4mm solid var(--tenue); border-radius: 0 0 1.6mm 1.6mm; padding: 2.6mm 3.2mm 3mm; font-size: 8.7pt; color: var(--suave); line-height: 1.42; }
+  .tres b { display: block; color: var(--tinta); font-size: 9.6pt; margin-bottom: 0.8mm; }
+  .tres .uno { border-top-color: var(--ocupada); }
+  .tres .sost { border-top-color: var(--tranqui); }
+  .tres .sobre { border-top-color: var(--colapsada); }
+  .tres .sello { margin-bottom: 1.4mm; }
+
+
+  .hipotesis td { padding: 1.7mm 1.8mm; font-size: 8.9pt; }
+  .hipotesis td:first-child { font-family: var(--serif); font-size: 13pt; font-weight: 700; color: var(--teal); width: 11mm; line-height: 1.1; }
+  .hipotesis td b { color: var(--tinta); }
+  .hipotesis td.donde { width: 30mm; font-size: 8.4pt; color: var(--suave); }
+  .hipotesis td.estado { width: 22mm; }
+
+  .lista-caja { list-style: none; padding: 0; margin: 0; }
+  .lista-caja li { padding: 1.6mm 0; border-bottom: 0.5pt solid var(--linea); margin: 0; font-size: 8.9pt; }
+  .lista-caja li:last-child { border-bottom: none; padding-bottom: 0; }
+  .lista-caja b { color: var(--tinta); }
+
+  .linea { grid-template-columns: repeat(6, 1fr); }
+  .linea .hito.hoy::before { background: var(--tranqui); }
+  .linea .hoy .cuando { color: var(--tranqui); }
+</style>
+</head>
+<body>
+
+<!-- =============================== 1 · QUÉ ES Y LA PARADOJA =============================== -->
+<section class="hoja">
+  <div class="kicker">Norte del proyecto <span>·</span>20 de octubre de 2026</div>
+  <h1>Estar siempre ocupado no es lo mismo que avanzar</h1>
+  <p class="bajada">Antes de seguir midiendo y escribiendo, fijamos hacia dónde va la Mosca del WIP: qué es, qué queremos comprobar y qué nunca vamos a afirmar.</p>
+
+  <h2>Qué es y qué no es</h2>
+  <table class="que-es">
+    <tr><th>Es…</th><th>Qué significa</th><th>Hoy</th></tr>
+    <tr><td>Un juego</td><td>La forma de mostrarlo: una mosca oficinista con un tablero de tareas, en el navegador.</td><td><span class="sello s-real">Sí</span></td></tr>
+    <tr><td>Un experimento en el computador</td><td>Una simulación con supuestos basados en estudios y un cerebro de mosca real. No mide personas ni equipos.</td><td><span class="sello s-real">Sí</span></td></tr>
+    <tr><td>Una prueba real</td><td>Sólo cuando se lleve a equipos de verdad, en la última parte de esta etapa.</td><td><span class="sello s-verif">Todavía no</span></td></tr>
+  </table>
+  <p class="chico">Por eso cada número dirá de dónde sale: "en el juego", "en la simulación" o "según estudios".</p>
+
+  <h2>La idea central: la paradoja de la eficiencia</h2>
+  <p>La tomamos de Modig y Åhlström, <em>This is Lean</em> (2012). Hay dos formas de ser "eficiente":</p>
+  <div class="eficiencias">
+    <div><b>Eficiencia de recursos</b><span>Que las personas estén siempre ocupadas.</span></div>
+    <div><b>Eficiencia de flujo</b><span>Que el trabajo avance sin quedarse esperando.</span></div>
+  </div>
+  <p class="destruye">Optimizar la primera destruye la segunda.</p>
+  <p>En el juego, el límite es cuántas tareas puede tener abiertas la mosca a la vez. Lo que esperamos ver:</p>
+  <div class="tres">
+    <div class="uno"><span class="sello s-ilus">Espera ella</span><b>Con una tarea</b>La tarea vuela, pero cuando se traba esperando a otra persona, la mosca se queda sin nada que hacer.</div>
+    <div class="sost"><span class="sello s-real">Sostenible</span><b>Con 2 o 3</b>Las dos cosas se equilibran: casi siempre tiene qué hacer y sus tareas no esperan tanto.</div>
+    <div class="sobre"><span class="sello" style="background:var(--colapsada)">Sobrecarga</span><b>Con muchas</b>Nunca está sin qué hacer, pero cada tarea pasa casi todo el tiempo esperando su turno.</div>
+  </div>
+  <p class="chico">Cuánto tiempo pasa ocupada y cuánto esperan sus tareas en cada caso es justo lo primero que vamos a medir. Hasta entonces, esto es lo que esperamos, no un resultado.</p>
+
+  <div class="frase"><b>Propósito.</b> Mostrar, en un minuto y con una mosca de verdad, que estar siempre ocupado no es lo mismo que avanzar, y ayudar a los equipos a encontrar su <em>límite sostenible</em>: el que se aguanta todo el día sin colapsar.</div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Norte del proyecto · Felipe Fernández</span><span>1 / 2</span></div>
+</section>
+
+<!-- =============================== 2 · HIPÓTESIS, LÍMITES Y PARTES =============================== -->
+<section class="hoja">
+  <div class="kicker">Lo que vamos a comprobar</div>
+  <h1>Cuatro hipótesis, y si una falla lo diremos tal cual</h1>
+  <p class="bajada">Una hipótesis es algo que creemos, pero que todavía hay que probar. Cada una se prueba en su propia parte, y las reglas para decir "se cumple" se guardan antes de mirar los resultados.</p>
+  <table class="hipotesis">
+    <tr><th></th><th>Hipótesis</th><th>Se prueba en</th><th>Estado</th></tr>
+    <tr><td>H1</td><td><b>La paradoja.</b> Con más tareas nunca le falta qué hacer, pero sus tareas pasan cada vez más tiempo esperando y termina menos.</td><td class="donde">Parte 4.1, en la simulación</td><td class="estado"><span class="sello s-verif">Por probar</span></td></tr>
+    <tr><td>H2</td><td><b>El límite sostenible.</b> Cuando hay que esperar a otros, el mejor número es bajo pero no 1, y se mantiene aunque cambien los supuestos. Si se mueve según cuánto se espera, eso también es un hallazgo.</td><td class="donde">Parte 4.2, en la simulación</td><td class="estado"><span class="sello s-verif">Por probar</span></td></tr>
+    <tr><td>H3</td><td><b>Lo empezado no desaparece.</b> Al bajar el límite, la mejora tarda horas en notarse.</td><td class="donde">Parte 4.2, en la simulación</td><td class="estado"><span class="sello s-verif">Por probar</span></td></tr>
+    <tr><td>H4</td><td><b>Con personas.</b> Ver la mosca ayuda a que un equipo entienda la paradoja y se anime a probar un límite.</td><td class="donde">Parte 4.5, con equipos reales</td><td class="estado"><span class="sello s-verif">Por probar</span></td></tr>
+  </table>
+  <p class="chico">Lo que ya vimos en el juego de hoy (con 2 tareas termina más que con 1 o con 9, y al bajar de 10 a 2 tareas al mediodía recién queda tranquila a eso de las 15:10) salió de una sola combinación de supuestos. No cuenta como prueba: para eso están las partes 4.1 y 4.2.</p>
+
+  <div class="dos" style="margin-top:4mm">
+    <div class="caja tecnico" style="margin:0;font-size:8.9pt"><span class="etiqueta">Lo que no es hipótesis (y lo diremos así)</span>
+      <ul class="lista-caja">
+        <li><b>El estrés.</b> Es un supuesto del juego, basado en estudios. Que suba con las tareas lo pusimos nosotros.</li>
+        <li><b>Que cada tarea tarde más con más abiertas.</b> Es matemática: si se termina al mismo ritmo y hay más cosas abiertas, cada una espera más (ley de Little). No es un hallazgo.</li>
+        <li><b>El cerebro.</b> No prueba nada sobre la oficina. Nosotros elegimos que las tareas sean como polvo en la antena. Lo real es cómo reacciona una mosca a esa molestia.</li>
+      </ul>
+    </div>
+    <div class="caja regla" style="margin:0;font-size:8.9pt"><span class="etiqueta">Advertencias</span>
+      <ul class="lista-caja">
+        <li><b>Alto desempeño es más que esto.</b> La mosca muestra un ingrediente, el flujo: "uno de los hábitos de los equipos de alto desempeño".</li>
+        <li><b>La mosca es una persona sola.</b> No mide lo que pasa cuando el trabajo pasa de una persona a otra dentro de un equipo.</li>
+        <li><b>Si una hipótesis no se cumple, se dice tal cual.</b> No se ajusta nada para que calce.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Las partes de esta etapa</h2>
+  <div class="linea">
+    <div class="hito hoy"><span class="cuando">Hoy · hecha</span><b>4.0 Orden y norte</b>Carpeta de informes y este documento.</div>
+    <div class="hito prox"><span class="cuando">Sigue</span><b>4.1 La paradoja</b>¿Ocupada siempre, pero sus tareas esperando?</div>
+    <div class="hito prox"><span class="cuando">Después</span><b>4.2 Robustez</b>¿Se sostiene si cambian los supuestos?</div>
+    <div class="hito prox"><span class="cuando">Felipe</span><b>4.3 Estudios</b>Con su asesor, fuera del computador.</div>
+    <div class="hito prox"><span class="cuando">Después</span><b>4.4 Nuevo informe</b>El informe para compartir, rehecho alrededor de este norte.</div>
+    <div class="hito prox"><span class="cuando">Cuando se pida</span><b>4.5 Equipos reales</b>Un kit para probar un límite con personas.</div>
+  </div>
+
+  <div class="pie"><span><b>Mosca del WIP</b> · Norte del proyecto · Felipe Fernández</span><span>2 / 2</span></div>
+</section>
+
+<script>
+// ---------- Números de página del pie ----------
+(function () {
+  const hojas = [...document.querySelectorAll('.hoja')];
+  hojas.forEach((h, i) => { const n = h.querySelector('.pie span:last-child'); if (n) n.textContent = `${i + 1} / ${hojas.length}`; });
+})();
+</script>
+</body>
+</html>
