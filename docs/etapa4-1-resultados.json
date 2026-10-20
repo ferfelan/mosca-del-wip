@@ -1,0 +1,239 @@
+{
+ "dias": 200,
+ "semilla": 2024,
+ "paso": 0.15,
+ "filas": [
+  {
+   "wip": 1,
+   "con_que_hacer": 74.69958333403405,
+   "trabajando": 73.34486111184944,
+   "fumando": 0,
+   "cafe": 1.8333333333539859,
+   "esperando_bloqueos": 24.821805555898816,
+   "eficiencia_flujo": 72.88741999626907,
+   "esperando_su_turno": 27.112580003730926,
+   "tamano_sobre_tiempo": 72.88741999626907,
+   "flujo_promedio_por_tarea": 85.80960990115742,
+   "tamano_promedio_por_tarea": 85.80960990115744,
+   "terminadas": 15.885,
+   "tiempo_por_tarea_min": 34.12791942083395,
+   "minutos_rinden_por_hora": 43.87247100405616,
+   "colillas": 0,
+   "cafes": 6
+  },
+  {
+   "wip": 2,
+   "con_que_hacer": 96.28138888899154,
+   "trabajando": 94.80902777792132,
+   "fumando": 0,
+   "cafe": 1.5277777777948756,
+   "esperando_bloqueos": 3.663194444487004,
+   "eficiencia_flujo": 47.21010696827132,
+   "esperando_su_turno": 52.78989303172868,
+   "tamano_sobre_tiempo": 41.433044365427385,
+   "flujo_promedio_por_tarea": 53.62405864234062,
+   "tamano_promedio_por_tarea": 47.78428888305052,
+   "terminadas": 17.99,
+   "tiempo_por_tarea_min": 60.06971928848713,
+   "minutos_rinden_por_hora": 49.777211371589104,
+   "colillas": 0,
+   "cafes": 5
+  },
+  {
+   "wip": 3,
+   "con_que_hacer": 99.54291666667932,
+   "trabajando": 98.32375000004652,
+   "fumando": 0,
+   "cafe": 1.2222222222357653,
+   "esperando_bloqueos": 0.4540277777827944,
+   "eficiencia_flujo": 32.69265213786307,
+   "esperando_su_turno": 67.30734786213694,
+   "tamano_sobre_tiempo": 25.94161922507961,
+   "flujo_promedio_por_tarea": 34.548591439782705,
+   "tamano_promedio_por_tarea": 27.605209208262686,
+   "terminadas": 16.895,
+   "tiempo_por_tarea_min": 96.00208641608856,
+   "minutos_rinden_por_hora": 46.69217894286818,
+   "colillas": 0,
+   "cafes": 4
+  },
+  {
+   "wip": 4,
+   "con_que_hacer": 99.98791666666699,
+   "trabajando": 97.57125000006745,
+   "fumando": 1.5000000000167746,
+   "cafe": 0.9166666666766786,
+   "esperando_bloqueos": 0.012083333333466601,
+   "eficiencia_flujo": 24.31029810740465,
+   "esperando_su_turno": 75.68970189259535,
+   "tamano_sobre_tiempo": 17.735321118882688,
+   "flujo_promedio_por_tarea": 24.927055532211618,
+   "tamano_promedio_por_tarea": 18.23684864756699,
+   "terminadas": 15.405,
+   "tiempo_por_tarea_min": 140.38680623172738,
+   "minutos_rinden_por_hora": 42.615514593482644,
+   "colillas": 1,
+   "cafes": 3
+  },
+  {
+   "wip": 5,
+   "con_que_hacer": 100,
+   "trabajando": 95.19444444457788,
+   "fumando": 4.500000000049531,
+   "cafe": 0.30555555555892105,
+   "esperando_bloqueos": 0,
+   "eficiencia_flujo": 19.01383390786516,
+   "esperando_su_turno": 80.98616609213484,
+   "tamano_sobre_tiempo": 12.867279871127785,
+   "flujo_promedio_por_tarea": 19.212659004435015,
+   "tamano_promedio_por_tarea": 13.012997414910204,
+   "terminadas": 13.96,
+   "tiempo_por_tarea_min": 193.7002328080018,
+   "minutos_rinden_por_hora": 38.57383639213186,
+   "colillas": 3,
+   "cafes": 1
+  },
+  {
+   "wip": 6,
+   "con_que_hacer": 100,
+   "trabajando": 91.11111111135055,
+   "fumando": 8.888888888983452,
+   "cafe": 0,
+   "esperando_bloqueos": 0,
+   "eficiencia_flujo": 15.128127122197906,
+   "esperando_su_turno": 84.87187287780209,
+   "tamano_sobre_tiempo": 9.469605098615471,
+   "flujo_promedio_por_tarea": 15.197282055668072,
+   "tamano_promedio_por_tarea": 9.516377991241363,
+   "terminadas": 12.315,
+   "tiempo_por_tarea_min": 264.2005481120313,
+   "minutos_rinden_por_hora": 34.15186155618546,
+   "colillas": 6,
+   "cafes": 0
+  },
+  {
+   "wip": 7,
+   "con_que_hacer": 100,
+   "trabajando": 88.00000000033324,
+   "fumando": 12.00000000011405,
+   "cafe": 0,
+   "esperando_bloqueos": 0,
+   "eficiencia_flujo": 12.560665422216394,
+   "esperando_su_turno": 87.43933457778361,
+   "tamano_sobre_tiempo": 7.333319207954324,
+   "flujo_promedio_por_tarea": 12.590768618371243,
+   "tamano_promedio_por_tarea": 7.3516740611119715,
+   "terminadas": 11.15,
+   "tiempo_por_tarea_min": 340.4709192824797,
+   "minutos_rinden_por_hora": 30.774199218165784,
+   "colillas": 8,
+   "cafes": 0
+  },
+  {
+   "wip": 8,
+   "con_que_hacer": 100,
+   "trabajando": 83.50000000045819,
+   "fumando": 16.500000000168882,
+   "cafe": 0,
+   "esperando_bloqueos": 0,
+   "eficiencia_flujo": 10.429155186574796,
+   "esperando_su_turno": 89.5708448134252,
+   "tamano_sobre_tiempo": 5.7590190083334525,
+   "flujo_promedio_por_tarea": 10.446451448967904,
+   "tamano_promedio_por_tarea": 5.768900714978916,
+   "terminadas": 9.96,
+   "tiempo_por_tarea_min": 431.03913152606896,
+   "minutos_rinden_por_hora": 27.623099665619424,
+   "colillas": 11,
+   "cafes": 0
+  },
+  {
+   "wip": 9,
+   "con_que_hacer": 100,
+   "trabajando": 80.50000000054152,
+   "fumando": 19.50000000023107,
+   "cafe": 0,
+   "esperando_bloqueos": 0,
+   "eficiencia_flujo": 8.94630001608729,
+   "esperando_su_turno": 91.05369998391271,
+   "tamano_sobre_tiempo": 4.669865576676489,
+   "flujo_promedio_por_tarea": 8.95390930253136,
+   "tamano_promedio_por_tarea": 4.673997347889522,
+   "terminadas": 9.14,
+   "tiempo_por_tarea_min": 533.6369529540136,
+   "minutos_rinden_por_hora": 25.17266824530442,
+   "colillas": 13,
+   "cafes": 0
+  },
+  {
+   "wip": 10,
+   "con_que_hacer": 100,
+   "trabajando": 77.50000000062481,
+   "fumando": 22.500000000293255,
+   "cafe": 0,
+   "esperando_bloqueos": 0,
+   "eficiencia_flujo": 7.749329381322524,
+   "esperando_su_turno": 92.25067061867747,
+   "tamano_sobre_tiempo": 3.8797179623599574,
+   "flujo_promedio_por_tarea": 7.754154373337815,
+   "tamano_promedio_por_tarea": 3.8821486124578084,
+   "terminadas": 8.165,
+   "tiempo_por_tarea_min": 633.8051745253779,
+   "minutos_rinden_por_hora": 23.248895666768785,
+   "colillas": 15,
+   "cafes": 0
+  }
+ ],
+ "criterios": {
+  "a": true,
+  "b": {
+   "baja": true,
+   "mitad": true,
+   "escalones": [
+    {
+     "de": 2,
+     "a": 3,
+     "sube": -14.517454830408248
+    },
+    {
+     "de": 3,
+     "a": 4,
+     "sube": -8.382354030458423
+    },
+    {
+     "de": 4,
+     "a": 5,
+     "sube": -5.296464199539489
+    },
+    {
+     "de": 5,
+     "a": 6,
+     "sube": -3.885706785667253
+    },
+    {
+     "de": 6,
+     "a": 7,
+     "sube": -2.5674616999815125
+    },
+    {
+     "de": 7,
+     "a": 8,
+     "sube": -2.1315102356415974
+    },
+    {
+     "de": 8,
+     "a": 9,
+     "sube": -1.4828551704875057
+    },
+    {
+     "de": 9,
+     "a": 10,
+     "sube": -1.1969706347647664
+    }
+   ]
+  },
+  "c": true
+ },
+ "veredicto": "Se cumple",
+ "avisos": []
+}

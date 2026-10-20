@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Mosca del WIP · Etapa 4.1 La paradoja</title>
+<!-- Etapa 4.1 (2026-10-20): PDF corto, 2 páginas, en simple. Los números
+     son los de docs/etapa4-1-resultados.json (scripts/medir-paradoja.mjs,
+     200 días por WIP, semilla 2024). Se arma con:
+     DOC=etapa4-1 node scripts/documento.mjs -->
+<link rel="stylesheet" href="estilo.css" />
+<style>
+  body { font-size: 9.6pt; line-height: 1.52; }
+  .veredicto { display: grid; grid-template-columns: 38mm 1fr; gap: 5mm; align-items: center; background: #eaf3ec; border-left: 1.4mm solid var(--tranqui); border-radius: 0 1.6mm 1.6mm 0; padding: 3.4mm 4.4mm; margin: 3mm 0 0; }
+  .veredicto .sale { font-family: var(--serif); font-size: 19pt; font-weight: 700; color: var(--tranqui); line-height: 1.05; }
+  .veredicto .sale span { display: block; font-family: var(--sans); font-size: 7pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--suave); margin-bottom: 1mm; }
+  .veredicto ul { list-style: none; padding: 0; margin: 0; font-size: 8.6pt; }
+  .veredicto li { margin: 0 0 0.8mm; }
+  .veredicto li b { color: var(--tranqui); margin-right: 1.2mm; }
+  .tabla-wip td, .tabla-wip th { text-align: right; font-variant-numeric: tabular-nums; }
+  .tabla-wip td:first-child, .tabla-wip th:first-child { text-align: center; }
+  .tabla-wip td { padding: 1.35mm 1.8mm; font-size: 8.8pt; }
+  .tabla-wip tr.verde td:first-child { color: var(--tranqui); font-weight: 700; }
+  .tabla-wip tr.rojo td:first-child { color: var(--colapsada); font-weight: 700; }
+  .tabla-wip td.fuerte { font-weight: 600; color: var(--tinta); }
+  .medidas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3.4mm; margin: 1mm 0 3mm; }
+  .medidas div { background: #fff; border: 0.5pt solid var(--linea); border-radius: 1.6mm; padding: 2.6mm 3.2mm; font-size: 8.5pt; color: var(--suave); line-height: 1.42; }
+  .medidas b { display: block; color: var(--tinta); font-size: 9.4pt; margin-bottom: 0.6mm; }
+  .cuidado li { margin-bottom: 1.6mm; font-size: 8.9pt; }
+</style>
+</head>
+<body>
+
+<!-- =============================== 1 · RESULTADO =============================== -->
+<section class="hoja">
+  <div class="kicker">Etapa 4.1 · La paradoja <span>·</span>20 de octubre de 2026</div>
+  <h1>Desde 3 tareas ya nunca le falta qué hacer; lo que sigue creciendo es la espera</h1>
+  <p class="bajada">Medimos en la simulación, sin cambiar ninguna regla del juego, 200 días con cada número de tareas a la vez, de 1 a 10. La pregunta: ¿estar siempre ocupada es lo mismo que avanzar?</p>
+
+  <figure class="grafico"><div id="g-lineas"></div>
+    <figcaption><b>Azul:</b> parte del día en que la mosca tiene alguna tarea que puede avanzar. <b>Verde azulado:</b> de todo el tiempo que una tarea pasa abierta, la parte en que la mosca la está trabajando (eficiencia de flujo); el resto, la tarea espera su turno. En la simulación.</figcaption>
+  </figure>
+
+  <figure class="grafico" style="margin-top:3mm"><div id="g-terminadas"></div>
+    <figcaption><b>Tareas terminadas por día</b>, en la simulación. Con 2 a la vez termina 18; con 9, la mitad.</figcaption>
+  </figure>
+
+  <div class="veredicto">
+    <div class="sale"><span>Veredicto</span>Se cumple</div>
+    <ul>
+      <li><b>✓</b>Con 3 tareas o más tiene con qué avanzar el 99,5 % del día o más; con 1, el 75 % (se pedían 15 puntos más).</li>
+      <li><b>✓</b>La eficiencia de flujo baja en cada escalón, y con 9 tareas (9 %) es menos de la mitad que con 2 (47 %).</li>
+      <li><b>✓</b>Con 9 tareas termina menos que con 2 (9,1 contra 18,0 al día).</li>
+    </ul>
+  </div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Etapa 4.1 · Felipe Fernández</span><span>1 / 2</span></div>
+</section>
+
+<!-- =============================== 2 · TABLA Y CUIDADOS =============================== -->
+<section class="hoja">
+  <div class="kicker">Los números</div>
+  <h1>Más tareas no le dan más que hacer: solo hacen esperar más a cada una</h1>
+  <div class="medidas">
+    <div><b>Con qué hacer</b>Parte del día en que tiene al menos una tarea que puede avanzar (no trabada esperando a otra persona).</div>
+    <div><b>Trabajando</b>Parte del día en que de verdad avanza una tarea: no fuma, no toma café y no espera.</div>
+    <div><b>Eficiencia de flujo</b>De todo el tiempo que una tarea terminada estuvo abierta, la parte en que la mosca la trabajó.</div>
+  </div>
+  <table class="tabla-wip">
+    <tr><th>Tareas a la vez</th><th>Con qué hacer</th><th>Trabajando</th><th>Fumando</th><th>Esperando a otros</th><th>Eficiencia de flujo</th><th>Terminadas al día</th><th>Tiempo por tarea</th></tr>
+    <tbody id="filas"></tbody>
+  </table>
+  <p class="chico">En la simulación: 200 días con cada número, promedio por día. Los porcentajes son del día de oficina (9 a 18); el café completa el 100 %. El tiempo por tarea va desde que la empieza hasta que la termina, en horas de oficina.</p>
+
+  <h2>Lo que hay que decir con cuidado</h2>
+  <ul class="cuidado">
+    <li><strong>Que la eficiencia de flujo baje es matemática, no un hallazgo.</strong> Sale casi exacto de dividir "trabajando" por el número de tareas: si reparte su tiempo entre 9, cada una recibe más o menos un noveno. Es la misma ley de Little que hace que cada tarea tarde más.</li>
+    <li><strong>Lo demás viene de supuestos del juego, basados en estudios.</strong> Que con una sola tarea se quede sin nada que hacer un cuarto del día sale de los bloqueos (1 de cada 5 tareas espera de 30 a 60 minutos a otra persona). Que con muchas termine menos sale de lo que cuesta cambiar de tarea y de las salidas a fumar. No se ajustó nada para esta prueba; la parte 4.2 prueba qué pasa si esos supuestos cambian.</li>
+    <li><strong>"Trabajando" baja desde 4 tareas</strong> (98 % con 3, 80 % con 9) porque sale a fumar cada vez más. No contradice la paradoja: está ocupada o fumando, nunca sin qué hacer.</li>
+    <li><strong>Es una mosca en un computador, no un equipo.</strong> Lo que sí muestra, con números del mismo juego, son las tres piezas juntas: estar ocupada llega a su techo con 2 o 3 tareas, la espera de cada tarea sigue creciendo y las terminadas bajan.</li>
+  </ul>
+  <div class="pie"><span><b>Mosca del WIP</b> · Etapa 4.1 · Felipe Fernández</span><span>2 / 2</span></div>
+</section>
+
+<script>
+// Números de docs/etapa4-1-resultados.json (200 días por WIP, semilla 2024)
+const CON_QUE = [74.7, 96.3, 99.5, 100, 100, 100, 100, 100, 100, 100];
+const TRABAJANDO = [73.3, 94.8, 98.3, 97.6, 95.2, 91.1, 88.0, 83.5, 80.5, 77.5];
+const FUMANDO = [0, 0, 0, 1.5, 4.5, 8.9, 12.0, 16.5, 19.5, 22.5];
+const ESPERANDO = [24.8, 3.7, 0.5, 0, 0, 0, 0, 0, 0, 0];
+const FLUJO = [72.9, 47.2, 32.7, 24.3, 19.0, 15.1, 12.6, 10.4, 8.9, 7.7];
+const TERMINADAS = [15.9, 18.0, 16.9, 15.4, 14.0, 12.3, 11.2, 10.0, 9.1, 8.2];
+const TIEMPO = [34, 60, 96, 140, 194, 264, 340, 431, 534, 634];
+
+const coma = (x, d = 1) => x.toFixed(d).replace('.', ',');
+const pct = (x) => `${coma(x)} %`;
+const horas = (m) => (m < 60 ? `${m} min` : `${Math.floor(m / 60)} h ${String(Math.round(m % 60)).padStart(2, '0')} min`);
+
+// Números de página del pie
+(function () {
+  const hojas = [...document.querySelectorAll('.hoja')];
+  hojas.forEach((h, i) => { const n = h.querySelector('.pie span:last-child'); if (n) n.textContent = `${i + 1} / ${hojas.length}`; });
+})();
+
+// Tabla
+document.getElementById('filas').innerHTML = CON_QUE.map((_, i) =>
+  `<tr class="${i === 1 ? 'verde' : i === 8 ? 'rojo' : ''}"><td>${i + 1}</td><td>${pct(CON_QUE[i])}</td><td>${pct(TRABAJANDO[i])}</td><td>${pct(FUMANDO[i])}</td><td>${pct(ESPERANDO[i])}</td><td class="fuerte">${pct(FLUJO[i])}</td><td class="fuerte">${coma(TERMINADAS[i])}</td><td>${horas(TIEMPO[i])}</td></tr>`).join('');
+
+// Líneas: con qué hacer y eficiencia de flujo
+(function () {
+  const W = 640, H = 285, iz = 40, de = 150, ar = 16, ab = 34;
+  const x = (i) => iz + (i / 9) * (W - iz - de);
+  const y = (v) => ar + (1 - v / 100) * (H - ar - ab);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Con qué hacer sube hasta 100 % con 3 tareas; la eficiencia de flujo baja de 73 % a 8 %">`;
+  [0, 25, 50, 75, 100].forEach((v) => {
+    s += `<line x1="${iz}" x2="${W - de}" y1="${y(v)}" y2="${y(v)}" stroke="#e2ddd2"/>`;
+    s += `<text x="${iz - 6}" y="${y(v) + 3.5}" font-size="9.5" fill="#8a93a0" text-anchor="end">${v} %</text>`;
+  });
+  for (let i = 0; i < 10; i++) s += `<text x="${x(i)}" y="${H - 18}" font-size="9.5" fill="#8a93a0" text-anchor="middle">${i + 1}</text>`;
+  s += `<text x="${(iz + W - de) / 2}" y="${H - 3}" font-size="9.5" fill="#556070" text-anchor="middle">Tareas a la vez</text>`;
+  const linea = (datos, color, nombre, sub) => {
+    s += `<path d="${datos.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ')}" fill="none" stroke="${color}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>`;
+    datos.forEach((v, i) => { s += `<circle cx="${x(i)}" cy="${y(v)}" r="2.6" fill="${color}"/>`; });
+    const yy = y(datos[9]);
+    s += `<text x="${x(9) + 10}" y="${yy - 2}" font-size="10" fill="${color}" font-weight="700">${nombre}</text>`;
+    s += `<text x="${x(9) + 10}" y="${yy + 10}" font-size="9" fill="#556070">${sub}</text>`;
+  };
+  linea(CON_QUE, '#1d48b5', 'Con qué hacer', 'tiene alguna tarea que avanzar');
+  linea(FLUJO, '#2f7579', 'Eficiencia de flujo', 'la tarea está siendo trabajada');
+  // marcas en 1, 2 y 9
+  const nota = (i, v, texto, dy, ancla = 'start') => { s += `<text x="${x(i) + (ancla === 'start' ? 6 : -6)}" y="${y(v) + dy}" font-size="9" fill="#2c3442" text-anchor="${ancla}">${texto}</text>`; };
+  nota(1, FLUJO[1], '47 %', -7);
+  nota(1, CON_QUE[1], '96 %', 14);
+  s += `<text x="${x(8) + 4}" y="${y(22)}" font-size="9" fill="#2c3442" text-anchor="end">con 9: 9 % (el 91 % del tiempo espera su turno)</text>`;
+  s += `<line x1="${x(8) + 6}" y1="${y(21)}" x2="${x(8)}" y2="${y(FLUJO[8]) - 4}" stroke="#2c3442" stroke-width="0.8"/>`;
+  document.getElementById('g-lineas').innerHTML = s + '</svg>';
+})();
+
+// Barras: terminadas
+(function () {
+  const W = 640, H = 175, iz = 40, de = 150, ar = 18, ab = 22;
+  const paso = (W - iz - de) / 10;
+  const y = (v) => ar + (1 - v / 20) * (H - ar - ab);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Terminadas por día: 18 con 2 tareas, 9 con 9">`;
+  [0, 10, 20].forEach((v) => {
+    s += `<line x1="${iz}" x2="${W - de}" y1="${y(v)}" y2="${y(v)}" stroke="#e2ddd2"/>`;
+    s += `<text x="${iz - 6}" y="${y(v) + 3.5}" font-size="9.5" fill="#8a93a0" text-anchor="end">${v}</text>`;
+  });
+  TERMINADAS.forEach((v, i) => {
+    const color = i === 1 ? '#4f9d6a' : i === 8 ? '#cc4a43' : '#9aa6b8';
+    const x0 = iz + i * paso + paso * 0.18, ancho = paso * 0.64;
+    s += `<rect x="${x0}" y="${y(v)}" width="${ancho}" height="${y(0) - y(v)}" rx="2.5" fill="${color}"/>`;
+    s += `<text x="${x0 + ancho / 2}" y="${y(v) - 4}" font-size="9" fill="#2c3442" text-anchor="middle">${coma(v)}</text>`;
+    s += `<text x="${x0 + ancho / 2}" y="${H - 6}" font-size="9.5" fill="#8a93a0" text-anchor="middle">${i + 1}</text>`;
+  });
+  s += `<text x="${W - de + 10}" y="${y(18) + 3}" font-size="10" fill="#4f9d6a" font-weight="700">2 tareas: la que más termina</text>`;
+  s += `<text x="${W - de + 10}" y="${y(9) + 3}" font-size="10" fill="#cc4a43" font-weight="700">9 tareas: la mitad</text>`;
+  document.getElementById('g-terminadas').innerHTML = s + '</svg>';
+})();
+</script>
+</body>
+</html>
