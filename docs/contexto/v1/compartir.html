@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Mosca del WIP · Para compartir</title>
+<!-- Informe para compartir (colegas, empresas, cualquier persona): una
+     historia de 10 a 15 páginas A4, sin detalles técnicos (rutas, código,
+     scripts, Hz ni nombres de neuronas), sólo con imágenes del juego, crédito
+     a MaleCNS (CC BY 4.0) y sin nombres de empresas. Autor: Felipe Fernández.
+     Se arma con: node scripts/documento.mjs (los números de página se ponen
+     solos al final del archivo). Los gráficos se dibujan con los datos de
+     abajo, que salen de los 200 días por cada WIP del juego. -->
+<link rel="stylesheet" href="estilo.css" />
+<style>
+  body { font-size: 9.8pt; line-height: 1.55; }
+  .foto { display: block; width: 100%; border-radius: 2mm; border: 0.5pt solid var(--linea); }
+  .marco-oscuro { background: #070b17; border-radius: 2mm; padding: 3mm; }
+  .marco-oscuro img { display: block; width: 100%; border-radius: 1.2mm; border: 0; }
+  .marco-oscuro figcaption { color: #b9c6e4; }
+  .marco-oscuro figcaption b { color: #fff; }
+
+  .leccion { display: inline-flex; align-items: center; gap: 2.4mm; font-size: 7.8pt; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--teal); margin-bottom: 2mm; }
+  .leccion i { font-style: normal; font-family: var(--serif); font-size: 13pt; letter-spacing: 0; width: 7mm; height: 7mm; line-height: 7mm; text-align: center; border-radius: 50%; background: var(--teal); color: #fff; }
+
+  .marcador { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3.4mm; margin: 4.5mm 0 3.5mm; }
+  .marcador div { background: #fff; border: 0.5pt solid var(--linea); border-radius: 1.6mm; padding: 2.8mm 3.2mm 3mm; }
+  .marcador b { display: block; font-family: var(--serif); font-size: 21pt; line-height: 1.05; font-weight: 700; }
+  .marcador span { display: block; font-size: 8pt; color: var(--suave); line-height: 1.35; margin-top: 1mm; }
+  .marcador.bien b { color: var(--tranqui); }
+  .marcador.mal b { color: var(--colapsada); }
+
+  .grande { font-family: var(--serif); font-size: 16pt; line-height: 1.3; color: var(--tinta); margin: 4mm 0; }
+  .grande em { font-style: normal; color: var(--teal); }
+  .grande .rojo { color: var(--colapsada); }
+
+  .practica { display: grid; grid-template-columns: 9mm 1fr; gap: 0 3.6mm; padding: 3.2mm 0; border-bottom: 0.5pt solid var(--linea); }
+  .practica:last-of-type { border-bottom: none; }
+  .practica .n { font-family: var(--serif); font-size: 20pt; line-height: 1; color: var(--teal); font-weight: 700; }
+  .practica h3 { margin: 0 0 1mm; font-size: 11pt; }
+  .practica p { margin: 0; }
+
+  .frases-charla { list-style: none; padding: 0; margin: 0; display: grid; gap: 3.2mm; }
+  .frases-charla li { margin: 0; background: #fff; border: 0.5pt solid var(--linea); border-left: 1.2mm solid var(--teal); border-radius: 0 1.6mm 1.6mm 0; padding: 2.8mm 4mm; }
+  .frases-charla q { display: block; font-family: var(--serif); font-size: 12pt; line-height: 1.32; color: var(--tinta); quotes: '“' '”'; }
+  .frases-charla span { display: block; font-size: 7.9pt; color: var(--suave); margin-top: 1mm; }
+
+  .real-tabla td { padding: 2.3mm 1.8mm; font-size: 9pt; }
+  .real-tabla td:first-child { font-weight: 600; color: var(--tinta); }
+
+  .fuentes-simples { list-style: none; padding: 0; margin: 0; columns: 2; column-gap: 7mm; }
+  .fuentes-simples li { break-inside: avoid; margin: 0 0 3mm; font-size: 8.4pt; line-height: 1.45; }
+  .fuentes-simples b { display: block; color: var(--tinta); font-weight: 600; }
+  .fuentes-simples .cita { color: var(--tenue); font-size: 7.4pt; }
+
+  .creditos { background: var(--papel-2); border-radius: 1.6mm; padding: 3.6mm 4.4mm; font-size: 8.4pt; }
+  .creditos p:last-child { margin: 0; }
+</style>
+</head>
+<body>
+
+<!-- =============================== 1 · PORTADA =============================== -->
+<section class="hoja portada">
+  <img src="img/holograma.jpg" alt="La cara de la mosca en holograma, con las neuronas de su cerebro encendidas" />
+  <div class="sombra"></div>
+  <div class="arriba"><span>Una historia sobre trabajar en equipo</span><span>Octubre 2026</span></div>
+  <div class="abajo">
+    <h1>Mosca del WIP</h1>
+    <p class="lema">Una mosca con demasiadas tareas abiertas. Lo que le pasa explica por qué los equipos rinden más cuando se ponen un límite.</p>
+    <div class="datos">
+      <div><b>Felipe Fernández</b><br />Un juego 3D sobre el trabajo en curso</div>
+      <div style="text-align:right">En la portada, la mosca del juego en holograma.<br />Los puntos de colores son neuronas de una mosca real.</div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================== 2 · CONOCE A LA MOSCA =============================== -->
+<section class="hoja">
+  <div class="kicker">Antes de empezar</div>
+  <h1>Una mosca, un tablero y un día de oficina</h1>
+  <p class="bajada">Mosca del WIP es un juego que corre en el navegador. Lo hice para mostrar, sin diapositivas ni fórmulas, qué le pasa a cualquiera que tiene demasiadas cosas abiertas al mismo tiempo.</p>
+  <p>La protagonista es una mosca de la fruta con cuello de camisa y corbata. Trabaja frente a un tablero con tres columnas: <strong>Por hacer</strong>, <strong>En curso</strong> y <strong>Hecho</strong>. Antes de empezar el día, alguien decide cuántas tareas puede tener abiertas a la vez, de 1 a 10. En los equipos a ese número se le llama <strong>WIP</strong>, de <em>work in progress</em>: trabajo en curso. Aquí basta con pensar en "cuántas cosas a la vez".</p>
+  <p>Un día de oficina, de 9 a 18, dura un minuto. Jugamos 200 días con cada número y comparamos. Los resultados de las páginas siguientes son esos promedios.</p>
+  <figure style="margin-top:4mm"><img class="foto" src="img/exhibicion-wip9.jpg" alt="El juego en pantalla grande: la oficina a la izquierda y el cerebro con los números del día a la derecha" />
+    <figcaption><b>Así se ve en una pantalla grande.</b> A la izquierda, la oficina de la mosca. A la derecha, su cerebro, que se enciende según lo que le pasa, y los números del día: cuántas tareas tiene a la vez, cuántas terminó, cuánto tarda cada una y cuántos minutos de cada hora le rinden. Abajo, su estrés durante el día.</figcaption>
+  </figure>
+  <div class="dos" style="margin-top:4mm">
+    <div class="caja claude" style="margin:0"><span class="etiqueta">Cómo está contado</span><p style="font-size:9.6pt">Primero, dos días de la mosca. Después, cinco lecciones para los equipos y lo que pasa en su cerebro. Al final, qué es real y qué es juego, frases para charlas y las fuentes.</p></div>
+    <div class="caja tecnico" style="margin:0;font-size:8.8pt"><span class="etiqueta">Una aclaración</span><p>Los números exactos son del juego y sirven para ilustrar. Lo que tiene respaldo en estudios es la dirección: qué mejora y qué empeora cuando se abren más cosas a la vez (página <span data-pag="real">11</span>).</p></div>
+  </div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span>2 / 15</span></div>
+</section>
+
+<!-- =============================== 3 · DÍA 1 =============================== -->
+<section class="hoja">
+  <div class="kicker">Día 1</div>
+  <h1>Dos tareas a la vez</h1>
+  <figure style="margin:3mm 0 0"><img class="foto" src="img/escena-wip2.jpg" alt="La mosca trabaja tranquila con dos tareas en curso, el cenicero vacío y el café caliente" /></figure>
+  <p class="bajada" style="margin-top:5mm">A la una y media la mosca trabaja tranquila. Tiene dos tareas en curso y la columna Hecho se va llenando. El cenicero está vacío y al lado humea el café.</p>
+  <p>Dos es un buen número para ella. Cuando una tarea se traba esperando la respuesta de otra persona, sigue con la otra y no pierde el tiempo. Cuando una se termina, toma la siguiente. Avanza en las dos por turnos, y cambiar entre solo dos cuesta poco. Como no se estresa, de vez en cuando se toma un café.</p>
+  <div class="marcador bien">
+    <div><b>18</b><span>tareas terminadas en el día</span></div>
+    <div><b>1 hora</b><span>tarda cada tarea, de que empieza a que termina</span></div>
+    <div><b>0</b><span>cigarros</span></div>
+    <div><b>50 min</b><span>de cada hora rinden de verdad</span></div>
+  </div>
+  <p class="chico">Promedio de 200 días con dos tareas a la vez.</p>
+  <p class="grande">Terminó el doble que con nueve, cada tarea salió en una hora y cerró el día <em>tranquila</em>.</p>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span>3 / 15</span></div>
+</section>
+
+<!-- =============================== 4 · DÍA 2 =============================== -->
+<section class="hoja">
+  <div class="kicker">Día 2</div>
+  <h1>Nueve tareas a la vez</h1>
+  <figure style="margin:3mm 0 0"><img class="foto" src="img/escena-wip9.jpg" alt="La mosca con nueve tareas en curso: post-its por todo el monitor, una torre de papeles, colillas en el cenicero y sudor" /></figure>
+  <p class="bajada" style="margin-top:5mm">El mismo día, la misma mosca y las mismas tareas por hacer. Lo único que cambió es el límite: ahora puede tener nueve abiertas a la vez.</p>
+  <p>A la misma hora el monitor está lleno de post-its, la pila de papeles es una torre y la columna En curso está en rojo. Salta de una tarea a otra, se le caen gotas de sudor y sale a fumar una y otra vez. El cenicero ya tiene varias colillas, y el día recién va en la mitad.</p>
+  <div class="marcador mal">
+    <div><b>9</b><span>tareas terminadas en el día</span></div>
+    <div><b>9 horas</b><span>tarda cada tarea, de que empieza a que termina</span></div>
+    <div><b>13</b><span>cigarros</span></div>
+    <div><b>25 min</b><span>de cada hora rinden de verdad</span></div>
+  </div>
+  <p class="chico">Promedio de 200 días con nueve tareas a la vez.</p>
+  <p class="grande">Trabajó lo mismo. Terminó la mitad, cada tarea tardó nueve veces más y cerró el día <span class="rojo">colapsada</span>.</p>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span>4 / 15</span></div>
+</section>
+
+<!-- =============================== 5 · LECCIÓN 1 =============================== -->
+<section class="hoja">
+  <div class="leccion"><i>1</i>Lección</div>
+  <h1>Un límite sano, no una cosa a la vez</h1>
+  <p class="bajada">Uno pensaría que lo mejor es hacer una sola cosa a la vez. En el juego no es así, y en los equipos reales tampoco.</p>
+  <div class="dos-a" style="gap:6mm">
+    <div class="sin-margen">
+      <p>Más o menos una de cada cinco tareas se traba un rato, esperando a otra persona. Con una sola tarea abierta, cada vez que pasa eso la mosca se queda mirando la pantalla: <strong>pierde más de dos horas al día esperando</strong>.</p>
+      <p>Con dos, siempre tiene con qué seguir, y por eso es donde más termina. Con tres todavía está tranquila. Desde la cuarta, cada tarea extra le cuesta un poco más que la anterior.</p>
+    </div>
+    <figure style="margin:0"><img class="foto" src="img/monitor-bloqueo.jpg" alt="El tablero con una tarea trabada, en rojo y con candado" /><figcaption><b>Una tarea trabada</b> esperando a otra persona: la tarjeta se pone roja y con candado.</figcaption></figure>
+  </div>
+  <div class="grafico" id="g-terminadas" style="margin-top:4mm"></div>
+  <p class="chico" style="margin-top:1mm">Tareas terminadas en un día según cuántas tiene abiertas a la vez. Promedio de 200 días por cada número.</p>
+  <p>No hay un número mágico en que todo se rompe de golpe: se va poniendo peor de a poco. Algo parecido se ha visto en equipos de investigación: estar en muy pocos frentes o en demasiados rinde menos que un punto intermedio.</p>
+  <p class="frase">El mensaje no es "una cosa a la vez".<br />Es un límite sano, con espacio para cuando algo se traba.</p>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span>5 / 15</span></div>
+</section>
+
+<!-- =============================== 6 · LECCIÓN 2 =============================== -->
+<section class="hoja">
+  <div class="leccion"><i>2</i>Lección</div>
+  <h1>Empezar muchas cosas a la vez retrasa todo</h1>
+  <p class="bajada">Con nueve tareas abiertas, cada una tarda nueve horas. Con dos, una hora. La mosca no trabaja más lento: reparte su tiempo entre todas.</p>
+  <div class="grafico" id="g-tiempo"></div>
+  <p class="chico" style="margin-top:1mm">Cuánto tarda cada tarea, de que empieza a que termina, según cuántas tiene abiertas a la vez. Promedio de 200 días por cada número; se cuentan horas de oficina.</p>
+  <p>Cuando tiene muchas tareas abiertas, avanza un poquito en cada una, por turnos. Todas avanzan parejo, así que ninguna termina pronto. Y cada vez que cambia de tarea pierde un rato en retomar donde iba. El ejemplo de abajo lo muestra con ocho tareas de una hora cada una:</p>
+  <div class="grafico" id="g-ocho" style="margin-top:3mm"></div>
+  <p class="chico" style="margin-top:1mm">Ejemplo con la regla del juego para cambiar de tarea: con dos tareas a la vez rinde el 85 % de cada minuto; con ocho, el 55 %. Las barras muestran cuándo empieza y termina cada tarea.</p>
+  <p class="grande">A las 18:00, de a dos hay <em>6 tareas listas</em>. Con las ocho empezadas a la vez, <span class="rojo">ninguna</span>: todas van a poco más de la mitad.</p>
+  <div class="caja claude" style="margin-top:4mm">
+    <span class="etiqueta">Lo descubrimos por accidente</span>
+    <p style="font-size:9.8pt">Probando el juego, un día con diez tareas a la vez llegó a media tarde sin ninguna tarea terminada. Parecía un error, y en parte lo era: ese día la mosca había empezado siete tareas nuevas de golpe. Avanzaron juntas y terminaron casi al mismo tiempo, al final del día. Arreglamos el juego para que eso no pase por accidente, pero la lección se quedó.</p>
+  </div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span>6 / 15</span></div>
+</section>
+
+<!-- =============================== 7 · LECCIÓN 3 =============================== -->
+<section class="hoja">
+  <div class="leccion"><i>3</i>Lección</div>
+  <h1>Lo empezado no desaparece</h1>
+  <p class="bajada">Bajar el límite no borra lo que ya está empezado. Primero hay que terminarlo, y eso toma tiempo.</p>
+  <div class="dos-a" style="gap:6mm">
+    <div class="sin-margen">
+      <p>Hicimos la prueba: un día con diez tareas a la vez y, a las 12:00, bajamos el límite a dos. Las diez tareas siguieron ahí. La mosca dejó de tomar nuevas y se dedicó a cerrar las que tenía, de a dos.</p>
+      <p>Recién a las 14:35 volvió a tener dos abiertas, y se calmó cerca de las 15:10: <strong>tres horas después del cambio</strong>. Estresarse le había tomado menos de una hora.</p>
+    </div>
+    <figure style="margin:0"><img class="foto" src="img/monitor-limite.jpg" alt="El tablero avisa que está sobre el límite" /><figcaption><b>Mientras termina lo empezado</b>, el tablero avisa que está sobre el nuevo límite.</figcaption></figure>
+  </div>
+  <div class="grafico" id="g-bajar" style="margin-top:4mm"></div>
+  <p class="chico" style="margin-top:1mm">Tareas en curso y estrés de la mosca en un día que parte con diez tareas a la vez y a las 12:00 baja a dos. Promedio de 300 días. Los dientes del estrés son los cigarros: alivian un rato y después vuelve a subir.</p>
+  <p class="frase">Cuando un equipo decide ponerse un límite, los resultados no llegan al día siguiente. Primero hay que vaciar lo que ya está empezado.</p>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span>7 / 15</span></div>
+</section>
+
+<!-- =============================== 8 · LECCIÓN 4 =============================== -->
+<section class="hoja">
+  <div class="leccion"><i>4</i>Lección</div>
+  <h1>La Eficiencia: cuántos minutos de cada hora rinden</h1>
+  <p class="bajada">Estar ocupado no es lo mismo que avanzar. El juego mide qué parte de cada hora se convierte en trabajo de verdad.</p>
+  <p>De cada hora se descuenta el tiempo que la mosca pierde al cambiar de tarea, las salidas a fumar, los cafés y los ratos que pasa esperando a otros. Lo que queda es lo que rinde.</p>
+  <p class="grande">Con <em>2 tareas</em> a la vez rinde <em>50 minutos</em> de cada hora.<br />Con <span class="rojo">9</span>, solo <span class="rojo">25</span>.</p>
+  <div class="grafico" id="g-eficiencia" style="margin-top:2mm"></div>
+  <p class="chico" style="margin-top:1mm">Minutos de cada hora que rinden de verdad, según cuántas tareas tiene abiertas a la vez. Promedio de 200 días por cada número.</p>
+  <h3>Qué se come los minutos</h3>
+  <table>
+    <tbody>
+      <tr><td style="width:40mm"><strong>Con una sola tarea</strong></td><td>Esperar a otros. Cuando su única tarea se traba, no tiene nada más que hacer.</td></tr>
+      <tr><td><strong>Con dos o tres</strong></td><td>Casi nada: cambiar entre pocas tareas cuesta poco, y se toma algún café.</td></tr>
+      <tr><td><strong>Con muchas</strong></td><td>Cambiar de tarea una y otra vez, y salir a fumar.</td></tr>
+    </tbody>
+  </table>
+  <p>Hasta el café descuenta: mientras toma café no trabaja. Pero es una pausa que la ayuda a recuperarse, y por eso vale la pena (lección 5).</p>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span>8 / 15</span></div>
+</section>
+
+<!-- =============================== 9 · LECCIÓN 5 =============================== -->
+<section class="hoja">
+  <div class="leccion"><i>5</i>Lección</div>
+  <h1>El estrés sube rápido y baja lento</h1>
+  <p class="bajada">Lo que estresa a la mosca son las tareas que tiene abiertas. Y la mala pausa no la calma.</p>
+  <div class="marco-oscuro" style="display:grid;gap:2.4mm">
+    <figure style="margin:0"><img src="img/estres-wip2.jpg" alt="Estrés de un día con dos tareas a la vez: se queda abajo todo el día" /><figcaption><b>Con 2 tareas a la vez.</b> La línea se queda abajo todo el día. Cada tacita es un café.</figcaption></figure>
+    <figure style="margin:0"><img src="img/estres-wip9.jpg" alt="Estrés de un día con nueve tareas a la vez: sube a Colapsada en menos de una hora" /><figcaption><b>Con 9 tareas a la vez.</b> Sube a "Colapsada" en menos de una hora y no baja. Cada marca blanca es un cigarro.</figcaption></figure>
+  </div>
+  <div class="dos-a" style="gap:6mm;margin-top:4.5mm">
+    <div class="sin-margen">
+      <p><strong>Fumar no la calma.</strong> Le da un alivio breve y después un rebote que lo anula, como describen los estudios: el cigarro solo alivia la ansiedad que el mismo cigarro provoca. Y cada salida son minutos sin trabajar.</p>
+      <p><strong>El café es la pausa sana.</strong> Solo le dan ganas cuando está tranquila, y la ayuda a recuperarse un poco más rápido. Con estrés alto, el café se enfría en la taza.</p>
+      <p><strong>Lo único que la calma de verdad es tener menos tareas abiertas.</strong></p>
+    </div>
+    <figure style="margin:0"><img class="foto" src="img/fumando.jpg" alt="La mosca fuma frente al tablero con nueve tareas en curso" /><figcaption><b>Con nueve tareas</b>, a media tarde: otra salida a fumar.</figcaption></figure>
+  </div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span>9 / 15</span></div>
+</section>
+
+<!-- =============================== 10 · EL CEREBRO =============================== -->
+<section class="hoja">
+  <div class="kicker">Lo que pasa en su cabeza</div>
+  <h1>El cerebro de la mosca</h1>
+  <p class="bajada">El panel oscuro del juego muestra neuronas de una mosca de la fruta real, cada una en su lugar.</p>
+  <div class="dos" style="gap:4mm">
+    <figure class="marco-oscuro" style="margin:0"><img src="img/cerebro-wip2.jpg" alt="El cerebro con dos tareas a la vez: casi apagado" /><figcaption><b>2 tareas a la vez:</b> casi todo en reposo.</figcaption></figure>
+    <figure class="marco-oscuro" style="margin:0"><img src="img/cerebro-wip9.jpg" alt="El cerebro con nueve tareas a la vez: mucho más encendido" /><figcaption><b>9 tareas a la vez:</b> tres veces más neuronas encendidas.</figcaption></figure>
+  </div>
+  <p style="margin-top:4.5mm">Los puntos salen de un mapa científico público del sistema nervioso completo de una mosca macho: dónde está cada neurona y con cuáles se conecta. Arriba está el cerebro; abajo cuelga el cordón nervioso, que lleva las órdenes al cuerpo.</p>
+  <p>Para encenderlo tradujimos las tareas abiertas en algo que una mosca sí siente: <strong>polvo en las antenas</strong>. Mientras más tareas, más fuerte la señal. Después simulamos, sobre las conexiones reales, cómo viaja esa señal. Esto encontramos:</p>
+  <ul>
+    <li>Con nueve tareas se encienden tres veces más neuronas que con dos.</li>
+    <li>Con dos tareas, la señal casi no llega a las neuronas que mueven el cuerpo. Con nueve, enciende 65 de ellas.</li>
+    <li>La señal no prende todo el cerebro: viaja por un camino. Incluso con diez tareas se enciende menos del 1 %.</li>
+    <li>En una mosca real, esa señal es la orden de <strong>limpiarse las antenas</strong> con las patas. En el juego la disfrazamos de cigarro.</li>
+  </ul>
+  <p class="chico">Es una simulación con un modelo simple de neuronas, no una medición en una mosca viva. Más detalle en la página siguiente.</p>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span>10 / 15</span></div>
+</section>
+
+<!-- =============================== 11 · ¿ESTO ES REAL? =============================== -->
+<section class="hoja" data-k="real">
+  <div class="kicker">¿Esto es real?</div>
+  <h1>Qué es real, qué está respaldado y qué es juego</h1>
+  <p class="bajada">Es lo primero que pregunta la gente. La respuesta corta: la dirección es real; los números exactos son del juego.</p>
+  <table class="real-tabla">
+    <thead><tr><th style="width:46mm">Qué</th><th style="width:31mm">Es</th><th>Por qué lo decimos</th></tr></thead>
+    <tbody>
+      <tr><td>Las neuronas y sus conexiones</td><td><span class="sello s-real">Real</span></td><td>Vienen de un mapa público del sistema nervioso de una mosca macho, hecho por equipos científicos. Cada punto está donde hay una neurona.</td></tr>
+      <tr><td>Las luces del cerebro</td><td><span class="sello s-resp">Simuladas</span></td><td>Un modelo simple de neuronas calcula cómo respondería ese cableado real. Es una simulación: nadie midió una mosca viva.</td></tr>
+      <tr><td>"Más tareas, más polvo en las antenas"</td><td><span class="sello s-juego">Decisión nuestra</span></td><td>Es la traducción que elegimos para que una mosca "sienta" la carga de trabajo. Una mosca real no sabe qué es una tarea.</td></tr>
+      <tr><td>Las tendencias del juego</td><td><span class="sello s-resp">Respaldadas</span></td><td>Con más cosas a la vez, cada una tarda más, se rinde menos, sube el estrés y cuesta bajarlo; con esperas por otros, una sola tarea no es lo mejor. Hay estudios detrás de cada una (página <span data-pag="fuentes">14</span>).</td></tr>
+      <tr><td>Los números exactos</td><td><span class="sello s-ilus">Ilustrativos</span></td><td>Las 18 tareas, las 9 horas, los 13 cigarros o los 50 minutos se eligieron para que el efecto se vea en un día que dura un minuto. En otro equipo serán otros.</td></tr>
+      <tr><td>El cigarro</td><td><span class="sello s-disfraz">Disfraz</span></td><td>Las moscas no fuman. Es el disfraz de limpiarse las antenas, que es lo que la señal enciende de verdad en la simulación.</td></tr>
+      <tr><td>El café</td><td><span class="sello s-ilus">Ilustrativo</span></td><td>Representa una pausa. Lo probamos con el sabor dulce en la simulación, pero no alcanzó a mover la trompita de la mosca, así que no lo presentamos como real.</td></tr>
+      <tr><td>Tiempo por tarea y tareas en curso</td><td><span class="sello s-mate">Matemática</span></td><td>Más tareas abiertas, con el mismo ritmo de salida, significa que cada una tarda más. Es una ley de las colas (ley de Little) y el juego la cumple.</td></tr>
+    </tbody>
+  </table>
+  <div class="caja regla" style="margin-top:4mm"><span class="etiqueta">Si alguien pregunta "¿esto es real?"</span><p style="font-size:9.6pt">"La dirección es real: con más trabajo en paralelo cada cosa tarda más, se pierde tiempo al cambiar de tarea y sube el estrés. Los números exactos son del juego. Las neuronas son de una mosca real y sus luces vienen de una simulación. Y el cigarro es un disfraz: las moscas no fuman."</p></div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span>11 / 15</span></div>
+</section>
+
+<!-- =============================== 12 · QUÉ APRENDEMOS =============================== -->
+<section class="hoja">
+  <div class="kicker">Para los equipos</div>
+  <h1>Qué aprendemos de la mosca</h1>
+  <p class="bajada">Cinco ideas para llevarse a la próxima reunión de equipo.</p>
+  <div class="practica"><span class="n">1</span><div><h3>Pónganse un límite sano</h3><p>No hace falta hacer una sola cosa a la vez: conviene tener un respaldo para cuando algo se traba esperando a otros. Pero el límite tiene que existir y respetarse. En el juego, lo mejor fue dos o tres tareas a la vez.</p></div></div>
+  <div class="practica"><span class="n">2</span><div><h3>Terminen antes de empezar</h3><p>Cada tarea nueva que se abre atrasa a las que ya estaban. Antes de tomar algo nuevo, vale la pena preguntarse qué se puede cerrar.</p></div></div>
+  <div class="practica"><span class="n">3</span><div><h3>Denle tiempo al cambio</h3><p>Si bajan el límite, lo empezado no desaparece. Las primeras horas o días se van en terminar lo que ya estaba abierto. No es que el límite no funcione.</p></div></div>
+  <div class="practica"><span class="n">4</span><div><h3>Miren cuánto rinde la hora</h3><p>Tener muchas cosas abiertas se siente productivo, pero lo que importa es cuánto se termina. Con nueve cosas a la vez, la mitad de cada hora se pierde.</p></div></div>
+  <div class="practica"><span class="n">5</span><div><h3>El estrés se baja con menos carga</h3><p>Las malas pausas no lo arreglan. Lo que calma es tener menos cosas abiertas, y las pausas sanas ayudan a recuperarse.</p></div></div>
+  <div class="caja claude" style="margin-top:5mm"><span class="etiqueta">Para probarlo con un equipo</span><p style="font-size:9.8pt">Pregunten cuántas cosas tiene abiertas cada persona hoy. Acuerden un límite y escríbanlo en el tablero. Durante dos semanas miren cuánto se termina y cuánto tarda cada cosa, no qué tan ocupados se ven.</p></div>
+  <div class="caja tecnico" style="font-size:8.8pt"><span class="etiqueta">Lo que el juego no dice</span><p>El número exacto depende de cada equipo y de su trabajo. El juego muestra hacia dónde se mueven las cosas; para elegir el límite propio hay que mirar los datos del propio equipo.</p></div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span>12 / 15</span></div>
+</section>
+
+<!-- =============================== 13 · FRASES PARA CHARLAS =============================== -->
+<section class="hoja">
+  <div class="kicker">Para contarlo</div>
+  <h1>Frases para charlas</h1>
+  <p class="bajada">Cada una dice de dónde sale, para que nadie se lleve una idea equivocada.</p>
+  <ul class="frases-charla">
+    <li><q>No es una cosa a la vez: es un límite sano.</q><span>Con esperas por otros, la mosca termina más con dos tareas que con una.</span></li>
+    <li><q>En el juego, con 2 tareas a la vez rinde 50 minutos de cada hora; con 9, solo 25.</q><span>Promedio de 200 días por cada número. Los minutos son del juego.</span></li>
+    <li><q>Si empiezas muchas cosas a la vez, avanzan parejo y terminan todas tarde.</q><span>Lo vimos por accidente: siete tareas empezadas de golpe, ninguna lista hasta la tarde.</span></li>
+    <li><q>Lo empezado no desaparece: bajar el límite no borra el trabajo a medias.</q><span>En el juego, calmarse toma tres horas; estresarse, menos de una.</span></li>
+    <li><q>Fumar no le baja el estrés: solo alivia la ansiedad que el mismo cigarro provoca.</q><span>Así lo describen los estudios sobre tabaco y estrés.</span></li>
+    <li><q>En la simulación, con 2 tareas la señal casi no llega a las neuronas que mueven el cuerpo; con 9, enciende 65.</q><span>Simulación sobre el mapa real de una mosca, con un modelo simple de neuronas.</span></li>
+    <li><q>La señal no prende todo el cerebro: viaja por un camino específico.</q><span>Incluso con diez tareas se enciende menos del 1 % de las neuronas, según la simulación.</span></li>
+    <li><q>El cigarro es un disfraz: la mosca en realidad se está limpiando las antenas. Las tareas son polvo en sus antenas.</q><span>Limpiarse las antenas es una conducta real y estudiada de la mosca.</span></li>
+  </ul>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span>13 / 15</span></div>
+</section>
+
+<!-- =============================== 14 · FUENTES CLAVE =============================== -->
+<section class="hoja" data-k="fuentes">
+  <div class="kicker">Fuentes</div>
+  <h1>De dónde sale cada idea</h1>
+  <p class="bajada">Las fuentes clave, en simple. Respaldan la dirección del juego, no sus números exactos.</p>
+  <ul class="fuentes-simples">
+    <li><b>Más tareas abiertas, más tiempo por tarea</b>Si sale lo mismo y hay más cosas adentro, cada una se demora más. Es matemática.<br /><span class="cita">Little, J. D. C. (1961). <em>Operations Research</em>, 9(3).</span></li>
+    <li><b>Cambiar de tarea cuesta</b>Cada cambio cuesta tiempo, más si las tareas son complejas. La tabla famosa de "20 % por proyecto" es una regla práctica, no una medición.<br /><span class="cita">Rubinstein, Meyer y Evans (2001). Weinberg (1992).</span></li>
+    <li><b>Lo que queda a medias sigue en la cabeza</b>Parte de la atención se queda pegada en lo que no se terminó, y se rinde peor en lo siguiente.<br /><span class="cita">Leroy, S. (2009). <em>Organizational Behavior and Human Decision Processes</em>, 109(2).</span></li>
+    <li><b>Las interrupciones estresan</b>Quienes fueron interrumpidos trabajaron más rápido, pero con más estrés y frustración.<br /><span class="cita">Mark, Gudith y Klocke (2008). <em>CHI '08</em>.</span></li>
+    <li><b>Ni muy pocos ni demasiados frentes</b>En equipos de investigación, estar en muy pocos o en demasiados equipos a la vez rinde menos que un punto intermedio.<br /><span class="cita">Bertolotti y otros (2015). <em>Research Policy</em>, 44(4).</span></li>
+    <li><b>El estrés sube rápido y baja lento</b>La hormona del estrés llega a su pico en 20 a 40 minutos y tarda del orden de una hora en volver a lo normal.<br /><span class="cita">Dickerson y Kemeny (2004). <em>Psychological Bulletin</em>, 130(3).</span></li>
+    <li><b>Fumar no baja el estrés</b>El alivio es solo el de la abstinencia entre cigarros; quienes dejan de fumar quedan con menos estrés.<br /><span class="cita">Parrott (1999). Taylor y otros (2014), <em>BMJ</em>.</span></li>
+    <li><b>Las pausas cortas ayudan, pero poco</b>Suben el ánimo y bajan el cansancio. La cafeína sube la hormona del estrés, y más con estrés alto.<br /><span class="cita">Albulescu y otros (2022), <em>PLOS ONE</em>. Lovallo y otros (2005, 2006).</span></li>
+    <li><b>Cómo se limpia las antenas una mosca</b>Sensores en la antena, unas pocas neuronas de relevo y las que dan la orden a las patas.<br /><span class="cita">Hampel y otros (2015, 2020), <em>eLife</em>. Seeds y otros (2014), <em>eLife</em>.</span></li>
+    <li><b>Simular el cerebro de una mosca con su mapa</b>Con un modelo simple de neuronas sobre el cableado real se pueden predecir conductas.<br /><span class="cita">Shiu y otros (2024). <em>Nature</em>, 634.</span></li>
+  </ul>
+  <div class="creditos" style="margin-top:2mm">
+    <p><strong>Datos del cerebro:</strong> Male CNS connectome v1.0 (FlyEM, HHMI Janelia, y colaboradores), licencia CC BY 4.0. Berg y otros (2026), <em>Cell</em>, 189(18). male-cns.janelia.org.</p>
+    <p><strong>Imágenes:</strong> todas son del juego Mosca del WIP y de su arte de portada.</p>
+    <p><strong>Autor:</strong> Felipe Fernández, octubre de 2026.</p>
+  </div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span>14 / 15</span></div>
+</section>
+
+<!-- =============================== 15 · CIERRE =============================== -->
+<section class="hoja cierre">
+  <img src="img/cierre.jpg" alt="La mosca toma café al final de un día tranquilo, con el tablero lleno de tareas hechas" />
+  <div class="texto">
+    <p class="grande" style="font-size:30pt;line-height:1.12;font-weight:700;margin:0 0 5mm">Un límite sano,<br /><span style="color:var(--teal)">no una cosa a la vez.</span></p>
+    <p class="bajada" style="max-width:150mm">Así termina un buen día: dos tareas abiertas, para seguir con una cuando la otra se traba, la columna Hecho llena y el café todavía caliente. Mañana a las nueve la mosca vuelve a empezar, con el límite que tú elijas.</p>
+    <p class="chico tenue" style="margin-top:16mm;max-width:150mm">Mosca del WIP · Felipe Fernández · octubre de 2026. Datos del cerebro: Male CNS connectome v1.0, CC BY 4.0.</p>
+  </div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span>15 / 15</span></div>
+</section>
+
+<script>
+// ---------- Números de página: pie y referencias <span data-pag="clave"> ----------
+(function () {
+  const hojas = [...document.querySelectorAll('.hoja')];
+  hojas.forEach((h, i) => { const n = h.querySelector('.pie span:last-child'); if (n) n.textContent = `${i + 1} / ${hojas.length}`; });
+  document.querySelectorAll('[data-pag]').forEach((el) => {
+    el.textContent = hojas.findIndex((h) => h.dataset.k === el.dataset.pag) + 1;
+  });
+})();
+
+// ---------- Datos del juego (200 días por cada WIP, 1 a 10) ----------
+// (la misma corrida de scripts/simular-dias.mjs que usa el Informe completo, 19 oct 2026)
+const TERMINADAS = [15.9, 17.8, 16.8, 15.4, 14.0, 12.0, 11.1, 9.7, 9.1, 8.2];
+const EFICIENCIA = [44, 50, 47, 43, 39, 34, 31, 28, 25, 23]; // minutos de cada hora
+const TIEMPO = [34, 61, 96, 140, 195, 265, 342, 436, 538, 636]; // minutos por tarea (horas de oficina)
+// WIP 10 desde las 09:00 y a las 12:00 baja a 2: promedio de 300 días, cada 15 minutos
+const CURVA = {"min":[540,555,570,585,600,615,630,645,660,675,690,705,720,735,750,765,780,795,810,825,840,855,870,885,900,915,930,945,960,975,990,1005,1020,1035,1050,1065,1080],"enCurso":[10,10,10,10,10,10,10,10,10,10,10,10,10,8.79,8.12,7.11,6.21,5.67,4.93,4.31,3.87,3.28,2.9,2.62,2.38,2.21,2.09,2.03,2.01,2,2,2,2,2,2,2,2],"estres":[10,38.1,57.5,70.8,79.9,91.2,90.5,88.5,95.5,96.9,97.9,98.5,100,98.1,98.2,90.5,81.9,77.9,70.4,63,55.7,48.5,41.5,35.3,29.6,25.2,21.4,18.5,16.3,14.7,13.5,12.6,12,11.5,11.1,10.8,10.6]};
+
+const coma = (x, d = 1) => x.toFixed(d).replace('.', ',');
+const barra = (x0, y0, ancho, y1, r, color, op = 0.9) =>
+  `<path d="M${x0},${y1} V${y0 + r} Q${x0},${y0} ${x0 + r},${y0} H${x0 + ancho - r} Q${x0 + ancho},${y0} ${x0 + ancho},${y0 + r} V${y1} Z" fill="${color}" opacity="${op}"/>`;
+
+// Barras por WIP (1 a 10), con la franja del límite sano (1 a 3)
+function barrasPorWip(id, datos, { max, marcas, formato, eje, destacar, H = 200 }) {
+  const W = 640, iz = 36, de = 10, ar = 34, ab = 30;
+  const x = (i) => iz + (i + 0.5) * ((W - iz - de) / 10);
+  const y = (v) => ar + (1 - v / max) * (H - ar - ab);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img">`;
+  const paso = (W - iz - de) / 10;
+  s += `<rect x="${iz + 2}" y="${ar - 22}" width="${paso * 3 - 4}" height="${H - ar - ab + 22}" rx="6" fill="#4f9d6a" opacity="0.09"/>`;
+  s += `<text x="${iz + paso * 1.5}" y="${ar - 9}" font-size="10" fill="#3d7d54" text-anchor="middle" font-weight="600">límite sano</text>`;
+  marcas.forEach((v) => { s += `<line x1="${iz}" x2="${W - de}" y1="${y(v)}" y2="${y(v)}" stroke="#e2ddd2"/><text x="${iz - 6}" y="${y(v) + 3.5}" font-size="9.5" fill="#8a93a0" text-anchor="end">${v}</text>`; });
+  datos.forEach((v, i) => {
+    const color = destacar[i + 1] ?? '#1d48b5';
+    s += barra(x(i) - 14, y(v), 28, y(0), 4, color);
+    s += `<text x="${x(i)}" y="${y(v) - 5}" font-size="10" fill="#2c3442" text-anchor="middle" font-weight="600">${formato(v)}</text>`;
+    s += `<text x="${x(i)}" y="${H - 14}" font-size="10.5" fill="${destacar[i + 1] ?? '#556070'}" text-anchor="middle" font-weight="${destacar[i + 1] ? 700 : 400}">${i + 1}</text>`;
+  });
+  s += `<text x="${(iz + W - de) / 2}" y="${H - 1}" font-size="9.5" fill="#8a93a0" text-anchor="middle">${eje}</text>`;
+  document.getElementById(id).innerHTML = s + '</svg>';
+}
+barrasPorWip('g-terminadas', TERMINADAS, { max: 20, marcas: [0, 10, 20], formato: (v) => coma(v), eje: 'Tareas a la vez', destacar: { 2: '#2f7579' } });
+barrasPorWip('g-tiempo', TIEMPO, { max: 660, marcas: [], formato: (m) => (m < 60 ? `${m} min` : `${coma(m / 60).replace(',0', '')} h`), eje: 'Tareas a la vez', destacar: { 2: '#2f7579', 9: '#cc4a43' }, H: 160 });
+barrasPorWip('g-eficiencia', EFICIENCIA, { max: 60, marcas: [0, 30, 60], formato: (v) => `${v} min`, eje: 'Tareas a la vez', destacar: { 2: '#2f7579', 9: '#cc4a43' } });
+
+// ---------- Ocho tareas de una hora: de a dos o todas a la vez ----------
+(function () {
+  const W = 640, iz = 108, de = 18, ar = 22, fila = 9.5, sep = 26, ab = 24;
+  const H = ar + 8 * fila * 2 + sep + ab + 16;
+  const x = (h) => iz + (h / 9) * (W - iz - de);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Ocho tareas de una hora: de a dos terminan seis; todas a la vez, ninguna">`;
+  for (let h = 0; h <= 9; h++) {
+    s += `<line x1="${x(h)}" x2="${x(h)}" y1="${ar - 6}" y2="${H - ab}" stroke="#e2ddd2"/>`;
+    s += `<text x="${x(h)}" y="${H - 8}" font-size="9.5" fill="#8a93a0" text-anchor="middle">${String(9 + h).padStart(2, '0')}:00</text>`;
+  }
+  const grupo = (y0, titulo, sub, tareas) => {
+    s += `<text x="0" y="${y0 + 26}" font-size="11" fill="#1d2532" font-weight="700">${titulo}</text>`;
+    s += `<text x="0" y="${y0 + 41}" font-size="9.5" fill="#556070">${sub}</text>`;
+    tareas.forEach(([a, b, lista], i) => {
+      const yy = y0 + i * fila + 1.5;
+      s += `<rect x="${x(a)}" y="${yy}" width="${x(b) - x(a)}" height="${fila - 3}" rx="3" fill="${lista ? '#2f7579' : '#c9a24a'}" opacity="${lista ? 0.9 : 0.75}"/>`;
+      if (lista) s += `<text x="${x(b) + 4}" y="${yy + fila - 4.2}" font-size="8.5" fill="#2f7579" font-weight="700">✓</text>`;
+    });
+  };
+  const d = 2 / 0.85; // dos tareas de una hora, rindiendo el 85 % de cada minuto
+  const deADos = [];
+  for (let k = 0; k < 4; k++) for (let j = 0; j < 2; j++) deADos.push([k * d, Math.min((k + 1) * d, 9), (k + 1) * d <= 9]);
+  grupo(ar, 'De a dos', '6 listas', deADos);
+  grupo(ar + 8 * fila + sep, 'Las 8 a la vez', '0 listas', Array.from({ length: 8 }, () => [0, 9, false]));
+  s += `<text x="${x(9) - 2}" y="${ar + 8 * fila + sep + 8 * fila + 12}" font-size="9" fill="#9a7a2c" text-anchor="end">todas al 62 %</text>`;
+  document.getElementById('g-ocho').innerHTML = s + '</svg>';
+})();
+
+// ---------- Bajar el límite de 10 a 2 a las 12:00 ----------
+(function () {
+  const W = 640, iz = 40, de = 70, hA = 84, hB = 120, gap = 22, ar = 18, ab = 22;
+  const H = ar + hA + gap + hB + ab;
+  const x = (m) => iz + ((m - 540) / 540) * (W - iz - de);
+  const yA = (v) => ar + (1 - v / 10) * hA;
+  const yB = (v) => ar + hA + gap + (1 - v / 100) * hB;
+  const linea = (ys, f) => CURVA.min.map((m, i) => `${i ? 'L' : 'M'}${x(m).toFixed(1)},${f(ys[i]).toFixed(1)}`).join(' ');
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Tareas en curso y estrés al bajar el límite de 10 a 2 a las 12:00">`;
+  [[0, 25, '#4f9d6a', 'Tranqui'], [25, 50, '#c99a1e', 'Ocupada'], [50, 75, '#d9732e', 'Estresada'], [75, 100, '#cc4a43', 'Colapsada']].forEach(([a, b, c, n]) => {
+    s += `<rect x="${iz}" y="${yB(b)}" width="${W - iz - de}" height="${yB(a) - yB(b)}" fill="${c}" opacity="0.10"/>`;
+    s += `<circle cx="${W - de + 10}" cy="${(yB(a) + yB(b)) / 2}" r="3.5" fill="${c}"/><text x="${W - de + 17}" y="${(yB(a) + yB(b)) / 2 + 3.5}" font-size="9.5" fill="#556070">${n}</text>`;
+  });
+  [0, 2, 5, 10].forEach((v) => { s += `<line x1="${iz}" x2="${W - de}" y1="${yA(v)}" y2="${yA(v)}" stroke="#e2ddd2"/><text x="${iz - 6}" y="${yA(v) + 3.5}" font-size="9.5" fill="#8a93a0" text-anchor="end">${v}</text>`; });
+  for (let h = 9; h <= 18; h++) { s += `<text x="${x(h * 60)}" y="${H - 6}" font-size="9.5" fill="#8a93a0" text-anchor="middle">${String(h).padStart(2, '0')}:00</text>`; }
+  s += `<line x1="${x(720)}" x2="${x(720)}" y1="${ar - 4}" y2="${yB(0)}" stroke="#1d2532" stroke-width="1"/>`;
+  s += `<text x="${x(720) + 5}" y="${ar - 6}" font-size="9.5" fill="#1d2532" font-weight="600">12:00 · el límite baja a 2</text>`;
+  s += `<text x="${iz}" y="${ar - 6}" font-size="10" fill="#2c3442" font-weight="600">Tareas en curso</text>`;
+  s += `<text x="${iz}" y="${ar + hA + gap - 6}" font-size="10" fill="#2c3442" font-weight="600">Estrés</text>`;
+  s += `<path d="${linea(CURVA.enCurso, yA)}" fill="none" stroke="#1d48b5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+  s += `<path d="${linea(CURVA.estres, yB)}" fill="none" stroke="#1d2532" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+  s += `<circle cx="${x(875)}" cy="${yA(2.8)}" r="4" fill="#1d48b5" stroke="#fcfaf6" stroke-width="2"/><text x="${x(875) + 8}" y="${yA(2.8) - 7}" font-size="9.5" fill="#2c3442">vuelve a 2 · 14:35</text>`;
+  s += `<circle cx="${x(908)}" cy="${yB(25)}" r="4" fill="#1d2532" stroke="#fcfaf6" stroke-width="2"/><text x="${x(908) + 8}" y="${yB(25) - 7}" font-size="9.5" fill="#2c3442">tranquila · 15:10</text>`;
+  document.getElementById('g-bajar').innerHTML = s + '</svg>';
+})();
+</script>
+</body>
+</html>
