@@ -44,7 +44,8 @@ sostenible**.
     avanzar".
   - **La respuesta**, al cierre: "Un límite sostenible, no una cosa a la
     vez".
-  En el informe para compartir, cada una aparece máximo 3 veces.
+  En el informe para compartir, cada una aparece máximo 3 veces (confirmado
+  por Felipe).
 - **Límite sostenible** = el que se mantiene todo el día sin colapsar (el
   juego mide un solo día). En la parte 4.4 reemplaza a "límite sano" en los
   dos informes y en el panel de Carga del juego. Hasta entonces, el juego y
