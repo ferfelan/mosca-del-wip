@@ -13,7 +13,7 @@
 // Van a la carpeta "Mosca del WIP" del Escritorio (regla de Felipe,
 // 2026-10-20), con la fecha de hoy al inicio y la versión al final:
 // "2026-10-19 Informe completo v1.pdf". Al cambiar el contenido de un
-// informe, súbele la versión aquí abajo (en la Etapa 4.4 pasan a v2).
+// informe, súbele la versión aquí abajo (Etapa 4.4: compartir v3, completo v2).
 //
 // Uso: node scripts/documento.mjs                → los dos informes
 //      DOC=compartir node scripts/documento.mjs  → sólo uno (completo, compartir,
@@ -21,7 +21,7 @@
 //      FOTOS=1 node scripts/documento.mjs        → antes saca todas las imágenes
 //                                                  del juego (requiere npm run dev)
 //      FOTOS=paneles,cierre node …               → sólo esos grupos: holograma,
-//        paneles, escenas, cerebros, monitor-limite, monitor-bloqueo, cierre
+//        paneles, escenas, cerebros, mundo, monitor-limite, monitor-bloqueo, cierre
 //      SALIDA=/otra/carpeta, FECHA=2026-10-19,   → otra carpeta, fecha o versión
 //      VERSION=v2
 import { chromium } from 'playwright';
@@ -36,7 +36,7 @@ const SALIDA = process.env.SALIDA ?? join(homedir(), 'Desktop', 'Mosca del WIP')
 const FECHA = process.env.FECHA ?? new Date().toLocaleDateString('sv-SE'); // 2026-10-20
 const DOCUMENTOS = [
   { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v1' },
-  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v2', paginas: [10, 13] },
+  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v3', paginas: [10, 13] },
   { id: 'norte', html: 'norte.html', nombre: 'Norte del proyecto', version: 'v1', paginas: [1, 2], aparte: true },
   { id: 'etapa4-1', html: 'etapa4-1.html', nombre: 'Etapa 4.1 La paradoja', version: 'v1', paginas: [1, 3], aparte: true },
   { id: 'etapa4-2', html: 'etapa4-2.html', nombre: 'Etapa 4.2 Robustez', version: 'v1', paginas: [1, 3], aparte: true },
@@ -201,6 +201,18 @@ if (process.env.FOTOS) {
       await jugar(p, { hora: '18:00' });
       await foto(p, `estres-wip${wip}`, { elemento: '.cerebro-dia' });
     }
+    await p.close();
+  }
+
+  // La mosca y su tablero, de cerca y sin paneles (página 2 del informe para
+  // compartir v3, pedido de Felipe: la captura con el panel tenía texto
+  // ilegible). WIP 2 a media mañana; cámara más cerca que la oficial.
+  if (quiero('mundo')) {
+    const p = await b.newPage({ viewport: { width: 1600, height: 1000 }, deviceScaleFactor: 2 });
+    await abrirJuego(p, { sinPaneles: true });
+    await jugar(p, { wip: 2, hora: '10:10' });
+    await p.evaluate(() => window.__mosca.camara([0.3, 2.1, 2.1], [-0.9, 1.4, -0.5]));
+    await foto(p, 'mundo-wip2');
     await p.close();
   }
 
