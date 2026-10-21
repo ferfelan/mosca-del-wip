@@ -16,6 +16,7 @@
    "estres_promedio": 5.494,
    "estres_maximo": 10,
    "nivel": "Tranqui",
+   "llega_a_su_nivel": "desde las 09:00",
    "wip_promedio": 1,
    "little": 1.004
   },
@@ -30,6 +31,7 @@
    "estres_promedio": 10,
    "estres_maximo": 10,
    "nivel": "Tranqui",
+   "llega_a_su_nivel": "desde las 09:00",
    "wip_promedio": 2,
    "little": 2.001
   },
@@ -44,6 +46,7 @@
    "estres_promedio": 17.409,
    "estres_maximo": 18,
    "nivel": "Tranqui",
+   "llega_a_su_nivel": "desde las 09:00",
    "wip_promedio": 3,
    "little": 3.004
   },
@@ -58,6 +61,7 @@
    "estres_promedio": 30.373,
    "estres_maximo": 37,
    "nivel": "Ocupada",
+   "llega_a_su_nivel": "09:46",
    "wip_promedio": 4,
    "little": 4.005
   },
@@ -72,6 +76,7 @@
    "estres_promedio": 41.486,
    "estres_maximo": 49,
    "nivel": "Ocupada",
+   "llega_a_su_nivel": "09:23",
    "wip_promedio": 5,
    "little": 5.008
   },
@@ -86,6 +91,7 @@
    "estres_promedio": 53.503,
    "estres_maximo": 62,
    "nivel": "Estresada",
+   "llega_a_su_nivel": "10:16",
    "wip_promedio": 6,
    "little": 6.025
   },
@@ -100,6 +106,7 @@
    "estres_promedio": 63.712,
    "estres_maximo": 73,
    "nivel": "Estresada",
+   "llega_a_su_nivel": "09:47",
    "wip_promedio": 7,
    "little": 7.03
   },
@@ -114,6 +121,7 @@
    "estres_promedio": 78.529,
    "estres_maximo": 89,
    "nivel": "Colapsada",
+   "llega_a_su_nivel": "10:26",
    "wip_promedio": 8,
    "little": 7.95
   },
@@ -128,6 +136,7 @@
    "estres_promedio": 85.937,
    "estres_maximo": 97,
    "nivel": "Colapsada",
+   "llega_a_su_nivel": "10:03",
    "wip_promedio": 9,
    "little": 9.032
   },
@@ -142,6 +151,7 @@
    "estres_promedio": 92.789,
    "estres_maximo": 100,
    "nivel": "Colapsada",
+   "llega_a_su_nivel": "09:51",
    "wip_promedio": 10,
    "little": 9.583
   }
