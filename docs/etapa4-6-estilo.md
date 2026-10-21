@@ -89,11 +89,14 @@ excepción al "un visual": la página de los dos días (dos fotos).
 
 ## 5. Reglas de texto
 
-- **Máximo 150 palabras por página**, sin contar gráficos. Cómo se cuenta:
-  bajada, pie de foto, párrafos, recuadro, frase de cierre, listas y celdas
-  de tabla. No cuentan: el rótulo, el título, los textos de adentro del
-  gráfico (ejes, leyenda) ni el pie de página. (Si Felipe prefiere contar
-  también el título, se recorta.)
+- **Máximo 150 palabras por página**, sin contar gráficos (decisión de
+  Felipe, 2026-10-21: sin contar el rótulo ni el título). Cómo se cuenta:
+  bajada, pie de foto, párrafos, recuadro y frase de cierre. No cuentan: el
+  rótulo, el título, el pie de página ni los visuales (los textos de adentro
+  de los gráficos, las tablas de números y de reglas, las tarjetas de la
+  pág. 5, los pasos de la pág. 10 y el diagrama de la pág. 8; en el HTML
+  llevan la clase `visual`). Vale para las 10 páginas; los anexos no tienen
+  tope de palabras. `revisar-paginas` cuenta así e informa también el total.
 - **Frases de máximo 20 palabras. Voz activa.**
 - **El título es la frase que resume la página**, máximo 2 líneas (la de
   la pág. 9 baja de 3 a 2).
@@ -159,3 +162,24 @@ Decisiones pendientes para el OK:
    "minuto", porque el holograma ya está en la portada.
 5. **Página de cierre**: foto del fin del día y la frase de la respuesta,
    si el total no se pasa de 16 hojas.
+
+## 9. Decisiones de Felipe al dar el OK (2026-10-21) y cómo quedaron
+
+1. **150 palabras sin contar rótulo ni título** (y sin los visuales, ver la
+   sección 5). Las 10 páginas quedaron entre 70 y 150.
+2. **Gráfico del estrés (pág. 7)**: Tranqui en verde, Ocupada y Estresada en
+   gris, Colapsada en rojo, con su nombre al lado.
+3. **Pág. 9**: las dos fotos del cerebro como una sola figura, lado a lado,
+   2 y 9 tareas, con un pie de una línea.
+4. **Pág. 1 sin foto**: el visual son los tres números grandes del "minuto"
+   (terminadas, tiempo por tarea y cuánto espera cada tarea), en la misma
+   tabla sin fondos de la pág. 3.
+5. **Página de cierre**: la foto del fin del día y la frase de la respuesta;
+   el total quedó en 16 hojas.
+6. **Gráfico de la pág. 6**: las tres curvas se distinguen por grosor y
+   trazo (la de hoy gruesa y continua; "ninguna" fina y continua; "2 de cada
+   5" fina y punteada), además del color, y cada una lleva su etiqueta al
+   final de la línea, no solo en la leyenda.
+
+El resultado (mediciones, lo que cambió de sentido y lo que salió de cada
+página) está en `docs/etapa4-6.md`.
