@@ -1,0 +1,40 @@
+{
+ "que": "El error de WIP 10 (sección 7 del Informe completo): scripts/error-wip10.mjs, cambio a 10 a las 09:05",
+ "dias": 200,
+ "semilla": 2024,
+ "paso": 0.15,
+ "filas": [
+  {
+   "caso": "WIP 10 desde el inicio",
+   "wip_inicial": 10,
+   "terminadas": 8.165,
+   "terminadas_a_las_1559": 6.425,
+   "dias_en_0_a_las_1559": 0,
+   "dias_en_0_al_cierre": 0
+  },
+  {
+   "caso": "WIP 3, cambiado a 10",
+   "wip_inicial": 3,
+   "terminadas": 4.635,
+   "terminadas_a_las_1559": 2.58,
+   "dias_en_0_a_las_1559": 0.025,
+   "dias_en_0_al_cierre": 0
+  },
+  {
+   "caso": "WIP 2, cambiado a 10",
+   "wip_inicial": 2,
+   "terminadas": 4.12,
+   "terminadas_a_las_1559": 2.015,
+   "dias_en_0_a_las_1559": 0.025,
+   "dias_en_0_al_cierre": 0
+  },
+  {
+   "caso": "WIP 1, cambiado a 10",
+   "wip_inicial": 1,
+   "terminadas": 3.58,
+   "terminadas_a_las_1559": 1.38,
+   "dias_en_0_a_las_1559": 0.135,
+   "dias_en_0_al_cierre": 0.01
+  }
+ ]
+}
