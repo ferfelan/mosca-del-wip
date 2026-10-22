@@ -143,8 +143,10 @@ function mosca(o) {
     <ellipse cx="6" cy="-17" rx="6" ry="9" fill="#fff" fill-opacity="${brillo}"/><ellipse cx="24" cy="16" rx="3" ry="4" fill="#fff" fill-opacity="${brillo * .5}"/><ellipse cx="18" cy="-26" rx="12" ry="5" transform="rotate(-30 18 -26)" fill="#fff" fill-opacity="${brillo * .35}"/></g>`;
   const ant = (dx, dy, col) => `<g transform="translate(${hx + 10 + dx} ${hy - 34 + dy}) rotate(${-20 + 55 * e})"><path d="M 0 0 L 4 -12" stroke="${col}" stroke-width="4" stroke-linecap="round"/><ellipse cx="6" cy="-17" rx="4" ry="6" transform="rotate(20 6 -17)" fill="${col}"/><path d="M 8 -22 L 20 -36" stroke="${col}" stroke-width="1.2" stroke-linecap="round"/>${[.3, .5, .7, .9].map(t => `<path d="M ${8 + 12 * t} ${-22 - 14 * t} l -3.5 -2.5" stroke="${col}" stroke-width=".9"/>`).join('')}</g>`;
   const trompa = `<path d="M ${hx + 16} ${hy + 30} L ${hx + 22} ${hy + 50}" stroke="#4a3d32" stroke-width="8" stroke-linecap="round"/><ellipse cx="${hx + 24}" cy="${hy + 53}" rx="6" ry="4" fill="#7d6d5f"/><ellipse cx="${hx + 22}" cy="${hy + 52}" rx="2" ry="1" fill="#fff" fill-opacity=".35"/>`;
-  const gotas = [[hx - 40, hy - 30], [hx - 24, hy - 56], [hx + 4, hy - 62]];
-  const sudor = gotas.slice(0, Math.round(e * 3)).map(([gx, gy]) => `<path transform="translate(${gx} ${gy})" d="M0 -7 C -4.2 -1 -4.2 5.5 0 5.5 C 4.2 5.5 4.2 -1 0 -7 Z" fill="#8fd0ff" stroke="#4f9fdc" stroke-width=".8"/><ellipse cx="${gx - 1.3}" cy="${gy - 1}" rx="1" ry="1.8" fill="#fff" fill-opacity=".8"/>`).join('');
+  // la gota de sudor va apoyada en la cabeza (la base entra en la superficie y la punta apunta hacia afuera), no flotando
+  const gota = (ang, k) => { const ar = ang * Math.PI / 180; const bx = hx + 35.5 * Math.cos(ar), by = hy - 35.5 * Math.sin(ar);
+    return `<g transform="translate(${bx} ${by}) rotate(${90 - ang}) scale(${k})"><ellipse cx="0" cy="2.4" rx="5.2" ry="1.7" fill="#1d2532" fill-opacity=".2" filter="url(#${p}blur2)"/><path d="M0 -12.5 C -4.6 -5 -4.8 2.5 0 2.5 C 4.8 2.5 4.6 -5 0 -12.5 Z" fill="#8fd0ff" stroke="#4f9fdc" stroke-width=".8"/><ellipse cx="-1.5" cy="-3" rx="1.1" ry="2.4" fill="#fff" fill-opacity=".85"/></g>`; };
+  const sudor = e >= .5 ? gota(103, .9) : '';
   return `<g transform="translate(${x} ${y}) scale(${s})">${pisadas}<g transform="rotate(${inc})">${lejos}${abd}${ala(-8, -12, .55)}${ala(0, 0, 1)}${tor}${cuello}${collar}${corb}${cerca}${cab}${ant(-9, -2, '#3a2f26')}${ant(0, 0, '#4a3d32')}${trompa}${sudor}</g></g>`;
 }
 
@@ -232,7 +234,8 @@ function cuaderno(w, h, col) {
 }
 function postits(w, h, col = '#ffe66d') { return caras(w, h, col, {top: '#fff1a6', left: '#e6cd5c'}) + `${[.25, .5, .75].map(t => `<path d="M ${-w / 2} ${-h + h * t} h ${w}" stroke="#e6cf55" stroke-width=".7"/>`).join('')}<path d="M ${w / 2 - 10} ${-h} L ${w / 2} ${-h} L ${w / 2} ${-h + 10} Z" fill="#fff6c2"/>`; }
 // la taza: apoyada en la tapa de la carpeta de arriba, con su sombra y su reflejo
-function taza(s = 1) {
+// rot = inclinación de la carpeta donde se apoya: el líquido se nivela (queda horizontal) y el vapor sube derecho
+function taza(s = 1, rot = 0) {
   return `<g transform="scale(${s})">
   <ellipse cx="9" cy="1.5" rx="26" ry="6.5" fill="#1d2532" fill-opacity=".14" filter="url(#${P}blur3)"/>
   <ellipse cx="1" cy=".6" rx="15.5" ry="5.8" fill="#1d2532" fill-opacity=".38" filter="url(#${P}blur2)"/>
@@ -245,10 +248,14 @@ function taza(s = 1) {
   <path d="M 10 -26 L 10 -3" stroke="#000" stroke-opacity=".1" stroke-width="4" stroke-linecap="round" filter="url(#${P}blur2)"/>
   <path d="M -14 0 A 14 5.5 0 0 0 14 0" fill="none" stroke="#000" stroke-opacity=".12" stroke-width="2.5"/>
   <ellipse cx="0" cy="-30" rx="14" ry="5.5" fill="#f3efe7" stroke="#a9a294" stroke-width=".8"/>
-  <ellipse cx="0" cy="-29.4" rx="11.6" ry="4.2" fill="#2a170c"/>
-  <ellipse cx="0" cy="-28.9" rx="10.4" ry="3.4" fill="#4b2a15"/>
-  <ellipse cx="-3.5" cy="-29.6" rx="4.5" ry="1.2" fill="#fff" fill-opacity=".38"/>
-  <g fill="none" stroke="#8d97a3" stroke-opacity=".3" stroke-width="2.4" stroke-linecap="round" filter="url(#${P}blur2)"><path d="M -5 -38 c 4 -6 -4 -10 1 -16"/><path d="M 3 -41 c 4 -6 -4 -10 1 -16"/></g>
+  <clipPath id="${P}tazaC"><ellipse cx="0" cy="-30" rx="11.8" ry="4.4"/></clipPath>
+  <ellipse cx="0" cy="-30" rx="11.8" ry="4.4" fill="#d6d0c3"/>
+  <g clip-path="url(#${P}tazaC)"><g transform="translate(0 -27.4) rotate(${-rot})">
+    <ellipse cx="0" cy="0" rx="13" ry="4.7" fill="#2a170c"/>
+    <ellipse cx="0" cy=".5" rx="11.6" ry="3.8" fill="#4b2a15"/>
+    <ellipse cx="-3.5" cy="-.4" rx="4.5" ry="1.2" fill="#fff" fill-opacity=".38"/>
+  </g></g>
+  <g transform="translate(0 -30) rotate(${-rot})" fill="none" stroke="#8d97a3" stroke-opacity=".3" stroke-width="2.4" stroke-linecap="round" filter="url(#${P}blur2)"><path d="M -5 -8 c 4 -6 -4 -10 1 -16"/><path d="M 3 -11 c 4 -6 -4 -10 1 -16"/></g>
   </g>`;
 }
 function hoja(x, y, rot, w = 24, h = 30) {
@@ -271,12 +278,12 @@ function torre(x, y, items, lean = 1, conTaza = true) {
   items.forEach((it, i) => {
     const arriba = i >= n - 4;
     cx += lean * (0.5 + i * 0.3) + r(-1.5, 1.5) + (arriba ? lean * r(4, 12) : 0);
-    rot = lean * (i / n) * 4 + r(-1, 1);
+    rot = lean * (i / n) * 4 + r(-1, 1) + (i === n - 1 ? lean * 2.2 : 0);
     const asoma = (i === n - 3 || i === n - 8 || i === 3) && it.t === 'carpeta';
     out += `<g transform="translate(${x + cx} ${y - cy}) rotate(${rot})">${asoma ? `<g transform="translate(${it.w / 2 - 14} ${-it.h / 2}) rotate(-7)"><rect x="0" y="-4" width="36" height="8" fill="#fff" stroke="#d6cfc0" stroke-width=".7"/><path d="M 16 -1.5 h 14 M 16 1.5 h 10" stroke="#c8ccd3" stroke-width=".8"/></g>` : ''}${dibujoItem(it)}<rect x="${-it.w / 2 - D}" y="${-it.h - DD}" width="${it.w + D}" height="3.5" fill="#000" fill-opacity=".10"/><rect x="${-it.w / 2}" y="-2" width="${it.w}" height="2" fill="#000" fill-opacity=".16"/></g>`;
     cy += it.h;
   });
-  if (conTaza) out += `<g transform="translate(${x + cx - 20} ${y - cy - DD / 2 - 1}) rotate(${rot})">${taza(1.3)}</g>`;
+  if (conTaza) { const ult = items[n - 1]; out += `<g transform="translate(${x + cx} ${y - cy + ult.h}) rotate(${rot}) translate(-20 ${-ult.h - DD / 2 - 1})">${taza(1.3, rot)}</g>`; }
   return {svg: out, topX: x + cx, topY: y - cy};
 }
 const PAL = {mostaza: '#e9c46a', terracota: '#e07a5f', salvia: '#8ab17d', azul: '#6c8ebf', crema: '#f1e4c3', rosa: '#e8a9a0', teal: '#2f7579', pizarra: '#4f6d8c', lila: '#b7a2cf'};
@@ -301,7 +308,7 @@ function portada(tipo) {
   sv += `<ellipse cx="${fx + 120}" cy="1008" rx="250" ry="13" fill="#1d2532" fill-opacity=".11" filter="url(#${P}blur)"/>`;
   sv += `<ellipse cx="${fx + 10}" cy="1004" rx="175" ry="11" fill="#1d2532" fill-opacity=".2" filter="url(#${P}blur)"/>`;
   sv += tipo === 'juego' ? moscaJuego({x: fx, y: fy, s, e: .85, p: P}) : mosca({x: fx, y: fy, s, e: .85, p: P});
-  const base = tipo === 'juego' ? [-6, -60] : [-8, -56];
+  const base = tipo === 'juego' ? [-6, -60] : [-14, -56];
   const t = torre(base[0], base[1], ITEMS, 1.2, true);
   sv += `<g transform="translate(${fx} ${fy}) scale(${s})"><ellipse cx="${base[0] + 4}" cy="${base[1] + 6}" rx="78" ry="9" fill="#1d2532" fill-opacity=".35" filter="url(#${P}blur3)"/>${t.svg}</g>`;
   sv += [[590, 420, 28], [640, 500, -18, 26, 34], [548, 350, 62, 24, 30], [660, 690, -40], [690, 975, 12, 30, 22]].map(([x, y, rot, w, h]) => hoja(x, y, rot, w, h)).join('');
