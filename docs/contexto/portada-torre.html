@@ -143,10 +143,11 @@ function mosca(o) {
     <ellipse cx="6" cy="-17" rx="6" ry="9" fill="#fff" fill-opacity="${brillo}"/><ellipse cx="24" cy="16" rx="3" ry="4" fill="#fff" fill-opacity="${brillo * .5}"/><ellipse cx="18" cy="-26" rx="12" ry="5" transform="rotate(-30 18 -26)" fill="#fff" fill-opacity="${brillo * .35}"/></g>`;
   const ant = (dx, dy, col) => `<g transform="translate(${hx + 10 + dx} ${hy - 34 + dy}) rotate(${-20 + 55 * e})"><path d="M 0 0 L 4 -12" stroke="${col}" stroke-width="4" stroke-linecap="round"/><ellipse cx="6" cy="-17" rx="4" ry="6" transform="rotate(20 6 -17)" fill="${col}"/><path d="M 8 -22 L 20 -36" stroke="${col}" stroke-width="1.2" stroke-linecap="round"/>${[.3, .5, .7, .9].map(t => `<path d="M ${8 + 12 * t} ${-22 - 14 * t} l -3.5 -2.5" stroke="${col}" stroke-width=".9"/>`).join('')}</g>`;
   const trompa = `<path d="M ${hx + 16} ${hy + 30} L ${hx + 22} ${hy + 50}" stroke="#4a3d32" stroke-width="8" stroke-linecap="round"/><ellipse cx="${hx + 24}" cy="${hy + 53}" rx="6" ry="4" fill="#7d6d5f"/><ellipse cx="${hx + 22}" cy="${hy + 52}" rx="2" ry="1" fill="#fff" fill-opacity=".35"/>`;
-  // la gota de sudor va apoyada en la cabeza (la base entra en la superficie y la punta apunta hacia afuera), no flotando
-  const gota = (ang, k) => { const ar = ang * Math.PI / 180; const bx = hx + 35.5 * Math.cos(ar), by = hy - 35.5 * Math.sin(ar);
-    return `<g transform="translate(${bx} ${by}) rotate(${90 - ang}) scale(${k})"><ellipse cx="0" cy="2.4" rx="5.2" ry="1.7" fill="#1d2532" fill-opacity=".2" filter="url(#${p}blur2)"/><path d="M0 -12.5 C -4.6 -5 -4.8 2.5 0 2.5 C 4.8 2.5 4.6 -5 0 -12.5 Z" fill="#8fd0ff" stroke="#4f9fdc" stroke-width=".8"/><ellipse cx="-1.5" cy="-3" rx="1.1" ry="2.4" fill="#fff" fill-opacity=".85"/></g>`; };
-  const sudor = e >= .5 ? gota(103, .9) : '';
+  // gotas de sudor que salen de la cabeza, como en los dibujos: la punta mira a la cabeza y la gota vuela hacia afuera
+  // (ang = de dónde sale, R = a qué distancia del centro de la cabeza va, k = tamaño). Dos claras y una chiquita más lejos.
+  const gota = (ang, R, k) => { const ar = ang * Math.PI / 180; const gx = hx + R * Math.cos(ar), gy = hy - R * Math.sin(ar);
+    return `<g transform="translate(${gx} ${gy}) rotate(${270 - ang}) scale(${k})"><path d="M0 -12.5 C -4.6 -5 -4.8 2.5 0 2.5 C 4.8 2.5 4.6 -5 0 -12.5 Z" fill="#8fd0ff" stroke="#4f9fdc" stroke-width=".8"/><ellipse cx="-1.5" cy="-1" rx="1.1" ry="2.2" fill="#fff" fill-opacity=".85"/></g>`; };
+  const sudor = e >= .5 ? gota(102, 53, 1) + gota(121, 51, .85) + (e >= .8 ? gota(110, 64, .55) : '') : '';
   return `<g transform="translate(${x} ${y}) scale(${s})">${pisadas}<g transform="rotate(${inc})">${lejos}${abd}${ala(-8, -12, .55)}${ala(0, 0, 1)}${tor}${cuello}${collar}${corb}${cerca}${cab}${ant(-9, -2, '#3a2f26')}${ant(0, 0, '#4a3d32')}${trompa}${sudor}</g></g>`;
 }
 
@@ -308,11 +309,12 @@ function portada(tipo) {
   sv += `<ellipse cx="${fx + 120}" cy="1008" rx="250" ry="13" fill="#1d2532" fill-opacity=".11" filter="url(#${P}blur)"/>`;
   sv += `<ellipse cx="${fx + 10}" cy="1004" rx="175" ry="11" fill="#1d2532" fill-opacity=".2" filter="url(#${P}blur)"/>`;
   sv += tipo === 'juego' ? moscaJuego({x: fx, y: fy, s, e: .85, p: P}) : mosca({x: fx, y: fy, s, e: .85, p: P});
-  const base = tipo === 'juego' ? [-6, -60] : [-14, -56];
+  const base = tipo === 'juego' ? [-6, -60] : [-28, -56];
   const t = torre(base[0], base[1], ITEMS, 1.2, true);
   sv += `<g transform="translate(${fx} ${fy}) scale(${s})"><ellipse cx="${base[0] + 4}" cy="${base[1] + 6}" rx="78" ry="9" fill="#1d2532" fill-opacity=".35" filter="url(#${P}blur3)"/>${t.svg}</g>`;
-  sv += [[590, 420, 28], [640, 500, -18, 26, 34], [548, 350, 62, 24, 30], [660, 690, -40], [690, 975, 12, 30, 22]].map(([x, y, rot, w, h]) => hoja(x, y, rot, w, h)).join('');
-  sv += postitSuelto(615, 600, 24) + postitSuelto(505, 540, -30, '#cfe6ff');
+  // lo que cae, cae del montón: sale por el lado derecho de la torre (donde las carpetas se resbalan) y baja hasta el piso
+  sv += [[552, 505, 30], [612, 660, -15, 26, 34], [590, 762, 55, 24, 30], [662, 905, -40], [570, 988, 8, 30, 22]].map(([x, y, rot, w, h]) => hoja(x, y, rot, w, h)).join('');
+  sv += postitSuelto(578, 585, -20) + postitSuelto(648, 848, 25, '#cfe6ff');
   sv += terminada(665, 1000);
   sv += `</svg>`;
   return `<section class="hoja clara">${sv}<div class="arriba"><h1>Mosca del WIP</h1><p class="lema">Estar siempre ocupado no es lo mismo que avanzar</p><p class="subtitulo">Un juego con una mosca real para ver por qué conviene limitar el trabajo en curso</p></div><div class="datos"><div><b>Felipe Fernández</b> · octubre 2026</div><div style="text-align:right">Por dentro, un cerebro de mosca real<br>Male CNS v1.0 · CC BY 4.0</div></div></section>`;
