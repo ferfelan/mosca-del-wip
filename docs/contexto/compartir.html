@@ -22,6 +22,13 @@
        etiquetas grises, pies de una línea, color solo con significado.
      Estructura: portada + 11 páginas + separador + 3 anexos + cierre = 17
      hojas; el pie numera solo el contenido (1 a 15).
+     v9 (2026-10-22, parte 4.8): SOLO cambia la portada. Sale el holograma
+     oscuro y entra una ilustración clara, "la mosca con su torre"
+     (img/portada-torre.svg, dibujada en docs/contexto/portada-torre.html y
+     exportada con scripts/portada-svg.mjs): la mosca con corbata y una gota
+     de sudor carga una torre de carpetas que se inclina y suelta hojas, con
+     una taza de café en la punta; en el suelo, una sola carpeta terminada.
+     Título arriba, créditos abajo. Ningún texto de las páginas cambió.
      Se arma con: DOC=compartir node scripts/documento.mjs; se revisa con:
      node scripts/revisar-paginas.mjs compartir. Los números de las tablas y
      los gráficos están al final y salen de la 4.1 y la 4.2
@@ -159,10 +166,16 @@
   .creditos p { margin: 0 0 1.2mm; max-width: none; }
   .creditos q { quotes: '“' '”'; }
 
-  /* Portada, separador y cierre */
-  .portada .lema { font-size: 19.5pt; line-height: 1.3; color: #d6f0f5; max-width: 170mm; margin: 0 0 4mm; }
-  .portada .subtitulo { font-family: var(--sans); font-size: 10.6pt; line-height: 1.5; color: rgba(214,240,245,0.8); max-width: 160mm; margin: 0 0 11mm; }
-  .portada .datos { font-size: 8pt; }
+  /* Portada (v9: clara, con la ilustración de la mosca y su torre; el título arriba y los créditos abajo.
+     La clase "portada" se mantiene para que el pie no la numere; "clara" pisa el fondo oscuro de estilo.css) */
+  .portada.clara { background: var(--papel); color: var(--tinta); }
+  .portada.clara .cabecera { position: absolute; left: 20mm; right: 20mm; top: 24mm; }
+  .portada.clara h1 { font-size: 50pt; line-height: 1.1; color: var(--tinta); margin: 0 0 5mm; letter-spacing: -0.015em; }
+  .portada.clara .lema { font-size: 19.5pt; line-height: 1.3; color: var(--teal); max-width: 150mm; margin: 0 0 4mm; }
+  .portada.clara .subtitulo { font-family: var(--sans); font-size: 10.6pt; line-height: 1.5; color: var(--suave); max-width: 118mm; margin: 0; }
+  .portada.clara .datos { position: absolute; left: 20mm; right: 20mm; bottom: 20mm; border-top-color: var(--linea); color: var(--suave); font-size: 8pt; }
+  .portada.clara .datos b { color: var(--tinta); }
+  /* Separador y cierre */
   .parte { display: flex; flex-direction: column; justify-content: center; background: var(--tinta); color: #e8ecf6; }
   .parte .kicker { color: #8fe9ff; }
   .parte h1 { color: #fff; font-size: 34pt; margin-bottom: 6mm; }
@@ -183,17 +196,16 @@
 <body>
 
 <!-- =============================== PORTADA =============================== -->
-<section class="hoja portada">
-  <img src="img/holograma.jpg" alt="La cara de la mosca del juego en holograma; los puntos de colores son neuronas de una mosca real" />
-  <div class="sombra"></div>
-  <div class="abajo">
+<section class="hoja portada clara">
+  <img src="img/portada-torre.svg" alt="Ilustración: la mosca del juego, con corbata y una gota de sudor, carga sobre el lomo una torre de carpetas que se inclina y suelta hojas, con una taza de café en la punta; en el suelo, una sola carpeta terminada con un visto verde" />
+  <div class="cabecera">
     <h1>Mosca del WIP</h1>
     <p class="lema">Estar siempre ocupado no es lo mismo que avanzar</p>
     <p class="subtitulo">Un juego con una mosca real para ver por qué conviene limitar el trabajo en curso</p>
-    <div class="datos">
-      <div><b>Felipe Fernández</b> · octubre 2026</div>
-      <div style="text-align:right">Los puntos de colores son neuronas reales<br />Male CNS v1.0 · CC BY 4.0</div>
-    </div>
+  </div>
+  <div class="datos">
+    <div><b>Felipe Fernández</b> · octubre 2026</div>
+    <div style="text-align:right">Por dentro, un cerebro de mosca real<br />Male CNS v1.0 · CC BY 4.0</div>
   </div>
 </section>
 

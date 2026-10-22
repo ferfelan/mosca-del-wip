@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<!-- Generador del arte de portada del informe para compartir (parte 4.8, 2026-10-22).
+     Dibuja en SVG "la mosca con su torre": la opción 1 (mosca ilustrada) es la que
+     eligió Felipe y es la portada del v9; la opción 2 (la mosca calcada del modelo
+     3D del juego) quedó como alternativa. Todo el dibujo es código: la mosca,
+     la torre de carpetas con volumen (frente, tapa y costado), la taza, las hojas
+     sueltas y las sombras. La luz viene de arriba a la izquierda en todo.
+     Para ver: abrir este archivo en el navegador (clic en una portada = grande).
+     Para regenerar el SVG que usa compartir.html (img/portada-torre.svg):
+       node scripts/portada-svg.mjs
+     El título y los créditos de la portada están en compartir.html, no aquí
+     (aquí solo se muestran de referencia). -->
+<title>Mosca del WIP · arte de portada (la mosca con su torre)</title>
+<style>
+:root{--papel:#fcfaf6;--tinta:#1d2532;--suave:#556070;--tenue:#8a93a0;--linea:#e2ddd2;--teal:#2f7579;--tranqui:#4f9d6a;--colapsada:#cc4a43;--serif:'Iowan Old Style',Charter,Georgia,serif;--sans:'Avenir Next','Helvetica Neue',Helvetica,sans-serif;}
+html,body{margin:0;background:#262b34;color:#e8ecf6;font-family:var(--sans);}
+header{padding:22px 32px 6px;display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap}
+header h1{font-family:var(--serif);font-size:22px;margin:0;font-weight:700}
+header p{margin:0;color:#b9c6e4;font-size:13px}
+.fila{display:flex;gap:40px;justify-content:center;align-items:flex-start;padding:16px 32px 48px;}
+.opcion{display:flex;flex-direction:column;align-items:center;gap:10px}
+.opcion .rotulo{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#8fe9ff;font-weight:600}
+.opcion .nota{font-size:12.5px;color:#b9c6e4;text-align:center;line-height:1.5;margin:0;max-width:var(--w)}
+.marco{width:var(--w);height:calc(var(--w) * 297 / 210);position:relative;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.55);cursor:zoom-in;background:#000}
+.marco .hoja{transform:scale(var(--s));transform-origin:0 0}
+.antes{width:var(--wa);box-shadow:0 12px 40px rgba(0,0,0,.55);display:block}
+.hoja{width:210mm;height:297mm;position:absolute;left:0;top:0;overflow:hidden;background:var(--papel);color:var(--tinta);box-sizing:border-box}
+svg.escena{position:absolute;inset:0;width:100%;height:100%;display:block}
+.clara{background:var(--papel);color:var(--tinta)}
+.clara .arriba{position:absolute;left:20mm;right:20mm;top:24mm}
+.clara h1{font-family:var(--serif);font-weight:700;font-size:50pt;line-height:1.1;color:var(--tinta);margin:0 0 5mm;letter-spacing:-0.015em}
+.clara .lema{font-family:var(--serif);font-size:19.5pt;line-height:1.3;color:var(--teal);max-width:150mm;margin:0 0 4mm}
+.clara .subtitulo{font-size:10.6pt;line-height:1.5;color:var(--suave);max-width:118mm;margin:0}
+.clara .datos{position:absolute;left:20mm;right:20mm;bottom:20mm;display:flex;justify-content:space-between;gap:8mm;border-top:.5pt solid var(--linea);padding-top:3.4mm;font-size:8pt;color:var(--suave);line-height:1.45}
+.clara .datos b{color:var(--tinta);font-weight:600}
+#grande{position:fixed;inset:0;background:rgba(10,12,16,.93);display:none;align-items:center;justify-content:center;cursor:zoom-out;z-index:9}
+#grande.abierto{display:flex}
+#grande .marco{cursor:zoom-out;box-shadow:0 20px 80px rgba(0,0,0,.8)}
+</style>
+</head>
+<body>
+<header><h1>Mosca del WIP · arte de portada: la mosca con su torre</h1><p>Opción 1 = la portada del v9. Haz clic en una portada para verla grande (Esc o clic para cerrar). El SVG se exporta con scripts/portada-svg.mjs.</p></header>
+<div class="fila" id="fila"></div>
+<div id="grande"></div>
+<script>
+// ======================= utilidades =======================
+const C = {pata: '#4a3d32', cerda: '#1c1611', oro: '#d9a62e', teal: '#2f7579', hecho: '#4f9d6a'};
+let seed = 7;
+const rnd = () => { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; };
+const r = (a, b) => a + (b - a) * rnd();
+function mix(col, hacia, t) { const c = parseInt(col.slice(1), 16); const v = [(c >> 16) & 255, (c >> 8) & 255, c & 255]; const h = hacia === '#fff' ? 255 : 0; return '#' + v.map(x => Math.round(x + (h - x) * t).toString(16).padStart(2, '0')).join(''); }
+const hexTile = (cx, cy) => `M${cx} ${cy - 2.6} L${cx + 2.25} ${cy - 1.3} L${cx + 2.25} ${cy + 1.3} L${cx} ${cy + 2.6} L${cx - 2.25} ${cy + 1.3} L${cx - 2.25} ${cy - 1.3} Z`;
+const TOR = 'M -36 -6 C -40 -30 -18 -56 14 -58 C 44 -60 60 -36 56 -8 C 52 16 30 34 4 34 C -22 34 -32 16 -36 -6 Z';
+const CORB = 'M 55 -29 L 67 -23 L 60 26 L 48 -6 Z';
+const ALA = 'M -6 -40 C -30 -74 -124 -72 -172 -30 C -180 -16 -160 -4 -120 -4 C -76 -4 -30 -16 -6 -40 Z';
+const TOR2 = 'M -34 -4 C -38 -30 -14 -58 18 -60 C 48 -62 64 -36 58 -8 C 52 18 28 36 2 36 C -22 36 -30 18 -34 -4 Z';
+const ALA2 = 'M -6 -54 C -30 -84 -130 -80 -176 -36 C -184 -20 -162 -6 -122 -4 C -78 -3 -28 -20 -6 -54 Z';
+const CORBJ = 'M 62 -32 L 78 -26 L 70 32 L 54 -6 Z';
+let P = 'a'; // prefijo de los ids del svg actual
+
+function defs(p) { return `<defs>
+<radialGradient id="${p}abdG" cx=".38" cy=".28" r=".82"><stop offset="0" stop-color="#a39282"/><stop offset=".5" stop-color="#6f6052"/><stop offset="1" stop-color="#352b23"/></radialGradient>
+<radialGradient id="${p}torG" cx=".42" cy=".2" r=".88"><stop offset="0" stop-color="#a89786"/><stop offset=".5" stop-color="#6f6052"/><stop offset="1" stop-color="#352b23"/></radialGradient>
+<radialGradient id="${p}cabG" cx=".3" cy=".26" r=".88"><stop offset="0" stop-color="#a89786"/><stop offset=".55" stop-color="#6f6052"/><stop offset="1" stop-color="#352b23"/></radialGradient>
+<radialGradient id="${p}ojoG" cx=".33" cy=".28" r=".85"><stop offset="0" stop-color="#f78a78"/><stop offset=".45" stop-color="#cf3d2f"/><stop offset=".85" stop-color="#7a1a10"/><stop offset="1" stop-color="#4e0d06"/></radialGradient>
+<linearGradient id="${p}alaG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dfe9f5" stop-opacity=".62"/><stop offset=".45" stop-color="#f3e4ee" stop-opacity=".5"/><stop offset="1" stop-color="#d9f0ea" stop-opacity=".62"/></linearGradient>
+<linearGradient id="${p}corbG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#12307f"/><stop offset=".6" stop-color="#2454c4"/><stop offset="1" stop-color="#1a3fa0"/></linearGradient>
+<linearGradient id="${p}pataG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5c4d40"/><stop offset="1" stop-color="#3a2f26"/></linearGradient>
+<linearGradient id="${p}lateral" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".12"/></linearGradient>
+<linearGradient id="${p}tazaG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#eee9df"/><stop offset="1" stop-color="#c9c2b5"/></linearGradient>
+<linearGradient id="${p}hojaG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#ebe6da"/></linearGradient>
+<linearGradient id="${p}piso" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ebe6dc"/><stop offset="1" stop-color="#ebe6dc" stop-opacity="0"/></linearGradient>
+<pattern id="${p}pelo" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M1 4 L2.2 1 M3.5 5 L4.5 2.5" stroke="#2b221b" stroke-opacity=".16" stroke-width=".8" stroke-linecap="round"/></pattern>
+<pattern id="${p}hex" width="4.5" height="7.8" patternUnits="userSpaceOnUse"><path d="${hexTile(2.25, 2.6)} ${hexTile(0, 6.5)} ${hexTile(4.5, 6.5)} ${hexTile(0, -1.3)} ${hexTile(4.5, -1.3)}" fill="none" stroke="#4a0f08" stroke-opacity=".42" stroke-width=".55"/></pattern>
+<pattern id="${p}hex2" width="4.5" height="7.8" patternUnits="userSpaceOnUse" patternTransform="scale(1.35)"><path d="${hexTile(2.25, 2.6)} ${hexTile(0, 6.5)} ${hexTile(4.5, 6.5)} ${hexTile(0, -1.3)} ${hexTile(4.5, -1.3)}" fill="none" stroke="#4a0f08" stroke-opacity=".5" stroke-width=".6"/><circle cx="2.25" cy="2.6" r="1.1" fill="#fff" fill-opacity=".14"/><circle cx="0" cy="6.5" r="1.1" fill="#fff" fill-opacity=".14"/><circle cx="4.5" cy="6.5" r="1.1" fill="#fff" fill-opacity=".14"/></pattern>
+<clipPath id="${p}abdJ"><ellipse cx="-54" cy="18" rx="46" ry="35" transform="rotate(-12 -54 18)"/></clipPath>
+<clipPath id="${p}torJ"><path d="${TOR2}"/></clipPath>
+<clipPath id="${p}cabJ"><circle cx="0" cy="0" r="46"/></clipPath>
+<clipPath id="${p}corbJ"><path d="${CORBJ}"/></clipPath>
+<clipPath id="${p}abdC"><ellipse cx="-66" cy="14" rx="54" ry="36" transform="rotate(-6 -66 14)"/></clipPath>
+<clipPath id="${p}torC"><path d="${TOR}"/></clipPath>
+<clipPath id="${p}corbC"><path d="${CORB}"/></clipPath>
+<clipPath id="${p}cabC"><circle cx="0" cy="0" r="38"/></clipPath>
+<filter id="${p}blur" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="7"/></filter>
+<filter id="${p}blur2" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="2.2"/></filter>
+<filter id="${p}blur3" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="4"/></filter>
+<radialGradient id="${p}vin" cx=".5" cy=".55" r=".75"><stop offset=".45" stop-color="#1d2532" stop-opacity="0"/><stop offset="1" stop-color="#1d2532" stop-opacity=".07"/></radialGradient>
+</defs>`; }
+
+// ======================= la mosca (de lado, mira a la derecha; origen en el tórax). Luz desde arriba a la izquierda =======================
+function mosca(o) {
+  const {x = 0, y = 0, s = 1, e = .8, p = 'a'} = o;
+  const hx = 86 + 4 * e, hy = -46 + 10 * e;
+  const inc = 5 * e;
+  const brillo = Math.max(.15, .85 - .55 * e);
+  const borde = (d, op = .35) => `<path d="${d}" fill="none" stroke="#2f2620" stroke-opacity="${op}" stroke-width="1.3"/>`;
+  const W = [6.5, 5, 3.4];
+  const seg = (pts, col, ws, op = 1) => {
+    let out = '';
+    for (let i = 0; i < 3; i++) out += `<path d="M ${pts[i][0]} ${pts[i][1]} L ${pts[i + 1][0]} ${pts[i + 1][1]}" stroke="${col}" stroke-width="${ws[i]}" stroke-linecap="round" stroke-opacity="${op}"/>`;
+    out += `<circle cx="${pts[1][0]}" cy="${pts[1][1]}" r="${ws[0] * .55}" fill="${col}" fill-opacity="${op}"/><circle cx="${pts[2][0]}" cy="${pts[2][1]}" r="${ws[1] * .55}" fill="${col}" fill-opacity="${op}"/>`;
+    const [tx, ty] = pts[3]; out += `<path d="M ${tx} ${ty} l 4 2.5 M ${tx} ${ty} l 1.5 4.5" stroke="${col}" stroke-width="1.3" stroke-linecap="round" stroke-opacity="${op}"/>`;
+    const [ax, ay] = pts[1], [bx, by] = pts[2]; const mx = (ax + bx) / 2, my = (ay + by) / 2; let nx = -(by - ay), ny = (bx - ax); const nl = Math.hypot(nx, ny) || 1; nx /= nl; ny /= nl;
+    out += `<path d="M ${mx} ${my} l ${nx * 4.5} ${ny * 4.5} M ${(ax + mx) / 2} ${(ay + my) / 2} l ${nx * 4} ${ny * 4} M ${(mx + bx) / 2} ${(my + by) / 2} l ${nx * 3.5} ${ny * 3.5}" stroke="${col}" stroke-width="1" stroke-opacity="${op}"/>`;
+    return out;
+  };
+  // sombras de las patas en el piso (anclan a la mosca al suelo)
+  const pies = [[-78, 99, .7], [-22, 101, .7], [56, 99, .7], [-30, 106, 1], [24, 108, 1], [96, 106, 1]];
+  const pisadas = pies.map(([px, py, k]) => `<ellipse cx="${px + 3}" cy="${py + 2}" rx="${9 * k}" ry="${3 * k}" fill="#1d2532" fill-opacity="${.16 * k}" filter="url(#${p}blur2)"/>`).join('');
+  const lejos = seg([[-56, 18], [-96, 44], [-100, 84], [-78, 98]], '#3a2f26', W, .92) + seg([[-18, 24], [-40, 56], [-44, 92], [-22, 100]], '#3a2f26', W, .92) + seg([[18, 14], [40, 44], [36, 80], [56, 98]], '#3a2f26', W, .92);
+  const cerca = seg([[-40, 26], [-72, 54], [-58, 94], [-30, 106]], C.pata, W) + seg([[-2, 32], [-14, 70], [0, 100], [24, 108]], C.pata, W) + seg([[34, 22], [66, 46], [76, 84], [96, 106]], C.pata, W);
+  const abdE = `cx="-66" cy="14" rx="54" ry="36" transform="rotate(-6 -66 14)"`;
+  const abd = `<g clip-path="url(#${p}abdC)"><ellipse ${abdE} fill="url(#${p}abdG)"/><ellipse ${abdE} fill="url(#${p}pelo)"/>
+    ${[-100, -86, -72, -58, -44].map(bx => `<path d="M ${bx} -26 C ${bx - 7} -6 ${bx - 7} 30 ${bx} 50" stroke="#2f2620" stroke-width="5" stroke-opacity=".42" fill="none"/>`).join('')}
+    <ellipse cx="-62" cy="40" rx="44" ry="9" fill="#fff" fill-opacity=".09"/>
+    <path d="M -6 -40 C -30 -74 -124 -72 -172 -30 C -180 -16 -160 -4 -120 -4 C -76 -4 -30 -16 -6 -40 Z" transform="translate(6 10)" fill="#1d2532" fill-opacity=".22" filter="url(#${p}blur3)"/>
+    <ellipse cx="-80" cy="-12" rx="30" ry="10" transform="rotate(-10 -80 -12)" fill="#fff" fill-opacity=".14" filter="url(#${p}blur3)"/></g>
+    <ellipse ${abdE} fill="none" stroke="#2f2620" stroke-opacity=".32" stroke-width="1.3"/>
+    ${[[-112, -10], [-100, -17], [-86, -21], [-72, -22]].map(([bx, by]) => `<path d="M ${bx} ${by} l -1.5 -7" stroke="${C.cerda}" stroke-width="1.2" stroke-linecap="round"/>`).join('')}`;
+  const ala = (dx, dy, op) => `<g transform="translate(${dx} ${dy})" opacity="${op}"><path d="${ALA}" fill="url(#${p}alaG)" stroke="#8aa0b8" stroke-opacity=".9" stroke-width="1.2"/>
+    <g fill="none" stroke="#7f93a8" stroke-opacity=".85" stroke-width="1.1"><path d="M -8 -40 C -50 -60 -110 -60 -168 -30"/><path d="M -10 -36 C -50 -46 -100 -42 -152 -16"/><path d="M -12 -30 C -40 -29 -80 -21 -126 -6"/><path d="M -60 -54 L -63 -42 M -100 -53 L -98 -36 M -72 -43 L -68 -28 M -130 -44 L -124 -22"/></g>
+    <path d="M -24 -52 C -60 -66 -120 -64 -158 -38" stroke="#fff" stroke-opacity=".6" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>`;
+  const tor = `<path d="${TOR}" fill="url(#${p}torG)"/><path d="${TOR}" fill="url(#${p}pelo)"/>
+    <g clip-path="url(#${p}torC)" fill="none"><path d="M -30 -14 C -10 -40 30 -46 52 -22" stroke="#2f2620" stroke-width="4" stroke-opacity=".36"/><path d="M -34 2 C -12 -26 32 -32 56 -6" stroke="#2f2620" stroke-width="4" stroke-opacity=".36"/><path d="M -30 18 C -8 -8 30 -14 50 8" stroke="#2f2620" stroke-width="4" stroke-opacity=".3"/>
+      <ellipse cx="-4" cy="-44" rx="26" ry="9" transform="rotate(-18 -4 -44)" fill="#fff" fill-opacity=".22" filter="url(#${p}blur3)"/>
+      <path d="M -36 10 C -20 36 20 40 56 10" stroke="#1d2532" stroke-opacity=".25" stroke-width="12" filter="url(#${p}blur3)"/></g>
+    ${borde(TOR)}
+    ${[[-24, -42, -118], [-12, -51, -106], [2, -56, -95], [16, -58, -84], [30, -55, -72], [42, -48, -58], [52, -38, -42]].map(([bx, by, a]) => `<path d="M ${bx} ${by} l ${9 * Math.cos(a * Math.PI / 180)} ${9 * Math.sin(a * Math.PI / 180)}" stroke="${C.cerda}" stroke-width="1.4" stroke-linecap="round"/>`).join('')}`;
+  const cuello = `<path d="M 40 -32 L ${hx - 16} ${hy + 4}" stroke="#5a4a3d" stroke-width="22" stroke-linecap="round"/>`;
+  const collar = `<g transform="rotate(-42 54 -42)"><ellipse cx="54" cy="-42" rx="15" ry="8.5" fill="#fff" stroke="#cfc9bd" stroke-width="1"/><ellipse cx="54" cy="-42" rx="15" ry="8.5" fill="url(#${p}lateral)"/><path d="M 40 -42 Q 54 -35 68 -42" stroke="#dcd6cb" stroke-width="1" fill="none"/></g>`;
+  const corb = `<path d="${CORB}" fill="url(#${p}corbG)"/><g clip-path="url(#${p}corbC)">${[-22, -12, -2, 8, 18].map(cy => `<path d="M 44 ${cy} l 26 -12" stroke="${C.oro}" stroke-width="2.4"/>`).join('')}<path d="M 48 -6 L 60 26 L 66 20 Z" fill="#000" fill-opacity=".18"/></g><path d="M 52 -35 l 13 5 l -3 8 l -12 -5 z" fill="#122d7a"/>`;
+  const cab = `<g transform="translate(${hx} ${hy})"><circle r="38" fill="url(#${p}cabG)"/><circle r="38" fill="url(#${p}pelo)"/>
+    <g clip-path="url(#${p}cabC)"><ellipse cx="-12" cy="-22" rx="16" ry="9" transform="rotate(-25 -12 -22)" fill="#fff" fill-opacity=".2" filter="url(#${p}blur3)"/><path d="M -36 18 C -16 44 16 44 36 18" stroke="#1d2532" stroke-opacity=".22" stroke-width="12" fill="none" filter="url(#${p}blur3)"/></g>
+    <circle r="38" fill="none" stroke="#2f2620" stroke-opacity=".32" stroke-width="1.3"/>
+    ${[122, 106, 90, 74].map(a => { const ar = a * Math.PI / 180; const bx = 38 * Math.cos(ar), by = -38 * Math.sin(ar); return `<path d="M ${bx} ${by} l ${7 * Math.cos(ar)} ${-7 * Math.sin(ar)}" stroke="${C.cerda}" stroke-width="1.4" stroke-linecap="round"/>`; }).join('')}
+    ${[[-5, -32], [1, -35.5], [7, -32]].map(([dx, dy]) => `<circle cx="${dx}" cy="${dy}" r="1.7" fill="#e06a48"/><circle cx="${dx - .5}" cy="${dy - .5}" r=".6" fill="#fff" fill-opacity=".8"/>`).join('')}
+    <ellipse cx="15" cy="0" rx="26" ry="34" fill="#1d2532" fill-opacity=".22" filter="url(#${p}blur2)"/>
+    <ellipse cx="14" cy="-2" rx="25" ry="33" fill="url(#${p}ojoG)" stroke="#4e0d06" stroke-opacity=".6" stroke-width="1.5"/>
+    <ellipse cx="14" cy="-2" rx="25" ry="33" fill="url(#${p}hex)"/>
+    <ellipse cx="6" cy="-17" rx="6" ry="9" fill="#fff" fill-opacity="${brillo}"/><ellipse cx="24" cy="16" rx="3" ry="4" fill="#fff" fill-opacity="${brillo * .5}"/><ellipse cx="18" cy="-26" rx="12" ry="5" transform="rotate(-30 18 -26)" fill="#fff" fill-opacity="${brillo * .35}"/></g>`;
+  const ant = (dx, dy, col) => `<g transform="translate(${hx + 10 + dx} ${hy - 34 + dy}) rotate(${-20 + 55 * e})"><path d="M 0 0 L 4 -12" stroke="${col}" stroke-width="4" stroke-linecap="round"/><ellipse cx="6" cy="-17" rx="4" ry="6" transform="rotate(20 6 -17)" fill="${col}"/><path d="M 8 -22 L 20 -36" stroke="${col}" stroke-width="1.2" stroke-linecap="round"/>${[.3, .5, .7, .9].map(t => `<path d="M ${8 + 12 * t} ${-22 - 14 * t} l -3.5 -2.5" stroke="${col}" stroke-width=".9"/>`).join('')}</g>`;
+  const trompa = `<path d="M ${hx + 16} ${hy + 30} L ${hx + 22} ${hy + 50}" stroke="#4a3d32" stroke-width="8" stroke-linecap="round"/><ellipse cx="${hx + 24}" cy="${hy + 53}" rx="6" ry="4" fill="#7d6d5f"/><ellipse cx="${hx + 22}" cy="${hy + 52}" rx="2" ry="1" fill="#fff" fill-opacity=".35"/>`;
+  const gotas = [[hx - 40, hy - 30], [hx - 24, hy - 56], [hx + 4, hy - 62]];
+  const sudor = gotas.slice(0, Math.round(e * 3)).map(([gx, gy]) => `<path transform="translate(${gx} ${gy})" d="M0 -7 C -4.2 -1 -4.2 5.5 0 5.5 C 4.2 5.5 4.2 -1 0 -7 Z" fill="#8fd0ff" stroke="#4f9fdc" stroke-width=".8"/><ellipse cx="${gx - 1.3}" cy="${gy - 1}" rx="1" ry="1.8" fill="#fff" fill-opacity=".8"/>`).join('');
+  return `<g transform="translate(${x} ${y}) scale(${s})">${pisadas}<g transform="rotate(${inc})">${lejos}${abd}${ala(-8, -12, .55)}${ala(0, 0, 1)}${tor}${cuello}${collar}${corb}${cerca}${cab}${ant(-9, -2, '#3a2f26')}${ant(0, 0, '#4a3d32')}${trompa}${sudor}</g></g>`;
+}
+
+// ======================= la mosca del juego (misma vista, calcada del modelo 3D: cabeza grande, ojos enormes con facetas,
+// abdomen corto con bandas finas, patas con articulaciones de bolita, bisagra de las alas, halterio, cuello de camisa y corbata) =======================
+function moscaJuego(o) {
+  const {x = 0, y = 0, s = 1, e = .85, p = 'a'} = o;
+  const hx = 108 + 4 * e, hy = -56 + 12 * e;
+  const inc = 6 * e;
+  const brillo = Math.max(.15, .9 - .6 * e);
+  const PATA = '#655547', CERDA = '#1c1611';
+  const W = [4.8, 4.1, 3.2];
+  const seg = (pts, col, op = 1) => {
+    let out = '';
+    for (let i = 0; i < 3; i++) out += `<path d="M ${pts[i][0]} ${pts[i][1]} L ${pts[i + 1][0]} ${pts[i + 1][1]}" stroke="${col}" stroke-width="${W[i]}" stroke-linecap="round" stroke-opacity="${op}"/>`;
+    [pts[0], pts[1], pts[2]].forEach(([jx, jy], k) => { const rr = k === 0 ? 4.8 : k === 1 ? 4.4 : 3.5; out += `<circle cx="${jx}" cy="${jy}" r="${rr}" fill="${col}" fill-opacity="${op}"/><circle cx="${jx - rr * .3}" cy="${jy - rr * .32}" r="${rr * .36}" fill="#fff" fill-opacity="${.38 * op}"/>`; });
+    const [tx, ty] = pts[3]; out += `<path d="M ${tx} ${ty} l 4 2.5 M ${tx} ${ty} l 1.5 4.5" stroke="${col}" stroke-width="1.3" stroke-linecap="round" stroke-opacity="${op}"/>`;
+    const [ax, ay] = pts[1], [bx, by] = pts[2]; const mx = (ax + bx) / 2, my = (ay + by) / 2; let nx = -(by - ay), ny = (bx - ax); const nl = Math.hypot(nx, ny) || 1; nx /= nl; ny /= nl;
+    out += `<path d="M ${mx} ${my} l ${nx * 4} ${ny * 4} M ${(mx + bx) / 2} ${(my + by) / 2} l ${nx * 3.5} ${ny * 3.5}" stroke="${CERDA}" stroke-width=".9" stroke-opacity="${.8 * op}"/>`;
+    return out;
+  };
+  const pies = [[-74, 99, .7], [-18, 101, .7], [64, 99, .7], [-26, 106, 1], [30, 108, 1], [104, 106, 1]];
+  const pisadas = pies.map(([px, py, k]) => `<ellipse cx="${px + 3}" cy="${py + 2}" rx="${9 * k}" ry="${3 * k}" fill="#1d2532" fill-opacity="${.16 * k}" filter="url(#${p}blur2)"/>`).join('');
+  const lejos = seg([[-50, 20], [-92, 44], [-96, 84], [-74, 98]], '#4a3d33', .92) + seg([[-14, 26], [-36, 56], [-40, 92], [-18, 100]], '#4a3d33', .92) + seg([[24, 16], [48, 44], [44, 80], [64, 98]], '#4a3d33', .92);
+  const cerca = seg([[-36, 28], [-68, 54], [-54, 94], [-26, 106]], PATA) + seg([[2, 34], [-10, 70], [4, 100], [30, 108]], PATA) + seg([[40, 24], [72, 46], [84, 84], [104, 106]], PATA);
+  const abdE = `cx="-54" cy="18" rx="46" ry="35" transform="rotate(-12 -54 18)"`;
+  const abd = `<g clip-path="url(#${p}abdJ)"><ellipse ${abdE} fill="url(#${p}abdG)"/>
+    ${[-90, -78, -66, -54, -42, -30].map(bx => `<path d="M ${bx} -22 C ${bx - 6} -4 ${bx - 6} 30 ${bx} 52" stroke="#2f2620" stroke-width="2.6" stroke-opacity=".55" fill="none"/>`).join('')}
+    <ellipse cx="-50" cy="44" rx="40" ry="9" fill="#fff" fill-opacity=".08"/>
+    <ellipse cx="-72" cy="-8" rx="26" ry="9" transform="rotate(-14 -72 -8)" fill="#fff" fill-opacity=".3" filter="url(#${p}blur3)"/>
+    <path d="M -100 36 C -70 60 -30 58 -8 36" stroke="#1d2532" stroke-opacity=".3" stroke-width="12" fill="none" filter="url(#${p}blur3)"/>
+    <path d="${ALA2}" transform="translate(6 10)" fill="#1d2532" fill-opacity=".18" filter="url(#${p}blur3)"/></g>
+    <ellipse ${abdE} fill="none" stroke="#2f2620" stroke-opacity=".3" stroke-width="1.2"/>
+    ${[[-96, -10], [-84, -15], [-70, -17]].map(([bx, by]) => `<path d="M ${bx} ${by} l -1.5 -6" stroke="${CERDA}" stroke-width="1.1" stroke-linecap="round"/>`).join('')}`;
+  const halterio = `<path d="M -30 0 L -46 8" stroke="#5a4a3d" stroke-width="2.2" stroke-linecap="round"/><circle cx="-47" cy="8.5" r="3.4" fill="#5a4a3d"/><circle cx="-48" cy="7.5" r="1.1" fill="#fff" fill-opacity=".4"/>`;
+  const ala = (dx, dy, op) => `<g transform="translate(${dx} ${dy})" opacity="${op}"><path d="${ALA2}" fill="url(#${p}alaG)" stroke="#8aa0b8" stroke-opacity=".95" stroke-width="1.4"/>
+    <g fill="none" stroke="#7f93a8" stroke-opacity=".8" stroke-width="1.1"><path d="M -8 -52 C -52 -72 -114 -72 -172 -36"/><path d="M -10 -46 C -52 -56 -104 -50 -156 -20"/><path d="M -12 -38 C -42 -36 -84 -26 -130 -8"/><path d="M -62 -64 L -66 -50 M -104 -62 L -102 -43 M -74 -51 L -70 -34 M -134 -50 L -128 -26"/></g>
+    <path d="M -26 -62 C -64 -78 -124 -74 -162 -44" stroke="#fff" stroke-opacity=".65" stroke-width="2.6" fill="none" stroke-linecap="round"/></g>`;
+  const bisagra = `<ellipse cx="-6" cy="-56" rx="8" ry="4.5" transform="rotate(-22 -6 -56)" fill="#4e4035"/><ellipse cx="-8" cy="-57.5" rx="3.5" ry="1.6" transform="rotate(-22 -8 -57.5)" fill="#fff" fill-opacity=".3"/>`;
+  const tor = `<path d="${TOR2}" fill="url(#${p}torG)"/>
+    <g clip-path="url(#${p}torJ)" fill="none"><path d="M -28 -16 C -8 -44 32 -50 56 -24" stroke="#2f2620" stroke-width="4" stroke-opacity=".38"/><path d="M -32 2 C -10 -28 36 -34 60 -6" stroke="#2f2620" stroke-width="4" stroke-opacity=".38"/><path d="M -28 20 C -6 -8 34 -14 54 10" stroke="#2f2620" stroke-width="4" stroke-opacity=".3"/>
+      <ellipse cx="0" cy="-46" rx="28" ry="10" transform="rotate(-18 0 -46)" fill="#fff" fill-opacity=".32" filter="url(#${p}blur3)"/>
+      <path d="M -34 12 C -18 40 24 44 60 12" stroke="#1d2532" stroke-opacity=".3" stroke-width="14" filter="url(#${p}blur3)"/></g>
+    <path d="${TOR2}" fill="none" stroke="#2f2620" stroke-opacity=".3" stroke-width="1.2"/>
+    <path d="M -34 -14 C -38 -30 -24 -40 -14 -34 C -20 -26 -28 -18 -34 -14 Z" fill="#5f5044"/>
+    ${[[-18, -50, -112], [-2, -58, -98], [14, -61, -86], [30, -58, -72], [44, -50, -58], [54, -40, -44]].map(([bx, by, a]) => `<path d="M ${bx} ${by} l ${9 * Math.cos(a * Math.PI / 180)} ${9 * Math.sin(a * Math.PI / 180)}" stroke="${CERDA}" stroke-width="1.4" stroke-linecap="round"/>`).join('')}`;
+  const nx0 = 46, ny0 = -36, nx1 = hx - 24, ny1 = hy + 2;
+  const ang = Math.atan2(ny1 - ny0, nx1 - nx0) * 180 / Math.PI;
+  const cmx = 60, cmy = -40;
+  const cuello = `<path d="M ${nx0} ${ny0} L ${nx1} ${ny1}" stroke="#5f5044" stroke-width="26" stroke-linecap="round"/>`;
+  const collar = `<g transform="rotate(${ang + 90} ${cmx} ${cmy})"><ellipse cx="${cmx}" cy="${cmy}" rx="15.5" ry="7.5" fill="none" stroke="#f4f1ea" stroke-width="8"/><ellipse cx="${cmx}" cy="${cmy}" rx="15.5" ry="7.5" fill="none" stroke="url(#${p}lateral)" stroke-width="8"/><ellipse cx="${cmx}" cy="${cmy}" rx="19.5" ry="11.5" fill="none" stroke="#cfc9bd" stroke-width=".9"/><ellipse cx="${cmx}" cy="${cmy}" rx="11.5" ry="3.5" fill="none" stroke="#cfc9bd" stroke-width=".9"/></g>`;
+  const corb = `<path d="${CORBJ}" fill="url(#${p}corbG)"/><g clip-path="url(#${p}corbJ)">${[-26, -15, -4, 7, 18, 29].map(cy => `<path d="M 50 ${cy} l 30 -14" stroke="${C.oro}" stroke-width="2.6"/>`).join('')}<path d="M 54 -6 L 70 32 L 77 24 Z" fill="#000" fill-opacity=".18"/></g><path d="M 60 -38 l 15 6 l -4 9 l -14 -6 z" fill="#122d7a"/>`;
+  const cab = `<g transform="translate(${hx} ${hy})"><circle r="46" fill="url(#${p}cabG)"/>
+    <g clip-path="url(#${p}cabJ)"><ellipse cx="-16" cy="-28" rx="18" ry="10" transform="rotate(-28 -16 -28)" fill="#fff" fill-opacity=".3" filter="url(#${p}blur3)"/><path d="M -44 22 C -20 54 20 54 44 22" stroke="#1d2532" stroke-opacity=".28" stroke-width="14" fill="none" filter="url(#${p}blur3)"/></g>
+    <circle r="46" fill="none" stroke="#2f2620" stroke-opacity=".3" stroke-width="1.2"/>
+    ${[126, 108, 90, 72].map(a => { const ar = a * Math.PI / 180; const bx = 46 * Math.cos(ar), by = -46 * Math.sin(ar); return `<path d="M ${bx} ${by} l ${7 * Math.cos(ar)} ${-7 * Math.sin(ar)}" stroke="${CERDA}" stroke-width="1.4" stroke-linecap="round"/>`; }).join('')}
+    <ellipse cx="10" cy="-1" rx="33" ry="40" fill="#1d2532" fill-opacity=".25" filter="url(#${p}blur2)"/>
+    <ellipse cx="8" cy="-2" rx="32" ry="39" fill="url(#${p}ojoG)" stroke="#4e0d06" stroke-opacity=".55" stroke-width="1.6"/>
+    <ellipse cx="8" cy="-2" rx="32" ry="39" fill="url(#${p}hex2)"/>
+    <ellipse cx="-4" cy="-20" rx="11" ry="15" fill="#fff" fill-opacity="${brillo * .7}" filter="url(#${p}blur3)"/><ellipse cx="-2" cy="-22" rx="5" ry="8" fill="#fff" fill-opacity="${brillo}"/><ellipse cx="22" cy="20" rx="4" ry="5" fill="#fff" fill-opacity="${brillo * .4}"/></g>`;
+  const ant = (dx, dy, col) => `<g transform="translate(${hx + 18 + dx} ${hy - 40 + dy}) rotate(${-15 + 60 * e})"><path d="M 0 0 L 3 -9" stroke="${col}" stroke-width="4.5" stroke-linecap="round"/><ellipse cx="5" cy="-14" rx="4.2" ry="6" transform="rotate(20 5 -14)" fill="${col}"/><path d="M 7 -19 L 18 -32" stroke="${col}" stroke-width="1.2" stroke-linecap="round"/>${[.3, .55, .8].map(tt => `<path d="M ${7 + 11 * tt} ${-19 - 13 * tt} l -3.5 -2.5" stroke="${col}" stroke-width=".9"/>`).join('')}</g>`;
+  const trompa = `<path d="M ${hx + 22} ${hy + 36} L ${hx + 30} ${hy + 58}" stroke="#4e4035" stroke-width="9" stroke-linecap="round"/><ellipse cx="${hx + 32}" cy="${hy + 61}" rx="6.5" ry="4.5" fill="#8a7a6a"/><ellipse cx="${hx + 30}" cy="${hy + 60}" rx="2.2" ry="1.1" fill="#fff" fill-opacity=".35"/>`;
+  const gotas = [[hx - 26, hy - 64], [hx + 14, hy - 72]];
+  const sudor = gotas.slice(0, Math.min(2, Math.round(e * 3))).map(([gx, gy]) => `<path transform="translate(${gx} ${gy})" d="M0 -7 C -4.2 -1 -4.2 5.5 0 5.5 C 4.2 5.5 4.2 -1 0 -7 Z" fill="#8fd0ff" stroke="#4f9fdc" stroke-width=".8"/><ellipse cx="${gx - 1.3}" cy="${gy - 1}" rx="1" ry="1.8" fill="#fff" fill-opacity=".8"/>`).join('');
+  return `<g transform="translate(${x} ${y}) scale(${s})">${pisadas}<g transform="rotate(${inc})">${lejos}${abd}${halterio}${ala(-8, -12, .55)}${ala(0, 0, 1)}${tor}${bisagra}${cuello}${collar}${corb}${cerca}${cab}${ant(-9, -2, '#4a3d33')}${ant(0, 0, '#5a4a3d')}${trompa}${sudor}</g></g>`;
+}
+
+// ======================= la torre: cosas apiladas con volumen y luz desde arriba a la izquierda =======================
+const D = 9, DD = 5;
+function caras(w, h, col, o = {}) {
+  const cT = o.top || mix(col, '#fff', .34), cL = o.left || mix(col, '#000', .1), cF = o.front || col;
+  return `<path d="M ${-w / 2} 0 L ${-w / 2} ${-h} L ${-w / 2 - D} ${-h - DD} L ${-w / 2 - D} ${-DD} Z" fill="${cL}"/><path d="M ${-w / 2} ${-h} L ${w / 2} ${-h} L ${w / 2 - D} ${-h - DD} L ${-w / 2 - D} ${-h - DD} Z" fill="${cT}"/><rect x="${-w / 2}" y="${-h}" width="${w}" height="${h}" fill="${cF}"/><rect x="${-w / 2}" y="${-h}" width="${w}" height="${h}" fill="url(#${P}lateral)"/>`;
+}
+const paginas = (w, h) => `<rect x="${-w / 2}" y="${-h + 2.5}" width="${w}" height="${h - 5}" fill="#f7f2e8"/>${[.3, .5, .7].map(t => `<path d="M ${-w / 2} ${-h + h * t} h ${w}" stroke="#d6cfc0" stroke-width=".7"/>`).join('')}<rect x="${-w / 2}" y="${-h + 2.5}" width="${w}" height="${h - 5}" fill="url(#${P}lateral)"/>`;
+function carpeta(w, h, col) {
+  return caras(w, h, col) + paginas(w, h) + `<path d="M ${-w / 2} ${-2.5} L ${-w / 2} ${-h + 2.5} L ${-w / 2 - D} ${-h + 2.5 - DD} L ${-w / 2 - D} ${-2.5 - DD} Z" fill="#e9e3d6"/><path d="M ${w / 2 - 26} ${-h} L ${w / 2 - 6} ${-h} L ${w / 2 - 6 - D} ${-h - DD} L ${w / 2 - 26 - D} ${-h - DD} Z" fill="${mix(col, '#000', .12)}"/><rect x="${w / 2 - 28 - D / 2}" y="${-h - DD - 4.5}" width="20" height="5.5" rx="1.2" fill="${col}"/>`;
+}
+function archivador(w, h, col) {
+  return caras(w, h, col) + `<rect x="${-w * 0.22}" y="${-h * 0.78}" width="${w * 0.4}" height="${h * 0.56}" rx="1.5" fill="#fbf8f0"/><path d="M ${-w * 0.16} ${-h * 0.55} h ${w * 0.22} M ${-w * 0.16} ${-h * 0.4} h ${w * 0.14}" stroke="#aeb4bf" stroke-width="1.2"/><circle cx="${w * 0.36}" cy="${-h / 2}" r="${h * 0.14}" fill="${mix(col, '#000', .35)}"/><circle cx="${w * 0.36 - h * .04}" cy="${-h / 2 - h * .04}" r="${h * 0.05}" fill="#fff" fill-opacity=".5"/>`;
+}
+function cuaderno(w, h, col) {
+  let out = caras(w, h, col) + paginas(w, h);
+  for (let k = -h + 4; k < -2; k += 4.5) out += `<circle cx="${-w / 2 - D / 2}" cy="${k - DD / 2}" r="1.5" fill="#2b303b"/>`;
+  return out;
+}
+function postits(w, h, col = '#ffe66d') { return caras(w, h, col, {top: '#fff1a6', left: '#e6cd5c'}) + `${[.25, .5, .75].map(t => `<path d="M ${-w / 2} ${-h + h * t} h ${w}" stroke="#e6cf55" stroke-width=".7"/>`).join('')}<path d="M ${w / 2 - 10} ${-h} L ${w / 2} ${-h} L ${w / 2} ${-h + 10} Z" fill="#fff6c2"/>`; }
+// la taza: apoyada en la tapa de la carpeta de arriba, con su sombra y su reflejo
+function taza(s = 1) {
+  return `<g transform="scale(${s})">
+  <ellipse cx="9" cy="1.5" rx="26" ry="6.5" fill="#1d2532" fill-opacity=".14" filter="url(#${P}blur3)"/>
+  <ellipse cx="1" cy=".6" rx="15.5" ry="5.8" fill="#1d2532" fill-opacity=".38" filter="url(#${P}blur2)"/>
+  <path d="M 13 -24 C 32 -27 32 -3 13 -6" fill="none" stroke="#aaa394" stroke-width="7.6" stroke-linecap="round"/>
+  <path d="M 13 -24 C 32 -27 32 -3 13 -6" fill="none" stroke="url(#${P}tazaG)" stroke-width="5"/>
+  <path d="M 14.5 -23 C 27 -25 28 -13 23 -9" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M -14 -30 L -14 0 A 14 5.5 0 0 0 14 0 L 14 -30 Z" fill="url(#${P}tazaG)"/>
+  <path d="M -14 -30 L -14 0 A 14 5.5 0 0 0 14 0 L 14 -30 Z" fill="none" stroke="#a9a294" stroke-width=".8"/>
+  <path d="M -9 -25 L -9 -4" stroke="#fff" stroke-opacity=".8" stroke-width="3" stroke-linecap="round" filter="url(#${P}blur2)"/>
+  <path d="M 10 -26 L 10 -3" stroke="#000" stroke-opacity=".1" stroke-width="4" stroke-linecap="round" filter="url(#${P}blur2)"/>
+  <path d="M -14 0 A 14 5.5 0 0 0 14 0" fill="none" stroke="#000" stroke-opacity=".12" stroke-width="2.5"/>
+  <ellipse cx="0" cy="-30" rx="14" ry="5.5" fill="#f3efe7" stroke="#a9a294" stroke-width=".8"/>
+  <ellipse cx="0" cy="-29.4" rx="11.6" ry="4.2" fill="#2a170c"/>
+  <ellipse cx="0" cy="-28.9" rx="10.4" ry="3.4" fill="#4b2a15"/>
+  <ellipse cx="-3.5" cy="-29.6" rx="4.5" ry="1.2" fill="#fff" fill-opacity=".38"/>
+  <g fill="none" stroke="#8d97a3" stroke-opacity=".3" stroke-width="2.4" stroke-linecap="round" filter="url(#${P}blur2)"><path d="M -5 -38 c 4 -6 -4 -10 1 -16"/><path d="M 3 -41 c 4 -6 -4 -10 1 -16"/></g>
+  </g>`;
+}
+function hoja(x, y, rot, w = 24, h = 30) {
+  return `<g transform="translate(${x} ${y}) rotate(${rot})"><path d="M ${-w / 2 + 2} ${-h / 2 + 3} L ${w / 2 + 2} ${-h / 2 + 3} L ${w / 2 + 2} ${h / 2 + 3} L ${-w / 2 + 2} ${h / 2 + 3} Z" fill="#1d2532" fill-opacity=".12" filter="url(#${P}blur2)"/><path d="M ${-w / 2} ${-h / 2} L ${w / 2} ${-h / 2} Q ${w / 2 + 2} 0 ${w / 2} ${h / 2} L ${-w / 2} ${h / 2} Q ${-w / 2 - 2} 0 ${-w / 2} ${-h / 2} Z" fill="url(#${P}hojaG)" stroke="#d6cfc0" stroke-width=".9"/><path d="M ${-w * 0.3} ${-h * 0.25} h ${w * 0.6} M ${-w * 0.3} ${-h * 0.05} h ${w * 0.5} M ${-w * 0.3} ${h * 0.15} h ${w * 0.55}" stroke="#b7bcc6" stroke-width="1"/></g>`;
+}
+function postitSuelto(x, y, rot, col = '#fff3a0') { return `<g transform="translate(${x} ${y}) rotate(${rot})"><rect x="-8" y="-8" width="20" height="20" fill="#1d2532" fill-opacity=".12" filter="url(#${P}blur2)"/><rect x="-10" y="-10" width="20" height="20" fill="${col}"/><rect x="-10" y="-10" width="20" height="20" fill="url(#${P}lateral)"/><path d="M -6 -3 h 12 M -6 1 h 9 M -6 5 h 10" stroke="#6b6450" stroke-width="1" stroke-opacity=".5"/></g>`; }
+function dibujoItem(it) {
+  switch (it.t) {
+    case 'carpeta': return carpeta(it.w, it.h, it.c);
+    case 'archivador': return archivador(it.w, it.h, it.c);
+    case 'cuaderno': return cuaderno(it.w, it.h, it.c);
+    case 'postits': return postits(it.w, it.h, it.c);
+  }
+  return '';
+}
+// items de abajo hacia arriba; (x,y) = centro de la base; cada pieza proyecta sombra sobre la de abajo
+function torre(x, y, items, lean = 1, conTaza = true) {
+  let out = '', cx = 0, cy = 0, rot = 0;
+  const n = items.length;
+  items.forEach((it, i) => {
+    const arriba = i >= n - 4;
+    cx += lean * (0.5 + i * 0.3) + r(-1.5, 1.5) + (arriba ? lean * r(4, 12) : 0);
+    rot = lean * (i / n) * 4 + r(-1, 1);
+    const asoma = (i === n - 3 || i === n - 8 || i === 3) && it.t === 'carpeta';
+    out += `<g transform="translate(${x + cx} ${y - cy}) rotate(${rot})">${asoma ? `<g transform="translate(${it.w / 2 - 14} ${-it.h / 2}) rotate(-7)"><rect x="0" y="-4" width="36" height="8" fill="#fff" stroke="#d6cfc0" stroke-width=".7"/><path d="M 16 -1.5 h 14 M 16 1.5 h 10" stroke="#c8ccd3" stroke-width=".8"/></g>` : ''}${dibujoItem(it)}<rect x="${-it.w / 2 - D}" y="${-it.h - DD}" width="${it.w + D}" height="3.5" fill="#000" fill-opacity=".10"/><rect x="${-it.w / 2}" y="-2" width="${it.w}" height="2" fill="#000" fill-opacity=".16"/></g>`;
+    cy += it.h;
+  });
+  if (conTaza) out += `<g transform="translate(${x + cx - 20} ${y - cy - DD / 2 - 1}) rotate(${rot})">${taza(1.3)}</g>`;
+  return {svg: out, topX: x + cx, topY: y - cy};
+}
+const PAL = {mostaza: '#e9c46a', terracota: '#e07a5f', salvia: '#8ab17d', azul: '#6c8ebf', crema: '#f1e4c3', rosa: '#e8a9a0', teal: '#2f7579', pizarra: '#4f6d8c', lila: '#b7a2cf'};
+const ITEMS = [
+  {t: 'archivador', w: 176, h: 20, c: PAL.pizarra}, {t: 'carpeta', w: 164, h: 14, c: PAL.mostaza}, {t: 'carpeta', w: 170, h: 12, c: PAL.crema}, {t: 'carpeta', w: 160, h: 14, c: PAL.salvia},
+  {t: 'archivador', w: 172, h: 20, c: PAL.terracota}, {t: 'carpeta', w: 166, h: 13, c: PAL.azul}, {t: 'cuaderno', w: 150, h: 16, c: PAL.teal}, {t: 'carpeta', w: 168, h: 12, c: PAL.rosa},
+  {t: 'carpeta', w: 160, h: 14, c: PAL.crema}, {t: 'postits', w: 48, h: 18, c: '#ffe66d'}, {t: 'carpeta', w: 164, h: 13, c: PAL.mostaza}, {t: 'archivador', w: 170, h: 20, c: PAL.pizarra},
+  {t: 'carpeta', w: 158, h: 12, c: PAL.salvia}, {t: 'carpeta', w: 166, h: 14, c: PAL.crema}, {t: 'carpeta', w: 162, h: 12, c: PAL.azul}, {t: 'cuaderno', w: 146, h: 16, c: PAL.terracota},
+  {t: 'carpeta', w: 160, h: 13, c: PAL.rosa}, {t: 'carpeta', w: 156, h: 12, c: PAL.lila}, {t: 'carpeta', w: 150, h: 12, c: PAL.crema},
+];
+function terminada(x, y) {
+  return `<g transform="translate(${x} ${y})"><ellipse cx="6" cy="3" rx="58" ry="6" fill="#1d2532" fill-opacity=".14" filter="url(#${P}blur2)"/>${archivador(96, 18, PAL.salvia)}<circle cx="42" cy="-31" r="11" fill="#1d2532" fill-opacity=".15" filter="url(#${P}blur2)"/><circle cx="40" cy="-32" r="11" fill="${C.hecho}"/><path d="M 34 -32 l 4 4 l 8 -9" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></g>`;
+}
+
+// ======================= la portada (misma composición; cambia la mosca) =======================
+function portada(tipo) {
+  P = tipo === 'juego' ? 'b' : 'a'; seed = 5;
+  const s = 1.26, fx = tipo === 'juego' ? 340 : 352, fy = 1000 - s * 106;
+  let sv = `<svg class="escena" viewBox="0 0 840 1188" xmlns="http://www.w3.org/2000/svg">${defs(P)}`;
+  sv += `<rect width="840" height="1188" fill="url(#${P}vin)"/>`;
+  sv += `<rect x="0" y="1000" width="840" height="70" fill="url(#${P}piso)"/><line x1="60" y1="1000" x2="780" y2="1000" stroke="#d9d3c6" stroke-width="1.6"/>`;
+  sv += `<ellipse cx="${fx + 120}" cy="1008" rx="250" ry="13" fill="#1d2532" fill-opacity=".11" filter="url(#${P}blur)"/>`;
+  sv += `<ellipse cx="${fx + 10}" cy="1004" rx="175" ry="11" fill="#1d2532" fill-opacity=".2" filter="url(#${P}blur)"/>`;
+  sv += tipo === 'juego' ? moscaJuego({x: fx, y: fy, s, e: .85, p: P}) : mosca({x: fx, y: fy, s, e: .85, p: P});
+  const base = tipo === 'juego' ? [-6, -60] : [-8, -56];
+  const t = torre(base[0], base[1], ITEMS, 1.2, true);
+  sv += `<g transform="translate(${fx} ${fy}) scale(${s})"><ellipse cx="${base[0] + 4}" cy="${base[1] + 6}" rx="78" ry="9" fill="#1d2532" fill-opacity=".35" filter="url(#${P}blur3)"/>${t.svg}</g>`;
+  sv += [[590, 420, 28], [640, 500, -18, 26, 34], [548, 350, 62, 24, 30], [660, 690, -40], [690, 975, 12, 30, 22]].map(([x, y, rot, w, h]) => hoja(x, y, rot, w, h)).join('');
+  sv += postitSuelto(615, 600, 24) + postitSuelto(505, 540, -30, '#cfe6ff');
+  sv += terminada(665, 1000);
+  sv += `</svg>`;
+  return `<section class="hoja clara">${sv}<div class="arriba"><h1>Mosca del WIP</h1><p class="lema">Estar siempre ocupado no es lo mismo que avanzar</p><p class="subtitulo">Un juego con una mosca real para ver por qué conviene limitar el trabajo en curso</p></div><div class="datos"><div><b>Felipe Fernández</b> · octubre 2026</div><div style="text-align:right">Por dentro, un cerebro de mosca real<br>Male CNS v1.0 · CC BY 4.0</div></div></section>`;
+}
+
+// ======================= armar la vista: dos opciones =======================
+const OPCIONES = [
+  {rotulo: 'Opción 1', titulo: 'La mosca ilustrada', nota: 'La que elegiste, con la taza rehecha: mismo punto de vista que las carpetas, base apoyada con su sombra, asa con volumen, reflejos y vapor suave. Arriba, las carpetas se resbalan sin girar tanto.', html: portada('ilustrada')},
+  {rotulo: 'Opción 2', titulo: 'La mosca del juego', nota: 'Misma portada, pero la mosca calcada del modelo 3D: cabeza grande con ojos enormes y facetas, abdomen corto con bandas finas, patas con articulaciones de bolita, bisagra de las alas, halterio, cuello de camisa que abraza el cuello y la corbata azul con rayas doradas.', html: portada('juego')},
+];
+const PX = 793.7;
+const fila = document.getElementById('fila');
+OPCIONES.forEach((o, i) => {
+  const d = document.createElement('div'); d.className = 'opcion';
+  d.innerHTML = `<div class="rotulo">${o.rotulo}</div><h2 class="titulo" style="font-family:var(--serif);font-size:18px;margin:-4px 0 0;text-align:center">${o.titulo}</h2><div class="marco" data-i="${i}">${o.html}</div><p class="nota">${o.nota}</p>`;
+  fila.appendChild(d);
+});
+function medir() {
+  const alto = window.innerHeight - 210;
+  const w = Math.max(300, Math.min(560, alto * 210 / 297, (window.innerWidth - 120) / 2));
+  document.documentElement.style.setProperty('--w', w + 'px');
+  document.documentElement.style.setProperty('--s', (w / PX).toFixed(4));
+  const g = document.getElementById('grande');
+  const hw = Math.min((window.innerHeight - 40) * 210 / 297, window.innerWidth - 40);
+  g.style.setProperty('--w', hw + 'px'); g.style.setProperty('--s', (hw / PX).toFixed(4));
+}
+medir(); window.addEventListener('resize', medir);
+const grande = document.getElementById('grande');
+function abrir(i) { grande.innerHTML = `<div class="marco">${OPCIONES[i].html}</div>`; grande.classList.add('abierto'); }
+document.querySelectorAll('.fila .marco').forEach(m => m.addEventListener('click', () => abrir(+m.dataset.i)));
+grande.addEventListener('click', () => grande.classList.remove('abierto'));
+window.addEventListener('keydown', ev => { if (ev.key === 'Escape') grande.classList.remove('abierto'); });
+const q = new URLSearchParams(location.search).get('grande'); if (q) abrir(+q - 1);
+</script>
+</body>
+</html>

@@ -20,7 +20,7 @@ impreso: **una idea por página, un solo visual, poco texto y aire**.
 
 | Página | Qué es | ¿Cuenta como contenido? |
 |---|---|---|
-| Portada | Página completa, oscura, con el holograma: "Mosca del WIP", la bajada "Estar siempre ocupado no es lo mismo que avanzar", una línea ("Un juego con una mosca real para ver por qué conviene limitar el trabajo en curso"), "Felipe Fernández · octubre 2026" y el crédito corto de MaleCNS. Nada más. | No |
+| Portada | Página completa, oscura, con el holograma: "Mosca del WIP", la bajada "Estar siempre ocupado no es lo mismo que avanzar", una línea ("Un juego con una mosca real para ver por qué conviene limitar el trabajo en curso"), "Felipe Fernández · octubre 2026" y el crédito corto de MaleCNS. Nada más. **Desde el v9 (2026-10-22) es clara, con la ilustración "la mosca con su torre": ver la sección 11.** | No |
 | 1 a 10 | Las diez ideas, en el mismo orden que el v6 | Sí |
 | Separador | Página oscura, como "Segunda parte" del completo: "Anexos · Para quien quiere revisar: ¿Es real?, Los números, Fuentes y créditos" | No |
 | A, B, C | Los tres anexos | Sí (11, 12 y 13) |
@@ -85,7 +85,9 @@ excepción al "un visual": la página de los dos días (dos fotos).
 - **Fotos**: una por página como máximo, recortada a lo que importa, borde
   fino y esquinas de 2 mm. Pie de una línea, sin negrita inicial.
 - **Portada y separador**: fondo oscuro (#03050b con el holograma; #1d2532
-  el separador), igual que en el informe completo.
+  el separador), igual que en el informe completo. Desde el v9 (2026-10-22)
+  la portada es clara, con la ilustración de la mosca y su torre (sección
+  11); el separador sigue oscuro.
 
 ## 5. Reglas de texto
 
@@ -218,3 +220,35 @@ líneas con la conclusión) y cambia esto:
   para la historia y la tabla, no para más recuadros ni etiquetas.
 - Lo que sale de una página sigue sin perderse: va a otra página, a la
   sobremesa o a un anexo (lista en `docs/etapa4-7.md`).
+
+## 11. La portada del v9 (parte 4.8, 2026-10-22): "la mosca con su torre"
+
+Felipe quiso cambiar solo la portada. Eligió, entre tres ideas y luego tres
+variantes, una ilustración clara en vez del holograma oscuro. Reglas de esa
+portada (detalle y decisiones en `docs/etapa4-8.md`):
+
+- **Fondo papel** (`--papel`), como las páginas de adentro; el separador de
+  anexos sigue oscuro. Título "Mosca del WIP" arriba (50 pt), la bajada en
+  teal (19,5 pt), la línea de qué es (10,6 pt, gris) y, abajo, los créditos
+  con un filete fino: "Felipe Fernández · octubre 2026" y "Por dentro, un
+  cerebro de mosca real · Male CNS v1.0 · CC BY 4.0".
+- **La ilustración**: la mosca del juego (de lado, con corbata, encorvada y
+  con una gota de sudor) camina cargando sobre el lomo una torre de carpetas,
+  archivadores, cuadernos y un taco de post-its que se inclina a la derecha y
+  suelta hojas; en la punta, una taza de café; en el suelo, a la derecha, una
+  sola carpeta terminada con un visto verde (`--tranqui`). Es la frase norte
+  del problema hecha imagen: la torre es lo que está en curso; la única
+  terminada, lo que avanza.
+- **Luz y sombras**: una sola luz, desde arriba a la izquierda, para todo.
+  Sombras de contacto entre carpetas, bajo la torre sobre el lomo, bajo cada
+  pata y bajo la taza; una sombra larga hacia la derecha en el piso; una
+  banda suave bajo la línea del piso para que la escena se apoye.
+- **Color**: los de la guía (tinta, teal, verde) más una paleta de carpetas
+  apagada (mostaza, terracota, salvia, azul, crema, rosa, pizarra, lila).
+  El rojo solo en el ojo de la mosca; sin rojo de "sobrecarga" en la portada.
+- **Cómo se hace**: todo es código SVG en `docs/contexto/portada-torre.html`
+  (opción 1 = la elegida; opción 2 = la mosca calcada del modelo 3D, que
+  quedó como alternativa). `node scripts/portada-svg.mjs` exporta
+  `docs/contexto/img/portada-torre.svg`, que `compartir.html` muestra como
+  imagen de fondo en `<section class="hoja portada clara">`. La clase
+  `portada` se mantiene (el pie no la numera); `clara` pisa el fondo oscuro.
