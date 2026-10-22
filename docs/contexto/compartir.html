@@ -29,6 +29,9 @@
      de sudor carga una torre de carpetas que se inclina y suelta hojas, con
      una taza de café en la punta; en el suelo, una sola carpeta terminada.
      Título arriba, créditos abajo. Ningún texto de las páginas cambió.
+     v10 (2026-10-22, mismo día): las páginas en blanco puro (antes, tono
+     papel #fcfaf6 desde el 20 de octubre); el tono papel queda solo en la
+     portada. Pedido de Felipe. Nada más cambia.
      Se arma con: DOC=compartir node scripts/documento.mjs; se revisa con:
      node scripts/revisar-paginas.mjs compartir. Los números de las tablas y
      los gráficos están al final y salen de la 4.1 y la 4.2
@@ -39,6 +42,9 @@
 <style>
   /* ===== Estilo v7 (guía: docs/etapa4-6-estilo.md) con los ajustes del v8 ===== */
   body { font-size: 10.2pt; line-height: 1.58; }
+  /* v10 (2026-10-22, pedido de Felipe): las páginas en blanco puro. El tono papel (--papel, #fcfaf6) queda solo en la
+     portada (.portada.clara lo fija aparte); el separador sigue oscuro (.parte, más abajo). */
+  .hoja { background: #fff; }
   h1 { font-size: 21pt; line-height: 1.15; margin: 0 0 4.5mm; }
   h3 { font-size: 10.2pt; margin: 5mm 0 2mm; }
   .bajada { font-size: 11.6pt; line-height: 1.5; color: var(--suave); margin-bottom: 5.5mm; max-width: 152mm; }
