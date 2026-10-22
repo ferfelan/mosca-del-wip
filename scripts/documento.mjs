@@ -15,7 +15,8 @@
 // "2026-10-19 Informe completo v1.pdf". Al cambiar el contenido de un
 // informe, súbele la versión aquí abajo (20 oct., arreglos previos a la revisión
 // independiente: compartir v4 y v5, completo v3 y v4; arreglos de la revisión
-// independiente: compartir v6, completo v5).
+// independiente: compartir v6, completo v5; 21 oct., parte 4.6: compartir v7,
+// completo v6; parte 4.7: compartir v8, 16 a 17 hojas).
 //
 // Uso: node scripts/documento.mjs                → los dos informes
 //      DOC=compartir node scripts/documento.mjs  → sólo uno (completo, compartir,
@@ -38,7 +39,7 @@ const SALIDA = process.env.SALIDA ?? join(homedir(), 'Desktop', 'Mosca del WIP')
 const FECHA = process.env.FECHA ?? new Date().toLocaleDateString('sv-SE'); // 2026-10-20
 const DOCUMENTOS = [
   { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v6' },
-  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v7', paginas: [15, 16] },
+  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v8', paginas: [16, 17] },
   { id: 'norte', html: 'norte.html', nombre: 'Norte del proyecto', version: 'v1', paginas: [1, 2], aparte: true },
   { id: 'etapa4-1', html: 'etapa4-1.html', nombre: 'Etapa 4.1 La paradoja', version: 'v1', paginas: [1, 3], aparte: true },
   { id: 'etapa4-2', html: 'etapa4-2.html', nombre: 'Etapa 4.2 Robustez', version: 'v1', paginas: [1, 3], aparte: true },

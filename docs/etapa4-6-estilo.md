@@ -183,3 +183,38 @@ Decisiones pendientes para el OK:
 
 El resultado (mediciones, lo que cambió de sentido y lo que salió de cada
 página) está en `docs/etapa4-6.md`.
+
+## 10. Ajustes del v8 (parte 4.7, 2026-10-21; detalle en `docs/etapa4-7.md`)
+
+Felipe revisó el v7: el ruido se fue, pero partía sin contexto, sobraba aire
+y los datos duros quedaron en los anexos. El v8 mantiene todas las reglas de
+arriba (un visual principal, un recuadro, tres etiquetas grises, pies de una
+línea, color solo con significado, frases de 20 palabras, títulos de 2
+líneas con la conclusión) y cambia esto:
+
+- **11 páginas de contenido**: 1 El gancho (texto dado por Felipe; único
+  título que no dice la conclusión) · 2 La protagonista y las reglas · 3 Un
+  mismo día, dos veces · 4 **nueva**: la tabla de 1 a 10 (cinco columnas:
+  terminadas, tiempo por tarea, minutos que rinden, cigarros, estrés al
+  cerrar; las filas 2 y 9 con fondo; el anexo B conserva las nueve
+  columnas) · 5 La paradoja · 6 El límite · 7 Lo empezado no desaparece ·
+  8 No es solo la mosca · 9 El disfraz · 10 El cerebro · 11 Qué hacer.
+  Portada, separador, 3 anexos y cierre: 17 hojas; el pie numera 1 a 15.
+- **Tono**: el lector es el protagonista. Cada página abre con una frase
+  que lo pone en la escena o le habla, y cierra con una frase que vuelve a
+  él; la mosca es el personaje que le muestra algo. Humor suave desde las
+  situaciones de la mosca, nunca del lector. Una idea sorprendente por
+  página. Segunda persona ("tú", "tu equipo"), voz activa. **Cero signos de
+  exclamación.**
+- **"Para la sobremesa"**: una línea fija al pie de cada página de
+  contenido (sobre el pie de página, mismo lugar y estilo: rótulo teal,
+  frase gris, fuente entre paréntesis en gris claro): un dato verificado del
+  proyecto o de la mosca, solo del anexo C o de la investigación verificada.
+  En el HTML es `.sobremesa`; `revisar-paginas` la usa como tope del
+  contenido y cuenta sus palabras aparte. La clase de la fuente se llama
+  `de-donde` (no `fuente`: esa es la tarjeta de fuentes de `estilo.css`).
+- **Espacio**: llenado 80–95 %; hasta unas 200 palabras por página (misma
+  forma de contar que la sección 5, y la sobremesa cuenta). El espacio es
+  para la historia y la tabla, no para más recuadros ni etiquetas.
+- Lo que sale de una página sigue sin perderse: va a otra página, a la
+  sobremesa o a un anexo (lista en `docs/etapa4-7.md`).

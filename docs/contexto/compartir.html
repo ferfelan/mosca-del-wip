@@ -3,33 +3,40 @@
 <head>
 <meta charset="utf-8" />
 <title>Mosca del WIP · Para compartir</title>
-<!-- Informe para compartir v7 (2026-10-21, parte 4.6: pulido visual y de
-     texto con la guía docs/etapa4-6-estilo.md; ningún número ni fuente
-     cambió respecto del v6, que quedó guardado en docs/contexto/v6/).
-     Estructura: portada + 10 páginas + separador + 3 anexos + cierre (16
-     hojas; el pie numera solo el contenido, 1 a 14). Cada página: rótulo,
-     título de 2 líneas, bajada, un visual, 1 o 2 párrafos, a lo más un
-     recuadro (borde teal) y una frase de cierre; máximo 150 palabras sin
-     contar rótulo, título ni visuales (gráficos, tablas de números y de
-     reglas, tarjetas de la pág. 5 y pasos de la pág. 10, marcados con la
-     clase "visual"); frases de 20 palabras; tres etiquetas grises.
-     Versiones anteriores: v6 (20 oct., arreglos de la revisión
-     independiente), v5, v4, v3, v2 (Etapa 4.4) y v1 (docs/contexto/v1/).
+<!-- Informe para compartir v8 (2026-10-21, parte 4.7: el v7 tenía el diseño
+     limpio pero partía sin contexto, sobraba aire y los datos duros quedaron
+     en los anexos). Ningún número ni fuente cambió respecto del v7 (guardado
+     en docs/contexto/v7/). Qué cambia en el v8:
+     · 11 páginas de contenido (la nueva es la 4, la tabla de 1 a 10 tareas
+       que antes vivía solo en el anexo B; "No es solo la mosca" pasa a la 8).
+     · Tono: el lector es el protagonista (cada página abre poniéndolo en la
+       escena y cierra volviendo a él); humor suave desde la mosca; segunda
+       persona; cero signos de exclamación; títulos con la conclusión salvo
+       la pág. 1 (texto dado por Felipe).
+     · Una línea fija "Para la sobremesa" al pie de cada página de contenido:
+       un dato verificado del proyecto o de la mosca (solo del anexo C o de
+       la investigación verificada), siempre en el mismo lugar y estilo.
+     · Llenado 80–95 % y hasta unas 200 palabras por página (sin rótulo,
+       título ni visuales). Se mantiene el resto de la guía v7
+       (docs/etapa4-6-estilo.md): un visual principal, un recuadro, tres
+       etiquetas grises, pies de una línea, color solo con significado.
+     Estructura: portada + 11 páginas + separador + 3 anexos + cierre = 17
+     hojas; el pie numera solo el contenido (1 a 15).
      Se arma con: DOC=compartir node scripts/documento.mjs; se revisa con:
-     node scripts/revisar-paginas.mjs compartir. Los números de los gráficos
-     están al final y salen de la 4.1 y la 4.2 (docs/etapa4-1-resultados.json
-     y etapa4-2-resultados.json: 200 días por cada número de tareas, semilla
-     2024); la curva de la pág. 7, de docs/corrida-oficial.json (simular-dias
-     con la misma semilla). -->
+     node scripts/revisar-paginas.mjs compartir. Los números de las tablas y
+     los gráficos están al final y salen de la 4.1 y la 4.2
+     (docs/etapa4-1-resultados.json y etapa4-2-resultados.json: 200 días por
+     cada número de tareas, semilla 2024); la curva de la pág. 7, de
+     docs/corrida-oficial.json (simular-dias con la misma semilla). -->
 <link rel="stylesheet" href="estilo.css" />
 <style>
-  /* ===== Estilo v7 (guía: docs/etapa4-6-estilo.md) ===== */
+  /* ===== Estilo v7 (guía: docs/etapa4-6-estilo.md) con los ajustes del v8 ===== */
   body { font-size: 10.2pt; line-height: 1.58; }
   h1 { font-size: 21pt; line-height: 1.15; margin: 0 0 4.5mm; }
   h3 { font-size: 10.2pt; margin: 5mm 0 2mm; }
-  .bajada { font-size: 11.6pt; line-height: 1.5; color: var(--suave); margin-bottom: 6mm; max-width: 152mm; }
-  p { margin: 0 0 3.4mm; max-width: 142mm; }
-  figure { margin: 0 0 6.5mm; }
+  .bajada { font-size: 11.6pt; line-height: 1.5; color: var(--suave); margin-bottom: 5.5mm; max-width: 152mm; }
+  p { margin: 0 0 3.2mm; max-width: 142mm; }
+  figure { margin: 0 0 5.5mm; }
   figure img { border-radius: 2mm; }
   figcaption { font-size: 8.2pt; color: var(--suave); margin-top: 2.2mm; line-height: 1.45; max-width: none; }
   figcaption b { font-weight: 600; color: var(--tinta); }
@@ -38,24 +45,29 @@
   .chico { font-size: 8.2pt; color: var(--suave); }
 
   /* El único recuadro: borde izquierdo teal */
-  .recuadro { border-left: 1.2mm solid var(--teal); background: #edf3f2; border-radius: 0 1.6mm 1.6mm 0; padding: 4mm 5mm; margin: 5.5mm 0 0; max-width: 152mm; break-inside: avoid; }
+  .recuadro { border-left: 1.2mm solid var(--teal); background: #edf3f2; border-radius: 0 1.6mm 1.6mm 0; padding: 3.6mm 5mm; margin: 4.5mm 0 0; max-width: 152mm; break-inside: avoid; }
   .recuadro .etiqueta { display: block; font-size: 7pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--suave); margin-bottom: 1.4mm; }
-  .recuadro p { font-family: var(--serif); font-size: 12pt; line-height: 1.42; color: var(--tinta); margin: 0; max-width: none; }
+  .recuadro p { font-family: var(--serif); font-size: 11.6pt; line-height: 1.42; color: var(--tinta); margin: 0; max-width: none; }
   .recuadro q { quotes: '“' '”'; }
   .recuadro .de { display: block; font-family: var(--sans); font-size: 8pt; color: var(--suave); margin-top: 1.6mm; line-height: 1.4; }
 
   /* La frase de cierre de cada página */
-  .cierre-pagina { font-family: var(--serif); font-size: 13pt; line-height: 1.35; color: var(--tinta); margin: 6.5mm 0 0; max-width: 152mm; }
+  .cierre-pagina { font-family: var(--serif); font-size: 13pt; line-height: 1.35; color: var(--tinta); margin: 5.5mm 0 0; max-width: 156mm; }
   .cierre-pagina strong { font-weight: 700; color: var(--teal); }
   .cierre-pagina .rojo { color: var(--colapsada); }
   .cierre-pagina .verde { color: var(--tranqui); }
+
+  /* v8: la línea fija "Para la sobremesa", siempre en el mismo lugar (sobre el pie) y con el mismo estilo */
+  .sobremesa { position: absolute; left: 20mm; right: 20mm; bottom: 19mm; display: grid; grid-template-columns: 31mm 1fr; gap: 0 3mm; align-items: baseline; border-top: 0.5pt solid var(--linea); padding-top: 1.9mm; font-size: 8.5pt; line-height: 1.42; color: var(--suave); }
+  .sobremesa .rotulo { font-size: 6.6pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); white-space: nowrap; }
+  .sobremesa .de-donde { color: var(--tenue); } /* no se llama "fuente": esa clase es la tarjeta de fuentes de estilo.css */
 
   /* Las tres etiquetas de origen (grises, con texto); en el anexo A pueden ser más */
   .origen { display: inline-block; font-size: 6.6pt; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.4mm 1.6mm; border-radius: 1mm; white-space: nowrap; vertical-align: 0.3mm; background: #ebe8e1; color: var(--suave); }
 
   /* Números clave grandes (págs. 1 y 3): una tabla sin fondos */
   .marcador { display: grid; grid-template-columns: 54mm 1fr 1fr; margin: 1mm 0 0; border-top: 0.5pt solid var(--linea); }
-  .marcador div { padding: 2.6mm 3mm 2.6mm 0; border-bottom: 0.5pt solid var(--linea); font-size: 8.8pt; color: var(--suave); }
+  .marcador div { padding: 2.4mm 3mm 2.4mm 0; border-bottom: 0.5pt solid var(--linea); font-size: 8.8pt; color: var(--suave); }
   .marcador .cab { font-size: 7pt; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--suave); padding-top: 2.2mm; padding-bottom: 2.2mm; }
   .marcador .cab.bien { color: #2f7347; }
   .marcador .cab.mal { color: var(--colapsada); }
@@ -63,32 +75,44 @@
   .marcador b { font-family: var(--serif); font-size: 18pt; font-weight: 700; color: var(--tinta); margin-right: 1.5mm; line-height: 1; }
   .marcador .bien b { color: var(--tranqui); }
   .marcador .mal b { color: var(--colapsada); }
-  .marcador.grande div { padding-top: 3.4mm; padding-bottom: 3.4mm; }
-  .marcador.grande b { font-size: 22pt; }
+  .adelanto { margin-top: 4.5mm; }
 
   /* Página 2: la foto y la tabla de reglas */
-  .banda-mundo { height: 46mm; object-fit: cover; object-position: center 30%; }
+  .banda-mundo { height: 38mm; object-fit: cover; object-position: center 30%; }
   .reglas { margin-top: 0; }
-  .reglas td { padding: 0.95mm 1.8mm 0.95mm 0; font-size: 8.6pt; line-height: 1.36; }
+  .reglas td { padding: 0.9mm 1.8mm 0.9mm 0; font-size: 8.6pt; line-height: 1.36; }
   .reglas td:last-child { width: 54mm; font-size: 7.9pt; color: var(--suave); line-height: 1.35; }
 
   /* Página 3: las dos fotos (la única excepción al visual único) */
   .comparar { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
-  .comparar img { height: 48mm; object-fit: cover; object-position: center 40%; }
+  .comparar img { height: 44mm; object-fit: cover; object-position: center 40%; }
 
-  /* Página 5: las cuatro tarjetas, en cuadrícula con filetes, sin cajas */
+  /* Página 4 (nueva): la tabla de 1 a 10 tareas, cinco columnas, letra más grande que en el anexo */
+  .tabla-dia { margin: 0 0 1.5mm; }
+  .tabla-dia th { font-size: 7pt; padding: 1.2mm 2mm; }
+  .tabla-dia td { font-size: 9.6pt; padding: 1.6mm 2mm; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .tabla-dia td:first-child, .tabla-dia th:first-child { text-align: left; }
+  .tabla-dia th { text-align: right; }
+  .tabla-dia td b { color: var(--tinta); }
+  .tabla-dia tr.mejor td { background: #eaf3ec; }
+  .tabla-dia tr.sobre td { background: #fbe9e8; }
+  .tabla-dia .nivel-t { color: #2f7347; font-weight: 600; }
+  .tabla-dia .nivel-m { color: var(--suave); }
+  .tabla-dia .nivel-k { color: var(--colapsada); font-weight: 600; }
+
+  /* Página 8: las cuatro tarjetas, en cuadrícula con filetes, sin cajas */
   .estudios { display: grid; grid-template-columns: 1fr 1fr; gap: 0 7mm; margin: 1mm 0 0; border-top: 0.5pt solid var(--linea); }
-  .estudio { padding: 3.6mm 0 3.4mm; border-bottom: 0.5pt solid var(--linea); font-size: 9.3pt; line-height: 1.5; }
-  .estudio h3 { margin: 0 0 1.4mm; font-family: var(--serif); font-size: 12.5pt; font-weight: 700; }
-  .estudio p { margin: 0 0 1.4mm; max-width: none; }
-  .estudio .tipo { font-size: 8.2pt; color: var(--suave); margin: 0; }
+  .estudio { padding: 3.2mm 0 3mm; border-bottom: 0.5pt solid var(--linea); font-size: 9.1pt; line-height: 1.48; }
+  .estudio h3 { margin: 0 0 1.2mm; font-family: var(--serif); font-size: 12.5pt; font-weight: 700; }
+  .estudio p { margin: 0 0 1.2mm; max-width: none; }
+  .estudio .tipo { font-size: 8.1pt; color: var(--suave); margin: 0; }
   .estudio .tipo b { color: var(--suave); font-weight: 600; }
   .estudio .cita { display: block; font-size: 7.6pt; color: var(--tenue); margin-top: 0.8mm; }
 
-  /* Página 8: el viaje de ida y vuelta, en una fila de tres */
-  .viaje { display: grid; grid-template-columns: 1fr 7mm 1fr 7mm 1fr; align-items: stretch; margin: 2mm 0 0; }
-  .viaje .paso { background: var(--papel-2); border-radius: 1.6mm; padding: 5.2mm 4.6mm; font-size: 9.6pt; line-height: 1.52; color: var(--suave); min-height: 46mm; }
-  .angosto p { max-width: 134mm; }
+  /* Página 9: el viaje de ida y vuelta, en una fila de tres */
+  .viaje { display: grid; grid-template-columns: 1fr 7mm 1fr 7mm 1fr; align-items: stretch; margin: 3.5mm 0 0; }
+  .viaje .paso { background: var(--papel-2); border-radius: 1.6mm; padding: 7mm 5mm; font-size: 10pt; line-height: 1.55; color: var(--suave); min-height: 68mm; }
+  .angosto p { max-width: 124mm; }
   .viaje .paso b { display: block; font-size: 6.8pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--suave); margin-bottom: 1.6mm; }
   .viaje .paso strong { display: block; font-family: var(--serif); font-size: 13.5pt; color: var(--tinta); margin-bottom: 1.4mm; }
   .viaje .mosca { background: var(--tinta); color: #b9c6e4; }
@@ -96,14 +120,14 @@
   .viaje .mosca strong { color: #fff; }
   .viaje .fl { align-self: center; text-align: center; font-size: 14pt; color: var(--tinta); line-height: 1; }
 
-  /* Página 9: las dos fotos del cerebro como una sola figura */
-  .cerebros { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; max-width: 126mm; margin: 0 auto; }
+  /* Página 10: las dos fotos del cerebro como una sola figura */
+  .cerebros { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; max-width: 116mm; margin: 0 auto; }
   .cerebros img { display: block; width: 100%; border-radius: 2mm; }
   .cerebros .rotulo { font-size: 7pt; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--suave); margin-bottom: 1.6mm; }
 
-  /* Página 10: los cuatro pasos */
+  /* Página 11: los cuatro pasos */
   .pasos4 { list-style: none; padding: 0; margin: 1mm 0 0; border-top: 0.5pt solid var(--linea); }
-  .pasos4 li { display: grid; grid-template-columns: 10mm 1fr; gap: 0 3mm; padding: 4.2mm 0; border-bottom: 0.5pt solid var(--linea); margin: 0; }
+  .pasos4 li { display: grid; grid-template-columns: 10mm 1fr; gap: 0 3mm; padding: 3.6mm 0; border-bottom: 0.5pt solid var(--linea); margin: 0; }
   .pasos4 .n { font-family: var(--serif); font-size: 22pt; line-height: 1; color: var(--teal); font-weight: 700; }
   .pasos4 h3 { margin: 0 0 1mm; font-size: 11pt; }
   .pasos4 p { margin: 0; font-size: 9.6pt; max-width: 140mm; }
@@ -173,43 +197,47 @@
   </div>
 </section>
 
-<!-- =============================== 1 · POR QUÉ =============================== -->
-<section class="hoja">
+<!-- =============================== 1 · EL GANCHO (texto de Felipe) =============================== -->
+<section class="hoja" data-k="gancho">
   <div class="kicker">Por qué estás viendo esto</div>
-  <h1>Trabajar con demasiadas cosas abiertas se siente productivo. No lo es.</h1>
-  <p class="bajada">Lo que está a medias es el trabajo en curso (WIP, por su sigla en inglés). Lo muestra un juego: una mosca oficinista, un tablero y un día de 9 a 18 en un minuto.</p>
-  <div class="marcador grande visual">
+  <h1>Ocupado todo el día. ¿Y qué terminaste?</h1>
+  <p class="bajada">Lunes, 9 de la mañana. Tres pendientes de ayer, dos correos que esperan respuesta, el reporte, una urgencia de un colega y lo que ibas a terminar hoy. Nueve cosas abiertas. Trabajas sin parar. A las 6 no cerraste ninguna.</p>
+  <p>Casi todos trabajamos así, y se siente productivo. Pero hay una pregunta que pocos se hacen: ¿cuántas cosas a la vez conviene tener abiertas? La respuesta de siempre es “depende”. Este informe la muestra, en un minuto y con una mosca.</p>
+  <p>¿Por qué una mosca? Porque la mosca de la fruta es uno de los pocos animales con el mapa completo de su sistema nervioso, neurona por neurona: 166.700, publicado en 2026. Le pusimos una corbata, un tablero de tareas y un día de oficina que dura un minuto. Tú eliges cuántas tareas tiene abiertas a la vez. Después miras qué pasa: en su día y en su cerebro.</p>
+  <div class="recuadro"><span class="etiqueta">Qué es y qué no</span><p>Un juego en el navegador. Por dentro, un experimento en el computador: reglas basadas en estudios y un cerebro real. No mide personas ni equipos: una mosca sola, un solo día. Por eso cada número dice de dónde sale: en el juego, en la simulación o según estudios.</p></div>
+  <p class="adelanto">Con 2 tareas a la vez termina 18 al día; con 9, termina 9. Cada tarea tarda 1 hora o casi 9. Lo que sigue explica por qué, y qué hacer con eso.</p>
+  <div class="marcador visual">
     <div class="cab">En el juego, la misma mosca y las mismas horas</div><div class="cab bien">Con 2 tareas a la vez</div><div class="cab mal">Con 9 tareas a la vez</div>
     <div class="que">Tareas terminadas en el día</div><div class="bien"><b>18</b></div><div class="mal"><b>9</b></div>
     <div class="que">Tiempo por tarea</div><div class="bien"><b>1 h</b></div><div class="mal"><b>casi 9 h</b></div>
     <div class="que">De su tiempo, cada tarea espera su turno</div><div class="bien"><b>la mitad</b></div><div class="mal"><b>9 de cada 10</b> minutos</div>
   </div>
-  <p style="margin-top:6mm">Por dentro es un experimento en el computador: reglas basadas en estudios, rotuladas, y el cerebro de una mosca real. No mide personas ni equipos: es una mosca sola, un solo día. Por eso cada número dice de dónde sale: en el juego, en la simulación o según estudios.</p>
-  <div class="recuadro"><span class="etiqueta">Si solo tienes un minuto</span><p>Sin esperas a otras personas, lo mejor sería una tarea a la vez. Con esperas, un límite bajo, pero no una.</p></div>
   <p class="cierre-pagina"><strong>Estar siempre ocupado no es lo mismo que avanzar.</strong></p>
+  <div class="sobremesa"><span class="rotulo">Para la sobremesa</span><span>Cinco premios Nobel de Medicina premiaron trabajos con esta mosca: el primero en 1933, el último en 2017. <span class="de-donde">(nobelprize.org)</span></span></div>
   <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
 </section>
 
-<!-- =============================== 2 · LA MOSCA Y SU MUNDO =============================== -->
-<section class="hoja">
-  <div class="kicker">La mosca y su mundo</div>
+<!-- =============================== 2 · LA PROTAGONISTA Y LAS REGLAS =============================== -->
+<section class="hoja" data-k="mundo">
+  <div class="kicker">La protagonista y sus reglas</div>
   <h1>Una mosca real en una oficina de mentira, con reglas que puedes ver</h1>
-  <p class="bajada">La protagonista es una mosca de la fruta, uno de los animales más estudiados en biología. Su cerebro es real (página <span data-pag="cerebro">9</span>); su oficina, un juego.</p>
+  <p class="bajada">Tu escritorio, pero en una pantalla: tablero de tres columnas, taza de café, cenicero y una oficinista con corbata. Cuánto trabajo acepta no lo decide ella: lo decides tú.</p>
   <figure><img class="foto banda-mundo" src="img/mundo-wip2.jpg" alt="La mosca frente a su tablero: Por hacer, En curso y Hecho" />
     <figcaption>La mosca frente a su tablero de tres columnas: Por hacer, En curso y Hecho.</figcaption>
   </figure>
-  <p>Antes de empezar, alguien elige cuántas tareas puede tener en curso a la vez, de 1 a 10. Los equipos lo llaman límite de trabajo en curso. Lleva más de un siglo en los laboratorios: cinco premios Nobel de Medicina premiaron trabajos con moscas. Unas tres cuartas partes de los genes de enfermedades humanas estudiados tienen un pariente en ella. Su sistema nervioso central (cerebro y cordón nervioso) tiene 166.700 neuronas; el cerebro humano, unos 86 mil millones.</p>
-  <h3 style="margin-top:3.5mm">Las reglas de su mundo, y de dónde sale cada una</h3>
+  <p>La protagonista es una mosca de la fruta, uno de los animales más estudiados en biología. Lleva más de un siglo en los laboratorios. Su cerebro es real (página <span data-pag="cerebro">10</span>); su oficina, un juego. Antes de que empiece el día eliges cuántas tareas puede tener en curso a la vez, de 1 a 10. Los equipos lo llaman límite de trabajo en curso (WIP, por su sigla en inglés). Después ella hace lo suyo: trabaja, cambia de tarea, espera respuestas y, si se agobia, sale a fumar.</p>
+  <h3 style="margin-top:3mm">Las reglas de su mundo, y de dónde sale cada una</h3>
   <div class="visual"><table class="reglas"><tbody id="t-reglas"></tbody></table></div>
-  <p class="cierre-pagina" style="margin-top:5mm">Jugamos 200 días con cada número de tareas; los números que siguen son esos promedios, en el juego.</p>
+  <p class="cierre-pagina" style="margin-top:4mm">Jugamos 200 días con cada número de tareas; lo que sigue son esos promedios. Tu lunes de nueve pendientes está en la página siguiente, a la derecha.</p>
+  <div class="sobremesa"><span class="rotulo">Para la sobremesa</span><span>Unas tres cuartas partes de los genes de enfermedades humanas estudiados tienen un pariente en la mosca. <span class="de-donde">(Reiter y otros, 2001)</span></span></div>
   <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
 </section>
 
 <!-- =============================== 3 · MISMO DÍA =============================== -->
-<section class="hoja">
+<section class="hoja" data-k="dia">
   <div class="kicker">Un mismo día, dos veces</div>
   <h1>Misma mosca, mismas tareas: con 2 a la vez termina 18; con 9, termina 9</h1>
-  <p class="bajada">La única diferencia entre los dos días, en el juego, es el límite. Las fotos son de la misma hora: la una y media de la tarde.</p>
+  <p class="bajada">Son la una y media de la tarde en las dos fotos. Mira el cenicero, el café y la pila de papeles. La única diferencia entre los dos días, en el juego, es el límite.</p>
   <figure>
     <div class="comparar">
       <img class="foto" src="img/escena-wip2.jpg" alt="Con dos tareas en curso: la mosca trabaja tranquila, el cenicero vacío y el café caliente" />
@@ -224,77 +252,103 @@
     <div class="que">Minutos de cada hora que rinden de verdad</div><div class="bien"><b>50</b></div><div class="mal"><b>25</b> pierde 35 de cada 60</div>
     <div class="que">Cigarros y cafés</div><div class="bien"><b>0</b> cigarros, 5 cafés</div><div class="mal"><b>13</b> cigarros, 0 cafés</div>
   </div>
-  <p style="margin-top:5mm">Con 9 tareas estuvo en la oficina las mismas horas, ocupada casi todo el tiempo. Pero cada minuto rinde menos: salta entre tareas, pierde un rato al retomar cada una y sale a fumar. Y como avanza un poquito en cada tarea por turnos, todas tardan.</p>
+  <p style="margin-top:4.5mm">Con 9 tareas estuvo en la oficina las mismas horas, ocupada casi todo el tiempo. Te va a sonar: salta entre tareas, pierde un rato al retomar cada una y sale a fumar. Como avanza un poquito en cada tarea por turnos, todas tardan. El café se le enfrió sin que lo tocara.</p>
   <p>El juego marca 3 como límite sostenible: hasta 3 tareas a la vez cierra el día tranquila. El 2 es, dentro de ese límite, el número con que más termina, y así lo marcan las tablas.</p>
-  <p class="cierre-pagina">Terminó la mitad, cada tarea tardó nueve veces más y cerró el día <span class="rojo">colapsada</span>. Con 2, cerró <span class="verde">tranquila</span>.</p>
+  <p class="cierre-pagina">Terminó la mitad, cada tarea tardó nueve veces más y cerró el día <span class="rojo">colapsada</span>. Con 2, cerró <span class="verde">tranquila</span>. ¿A cuál de las dos fotos se parece tu martes?</p>
+  <div class="sobremesa"><span class="rotulo">Para la sobremesa</span><span>Cada cambio de tarea cuesta décimas de segundo, medidas en laboratorio. En un día de nueve tareas, se suman. <span class="de-donde">(Rubinstein, Meyer y Evans, 2001)</span></span></div>
   <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
 </section>
 
-<!-- =============================== 4 · LA PARADOJA =============================== -->
-<section class="hoja">
+<!-- =============================== 4 · LA TABLA DE 1 A 10 (nueva en el v8) =============================== -->
+<section class="hoja" data-k="tabla">
+  <div class="kicker">De 1 a 10 tareas</div>
+  <h1>No hay un número donde todo se rompe: cada tarea extra cuesta un poco más</h1>
+  <p class="bajada">Antes de elegir tu límite, mira la tabla entera. Cada fila es un día promedio de 200, en el juego, con ese número de tareas abiertas a la vez.</p>
+  <div class="visual">
+    <table class="tabla-dia">
+      <thead><tr><th>Tareas a la vez</th><th>Terminadas</th><th>Tiempo por tarea</th><th>Rinden, de cada hora</th><th>Cigarros</th><th>Estrés al cerrar</th></tr></thead>
+      <tbody id="t-dia-corta"></tbody>
+    </table>
+    <p class="chico" style="max-width:none;margin-bottom:0">Con fondo, los dos días de la página anterior: verde, 2; rojo, 9. Tiempo por tarea en horas de oficina; la tabla completa, con nueve columnas, en el anexo B.</p>
+  </div>
+  <p style="margin-top:4.5mm">Con 1 se queda esperando. Cuando su única tarea se traba, no tiene otra a mano. En el juego pasa más de 2 horas al día sin nada que hacer. Por eso termina menos que con 2.</p>
+  <p>De 2 a 3 termina casi lo mismo y cierra el día tranquila, sin un solo cigarro. Es lo que el juego llama límite sostenible: hasta 3, aguanta el día entero.</p>
+  <p>Desde 4, cada tarea extra empeora todo un poco: menos terminadas, más horas por tarea, más cigarros. Fíjate en el orden. El estrés y los cigarros aparecen con 4; la caída de lo terminado a la mitad, recién con 9. Primero se nota en la mosca; después, en el tablero.</p>
+  <p class="cierre-pagina">Si hoy tienes nueve cosas abiertas, no caíste por un precipicio: bajaste de a un escalón por tarea. Se suben igual, de a uno.</p>
+  <div class="sobremesa"><span class="rotulo">Para la sobremesa</span><span>En Italia, un sorteo reparte las causas entre los jueces. Los que acumularon más juicios a la vez tardaron más en cerrarlos. <span class="de-donde">(Coviello, Ichino y Persico, 2014 y 2015)</span></span></div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
+</section>
+
+<!-- =============================== 5 · LA PARADOJA =============================== -->
+<section class="hoja" data-k="paradoja">
   <div class="kicker">La paradoja</div>
   <h1>Con más tareas nunca le falta qué hacer, pero cada una pasa más tiempo esperando</h1>
-  <p class="bajada">Hay dos eficiencias: estar siempre ocupado (eficiencia de recursos) o que el trabajo avance sin esperar (eficiencia de flujo). Optimizar la primera arruina la segunda (Modig y Åhlström, 2012).</p>
+  <p class="bajada">Tu jefe te ve ocupado y le parece bien. Pero hay dos eficiencias: estar siempre ocupado (de recursos) o que el trabajo avance sin esperar (de flujo). Optimizar la primera arruina la segunda (Modig y Åhlström, 2012).</p>
   <figure class="grafico"><div id="g-paradoja"></div>
-    <figcaption>En el juego: cuándo tiene con qué hacer y cuánto se trabaja de verdad cada tarea en curso.</figcaption>
+    <figcaption>En el juego: cuándo tiene con qué hacer y cuánto avanza de verdad cada tarea.</figcaption>
   </figure>
-  <p>Con las esperas de hoy, desde 3 tareas tiene con qué hacer todo el día. Abrir más solo pone tareas a esperar. Las líneas de producción llaman a ese punto "trabajo en curso crítico" (Hopp y Spearman, <em>Factory Physics</em>).</p>
-  <p>Que cada tarea tarde más es casi una división del tiempo entre todas. Es matemática (la ley de Little), no un hallazgo. En el juego sube en cada escalón: 34 minutos por tarea con 1, más de 10 horas con 10.</p>
-  <p class="cierre-pagina">La teoría solo dice que lo terminado deja de subir. Que baje lo ponen el costo de cambiar de tarea y los cigarros.</p>
+  <p>Con las esperas de hoy, desde 3 tareas tiene con qué hacer todo el día. Abrir más solo pone tareas a esperar su turno. Las fábricas tienen nombre para ese punto: “trabajo en curso crítico” (Hopp y Spearman, <em>Factory Physics</em>).</p>
+  <p>Que cada tarea tarde más es casi una división del tiempo entre todas: matemática, no un hallazgo. En el juego sube en cada escalón: 34 minutos por tarea con 1, más de 10 horas con 10. Con 9 abiertas, cada una avanza el 9 % del tiempo que pasa en curso; el resto, espera.</p>
+  <p class="cierre-pagina">La teoría solo dice que lo terminado deja de subir. Que baje lo ponen el costo de cambiar de tarea y los cigarros. Con nueve abiertas no rindes más: esperas más.</p>
+  <div class="sobremesa"><span class="rotulo">Para la sobremesa</span><span>Que cada tarea tarde más cuando hay más abiertas no es una opinión: es un teorema, de 1961. <span class="de-donde">(la ley de Little)</span></span></div>
   <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
 </section>
 
-<!-- =============================== 5 · NO ES SOLO LA MOSCA =============================== -->
+<!-- =============================== 6 · EL LÍMITE =============================== -->
+<section class="hoja" data-k="limite">
+  <div class="kicker">El límite</div>
+  <h1>El mejor límite depende de cuánto se espera: sin esperas, 1; con esperas, de 2 a 4 en la simulación</h1>
+  <p class="bajada">¿Entonces una cosa a la vez? Depende de cuánto esperas a otros. Probamos 20 combinaciones de reglas: en 16 de los 17 casos con esperas, el mejor quedó entre 2 y 4.</p>
+  <figure class="grafico"><div id="g-curvas"></div>
+    <figcaption>En la simulación: terminadas al día según cuántas tiene a la vez; el círculo marca la mejor.</figcaption>
+  </figure>
+  <p>Las esperas empujan hacia más tareas: si una se traba, conviene tener otra a mano. Con una sola, en el juego, espera más de 2 horas al día. Cambiar de tarea empuja hacia menos: cada salto cuesta; mientras más cuesta, menos conviene abrir. Tu límite vive entre esas dos fuerzas.</p>
+  <p>Es un resultado de la simulación, no un número científico: tu equipo tiene el suyo. La mosca trabaja sola y no puede destrabar lo que espera. Un equipo sí; eso aconseja DORA: cuando alguien queda esperando, atacar la espera en vez de abrir otra cosa.</p>
+  <div class="recuadro"><p>Reducir las esperas permite bajar el límite; subir el límite no reduce las esperas.</p></div>
+  <p class="cierre-pagina"><strong>Un límite sostenible, no una cosa a la vez</strong> vale con esperas inevitables. Con menos esperas, más cerca de una.</p>
+  <div class="sobremesa"><span class="rotulo">Para la sobremesa</span><span>El ideal de DORA es una cosa a la vez. Quizá no se alcance, pero sirve de norte. <span class="de-donde">(dora.dev)</span></span></div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
+</section>
+
+<!-- =============================== 7 · LO EMPEZADO NO DESAPARECE =============================== -->
+<section class="hoja" data-k="empezado">
+  <div class="kicker">Lo empezado no desaparece</div>
+  <h1>Bajar el límite no la calma de inmediato: lo empezado tarda más de 2 horas en salir</h1>
+  <p class="bajada">Supón que a mediodía decides ordenarte: de diez cosas abiertas a dos. En el juego, las diez siguen ahí: no toma nuevas y cierra las que tiene.</p>
+  <figure class="grafico"><div id="g-bajar"></div>
+    <figcaption>En el juego, promedio de 200 días: 10 a la vez y a las 12:00 baja a 2.</figcaption>
+  </figure>
+  <p>Recién a las 14:35 vuelve a tener dos abiertas. Lo firme: lo empezado tarda más de 2 horas en salir, con cualquier regla probada. Que se calme a las 15:07 depende del supuesto del estrés: sube rápido, baja lento.</p>
+  <p>Sostenible: se mantiene todo el día sin colapsar. La idea tiene años, y no solo en el software. En fábricas de hace un siglo, pasado cierto punto cada hora extra rendía menos (Pencavel 2015).</p>
+  <div class="recuadro"><p><q>Los procesos […] promueven el desarrollo sostenible. Los promotores, desarrolladores y usuarios debemos ser capaces de mantener un ritmo constante de forma indefinida.</q><span class="de">Principio 8 del Manifiesto […], la declaración de 2001 que fundó las metodologías […].</span></p></div>
+  <p class="cierre-pagina">Si bajas tu límite un lunes, no lo juzgues el martes: lo empezado tiene que salir primero.</p>
+  <div class="sobremesa"><span class="rotulo">Para la sobremesa</span><span>En el laboratorio, la hormona del estrés llega a su pico en 20 a 40 minutos y tarda más en bajar. <span class="de-donde">(Dickerson y Kemeny, 2004)</span></span></div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
+</section>
+
+<!-- =============================== 8 · NO ES SOLO LA MOSCA =============================== -->
 <section class="hoja" data-k="estudios">
   <div class="kicker">Con personas reales</div>
   <h1>No es solo la mosca: jueces, reclutadores y equipos apuntan en la misma dirección</h1>
-  <p class="bajada">Ningún estudio da un número de tareas. Lo que dan es la dirección, y es la misma que la del juego.</p>
+  <p class="bajada">Quizá piensas: es un juego, y con una mosca. Tienes razón. Ningún estudio con personas da un número de tareas; los que encontramos dan la dirección, y es la misma.</p>
   <div class="estudios visual">
     <div class="estudio"><h3>Jueces italianos</h3><p>Los jueces que llevaban más juicios a la vez, por el sorteo de las causas, tardaron más en cerrarlos. La calidad de sus fallos no cambió: más malabares, más demora, misma calidad.</p><p class="tipo"><b>Tipo:</b> estudio de campo; cada juez trabaja solo: el más parecido a la mosca. <b>No mide</b> equipos.<span class="cita">Coviello, Ichino y Persico (2014, 2015)</span></p></div>
     <div class="estudio"><h3>Reclutadores</h3><p>Un poco de trabajo en paralelo ayudó a terminar más; pasado un punto, terminaron menos. Ni muy poco ni demasiado.</p><p class="tipo"><b>Tipo:</b> estudio de campo; una relación, no una causa. <b>No dice</b> dónde está el punto para otros trabajos.<span class="cita">Aral, Brynjolfsson y Van Alstyne (2012)</span></p></div>
     <div class="estudio"><h3>Equipos de investigación</h3><p>Quienes estaban en muy pocos equipos a la vez, o en demasiados, rindieron menos que los de un punto intermedio.</p><p class="tipo"><b>Tipo:</b> estudio de campo en una organización; relación, no causa. <b>No mide</b> esperas ni tareas.<span class="cita">Bertolotti y otros (2015)</span></p></div>
     <div class="estudio"><h3>Encuestas grandes a equipos de software</h3><p>Limitar el trabajo en curso ayuda a entregar mejor, sobre todo junto a tableros visibles y retroalimentación. Su ideal es una cosa a la vez, como un norte.</p><p class="tipo"><b>Tipo:</b> encuesta grande; relación, no causa. <b>No dice</b> que el límite solo baste.<span class="cita">DORA (el programa de investigación de Google sobre equipos de software), capacidad "Work in process limits"</span></p></div>
   </div>
-  <p class="chico" style="margin-top:3mm;max-width:none;white-space:nowrap;font-size:7.6pt">De más a menos fuerte: experimento · campo con causa (jueces) · campo, relación (los otros dos) · encuesta (DORA) · simulación (la mosca)</p>
-  <p class="cierre-pagina">Tres estudios de campo y una encuesta. Ninguno es un experimento con equipos, y ninguno da un número. La mosca pone esa misma dirección en una pantalla, en un minuto.</p>
+  <p class="chico" style="margin-top:2.5mm;max-width:none;white-space:nowrap;font-size:7.6pt">De más a menos fuerte: experimento · campo con causa (jueces) · campo, relación (los otros dos) · encuesta (DORA) · simulación (la mosca)</p>
+  <p style="margin-top:4mm">Fíjate en lo que comparten. Ninguno midió cuántas tareas conviene tener abiertas. Midieron qué pasa cuando son demasiadas: más demora por tarea, menos terminado, o las dos cosas. La mosca no agrega una prueba. Pone esa misma dirección en una pantalla, en un minuto, para que tu equipo la vea antes de discutirla.</p>
+  <p class="cierre-pagina">Tres estudios de campo y una encuesta. Ninguno es un experimento con equipos, y ninguno da un número. El tuyo lo vas a tener que medir.</p>
+  <div class="sobremesa"><span class="rotulo">Para la sobremesa</span><span>En un experimento de 2008, las personas interrumpidas terminaron sus tareas más rápido. Lo que subió fue el estrés. <span class="de-donde">(Mark, Gudith y Klocke, 2008)</span></span></div>
   <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
 </section>
 
-<!-- =============================== 6 · EL LÍMITE =============================== -->
-<section class="hoja">
-  <div class="kicker">El límite</div>
-  <h1>El mejor límite depende de cuánto se espera: sin esperas, 1; con esperas, de 2 a 4 en la simulación</h1>
-  <p class="bajada">Probamos 20 combinaciones de reglas: en 16 de los 17 casos con esperas, el mejor quedó entre 2 y 4.</p>
-  <figure class="grafico"><div id="g-curvas"></div>
-    <figcaption>En la simulación: terminadas al día según cuántas tiene a la vez; el círculo, la que más termina.</figcaption>
-  </figure>
-  <p>Las esperas empujan hacia más tareas: si una se traba, conviene tener otra a mano. Con una sola, en el juego, espera más de 2 horas al día. Cambiar de tarea empuja hacia menos: cada salto cuesta; mientras más cuesta, menos conviene tener.</p>
-  <p>Es un resultado de la simulación, no un número científico: tu equipo tiene el suyo. La mosca trabaja sola y no puede destrabar lo que espera. Un equipo sí; eso aconseja DORA: atacar la espera.</p>
-  <div class="recuadro"><p>Reducir las esperas permite bajar el límite; subir el límite no reduce las esperas.</p></div>
-  <p class="cierre-pagina"><strong>Un límite sostenible, no una cosa a la vez</strong> vale con esperas inevitables. Con menos esperas, más cerca de una.</p>
-  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
-</section>
-
-<!-- =============================== 7 · LO EMPEZADO =============================== -->
-<section class="hoja">
-  <div class="kicker">Sostenible</div>
-  <h1>Bajar el límite no la calma de inmediato: lo empezado tarda más de 2 horas en salir</h1>
-  <p class="bajada">Diez tareas a la vez; a las 12:00 el límite baja a dos. Las diez siguen ahí: no toma nuevas y cierra las que tiene.</p>
-  <figure class="grafico"><div id="g-bajar"></div>
-    <figcaption>En el juego, promedio de 200 días: 10 a la vez y a las 12:00 baja a 2.</figcaption>
-  </figure>
-  <p>Recién a las 14:35 vuelve a tener dos abiertas. Lo firme: lo empezado tarda más de 2 horas en salir, con cualquier regla probada. Que se calme a las 15:07 depende del supuesto del estrés: sube rápido, baja lento.</p>
-  <p>Sostenible: se mantiene todo el día sin colapsar. La idea tiene años:</p>
-  <div class="recuadro"><p><q>Los procesos […] promueven el desarrollo sostenible. Los promotores, desarrolladores y usuarios debemos ser capaces de mantener un ritmo constante de forma indefinida.</q><span class="de">Principio 8 del Manifiesto […], la declaración de 2001 que fundó las metodologías […].</span></p></div>
-  <p class="cierre-pagina">Igual con las horas: en fábricas de hace un siglo, pasado cierto punto cada hora extra rendía menos (Pencavel 2015).</p>
-  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
-</section>
-
-<!-- =============================== 8 · EL DISFRAZ =============================== -->
-<section class="hoja angosto">
+<!-- =============================== 9 · EL DISFRAZ =============================== -->
+<section class="hoja angosto" data-k="disfraz">
   <div class="kicker">El disfraz</div>
   <h1>La mosca no fuma: el cigarro es un disfraz de limpiarse las antenas</h1>
-  <p class="bajada">Una mosca no sabe qué es una tarea. Para que su cerebro sienta la carga, traducimos la oficina a lo que sí siente.</p>
+  <p class="bajada">Si te preguntabas por qué una mosca fuma: no lo hace. No sabe qué es una tarea. Para que su cerebro sienta la carga, traducimos la oficina a lo que sí siente.</p>
   <figure>
     <div class="viaje visual">
       <div class="paso"><b>En la oficina</b><strong>Tareas abiertas</strong>Más tareas a la vez, más fuerte la molestia.</div>
@@ -305,18 +359,18 @@
     </div>
     <figcaption>Ida y vuelta: la oficina se traduce a una molestia en la antena; la reacción vuelve como cigarro.</figcaption>
   </figure>
-  <p>El café hace el mismo viaje: una pausa sin mucho estrés es azúcar en la trompita. En la simulación la señal no alcanzó a moverla: es solo ilustrativo. Solo esos dos estímulos; nunca dolor.</p>
-  <p>Según estudios, una mosca cubierta de polvo se limpia primero los ojos y después las antenas. Nosotros, solo la antena.</p>
-  <p>Según estudios con personas, fumar no calma: alivio breve y rebote; quienes dejan tienen menos estrés. El café del juego aparece solo sin mucho estrés: la cafeína sube la hormona del estrés. Ayuda la pausa, no la cafeína.</p>
-  <p class="cierre-pagina">Lo que en el juego es un cigarro, en su cerebro es la orden de limpiarse.</p>
+  <p>El café hace el mismo viaje: una pausa sin mucho estrés es azúcar en la trompita. En la simulación la señal no alcanzó a moverla: el café es solo ilustrativo. Solo esos dos estímulos; nunca dolor.</p>
+  <p>Según estudios con personas, fumar no calma: alivio breve y rebote; quienes dejan de fumar tienen menos estrés. El café del juego aparece solo sin mucho estrés. La cafeína sube la hormona del estrés, y más si ya estás tenso. Lo que ayuda es la pausa, no la cafeína. Si el café es tu única pausa, sigue siendo una pausa.</p>
+  <p class="cierre-pagina">Lo que en el juego es un cigarro, en su cerebro es la orden de limpiarse las antenas. Cuál es tu cigarro, lo sabes tú.</p>
+  <div class="sobremesa"><span class="rotulo">Para la sobremesa</span><span>Una mosca cubierta de polvo se limpia en un orden fijo: primero los ojos, después las antenas. En el juego, solo la antena. <span class="de-donde">(Seeds y otros, 2014)</span></span></div>
   <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
 </section>
 
-<!-- =============================== 9 · EL CEREBRO =============================== -->
+<!-- =============================== 10 · EL CEREBRO =============================== -->
 <section class="hoja" data-k="cerebro">
   <div class="kicker">El cerebro</div>
   <h1>Su cerebro es real y se enciende más con más tareas, pero no prueba lecciones de oficina</h1>
-  <p class="bajada">Un proyecto científico público trazó el sistema nervioso central (cerebro y cordón nervioso) de una mosca macho, neurona por neurona.</p>
+  <p class="bajada">Lo que ves encenderse no es un dibujo. Un proyecto científico público trazó el sistema nervioso central (cerebro y cordón nervioso) de una mosca macho, neurona por neurona.</p>
   <figure>
     <div class="cerebros visual">
       <div><div class="rotulo">Con 2 tareas a la vez</div><img src="img/cerebro-wip2.jpg" alt="El cerebro con dos tareas a la vez: casi todo en reposo" /></div>
@@ -326,24 +380,27 @@
     <figcaption>En la simulación: 423 neuronas encendidas con 2 tareas y 1.328 con 9, tres veces más.</figcaption>
   </figure>
   <p>Son 166.700 neuronas, cada una en su lugar y con sus conexiones. Cada una se simula como un vaso con un agujerito: se llena con las señales y se vacía despacio. Al llegar a la marca se vuelca sobre las siguientes. Ese modelo acertó 9 de cada 10 predicciones en moscas vivas, en otro mapa (Shiu y otros, 2024).</p>
-  <p>De las 815 neuronas que mueven el cuerpo, con 2 tareas casi ninguna se enciende en la simulación. Con 9, 65; incluso con 10, menos del 1 % de sus neuronas.</p>
-  <p class="cierre-pagina">Que las tareas sean polvo en la antena lo elegimos nosotros. El cerebro reacciona a esa molestia; no prueba las lecciones del juego.</p>
+  <p>De las 815 neuronas que mueven el cuerpo, con 2 tareas casi ninguna se enciende en la simulación. Con 9, 65; con 10, menos del 1 % de sus neuronas. Lo que tus nueve pendientes encienden es poco y preciso: el circuito de limpiarse.</p>
+  <p class="cierre-pagina">Que las tareas sean polvo en la antena lo elegimos nosotros. El cerebro reacciona a esa molestia; no prueba las lecciones del juego. Esas las pruebas tú, con tu equipo.</p>
+  <div class="sobremesa"><span class="rotulo">Para la sobremesa</span><span>Tu cerebro tiene unos 86 mil millones de neuronas. Todo el sistema nervioso de la mosca, 166.700. <span class="de-donde">(Azevedo y otros, 2009; Berg y otros, 2026)</span></span></div>
   <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
 </section>
 
-<!-- =============================== 10 · QUÉ HACER =============================== -->
-<section class="hoja">
+<!-- =============================== 11 · QUÉ HACER =============================== -->
+<section class="hoja" data-k="hacer">
   <div class="kicker">Qué hacer con esto</div>
   <h1>Cuatro pasos para probar un límite con tu equipo</h1>
-  <p class="bajada">El juego no dice cuál es tu número: la mosca trabaja sola; un equipo se pasa trabajo y se ayuda. Estos cuatro pasos sirven para encontrarlo.</p>
+  <p class="bajada">El juego no dice cuál es tu número: la mosca trabaja sola; tu equipo se pasa trabajo y se ayuda. Estos cuatro pasos sirven para encontrarlo.</p>
   <ol class="pasos4 visual">
     <li><span class="n">1</span><div><h3>Pongan el trabajo a la vista</h3><p>Tres columnas bastan: por hacer, en curso, hecho. Lo que no se ve no se puede limitar.</p></div></li>
     <li><span class="n">2</span><div><h3>Cuenten lo abierto y pónganle un límite</h3><p>Cuenten cuántas cosas tiene abiertas cada persona hoy. Acuerden un límite bajo, escríbanlo en el tablero y respétenlo; con esperas inevitables, no una.</p></div></li>
     <li><span class="n">3</span><div><h3>Cuando alguien queda esperando, ataquen la espera</h3><p>No abran otra cosa para "aprovechar el tiempo": ayuden a destrabar lo que espera. Con menos esperas, el límite puede bajar.</p></div></li>
     <li><span class="n">4</span><div><h3>Prueben dos semanas y midan</h3><p>Cuántas tareas se terminan por semana, cuánto tarda cada una, cuánto hay abierto y cuánto espera cada tarea. Comparen con las dos semanas anteriores; lo empezado tarda en salir.</p></div></li>
   </ol>
-  <p style="margin-top:5.5mm">Limitar el trabajo en curso es <strong>uno de los hábitos</strong> de los equipos de alto desempeño, no el único. Ayuda sobre todo con un tablero visible y con retroalimentación de lo que pasa en producción.</p>
+  <p style="margin-top:4.5mm">Limitar el trabajo en curso es <strong>uno de los hábitos</strong> de los equipos de alto desempeño, no el único. Ayuda sobre todo con un tablero visible y con retroalimentación de lo que pasa en producción. Y no esperes el cambio el primer día: como a la mosca, lo empezado te va a tardar en salir.</p>
+  <p>El primer paso no necesita reunión. Cuenta, ahora mismo, cuántas cosas tienes abiertas. Si te salió el número de la página 1, ya sabes por dónde empezar.</p>
   <p class="cierre-pagina"><strong>Un límite sostenible, no una cosa a la vez.</strong></p>
+  <div class="sobremesa"><span class="rotulo">Para la sobremesa</span><span>Quienes dejan de fumar tienen menos estrés que quienes siguen. La mosca solo lo logra de una manera: con 3 tareas o menos. <span class="de-donde">(Taylor y otros, 2014; en el juego, 0 cigarros hasta 3)</span></span></div>
   <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
 </section>
 
@@ -376,7 +433,7 @@
     <div><strong>No mide personas.</strong> Es un experimento en el computador; una prueba con equipos de verdad sería otro proyecto.</div>
     <div><strong>El cerebro no decide.</strong> Muestra cómo reacciona una mosca a una molestia; las reglas del juego son nuestras.</div>
   </div>
-  <p class="chico" style="margin-top:3mm;max-width:none;font-size:7.8pt"><strong>Tipos de evidencia, de más a menos fuerte</strong> (página <span data-pag="estudios">5</span>): experimento, se cambia una sola cosa a propósito y se mide (ninguno de los citados lo es) · campo con causa, un sorteo decide quién recibe más (los jueces) · campo, relación, se observa qué va con qué (reclutadores, equipos) · encuesta (DORA) · simulación, reglas y supuestos en un computador (la mosca).</p>
+  <p class="chico" style="margin-top:3mm;max-width:none;font-size:7.8pt"><strong>Tipos de evidencia, de más a menos fuerte</strong> (página <span data-pag="estudios">8</span>): experimento, se cambia una sola cosa a propósito y se mide (ninguno de los citados lo es) · campo con causa, un sorteo decide quién recibe más (los jueces) · campo, relación, se observa qué va con qué (reclutadores, equipos) · encuesta (DORA) · simulación, reglas y supuestos en un computador (la mosca).</p>
   <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
 </section>
 
@@ -449,16 +506,6 @@
 </section>
 
 <script>
-// ---------- Números de página: el pie numera solo el contenido (ni la portada ni el separador) ----------
-(function () {
-  const hojas = [...document.querySelectorAll('.hoja')];
-  const contenido = hojas.filter((h) => !h.classList.contains('portada') && !h.classList.contains('parte'));
-  contenido.forEach((h, i) => { const n = h.querySelector('.pie span:last-child'); if (n) n.textContent = `${i + 1} / ${contenido.length}`; });
-  document.querySelectorAll('[data-pag]').forEach((el) => {
-    el.textContent = contenido.findIndex((h) => h.dataset.k === el.dataset.pag) + 1;
-  });
-})();
-
 // ---------- Datos del juego (Etapa 4.1: 200 días por cada número de tareas, semilla 2024) ----------
 const TERMINADAS = [15.9, 18.0, 16.9, 15.4, 14.0, 12.3, 11.2, 10.0, 9.1, 8.2];
 const TIEMPO = [34, 60, 96, 140, 194, 264, 340, 431, 534, 634]; // minutos por tarea (horas de oficina), redondeados de docs/corrida-oficial.json
@@ -496,11 +543,19 @@ document.getElementById('t-reglas').innerHTML = [
   ['1 de cada 5 tareas se traba de 30 a 60 minutos esperando a otra persona.', O('Supuesto nuestro')],
   ['Lo que queda a medias le resta un poco de concentración.', O('Supuesto nuestro') + ' inspirado en estudios'],
   ['Más tareas abiertas, más estrés. Sube rápido y baja lento. El juego lo divide en cuatro niveles: Tranqui (menos de 25&nbsp;%), Ocupada, Estresada y Colapsada (desde 75&nbsp;%).', O('Supuesto nuestro') + ' inspirado en estudios'],
-  ['Con estrés sale a "fumar" (8 minutos sin trabajar); sin mucho estrés toma "café", una pausa corta.', O('Del juego') + ' es un disfraz, explicado en la pág.&nbsp;8'],
+  ['Con estrés sale a "fumar" (8 minutos sin trabajar); sin mucho estrés toma "café", una pausa corta.', O('Del juego') + ' es un disfraz, explicado en la pág.&nbsp;<span data-pag="disfraz">9</span>'],
   ['Cada tarea tarda más mientras más hay abiertas.', 'Matemática: no es una regla, sale sola'],
 ].map(([r, o]) => `<tr><td>${r}</td><td>${o}</td></tr>`).join('');
 
-// ---------- Página 4: la paradoja (dos curvas) ----------
+// ---------- Página 4 (nueva en el v8): la tabla corta de 1 a 10, cinco columnas; los mismos datos que el anexo B ----------
+document.getElementById('t-dia-corta').innerHTML = TERMINADAS.map((t, i) => {
+  const clase = i === 1 ? 'mejor' : i === 8 ? 'sobre' : '';
+  const n = i === 1 ? '<b>2 · sostenible</b>' : i === 8 ? '<b>9 · sobrecarga</b>' : `${i + 1}`;
+  const nivel = ESTRES[i] === 'Tranqui' ? 'nivel-t' : ESTRES[i] === 'Colapsada' ? 'nivel-k' : 'nivel-m';
+  return `<tr class="${clase}"><td>${n}</td><td><b>${coma(t)}</b></td><td>${horas(TIEMPO[i])}</td><td>${RINDEN[i]} min</td><td>${CIGARROS[i]}</td><td class="${nivel}">${ESTRES[i]}</td></tr>`;
+}).join('');
+
+// ---------- Página 5: la paradoja (dos curvas) ----------
 (function () {
   const W = 640, H = 262, iz = 42, de = 14, ar = 22, ab = 36;
   const x = (i) => iz + (i / 9) * (W - iz - de);
@@ -526,7 +581,7 @@ document.getElementById('t-reglas').innerHTML = [
 
 // ---------- Página 6: terminadas según cuántas se traban (rampa teal; grosor y trazo distintos; etiqueta al final de cada línea) ----------
 (function () {
-  const W = 640, H = 300, iz = 30, de = 150, ar = 14, ab = 40;
+  const W = 640, H = 284, iz = 30, de = 150, ar = 14, ab = 40;
   const x = (i) => iz + (i / 9) * (W - iz - de);
   const y = (v) => ar + (1 - v / 24) * (H - ar - ab); // eje desde 0
   let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Terminadas por día según tareas a la vez, con distintas esperas">`;
@@ -562,7 +617,7 @@ document.getElementById('t-reglas').innerHTML = [
 
 // ---------- Página 7: bajar el límite de 10 a 2 a las 12:00 (Tranqui en verde, Colapsada en rojo, los del medio en gris) ----------
 (function () {
-  const W = 640, iz = 40, de = 72, hA = 86, hB = 128, gap = 24, ar = 18, ab = 22;
+  const W = 640, iz = 40, de = 72, hA = 80, hB = 118, gap = 24, ar = 18, ab = 22;
   const H = ar + hA + gap + hB + ab;
   const x = (m) => iz + ((m - 540) / 540) * (W - iz - de);
   const yA = (v) => ar + (1 - v / 10) * hA;
@@ -610,6 +665,16 @@ document.getElementById('t-dia').innerHTML = TERMINADAS.map((t, i) => {
 }).join('');
 document.getElementById('t-esperas').innerHTML = ESPERAS.map((f, i) =>
   `<tr class="${i === 2 ? 'mejor' : ''}"><td>${f[0]}</td><td><b>${f[1]}</b></td><td>${f[2]}</td><td>${f[3]}</td><td>${f[4]}</td></tr>`).join('');
+
+// ---------- Números de página: el pie numera solo el contenido (ni la portada ni el separador). Va al final, porque las tablas de arriba también llevan referencias a páginas ----------
+(function () {
+  const hojas = [...document.querySelectorAll('.hoja')];
+  const contenido = hojas.filter((h) => !h.classList.contains('portada') && !h.classList.contains('parte'));
+  contenido.forEach((h, i) => { const n = h.querySelector('.pie span:last-child'); if (n) n.textContent = `${i + 1} / ${contenido.length}`; });
+  document.querySelectorAll('[data-pag]').forEach((el) => {
+    el.textContent = contenido.findIndex((h) => h.dataset.k === el.dataset.pag) + 1;
+  });
+})();
 </script>
 </body>
 </html>

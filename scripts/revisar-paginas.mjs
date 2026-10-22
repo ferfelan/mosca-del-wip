@@ -2,16 +2,18 @@
 // PDF: sólo mide. Uso:
 //   node scripts/revisar-paginas.mjs compartir      (o completo, etapa4-3…)
 //
-// Para "compartir" aplica las reglas de la parte 4.6 (docs/etapa4-6-estilo.md,
-// 2026-10-21): cada hoja llena entre 70 y 90 %; máximo 150 palabras sin
-// contar el rótulo (.kicker), el título (h1), los gráficos (svg) ni los
-// visuales marcados con la clase "visual" (tablas de números y de reglas,
-// tarjetas de la pág. 5, pasos de la pág. 10, diagramas); título de máximo
-// 2 líneas; máximo un visual (dos sólo en la página de los dos días); frases
-// de máximo 20 palabras. La portada, el separador y el cierre no se miden
-// como páginas de contenido, y los anexos sólo informan (no avisan).
-// Para los demás documentos siguen las reglas de la 4.4 (llenado 80–95 %,
-// unas 180 palabras de texto corrido, máximo 2 gráficos).
+// Para "compartir" aplica las reglas del v8 (parte 4.7, 2026-10-21, sobre la
+// guía docs/etapa4-6-estilo.md): cada hoja llena entre 80 y 95 % (el tope del
+// contenido es la línea "Para la sobremesa", que es fija sobre el pie); hasta
+// 200 palabras sin contar el rótulo (.kicker), el título (h1), los gráficos
+// (svg) ni los visuales marcados con la clase "visual" (tablas de números y
+// de reglas, tarjetas de la pág. 8, pasos de la pág. 11, diagramas); la línea
+// de sobremesa sí cuenta y se informa aparte; título de máximo 2 líneas;
+// máximo un visual (dos sólo en la página de los dos días); frases de máximo
+// 20 palabras; ningún signo de exclamación. La portada, el separador y el
+// cierre no se miden como páginas de contenido, y los anexos sólo informan
+// (no avisan). Para los demás documentos siguen las reglas de la 4.4
+// (llenado 80–95 %, unas 180 palabras de texto corrido, máximo 2 gráficos).
 import { chromium } from 'playwright';
 import { pathToFileURL } from 'node:url';
 import { join, dirname } from 'node:path';
@@ -20,7 +22,7 @@ import { fileURLToPath } from 'node:url';
 const CARPETA = join(dirname(fileURLToPath(import.meta.url)), '..', 'docs', 'contexto');
 const doc = process.argv[2] ?? 'compartir';
 const REGLAS = doc === 'compartir'
-  ? { llenado: [70, 90], palabras: 150, visuales: 1, lineasTitulo: 2, frase: 20, v7: true }
+  ? { llenado: [80, 95], palabras: 200, visuales: 1, lineasTitulo: 2, frase: 20, v7: true }
   : { llenado: [80, 95], palabras: 190, visuales: 2, lineasTitulo: 99, frase: 99, v7: false };
 const b = await chromium.launch();
 const p = await b.newPage();
@@ -32,10 +34,12 @@ const filas = await p.evaluate((R) => [...document.querySelectorAll('.hoja')].ma
   const arriba = r.top + parseFloat(est.paddingTop);
   const abajo = r.bottom - parseFloat(est.paddingBottom);
   const pie = h.querySelector('.pie');
-  const limite = pie ? pie.getBoundingClientRect().top - 2 : abajo; // el pie es fijo: el contenido debe quedar sobre él
+  const sobremesa = h.querySelector('.sobremesa'); // v8: la línea fija sobre el pie; el contenido debe quedar sobre ella
+  const tope = sobremesa ?? pie;
+  const limite = tope ? tope.getBoundingClientRect().top - 2 : abajo; // el pie es fijo: el contenido debe quedar sobre él
   let fondo = arriba;
   for (const el of h.querySelectorAll('*')) {
-    if (el === pie || pie?.contains(el)) continue;
+    if (el === pie || pie?.contains(el) || el === sobremesa || sobremesa?.contains(el)) continue;
     if (getComputedStyle(el).position === 'absolute') continue;
     const q = el.getBoundingClientRect();
     if (q.height > 0 && q.bottom > fondo) fondo = q.bottom;
@@ -63,6 +67,8 @@ const filas = await p.evaluate((R) => [...document.querySelectorAll('.hoja')].ma
   }
   const t = h.querySelector('h1');
   const lineasTitulo = t ? Math.round(t.getBoundingClientRect().height / parseFloat(getComputedStyle(t).lineHeight)) : 0;
+  const deSobremesa = sobremesa ? cuenta(sobremesa.innerText) : 0;
+  const exclamaciones = (clon.innerText.match(/[!¡]/g) ?? []).length;
   const graficos = h.querySelectorAll('.grafico svg, figure img, img.banda').length;
   const tipo = h.classList.contains('portada') ? 'portada' : h.classList.contains('parte') ? 'separador' : h.classList.contains('cierre') ? 'cierre' : /anexo/i.test(h.querySelector('.kicker')?.textContent ?? '') ? 'anexo' : 'contenido';
   return {
@@ -73,6 +79,8 @@ const filas = await p.evaluate((R) => [...document.querySelectorAll('.hoja')].ma
     sobra: Math.max(0, Math.round(fondo - limite)),
     palabras,
     todas,
+    deSobremesa,
+    exclamaciones,
     graficos,
     lineasTitulo,
     largas,
@@ -88,8 +96,11 @@ for (const f of filas) {
   if (mide && f.graficos > REGLAS.visuales && !/dos veces|dos fotos/i.test(f.titulo + ' ' + (f.kicker ?? '')) && f.graficos > 2) avisos.push('más de un visual');
   if (mide && f.lineasTitulo > REGLAS.lineasTitulo) avisos.push('título de 3 líneas');
   if (mide && f.largas.length) avisos.push(`${f.largas.length} frase(s) de más de ${REGLAS.frase} palabras`);
+  if (mide && REGLAS.v7 && f.exclamaciones) avisos.push(`${f.exclamaciones} signo(s) de exclamación`);
+  if (mide && REGLAS.v7 && !f.deSobremesa) avisos.push('sin línea de sobremesa');
   const etiqueta = f.tipo === 'contenido' ? '' : ` [${f.tipo}]`;
-  console.log(`${String(f.pagina).padStart(2)}  ${String(f.llenado).padStart(3)} %  ${String(f.palabras).padStart(3)} palabras (${String(f.todas).padStart(3)} en total)  ${f.graficos} visual  título ${f.lineasTitulo} líneas  ${f.titulo}${etiqueta}${avisos.length ? '   ← ' + avisos.join(', ') : ''}`);
+  const sobremesa = REGLAS.v7 && f.deSobremesa ? `, ${String(f.deSobremesa).padStart(2)} de sobremesa` : '';
+  console.log(`${String(f.pagina).padStart(2)}  ${String(f.llenado).padStart(3)} %  ${String(f.palabras).padStart(3)} palabras (${String(f.todas).padStart(3)} en total${sobremesa})  ${f.graficos} visual  título ${f.lineasTitulo} líneas  ${f.titulo}${etiqueta}${avisos.length ? '   ← ' + avisos.join(', ') : ''}`);
   if (mide) for (const l of f.largas) console.log(`      frase larga, ${l}`);
 }
 await b.close();
