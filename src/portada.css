@@ -86,8 +86,10 @@ h1 {
 .nota { font-size: 14.5px; color: var(--suave); margin: 14px 0 0; }
 
 /* La ilustración es la portada del informe (hoja vertical con aire arriba para
-   el título). Aquí se recorta ese aire: se ve desde la taza de café hasta el
-   piso, con object-fit. */
+   el título), en su versión para la web: sin viñeta de fondo y con el piso
+   desvanecido en los costados (scripts/portada-svg-web.mjs), así se funde con
+   el papel de la página. Aquí se recorta el aire de arriba: se ve desde la taza
+   de café hasta el piso, con object-fit. */
 .hero-arte { margin: 0; justify-self: end; width: 100%; }
 .hero-arte img { display: block; width: 100%; height: auto; aspect-ratio: 840 / 900; object-fit: cover; object-position: 50% 80%; }
 
@@ -143,12 +145,17 @@ section p:last-child { margin-bottom: 0; }
 @media (max-width: 899px) {
   body.portada { font-size: 17px; }
   main { padding: 0 20px; }
-  .hero { grid-template-columns: 1fr; gap: 18px; padding: 24px 0 12px; }
-  .hero-arte { order: -1; justify-self: start; width: auto; }
-  .hero-arte img { width: 236px; }
+  .hero { grid-template-columns: 1fr; gap: 22px; padding: 28px 0 12px; }
   h1 { font-size: 46px; margin-bottom: 12px; }
   .lema { font-size: 22px; max-width: none; margin-bottom: 14px; }
-  .que-es { margin-bottom: 4px; }
+  .que-es { margin-bottom: 22px; }
+  /* En celular el botón del informe es el principal (el juego no se juega bien
+     ahí) y va justo después de la presentación; "Jugar igual" queda más abajo. */
+  .hero .acciones { display: block; }
+  .hero .boton { width: 100%; background: var(--tinta); color: var(--papel); font-size: 18px; }
+  .hero .boton:hover { background: var(--tinta-hover); color: var(--papel); }
+  /* La ilustración pasa debajo del botón, a todo el ancho y centrada. */
+  .hero-arte { justify-self: center; width: 100%; max-width: 440px; margin-top: 4px; }
   .solo-computador { display: none !important; }
   .solo-celular { display: block; }
 
@@ -157,7 +164,6 @@ section p:last-child { margin-bottom: 0; }
   .tele video { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 8px; background: #0b0f16; }
   .tele figcaption { color: #cfd6e0; font-size: 14px; padding: 10px 6px 2px; }
   .celular .acciones { gap: 10px 18px; }
-  .celular .boton.principal { width: 100%; }
   .enlace-jugar { display: inline-flex; align-items: center; min-height: 44px; padding: 0 6px; font-weight: 600; }
 
   section { padding: 32px 0; }
