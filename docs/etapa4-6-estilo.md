@@ -252,3 +252,52 @@ portada (detalle y decisiones en `docs/etapa4-8.md`):
   `docs/contexto/img/portada-torre.svg`, que `compartir.html` muestra como
   imagen de fondo en `<section class="hoja portada clara">`. La clase
   `portada` se mantiene (el pie no la numera); `clara` pisa el fondo oscuro.
+
+## 12. La voz del v14 (primeros lectores, 2026-10-24; detalle en `docs/etapa4-7-feedback.md`)
+
+Un lector dijo que el texto sonaba a inteligencia artificial, y Felipe
+encontró la causa en las reglas de estilo (frases de 20 palabras, 150
+palabras por página, una frase de cierre por página). Esas tres reglas se
+reemplazan por estas; todo lo demás de la guía (estructura, visual único,
+etiquetas, color con significado, sobremesa, 80–95 %) sigue igual.
+
+**Cómo escribir**
+
+- Como alguien que le explica esto a un colega tomando un café. Frases
+  completas, con sujeto y verbo. Una idea por frase. Las ideas se unen con
+  palabras ("porque", "entonces", "pero", "es decir", "o sea"), no con
+  signos.
+- Tope de unas 200 palabras por página (la sobremesa cuenta). Si una frase
+  necesita 30 palabras para entenderse, que las tenga.
+- Se permite repetir una palabra si así se entiende mejor; no buscar
+  sinónimos para no repetir.
+- Ejemplos concretos antes que frases abstractas.
+
+**Lo que se saca (señales típicas de texto de IA)**
+
+- Tríos y listas de tres por sonar bien (describir una foto con tres cosas
+  está bien; "más demora, menos terminado, más estrés" como remate, no).
+- La revelación con dos puntos ("Lo firme: …", "La respuesta corta: …").
+  Máximo un par de dos puntos por párrafo, y solo para introducir una lista
+  o una cita.
+- Punto y coma para encadenar ideas: máximo uno por página (los títulos, que
+  no se tocaron, y las citas bibliográficas del anexo C no cuentan).
+- Contrastes cortados ("No X. Y.") y paralelismos negativos ("No es X, es
+  Y") usados como efecto; paralelismos y espejos ("Primero en la mosca;
+  después, en el tablero").
+- Remates sentenciosos y frases de póster al final de la página. La frase
+  de cierre ya no es obligatoria: se queda solo si dice algo nuevo (las dos
+  frases norte se quedan donde Felipe las fijó).
+- Fragmentos sin verbo ("Sostenible: se mantiene todo el día sin colapsar").
+- Preguntas retóricas de apertura: máximo una en todo el informe (la de la
+  página 1, texto de Felipe).
+- Rayas como pausa dramática; negritas dentro del texto corrido (solo en
+  títulos y etiquetas); frases de guía vacías ("Fíjate en", "Lo que sigue",
+  "Piensa en esto"); cierres genéricos que resumen lo ya dicho.
+
+**Cómo se revisa**: `node scripts/revisar-paginas.mjs compartir` ya no
+avisa por frases largas y cuenta por página punto y coma (`;`), rayas (`—`),
+dos puntos que no sean de hora (`:`), signos de pregunta (`¿`) y negritas en
+el texto corrido (`b`); avisa si hay más de un punto y coma, alguna raya o
+alguna negrita. Después, leer el texto entero una vez como el lector que se
+quejó y reescribir o borrar lo que todavía suene a póster.

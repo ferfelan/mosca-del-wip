@@ -14,6 +14,13 @@
 // cierre no se miden como páginas de contenido, y los anexos sólo informan
 // (no avisan). Para los demás documentos siguen las reglas de la 4.4
 // (llenado 80–95 %, unas 180 palabras de texto corrido, máximo 2 gráficos).
+//
+// v14 (2026-10-24, primeros lectores): para "compartir" ya no hay tope de 20
+// palabras por frase (la voz nueva une las ideas con palabras, no con signos)
+// y se cuentan por página las señales de texto de IA que pidió sacar Felipe:
+// punto y coma (máximo uno por página), rayas (ninguna), dos puntos que no
+// sean de hora, signos de pregunta y negritas dentro del texto corrido
+// (ninguna; las de títulos, etiquetas, visuales y la frase norte no cuentan).
 import { chromium } from 'playwright';
 import { pathToFileURL } from 'node:url';
 import { join, dirname } from 'node:path';
@@ -22,7 +29,7 @@ import { fileURLToPath } from 'node:url';
 const CARPETA = join(dirname(fileURLToPath(import.meta.url)), '..', 'docs', 'contexto');
 const doc = process.argv[2] ?? 'compartir';
 const REGLAS = doc === 'compartir'
-  ? { llenado: [80, 95], palabras: 200, visuales: 1, lineasTitulo: 2, frase: 20, v7: true }
+  ? { llenado: [80, 95], palabras: 200, visuales: 1, lineasTitulo: 2, frase: 99, v7: true, voz: true }
   : { llenado: [80, 95], palabras: 190, visuales: 2, lineasTitulo: 99, frase: 99, v7: false };
 const b = await chromium.launch();
 const p = await b.newPage();
@@ -69,6 +76,15 @@ const filas = await p.evaluate((R) => [...document.querySelectorAll('.hoja')].ma
   const lineasTitulo = t ? Math.round(t.getBoundingClientRect().height / parseFloat(getComputedStyle(t).lineHeight)) : 0;
   const deSobremesa = sobremesa ? cuenta(sobremesa.innerText) : 0;
   const exclamaciones = (clon.innerText.match(/[!¡]/g) ?? []).length;
+  // v14: señales de texto de IA, contadas sobre todo el texto de la hoja (visuales incluidos; la sobremesa no)
+  const c4 = clon.cloneNode(true);
+  c4.querySelectorAll('.sobremesa').forEach((el) => el.remove());
+  const texto = c4.innerText;
+  const puntoComa = (texto.match(/;/g) ?? []).length;
+  const rayas = (texto.match(/—/g) ?? []).length;
+  const dosPuntos = (texto.match(/(?<!\d):(?!\d)/g) ?? []).length;
+  const preguntas = (texto.match(/¿/g) ?? []).length;
+  const negritas = [...clon.querySelectorAll('p strong, p b')].filter((el) => !el.closest('.visual, .limites, .fuentes-simples, .creditos, .cierre-pagina, .recuadro, .chico, .sobremesa, figure')).length;
   const graficos = h.querySelectorAll('.grafico svg, figure img, img.banda').length;
   const tipo = h.classList.contains('portada') ? 'portada' : h.classList.contains('parte') ? 'separador' : h.classList.contains('cierre') ? 'cierre' : /anexo/i.test(h.querySelector('.kicker')?.textContent ?? '') ? 'anexo' : 'contenido';
   return {
@@ -84,6 +100,11 @@ const filas = await p.evaluate((R) => [...document.querySelectorAll('.hoja')].ma
     graficos,
     lineasTitulo,
     largas,
+    puntoComa,
+    rayas,
+    dosPuntos,
+    preguntas,
+    negritas,
   };
 }), REGLAS);
 for (const f of filas) {
@@ -98,9 +119,15 @@ for (const f of filas) {
   if (mide && f.largas.length) avisos.push(`${f.largas.length} frase(s) de más de ${REGLAS.frase} palabras`);
   if (mide && REGLAS.v7 && f.exclamaciones) avisos.push(`${f.exclamaciones} signo(s) de exclamación`);
   if (mide && REGLAS.v7 && !f.deSobremesa) avisos.push('sin línea de sobremesa');
+  if (REGLAS.voz && f.tipo !== 'portada' && f.tipo !== 'separador' && f.tipo !== 'cierre') {
+    if (f.puntoComa > 1) avisos.push(`${f.puntoComa} punto y coma`);
+    if (f.rayas) avisos.push(`${f.rayas} raya(s)`);
+    if (f.negritas) avisos.push(`${f.negritas} negrita(s) en el texto`);
+  }
   const etiqueta = f.tipo === 'contenido' ? '' : ` [${f.tipo}]`;
   const sobremesa = REGLAS.v7 && f.deSobremesa ? `, ${String(f.deSobremesa).padStart(2)} de sobremesa` : '';
-  console.log(`${String(f.pagina).padStart(2)}  ${String(f.llenado).padStart(3)} %  ${String(f.palabras).padStart(3)} palabras (${String(f.todas).padStart(3)} en total${sobremesa})  ${f.graficos} visual  título ${f.lineasTitulo} líneas  ${f.titulo}${etiqueta}${avisos.length ? '   ← ' + avisos.join(', ') : ''}`);
+  const voz = REGLAS.voz ? `  ;${f.puntoComa} —${f.rayas} :${f.dosPuntos} ¿${f.preguntas} b${f.negritas}` : '';
+  console.log(`${String(f.pagina).padStart(2)}  ${String(f.llenado).padStart(3)} %  ${String(f.palabras).padStart(3)} palabras (${String(f.todas).padStart(3)} en total${sobremesa})  ${f.graficos} visual  título ${f.lineasTitulo} líneas${voz}  ${f.titulo}${etiqueta}${avisos.length ? '   ← ' + avisos.join(', ') : ''}`);
   if (mide) for (const l of f.largas) console.log(`      frase larga, ${l}`);
 }
 await b.close();

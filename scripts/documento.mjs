@@ -21,7 +21,8 @@
 // papel solo en la portada; v11: en la portada, el café nivelado en la taza
 // inclinada y la gota de sudor apoyada en la cabeza; v12: gotas que salen de la
 // cabeza y hojas que caen desde la torre; v13: gotas corriendo por la cabeza y
-// hojas desparramadas para varios lados).
+// hojas desparramadas para varios lados; 24 oct., primeros lectores: compartir v14,
+// el feedback de tres lectores junto, y completo v7).
 //
 // Uso: node scripts/documento.mjs                → los dos informes
 //      DOC=compartir node scripts/documento.mjs  → sólo uno (completo, compartir,
@@ -43,8 +44,8 @@ const IMG = join(CARPETA, 'img');
 const SALIDA = process.env.SALIDA ?? join(homedir(), 'Desktop', 'Mosca del WIP');
 const FECHA = process.env.FECHA ?? new Date().toLocaleDateString('sv-SE'); // 2026-10-20
 const DOCUMENTOS = [
-  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v6' },
-  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v13', paginas: [16, 17] },
+  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v7' },
+  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v14', paginas: [16, 17] },
   { id: 'norte', html: 'norte.html', nombre: 'Norte del proyecto', version: 'v1', paginas: [1, 2], aparte: true },
   { id: 'etapa4-1', html: 'etapa4-1.html', nombre: 'Etapa 4.1 La paradoja', version: 'v1', paginas: [1, 3], aparte: true },
   { id: 'etapa4-2', html: 'etapa4-2.html', nombre: 'Etapa 4.2 Robustez', version: 'v1', paginas: [1, 3], aparte: true },
