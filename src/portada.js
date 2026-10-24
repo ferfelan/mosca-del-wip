@@ -39,7 +39,7 @@ const el = {
   resumen: $('[data-resumen]'),
 };
 const cerebroCaja = document.querySelector('.cerebro');
-const neuronasEl = cerebroCaja.querySelector('[data-neuronas]');
+const neuronasEl = document.querySelector('[data-neuronas]');
 
 let tareas = Number(rango.value);
 let tocado = false; // la persona ya movió el control: la subida sola se detiene

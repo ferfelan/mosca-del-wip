@@ -170,7 +170,8 @@ h1 {
 
 .cerebro-cuenta {
   position: absolute;
-  left: 32px;
+  z-index: 1;
+  left: 0;
   top: 28px;
   max-width: 12em;
   pointer-events: none;
@@ -267,6 +268,10 @@ h1 {
 .wip:focus-visible { outline: none; }
 .wip:focus-visible::-webkit-slider-thumb { outline: 3px solid var(--vision); outline-offset: 3px; }
 .wip:focus-visible::-moz-range-thumb { outline: 3px solid var(--vision); outline-offset: 3px; }
+/* En pantallas táctiles el control es más alto para tocarlo fácil; el riel se ve igual. */
+@media (pointer: coarse) {
+  .wip { height: 44px; margin-top: 2px; }
+}
 
 .marcas {
   position: relative;
@@ -425,13 +430,16 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .credito h2 { grid-column: 1 / -1; max-width: 16em; }
 .credito-texto p { color: var(--suave); max-width: 62ch; }
 .credito-texto p + p { margin-top: 14px; }
-.zonas { padding: 20px 22px; border-radius: 18px; border: 1px solid var(--borde); background: var(--noche-2); }
+.zonas { padding: 20px 22px; border-radius: 18px; border: 1px solid var(--borde); background: var(--noche-2); container-type: inline-size; }
 .zonas-titulo { font-size: 14px; font-weight: 600; color: var(--suave); margin-bottom: 12px; }
 .zonas ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; }
 .zonas li { display: flex; align-items: center; gap: 10px; font-size: 15.5px; }
 .zonas li::before { content: ''; flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--zona); box-shadow: 0 0 12px var(--zona); }
 .zonas li.reposo { color: var(--tenue); }
 .zonas li.reposo::before { box-shadow: none; }
+@container (max-width: 330px) {
+  .zonas ul { grid-template-columns: 1fr; }
+}
 
 /* El informe: su tapa (la mosca con su torre) y el botón */
 .informe {
@@ -498,14 +506,16 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   /* En celular el botón del informe es el principal (el juego no se juega
      bien ahí) y va justo después de la presentación. */
   .hero .acciones { display: block; }
-  .hero .boton { width: 100%; background: var(--tinta); color: var(--noche); border-color: transparent; font-size: 17px; }
+  .boton,
+  .boton.principal { padding-inline: 20px; text-align: center; }
+  .hero .boton { width: 100%; max-width: 440px; background: var(--tinta); color: var(--noche); border-color: transparent; font-size: 17px; }
   .hero .boton:hover { background: #fff; }
   .solo-computador { display: none !important; }
   .solo-celular { display: block; }
 
   .laboratorio { padding: 8px 0 0; }
-  .cerebro { position: relative; inset: auto; height: min(118vw, 580px); margin: 0 calc(-1 * var(--margen)); }
-  .cerebro-cuenta { left: var(--margen); top: 8px; max-width: 9em; font-size: 13.5px; }
+  .cerebro { position: relative; inset: auto; height: min(118vw, 580px, max(320px, 100svh - 40px)); margin: 0 calc(-1 * var(--margen)); }
+  .cerebro-cuenta { top: 16px; max-width: 9em; font-size: 13.5px; }
   .cerebro-cuenta .cifra { font-size: 28px; }
   .consola { margin-top: -40px; padding: 18px 18px 16px; border-radius: 20px; }
   .wip-numero { font-size: 38px; }
@@ -534,12 +544,23 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .tapa { width: min(64vw, 260px); margin: 0 auto 36px; }
   .tapa img { transform: rotateY(10deg) rotateX(2deg); }
   .informe-texto .acciones { display: block; }
-  .informe-texto .boton { width: 100%; }
+  .informe-texto .boton { width: 100%; max-width: 440px; }
 
   /* En celular el cierre solo repetiría el botón del informe, que está justo arriba. */
   .cierre .acciones { display: none; }
   .cierre-frase { margin-bottom: 0; }
   .pie { flex-direction: column; padding: 24px var(--margen) 40px; }
+}
+
+/* Computadores angostos (900 a 1099 px, como el iPad en horizontal): el
+   lienzo empieza más a la derecha (el cerebro se achica para caber) y el
+   contador queda en el espacio libre de la izquierda; los dos botones caben
+   en una fila. */
+@media (min-width: 900px) and (max-width: 1099px) {
+  .cerebro { left: 64px; }
+  .cerebro-cuenta { max-width: 8em; font-size: 14px; }
+  .boton { padding-inline: 20px; }
+  .boton.principal { padding-inline: 28px; }
 }
 
 /* Pantallas de computador bajas (proyector de 1280 × 720, ventanas chicas):
