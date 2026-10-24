@@ -15,3 +15,5 @@ datos-crudos/
 
 # Python y numba guardan aquí archivos temporales
 __pycache__/
+.vercel
+.env*
