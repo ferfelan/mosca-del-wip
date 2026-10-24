@@ -6,6 +6,7 @@
 // nivel y las tareas a la vez de ese momento.
 // Los datos vienen del juego (main.js los registra en cada paso del reloj).
 import { nivelDeEstres, NIVELES_ESTRES } from './brain.js';
+import { tx, nombreNivel } from './juego-textos.js';
 
 const SUPERFICIE = '#0c1122';
 const TINTA_TENUE = '#6e778d';
@@ -61,11 +62,19 @@ export function crearGraficoDia({ lienzo, tooltip }) {
       lienzo.width = Math.round(w * ratio);
       lienzo.height = Math.round(h * ratio);
     }
-    // Con espacio (Exhibición), los nombres de los niveles a la derecha
+    // Con espacio (Exhibición), los nombres de los niveles a la derecha. Su
+    // margen es de 66 px; sólo crece si el nombre más largo no cabe
+    // ("Overwhelmed" en inglés; los de español caben siempre)
     const nombres = h >= 90 && w >= 360;
+    let margen = 66;
+    if (nombres) {
+      ctx.font = `10px ${FUENTE}`;
+      const largo = Math.max(...NIVELES_ESTRES.map((n) => ctx.measureText(nombreNivel(n.nombre)).width));
+      margen = Math.max(66, Math.ceil(largo) + 12);
+    }
     const franja = h >= 90 ? 16 : 12; // donde van los cigarros y los cafés
     const eje = 13;
-    return { ratio, w, h, nombres, x0: 2, x1: w - (nombres ? 66 : 4), y0: 5, y1: h - eje - franja, franja: h - eje - franja / 2 };
+    return { ratio, w, h, nombres, x0: 2, x1: w - (nombres ? margen : 4), y0: 5, y1: h - eje - franja, franja: h - eje - franja / 2 };
   }
 
   function dibujarCigarro(x, y, escala) {
@@ -134,7 +143,7 @@ export function crearGraficoDia({ lienzo, tooltip }) {
         const hasta = Math.min(100, n.max);
         ctx.fillStyle = n.color;
         ctx.globalAlpha = 0.85;
-        ctx.fillText(n.nombre, g.x1 + 8, yDe((desde + hasta) / 2));
+        ctx.fillText(nombreNivel(n.nombre), g.x1 + 8, yDe((desde + hasta) / 2));
         desde = hasta;
       }
       ctx.globalAlpha = 1;
@@ -220,8 +229,8 @@ export function crearGraficoDia({ lienzo, tooltip }) {
 
     const cigarros = marcas.filter((m) => m.tipo === 'cigarro').length;
     const cafes = marcas.length - cigarros;
-    const ahora = ultimo ? `ahora ${nivelDeEstres(ultimo.d.estres).nombre}` : 'el día empieza a las 09:00';
-    lienzo.setAttribute('aria-label', `Estrés de la mosca durante el día: ${ahora}; ${cigarros} ${cigarros === 1 ? 'cigarro' : 'cigarros'} y ${cafes} ${cafes === 1 ? 'café' : 'cafés'}.`);
+    const ahora = ultimo ? tx('graficoAhora', nombreNivel(nivelDeEstres(ultimo.d.estres).nombre)) : tx('graficoEmpieza');
+    lienzo.setAttribute('aria-label', tx('graficoResumen', ahora, cigarros, cafes));
   }
 
   // ---- Mouse: la línea vertical busca la muestra más cercana con datos ----
@@ -249,11 +258,11 @@ export function crearGraficoDia({ lienzo, tooltip }) {
       return;
     }
     const dato = datos[mejor];
-    const nivel = nivelDeEstres(dato.estres).nombre;
+    const nivel = nombreNivel(nivelDeEstres(dato.estres).nombre);
     // ¿empezó un cigarro o un café cerca de esa hora? (± 6 minutos)
     const cerca = marcas.filter((m) => Math.abs(m.f - (mejor + 0.5) / MUESTRAS) < 6 / 540);
-    const evento = cerca.some((m) => m.tipo === 'cigarro') ? ' · sale a fumar' : cerca.length ? ' · toma café' : '';
-    tooltip.innerHTML = `<strong>${horaDeFraccion(mejor / MUESTRAS)}</strong> · ${nivel} (${Math.round(dato.estres)}%) · ${dato.enCurso} a la vez${evento}`;
+    const evento = cerca.some((m) => m.tipo === 'cigarro') ? tx('graficoFuma') : cerca.length ? tx('graficoCafe') : '';
+    tooltip.innerHTML = tx('graficoCartel', horaDeFraccion(mejor / MUESTRAS), nivel, Math.round(dato.estres), dato.enCurso, evento);
     tooltip.hidden = false;
     const xPunto = g.x0 + ((mejor + 0.5) / MUESTRAS) * (g.x1 - g.x0);
     const ancho = tooltip.offsetWidth;
@@ -269,5 +278,12 @@ export function crearGraficoDia({ lienzo, tooltip }) {
   lienzo.addEventListener('pointerleave', alSalir);
   new ResizeObserver(() => (sucio = true)).observe(lienzo);
 
-  return { registrar, marcar, reiniciar, dibujar };
+  // Al cambiar de idioma: se vuelve a dibujar (nombres de los niveles y lo
+  // que lee el lector de pantalla); el cartelito vuelve con el mouse
+  function refrescarTextos() {
+    if (!tooltip.hidden) alSalir();
+    sucio = true;
+  }
+
+  return { registrar, marcar, reiniciar, dibujar, refrescarTextos };
 }

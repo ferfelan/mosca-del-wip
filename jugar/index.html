@@ -2,7 +2,32 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- Antes de dibujar: si la persona eligió inglés, la página se esconde un
+         instante mientras el juego pone sus textos (así no se ve en español);
+         la escena 3D se ve igual. Si algo falla, aparece sola a los 2,5 s. -->
+    <style>
+      html.traduciendo body > :not(#escena),
+      html.traduciendo #escena > :not(canvas) {
+        visibility: hidden !important;
+      }
+    </style>
+    <script>
+      (function () {
+        var raiz = document.documentElement;
+        var idioma = new URLSearchParams(location.search).get('lang');
+        try {
+          if (idioma !== 'es' && idioma !== 'en') idioma = localStorage.getItem('mosca-idioma');
+        } catch (e) {}
+        if (idioma === 'en') {
+          raiz.lang = 'en';
+          raiz.className += ' traduciendo';
+          setTimeout(function () { raiz.classList.remove('traduciendo'); }, 2500);
+        }
+      })();
+    </script>
+    <link rel="icon" href="/favicon.ico?v=3" sizes="32x32" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=3" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mosca del WIP</title>
     <!-- Conteo de visitas sin cookies (Vercel Web Analytics); no toca el juego. -->
@@ -148,6 +173,10 @@
           <p class="cerebro-sub">Arriba el cerebro; abajo, el cordón nervioso</p>
         </div>
         <div class="cerebro-acciones solo-control">
+          <div class="idioma" role="group" aria-label="Idioma">
+            <button type="button" data-idioma="es" lang="es" aria-pressed="true" aria-label="Español" title="Español">ES</button>
+            <button type="button" data-idioma="en" lang="en" aria-pressed="false" aria-label="English" title="English">EN</button>
+          </div>
           <button id="btn-exhibicion" class="boton-exhibicion" type="button" title="Vista exhibición: pantalla completa para mostrar (tecla E)">
             Exhibición
             <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M9.5 2.5h4v4M13.5 2.5 9 7M6.5 13.5h-4v-4M2.5 13.5 7 9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -265,6 +294,13 @@
       Controles
       <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M2.5 4.5h11M2.5 11.5h11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="10" cy="4.5" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.4"/><circle cx="6" cy="11.5" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.4"/></svg>
     </button>
+
+    <!-- ES | EN cuando el panel del cerebro no está (cerebro oculto o
+         exhibición): el mismo botón que va en su cabecera -->
+    <div id="idioma-flotante" class="idioma idioma-flotante" role="group" aria-label="Idioma">
+      <button type="button" data-idioma="es" lang="es" aria-pressed="true" aria-label="Español" title="Español">ES</button>
+      <button type="button" data-idioma="en" lang="en" aria-pressed="false" aria-label="English" title="English">EN</button>
+    </div>
 
     <div id="velo" aria-hidden="true"></div>
 

@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import { crearTexturaKanban, dibujarKanban } from './kanban.js';
+import { tx } from './juego-textos.js';
 import {
   texturaCielo,
   texturaPoster,
@@ -181,20 +182,27 @@ function crearCajetilla() {
   return g;
 }
 
+// Post-it escrito a mano. Al cambiar de idioma se vuelve a escribir en el
+// mismo lienzo (t.userData.escribir(lineas)).
 function texturaPostit(color, lineas) {
   const c = document.createElement('canvas');
   c.width = c.height = 128;
   const ctx = c.getContext('2d');
-  ctx.fillStyle = color;
-  ctx.fillRect(0, 0, 128, 128);
-  ctx.fillStyle = 'rgba(0,0,0,0.06)';
-  ctx.fillRect(0, 0, 128, 18);
-  ctx.fillStyle = '#3a3226';
-  ctx.font = 'italic 600 24px "Marker Felt", "Comic Sans MS", cursive';
-  ctx.textAlign = 'center';
-  lineas.forEach((t, i) => ctx.fillText(t, 64, 58 + i * 32));
   const t = new THREE.CanvasTexture(c);
   t.colorSpace = THREE.SRGBColorSpace;
+  t.userData.escribir = (texto) => {
+    ctx.fillStyle = color;
+    ctx.fillRect(0, 0, 128, 128);
+    ctx.fillStyle = 'rgba(0,0,0,0.06)';
+    ctx.fillRect(0, 0, 128, 18);
+    ctx.fillStyle = '#3a3226';
+    ctx.font = 'italic 600 24px "Marker Felt", "Comic Sans MS", cursive';
+    ctx.textAlign = 'center';
+    texto.forEach((linea, i) => ctx.fillText(linea, 64, 58 + i * 32));
+    t.userData.textos = texto;
+    t.needsUpdate = true;
+  };
+  t.userData.escribir(lineas);
   return t;
 }
 
@@ -299,9 +307,10 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
   oficina.add(ventana);
 
   // ---------- Póster ----------
+  const texturaDelPoster = texturaPoster();
   const poster = malla(
     new THREE.PlaneGeometry(0.72, 0.92),
-    new THREE.MeshStandardMaterial({ map: texturaPoster(), roughness: 0.9 }),
+    new THREE.MeshStandardMaterial({ map: texturaDelPoster, roughness: 0.9 }),
     { x: 0.95, y: 1.95, z: -2.07, sombra: false }
   );
   oficina.add(poster);
@@ -471,7 +480,7 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
   monitor.add(solido(malla(new RoundedBoxGeometry(0.98, 0.63, 0.05, 3, 0.026), matMonitor, { y: 0.63 })));
 
   const { ctx: kanbanCtx, textura: kanbanTextura } = crearTexturaKanban(anisotropia);
-  dibujarKanban(kanbanCtx, { porHacer: 0, enCurso: 0, hechas: 0, hora: '09:00' });
+  let textosKanban = dibujarKanban(kanbanCtx, { porHacer: 0, enCurso: 0, hechas: 0, hora: '09:00' });
   kanbanTextura.needsUpdate = true;
   const pantalla = malla(
     new THREE.PlaneGeometry(0.9, 0.55),
@@ -484,30 +493,34 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
   // van ordenados en el marco; los siguientes, cada vez más chuecos, unos
   // encima de otros y algunos tapando un poco las esquinas de la pantalla
   // (nunca el centro del kanban).
+  // (lo escrito en cada uno está en src/juego-textos.js, en este mismo orden:
+  // "WIP ≤ 3 :)", "¡urgente! cliente", "revisar informe"…)
   const POSTITS = [
-    { x: -0.52, y: 0.74, giro: 0.03, color: '#a6e3a1', texto: ['WIP ≤ 3', ':)'] },
-    { x: 0.52, y: 0.8, giro: -0.04, color: '#ffe46b', texto: ['¡urgente!', 'cliente'] },
-    { x: 0.525, y: 0.6, giro: 0.08, color: '#ff9ec7', texto: ['revisar', 'informe'] },
-    { x: 0.505, y: 0.41, giro: -0.12, color: '#9fd0ff', texto: ['reunión', '11:00'] },
-    { x: -0.52, y: 0.5, giro: 0.14, color: '#ffb877', texto: ['pagar', 'facturas'] },
+    { x: -0.52, y: 0.74, giro: 0.03, color: '#a6e3a1' },
+    { x: 0.52, y: 0.8, giro: -0.04, color: '#ffe46b' },
+    { x: 0.525, y: 0.6, giro: 0.08, color: '#ff9ec7' },
+    { x: 0.505, y: 0.41, giro: -0.12, color: '#9fd0ff' },
+    { x: -0.52, y: 0.5, giro: 0.14, color: '#ffb877' },
     // arriba: pegados al borde superior, entre el título y la hora
-    { x: -0.02, y: 0.945, giro: -0.08, color: '#ffe46b', texto: ['llamar', 'cliente'] },
-    { x: 0.2, y: 0.95, giro: 0.18, color: '#ff9ec7', texto: ['bug', '#42'] },
+    { x: -0.02, y: 0.945, giro: -0.08, color: '#ffe46b' },
+    { x: 0.2, y: 0.95, giro: 0.18, color: '#ff9ec7' },
     // esquinas de abajo: tapan un poco la pantalla, no los títulos ni los números
-    { x: 0.43, y: 0.37, giro: 0.32, color: '#a6e3a1', texto: ['¡hoy!', ''] },
-    { x: -0.43, y: 0.375, giro: -0.3, color: '#ffe46b', texto: ['ASAP', ''] },
-    { x: 0.548, y: 0.7, giro: -0.24, color: '#ffb877', texto: ['¿y esto?', ''] },
-    { x: -0.535, y: 0.87, giro: 0.26, color: '#ff9ec7', texto: ['feedback', 'equipo'] },
-    { x: -0.25, y: 0.952, giro: 0.07, color: '#9fd0ff', texto: ['presu-', 'puesto'] },
-    { x: 0.465, y: 0.53, giro: 0.36, color: '#ffe46b', texto: ['deploy', 'viernes'] },
-    { x: -0.548, y: 0.63, giro: -0.32, color: '#a6e3a1', texto: ['pendiente', ''] },
+    { x: 0.43, y: 0.37, giro: 0.32, color: '#a6e3a1' },
+    { x: -0.43, y: 0.375, giro: -0.3, color: '#ffe46b' },
+    { x: 0.548, y: 0.7, giro: -0.24, color: '#ffb877' },
+    { x: -0.535, y: 0.87, giro: 0.26, color: '#ff9ec7' },
+    { x: -0.25, y: 0.952, giro: 0.07, color: '#9fd0ff' },
+    { x: 0.465, y: 0.53, giro: 0.36, color: '#ffe46b' },
+    { x: -0.548, y: 0.63, giro: -0.32, color: '#a6e3a1' },
   ];
 
   const geoPostit = new THREE.BoxGeometry(0.088, 0.088, 0.002);
-  const postits = POSTITS.map(({ x, y, giro, color, texto }, i) => {
+  const texturasPostit = [];
+  const postits = POSTITS.map(({ x, y, giro, color }, i) => {
+    texturasPostit.push(texturaPostit(color, tx('postits')[i]));
     const nota = malla(
       geoPostit,
-      new THREE.MeshStandardMaterial({ map: texturaPostit(color, texto), roughness: 0.85 }),
+      new THREE.MeshStandardMaterial({ map: texturasPostit[i], roughness: 0.85 }),
       // cada uno un poco más adelante que el anterior: se pueden montar
       { x, y, z: 0.027 + i * 0.0012, sombra: false }
     );
@@ -1029,9 +1042,21 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
     },
     grupo: oficina,
     actualizarKanban(estado) {
-      dibujarKanban(kanbanCtx, estado);
+      textosKanban = dibujarKanban(kanbanCtx, estado);
       kanbanTextura.needsUpdate = true;
     },
+    // Al cambiar de idioma: el póster y los post-its se vuelven a escribir (el
+    // kanban se dibuja en cada cuadro, así que cambia solo)
+    ponerTextos() {
+      texturaDelPoster.userData.redibujar();
+      texturasPostit.forEach((t, i) => t.userData.escribir(tx('postits')[i]));
+    },
+    // Lo que dice cada texto de la escena (para las pruebas)
+    textosEscena: () => ({
+      kanban: textosKanban,
+      poster: texturaDelPoster.userData.textos,
+      postits: texturasPostit.map((t) => t.userData.textos),
+    }),
     actualizarReloj(fraccionDelDia) {
       const horaDelDia = 9 + fraccionDelDia * 9;
       manecillaHora.rotation.z = -((horaDelDia % 12) / 12) * Math.PI * 2;

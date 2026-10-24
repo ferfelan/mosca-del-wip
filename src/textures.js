@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { tx } from './juego-textos.js';
 
 function lienzo(w, h) {
   const canvas = document.createElement('canvas');
@@ -65,8 +66,22 @@ export function texturaCielo() {
   return aTextura(canvas);
 }
 
+// Póster "WIP ≤ 3". Las dos líneas de abajo cambian con el idioma: al cambiarlo
+// se vuelve a dibujar en el mismo lienzo (textura.userData.redibujar()) y
+// userData.textos dice lo que quedó escrito (para las pruebas).
 export function texturaPoster() {
   const { canvas, ctx } = lienzo(420, 540);
+  const textura = aTextura(canvas);
+  textura.userData.redibujar = () => {
+    textura.userData.textos = dibujarPoster(ctx);
+    textura.needsUpdate = true;
+  };
+  textura.userData.redibujar();
+  return textura;
+}
+
+function dibujarPoster(ctx) {
+  const [linea1, linea2] = tx('poster');
   ctx.fillStyle = '#fdf6e6';
   ctx.fillRect(0, 0, 420, 540);
   ctx.strokeStyle = '#e0a94f';
@@ -82,8 +97,8 @@ export function texturaPoster() {
 
   ctx.fillStyle = '#8a6a3a';
   ctx.font = '26px -apple-system, Helvetica, sans-serif';
-  ctx.fillText('menos cosas a la vez', 210, 410);
-  ctx.fillText('= más cosas listas', 210, 446);
+  ctx.fillText(linea1, 210, 410);
+  ctx.fillText(linea2, 210, 446);
 
   ctx.strokeStyle = '#e0a94f';
   ctx.lineWidth = 4;
@@ -91,7 +106,7 @@ export function texturaPoster() {
   ctx.moveTo(140, 370);
   ctx.lineTo(280, 370);
   ctx.stroke();
-  return aTextura(canvas);
+  return ['WIP', '≤ 3', linea1, linea2];
 }
 
 export function texturaTeclado() {

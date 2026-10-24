@@ -7,11 +7,15 @@
 //   - en pantallas táctiles los botones y el control midan 44 px de alto,
 //   - en celular vertical el botón del PDF quede en la primera pantalla,
 //   - el cerebro se encienda y no haya errores,
+//   - en inglés no quede ningún texto en español (salvo nombres propios),
 // y saca una foto de la primera pantalla y otra de la página completa.
+// Lo hace con cada fondo (negro y blanco) y cada idioma (español e inglés).
 // Uso (con npm run dev, o con la dirección publicada):
-//   node scripts/portada-responsiva.mjs [dirección] [carpeta de fotos] [solo]
+//   node scripts/portada-responsiva.mjs [dirección] [carpeta de fotos] [solo] [combinaciones]
 // "solo" revisa únicamente los tamaños cuyo nombre contiene alguno de esos
-// textos, separados por coma (por ejemplo: computador-9,1024x768).
+// textos, separados por coma (por ejemplo: computador-9,1024x768); "todos"
+// revisa todos. "combinaciones" elige fondo e idioma (por omisión
+// oscuro-es,claro-es,oscuro-en,claro-en).
 import { chromium } from 'playwright';
 import { mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -50,7 +54,7 @@ const TAMANOS = [
 ];
 
 // Corre dentro de la página
-function medir({ tactil, celularVertical }) {
+function medir({ tactil, celularVertical, idioma }) {
   const problemas = [];
   const vw = document.documentElement.clientWidth;
   if (document.documentElement.scrollWidth > vw) {
@@ -105,7 +109,7 @@ function medir({ tactil, celularVertical }) {
     }
   }
   if (tactil) {
-    for (const el of document.querySelectorAll('.boton, .enlace-jugar, input[type=range]')) {
+    for (const el of document.querySelectorAll('.boton, .enlace-jugar, input[type=range], .selector button')) {
       if (!seVe(el)) continue;
       const alto = el.getBoundingClientRect().height;
       if (alto < 44) problemas.push(`difícil de tocar (${Math.round(alto)} px de alto): «${corto(el.textContent || el.id)}»`);
@@ -117,21 +121,45 @@ function medir({ tactil, celularVertical }) {
     if (abajo > window.innerHeight) problemas.push(`el botón del PDF queda bajo la primera pantalla (${Math.round(abajo)} px de ${window.innerHeight})`);
   }
   if (!document.querySelector('.cerebro.vivo')) problemas.push('el cerebro no se encendió (queda la foto fija)');
+  if (document.documentElement.lang !== idioma) problemas.push(`la página dice lang="${document.documentElement.lang}" y debía ser ${idioma}`);
+  // En inglés: ninguna palabra en español a la vista ni en lo que lee un lector de pantalla
+  if (idioma === 'en') {
+    const ESPANOL = /\b(tareas?|terminadas?|estrés|cigarros|juego|informe|cerebro|neuronas|Descargar|Jugar|Promedio|límite|simulación|Hecho por|Sin cookies|Colores|Visión|Memoria|Mando|Movimiento|reposo|a la vez|Gratis|Fondo|Idioma|mosca|oficina|páginas)\b/i;
+    const textos = [];
+    const recorrido = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    while (recorrido.nextNode()) {
+      const nodo = recorrido.currentNode;
+      if (nodo.parentElement.closest('script, style') || !seVe(nodo.parentElement)) continue;
+      textos.push(nodo.textContent);
+    }
+    for (const el of document.querySelectorAll('[aria-label], [title], img[alt]')) textos.push(el.getAttribute('aria-label') || '', el.getAttribute('title') || '', el.getAttribute('alt') || '');
+    for (const t of textos) {
+      const limpio = t.replace(/Mosca del WIP|Male CNS|Felipe Fernández|Español/g, '');
+      if (ESPANOL.test(limpio)) problemas.push(`en inglés quedó en español: «${corto(t)}»`);
+    }
+  }
   return problemas;
 }
 
-const SOLO = process.argv[4] ? process.argv[4].split(',') : null;
+const SOLO = process.argv[4] && process.argv[4] !== 'todos' ? process.argv[4].split(',') : null;
+const COMBINACIONES = (process.argv[5] || 'oscuro-es,claro-es,oscuro-en,claro-en').split(',').map((c) => c.split('-'));
 const REVISAR = SOLO ? TAMANOS.filter(([nombre]) => SOLO.some((s) => nombre.includes(s))) : TAMANOS;
 
 const navegador = await chromium.launch({ args: ['--enable-unsafe-swiftshader', '--use-gl=angle', '--ignore-gpu-blocklist'] });
 let total = 0;
-for (const [nombre, ancho, alto, tactil] of REVISAR) {
+for (const [fondo, idioma] of COMBINACIONES) for (const [nombreTamano, ancho, alto, tactil] of REVISAR) {
+  const nombre = `${fondo}-${idioma}-${nombreTamano}`;
   const contexto = await navegador.newContext({
     viewport: { width: ancho, height: alto },
     deviceScaleFactor: 1,
     isMobile: tactil,
     hasTouch: tactil,
   });
+  // El fondo y el idioma como si la persona los hubiera elegido antes
+  await contexto.addInitScript(([f, i]) => {
+    localStorage.setItem('mosca-fondo', f);
+    localStorage.setItem('mosca-idioma', i);
+  }, [fondo, idioma]);
   const pagina = await contexto.newPage();
   const errores = [];
   pagina.on('pageerror', (e) => errores.push(e.message));
@@ -143,7 +171,7 @@ for (const [nombre, ancho, alto, tactil] of REVISAR) {
   await pagina.waitForTimeout(4800); // la consola sube sola hasta 9 (la palabra más larga: "Colapsada")
   await pagina.evaluate(() => window.scrollTo(0, 0));
   await pagina.waitForTimeout(300);
-  const problemas = await pagina.evaluate(medir, { tactil, celularVertical: tactil && ancho < 600 && alto > ancho });
+  const problemas = await pagina.evaluate(medir, { tactil, celularVertical: tactil && ancho < 600 && alto > ancho, idioma });
   problemas.push(...errores.map((e) => `error: ${e}`));
   await pagina.screenshot({ path: join(CARPETA, `${nombre}-pantalla.png`) });
   await pagina.screenshot({ path: join(CARPETA, `${nombre}-completa.png`), fullPage: true });
@@ -154,4 +182,4 @@ for (const [nombre, ancho, alto, tactil] of REVISAR) {
 }
 await navegador.close();
 console.log(`\nFotos en ${CARPETA}`);
-console.log(total ? `${total} cosas para revisar` : `portada: todo bien en los ${REVISAR.length} tamaños`);
+console.log(total ? `${total} cosas para revisar` : `portada: todo bien en los ${REVISAR.length} tamaños, con ${COMBINACIONES.length} combinaciones de fondo e idioma`);

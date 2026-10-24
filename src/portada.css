@@ -3,7 +3,8 @@
    cerebro (#060a16), así el lienzo 3D se funde con la página. El color tiene
    significado: los cinco neón son las zonas del cerebro (src/cerebro.js) y el
    verde, amarillo, naranjo y rojo son los niveles del juego. Tipografía Mona
-   Sans (licencia OFL) guardada en public/fonts: ningún pedido a otro servidor. */
+   Sans (licencia OFL) guardada en public/fonts: ningún pedido a otro servidor.
+   Con el botón de arriba el fondo pasa a blanco (ver "Fondo blanco"). */
 @font-face {
   font-family: 'Mona Sans';
   src: url('/fonts/mona-sans-latin-wdth.woff2') format('woff2-variations'),
@@ -16,7 +17,11 @@
     U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-:root {
+/* Los colores de noche. Con fondo blanco cambian (más abajo), salvo dentro de
+   .siempre-noche: el cerebro, el video y los colores del cerebro, cuyos neón
+   solo se ven sobre oscuro. */
+:root,
+:root[data-tema='claro'] .siempre-noche {
   --noche: #060a16;
   --noche-2: #0b1124;
   --noche-3: #141c35;
@@ -34,13 +39,65 @@
   --ocupada: #e3b341;
   --estresada: #f08a4b;
   --colapsada: #f0675c;
+  --subrayado: rgba(238, 241, 248, 0.38);
+}
+:root {
   --carga: var(--tranqui);
   --nivel: var(--tranqui);
+  /* Vidrios y sombras de la página (no cambian dentro de .siempre-noche) */
+  --vidrio: rgba(255, 255, 255, 0.03);
+  --vidrio-hover: rgba(255, 255, 255, 0.08);
+  --borde-hover: rgba(200, 215, 255, 0.45);
+  --principal-hover: #fff;
+  --halo: rgba(238, 241, 248, 0.14);
+  --consola-fondo: rgba(11, 17, 36, 0.74);
+  --consola-sombra: 0 28px 70px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --riel-vacio: rgba(6, 10, 22, 0.66);
+  --punto-halo: rgba(255, 255, 255, 0.06);
+  --sombra-pantalla: 0 40px 90px rgba(0, 0, 0, 0.55), 0 0 0 6px rgba(255, 255, 255, 0.025);
+  --sombra-tapa: -24px 34px 70px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06);
   --fuente: 'Mona Sans', 'Avenir Next', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
   --ancho: 1280px;
   --margen: clamp(20px, 4vw, 56px);
+  --alto-barra: 62px; /* la barra de arriba (idioma y fondo) */
   color-scheme: dark;
 }
+
+/* ---------- Fondo blanco ----------
+   Texto oscuro sobre blanco; los niveles del juego un poco más oscuros para
+   que se lean (contraste de 4,5 o más contra el blanco). */
+:root[data-tema='claro'] {
+  --noche: #ffffff;
+  --noche-2: #f3f5fa;
+  --noche-3: #e8ecf5;
+  --borde: rgba(16, 24, 48, 0.12);
+  --borde-fuerte: rgba(16, 24, 48, 0.22);
+  --tinta: #0b1124;
+  --suave: #3b4459;
+  --tenue: #5d667c;
+  --vision: #0786a6;
+  --tranqui: #18794a;
+  --ocupada: #946500;
+  --estresada: #b84e15;
+  --colapsada: #cc3b30;
+  --subrayado: rgba(11, 17, 36, 0.35);
+  --vidrio: rgba(16, 24, 48, 0.03);
+  --vidrio-hover: rgba(16, 24, 48, 0.07);
+  --borde-hover: rgba(16, 24, 48, 0.4);
+  --principal-hover: #1f2a4a;
+  --halo: rgba(11, 17, 36, 0.12);
+  --consola-fondo: #ffffff;
+  --consola-sombra: 0 24px 60px rgba(16, 24, 48, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  --riel-vacio: #dfe4ee;
+  --punto-halo: rgba(16, 24, 48, 0.07);
+  --sombra-pantalla: 0 30px 70px rgba(16, 24, 48, 0.2), 0 0 0 6px rgba(16, 24, 48, 0.035);
+  --sombra-tapa: -18px 28px 56px rgba(16, 24, 48, 0.24), 0 0 0 1px rgba(16, 24, 48, 0.08);
+  color-scheme: light;
+}
+:root[data-tema='claro'] .siempre-noche { color: var(--tinta); }
+/* Mientras se ponen los textos en inglés no se muestra la página (lo decide
+   el script del <head>; a los 2,5 s se muestra igual) */
+.traduciendo body { visibility: hidden; }
 
 * { box-sizing: border-box; }
 
@@ -60,7 +117,7 @@ body.portada {
 
 main { overflow-x: clip; }
 
-a { color: var(--tinta); text-decoration-color: rgba(238, 241, 248, 0.38); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a { color: var(--tinta); text-decoration-color: var(--subrayado); text-decoration-thickness: 1px; text-underline-offset: 3px; }
 a:hover { text-decoration-color: currentColor; }
 :focus-visible { outline: 3px solid var(--vision); outline-offset: 3px; border-radius: 8px; }
 
@@ -70,6 +127,53 @@ p { margin: 0; }
 .solo-lector {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ---------- La barra de arriba: la mosca, el idioma y el fondo ---------- */
+.barra {
+  position: relative;
+  z-index: 5;
+  max-width: var(--ancho);
+  margin: 0 auto;
+  padding: 16px var(--margen) 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.marca { display: block; width: 36px; height: 36px; border-radius: 9px; }
+.ajustes { display: flex; gap: 8px; }
+.selector {
+  display: flex;
+  padding: 3px;
+  border-radius: 999px;
+  border: 1px solid var(--borde);
+  background: var(--noche-2);
+}
+.selector button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 38px;
+  padding: 0 11px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--tenue);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 650;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+.selector button:hover { color: var(--tinta); }
+.selector button[aria-pressed='true'] { background: var(--tinta); color: var(--noche); cursor: default; }
+.selector button:focus-visible { outline-offset: 1px; border-radius: 999px; }
+/* En pantallas táctiles, del tamaño de un dedo */
+@media (pointer: coarse) {
+  .selector button { min-width: 44px; height: 44px; }
 }
 
 /* ---------- Botones ---------- */
@@ -82,7 +186,7 @@ p { margin: 0; }
   padding: 0 26px;
   border-radius: 999px;
   border: 1px solid var(--borde-fuerte);
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--vidrio);
   color: var(--tinta);
   font-family: inherit;
   font-size: 16.5px;
@@ -90,9 +194,9 @@ p { margin: 0; }
   text-decoration: none;
   transition: background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
 }
-.boton:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(200, 215, 255, 0.45); }
+.boton:hover { background: var(--vidrio-hover); border-color: var(--borde-hover); }
 .boton.principal { background: var(--tinta); border-color: transparent; color: var(--noche); padding: 0 36px; font-size: 17px; font-weight: 650; }
-.boton.principal:hover { background: #fff; box-shadow: 0 0 0 5px rgba(238, 241, 248, 0.14); }
+.boton.principal:hover { background: var(--principal-hover); box-shadow: 0 0 0 5px var(--halo); }
 
 /* ---------- Hero: el texto a la izquierda, el cerebro y la prueba a la derecha ---------- */
 .hero {
@@ -102,7 +206,7 @@ p { margin: 0; }
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
   column-gap: clamp(24px, 4vw, 72px);
-  min-height: clamp(700px, 100svh, 1000px);
+  min-height: clamp(640px, calc(100svh - var(--alto-barra)), 940px);
 }
 .hero-texto { align-self: center; padding: 64px 0 72px; }
 h1 {
@@ -123,7 +227,8 @@ h1 {
   margin-bottom: 20px;
   text-wrap: balance;
 }
-.que-es { color: var(--suave); max-width: 44ch; margin-bottom: 34px; }
+.lema:lang(en) { max-width: 26ch; }
+.que-es { color: var(--suave); max-width: 44ch; margin-bottom: 34px; text-wrap: pretty; }
 .hero-texto .nota { margin-top: 16px; }
 
 .laboratorio {
@@ -192,6 +297,21 @@ h1 {
 .origen { color: var(--tenue); }
 .consola-frase { font-size: 14px; line-height: 1.45; color: var(--tenue); margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--borde); }
 
+/* Con fondo blanco el cerebro va en un recuadro de noche (sus neón no se ven
+   sobre blanco) y el contador queda adentro, arriba a la izquierda. */
+:root[data-tema='claro'] .cerebro {
+  top: 14px;
+  left: 0;
+  right: 0;
+  border-radius: 28px;
+  overflow: hidden;
+  background: var(--noche);
+  box-shadow: 0 30px 70px rgba(16, 24, 48, 0.2);
+}
+:root[data-tema='claro'] .cerebro-lienzo,
+:root[data-tema='claro'] .cerebro-foto { -webkit-mask-image: none; mask-image: none; }
+:root[data-tema='claro'] .cerebro-cuenta { left: 26px; top: 62px; }
+
 /* ---------- La consola: cuántas tareas a la vez ---------- */
 .consola {
   position: relative;
@@ -199,10 +319,10 @@ h1 {
   padding: 18px 22px 16px;
   border-radius: 22px;
   border: 1px solid var(--borde);
-  background: rgba(11, 17, 36, 0.74);
+  background: var(--consola-fondo);
   -webkit-backdrop-filter: blur(14px) saturate(1.15);
   backdrop-filter: blur(14px) saturate(1.15);
-  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  box-shadow: var(--consola-sombra);
 }
 .consola-cabeza { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 16px; }
 .consola-cabeza label { font-size: 15.5px; font-weight: 600; color: var(--tinta); }
@@ -235,14 +355,14 @@ h1 {
   height: 6px;
   border-radius: 999px;
   background:
-    linear-gradient(to right, transparent var(--pos), rgba(6, 10, 22, 0.66) var(--pos)),
+    linear-gradient(to right, transparent var(--pos), var(--riel-vacio) var(--pos)),
     linear-gradient(to right, var(--tranqui) 0 27.8%, var(--ocupada) 27.8% 50%, var(--colapsada) 50% 100%);
 }
 .wip::-moz-range-track {
   height: 6px;
   border-radius: 999px;
   background:
-    linear-gradient(to right, transparent var(--pos), rgba(6, 10, 22, 0.66) var(--pos)),
+    linear-gradient(to right, transparent var(--pos), var(--riel-vacio) var(--pos)),
     linear-gradient(to right, var(--tranqui) 0 27.8%, var(--ocupada) 27.8% 50%, var(--colapsada) 50% 100%);
 }
 .wip::-webkit-slider-thumb {
@@ -254,7 +374,7 @@ h1 {
   border-radius: 50%;
   background: var(--tinta);
   border: 4px solid var(--carga);
-  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.06), 0 0 22px var(--carga);
+  box-shadow: 0 0 0 6px var(--punto-halo), 0 0 22px var(--carga);
   transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 .wip::-moz-range-thumb {
@@ -263,7 +383,7 @@ h1 {
   border-radius: 50%;
   background: var(--tinta);
   border: 4px solid var(--carga);
-  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.06), 0 0 22px var(--carga);
+  box-shadow: 0 0 0 6px var(--punto-halo), 0 0 22px var(--carga);
 }
 .wip:focus-visible { outline: none; }
 .wip:focus-visible::-webkit-slider-thumb { outline: 3px solid var(--vision); outline-offset: 3px; }
@@ -359,7 +479,7 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   overflow: hidden;
   background: #0c1120;
   border: 1px solid var(--borde-fuerte);
-  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.55), 0 0 0 6px rgba(255, 255, 255, 0.025);
+  box-shadow: var(--sombra-pantalla);
 }
 .pantalla video { display: block; width: 100%; height: 100%; object-fit: cover; }
 .pantalla figcaption { grid-area: pie; margin-top: 14px; font-size: 14.5px; color: var(--tenue); }
@@ -456,7 +576,7 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   border-radius: 6px;
   transform: rotateY(16deg) rotateX(3deg);
   transform-origin: 30% 50%;
-  box-shadow: -24px 34px 70px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  box-shadow: var(--sombra-tapa);
   transition: transform 0.5s ease;
 }
 .tapa:hover img { transform: rotateY(6deg) rotateX(1deg); }
@@ -476,6 +596,7 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   margin: 0 auto 36px;
   text-wrap: balance;
 }
+.cierre-frase:lang(en) { max-width: 19ch; }
 .cierre .acciones { justify-content: center; }
 
 /* ---------- Pie ---------- */
@@ -499,7 +620,7 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 @media (max-width: 899px) {
   body.portada { font-size: 17px; }
   .hero { grid-template-columns: 1fr; min-height: 0; }
-  .hero-texto { padding: 40px 0 0; }
+  .hero-texto { padding: 16px 0 0; }
   h1 { font-size: clamp(50px, 14vw, 76px); margin-bottom: 20px; }
   .lema { font-size: 23px; max-width: none; }
   .que-es { margin-bottom: 24px; }
@@ -509,13 +630,16 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .boton,
   .boton.principal { padding-inline: 20px; text-align: center; }
   .hero .boton { width: 100%; max-width: 440px; background: var(--tinta); color: var(--noche); border-color: transparent; font-size: 17px; }
-  .hero .boton:hover { background: #fff; }
+  .hero .boton:hover { background: var(--principal-hover); }
   .solo-computador { display: none !important; }
   .solo-celular { display: block; }
 
   .laboratorio { padding: 8px 0 0; }
   .cerebro { position: relative; inset: auto; height: min(118vw, 580px, max(320px, 100svh - 40px)); margin: 0 calc(-1 * var(--margen)); }
   .cerebro-cuenta { top: 16px; max-width: 9em; font-size: 13.5px; }
+  :root[data-tema='claro'] .cerebro { margin: 0; border-radius: 22px; }
+  :root[data-tema='claro'] .cerebro-cuenta { left: 18px; top: 26px; }
+  .barra { padding-top: 12px; }
   .cerebro-cuenta .cifra { font-size: 28px; }
   .consola { margin-top: -40px; padding: 18px 18px 16px; border-radius: 20px; }
   .wip-numero { font-size: 38px; }
@@ -552,12 +676,24 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .pie { flex-direction: column; padding: 24px var(--margen) 40px; }
 }
 
+/* Celulares muy chicos (320 px, como el iPhone SE de primera generación): la
+   letra del texto un punto más chica, para que el botón del PDF quepa en la
+   primera pantalla también en inglés, que es más largo. */
+@media (max-width: 360px) {
+  body.portada { font-size: 16px; }
+  .que-es { margin-bottom: 20px; }
+}
+
 /* Computadores angostos (900 a 1099 px, como el iPad en horizontal): el
    lienzo empieza más a la derecha (el cerebro se achica para caber) y el
    contador queda en el espacio libre de la izquierda; los dos botones caben
    en una fila. */
 @media (min-width: 900px) and (max-width: 1099px) {
   .cerebro { left: 64px; }
+  /* Con fondo blanco el recuadro ocupa toda la columna y el lienzo, adentro,
+     deja libre el lugar del contador */
+  :root[data-tema='claro'] .cerebro-lienzo,
+  :root[data-tema='claro'] .cerebro-foto { left: 64px; width: calc(100% - 64px); }
   .cerebro-cuenta { max-width: 8em; font-size: 14px; }
   .boton { padding-inline: 20px; }
   .boton.principal { padding-inline: 28px; }
@@ -566,7 +702,7 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 /* Pantallas de computador bajas (proyector de 1280 × 720, ventanas chicas):
    todo un poco más compacto para que el cerebro tenga lugar. */
 @media (min-width: 900px) and (max-height: 820px) {
-  .hero { min-height: max(100svh, 680px); }
+  .hero { min-height: max(calc(100svh - var(--alto-barra)), 620px); }
   .hero-texto { padding: 40px 0 48px; }
   h1 { font-size: clamp(52px, 6.6vw, 100px); margin-bottom: 22px; }
   .que-es { margin-bottom: 28px; }

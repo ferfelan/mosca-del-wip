@@ -6,8 +6,13 @@
 //    Al entrar sube sola de 2 a 9 una vez; después manda la persona.
 // 3. El clip del juego: se baja cuando está por verse, marca si son pocas o
 //    muchas tareas y se detiene fuera de la pantalla.
-// Con "reducir movimiento" el cerebro no gira, la consola no sube sola y el
-// clip queda con sus controles.
+// 4. Arriba a la derecha: idioma (español o inglés) y fondo (negro o blanco).
+//    Los dos se recuerdan en este navegador; el script corto del <head> los
+//    aplica antes de dibujar. Al llegar, siempre en español y fondo negro.
+// Con "reducir movimiento" el cerebro no gira, la consola no sube sola, el
+// clip queda con sus controles y los cambios de idioma y fondo no se funden.
+import { leerIdioma, marcarIdioma, elegirIdioma, rutaEnIdioma, formatoNumero } from './idioma.js';
+import { INGLES, DINAMICOS } from './portada-textos.js';
 
 // Tabla de 1 a 10 del informe (pág. 4): corrida oficial, 200 días por cada
 // número de tareas, semilla 2024 (docs/corrida-oficial.json). Si la corrida
@@ -22,9 +27,15 @@ const NEURONAS = [330, 423, 532, 633, 1026, 1114, 1184, 1247, 1328, 1398];
 const COLOR_NIVEL = { Tranqui: 'var(--tranqui)', Ocupada: 'var(--ocupada)', Estresada: 'var(--estresada)', Colapsada: 'var(--colapsada)' };
 // La carga, como en el juego: verde hasta 3, amarillo con 4 y 5, rojo desde 6
 const colorCarga = (n) => (n <= 3 ? 'var(--tranqui)' : n <= 5 ? 'var(--ocupada)' : 'var(--colapsada)');
-const coma = (x) => x.toFixed(1).replace('.', ',');
-const miles = new Intl.NumberFormat('es-CL');
 const quieto = matchMedia('(prefers-reduced-motion: reduce)');
+// El idioma y cómo se escriben los números en él: 15,9 y 1.328 en español;
+// 15.9 y 1,328 en inglés (los pone ponerIdioma)
+let idioma = leerIdioma();
+let decimal;
+let miles;
+const conDecimal = (x) => decimal.format(x);
+const textos = () => DINAMICOS[idioma];
+const avisosIdioma = []; // lo que además cambia con el idioma (el clip)
 
 // ---------- La consola ----------
 const consola = document.querySelector('.consola');
@@ -78,12 +89,12 @@ function pintar(n) {
   consola.style.setProperty('--carga', colorCarga(n));
   consola.style.setProperty('--nivel', COLOR_NIVEL[nivel]);
   rango.style.setProperty('--v', n);
-  rango.setAttribute('aria-valuetext', `${n} ${n === 1 ? 'tarea' : 'tareas'} a la vez`);
+  rango.setAttribute('aria-valuetext', textos().tareas(n));
   el.wip.textContent = n;
-  el.limite.textContent = n <= 3 ? 'Dentro del límite sostenible (3)' : 'Sobre el límite sostenible (3)';
-  contar(el.terminadas, TERMINADAS[n - 1], coma);
+  el.limite.textContent = textos().limite(n <= 3);
+  contar(el.terminadas, TERMINADAS[n - 1], conDecimal);
   contar(el.cigarros, CIGARROS[n - 1], (x) => String(Math.round(x)));
-  el.estres.textContent = nivel;
+  el.estres.textContent = textos().nivel(nivel);
   if (!cerebro) neuronasEl.textContent = miles.format(NEURONAS[n - 1]);
 }
 
@@ -101,9 +112,74 @@ rango.addEventListener('input', () => {
 });
 rango.addEventListener('change', () => {
   const n = tareas;
-  el.resumen.textContent = `Con ${n} a la vez: ${coma(TERMINADAS[n - 1])} terminadas en el día, estrés ${ESTRES[n - 1]} al cerrar y ${CIGARROS[n - 1]} cigarros.`;
+  el.resumen.textContent = textos().resumen(n, conDecimal(TERMINADAS[n - 1]), textos().nivel(ESTRES[n - 1]), CIGARROS[n - 1]);
 });
-pintar(tareas);
+
+// ---------- Idioma y fondo ----------
+// Cambio con un fundido corto, si el navegador lo permite
+function conFundido(cambio) {
+  if (document.startViewTransition && !quieto.matches) document.startViewTransition(cambio);
+  else cambio();
+}
+
+// El español queda guardado tal como está en index.html; el inglés viene de
+// portada-textos.js
+const conTexto = [...document.querySelectorAll('[data-t]')].map((nodo) => ({ nodo, es: nodo.innerHTML }));
+const conAria = [...document.querySelectorAll('[data-t-aria]')].map((nodo) => ({ nodo, es: nodo.getAttribute('aria-label') }));
+const conTitulo = [...document.querySelectorAll('[data-t-title]')].map((nodo) => ({ nodo, es: nodo.getAttribute('title') }));
+const botonesIdioma = document.querySelectorAll('[data-idioma]');
+
+function ponerIdioma(nuevo, alEntrar = false) {
+  idioma = nuevo;
+  const en = idioma === 'en';
+  if (!(alEntrar && !en)) {
+    for (const { nodo, es } of conTexto) nodo.innerHTML = en ? (INGLES[nodo.dataset.t] ?? es) : es;
+    for (const { nodo, es } of conAria) nodo.setAttribute('aria-label', en ? (INGLES[nodo.dataset.tAria] ?? es) : es);
+    for (const { nodo, es } of conTitulo) nodo.setAttribute('title', en ? (INGLES[nodo.dataset.tTitle] ?? es) : es);
+  }
+  for (const enlace of document.querySelectorAll('[data-jugar]')) enlace.href = rutaEnIdioma('/jugar/', idioma);
+  for (const boton of botonesIdioma) boton.setAttribute('aria-pressed', String(boton.dataset.idioma === idioma));
+  decimal = formatoNumero(idioma, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  miles = formatoNumero(idioma);
+  ultimaCuenta = -1; // el contador de neuronas se vuelve a escribir con el formato nuevo
+  pintar(tareas);
+  avisosIdioma.forEach((aviso) => aviso());
+  marcarIdioma(idioma);
+  document.documentElement.classList.remove('traduciendo');
+}
+
+for (const boton of botonesIdioma) {
+  boton.addEventListener('click', () => {
+    if (boton.dataset.idioma === idioma) return;
+    elegirIdioma(boton.dataset.idioma);
+    conFundido(() => ponerIdioma(boton.dataset.idioma));
+  });
+}
+
+const botonesFondo = document.querySelectorAll('[data-fondo]');
+function ponerFondo(fondo) {
+  const claro = fondo === 'claro';
+  if (claro) document.documentElement.dataset.tema = 'claro';
+  else delete document.documentElement.dataset.tema;
+  document.querySelector('meta[name="theme-color"]').content = claro ? '#ffffff' : '#060a16';
+  document.querySelector('meta[name="color-scheme"]').content = claro ? 'light' : 'dark';
+  for (const boton of botonesFondo) boton.setAttribute('aria-pressed', String(boton.dataset.fondo === fondo));
+  despertar(600); // con fondo blanco el cerebro va en un recuadro: se dibuja de nuevo
+}
+for (const boton of botonesFondo) {
+  boton.addEventListener('click', () => {
+    const fondo = boton.dataset.fondo;
+    try {
+      localStorage.setItem('mosca-fondo', fondo);
+    } catch {
+      // sin almacenamiento: vale solo para esta visita
+    }
+    conFundido(() => ponerFondo(fondo));
+  });
+}
+
+ponerFondo(document.documentElement.dataset.tema === 'claro' ? 'claro' : 'oscuro');
+ponerIdioma(idioma, true);
 
 // Al entrar, una sola vez: sube de 2 a 9 tareas para mostrar qué pasa
 function subidaSola() {
@@ -205,8 +281,17 @@ const seccionJuego = document.querySelector('.juego');
 const video = seccionJuego?.querySelector('video');
 if (video) {
   const grande = matchMedia('(min-width: 900px)');
-  const cambio = Number(video.dataset.cambio || 6); // segundo en que pasa de 2 a 9 tareas
-  const fuente = () => (grande.matches && video.dataset.srcGrande ? video.dataset.srcGrande : video.dataset.src);
+  const d = video.dataset;
+  // En inglés va el clip grabado con el juego en inglés (data-src-en...), si está
+  const enIngles = () => idioma === 'en' && Boolean(d.srcEn);
+  const cambio = () => Number((enIngles() && d.cambioEn) || d.cambio || 6); // segundo en que pasa de 2 a 9 tareas
+  const fuente = () => {
+    if (enIngles()) return grande.matches && d.srcGrandeEn ? d.srcGrandeEn : d.srcEn;
+    return grande.matches && d.srcGrande ? d.srcGrande : d.src;
+  };
+  const posterEspanol = video.getAttribute('poster');
+  const ponerPoster = () => video.setAttribute('poster', enIngles() && d.posterEn ? d.posterEn : posterEspanol);
+  ponerPoster();
   const cargar = () => {
     if (video.getAttribute('src')) return;
     video.src = fuente();
@@ -214,14 +299,31 @@ if (video) {
   };
   // Si el clip grande no está, el de celular sirve igual
   video.addEventListener('error', () => {
-    if (video.dataset.srcGrande && video.currentSrc.endsWith(video.dataset.srcGrande)) {
-      video.dataset.srcGrande = '';
-      video.src = video.dataset.src;
+    const clave = enIngles() ? 'srcGrandeEn' : 'srcGrande';
+    if (d[clave] && video.currentSrc.endsWith(d[clave])) {
+      d[clave] = '';
+      video.src = fuente();
       if (!quieto.matches) video.play().catch(() => (video.controls = true));
     }
   });
   video.addEventListener('timeupdate', () => {
-    seccionJuego.dataset.fase = video.currentTime < cambio ? 'pocas' : 'muchas';
+    seccionJuego.dataset.fase = video.currentTime < cambio() ? 'pocas' : 'muchas';
+  });
+  // Al cambiar de idioma, el mismo momento del clip en el otro idioma
+  avisosIdioma.push(() => {
+    ponerPoster();
+    if (!video.getAttribute('src') || video.currentSrc.endsWith(fuente())) return;
+    const momento = video.currentTime;
+    const seguia = !video.paused;
+    video.src = fuente();
+    video.addEventListener(
+      'loadedmetadata',
+      () => {
+        video.currentTime = momento;
+        if (seguia) video.play().catch(() => (video.controls = true));
+      },
+      { once: true }
+    );
   });
   new IntersectionObserver(([e]) => {
     if (e.isIntersecting) cargar();

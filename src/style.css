@@ -2397,3 +2397,120 @@ tr.mejor-dia td:last-child {
 .atajo kbd:first-child {
   margin-left: 0;
 }
+
+/* ---------- Idioma: ES | EN (2026-10-24) ----------
+   Dos botones juntos, con el estilo de los botones oscuros del cerebro. Uno
+   va en la cabecera del cerebro (en Control); el otro aparece cuando ese
+   panel no está: bajo el botón "Cerebro" si se ocultó, y al final de la barra
+   de arriba en Exhibición. */
+.idioma {
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--oscuro-borde);
+  border-radius: 8px;
+  background: var(--oscuro-superficie);
+}
+
+.idioma button {
+  min-width: 27px;
+  height: 22px;
+  padding: 0 5px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--oscuro-suave);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.idioma button:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--oscuro-tinta);
+}
+
+.idioma button[aria-pressed='true'] {
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--oscuro-tinta);
+  cursor: default;
+}
+
+.idioma button:focus {
+  outline: none;
+}
+
+.idioma button:focus-visible {
+  box-shadow: 0 0 0 3px rgba(47, 227, 255, 0.35);
+}
+
+/* El que flota: escondido mientras está la cabecera del cerebro */
+.idioma-flotante {
+  position: fixed;
+  top: 58px;
+  left: 16px;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--oscuro-panel);
+  box-shadow: 0 8px 22px rgba(20, 22, 40, 0.25);
+  opacity: 0;
+  transform: translateX(-12px);
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
+}
+
+.idioma-flotante button {
+  border-radius: 999px;
+}
+
+body.cerebro-oculto:not(.exhibicion) .idioma-flotante,
+body.exhibicion .idioma-flotante {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.3s ease 0.2s, transform 0.3s ease 0.2s, visibility 0s linear 0s;
+}
+
+/* En Exhibición, al final de la barra de arriba, como un botón más de ella */
+body.exhibicion .idioma-flotante {
+  top: 20px;
+  right: 28px;
+  left: auto;
+  padding: 2px;
+  border-radius: 8px;
+  background: var(--oscuro-superficie);
+  box-shadow: none;
+}
+
+body.exhibicion .idioma-flotante button {
+  border-radius: 6px;
+}
+
+body.exhibicion .barra-datos {
+  margin-right: 78px;
+}
+
+@media (max-height: 800px) {
+  body.exhibicion .idioma-flotante {
+    top: 14px;
+  }
+}
+
+/* En inglés, "Overwhelmed" es más largo que "Colapsada": la tarjeta "How the
+   fly is doing" se ensancha un poco para que "Overwhelmed 100%" quepa en su
+   fila (en español queda igual) */
+:root[lang='en'] .estado-mosca {
+  width: 246px;
+}
+
+@media (max-height: 800px) {
+  :root[lang='en'] .estado-mosca {
+    width: 222px;
+  }
+}

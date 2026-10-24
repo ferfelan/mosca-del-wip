@@ -9,6 +9,20 @@ import { cargarDatosCerebro, cargarActividadReal, crearCerebro, GRUPOS_VISUALES 
 import { sacarFoto } from './foto.js';
 import { crearGraficoDia } from './grafico.js';
 import { POS_CENICERO, POS_PILA, CENTRO_PANTALLA, ESCALA_MONITOR } from './layout.js';
+import { leerIdioma, marcarIdioma, elegirIdioma, formatoNumero } from './idioma.js';
+import { tx, ponerIdiomaJuego, nombreNivel, zona, prepararPagina, traducirPagina } from './juego-textos.js';
+
+// ---------- Idioma: español (siempre al llegar) o inglés ----------
+// Se decide antes de armar la oficina, así el kanban, el póster y los
+// post-its se dibujan desde el principio en el idioma elegido. La página
+// guarda antes sus textos en español, para volver a ellos exactos.
+let idioma = leerIdioma();
+marcarIdioma(idioma);
+ponerIdiomaJuego(idioma);
+prepararPagina();
+if (idioma === 'en') traducirPagina('en');
+// Números como se escriben en cada idioma: 1.328 en español, 1,328 en inglés
+let miles = formatoNumero(idioma);
 
 const CLAVE_STORAGE = 'mosca-del-wip-dias';
 const MIN_SIM_POR_SEG_REAL = 540 / 60; // día de 540 min simulados en 60s reales a x1
@@ -114,11 +128,13 @@ function formatoTiempo(minutos, corto = false) {
   return resto ? `${h} h ${resto} min` : `${h} h`;
 }
 
+let diasPintados = []; // los de la tabla (para repintarla en otro idioma)
 function pintarTabla(dias) {
+  diasPintados = dias;
   elTablaBody.innerHTML = '';
   elBtnBorrar.hidden = !dias.length;
   if (!dias.length) {
-    elTablaBody.innerHTML = '<tr class="vacia"><td colspan="7">Juega un día completo para comparar</td></tr>';
+    elTablaBody.innerHTML = `<tr class="vacia"><td colspan="7">${tx('tablaVacia')}</td></tr>`;
     return;
   }
   // El mejor día (más tareas terminadas) se destaca: ayuda a comparar
@@ -127,7 +143,7 @@ function pintarTabla(dias) {
     const tr = document.createElement('tr');
     if (d.hechas === mejor) {
       tr.className = 'mejor-dia';
-      tr.title = 'El día con más tareas terminadas';
+      tr.title = tx('mejorDia');
     }
     tr.innerHTML = `<td>${d.wip}</td><td>${d.hechas}</td><td>${formatoTiempo(d.tiempoPorTarea, true)}</td><td>${d.colillas}</td><td>${d.cafes ?? '–'}</td><td>${d.estresMax}%</td>`;
     const celda = document.createElement('td');
@@ -135,8 +151,8 @@ function pintarTabla(dias) {
     quitar.type = 'button';
     quitar.className = 'quitar-fila';
     quitar.textContent = '×';
-    quitar.title = 'Eliminar este día';
-    quitar.setAttribute('aria-label', `Eliminar el día ${i + 1} (WIP ${d.wip})`);
+    quitar.title = tx('quitarDia');
+    quitar.setAttribute('aria-label', tx('quitarDiaNombre', i + 1, d.wip));
     quitar.addEventListener('click', () => {
       const actuales = cargarDias();
       actuales.splice(i, 1);
@@ -160,16 +176,16 @@ elBtnBorrar.addEventListener('click', () => {
   if (esperandoConfirmacion) {
     clearTimeout(esperandoConfirmacion);
     esperandoConfirmacion = null;
-    elBtnBorrar.textContent = 'Borrar historial';
+    elBtnBorrar.textContent = tx('borrarHistorial');
     elBtnBorrar.classList.remove('confirmar');
     escribirDias([]);
     return;
   }
-  elBtnBorrar.textContent = '¿Seguro? Toca de nuevo';
+  elBtnBorrar.textContent = tx('confirmarBorrado');
   elBtnBorrar.classList.add('confirmar');
   esperandoConfirmacion = setTimeout(() => {
     esperandoConfirmacion = null;
-    elBtnBorrar.textContent = 'Borrar historial';
+    elBtnBorrar.textContent = tx('borrarHistorial');
     elBtnBorrar.classList.remove('confirmar');
   }, 3000);
 });
@@ -197,10 +213,10 @@ function pintarNotaWip(limite, enCurso) {
   const drenando = enCurso > limite;
   const carga = drenando ? enCurso : limite;
   const texto = drenando
-    ? `Terminando lo empezado: ${enCurso} en curso`
+    ? tx('notaTerminando', enCurso)
     : limite <= LIMITE_SANO
-      ? `Dentro del límite sostenible (${LIMITE_SANO})`
-      : `Sobre el límite sostenible (${LIMITE_SANO})`;
+      ? tx('notaDentro', LIMITE_SANO)
+      : tx('notaSobre', LIMITE_SANO);
   if (elWipNota.textContent !== texto) elWipNota.textContent = texto;
   elWipNota.dataset.carga = nivelCarga(carga);
 }
@@ -222,7 +238,7 @@ pintarWip();
 
 function alternarPausa() {
   pausado = !pausado;
-  elBtnPausa.textContent = pausado ? 'Reanudar' : 'Pausa';
+  elBtnPausa.textContent = tx(pausado ? 'reanudar' : 'pausa');
   elBtnPausa.classList.toggle('activo', pausado);
 }
 elBtnPausa.addEventListener('click', alternarPausa);
@@ -273,7 +289,7 @@ function refrescarUI(estado, cigarroEnMano) {
   // Tiempo por tarea: "–" hasta que termine la primera tarea del día
   elTiempo.textContent = formatoTiempo(estado.tiempoPorTarea);
   elEficiencia.textContent = formatoEficiencia(estado.eficiencia);
-  elEstres.textContent = estado.nivel.nombre;
+  elEstres.textContent = nombreNivel(estado.nivel.nombre);
   elEstres.style.color = estado.nivel.color;
   elBarraEstres.style.width = `${Math.round(estado.estres)}%`;
   elBarraEstres.style.background = estado.nivel.color;
@@ -301,7 +317,7 @@ function refrescarUI(estado, cigarroEnMano) {
   // Tarjeta "Estado de la mosca" (exhibición): nivel, barra de estrés y qué
   // está haciendo
   elExMosca.style.setProperty('--nivel', estado.nivel.color);
-  elExMoscaNivel.textContent = estado.nivel.nombre;
+  elExMoscaNivel.textContent = nombreNivel(estado.nivel.nombre);
   elExMoscaPct.textContent = `${Math.round(estado.estres)}%`;
   elExMoscaBarra.style.width = `${Math.round(estado.estres)}%`;
   elExMosca.classList.toggle('fin', estado.terminado);
@@ -318,7 +334,7 @@ function refrescarUI(estado, cigarroEnMano) {
             : 'Trabaja';
   if (elExMosca.dataset.hace !== queHace) {
     elExMosca.dataset.hace = queHace;
-    elExMoscaHace.textContent = QUE_HACE[queHace];
+    elExMoscaHace.textContent = tx('queHace')[queHace];
   }
   const velocidad = VELOCIDADES[indiceVelocidad];
   elExRitmo.hidden = velocidad === 1;
@@ -327,14 +343,14 @@ function refrescarUI(estado, cigarroEnMano) {
   elRotulo.dataset.estado = situacion;
   // Aviso de arriba: en vivo o en pausa, y si son pocas o muchas tareas a la
   // vez (el número está en la Carga)
-  elExInicioTipo.textContent = modoDemo ? 'Modo demo' : pausado ? 'En pausa' : 'En vivo';
+  elExInicioTipo.textContent = tx(modoDemo ? 'modoDemo' : pausado ? 'enPausa' : 'enVivo');
   const drenando = estado.enCurso > estado.wip && !estado.terminado;
   pintarNotaWip(estado.wip, estado.terminado ? 0 : estado.enCurso);
   const textoAviso = drenando
-    ? `Terminando lo empezado · nuevo límite ${estado.wip}`
+    ? tx('avisoTerminando', estado.wip)
     : estado.wip > LIMITE_SANO
-      ? 'Muchas tareas a la vez'
-      : 'Pocas tareas a la vez';
+      ? tx('muchasTareas')
+      : tx('pocasTareas');
   if (elExInicioTexto.textContent !== textoAviso) elExInicioTexto.textContent = textoAviso;
   elExInicio.dataset.carga = nivelCarga(drenando ? estado.enCurso : estado.wip);
   elExInicio.classList.toggle('oculto', estado.terminado);
@@ -381,7 +397,7 @@ const escribir = (el, texto) => {
   if (el.textContent !== texto) el.textContent = texto;
 };
 function pintarCifras(estado) {
-  escribir(elCifrasTitulo, estado.terminado ? 'Resumen del día' : 'Hoy en la oficina');
+  escribir(elCifrasTitulo, tx(estado.terminado ? 'resumenDelDia' : 'hoyEnLaOficina'));
   escribir(cifras.carga, String(estado.enCurso));
   elCifraCarga.dataset.carga = nivelCarga(estado.enCurso);
   segmentosCarga.forEach((s, i) => s.classList.toggle('lleno', i < estado.enCurso));
@@ -396,30 +412,40 @@ function pintarCifras(estado) {
 
 // Resumen del día en la exhibición: el día recién jugado y los anteriores
 // (los mismos de "Días jugados")
+let diasDelResumen = null; // los que muestra (para repintarlo en otro idioma)
 function llenarResumenDelDia() {
-  const dias = cargarDias();
+  diasDelResumen = cargarDias();
+  pintarResumen();
+  pintarSiguienteDia();
+}
+
+function pintarResumen() {
+  const dias = diasDelResumen;
   const actual = dias[dias.length - 1];
-  elExFinTitulo.textContent = `Fin del día con WIP ${actual.wip}`;
+  elExFinTitulo.textContent = tx('finDelDiaWip', actual.wip);
   elExFinFilas.innerHTML = '';
   dias.slice(-3).forEach((d, i, lista) => {
     const tr = document.createElement('tr');
     // La fila de hoy se marca para distinguirla de los días anteriores
     const hoy = i === lista.length - 1;
     if (hoy) tr.className = 'actual';
-    tr.innerHTML = `<th>WIP ${d.wip}${hoy ? ' <span class="fila-hoy">hoy</span>' : ''}</th><td>${d.hechas}</td><td>${formatoTiempo(d.tiempoPorTarea, true)}</td><td>${d.colillas}</td><td>${d.cafes ?? '–'}</td><td>${d.estresMax}%</td>`;
+    tr.innerHTML = `<th>WIP ${d.wip}${hoy ? ` <span class="fila-hoy">${tx('hoy')}</span>` : ''}</th><td>${d.hechas}</td><td>${formatoTiempo(d.tiempoPorTarea, true)}</td><td>${d.colillas}</td><td>${d.cafes ?? '–'}</td><td>${d.estresMax}%</td>`;
     elExFinFilas.appendChild(tr);
   });
-  pintarSiguienteDia();
 }
 
 function siguienteWipDemo() {
   return Number(elWip.value) > 3 ? WIP_DEMO.bajo : WIP_DEMO.alto;
 }
 
+// Lo que sigue (se recuerda lo último que dijo, para repintarlo en otro idioma)
+let siguientePintado = null;
 function pintarSiguienteDia() {
-  elExFinTexto.textContent = modoDemo
-    ? `Modo demo · sigue un día con WIP ${siguienteWipDemo()}…`
-    : 'R para jugar otro día · 1–9 cambia el WIP · D modo demo';
+  siguientePintado = modoDemo ? { demo: true, wip: siguienteWipDemo() } : { demo: false };
+  escribirSiguienteDia();
+}
+function escribirSiguienteDia() {
+  elExFinTexto.textContent = siguientePintado.demo ? tx('demoSigue', siguientePintado.wip) : tx('otroDia');
 }
 
 // ---------- Tamaño de los lienzos y encuadre ----------
@@ -800,18 +826,8 @@ window.addEventListener('mousemove', () => {
 let cerebro = null;
 const elActivas = document.getElementById('c-activas');
 const elFrase = document.getElementById('cerebro-frase');
-const FRASE = 'Neuronas reales de una mosca. Mientras más tareas tiene encima, más se enciende.';
-const FRASE_FIN = 'Día terminado: la mosca descansa y su cerebro se apaga.';
-// Lo que está haciendo la mosca, en palabras (tarjeta de la exhibición)
-const QUE_HACE = {
-  Trabaja: 'Trabajando en el kanban',
-  Fuma: 'Salió a fumar: pierde tiempo',
-  Café: 'Pausa sana: toma café',
-  Espera: 'Espera: sus tareas están bloqueadas',
-  'En pausa': 'Juego en pausa',
-  Descansa: 'Día terminado: descansa',
-};
-const formato = new Intl.NumberFormat('es-CL');
+// (la frase, la del día terminado y lo que está haciendo la mosca, en
+// palabras, están en src/juego-textos.js: frase, fraseFin y queHace)
 // Zonas: qué parte de las neuronas encendidas está en cada una (suman 100 %).
 // Durante el día, en vivo; al terminar, el promedio del día.
 const elZonasTitulo = document.getElementById('zonas-titulo');
@@ -829,9 +845,9 @@ cargarDatosCerebro()
       const li = document.createElement('li');
       li.className = 'grupo';
       li.style.setProperty('--c', GRUPOS_VISUALES[g.id].color);
-      li.innerHTML = `<span class="grupo-nombre"><span class="grupo-punto"></span>${g.nombre}</span><span class="grupo-valor">–</span><span class="grupo-barra"><span></span></span>`;
+      li.innerHTML = `<span class="grupo-nombre"><span class="grupo-punto"></span>${zona(g).nombre}</span><span class="grupo-valor">–</span><span class="grupo-barra"><span></span></span>`;
       elGrupos.appendChild(li);
-      filasGrupo[g.id] = { g, li, valor: li.querySelector('.grupo-valor'), barra: li.querySelector('.grupo-barra span') };
+      filasGrupo[g.id] = { g, li, nombre: li.querySelector('.grupo-nombre'), valor: li.querySelector('.grupo-valor'), barra: li.querySelector('.grupo-barra span') };
     });
   })
   .catch((err) => console.error('No se pudo cargar el cerebro', err));
@@ -890,8 +906,8 @@ function repartirCien(partes) {
 function pintarZonas(l, terminado) {
   const filas = Object.values(filasGrupo);
   if (!filas.length) return;
-  escribir(elZonasTitulo, terminado ? 'De dónde vino la actividad' : 'De dónde viene la actividad');
-  escribir(elZonasSub, terminado ? 'promedio del día' : '% de las neuronas encendidas');
+  escribir(elZonasTitulo, tx(terminado ? 'zonasDia' : 'zonasAhora'));
+  escribir(elZonasSub, tx(terminado ? 'zonasSubDia' : 'zonasSubAhora'));
   const hay = terminado ? encendidasDia > 0 : l.activas > 0;
   const partes = filas.map(({ g }) => {
     if (!hay) return 0;
@@ -902,11 +918,12 @@ function pintarZonas(l, terminado) {
     escribir(valor, hay ? `${enteros[i]}%` : '–');
     barra.style.width = `${(partes[i] * 100).toFixed(1)}%`;
     const z = l.porGrupo.find((x) => x.id === g.id);
+    const { nombre, detalle } = zona(g);
     li.title = !hay
-      ? `${g.nombre} (${g.detalle}): sin neuronas encendidas`
+      ? tx('zonaSinActividad', nombre, detalle)
       : terminado
-        ? `${g.nombre} (${g.detalle}): ${enteros[i]}% de las neuronas encendidas, en promedio durante el día`
-        : `${g.nombre} (${g.detalle}): ${formato.format(z.activas)} de las ${formato.format(l.activas)} neuronas encendidas`;
+        ? tx('zonaPromedio', nombre, detalle, enteros[i])
+        : tx('zonaAhora', nombre, detalle, miles.format(z.activas), miles.format(l.activas));
   });
 }
 // Botón "Centrar": vuelve a la vista inicial y a girar solo
@@ -933,10 +950,8 @@ function pintarBotonGiro() {
   giroPintado = girando;
   elBtnGirar.classList.toggle('detenido', !girando);
   elBtnGirar.setAttribute('aria-pressed', String(!girando));
-  elBtnGirarTexto.textContent = girando ? 'Detener' : 'Girar';
-  elBtnGirar.title = girando
-    ? 'Detener el giro del cerebro (también con un clic en el cerebro)'
-    : 'Volver a girar el cerebro (también con un clic en el cerebro)';
+  elBtnGirarTexto.textContent = tx(girando ? 'detener' : 'girar');
+  elBtnGirar.title = tx(girando ? 'detenerTitulo' : 'girarTitulo');
 }
 
 // ---------- "¿Es real?": qué es real y qué es juego, en pocas líneas ----------
@@ -970,28 +985,33 @@ const elFicha = document.getElementById('cerebro-ficha');
 const lienzoCerebro = document.getElementById('lienzo-cerebro');
 let fichaFija = null; // la que se dejó abierta con un clic
 const APODOS = { ANXXX462a: 'Clavicle', GNG197: 'FMIn', AN13B002: 'Dandelion', GNG108: 'Roundup', GNG120: 'Roundtree', GNG588: 'Fdg' };
-// [rol general, qué hace]
+// [rol general, qué hace] (las palabras, en src/juego-textos.js: roles)
 function rolGeneral(n) {
-  if (n.rol === 1) return ['Sensor', 'siente lo que mueve la antena.'];
-  if (n.rol === 2 || n.rol === 3) return ['Relevo', 'pasa la señal de la antena a otras neuronas.'];
-  if (n.rol === 4 || n.rol === 5) return ['Lleva órdenes al cuerpo', 'le manda una orden a las patas.'];
-  if (n.rol === 6) return ['Sensor', 'siente el dulce.'];
-  if (n.rol === 7) return ['Relevo', 'pasa la señal del dulce.'];
-  if (n.rol === 8) return ['Mueve un músculo', 'el de la trompita.'];
-  const s = n.superclase;
-  if (s === 'descending_neuron') return ['Lleva órdenes al cuerpo', 'conecta el cerebro con el cuerpo.'];
-  if (s === 'ascending_neuron') return ['Trae avisos del cuerpo', 'conecta el cuerpo con el cerebro.'];
-  if (s.endsWith('motor')) return ['Mueve un músculo', 'de una pata o del cuerpo.'];
-  if (s === 'vnc_intrinsic') return ['Coordina el cuerpo', 'parte del cordón nervioso.'];
-  if (s.includes('sensory')) return ['Sensor', 'trae información del cuerpo.'];
-  if (s.startsWith('ol_') || s.startsWith('visual')) return ['Visión', 'procesa lo que ve.'];
-  if (s === 'cb_intrinsic') return ['Procesa', 'junta información dentro del cerebro.'];
-  return ['Neurona', 'parte del sistema nervioso de la mosca.'];
+  return tx('roles')[claveRol(n)];
 }
+function claveRol(n) {
+  if (n.rol === 1) return 'antenaSensor';
+  if (n.rol === 2 || n.rol === 3) return 'antenaRelevo';
+  if (n.rol === 4 || n.rol === 5) return 'ordenPatas';
+  if (n.rol === 6) return 'dulceSensor';
+  if (n.rol === 7) return 'dulceRelevo';
+  if (n.rol === 8) return 'trompita';
+  const s = n.superclase;
+  if (s === 'descending_neuron') return 'baja';
+  if (s === 'ascending_neuron') return 'sube';
+  if (s.endsWith('motor')) return 'motora';
+  if (s === 'vnc_intrinsic') return 'cordon';
+  if (s.includes('sensory')) return 'sensor';
+  if (s.startsWith('ol_') || s.startsWith('visual')) return 'vision';
+  if (s === 'cb_intrinsic') return 'procesa';
+  return 'neurona';
+}
+let fichaNeurona = null; // la última que mostró (para repintarla en otro idioma)
 function escribirFicha(n) {
-  const nombre = n.tipo ? `${n.tipo}${APODOS[n.tipo] ? ` (${APODOS[n.tipo]})` : ''}` : 'Neurona sin nombre';
+  fichaNeurona = n;
+  const nombre = n.tipo ? `${n.tipo}${APODOS[n.tipo] ? ` (${APODOS[n.tipo]})` : ''}` : tx('neuronaSinNombre');
   const [rol, que] = rolGeneral(n);
-  const ahora = n.hz > 0 ? 'Encendida ahora' : 'En reposo ahora';
+  const ahora = tx(n.hz > 0 ? 'encendidaAhora' : 'enReposoAhora');
   const html = `<strong>${nombre}</strong><span class="ficha-linea"><b>${rol}:</b> ${que}</span><span class="ficha-linea ficha-suave">${ahora}</span>`;
   if (html === fichaEscrita) return;
   fichaEscrita = html;
@@ -1061,14 +1081,70 @@ function refrescarCerebro(dt, estado, cafeVisible, ahora) {
   if (vista === 'control' && cerebroOculto && factorIzq === 0) return;
   cerebro.renderizar();
   if (!toca) return;
-  const l = cerebro.lectura();
-  escribir(elActivas, formato.format(l.activas));
-  escribir(elFrase, estado.terminado ? FRASE_FIN : FRASE);
-  pintarZonas(l, estado.terminado);
+  const l = pintarLectura(estado);
   // El borde del panel también brilla más mientras más neuronas disparan
   elCerebro.style.setProperty('--actividad', l.intensidad.toFixed(3));
   // La tarjetita fija se mantiene al día (se enciende y se apaga)
   if (fichaFija) escribirFicha(cerebro.neurona(fichaFija.punto));
+}
+
+// Neuronas encendidas, la frase y las zonas (también al cambiar de idioma)
+function pintarLectura(estado) {
+  const l = cerebro.lectura();
+  escribir(elActivas, miles.format(l.activas));
+  escribir(elFrase, tx(estado.terminado ? 'fraseFin' : 'frase'));
+  pintarZonas(l, estado.terminado);
+  return l;
+}
+
+// ---------- Botón ES | EN: cambia el idioma sin reiniciar el día ----------
+// Hay dos: uno en la cabecera del cerebro y otro que aparece cuando ese panel
+// no está (cerebro oculto o exhibición). Hacen lo mismo y se ven iguales.
+const botonesIdioma = document.querySelectorAll('[data-idioma]');
+function pintarBotonesIdioma() {
+  for (const boton of botonesIdioma) boton.setAttribute('aria-pressed', String(boton.dataset.idioma === idioma));
+}
+pintarBotonesIdioma();
+for (const boton of botonesIdioma) boton.addEventListener('click', () => cambiarIdioma(boton.dataset.idioma));
+
+function cambiarIdioma(nuevo) {
+  if (nuevo === idioma || !['es', 'en'].includes(nuevo)) return;
+  elegirIdioma(nuevo);
+  idioma = nuevo;
+  ponerIdiomaJuego(nuevo);
+  miles = formatoNumero(nuevo);
+  traducirPagina(nuevo);
+  pintarBotonesIdioma();
+  repintarTextos();
+}
+
+// Todo lo que escribe el juego, de nuevo y en el idioma de ahora: la misma
+// partida (no cambia la hora, la pausa, el WIP ni el historial)
+function repintarTextos() {
+  pintarTabla(diasPintados);
+  elBtnBorrar.textContent = tx(esperandoConfirmacion ? 'confirmarBorrado' : 'borrarHistorial');
+  // (el botón dice lo que ya decía: "Reanudar" mientras está marcado)
+  elBtnPausa.textContent = tx(elBtnPausa.classList.contains('activo') ? 'reanudar' : 'pausa');
+  if (elExMosca.dataset.hace) elExMoscaHace.textContent = tx('queHace')[elExMosca.dataset.hace];
+  if (diasDelResumen?.length) pintarResumen();
+  if (siguientePintado) escribirSiguienteDia();
+  for (const { g, nombre } of Object.values(filasGrupo)) nombre.lastChild.nodeValue = zona(g).nombre;
+  if (cerebro) {
+    giroPintado = null;
+    pintarBotonGiro();
+    pintarLectura(juego.estado());
+    // la tarjetita de una neurona, si está a la vista (la fija se vuelve a
+    // ubicar: con otro largo podría salirse de la pantalla)
+    if (!elFicha.hidden) {
+      if (fichaFija) ponerFicha(cerebro.neurona(fichaFija.punto), fichaFija.x, fichaFija.y);
+      else if (fichaNeurona) escribirFicha(fichaNeurona);
+    }
+  }
+  graficoDia.refrescarTextos();
+  graficoDia.dibujar();
+  oficina.ponerTextos();
+  refrescarUI(juego.estado(), mosca.cigarroEnMano());
+  if (!elInfo.hidden) alternarInfo(true);
 }
 
 // ---------- Bucle principal (máximo 60 cuadros por segundo: fluido y sin calentar) ----------
@@ -1129,6 +1205,9 @@ function animar(ahora = performance.now()) {
 }
 
 animar();
+// El script del <head> esconde la página mientras se ponen los textos en
+// inglés; ya están (el primer cuadro se dibujó en su idioma)
+document.documentElement.classList.remove('traduciendo');
 
 if (import.meta.env.DEV) {
   window.__mosca = {
@@ -1189,6 +1268,10 @@ if (import.meta.env.DEV) {
       refrescarUI(estado, mosca.cigarroEnMano());
     },
     choques: (opciones) => revisarChoques(scene, opciones),
+    // Idioma: cuál está puesto y qué dicen los textos de la escena 3D (kanban,
+    // póster y post-its)
+    idioma: () => idioma,
+    textosEscena: () => oficina.textosEscena(),
     // Dónde está en pantalla una neurona del circuito (2 = aBN1, 4 = aDN1…)
     cerebroDonde: (rol) => cerebro?.dondeEsta(rol),
     vista: (v) => cambiarVista(v, true),

@@ -1,13 +1,15 @@
 import * as THREE from 'three';
+import { tx } from './juego-textos.js';
 
 const ANCHO = 1024;
 const ALTO = 620;
 const LIMITE_SANO = 3;
 
+// titulo: su texto en src/juego-textos.js (POR HACER / TO DO…)
 const COLUMNAS = [
-  { clave: 'porHacer', titulo: 'POR HACER', color: '#94a3b8', tarjeta: '#e2e8f0', barra: '#94a3b8' },
-  { clave: 'enCurso', titulo: 'EN CURSO', color: '#2f7de1', tarjeta: '#dbeafe', barra: '#2f7de1' },
-  { clave: 'hechas', titulo: 'HECHO', color: '#1f9d62', tarjeta: '#d7f2e3', barra: '#1f9d62' },
+  { clave: 'porHacer', titulo: 'porHacer', color: '#94a3b8', tarjeta: '#e2e8f0', barra: '#94a3b8' },
+  { clave: 'enCurso', titulo: 'enCurso', color: '#2f7de1', tarjeta: '#dbeafe', barra: '#2f7de1' },
+  { clave: 'hechas', titulo: 'hecho', color: '#1f9d62', tarjeta: '#d7f2e3', barra: '#1f9d62' },
 ];
 
 // Candado simple (tarea bloqueada esperando a otra persona)
@@ -51,7 +53,14 @@ export function crearTexturaKanban(anisotropia = 4) {
   return { canvas, ctx, textura };
 }
 
+// Devuelve los textos que escribió (las pruebas revisan que estén en el idioma
+// elegido)
 export function dibujarKanban(ctx, estado) {
+  const escritos = [];
+  const escribir = (texto, x, y) => {
+    escritos.push(texto);
+    ctx.fillText(texto, x, y);
+  };
   ctx.fillStyle = '#f4f6fa';
   ctx.fillRect(0, 0, ANCHO, ALTO);
 
@@ -61,11 +70,11 @@ export function dibujarKanban(ctx, estado) {
   ctx.font = 'bold 40px -apple-system, Helvetica, sans-serif';
   ctx.textAlign = 'left';
   ctx.textBaseline = 'middle';
-  ctx.fillText('TABLERO DEL DÍA', 34, 40);
+  escribir(tx('tablero'), 34, 40);
   ctx.textAlign = 'right';
   ctx.font = 'bold 38px -apple-system, Helvetica, sans-serif';
   ctx.fillStyle = '#9fb3cd';
-  ctx.fillText(estado.hora ?? '', ANCHO - 34, 40);
+  escribir(estado.hora ?? '', ANCHO - 34, 40);
 
   const margen = 24;
   const colW = (ANCHO - margen * 4) / 3;
@@ -79,7 +88,7 @@ export function dibujarKanban(ctx, estado) {
     const limite = estado.wip ?? Infinity;
     const sobreLimite = col.clave === 'enCurso' && cantidad > limite;
     const excedido = col.clave === 'enCurso' && (cantidad > LIMITE_SANO || sobreLimite);
-    const aviso = sobreLimite ? `SOBRE EL LÍMITE (${limite})` : excedido ? '¡WIP ALTO!' : null;
+    const aviso = sobreLimite ? tx('sobreLimite', limite) : excedido ? tx('wipAlto') : null;
 
     ctx.fillStyle = '#e8ecf3';
     rectRedondo(ctx, x, colY, colW, colH, 18);
@@ -91,18 +100,29 @@ export function dibujarKanban(ctx, estado) {
     ctx.fillRect(x, colY + 40, colW, 22);
 
     ctx.fillStyle = '#ffffff';
+    const titulo = tx(col.titulo);
+    const textoCantidad = sobreLimite ? `${cantidad} / ${limite}` : String(cantidad);
+    // El título se achica sólo si no deja lugar para el número ("10" a 32 px,
+    // o "10 / 2" a 26 px si bajaron el límite). Pasa con "IN PROGRESS" en
+    // inglés; en español todos caben y quedan a 34 px, como siempre.
+    ctx.font = `bold ${sobreLimite ? 26 : 32}px -apple-system, Helvetica, sans-serif`;
+    const reserva = ctx.measureText(sobreLimite ? textoCantidad : '10').width;
     ctx.font = 'bold 34px -apple-system, Helvetica, sans-serif';
+    let anchoTitulo = ctx.measureText(titulo).width;
+    const maximoTitulo = colW - 40 - 16 - reserva;
+    if (anchoTitulo > maximoTitulo) {
+      ctx.font = `bold ${Math.floor((34 * maximoTitulo) / anchoTitulo)}px -apple-system, Helvetica, sans-serif`;
+      anchoTitulo = ctx.measureText(titulo).width;
+    }
     ctx.textAlign = 'left';
-    ctx.fillText(col.titulo, x + 20, colY + 32);
+    escribir(titulo, x + 20, colY + 32);
     ctx.textAlign = 'right';
     // "10 / 2" no cabe al lado del título a 36 px: se achica lo justo
-    const anchoTitulo = ctx.measureText(col.titulo).width;
-    const textoCantidad = sobreLimite ? `${cantidad} / ${limite}` : String(cantidad);
     ctx.font = 'bold 36px -apple-system, Helvetica, sans-serif';
     const libre = colW - 40 - anchoTitulo - 16;
     const tamano = Math.min(36, Math.floor((36 * libre) / ctx.measureText(textoCantidad).width));
     ctx.font = `bold ${tamano}px -apple-system, Helvetica, sans-serif`;
-    ctx.fillText(textoCantidad, x + colW - 20, colY + 32);
+    escribir(textoCantidad, x + colW - 20, colY + 32);
 
     const altoTarjeta = 56;
     const sep = 12;
@@ -154,14 +174,15 @@ export function dibujarKanban(ctx, estado) {
       ctx.fillStyle = '#64748b';
       ctx.font = 'bold 26px -apple-system, Helvetica, sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText(`+${cantidad - visibles} más`, x + colW / 2, colY + colH - (aviso ? 62 : 26));
+      escribir(tx('masTarjetas', cantidad - visibles), x + colW / 2, colY + colH - (aviso ? 62 : 26));
     }
 
     if (aviso) {
       ctx.fillStyle = '#e03b3b';
       ctx.font = `bold ${sobreLimite ? 24 : 26}px -apple-system, Helvetica, sans-serif`;
       ctx.textAlign = 'center';
-      ctx.fillText(aviso, x + colW / 2, colY + colH - 24);
+      escribir(aviso, x + colW / 2, colY + colH - 24);
     }
   });
+  return escritos;
 }

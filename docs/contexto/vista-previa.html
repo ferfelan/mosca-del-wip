@@ -3,25 +3,72 @@
 <head>
 <meta charset="utf-8" />
 <title>Vista previa para compartir (1200 × 630)</title>
-<!-- Imagen que muestran LinkedIn y WhatsApp al pegar el enlace. Se captura con
-     agent-browser a 1200×630 y se guarda como public/img/vista-previa.jpg. -->
+<!-- Imagen que muestran LinkedIn y WhatsApp al pegar el enlace, con el estilo
+     de la portada nueva: de noche, el título y el cerebro del juego (las mismas
+     neuronas y la misma actividad simulada) con 9 tareas a la vez.
+     Se abre con el servidor de prueba encendido (npm run dev) y se guarda con
+     node scripts/vista-previa.mjs. La versión clara de la parte 5.1 sigue en
+     vista-previa-clara.html. -->
 <style>
+  @font-face {
+    font-family: 'Mona Sans';
+    src: url('/fonts/mona-sans-latin-wdth.woff2') format('woff2');
+    font-weight: 200 900;
+    font-stretch: 75% 125%;
+  }
   html, body { margin: 0; }
-  body { width: 1200px; height: 630px; overflow: hidden; position: relative; background: #fcfaf6; color: #1d2532; font-family: 'Avenir Next', 'Helvetica Neue', Helvetica, sans-serif; }
-  .texto { position: absolute; left: 76px; top: 0; bottom: 0; width: 620px; display: flex; flex-direction: column; justify-content: center; }
-  h1 { font-family: 'Iowan Old Style', Charter, Georgia, serif; font-weight: 700; font-size: 108px; line-height: 0.98; letter-spacing: -0.02em; margin: 0 0 28px; }
-  .lema { font-family: 'Iowan Old Style', Charter, Georgia, serif; font-weight: 700; font-size: 42px; line-height: 1.2; color: #2f7579; margin: 0 0 30px; max-width: 14ch; }
-  .sub { font-size: 25px; line-height: 1.35; color: #556070; margin: 0; max-width: 24ch; }
-  /* La ilustración (versión web, sin viñeta) llega hasta el borde derecho. */
-  .arte { position: absolute; right: 0; top: -58px; height: 790px; width: auto; }
+  body {
+    width: 1200px; height: 630px; overflow: hidden; position: relative;
+    background: #060a16; color: #eef1f8;
+    font-family: 'Mona Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* El cerebro, más grande que la imagen: se corta abajo y a la derecha y sus
+     bordes se funden con el fondo, como en la portada */
+  .cerebro {
+    position: absolute; left: 450px; top: 36px; width: 790px; height: 960px; display: block;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 14%, #000 100%), linear-gradient(to bottom, #000 52%, transparent 62%);
+    -webkit-mask-composite: source-in;
+  }
+  .texto { position: absolute; left: 84px; top: 0; bottom: 0; width: 600px; display: flex; flex-direction: column; justify-content: center; }
+  .marca { width: 56px; height: 56px; margin-bottom: 30px; }
+  h1 { font-size: 124px; font-weight: 800; font-stretch: 110%; line-height: 0.9; letter-spacing: -0.035em; margin: 0 0 34px; }
+  .lema { font-size: 38px; font-weight: 560; line-height: 1.2; letter-spacing: -0.012em; margin: 0 0 22px; max-width: 21ch; }
+  .sub { font-size: 25px; line-height: 1.4; color: #a9b1c4; margin: 0; }
 </style>
 </head>
 <body>
+  <canvas class="cerebro"></canvas>
   <div class="texto">
+    <img class="marca" src="/favicon.svg" alt="" />
     <h1>Mosca del WIP</h1>
     <p class="lema">Estar siempre ocupado no es lo mismo que avanzar.</p>
     <p class="sub">Un juego con el cerebro de una mosca real</p>
   </div>
-  <img class="arte" src="/img/portada-torre.svg" alt="" />
+  <script type="module">
+    import { cargarDatosCerebro, cargarActividadReal, crearCerebro } from '/src/cerebro.js';
+    // Para probar otro momento: ?t= segundos de giro (cambia el ángulo) y
+    // ?tareas= de 1 a 10
+    const pide = new URLSearchParams(location.search);
+    const segundos = Number(pide.get('t') ?? 6);
+    const tareas = Number(pide.get('tareas') ?? 9);
+    const lienzo = document.querySelector('.cerebro');
+    const datos = await cargarDatosCerebro();
+    const real = await cargarActividadReal(datos);
+    const cerebro = crearCerebro(lienzo, datos, real);
+    const paso = 1 / 60;
+    cerebro.renderizar();
+    for (let t = 0; t < segundos; t += paso) cerebro.actualizar(paso, { enCurso: tareas, cafe: false, apagado: false });
+    await document.fonts.ready;
+    // Unos cuadros más sin mover nada, para que el último quede en pantalla
+    let cuadros = 0;
+    const dibujar = () => {
+      cerebro.actualizar(0, { enCurso: tareas, cafe: false, apagado: false });
+      cerebro.renderizar();
+      if (++cuadros < 4) requestAnimationFrame(dibujar);
+      else document.body.dataset.listo = '1';
+    };
+    requestAnimationFrame(dibujar);
+  </script>
 </body>
 </html>

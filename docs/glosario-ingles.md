@@ -1,0 +1,178 @@
+# Glosario: el juego y la portada en inglés (2026-10-24)
+
+> Pedido de Felipe: "que esté en español o inglés, asegúrate que las
+> traducciones queden bien y en el juego igual. asegúrate que se vea bien".
+
+La portada y el juego se pueden ver en **español o en inglés**. Al llegar
+siempre parten en español; el botón **ES | EN** cambia el idioma y el
+navegador lo recuerda. En el juego el botón está en la cabecera del panel del
+cerebro (al lado de "Exhibición"); si ese panel está oculto, aparece bajo el
+botón "Cerebro", y en la Exhibición va al final de la barra de arriba. Cambiar
+de idioma **no reinicia el día**: la misma partida sigue igual, solo cambian
+las palabras (también las del kanban, el póster y los post-its).
+
+Este glosario junta las palabras que usamos en inglés, para que la portada y
+el juego digan lo mismo. Si quieres cambiar una palabra:
+
+- en el juego, está en `src/juego-textos.js` (español e inglés lado a lado);
+- en la portada, en `src/portada-textos.js`.
+
+## Cómo está escrito el inglés
+
+- Simple, cálido y corto, con la misma voz del informe. Nunca la palabra
+  "[…]". No agrega ni quita nada de lo que dice el español.
+- Inglés de Estados Unidos.
+- Los números son los mismos; cambia cómo se escriben: **15.9** y **1,328** en
+  inglés; **15,9** y **1.328** en español.
+- La hora va igual en los dos idiomas: **14:25**.
+- La mosca es "she" (ella).
+- Las letras de las teclas no cambian (E, B, C, R, D, 1–9). Solo cambia el
+  nombre de la barra espaciadora: "Espacio" → "Space".
+
+## 1. Palabras clave (portada y juego)
+
+| Español | Inglés |
+|---|---|
+| Mosca del WIP | Mosca del WIP (no se traduce) |
+| WIP | WIP |
+| trabajo en curso | work in progress |
+| tarea / tareas | task / tasks |
+| a la vez | at once |
+| Tareas en curso a la vez (WIP) | Tasks in progress at once (WIP) |
+| límite sostenible (3) | sustainable limit (3) |
+| Dentro del / Sobre el límite sostenible (3) | Within / Over the sustainable limit (3) |
+| terminadas (en el día) | finished (in the day) |
+| estrés al cerrar | stress at the end of the day |
+| Tranqui / Ocupada / Estresada / Colapsada | Calm / Busy / Stressed / Overwhelmed |
+| cigarros | cigarettes |
+| salir a fumar | go out for a smoke |
+| café | coffee |
+| Por hacer / En curso / Hecho | To do / In progress / Done |
+| Tablero del día | Today's board |
+| ¡WIP alto! | High WIP! |
+| +N más | +N more |
+| Días jugados | Days played |
+| neuronas encendidas | neurons firing |
+| en el juego / en la simulación | in the game / in the simulation |
+| Cerebro / Controles | Brain / Controls |
+| mosca de la fruta | fruit fly |
+| MaleCNS / Male CNS | MaleCNS / Male CNS (no se traduce; nunca FlyWire) |
+
+**Zonas del cerebro** (el detalle sale al pasar el mouse):
+
+| Español | Inglés |
+|---|---|
+| Visión (lóbulos ópticos) | Vision (optic lobes) |
+| Cerebro central (integra y decide) | Central brain (integrates and decides) |
+| Memoria (cuerpos fungiformes) | Memory (mushroom bodies) |
+| Mando (conecta cerebro y cuerpo) | Command (connects brain and body) |
+| Movimiento (cordón nervioso y motoras) | Movement (nerve cord and motor neurons) |
+| en reposo | at rest |
+
+## 2. En la pantalla del juego
+
+| Español | Inglés |
+|---|---|
+| Día de oficina · 09:00 a 18:00 | Office day · 09:00 to 18:00 |
+| Hora | Time |
+| Pausa / Reanudar | Pause / Resume |
+| Velocidad | Speed |
+| Reiniciar día | Restart day |
+| Terminadas | Finished |
+| Colillas (lo que fumó) | Cigarettes |
+| Cafés | Coffees |
+| Tiempo por tarea | Time per task |
+| Eficiencia · "26 min de cada hora" | Efficiency · "26 min of every hour" |
+| Estrés · Estrés máx. | Stress · Max stress |
+| últimos 5 | last 5 |
+| Juega un día completo para comparar | Play a full day to compare |
+| Borrar historial · ¿Seguro? Toca de nuevo | Clear history · Sure? Press again |
+| Números del juego. Que cada tarea tarde más tiene respaldo; el estrés es un supuesto nuestro. | Game numbers. That each task takes longer is backed by evidence; the stress is our assumption. |
+| Terminando lo empezado: 8 en curso | Finishing what's started: 8 in progress |
+| En vivo / En pausa / Modo demo | Live / Paused / Demo mode |
+| Muchas / Pocas tareas a la vez | Many / Few tasks at once |
+| Terminando lo empezado · nuevo límite 2 | Finishing what's started · new limit 2 |
+| Vista inicial | Reset view |
+| Exhibición (la vista para mostrar en grande) | Exhibition |
+| La misma partida, en grande | The same game, on the big screen |
+| Estado de la mosca | How the fly is doing |
+| Trabajando en el kanban | Working on the kanban |
+| Salió a fumar: pierde tiempo | Out for a smoke: losing time |
+| Pausa sana: toma café | Healthy break: having a coffee |
+| Espera: sus tareas están bloqueadas | Waiting: her tasks are blocked |
+| Juego en pausa | Game paused |
+| Día terminado: descansa | Day over: resting |
+| Día terminado | Day over |
+| Fin del día con WIP 9 · hoy | End of the day with WIP 9 · today |
+| R para jugar otro día · 1–9 cambia el WIP · D modo demo | R to play another day · 1–9 changes the WIP · D demo mode |
+| Modo demo · sigue un día con WIP 2… | Demo mode · next up: a day with WIP 2… |
+| Fin del día. Mira la tabla o reinicia para probar otro WIP. | End of the day. Check the table, or restart to try another WIP. |
+| Cerebro en vivo | Live brain |
+| Arriba el cerebro; abajo, el cordón nervioso | The brain on top; the nerve cord below |
+| Detener / Girar / Centrar | Stop / Rotate / Center |
+| Neuronas reales de una mosca. Mientras más tareas tiene encima, más se enciende. | Real neurons from a fly. The more tasks she has on her plate, the more her brain lights up. |
+| Día terminado: la mosca descansa y su cerebro se apaga. | Day over: the fly rests and her brain switches off. |
+| Hoy en la oficina / Resumen del día | Today at the office / Day summary |
+| Carga · "9 a la vez" · límite sostenible 3 | Workload · "9 at once" · sustainable limit 3 |
+| De dónde viene / vino la actividad | Where the activity comes / came from |
+| % de las neuronas encendidas · promedio del día | % of the neurons firing · average for the day |
+| Estrés del día | Stress during the day |
+| cigarro · café (leyenda del gráfico) | cigarette · coffee |
+| sale a fumar · toma café (al pasar el mouse) | out for a smoke · having coffee |
+| encendida · camino de la señal | firing · signal path |
+| ¿Es real? | Is it real? |
+| Las moscas no fuman: el cigarro es un disfraz. | Flies don't smoke: the cigarette is part of the costume. |
+| Datos: Male CNS v1.0 | Data: Male CNS v1.0 |
+
+**Tarjetita de una neurona** (al pasar el mouse por el cerebro):
+
+| Español | Inglés |
+|---|---|
+| Sensor · Relevo | Sensor · Relay |
+| Lleva órdenes al cuerpo | Carries orders to the body |
+| Trae avisos del cuerpo | Brings news from the body |
+| Mueve un músculo · el de la trompita | Moves a muscle · the one in the proboscis |
+| Coordina el cuerpo | Coordinates the body |
+| Visión · Procesa · Neurona | Vision · Processing · Neuron |
+| Neurona sin nombre | Unnamed neuron |
+| Encendida ahora / En reposo ahora | Firing now / At rest now |
+
+## 3. En la oficina 3D
+
+| Español | Inglés |
+|---|---|
+| TABLERO DEL DÍA | TODAY'S BOARD |
+| POR HACER / EN CURSO / HECHO | TO DO / IN PROGRESS / DONE |
+| ¡WIP ALTO! | HIGH WIP! |
+| SOBRE EL LÍMITE (2) | OVER THE LIMIT (2) |
+| +4 más | +4 more |
+| Póster: menos cosas a la vez / = más cosas listas | fewer things at once / = more things done |
+| Post-its: ¡urgente! cliente · revisar informe · reunión 11:00 · pagar facturas · llamar cliente · ¡hoy! · ¿y esto? · feedback equipo · presupuesto · deploy viernes · pendiente | urgent! client · review report · meeting 11:00 · pay invoices · call client · today! · and this? · team feedback · budget · deploy Friday · pending |
+
+"WIP ≤ 3 :)", "bug #42" y "ASAP" quedan iguales.
+
+En inglés, "IN PROGRESS" es más largo que "EN CURSO": en el kanban ese título
+se achica un poco solo cuando no deja espacio para el número. En español
+todo queda del mismo tamaño que antes.
+
+## 4. Lo que queda en español a propósito
+
+- **"Mosca del WIP"**: es el nombre del juego.
+- **El botón "ES"** se anuncia como "Español" (y "EN" como "English"): cada
+  idioma se nombra en su propio idioma, así lo encuentra quien lo habla.
+- **Un aviso interno** ("No se pudo cargar el cerebro") que solo se ve en la
+  consola del navegador si algo falla; el jugador no lo ve.
+
+## 5. Para revisar
+
+Con el juego encendido (`npm run dev`):
+
+```
+node scripts/probar-ingles.mjs
+```
+
+Abre el juego en inglés en tres pantallas (1280×720, 1440×900 y 1920×1080),
+juega parte del día y cambia de idioma ida y vuelta. Revisa que no quede
+nada en español, que nada se salga de su caja, que al volver a español todo
+diga exactamente lo mismo que antes y que el día no se reinicie. Debe decir
+"inglés: todo bien". Las capturas quedan en `capturas/ingles/`.
