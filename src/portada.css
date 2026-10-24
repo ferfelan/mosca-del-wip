@@ -1,182 +1,565 @@
-/* Portada de mosca.deliverycraft.ai (Etapa 5.1). Mismo estilo del informe
-   para compartir: tono papel, títulos en Iowan Old Style, texto en Avenir
-   Next, teal de énfasis y la ilustración "la mosca con su torre". Sin
-   tipografías externas ni pedidos a otros servidores. */
+/* Portada de mosca.deliverycraft.ai, versión 2 (parte 5.2b, 2026-10-24).
+   De noche, como el panel del cerebro del juego: el fondo es el mismo del
+   cerebro (#060a16), así el lienzo 3D se funde con la página. El color tiene
+   significado: los cinco neón son las zonas del cerebro (src/cerebro.js) y el
+   verde, amarillo, naranjo y rojo son los niveles del juego. Tipografía Mona
+   Sans (licencia OFL) guardada en public/fonts: ningún pedido a otro servidor. */
+@font-face {
+  font-family: 'Mona Sans';
+  src: url('/fonts/mona-sans-latin-wdth.woff2') format('woff2-variations'),
+    url('/fonts/mona-sans-latin-wdth.woff2') format('woff2');
+  font-weight: 200 900;
+  font-stretch: 75% 125%;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308,
+    U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 :root {
-  --papel: #fcfaf6;
-  --papel-2: #f3efe7;
-  --tinta: #1d2532;
-  --tinta-hover: #2b3648;
-  --texto: #2c3442;
-  --suave: #556070;
-  --linea: #e2ddd2;
-  --teal: #2f7579;
-  --tranqui: #4f9d6a;
-  --colapsada: #cc4a43;
-  --serif: 'Iowan Old Style', Charter, 'Palatino Linotype', Palatino, Georgia, serif;
-  --sans: 'Avenir Next', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  color-scheme: light;
+  --noche: #060a16;
+  --noche-2: #0b1124;
+  --noche-3: #141c35;
+  --borde: rgba(150, 175, 255, 0.12);
+  --borde-fuerte: rgba(170, 190, 255, 0.26);
+  --tinta: #eef1f8;
+  --suave: #a9b1c4;
+  --tenue: #7f889e;
+  --vision: #2fe3ff;
+  --central: #8b5cff;
+  --memoria: #ffd84d;
+  --mando: #ff4fd8;
+  --movimiento: #ff7f66;
+  --tranqui: #5cc483;
+  --ocupada: #e3b341;
+  --estresada: #f08a4b;
+  --colapsada: #f0675c;
+  --carga: var(--tranqui);
+  --nivel: var(--tranqui);
+  --fuente: 'Mona Sans', 'Avenir Next', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --ancho: 1280px;
+  --margen: clamp(20px, 4vw, 56px);
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
 
-html { background: var(--papel); }
+html { background: var(--noche); }
 
 body.portada {
   margin: 0;
-  background: var(--papel);
-  color: var(--texto);
-  font-family: var(--sans);
+  background: var(--noche);
+  color: var(--tinta);
+  font-family: var(--fuente);
   font-size: 18px;
-  line-height: 1.55;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
-main { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+main { overflow-x: clip; }
 
-a { color: var(--teal); text-decoration-thickness: 1px; text-underline-offset: 3px; }
-a:hover { color: var(--tinta); }
-a:focus-visible, .boton:focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; border-radius: 4px; }
+a { color: var(--tinta); text-decoration-color: rgba(238, 241, 248, 0.38); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { text-decoration-color: currentColor; }
+:focus-visible { outline: 3px solid var(--vision); outline-offset: 3px; border-radius: 8px; }
 
-h1, h2, .lema, .barra-valor { font-family: var(--serif); color: var(--tinta); font-weight: 700; }
-
-/* ---------- Hero ---------- */
-.hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 440px);
-  gap: 56px;
-  align-items: center;
-  padding: 56px 0 44px;
+p { margin: 0; }
+.nota { font-size: 14.5px; line-height: 1.5; color: var(--tenue); }
+.solo-celular { display: none; }
+.solo-lector {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
-h1 {
-  font-size: clamp(44px, 6vw, 74px);
-  line-height: 1.02;
-  letter-spacing: -0.015em;
-  margin: 0 0 20px;
-}
-.lema {
-  font-size: clamp(21px, 2.2vw, 27px);
-  line-height: 1.3;
-  color: var(--teal);
-  margin: 0 0 22px;
-  max-width: 22ch;
-}
-.que-es { max-width: 52ch; margin: 0 0 30px; }
 
-.acciones { display: flex; flex-wrap: wrap; gap: 12px 14px; align-items: center; }
+/* ---------- Botones ---------- */
+.acciones { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 .boton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: 52px;
   padding: 0 26px;
-  border-radius: 10px;
-  border: 1.5px solid var(--tinta);
+  border-radius: 999px;
+  border: 1px solid var(--borde-fuerte);
+  background: rgba(255, 255, 255, 0.03);
   color: var(--tinta);
-  background: transparent;
-  text-decoration: none;
+  font-family: inherit;
+  font-size: 16.5px;
   font-weight: 600;
-  font-size: 17.5px;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  text-decoration: none;
+  transition: background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
 }
-.boton:hover { background: var(--papel-2); color: var(--tinta); }
-.boton.principal { background: var(--tinta); color: var(--papel); padding: 0 40px; font-size: 19px; }
-.boton.principal:hover { background: var(--tinta-hover); color: var(--papel); }
-.nota { font-size: 14.5px; color: var(--suave); margin: 14px 0 0; }
+.boton:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(200, 215, 255, 0.45); }
+.boton.principal { background: var(--tinta); border-color: transparent; color: var(--noche); padding: 0 36px; font-size: 17px; font-weight: 650; }
+.boton.principal:hover { background: #fff; box-shadow: 0 0 0 5px rgba(238, 241, 248, 0.14); }
 
-/* La ilustración es la portada del informe (hoja vertical con aire arriba para
-   el título), en su versión para la web: sin viñeta de fondo y con el piso
-   desvanecido en los costados (scripts/portada-svg-web.mjs), así se funde con
-   el papel de la página. Aquí se recorta el aire de arriba: se ve desde la taza
-   de café hasta el piso, con object-fit. */
-.hero-arte { margin: 0; justify-self: end; width: 100%; }
-.hero-arte img { display: block; width: 100%; height: auto; aspect-ratio: 840 / 900; object-fit: cover; object-position: 50% 80%; }
+/* ---------- Hero: el texto a la izquierda, el cerebro y la prueba a la derecha ---------- */
+.hero {
+  max-width: var(--ancho);
+  margin: 0 auto;
+  padding: 0 var(--margen);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  column-gap: clamp(24px, 4vw, 72px);
+  min-height: clamp(700px, 100svh, 1000px);
+}
+.hero-texto { align-self: center; padding: 64px 0 72px; }
+h1 {
+  font-size: clamp(56px, 7.6vw, 116px);
+  font-weight: 800;
+  font-stretch: 110%;
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+  margin: 0 0 30px;
+  text-wrap: balance;
+}
+.lema {
+  font-size: clamp(22px, 2.2vw, 30px);
+  font-weight: 560;
+  line-height: 1.22;
+  letter-spacing: -0.012em;
+  max-width: 21ch;
+  margin-bottom: 20px;
+  text-wrap: balance;
+}
+.que-es { color: var(--suave); max-width: 44ch; margin-bottom: 34px; }
+.hero-texto .nota { margin-top: 16px; }
 
-.solo-celular { display: none; }
+.laboratorio {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 28px 0 40px;
+}
+
+/* El lienzo se funde con la página: mismo fondo y bordes que se desvanecen. */
+.cerebro {
+  position: absolute;
+  top: 0;
+  bottom: 150px;
+  left: -32px;
+  right: calc(-1 * (var(--margen) + max(0px, (100vw - var(--ancho)) / 2)));
+}
+.cerebro-lienzo,
+.cerebro-foto {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent),
+    linear-gradient(to bottom, transparent, #000 7%, #000 88%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent),
+    linear-gradient(to bottom, transparent, #000 7%, #000 88%, transparent);
+  mask-composite: intersect;
+}
+.cerebro-foto { object-fit: contain; transition: opacity 0.8s ease; }
+.cerebro-lienzo { opacity: 0; transition: opacity 0.8s ease; touch-action: pan-y; }
+.cerebro.vivo .cerebro-lienzo { opacity: 1; }
+.cerebro.vivo .cerebro-foto { opacity: 0; }
+@media (pointer: fine) {
+  .cerebro-lienzo { cursor: grab; }
+  .cerebro-lienzo:active { cursor: grabbing; }
+}
+@media (pointer: coarse) {
+  .cerebro-lienzo { pointer-events: none; }
+}
+
+.cerebro-cuenta {
+  position: absolute;
+  left: 32px;
+  top: 28px;
+  max-width: 12em;
+  pointer-events: none;
+  font-size: 15px;
+  line-height: 1.35;
+  color: var(--suave);
+  text-shadow: 0 0 14px var(--noche), 0 0 4px var(--noche);
+}
+.cerebro-cuenta .cifra {
+  display: block;
+  font-size: 34px;
+  font-weight: 740;
+  font-stretch: 105%;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--tinta);
+}
+.origen { color: var(--tenue); }
+.consola-frase { font-size: 14px; line-height: 1.45; color: var(--tenue); margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--borde); }
+
+/* ---------- La consola: cuántas tareas a la vez ---------- */
+.consola {
+  position: relative;
+  z-index: 2;
+  padding: 18px 22px 16px;
+  border-radius: 22px;
+  border: 1px solid var(--borde);
+  background: rgba(11, 17, 36, 0.74);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  backdrop-filter: blur(14px) saturate(1.15);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+.consola-cabeza { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 16px; }
+.consola-cabeza label { font-size: 15.5px; font-weight: 600; color: var(--tinta); }
+.wip-numero {
+  grid-row: span 2;
+  font-size: 42px;
+  font-weight: 760;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--carga);
+  transition: color 0.25s ease;
+}
+
+/* El riel lleva los tres colores del juego para la carga: verde hasta 3,
+   amarillo con 4 y 5, rojo desde 6. Lo que queda a la derecha del punto se
+   apaga. --v es el número elegido (lo pone portada.js). */
+.wip {
+  --v: 2;
+  --pos: calc((var(--v) - 1) / 9 * 100%);
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 30px;
+  margin: 8px 0 0;
+  background: transparent;
+  cursor: pointer;
+}
+.wip::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background:
+    linear-gradient(to right, transparent var(--pos), rgba(6, 10, 22, 0.66) var(--pos)),
+    linear-gradient(to right, var(--tranqui) 0 27.8%, var(--ocupada) 27.8% 50%, var(--colapsada) 50% 100%);
+}
+.wip::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background:
+    linear-gradient(to right, transparent var(--pos), rgba(6, 10, 22, 0.66) var(--pos)),
+    linear-gradient(to right, var(--tranqui) 0 27.8%, var(--ocupada) 27.8% 50%, var(--colapsada) 50% 100%);
+}
+.wip::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  margin-top: -9px;
+  border-radius: 50%;
+  background: var(--tinta);
+  border: 4px solid var(--carga);
+  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.06), 0 0 22px var(--carga);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.wip::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--tinta);
+  border: 4px solid var(--carga);
+  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.06), 0 0 22px var(--carga);
+}
+.wip:focus-visible { outline: none; }
+.wip:focus-visible::-webkit-slider-thumb { outline: 3px solid var(--vision); outline-offset: 3px; }
+.wip:focus-visible::-moz-range-thumb { outline: 3px solid var(--vision); outline-offset: 3px; }
+
+.marcas {
+  position: relative;
+  height: 18px;
+  font-size: 12.5px;
+  line-height: 18px;
+  color: var(--tenue);
+}
+/* Cada número justo bajo su punto del riel: el centro del punto (24 px) va
+   de 12 px a 12 px del final. */
+.marcas span { position: absolute; top: 0; left: calc(12px + var(--i) * (100% - 24px) / 9); transform: translateX(-50%); }
+.marcas span:nth-child(2) { --i: 1; }
+.marcas span:nth-child(3) { --i: 2; }
+.marcas span:nth-child(4) { --i: 3; }
+.marcas span:nth-child(5) { --i: 4; }
+.marcas span:nth-child(6) { --i: 5; }
+.marcas span:nth-child(7) { --i: 6; }
+.marcas span:nth-child(8) { --i: 7; }
+.marcas span:nth-child(9) { --i: 8; }
+.marcas span:nth-child(10) { --i: 9; }
+.marcas span:first-child { --i: 0; }
+.marcas .limite { color: var(--tranqui); font-weight: 650; }
+.wip-limite { margin-top: 2px; font-size: 14px; font-weight: 550; color: var(--carga); transition: color 0.25s ease; }
+
+.consola-datos {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 14px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--borde);
+}
+.dato { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 2px; min-width: 0; }
+.dato dt { font-size: 13.5px; line-height: 1.3; color: var(--tenue); }
+.dato dd {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 720;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+}
+.dato dd.nivel { color: var(--nivel); transition: color 0.25s ease; }
+.consola-nota { margin-top: 12px; font-size: 13.5px; }
 
 /* ---------- Secciones ---------- */
-section { padding: 48px 0; border-top: 1px solid var(--linea); }
-h2 { font-size: 28px; line-height: 1.2; margin: 0 0 14px; }
-section p { margin: 0 0 12px; max-width: 60ch; }
-section p:last-child { margin-bottom: 0; }
+.juego,
+.credito,
+.informe,
+.cierre {
+  max-width: var(--ancho);
+  margin: 0 auto;
+  padding: clamp(72px, 9vw, 132px) var(--margen) 0;
+}
+h2 {
+  font-size: clamp(32px, 3.6vw, 50px);
+  font-weight: 760;
+  font-stretch: 106%;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  margin: 0 0 18px;
+  text-wrap: balance;
+}
+h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px; }
 
-/* Resultado: texto a la izquierda, dos barras a la derecha */
-.resultado {
+/* Lo que muestra el juego: el video y, al lado, la columna "Hecho" de cada día */
+.juego {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 48px;
+  grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
+  grid-template-areas:
+    'texto texto'
+    'pantalla hecho'
+    'pie nota';
+  column-gap: clamp(20px, 3vw, 40px);
+}
+.juego-texto { grid-area: texto; max-width: 40em; margin-bottom: 40px; }
+.juego-texto p { color: var(--suave); font-size: 19px; }
+.pantalla { margin: 0; display: contents; }
+.pantalla-marco {
+  grid-area: pantalla;
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #0c1120;
+  border: 1px solid var(--borde-fuerte);
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.55), 0 0 0 6px rgba(255, 255, 255, 0.025);
+}
+.pantalla video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.pantalla figcaption { grid-area: pie; margin-top: 14px; font-size: 14.5px; color: var(--tenue); }
+.pantalla-estado {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 7px 15px 7px 13px;
+  border-radius: 999px;
+  background: rgba(10, 14, 28, 0.84);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 13.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.pantalla-estado span { display: inline-flex; align-items: center; gap: 8px; }
+.pantalla-estado span::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; box-shadow: 0 0 10px currentColor; }
+.estado-pocas { color: var(--tranqui); }
+.estado-muchas { color: var(--colapsada); }
+.pantalla-estado .estado-muchas { display: none; }
+.juego[data-fase='muchas'] .pantalla-estado .estado-pocas { display: none; }
+.juego[data-fase='muchas'] .pantalla-estado .estado-muchas { display: inline-flex; }
+
+.hecho { grid-area: hecho; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.columna {
+  --col: var(--tranqui);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 14px 14px;
+  border-radius: 16px;
+  border: 1px solid var(--borde);
+  background: var(--noche-2);
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+.columna.muchas { --col: var(--colapsada); }
+.juego[data-fase='pocas'] .columna.pocas,
+.juego[data-fase='muchas'] .columna.muchas {
+  border-color: color-mix(in srgb, var(--col) 55%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--col) 25%, transparent), 0 0 34px color-mix(in srgb, var(--col) 14%, transparent);
+}
+.columna-titulo { font-size: 14px; font-weight: 600; color: var(--suave); }
+.tarjetas { flex: 1 1 auto; display: flex; flex-direction: column-reverse; justify-content: flex-start; gap: 4px; min-height: 0; }
+.tarjetas i {
+  display: block;
+  flex: 0 1 11px;
+  min-height: 6px;
+  border-radius: 3px;
+  background: var(--col);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+.tarjetas i.falta { background: transparent; box-shadow: none; border: 1px dashed color-mix(in srgb, var(--col) 50%, transparent); }
+.columna-total { font-size: 14.5px; color: var(--suave); line-height: 1.3; }
+.columna-total .cifra { display: block; font-size: 38px; font-weight: 760; letter-spacing: -0.02em; line-height: 1.05; color: var(--col); }
+.hecho-nota { grid-area: nota; margin-top: 14px; }
+
+.celular-aviso { margin-top: 28px; }
+
+/* Por dentro: el crédito de MaleCNS y los colores del cerebro */
+.credito {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  column-gap: clamp(24px, 5vw, 80px);
+  align-items: start;
+}
+.credito h2 { grid-column: 1 / -1; max-width: 16em; }
+.credito-texto p { color: var(--suave); max-width: 62ch; }
+.credito-texto p + p { margin-top: 14px; }
+.zonas { padding: 20px 22px; border-radius: 18px; border: 1px solid var(--borde); background: var(--noche-2); }
+.zonas-titulo { font-size: 14px; font-weight: 600; color: var(--suave); margin-bottom: 12px; }
+.zonas ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; }
+.zonas li { display: flex; align-items: center; gap: 10px; font-size: 15.5px; }
+.zonas li::before { content: ''; flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--zona); box-shadow: 0 0 12px var(--zona); }
+.zonas li.reposo { color: var(--tenue); }
+.zonas li.reposo::before { box-shadow: none; }
+
+/* El informe: su tapa (la mosca con su torre) y el botón */
+.informe {
+  display: grid;
+  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  column-gap: clamp(32px, 6vw, 96px);
   align-items: center;
 }
-.resultado-texto p { max-width: 46ch; }
-.barras { display: grid; gap: 22px; }
-.barra {
-  display: grid;
-  grid-template-columns: minmax(8.5em, auto) minmax(0, 1fr) auto;
-  gap: 14px;
-  align-items: center;
+.tapa { display: block; perspective: 1400px; }
+.tapa img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  transform: rotateY(16deg) rotateX(3deg);
+  transform-origin: 30% 50%;
+  box-shadow: -24px 34px 70px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  transition: transform 0.5s ease;
 }
-.barra-nombre { font-size: 15.5px; color: var(--suave); }
-.barra-pista { display: block; height: 22px; background: var(--papel-2); border-radius: 4px; overflow: hidden; }
-.barra-relleno { display: block; height: 100%; width: var(--v); border-radius: 0 4px 4px 0; }
-.barra-relleno.tranqui { background: var(--tranqui); }
-.barra-relleno.colapsada { background: var(--colapsada); }
-.barra-valor { font-size: 23px; line-height: 1; white-space: nowrap; }
+.tapa:hover img { transform: rotateY(6deg) rotateX(1deg); }
+.informe-texto p { color: var(--suave); max-width: 42ch; }
+.informe-texto .acciones { margin-top: 30px; }
+.informe-texto .nota { margin-top: 14px; }
 
-/* Crédito */
-.credito p { font-size: 16.5px; color: var(--suave); max-width: 72ch; }
+/* Cierre: la respuesta del proyecto */
+.cierre { text-align: center; padding-bottom: clamp(72px, 9vw, 128px); }
+.cierre-frase {
+  font-size: clamp(34px, 5.2vw, 68px);
+  font-weight: 780;
+  font-stretch: 106%;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  max-width: 15ch;
+  margin: 0 auto 36px;
+  text-wrap: balance;
+}
+.cierre .acciones { justify-content: center; }
 
 /* ---------- Pie ---------- */
 .pie {
-  max-width: 1120px;
+  max-width: var(--ancho);
   margin: 0 auto;
-  padding: 26px 24px 44px;
-  border-top: 1px solid var(--linea);
+  padding: 28px var(--margen) 44px;
+  /* La línea de arriba va al ancho del contenido, no de borde a borde */
+  background: linear-gradient(var(--borde), var(--borde)) center top / calc(100% - 2 * var(--margen)) 1px no-repeat;
   display: flex;
   justify-content: space-between;
-  gap: 16px;
+  gap: 8px 24px;
   flex-wrap: wrap;
-  font-size: 15px;
-  color: var(--suave);
+  font-size: 14.5px;
+  color: var(--tenue);
 }
 .pie p { margin: 0; }
+.pie a { color: var(--suave); }
 
-/* ---------- Celular y pantallas angostas ---------- */
+/* ---------- Pantallas angostas y celular ---------- */
 @media (max-width: 899px) {
   body.portada { font-size: 17px; }
-  main { padding: 0 20px; }
-  .hero { grid-template-columns: 1fr; gap: 22px; padding: 28px 0 12px; }
-  h1 { font-size: 46px; margin-bottom: 12px; }
-  .lema { font-size: 22px; max-width: none; margin-bottom: 14px; }
-  .que-es { margin-bottom: 22px; }
-  /* En celular el botón del informe es el principal (el juego no se juega bien
-     ahí) y va justo después de la presentación; "Jugar igual" queda más abajo. */
+  .hero { grid-template-columns: 1fr; min-height: 0; }
+  .hero-texto { padding: 40px 0 0; }
+  h1 { font-size: clamp(50px, 14vw, 76px); margin-bottom: 20px; }
+  .lema { font-size: 23px; max-width: none; }
+  .que-es { margin-bottom: 24px; }
+  /* En celular el botón del informe es el principal (el juego no se juega
+     bien ahí) y va justo después de la presentación. */
   .hero .acciones { display: block; }
-  .hero .boton { width: 100%; background: var(--tinta); color: var(--papel); font-size: 18px; }
-  .hero .boton:hover { background: var(--tinta-hover); color: var(--papel); }
-  /* La ilustración pasa debajo del botón, a todo el ancho y centrada. */
-  .hero-arte { justify-self: center; width: 100%; max-width: 440px; margin-top: 0; }
-  /* En celular se recorta más aire de arriba (desde el vapor del café), para
-     que no quede un hueco grande entre "Gratis y sin registro" y el dibujo. */
-  .hero-arte img { aspect-ratio: 840 / 760; object-position: 50% 79%; }
+  .hero .boton { width: 100%; background: var(--tinta); color: var(--noche); border-color: transparent; font-size: 17px; }
+  .hero .boton:hover { background: #fff; }
   .solo-computador { display: none !important; }
   .solo-celular { display: block; }
 
-  .celular { padding: 28px 0; }
-  .tele { margin: 18px 0 20px; background: var(--tinta); border-radius: 14px; padding: 10px; }
-  .tele video { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 8px; background: #0b0f16; }
-  .tele figcaption { color: #cfd6e0; font-size: 14px; padding: 10px 6px 2px; }
-  .celular .acciones { gap: 10px 18px; }
-  .enlace-jugar { display: inline-flex; align-items: center; min-height: 44px; padding: 0 6px; font-weight: 600; }
+  .laboratorio { padding: 8px 0 0; }
+  .cerebro { position: relative; inset: auto; height: min(118vw, 580px); margin: 0 calc(-1 * var(--margen)); }
+  .cerebro-cuenta { left: var(--margen); top: 8px; max-width: 9em; font-size: 13.5px; }
+  .cerebro-cuenta .cifra { font-size: 28px; }
+  .consola { margin-top: -40px; padding: 18px 18px 16px; border-radius: 20px; }
+  .wip-numero { font-size: 38px; }
+  .consola-datos { grid-template-columns: 1fr; gap: 10px; }
+  .dato { flex-direction: row; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .dato dt { font-size: 14.5px; }
+  .dato dd { font-size: 22px; }
 
-  section { padding: 32px 0; }
-  h2 { font-size: 25px; }
-  .resultado { grid-template-columns: 1fr; gap: 22px; }
-  .barra { grid-template-columns: 1fr; gap: 6px; }
-  .barra-valor { font-size: 22px; }
-  .pie { flex-direction: column; gap: 6px; padding: 22px 20px 40px; }
+  .juego,
+  .credito,
+  .informe,
+  .cierre { padding-top: 64px; }
+  .juego { grid-template-columns: 1fr; grid-template-areas: 'texto' 'pantalla' 'pie' 'hecho' 'nota'; }
+  .juego-texto { margin-bottom: 24px; }
+  .juego-texto p { font-size: 17px; }
+  .pantalla-marco { border-radius: 14px; }
+  .pantalla-estado { top: 10px; font-size: 12.5px; padding: 5px 12px 5px 10px; }
+  .pantalla figcaption { margin: 10px 0 24px; }
+  .tarjetas i { flex-basis: 10px; }
+  .enlace-jugar { display: inline-flex; align-items: center; min-height: 44px; margin-top: 4px; font-weight: 650; }
+
+  .credito { grid-template-columns: 1fr; }
+  .zonas { margin-top: 24px; }
+
+  .informe { grid-template-columns: 1fr; }
+  .tapa { width: min(64vw, 260px); margin: 0 auto 36px; }
+  .tapa img { transform: rotateY(10deg) rotateX(2deg); }
+  .informe-texto .acciones { display: block; }
+  .informe-texto .boton { width: 100%; }
+
+  /* En celular el cierre solo repetiría el botón del informe, que está justo arriba. */
+  .cierre .acciones { display: none; }
+  .cierre-frase { margin-bottom: 0; }
+  .pie { flex-direction: column; padding: 24px var(--margen) 40px; }
+}
+
+/* Pantallas de computador bajas (proyector de 1280 × 720, ventanas chicas):
+   todo un poco más compacto para que el cerebro tenga lugar. */
+@media (min-width: 900px) and (max-height: 820px) {
+  .hero { min-height: max(100svh, 680px); }
+  .hero-texto { padding: 40px 0 48px; }
+  h1 { font-size: clamp(52px, 6.6vw, 100px); margin-bottom: 22px; }
+  .que-es { margin-bottom: 28px; }
+  .laboratorio { padding: 20px 0 28px; }
+  .cerebro { bottom: 120px; }
+  .consola { padding: 14px 20px 12px; }
+  .consola-frase { display: none; }
+  .wip-numero { font-size: 36px; }
+  .consola-datos { margin-top: 10px; padding-top: 10px; }
+  .dato dd { font-size: 24px; }
+  .consola-nota { margin-top: 8px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .boton { transition: none; }
+  *, *::before, *::after { transition: none !important; }
+  .tapa:hover img { transform: rotateY(16deg) rotateX(3deg); }
 }

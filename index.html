@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mosca del WIP</title>
     <meta name="description" content="Un juego con el cerebro de una mosca real para ver qué pasa cuando tienes demasiadas cosas abiertas a la vez. Estar siempre ocupado no es lo mismo que avanzar." />
-    <meta name="theme-color" content="#fcfaf6" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#060a16" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
     <link rel="canonical" href="https://mosca.deliverycraft.ai/" />
 
     <!-- Vista previa al compartir el enlace (LinkedIn, WhatsApp) -->
@@ -25,6 +26,8 @@
     <meta name="twitter:description" content="Un juego con el cerebro de una mosca real para ver qué pasa cuando tienes demasiadas cosas abiertas a la vez." />
     <meta name="twitter:image" content="https://mosca.deliverycraft.ai/img/vista-previa.jpg" />
 
+    <!-- La tipografía vive en el mismo sitio (no se pide a otro servidor) -->
+    <link rel="preload" href="/fonts/mona-sans-latin-wdth.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="/src/portada.css" />
     <script type="module" src="/src/portada.js"></script>
     <script type="module" src="/src/visitas.js"></script>
@@ -46,64 +49,134 @@
           </div>
           <p class="nota">Gratis y sin registro.</p>
         </div>
-        <figure class="hero-arte">
-          <img src="/img/portada-torre.svg" width="840" height="1188" alt="Una mosca con corbata y una gota de sudor carga una torre de carpetas que se inclina y suelta hojas. En el suelo hay una sola carpeta terminada." />
-        </figure>
+
+        <!-- El cerebro del juego (las mismas neuronas y la misma actividad
+             simulada) y una prueba rápida: cuántas tareas a la vez. -->
+        <div class="laboratorio">
+          <div class="cerebro" data-tareas="2">
+            <img class="cerebro-foto" src="/img/cerebro-portada.jpg" width="1000" height="1018" alt="" aria-hidden="true" decoding="async" />
+            <canvas class="cerebro-lienzo" aria-hidden="true"></canvas>
+            <p class="cerebro-cuenta"><span class="cifra" data-neuronas>423</span> neuronas encendidas <span class="origen">en la simulación</span></p>
+          </div>
+
+          <div class="consola" role="group" aria-labelledby="t-wip">
+            <p class="consola-frase">Neuronas reales de una mosca. Mientras más tareas tiene encima, más se enciende.</p>
+            <div class="consola-control">
+              <div class="consola-cabeza">
+                <label id="t-wip" for="wip">Tareas en curso a la vez (WIP)</label>
+                <output class="wip-numero" for="wip" data-wip>2</output>
+                <p class="wip-limite" data-limite>Dentro del límite sostenible (3)</p>
+              </div>
+              <input id="wip" class="wip" type="range" min="1" max="10" step="1" value="2" aria-valuetext="2 tareas a la vez" />
+              <div class="marcas" aria-hidden="true"><span>1</span><span>2</span><span class="limite">3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+            </div>
+            <dl class="consola-datos">
+              <div class="dato"><dt>terminadas en el día</dt><dd data-terminadas>18,0</dd></div>
+              <div class="dato"><dt>estrés al cerrar</dt><dd class="nivel" data-estres>Tranqui</dd></div>
+              <div class="dato"><dt>cigarros</dt><dd data-cigarros>0</dd></div>
+            </dl>
+            <p class="nota consola-nota">Promedio de 200 días jugados. Son números del juego, no de personas.</p>
+            <p class="solo-lector" aria-live="polite" data-resumen></p>
+          </div>
+        </div>
       </header>
 
-      <section class="celular solo-celular" aria-labelledby="t-celular">
-        <h2 id="t-celular">Se ve mejor en computador</h2>
-        <p>
-          El juego es en 3D y está hecho para una pantalla ancha. En el celular, los paneles
-          tapan la oficina. Así se ve:
-        </p>
-        <figure class="tele">
-          <video muted loop playsinline preload="none" poster="/video/clip-celular.jpg" data-src="/video/clip-celular.mp4" aria-label="La mosca en su oficina: primero con 2 tareas a la vez, tranquila; después con 9, estresada y fumando."></video>
-          <figcaption>Primero con 2 tareas a la vez. Después con 9.</figcaption>
-        </figure>
-        <div class="acciones">
-          <a class="enlace-jugar" href="/jugar/">Jugar igual</a>
-        </div>
-        <p class="nota">Si lo intentas, gira el celular.</p>
-      </section>
-
-      <section class="resultado" aria-labelledby="t-resultado">
-        <div class="resultado-texto">
-          <h2 id="t-resultado">Lo que muestra el juego</h2>
+      <section class="juego" aria-labelledby="t-juego" data-fase="pocas">
+        <div class="juego-texto">
+          <h2 id="t-juego">Lo que muestra el juego</h2>
           <p>
             La misma mosca, el mismo día de oficina, dos veces. Con 2 tareas a la vez termina 18.
             Con 9 termina la mitad, aunque está ocupada todo el día.
           </p>
-          <p class="nota">Promedio de 200 días jugados. Son números del juego, no de personas.</p>
         </div>
-        <div class="barras" role="img" aria-label="Con 2 tareas a la vez termina 18. Con 9 tareas a la vez termina 9, la mitad.">
-          <div class="barra">
-            <span class="barra-nombre">2 tareas a la vez</span>
-            <span class="barra-pista"><span class="barra-relleno tranqui" style="--v: 100%"></span></span>
-            <span class="barra-valor">18 terminadas</span>
+
+        <figure class="pantalla">
+          <div class="pantalla-marco">
+            <video muted loop playsinline preload="none" poster="/video/clip-inicio.jpg" data-cambio="5.8"
+              data-src="/video/clip-celular.mp4?v=2" data-src-grande="/video/clip-computador.mp4"
+              aria-label="La mosca en su oficina: primero con 2 tareas a la vez, tranquila; después con 9, estresada y fumando."></video>
+            <span class="pantalla-estado" aria-hidden="true">
+              <span class="estado-pocas">Pocas tareas a la vez</span>
+              <span class="estado-muchas">Muchas tareas a la vez</span>
+            </span>
           </div>
-          <div class="barra">
-            <span class="barra-nombre">9 tareas a la vez</span>
-            <span class="barra-pista"><span class="barra-relleno colapsada" style="--v: 50%"></span></span>
-            <span class="barra-valor">9, la mitad</span>
+          <figcaption>Primero con 2 tareas a la vez. Después con 9.</figcaption>
+        </figure>
+
+        <div class="hecho" role="img" aria-label="Con 2 tareas a la vez termina 18. Con 9 tareas a la vez termina 9, la mitad.">
+          <div class="columna pocas">
+            <p class="columna-titulo">2 a la vez</p>
+            <div class="tarjetas" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <p class="columna-total"><span class="cifra">18</span> terminadas</p>
           </div>
+          <div class="columna muchas">
+            <p class="columna-titulo">9 a la vez</p>
+            <div class="tarjetas" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="falta"></i><i class="falta"></i><i class="falta"></i><i class="falta"></i><i class="falta"></i><i class="falta"></i><i class="falta"></i><i class="falta"></i><i class="falta"></i></div>
+            <p class="columna-total"><span class="cifra">9</span> la mitad</p>
+          </div>
+        </div>
+        <p class="nota hecho-nota">Promedio de 200 días jugados.</p>
+
+        <div class="celular-aviso solo-celular">
+          <h3>Se ve mejor en computador</h3>
+          <p>El juego es en 3D y está hecho para una pantalla ancha. En el celular, los paneles tapan la oficina.</p>
+          <a class="enlace-jugar" href="/jugar/">Jugar igual</a>
+          <p class="nota">Si lo intentas, gira el celular.</p>
         </div>
       </section>
 
       <section class="credito" aria-labelledby="t-credito">
         <h2 id="t-credito">Por dentro, un cerebro de mosca real</h2>
-        <p>
-          Las neuronas que se encienden en el juego vienen del
-          <a href="https://male-cns.janelia.org">Male CNS v1.0</a>, el mapa completo del sistema
-          nervioso de una mosca, neurona por neurona. «This project is a collaboration between
-          FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC
-          Laboratory of Molecular Biology, and Google Research.»
-        </p>
-        <p>
-          Datos con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>,
-          adaptados para el juego: se muestra una parte de las neuronas y la actividad que ves
-          es simulada.
-        </p>
+        <div class="credito-texto">
+          <p>
+            Las neuronas que se encienden en el juego vienen del
+            <a href="https://male-cns.janelia.org">Male CNS v1.0</a>, el mapa completo del sistema
+            nervioso de una mosca, neurona por neurona. «This project is a collaboration between
+            FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC
+            Laboratory of Molecular Biology, and Google Research.»
+          </p>
+          <p>
+            Datos con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>,
+            adaptados para el juego: se muestra una parte de las neuronas y la actividad que ves
+            es simulada.
+          </p>
+        </div>
+        <div class="zonas">
+          <p class="zonas-titulo">Colores del cerebro</p>
+          <ul>
+            <li style="--zona: #2fe3ff">Visión</li>
+            <li style="--zona: #8b5cff">Cerebro central</li>
+            <li style="--zona: #ffd84d">Memoria</li>
+            <li style="--zona: #ff4fd8">Mando</li>
+            <li style="--zona: #ff7f66">Movimiento</li>
+            <li class="reposo" style="--zona: #5d6680">En reposo</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="informe" aria-labelledby="t-informe">
+        <a class="tapa" href="/Mosca-del-WIP-Informe.pdf" download="Mosca del WIP - Informe.pdf" tabindex="-1" aria-hidden="true">
+          <img src="/img/tapa-informe.jpg" width="720" height="1019" alt="" loading="lazy" decoding="async" />
+        </a>
+        <div class="informe-texto">
+          <h2 id="t-informe">El informe</h2>
+          <p>
+            Cuenta de dónde sale cada número y trae cuatro pasos para probar un límite con tu
+            equipo. Se lee en 10 minutos.
+          </p>
+          <div class="acciones">
+            <a class="boton principal" href="/Mosca-del-WIP-Informe.pdf" download="Mosca del WIP - Informe.pdf">Descargar el informe (PDF)</a>
+          </div>
+          <p class="nota">Son 17 páginas y pesa 4 MB.</p>
+        </div>
+      </section>
+
+      <section class="cierre" aria-label="Para terminar">
+        <p class="cierre-frase">Un límite sostenible, no una cosa a la vez.</p>
+        <div class="acciones">
+          <a class="boton principal solo-computador" href="/jugar/">Jugar</a>
+          <a class="boton" href="/Mosca-del-WIP-Informe.pdf" download="Mosca del WIP - Informe.pdf">Descargar el informe (PDF)</a>
+        </div>
       </section>
     </main>
 
