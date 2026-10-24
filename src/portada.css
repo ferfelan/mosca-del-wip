@@ -155,7 +155,10 @@ section p:last-child { margin-bottom: 0; }
   .hero .boton { width: 100%; background: var(--tinta); color: var(--papel); font-size: 18px; }
   .hero .boton:hover { background: var(--tinta-hover); color: var(--papel); }
   /* La ilustración pasa debajo del botón, a todo el ancho y centrada. */
-  .hero-arte { justify-self: center; width: 100%; max-width: 440px; margin-top: 4px; }
+  .hero-arte { justify-self: center; width: 100%; max-width: 440px; margin-top: 0; }
+  /* En celular se recorta más aire de arriba (desde el vapor del café), para
+     que no quede un hueco grande entre "Gratis y sin registro" y el dibujo. */
+  .hero-arte img { aspect-ratio: 840 / 760; object-position: 50% 79%; }
   .solo-computador { display: none !important; }
   .solo-celular { display: block; }
 

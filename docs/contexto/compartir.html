@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <title>Mosca del WIP · Para compartir</title>
+<!-- v18 (2026-10-24, Etapa 5): solo se agrega la dirección del juego publicado,
+     como enlace: pág. 1 ("jugarlo en mosca.deliverycraft.ai") y cierre ("Juega en
+     mosca.deliverycraft.ai"). Nada más cambia; el v17 está en docs/contexto/v17/. -->
 <!-- Informe para compartir v8 (2026-10-21, parte 4.7: el v7 tenía el diseño
      limpio pero partía sin contexto, sobraba aire y los datos duros quedaron
      en los anexos). Ningún número ni fuente cambió respecto del v7 (guardado
@@ -282,6 +285,9 @@
   .parte .pie b { color: #b9c6e4; }
   .cierre .grande { font-size: 28pt; margin: 0 0 4mm; }
   .cierre .texto p { max-width: 160mm; }
+  /* v18: la dirección del juego publicado, como enlace que se puede tocar en el PDF */
+  a.sitio { color: var(--teal); text-decoration: underline; text-decoration-thickness: 0.6pt; text-underline-offset: 0.6mm; }
+  .cierre .juega { font-family: var(--serif); font-size: 16pt; line-height: 1.3; color: var(--tinta); font-weight: 700; margin: 0 0 5mm; }
 </style>
 </head>
 <body>
@@ -308,7 +314,7 @@
   <p>Casi todos trabajamos así, y se siente productivo. Pero hay una pregunta que pocos se hacen: ¿cuántas cosas a la vez conviene tener abiertas? La respuesta de siempre es “depende”. Este informe la muestra, en un minuto y con una mosca.</p>
   <p>¿Por qué una mosca? Porque la mosca de la fruta es uno de los pocos animales con el mapa completo de su sistema nervioso, neurona por neurona: 166.700, publicado en 2026. Así que hicimos un juego: le pusimos una corbata, un tablero de tareas y un día de oficina que dura un minuto.</p>
   <div class="recuadro"><span class="etiqueta">Qué es</span><p>Este informe cuenta lo que el juego muestra y cómo probarlo con tu equipo. Por dentro hay un experimento en el computador, con reglas basadas en estudios y un cerebro de mosca real. No mide personas ni equipos, porque es una mosca sola y un solo día. Por eso cada número dice de dónde sale, si del juego, de la simulación o de estudios. Las reglas y los criterios de éxito se escribieron antes de correr las simulaciones, y ningún número se ajustó después.</p></div>
-  <p class="con-esto"><span class="etiqueta">Qué puedes hacer con esto</span>leerlo en 10 minutos · jugarlo · probar un límite con tu equipo (página <span data-pag="hacer">11</span>).</p>
+  <p class="con-esto"><span class="etiqueta">Qué puedes hacer con esto</span>leerlo en 10 minutos · jugarlo en <a class="sitio" href="https://mosca.deliverycraft.ai/">mosca.deliverycraft.ai</a> · probar un límite con tu equipo (página <span data-pag="hacer">11</span>).</p>
   <p style="margin-top:4mm">Pusimos a la misma mosca a trabajar el mismo día de oficina dos veces: una con 2 tareas abiertas a la vez y otra con 9. Repetimos cada día 200 veces y sacamos el promedio. Con 2 terminó 18 tareas. Con 9 terminó la mitad, aunque estuvo ocupada todo el día, y cada tarea tardó casi nueve veces más. La página <span data-pag="dia">3</span> muestra ese día por dentro.</p>
   <p class="cierre-pagina"><strong>Estar siempre ocupado no es lo mismo que avanzar.</strong></p>
   <div class="sobremesa"><span class="rotulo">Dato freak</span><span>Cinco premios Nobel de Medicina premiaron trabajos con esta mosca: el primero en 1933, el último en 2017. <span class="de-donde">(nobelprize.org)</span></span></div>
@@ -616,6 +622,7 @@
   <img src="img/cierre.jpg" alt="La mosca toma café al final de un día tranquilo, con la columna Hecho llena" />
   <div class="texto">
     <p class="grande">Un límite sostenible, <span>no una cosa a la vez.</span></p>
+    <p class="juega">Juega en <a class="sitio" href="https://mosca.deliverycraft.ai/">mosca.deliverycraft.ai</a></p>
     <p class="chico">Cerca del fin de un buen día, en el juego: dos tareas abiertas, la columna Hecho llena y el café todavía caliente.</p>
   </div>
   <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
