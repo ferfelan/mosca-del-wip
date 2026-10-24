@@ -25,7 +25,8 @@
 // el feedback de tres lectores junto, y completo v7; revisión de Felipe del v14, el mismo
 // día: compartir v15 ("Dato freak", sin "[…]", pág. 8 con cinco tarjetas, pág. 9 en dos
 // filas, gráfico de la pág. 5 con valores en 2 y 9) y completo v8; arreglos de Felipe al
-// v15, el mismo día: compartir v16, datos freak nuevos y "Regla nuestra" en la pág. 2).
+// v15, el mismo día: compartir v16, datos freak nuevos y "Regla nuestra" en la pág. 2; v17, mismo
+// día: la tarjeta de DORA de la pág. 8 sin la frase del ideal, que ya está en el dato freak de la pág. 6).
 //
 // Uso: node scripts/documento.mjs                → los dos informes
 //      DOC=compartir node scripts/documento.mjs  → sólo uno (completo, compartir,
@@ -48,7 +49,7 @@ const SALIDA = process.env.SALIDA ?? join(homedir(), 'Desktop', 'Mosca del WIP')
 const FECHA = process.env.FECHA ?? new Date().toLocaleDateString('sv-SE'); // 2026-10-20
 const DOCUMENTOS = [
   { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v8' },
-  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v16', paginas: [16, 17] },
+  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v17', paginas: [16, 17] },
   { id: 'norte', html: 'norte.html', nombre: 'Norte del proyecto', version: 'v1', paginas: [1, 2], aparte: true },
   { id: 'etapa4-1', html: 'etapa4-1.html', nombre: 'Etapa 4.1 La paradoja', version: 'v1', paginas: [1, 3], aparte: true },
   { id: 'etapa4-2', html: 'etapa4-2.html', nombre: 'Etapa 4.2 Robustez', version: 'v1', paginas: [1, 3], aparte: true },
