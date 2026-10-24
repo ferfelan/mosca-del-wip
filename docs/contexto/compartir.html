@@ -77,6 +77,21 @@
      nuevos (Berg y otros 2026 en la pág. 2, Hampel y otros 2020 en la 9, Sjøberg,
      Johnsen y Solberg 2012 en la 11); Murty 2022 y Sjøberg 2012 entran al anexo C.
      La fuente del v14 quedó en docs/contexto/v14/.
+     v16 (2026-10-24, arreglos de Felipe al v15): ningún número del juego cambia
+     y el juego no se toca. Qué cambia: pág. 2, la primera regla de la tabla dice
+     "Regla nuestra" en vez de "—" y el dato freak es el primer mapa completo de
+     un cerebro adulto (Dorkenwald y otros 2024, que entra al anexo C; el de Berg
+     sale); datos freak reescritos en las págs. 3 (Rubinstein 2001), 4 (Coviello,
+     en pasado, con la calidad de los fallos), 6 (DORA) y 8 (Mark 2008) y uno nuevo
+     en la 9 (Albulescu 2022, en vez de Hampel 2020); pág. 5 sin la frase del
+     párrafo que repetía el pie del gráfico ("con 9 abiertas, cada una avanza el
+     9 %"); pág. 8, la línea bajo las tarjetas distingue el estudio de los jueces
+     (un sorteo decidía) de los demás; pág. 11 sin "Es un solo caso, pero es
+     real."; los "3.200 días" de Murty quedan (verificados por Felipe en la
+     versión republicada del artículo). En el anexo C, las líneas que respaldaban
+     los datos freak que salieron (Berg, Hampel) también salen, y las de
+     Rubinstein, Mark y Albulescu dicen lo que dicen los nuevos. La fuente del v15
+     quedó en docs/contexto/v15/.
      Se arma con: DOC=compartir node scripts/documento.mjs; se revisa con:
      node scripts/revisar-paginas.mjs compartir. Los números de las tablas y
      los gráficos están al final y salen de la 4.1 y la 4.2
@@ -162,9 +177,9 @@
   .comparar img { height: 44mm; object-fit: cover; object-position: center 40%; }
 
   /* Página 4 (nueva): la tabla de 1 a 10 tareas, cinco columnas, letra más grande que en el anexo */
-  .tabla-dia { margin: 0 0 1.5mm; }
+  .tabla-dia { margin: 0 0 1mm; }
   .tabla-dia th { font-size: 7pt; padding: 1.2mm 2mm; }
-  .tabla-dia td { font-size: 9.6pt; padding: 1.35mm 2mm; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .tabla-dia td { font-size: 9.6pt; padding: 1.25mm 2mm; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
   .tabla-dia td:first-child, .tabla-dia th:first-child { text-align: left; }
   .tabla-dia th { text-align: right; }
   .tabla-dia td b { color: var(--tinta); }
@@ -230,13 +245,13 @@
   .acostada td:first-child { white-space: normal; font-weight: 600; color: var(--tinta); }
   .numeros td b { color: var(--tinta); }
   .fuentes-simples { list-style: none; padding: 0; margin: 0; columns: 2; column-gap: 7mm; }
-  .fuentes-simples li { break-inside: avoid; margin: 0 0 0.8mm; font-size: 7.4pt; line-height: 1.3; } /* v15: 7,4 pt (era 7,6) para que quepan las dos fuentes nuevas */
+  .fuentes-simples li { break-inside: avoid; margin: 0 0 0.8mm; font-size: 7.3pt; line-height: 1.26; } /* v15: 7,4 pt (era 7,6) para que quepan las dos fuentes nuevas; v16: 7,3 pt e interlineado 1,26 para que quepa Dorkenwald 2024 */
   .fuentes-simples b { display: block; color: var(--tinta); font-weight: 600; }
   .fuentes-simples .cita { color: var(--tenue); font-size: 6.8pt; }
-  .fuentes-simples h4 { column-span: all; font-size: 7.2pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 1.2mm 0 1mm; border-bottom: 0.5pt solid var(--linea); padding-bottom: 0.7mm; }
+  .fuentes-simples h4 { column-span: all; font-size: 7.2pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 1mm 0 0.8mm; border-bottom: 0.5pt solid var(--linea); padding-bottom: 0.7mm; }
   .fuentes-simples h4:first-child { margin-top: 0; }
-  .creditos { font-size: 7.8pt; line-height: 1.4; color: var(--suave); border-top: 0.5pt solid var(--linea); padding-top: 2mm; }
-  .creditos p { margin: 0 0 1.2mm; max-width: none; }
+  .creditos { font-size: 7.8pt; line-height: 1.4; color: var(--suave); border-top: 0.5pt solid var(--linea); padding-top: 1.5mm; }
+  .creditos p { margin: 0 0 0.8mm; max-width: none; }
   .creditos q { quotes: '“' '”'; }
 
   /* Portada (v9: clara, con la ilustración de la mosca y su torre; el título arriba y los créditos abajo.
@@ -309,7 +324,7 @@
   <h3 style="margin-top:2.5mm">Las reglas de su mundo (qué parte de cada número es nuestra, en el anexo B)</h3>
   <div class="visual"><table class="reglas"><thead><tr><th>La regla</th><th>Inspirado en</th></tr></thead><tbody id="t-reglas"></tbody></table></div>
   <p style="margin-top:3mm">Jugamos 200 días con cada número de tareas y promediamos. Tu lunes de nueve pendientes está en la página siguiente, a la derecha.</p>
-  <div class="sobremesa"><span class="rotulo">Dato freak</span><span>Aunque decimos “la mosca”, el cerebro de este informe es de un macho. Y no da lo mismo: en el macho, casi 5 de cada 100 neuronas del cerebro central son propias de su sexo o distintas a las de la hembra. <span class="de-donde">(Berg y otros, 2026)</span></span></div>
+  <div class="sobremesa"><span class="rotulo">Dato freak</span><span>El cerebro de la mosca tiene unas 139 mil neuronas unidas por unos 50 millones de conexiones. En 2024 se publicó el primer mapa completo de todas ellas. <span class="de-donde">(Dorkenwald y otros, 2024)</span></span></div>
   <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
 </section>
 
@@ -334,7 +349,7 @@
   </div>
   <p style="margin-top:4.5mm">Con 9 tareas estuvo en la oficina las mismas horas y ocupada casi todo el tiempo. Te va a sonar, porque salta entre tareas, pierde un rato al retomar cada una y sale a fumar. Como avanza un poquito en cada tarea por turnos, todas tardan. El café se le enfrió sin que lo tocara. Con 2 pasó lo contrario: cada tarea salió en una hora y le quedó tiempo para cinco cafés.</p>
   <p>El letrero de la oficina dice hasta 3 y la tabla marca 2. La página siguiente explica por qué.</p>
-  <div class="sobremesa"><span class="rotulo">Dato freak</span><span>Cada cambio de tarea cuesta décimas de segundo, medidas en laboratorio. En un día de nueve tareas, se suman. <span class="de-donde">(Rubinstein, Meyer y Evans, 2001)</span></span></div>
+  <div class="sobremesa"><span class="rotulo">Dato freak</span><span>En el laboratorio, cada cambio de tarea cuesta apenas unas décimas de segundo, y cuesta más si la tarea es difícil o poco conocida. Parece nada, pero en un día lleno de cambios se va sumando. <span class="de-donde">(Rubinstein, Meyer y Evans, 2001)</span></span></div>
   <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
 </section>
 
@@ -350,10 +365,10 @@
     </table>
     <p class="chico" style="max-width:none;margin-bottom:0">Con fondo, los dos días de la página anterior: verde el 2 y rojo el 9. Tiempo por tarea en horas de oficina. Las otras columnas y de dónde sale cada número, en el anexo B.</p>
   </div>
-  <p style="margin-top:3.5mm">Con 1 se queda esperando: cuando su única tarea se traba no tiene otra a mano, y en el juego pasa más de 2 horas al día sin nada que hacer. Por eso termina menos que con 2.</p>
+  <p style="margin-top:2mm">Con 1 se queda esperando: cuando su única tarea se traba no tiene otra a mano, y en el juego pasa más de 2 horas al día sin nada que hacer. Por eso termina menos que con 2.</p>
   <p>De 2 a 3 termina casi lo mismo y cierra el día tranquila, sin un solo cigarro. El letrero de la oficina mide el estrés, y por eso dice hasta 3: hasta ahí aguanta el día entero, y el juego lo llama límite sostenible. La tabla mide otra cosa, lo terminado, y con 2 termina una tarea más al día que con 3. Esa tarea de diferencia viene del costo de cambiar de tarea, un supuesto nuestro sin datos detrás. Si ese costo fuera cero, ganaría el 3 (anexo B). Por eso el juego habla de hasta 3 y no de un solo número.</p>
   <p>Desde 4, cada tarea extra empeora todo un poco, y hay algo curioso en el orden en que aparecen las cosas. El estrés y los cigarros empiezan con 4 tareas, pero lo terminado recién cae a la mitad con 9. O sea que primero se nota en la mosca y mucho después en el tablero.</p>
-  <div class="sobremesa"><span class="rotulo">Dato freak</span><span>En Italia, un sorteo reparte las causas entre los jueces. Los que acumularon más juicios a la vez tardaron más en cerrarlos. <span class="de-donde">(Coviello, Ichino y Persico, 2014 y 2015)</span></span></div>
+  <div class="sobremesa"><span class="rotulo">Dato freak</span><span>En los tribunales laborales de Milán, un sorteo repartía las causas entre los jueces. Los que por azar tuvieron más juicios abiertos a la vez tardaron más en cerrarlos, y la calidad de sus fallos no cambió. <span class="de-donde">(Coviello, Ichino y Persico, 2014 y 2015)</span></span></div>
   <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
 </section>
 
@@ -366,7 +381,7 @@
     <figcaption>En el juego. Por ejemplo, con 9 tareas tiene algo que avanzar el 100 % del día, pero cada tarea avanza solo el 9 % del tiempo que está abierta. El otro 91 % espera su turno.</figcaption>
   </figure>
   <p>Con las esperas de hoy, desde 3 tareas tiene con qué hacer todo el día. Abrir más no le da más trabajo, solo pone tareas a esperar su turno. En las fábricas ese punto tiene nombre, “trabajo en curso crítico” (Hopp y Spearman, <em>Factory Physics</em>).</p>
-  <p>Que cada tarea tarde más con más abiertas es casi una división del tiempo entre todas, o sea matemática y no un hallazgo. Es lo que pasa cuando repartes una hora entre nueve tareas: a cada una le tocan unos minutos y las otras ocho esperan. Con 9 abiertas, cada una avanza el 9 % del tiempo que pasa en curso, y el resto espera.</p>
+  <p>Que cada tarea tarde más con más abiertas es casi una división del tiempo entre todas, o sea matemática y no un hallazgo. Es lo que pasa cuando repartes una hora entre nueve tareas: a cada una le tocan unos minutos y las otras ocho esperan.</p>
   <p class="cierre-pagina">La teoría solo dice que lo terminado deja de subir. Que además baje lo ponen nuestras reglas, el costo de cambiar de tarea y los cigarros.</p>
   <div class="sobremesa"><span class="rotulo">Dato freak</span><span>Que cada tarea tarde más cuando hay más abiertas no es una opinión: es un teorema, de 1961. <span class="de-donde">(la ley de Little)</span></span></div>
   <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
@@ -384,7 +399,7 @@
   <p>Ese 2 a 4 es un resultado de la simulación y no un número científico, así que tu equipo tiene el suyo. La mosca trabaja sola y no puede destrabar lo que espera, pero un equipo sí puede. Eso es lo que aconseja DORA (página <span data-pag="estudios">8</span>): cuando alguien queda esperando, atacar la espera en vez de abrir otra cosa.</p>
   <div class="recuadro"><p>Reducir las esperas permite bajar el límite. Subir el límite no reduce las esperas.</p></div>
   <p class="cierre-pagina"><strong>Un límite sostenible, no una cosa a la vez</strong> vale cuando hay esperas que no puedes evitar. Con menos esperas, el límite se acerca a una.</p>
-  <div class="sobremesa"><span class="rotulo">Dato freak</span><span>El ideal de DORA es una cosa a la vez. Quizá no se alcance, pero sirve de norte. <span class="de-donde">(dora.dev)</span></span></div>
+  <div class="sobremesa"><span class="rotulo">Dato freak</span><span>Para DORA, el programa de investigación de Google sobre equipos de software, lo ideal sería que un equipo trabajara en una sola cosa a la vez. Admite que tal vez no se logre, pero lo propone como la dirección hacia donde ir. <span class="de-donde">(dora.dev)</span></span></div>
   <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
 </section>
 
@@ -415,10 +430,10 @@
     <div class="estudio"><h3>Encuestas grandes a equipos de software</h3><p>Limitar el trabajo en curso ayuda a entregar mejor, sobre todo junto a tableros visibles y retroalimentación. Su ideal es una cosa a la vez, como un norte.</p><span class="cita">DORA, “Work in process limits” (dora.dev) · Forsgren, Humble y Kim (2018), <em>Accelerate</em></span></div>
     <div class="estudio ancho"><h3>Oficinas reales</h3><p>En tres grandes empresas midieron a 137 personas durante 3.200 días de trabajo. Cambiaban de aplicación o de página web casi 1.200 veces al día y perdían casi 4 horas a la semana en volver a ubicarse, un 9 % de su tiempo. Mide cambios de pantalla, no tareas abiertas.</p><span class="cita">Murty, Dadlani y Das (2022), <em>Harvard Business Review</em>, “How Much Time and Energy Do We Waste Toggling Between Applications?”</span></div>
   </div>
-  <p class="chico" style="margin-top:2.5mm;max-width:none">Ninguno de estos estudios es un experimento: muestran que las cosas van juntas, no prueban la causa.</p>
+  <p class="chico" style="margin-top:2.5mm;max-width:none">Ninguno es un experimento de laboratorio. El de los jueces se acerca, porque un sorteo decidía quién recibía más causas. Los demás muestran que las cosas van juntas, pero no prueban la causa.</p>
   <p style="margin-top:4mm">Lo que estos estudios tienen en común es que ninguno midió cuántas tareas conviene tener abiertas. Midieron qué pasa cuando son demasiadas, y encontraron más demora por tarea, menos terminado o las dos cosas. La mosca no agrega una prueba a esa lista. Lo que hace es poner esa misma dirección en una pantalla, en un minuto, para que tu equipo la vea antes de discutirla.</p>
   <p class="cierre-pagina">Son cuatro estudios y una encuesta. Ninguno da un número, así que el tuyo lo vas a tener que medir.</p>
-  <div class="sobremesa"><span class="rotulo">Dato freak</span><span>En un experimento de 2008, las personas interrumpidas terminaron sus tareas más rápido. Lo que subió fue el estrés. <span class="de-donde">(Mark, Gudith y Klocke, 2008)</span></span></div>
+  <div class="sobremesa"><span class="rotulo">Dato freak</span><span>En un experimento de 2008, a un grupo lo interrumpieron mientras respondía correos y a otro no. Los interrumpidos terminaron un poco antes e igual de bien, pero con más estrés y más sensación de apuro. <span class="de-donde">(Mark, Gudith y Klocke, 2008)</span></span></div>
   <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
 </section>
 
@@ -444,7 +459,7 @@
   </figure>
   <p>Según estudios con personas, fumar no calma. Da un alivio breve y un rebote, y quienes dejan de fumar tienen menos estrés que quienes siguen. El café del juego aparece solo cuando no hay mucho estrés, porque la cafeína sube la hormona del estrés, y más si ya estás tenso. Lo que ayuda es la pausa y no la cafeína. Si el café es tu única pausa, sigue siendo una pausa.</p>
   <p class="cierre-pagina">Lo que en el juego es un cigarro, en su cerebro es la orden de limpiarse las antenas.</p>
-  <div class="sobremesa"><span class="rotulo">Dato freak</span><span>Algunos sensores de la antena, al encenderse, no solo hacen que la mosca se limpie. También la hacen aletear o caminar hacia atrás. <span class="de-donde">(Hampel y otros, 2020)</span></span></div>
+  <div class="sobremesa"><span class="rotulo">Dato freak</span><span>Juntando 22 estudios, las pausas de 10 minutos o menos subieron la energía y bajaron el cansancio. El rendimiento casi no cambió. <span class="de-donde">(Albulescu y otros, 2022)</span></span></div>
   <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
 </section>
 
@@ -492,7 +507,7 @@
     <p style="margin-top:1.4mm">Los estudios citados en este informe están en el anexo C.</p>
   </div>
   <p class="cierre-pagina" style="margin-top:2.5mm"><strong>Un límite sostenible, no una cosa a la vez.</strong></p>
-  <div class="sobremesa"><span class="rotulo">Dato freak</span><span>Una empresa de software noruega empezó a trabajar con un tablero y límites de trabajo en curso. El tiempo que tardaba en resolver un error bajó de 12 a 5 días. Es un solo caso, pero es real. <span class="de-donde">(Sjøberg, Johnsen y Solberg, 2012)</span></span></div>
+  <div class="sobremesa"><span class="rotulo">Dato freak</span><span>Una empresa de software noruega empezó a trabajar con un tablero y límites de trabajo en curso. El tiempo que tardaba en resolver un error bajó de 12 a 5 días. <span class="de-donde">(Sjøberg, Johnsen y Solberg, 2012)</span></span></div>
   <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
 </section>
 
@@ -573,19 +588,20 @@
     <li><b>Un equipo real con tablero y límites</b>Una empresa de software noruega pasó a trabajar con tablero y límites de trabajo en curso, y el tiempo para resolver un error bajó de 12 a 5 días. Un solo caso.<br /><span class="cita">Sjøberg, Johnsen y Solberg (2012), <em>IEEE Software</em>, 29(5).</span></li>
     <li><b>Horas largas rinden cada vez menos</b>Obreras de fábricas de municiones, 1914–1918: bajo cierta cantidad de horas a la semana la producción subía parejo con las horas, y más allá, cada vez menos.<br /><span class="cita">Pencavel (2015), <em>The Economic Journal</em>, 125(589).</span></li>
     <h4>Cambiar de tarea, estrés, tabaco y café</h4>
-    <li><b>Cada cambio de tarea cuesta</b>Décimas de segundo que se suman. La tabla "20 % por proyecto" es una regla práctica, no una medición.<br /><span class="cita">Rubinstein, Meyer y Evans (2001), <em>J. of Experimental Psychology: HPP</em>, 27(4). Weinberg (1992), <em>Quality Software Management</em>, vol. 1.</span></li>
+    <li><b>Cada cambio de tarea cuesta</b>Décimas de segundo que se suman, y más si la tarea es difícil o poco conocida. La tabla "20 % por proyecto" es una regla práctica, no una medición.<br /><span class="cita">Rubinstein, Meyer y Evans (2001), <em>J. of Experimental Psychology: HPP</em>, 27(4). Weinberg (1992), <em>Quality Software Management</em>, vol. 1.</span></li>
     <li><b>Lo que queda a medias sigue en la cabeza</b><span class="cita">Leroy (2009), <em>Organizational Behavior and Human Decision Processes</em>, 109(2).</span></li>
-    <li><b>Las interrupciones estresan</b>Los interrumpidos trabajaron más rápido, pero con más estrés.<br /><span class="cita">Mark, Gudith y Klocke (2008), <em>CHI '08</em>.</span></li>
+    <li><b>Las interrupciones estresan</b>Los interrumpidos trabajaron un poco más rápido e igual de bien, pero con más estrés y más apuro.<br /><span class="cita">Mark, Gudith y Klocke (2008), <em>CHI '08</em>.</span></li>
     <li><b>El estrés sube rápido y baja lento</b>La hormona del estrés llega a su pico en 20 a 40 minutos, en el laboratorio.<br /><span class="cita">Dickerson y Kemeny (2004), <em>Psychological Bulletin</em>, 130(3).</span></li>
     <li><b>Fumar no calma</b>Da un alivio breve y un rebote, y quienes dejan de fumar tienen menos estrés.<br /><span class="cita">Parrott (1999), <em>American Psychologist</em>, 54(10). Taylor y otros (2014), <em>BMJ</em>, 348.</span></li>
-    <li><b>La pausa ayuda y la cafeína sube el cortisol</b>Por eso el café del juego solo aparece sin mucho estrés.<br /><span class="cita">Albulescu y otros (2022), <em>PLOS ONE</em>, 17(8). Lovallo y otros (2005), <em>Psychosomatic Medicine</em>, 67(5); (2006), <em>Pharmacol. Biochem. Behav.</em>, 83(3).</span></li>
+    <li><b>La pausa ayuda y la cafeína sube el cortisol</b>En 22 estudios juntos, las pausas de 10 minutos o menos subieron la energía y bajaron el cansancio, y el rendimiento casi no cambió. Como la cafeína sube el cortisol, el café del juego solo aparece sin mucho estrés.<br /><span class="cita">Albulescu y otros (2022), <em>PLOS ONE</em>, 17(8). Lovallo y otros (2005), <em>Psychosomatic Medicine</em>, 67(5); (2006), <em>Pharmacol. Biochem. Behav.</em>, 83(3).</span></li>
     <h4>La mosca y su cerebro</h4>
-    <li><b>Cómo se limpia las antenas</b>Sensores en la antena, neuronas de relevo y las que dan la orden a las patas. Algunos sensores también hacen aletear o caminar hacia atrás. Con polvo, primero los ojos.<br /><span class="cita">Hampel y otros (2015, 2020), <em>eLife</em>. Seeds y otros (2014), <em>eLife</em>.</span></li>
+    <li><b>Cómo se limpia las antenas</b>Sensores en la antena, neuronas de relevo y las que dan la orden a las patas. Con polvo, primero los ojos.<br /><span class="cita">Hampel y otros (2015, 2020), <em>eLife</em>. Seeds y otros (2014), <em>eLife</em>.</span></li>
     <li><b>Simular el cerebro con su mapa</b>Un modelo simple sobre el cableado real acertó 9 de cada 10 predicciones probadas. Con las conexiones barajadas al azar, la limpieza desaparece.<br /><span class="cita">Shiu y otros (2024), <em>Nature</em>, 634.</span></li>
-    <li><b>El mapa de la mosca macho</b>166.700 neuronas del sistema nervioso central, y simulamos 164.587, las que tienen sus conexiones completas. En el macho, casi 5 de cada 100 neuronas del cerebro central son propias de su sexo o distintas a las de la hembra.<br /><span class="cita">Berg y otros (2026), <em>Cell</em>, 189(18).</span></li>
+    <li><b>El mapa de la mosca macho</b>166.700 neuronas del sistema nervioso central, y simulamos 164.587, las que tienen sus conexiones completas.<br /><span class="cita">Berg y otros (2026), <em>Cell</em>, 189(18).</span></li>
+    <li><b>El primer mapa completo de un cerebro adulto</b>Unas 139 mil neuronas y 50 millones de conexiones en el cerebro de una hembra, sin el cordón nervioso. El del juego es otro mapa, el de la mosca macho.<br /><span class="cita">Dorkenwald y otros (2024), <em>Nature</em>, 634.</span></li>
     <li><b>La mosca en la ciencia</b>Cinco Nobel de Medicina con moscas (1933, 1946, 1995, 2011, 2017) y las neuronas del cerebro humano.<br /><span class="cita">nobelprize.org/drosophila; nobelprize.org/prizes/medicine/1946/summary/ y /1995/summary/. Azevedo y otros (2009), <em>J. of Comparative Neurology</em>, 513(5).</span></li>
   </ul>
-  <div class="creditos" style="margin-top:1.5mm">
+  <div class="creditos" style="margin-top:1mm">
     <p><strong>Datos del cerebro:</strong> Male CNS v1.0. <q>This project is a collaboration between FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC Laboratory of Molecular Biology, and Google Research.</q> <q>The Male CNS dataset is licensed under CC-BY.</q> Licencia CC BY 4.0 · male-cns.janelia.org.</p>
     <p><strong>Imágenes:</strong> todas son del juego Mosca del WIP y de su arte de portada. <strong>Autor:</strong> Felipe Fernández, octubre de 2026.</p>
   </div>
@@ -635,8 +651,9 @@ const TEAL = '#2f7579', TINTA = '#1d2532', PAPEL = '#fcfaf6', LINEA = '#e2ddd2',
 
 // ---------- Página 2: las reglas y, al lado, solo la referencia en que se inspira cada una ----------
 // v15 (pedido de Felipe): fuera las etiquetas grises y el texto explicativo de la segunda columna ("Inspirado en"); qué parte de cada número es nuestra está en la tabla "Cada número y de dónde sale" del anexo B
+// v16 (pedido de Felipe): la primera regla (15 a 35 minutos) dice "Regla nuestra" en vez de "—"
 document.getElementById('t-reglas').innerHTML = [
-  ['Cada tarea toma de 15 a 35 minutos de trabajo.', '—'],
+  ['Cada tarea toma de 15 a 35 minutos de trabajo.', 'Regla nuestra'],
   ['Cambiar de tarea cuesta. Con 2 tareas cada minuto rinde el 85&nbsp;% y con 10, el 50&nbsp;%.', 'Weinberg (1992)'],
   ['1 de cada 5 tareas se traba de 30 a 60 minutos esperando a otra persona.', 'Bertolotti y otros (2015)'],
   ['Lo que queda a medias le resta un poco de concentración.', 'Leroy (2009)'],
