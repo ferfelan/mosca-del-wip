@@ -56,7 +56,8 @@ const DOCUMENTOS = [
   { id: 'etapa4-3', html: 'etapa4-3.html', nombre: 'Etapa 4.3 Cruce con los estudios', version: 'v1', paginas: [1, 3], aparte: true },
   { id: 'maqueta', html: 'maqueta-v7.html', nombre: 'Maqueta compartir', version: 'v7', paginas: [3, 3], aparte: true },
 ];
-const JUEGO = 'http://localhost:5173';
+const SITIO = 'http://localhost:5173'; // raíz del sitio (portada, docs)
+const JUEGO = `${SITIO}/jugar/`; // el juego vive en /jugar/ desde la Etapa 5.1
 const b = await chromium.launch({ args: ['--enable-unsafe-swiftshader', '--use-gl=angle', '--ignore-gpu-blocklist'] });
 
 async function abrirJuego(p, { sinPaneles = false } = {}) {
@@ -139,7 +140,7 @@ if (process.env.FOTOS) {
   if (quiero('holograma')) {
     const p = await b.newPage({ viewport: { width: 1240, height: 1754 } });
     p.on('pageerror', (e) => console.log('ERROR', e.message));
-    await p.goto(`${JUEGO}/docs/contexto/arte/holograma.html?w=1240&h=1754&dpr=2`, { waitUntil: 'networkidle' });
+    await p.goto(`${SITIO}/docs/contexto/arte/holograma.html?w=1240&h=1754&dpr=2`, { waitUntil: 'networkidle' });
     await p.waitForFunction(() => window.__listo, { timeout: 180000 });
     await p.locator('canvas').screenshot({ path: join(IMG, 'holograma.jpg'), type: 'jpeg', quality: 92 });
     console.log('foto holograma');

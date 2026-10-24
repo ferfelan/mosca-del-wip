@@ -3,7 +3,7 @@
 import { chromium } from 'playwright';
 const b = await chromium.launch({ args: ['--enable-unsafe-swiftshader', '--use-gl=angle', '--ignore-gpu-blocklist'] });
 const p = await b.newPage({ viewport: { width: 800, height: 500 } });
-await p.goto('http://localhost:5173', { waitUntil: 'networkidle' });
+await p.goto('http://localhost:5173/jugar/', { waitUntil: 'networkidle' });
 await p.waitForFunction(() => window.__mosca);
 const r = await p.evaluate(() => {
   const m = window.__mosca; m.pausar(true); m.congelar(true);

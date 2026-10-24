@@ -1,7 +1,7 @@
 import { chromium } from 'playwright';
 import { mkdirSync } from 'node:fs';
 
-const URL = process.env.URL ?? 'http://localhost:5173';
+const URL = process.env.URL ?? 'http://localhost:5173/jugar/';
 const SALIDA = 'capturas';
 const SOLO = process.env.SOLO; // ej. SOLO=01,04 para sacar sólo algunas
 

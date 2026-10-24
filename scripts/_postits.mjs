@@ -2,7 +2,7 @@ import { chromium } from 'playwright';
 const b = await chromium.launch({ args: ['--enable-unsafe-swiftshader', '--use-gl=angle', '--ignore-gpu-blocklist'] });
 const p = await b.newPage({ viewport: { width: 1512, height: 860 } });
 p.on('pageerror', (e) => console.log('ERROR', e.message));
-await p.goto('http://localhost:5173', { waitUntil: 'networkidle' });
+await p.goto('http://localhost:5173/jugar/', { waitUntil: 'networkidle' });
 await p.waitForFunction(() => window.__mosca && window.__mosca.cerebro());
 await p.evaluate(() => { window.__mosca.ocultarCerebro(true); window.__mosca.ocultarControles(true); });
 for (const w of [1, 4, 10]) {

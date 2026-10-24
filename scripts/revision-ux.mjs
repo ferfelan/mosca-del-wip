@@ -10,7 +10,7 @@ p.on('console', (m) => { if (['error', 'warning'].includes(m.type()) && !m.text(
 const problemas = [];
 const revisar = (ok, texto) => { if (!ok) problemas.push(texto); };
 
-await p.goto('http://localhost:5173', { waitUntil: 'networkidle' });
+await p.goto('http://localhost:5173/jugar/', { waitUntil: 'networkidle' });
 await p.evaluate(() => localStorage.clear());
 await p.reload({ waitUntil: 'networkidle' });
 await p.waitForTimeout(2500);

@@ -9,7 +9,7 @@ p.on('pageerror', (e) => errores.push(e.message));
 p.on('console', (m) => { if (['error', 'warning'].includes(m.type()) && !m.text().includes('PCFSoft')) errores.push(m.text()); });
 const fallas = [];
 const revisar = (ok, texto) => { if (!ok) fallas.push(texto); console.log(`${ok ? 'ok   ' : 'FALLA'} ${texto}`); };
-await p.goto('http://localhost:5173', { waitUntil: 'networkidle' });
+await p.goto('http://localhost:5173/jugar/', { waitUntil: 'networkidle' });
 await p.evaluate(() => localStorage.clear());
 await p.reload({ waitUntil: 'networkidle' });
 await p.waitForFunction(() => window.__mosca && window.__mosca.cerebro());

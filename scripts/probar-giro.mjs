@@ -16,9 +16,9 @@ const b = await chromium.launch({ args: ['--enable-unsafe-swiftshader', '--use-g
 const p = await b.newPage({ viewport: { width: 1512, height: 860 } });
 const errores = [];
 p.on('pageerror', (e) => errores.push(e.message));
-await p.goto('http://localhost:5173', { waitUntil: 'networkidle' });
+await p.goto('http://localhost:5173/jugar/', { waitUntil: 'networkidle' });
 await p.evaluate(() => ['mosca-del-wip-cerebro-oculto', 'mosca-del-wip-controles-oculto'].forEach((k) => localStorage.removeItem(k)));
-await p.goto('http://localhost:5173', { waitUntil: 'networkidle' });
+await p.goto('http://localhost:5173/jugar/', { waitUntil: 'networkidle' });
 await p.waitForFunction(() => window.__mosca && window.__mosca.cerebro());
 
 const fallas = [];

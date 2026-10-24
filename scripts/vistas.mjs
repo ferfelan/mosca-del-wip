@@ -7,7 +7,7 @@ const p = await b.newPage({ viewport: { width: 1512, height: 860 } });
 p.on('pageerror', (e) => console.log('ERROR', e.message));
 p.on('console', (m) => { if (['error', 'warning'].includes(m.type()) && !m.text().includes('PCFSoft')) console.log('CONSOLA', m.text()); });
 const abrir = async () => {
-  await p.goto('http://localhost:5173', { waitUntil: 'networkidle' });
+  await p.goto('http://localhost:5173/jugar/', { waitUntil: 'networkidle' });
   await p.waitForFunction(() => window.__mosca && window.__mosca.cerebro());
 };
 await abrir();

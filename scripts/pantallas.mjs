@@ -12,7 +12,7 @@ let total = 0;
 for (const [w, h] of [[1920, 1080], [1906, 830], [1512, 860], [1280, 720], [1024, 700]]) {
   const p = await b.newPage({ viewport: { width: w, height: h } });
   p.on('pageerror', (e) => console.log('ERROR', e.message));
-  await p.goto('http://localhost:5173', { waitUntil: 'networkidle' });
+  await p.goto('http://localhost:5173/jugar/', { waitUntil: 'networkidle' });
   await p.waitForFunction(() => window.__mosca && window.__mosca.cerebro());
   await p.evaluate(() => { localStorage.clear(); });
   await p.reload({ waitUntil: 'networkidle' });

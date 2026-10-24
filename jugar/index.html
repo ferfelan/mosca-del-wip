@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mosca del WIP</title>
+  </head>
+  <body>
+    <header id="barra-exhibicion" class="solo-exhibicion" aria-hidden="true">
+      <div class="marca">
+        <span class="marca-nombre">Mosca del WIP</span>
+        <span class="marca-sub">La misma partida, en grande</span>
+      </div>
+      <div class="barra-datos">
+        <span class="atajo"><kbd>Espacio</kbd> pausa <kbd>R</kbd> otro día <kbd>1–9</kbd> WIP <kbd>D</kbd> demo <kbd>E</kbd> volver <span class="atajo-extra">· doble clic: vista inicial</span></span>
+      </div>
+    </header>
+
+    <div id="escena">
+      <canvas id="lienzo-3d"></canvas>
+      <div class="rotulo-escena solo-exhibicion">
+        <span class="punto-vivo" aria-hidden="true"></span>
+        <span class="ex-situacion ex-terminado">Día terminado ·</span>
+        <span id="ex-hora">09:00</span>
+        <span class="ex-ritmo" id="ex-ritmo" hidden>x1</span>
+      </div>
+      <div id="ex-inicio" class="aviso-inicio" role="status">
+        <span class="aviso-inicio-tipo" id="ex-inicio-tipo">En vivo</span>
+        <span class="aviso-inicio-carga" id="ex-inicio-texto">Muchas tareas a la vez</span>
+      </div>
+      <button id="btn-vista-inicial" class="boton-vista-inicial" type="button" title="Volver la oficina a su vista inicial (también con doble clic en la escena)" hidden>
+        <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7M3 2.5v3h3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Vista inicial
+      </button>
+      <div id="ex-mosca" class="estado-mosca solo-exhibicion" aria-label="Estado de la mosca">
+        <span class="estado-mosca-titulo">Estado de la mosca</span>
+        <div class="estado-mosca-fila">
+          <strong class="estado-mosca-nivel"><span class="estado-mosca-punto" aria-hidden="true"></span><span id="ex-mosca-nivel">Tranqui</span></strong>
+          <span class="estado-mosca-pct" id="ex-mosca-pct" title="Nivel de estrés">10%</span>
+        </div>
+        <div class="estado-mosca-barra" aria-hidden="true"><span id="ex-mosca-barra"></span></div>
+        <span class="estado-mosca-hace" id="ex-mosca-hace">Trabajando</span>
+      </div>
+      <div id="ex-fin" class="aviso-fin oculto solo-exhibicion" role="status">
+        <strong id="ex-fin-titulo">Fin del día</strong>
+        <table class="comparacion" aria-label="Comparación de los días">
+          <thead><tr><th></th><th>Terminadas</th><th title="Tiempo por tarea, en horas y minutos del juego">Tiempo<br />por tarea</th><th>Colillas</th><th>Cafés</th><th>Estrés<br />máx.</th></tr></thead>
+          <tbody id="ex-fin-filas"></tbody>
+        </table>
+        <span class="aviso-fin-sigue" id="ex-fin-texto"></span>
+      </div>
+    </div>
+
+    <aside id="panel">
+      <header class="cabecera">
+        <div>
+          <h1>Mosca del WIP</h1>
+          <p class="subtitulo">Día de oficina · 09:00 a 18:00</p>
+        </div>
+        <button id="btn-ocultar-controles" class="boton-icono-claro" type="button" title="Ocultar los controles (tecla C)" aria-label="Ocultar el panel de controles" aria-controls="panel" aria-expanded="true">
+          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </header>
+
+      <section class="bloque">
+        <div class="bloque-fila">
+          <label for="wip" class="etiqueta">Tareas en curso a la vez</label>
+          <span class="wip-numero" id="wip-valor">3</span>
+        </div>
+        <input type="range" id="wip" min="1" max="10" step="1" value="3" aria-describedby="wip-nota" />
+        <div class="escala" aria-hidden="true">
+          <span>1</span><span>3</span><span>10</span>
+        </div>
+        <p class="nota" id="wip-nota">Dentro del límite sostenible</p>
+      </section>
+
+      <section class="bloque">
+        <div class="bloque-fila">
+          <span class="etiqueta">Hora</span>
+          <span class="hora" id="reloj-texto">09:00</span>
+        </div>
+        <div class="barra"><div id="barra-dia-relleno"></div></div>
+        <div class="controles">
+          <button id="btn-pausa" type="button">Pausa</button>
+          <button id="btn-velocidad" type="button" title="Velocidad">x1</button>
+          <button id="btn-reiniciar" type="button">Reiniciar día</button>
+        </div>
+      </section>
+
+      <section class="bloque">
+        <div class="metricas">
+          <div class="metrica">
+            <span class="metrica-valor" id="m-hechas">0</span>
+            <span class="metrica-label">Terminadas</span>
+          </div>
+          <div class="metrica">
+            <span class="metrica-valor" id="m-colillas">0</span>
+            <span class="metrica-label">Colillas</span>
+          </div>
+          <div class="metrica">
+            <span class="metrica-valor" id="m-cafes">0</span>
+            <span class="metrica-label">Cafés</span>
+          </div>
+        </div>
+        <div class="bloque-fila tiempo-tarea" title="Tiempo promedio (del juego) desde que una tarea entra a «En curso» hasta que se termina. Con más tareas a la vez, cada una tarda más (Ley de Little).">
+          <span class="etiqueta">Tiempo por tarea</span>
+          <span class="tiempo-tarea-valor" id="m-tiempo">–</span>
+        </div>
+        <div class="bloque-fila eficiencia" title="De cada hora, cuántos minutos rinden de verdad: descuenta los cambios de tarea, el tiempo fumando o tomando café y las esperas por bloqueos (promedio desde las 09:00).">
+          <span class="etiqueta">Eficiencia</span>
+          <span class="tiempo-tarea-valor"><span id="m-eficiencia">–</span> <span class="eficiencia-de">de cada hora</span></span>
+        </div>
+        <div class="estres">
+          <div class="bloque-fila">
+            <span class="etiqueta">Estrés</span>
+            <span class="estres-nivel" id="m-estres">Tranqui</span>
+          </div>
+          <div class="barra"><div id="barra-estres-relleno"></div></div>
+        </div>
+      </section>
+
+      <section class="bloque ultimo">
+        <div class="bloque-fila">
+          <h2 class="etiqueta">Días jugados</h2>
+          <span class="nota-tenue">últimos 5</span>
+        </div>
+        <table id="tabla-dias">
+          <thead>
+            <tr><th>WIP</th><th>Terminadas</th><th title="Tiempo por tarea, en horas y minutos del juego">Tiempo<br />por tarea</th><th>Colillas</th><th>Cafés</th><th title="Estrés máximo del día">Estrés</th><th><span class="solo-lector">Eliminar</span></th></tr>
+          </thead>
+          <tbody id="tabla-dias-body"></tbody>
+        </table>
+        <button id="btn-borrar-historial" class="boton-texto" type="button" hidden>Borrar historial</button>
+        <p class="atajos" aria-label="Atajos de teclado">
+          <kbd>Espacio</kbd>&nbsp;pausa · <kbd>R</kbd>&nbsp;reinicia · <kbd>1–9</kbd>&nbsp;WIP · <kbd>E</kbd>&nbsp;exhibición · <kbd>B</kbd>&nbsp;cerebro · <kbd>C</kbd>&nbsp;controles
+        </p>
+        <p class="nota-ilustrativa">Números del juego. Que cada tarea tarde más tiene respaldo; el estrés es un supuesto nuestro.</p>
+      </section>
+    </aside>
+
+    <section id="cerebro" aria-label="Cerebro de la mosca en vivo">
+      <header class="cerebro-cabecera">
+        <div>
+          <h2>Cerebro en vivo</h2>
+          <p class="cerebro-sub">Arriba el cerebro; abajo, el cordón nervioso</p>
+        </div>
+        <div class="cerebro-acciones solo-control">
+          <button id="btn-exhibicion" class="boton-exhibicion" type="button" title="Vista exhibición: pantalla completa para mostrar (tecla E)">
+            Exhibición
+            <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M9.5 2.5h4v4M13.5 2.5 9 7M6.5 13.5h-4v-4M2.5 13.5 7 9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button id="btn-ocultar-cerebro" class="boton-icono" type="button" title="Ocultar el cerebro (tecla B)" aria-label="Ocultar el panel del cerebro" aria-controls="cerebro" aria-expanded="true">
+            <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M10 3.5 5.5 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </header>
+      <div class="cerebro-cuerpo">
+        <div class="cerebro-lienzo">
+          <canvas id="lienzo-cerebro" aria-label="Cerebro de la mosca: gira solo; un clic lo detiene y otro lo hace girar; detenido, arrastra para girarlo; rueda o pellizco para acercar"></canvas>
+          <div class="cerebro-botones">
+            <button id="btn-girar-cerebro" class="boton-centrar" type="button" aria-pressed="false" title="Detener el giro del cerebro (también con un clic en el cerebro)">
+              <svg class="icono-detener" viewBox="0 0 16 16" width="10" height="10" aria-hidden="true"><path d="M5 3.5v9M11 3.5v9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+              <svg class="icono-girar" viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.6-3.7M13 2.5v3h-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span id="btn-girar-texto">Detener</span>
+            </button>
+            <button id="btn-centrar-cerebro" class="boton-centrar" type="button" title="Volver a la vista inicial y a girar solo (también doble clic en el cerebro)">Centrar</button>
+          </div>
+        </div>
+        <div class="cerebro-lectura">
+          <p class="cerebro-contador"><strong id="c-activas">0</strong> neuronas encendidas</p>
+          <p class="cerebro-frase" id="cerebro-frase">Neuronas reales de una mosca. Mientras más tareas tiene encima, más se enciende.</p>
+        </div>
+        <section class="cifras" aria-labelledby="cifras-titulo">
+          <h3 class="cifras-titulo" id="cifras-titulo">Hoy en la oficina</h3>
+          <div class="cifra cifra-carga" id="cifra-carga" data-carga="ok" title="Tareas abiertas a la vez, contra el límite sostenible (3)">
+            <span class="cifra-label">Carga</span>
+            <span class="cifra-valor"><span id="cf-carga">3</span> <small>a la vez</small></span>
+            <span class="carga-segmentos" id="carga-segmentos" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+            <span class="cifra-sub">límite sostenible 3</span>
+          </div>
+          <div class="cifra cifra-hechas">
+            <span class="cifra-label">Terminadas</span>
+            <span class="cifra-valor" id="cf-hechas">0</span>
+          </div>
+          <div class="cifra cifra-tiempo" title="Tiempo promedio desde que una tarea entra a «En curso» hasta que se termina">
+            <span class="cifra-label">Tiempo por tarea</span>
+            <span class="cifra-valor" id="cf-tiempo">–</span>
+          </div>
+          <div class="cifra cifra-eficiencia" title="De cada hora, cuántos minutos rinden de verdad: descuenta los cambios de tarea, el tiempo fumando o tomando café y las esperas por bloqueos">
+            <span class="cifra-label">Eficiencia</span>
+            <span class="cifra-valor"><span id="cf-eficiencia">–</span> <small>de cada hora</small></span>
+            <span class="eficiencia-barra" aria-hidden="true"><span id="cf-eficiencia-barra"></span></span>
+          </div>
+          <div class="cifra cifra-colillas">
+            <span class="cifra-label">Colillas</span>
+            <span class="cifra-valor" id="cf-colillas">0</span>
+          </div>
+          <div class="cifra cifra-cafes">
+            <span class="cifra-label">Cafés</span>
+            <span class="cifra-valor" id="cf-cafes">0</span>
+          </div>
+        </section>
+        <section class="cerebro-zonas" aria-labelledby="zonas-titulo">
+          <p class="zonas-cabecera">
+            <span class="etiqueta-oscura" id="zonas-titulo">De dónde viene la actividad</span>
+            <span class="zonas-sub" id="zonas-sub">% de las neuronas encendidas</span>
+          </p>
+          <ul class="cerebro-grupos" id="cerebro-grupos"></ul>
+        </section>
+        <div class="cerebro-dia">
+          <div class="cerebro-dia-cabecera">
+            <span class="etiqueta-oscura">Estrés del día</span>
+            <span class="dia-leyenda" aria-hidden="true">
+              <span><svg viewBox="0 0 14 8" width="14" height="8"><rect x="1" y="2.5" width="9" height="3" rx="1" fill="#ece6dc"/><rect x="10" y="2.5" width="3" height="3" rx="1" fill="#ff7043"/></svg>cigarro</span>
+              <span><svg viewBox="0 0 12 10" width="12" height="10"><path d="M1.5 2h6.5v4a2.5 2.5 0 0 1-2.5 2.5h-1.5A2.5 2.5 0 0 1 1.5 6z" fill="#c8915e"/><path d="M8 3.2h1a1.6 1.6 0 0 1 0 3.2H8" fill="none" stroke="#c8915e" stroke-width="1.2"/></svg>café</span>
+            </span>
+          </div>
+          <div class="cerebro-dia-grafico">
+            <canvas id="lienzo-dia" role="img" aria-label="Estrés de la mosca durante el día"></canvas>
+            <div class="cerebro-dia-tooltip" id="cerebro-dia-tooltip" hidden></div>
+          </div>
+        </div>
+        <div class="cerebro-pie">
+          <ul class="cerebro-leyenda" aria-label="Cómo leer el cerebro">
+            <li><span class="ley-punto ley-gris" aria-hidden="true"></span>en reposo</li>
+            <li><span class="ley-punto ley-color" aria-hidden="true"></span>encendida</li>
+            <li><span class="ley-punto ley-anillo" aria-hidden="true"></span>camino de la señal</li>
+          </ul>
+          <p class="cerebro-pie-fila">
+            <button id="btn-es-real" class="boton-es-real" type="button" aria-expanded="false" aria-controls="cerebro-info">¿Es real?</button>
+            <span class="cerebro-credito">Datos: Male CNS v1.0 · CC BY 4.0</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div id="cerebro-ficha" class="cerebro-ficha" role="tooltip" hidden></div>
+
+    <div id="cerebro-info" class="cerebro-info" role="dialog" aria-labelledby="cerebro-info-titulo" hidden>
+      <div class="cerebro-info-cabeza">
+        <strong id="cerebro-info-titulo">¿Es real?</strong>
+        <button id="btn-cerrar-info" class="boton-info-cerrar" type="button" aria-label="Cerrar">×</button>
+      </div>
+      <p><b>Las neuronas y sus conexiones son de una mosca real.</b></p>
+      <p>Las tareas las traducimos en una señal y simulamos cómo responde su cerebro.</p>
+      <p>Las zonas muestran por dónde pasa la señal que le damos. Que una zona esté en 0% (por ejemplo, Memoria) no significa que la mosca no la use: la señal no llega ahí.</p>
+      <p>Las moscas no fuman: el cigarro es un disfraz.</p>
+      <p>Los números de la oficina son del juego. Que cada tarea tarde más y se termine menos tiene respaldo; que suba el estrés es un supuesto nuestro.</p>
+      <p class="cerebro-info-credito">Datos: Male CNS v1.0. Una colaboración entre FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC Laboratory of Molecular Biology y Google Research. Licencia CC BY 4.0 · male-cns.janelia.org</p>
+    </div>
+
+    <button id="btn-mostrar-cerebro" type="button" title="Mostrar el cerebro (tecla B)" aria-controls="cerebro">
+      <span class="icono-cerebro" aria-hidden="true">
+        <span style="--c: #2fe3ff"></span><span style="--c: #8b5cff"></span><span style="--c: #ffd84d"></span><span style="--c: #ff4fd8"></span>
+      </span>
+      Cerebro
+      <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+
+    <button id="btn-mostrar-controles" type="button" title="Mostrar los controles (tecla C)" aria-controls="panel">
+      <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M10 3.5 5.5 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Controles
+      <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M2.5 4.5h11M2.5 11.5h11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="10" cy="4.5" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.4"/><circle cx="6" cy="11.5" r="1.8" fill="#fff" stroke="currentColor" stroke-width="1.4"/></svg>
+    </button>
+
+    <div id="velo" aria-hidden="true"></div>
+
+    <div id="banner-fin-dia" class="oculto">
+      <p><strong>Fin del día.</strong> Mira la tabla o reinicia para probar otro WIP.</p>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
