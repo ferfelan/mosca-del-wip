@@ -123,7 +123,6 @@ a:hover { text-decoration-color: currentColor; }
 
 p { margin: 0; }
 .nota { font-size: 14.5px; line-height: 1.5; color: var(--tenue); }
-.solo-celular { display: none; }
 .solo-lector {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
@@ -538,8 +537,6 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .columna-total .cifra { display: block; font-size: 38px; font-weight: 760; letter-spacing: -0.02em; line-height: 1.05; color: var(--col); }
 .hecho-nota { grid-area: nota; margin-top: 14px; }
 
-.celular-aviso { margin-top: 28px; }
-
 /* Por dentro: el crédito de MaleCNS y los colores del cerebro */
 .credito {
   display: grid;
@@ -624,15 +621,13 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   h1 { font-size: clamp(50px, 14vw, 76px); margin-bottom: 20px; }
   .lema { font-size: 23px; max-width: none; }
   .que-es { margin-bottom: 24px; }
-  /* En celular el botón del informe es el principal (el juego no se juega
-     bien ahí) y va justo después de la presentación. */
-  .hero .acciones { display: block; }
+  /* En celular, justo después de la presentación, uno bajo el otro: Jugar (el
+     juego tiene su versión de celular) y el informe. */
+  .hero .acciones { display: grid; gap: 12px; }
   .boton,
   .boton.principal { padding-inline: 20px; text-align: center; }
-  .hero .boton { width: 100%; max-width: 440px; background: var(--tinta); color: var(--noche); border-color: transparent; font-size: 17px; }
-  .hero .boton:hover { background: var(--principal-hover); }
+  .hero .boton { width: 100%; max-width: 440px; font-size: 17px; }
   .solo-computador { display: none !important; }
-  .solo-celular { display: block; }
 
   .laboratorio { padding: 8px 0 0; }
   .cerebro { position: relative; inset: auto; height: min(118vw, 580px, max(320px, 100svh - 40px)); margin: 0 calc(-1 * var(--margen)); }
@@ -659,7 +654,6 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .pantalla-estado { top: 10px; font-size: 12.5px; padding: 5px 12px 5px 10px; }
   .pantalla figcaption { margin: 10px 0 24px; }
   .tarjetas i { flex-basis: 10px; }
-  .enlace-jugar { display: inline-flex; align-items: center; min-height: 44px; margin-top: 4px; font-weight: 650; }
 
   .credito { grid-template-columns: 1fr; }
   .zonas { margin-top: 24px; }
@@ -670,9 +664,8 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .informe-texto .acciones { display: block; }
   .informe-texto .boton { width: 100%; max-width: 440px; }
 
-  /* En celular el cierre solo repetiría el botón del informe, que está justo arriba. */
-  .cierre .acciones { display: none; }
-  .cierre-frase { margin-bottom: 0; }
+  /* En celular el cierre lleva solo Jugar: el botón del informe está justo arriba. */
+  .cierre-frase { margin-bottom: 28px; }
   .pie { flex-direction: column; padding: 24px var(--margen) 40px; }
 }
 

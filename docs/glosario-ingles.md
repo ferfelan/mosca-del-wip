@@ -137,6 +137,18 @@ el juego digan lo mismo. Si quieres cambiar una palabra:
 | Neurona sin nombre | Unnamed neuron |
 | Encendida ahora / En reposo ahora | Firing now / At rest now |
 
+**En el celular** (Parte 5.2e: el juego en vertical, como una app; las
+palabras que no están aquí son las mismas del computador):
+
+| Español | Inglés |
+|---|---|
+| Volver a la portada (la flecha de arriba) | Back to the home page |
+| Controles del día (la píldora del reloj) | Day controls |
+| Más números (la rayita de la hoja) | More numbers |
+| Vistas (las pestañas de abajo) | Views |
+| Oficina · Cerebro · Días | Office · Brain · Days |
+| Ver los días (al terminar el día) | See the days |
+
 ## 3. En la oficina 3D
 
 | Español | Inglés |

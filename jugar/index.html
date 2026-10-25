@@ -23,6 +23,13 @@
           raiz.className += ' traduciendo';
           setTimeout(function () { raiz.classList.remove('traduciendo'); }, 2500);
         }
+        // Celular (pantalla táctil chica, o tablet en vertical): el juego se arma
+        // como una app desde el primer cuadro. La misma condición que src/celular.js.
+        var celular = '(hover: none) and (pointer: coarse) and (max-width: 600px), (hover: none) and (pointer: coarse) and (max-height: 500px), (hover: none) and (pointer: coarse) and (orientation: portrait) and (max-width: 1100px)';
+        if (window.matchMedia && matchMedia(celular).matches) {
+          raiz.className += ' celular';
+          raiz.setAttribute('data-cel-vista', 'oficina');
+        }
       })();
     </script>
     <link rel="icon" href="/favicon.ico?v=3" sizes="32x32" />
@@ -61,6 +68,13 @@
       </div>
     </header>
 
+    <!-- Celular (src/celular.js): volver a la portada y la píldora del reloj,
+         donde se mueven la hora, la pausa, la velocidad y reiniciar -->
+    <a id="cel-volver" class="solo-celular" href="/" aria-label="Volver a la portada">
+      <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path d="M10 3.5 5.5 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <div id="cel-controles" class="solo-celular" role="group" aria-label="Controles del día"></div>
+
     <div id="escena">
       <canvas id="lienzo-3d"></canvas>
       <div class="rotulo-escena solo-exhibicion">
@@ -97,6 +111,7 @@
     </div>
 
     <aside id="panel">
+      <button id="cel-mas" class="solo-celular" type="button" aria-expanded="false" aria-label="Más números"></button>
       <header class="cabecera">
         <div>
           <h1>Mosca del WIP</h1>
@@ -107,7 +122,7 @@
         </button>
       </header>
 
-      <section class="bloque">
+      <section class="bloque bloque-wip">
         <div class="bloque-fila">
           <label for="wip" class="etiqueta">Tareas en curso a la vez</label>
           <span class="wip-numero" id="wip-valor">3</span>
@@ -119,7 +134,7 @@
         <p class="nota" id="wip-nota">Dentro del límite sostenible</p>
       </section>
 
-      <section class="bloque">
+      <section class="bloque bloque-hora">
         <div class="bloque-fila">
           <span class="etiqueta">Hora</span>
           <span class="hora" id="reloj-texto">09:00</span>
@@ -132,7 +147,7 @@
         </div>
       </section>
 
-      <section class="bloque">
+      <section class="bloque bloque-numeros">
         <div class="metricas">
           <div class="metrica">
             <span class="metrica-valor" id="m-hechas">0</span>
@@ -283,6 +298,35 @@
       </div>
     </section>
 
+    <!-- Celular: la pestaña Días (aquí se mueven el estrés del día y la tabla)
+         y las pestañas Oficina, Cerebro y Días -->
+    <section id="cel-dias" class="solo-celular">
+      <div id="cel-dias-grafico" class="cel-dias-grafico"></div>
+      <div id="cel-dias-tabla"></div>
+      <div class="cel-idioma">
+        <span>Idioma</span>
+        <div class="idioma" role="group" aria-label="Idioma">
+          <button type="button" data-idioma="es" lang="es" aria-pressed="true" aria-label="Español" title="Español">ES</button>
+          <button type="button" data-idioma="en" lang="en" aria-pressed="false" aria-label="English" title="English">EN</button>
+        </div>
+      </div>
+    </section>
+
+    <div id="cel-pestanas" class="solo-celular" role="tablist" aria-label="Vistas">
+      <button id="cel-pestana-oficina" type="button" role="tab" data-vista="oficina" aria-controls="escena" aria-selected="true">
+        <span class="cel-icono" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="11" rx="2"/><path d="M9 20h6M12 15v5"/></svg></span>
+        <span class="cel-pestana-texto">Oficina</span>
+      </button>
+      <button id="cel-pestana-cerebro" type="button" role="tab" data-vista="cerebro" aria-controls="cerebro" aria-selected="false" tabindex="-1">
+        <span class="cel-icono" aria-hidden="true"><span class="cel-puntos"><i style="--c: #2fe3ff"></i><i style="--c: #8b5cff"></i><i style="--c: #ffd84d"></i><i style="--c: #ff4fd8"></i></span></span>
+        <span class="cel-pestana-texto">Cerebro</span>
+      </button>
+      <button id="cel-pestana-dias" type="button" role="tab" data-vista="dias" aria-controls="cel-dias" aria-selected="false" tabindex="-1">
+        <span class="cel-icono" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M5 19V11M12 19V5M19 19v-6"/></svg></span>
+        <span class="cel-pestana-texto">Días</span>
+      </button>
+    </div>
+
     <div id="cerebro-ficha" class="cerebro-ficha" role="tooltip" hidden></div>
 
     <div id="cerebro-info" class="cerebro-info" role="dialog" aria-labelledby="cerebro-info-titulo" hidden>
@@ -322,7 +366,11 @@
     <div id="velo" aria-hidden="true"></div>
 
     <div id="banner-fin-dia" class="oculto">
-      <p><strong>Fin del día.</strong> Mira la tabla o reinicia para probar otro WIP.</p>
+      <p><strong>Fin del día.</strong> <span class="banner-texto">Mira la tabla o reinicia para probar otro WIP.</span></p>
+      <div class="cel-banner-botones solo-celular">
+        <button id="cel-ver-dias" type="button">Ver los días</button>
+        <button id="cel-reiniciar" type="button">Reiniciar día</button>
+      </div>
     </div>
 
     <script type="module" src="/src/main.js"></script>

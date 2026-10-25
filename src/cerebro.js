@@ -246,7 +246,9 @@ function texturaResplandor() {
   return t;
 }
 
-export function crearCerebro(canvas, datos, real) {
+// topeResolucion: hasta cuántos píxeles por punto de pantalla se dibuja (2 en
+// el computador; el juego pide 1,5 en el celular, para que no se caliente).
+export function crearCerebro(canvas, datos, real, { topeResolucion = () => 2 } = {}) {
   const { info } = datos;
   const { meta, n, posiciones, grupos, tonos, roles, indices, brillo, hz10 } = real;
   const ids = info.grupos.map((g) => g.id);
@@ -546,7 +548,7 @@ export function crearCerebro(canvas, datos, real) {
     if (w === tamano.w && h === tamano.h) return;
     tamano = { w, h };
     // Nunca por debajo de la resolución de la pantalla (nítido también con zoom del navegador)
-    const ratio = Math.min(Math.max(window.devicePixelRatio || 1, 1), 2);
+    const ratio = Math.min(Math.max(window.devicePixelRatio || 1, 1), topeResolucion());
     renderer.setPixelRatio(ratio);
     renderer.setSize(w, h, false);
     camera.aspect = w / h;

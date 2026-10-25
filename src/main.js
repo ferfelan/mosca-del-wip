@@ -11,6 +11,7 @@ import { crearGraficoDia } from './grafico.js';
 import { POS_CENICERO, POS_PILA, CENTRO_PANTALLA, ESCALA_MONITOR } from './layout.js';
 import { leerIdioma, marcarIdioma, elegirIdioma, formatoNumero } from './idioma.js';
 import { tx, ponerIdiomaJuego, nombreNivel, zona, prepararPagina, traducirPagina } from './juego-textos.js';
+import { iniciarCelular, esCelular, vistaCelular } from './celular.js';
 
 // ---------- Idioma: español (siempre al llegar) o inglés ----------
 // Se decide antes de armar la oficina, así el kanban, el póster y los
@@ -451,9 +452,11 @@ function escribirSiguienteDia() {
 // ---------- Tamaño de los lienzos y encuadre ----------
 // Resolución: en Control, la real de la pantalla (y se actualiza si la
 // ventana pasa a otra pantalla); en Exhibición, siempre al doble (nítida
-// aunque la pantalla no sea Retina).
+// aunque la pantalla no sea Retina). En el celular, a lo más 1,5 veces (así
+// no se calienta).
 function ratioEscena() {
   const dpr = window.devicePixelRatio || 1;
+  if (esCelular()) return Math.min(Math.max(dpr, 1), 1.5);
   return vista === 'exhibicion' ? 2 : Math.min(Math.max(dpr, 1), 2);
 }
 let dprAplicado = 0;
@@ -522,8 +525,9 @@ for (const sx of [-1, 1])
 function aplicarEspacioPanel() {
   const fi = factorIzq;
   const fd = factorDer;
-  if (vista === 'exhibicion' || (fi < 0.002 && fd < 0.002)) {
+  if (vista === 'exhibicion' || esCelular() || (fi < 0.002 && fd < 0.002)) {
     // Sin paneles: la escena ocupa toda la pantalla con el encuadre oficial
+    // (en el celular no hay paneles al lado: la oficina tiene su recuadro)
     camera.zoom = 1;
     camera.clearViewOffset();
     camera.updateProjectionMatrix();
@@ -592,7 +596,7 @@ function pintarControlesOculto() {
 }
 
 function alternarControles(ocultar = !controlesOculto) {
-  if (vista !== 'control') return;
+  if (vista !== 'control' || esCelular()) return;
   controlesOculto = ocultar;
   try {
     localStorage.setItem(CLAVE_CONTROLES_OCULTO, ocultar ? '1' : '0');
@@ -606,7 +610,7 @@ document.getElementById('btn-mostrar-controles').addEventListener('click', () =>
 pintarControlesOculto();
 
 function alternarCerebro(ocultar = !cerebroOculto) {
-  if (vista !== 'control') return;
+  if (vista !== 'control' || esCelular()) return;
   cerebroOculto = ocultar;
   try {
     localStorage.setItem(CLAVE_CEREBRO_OCULTO, ocultar ? '1' : '0');
@@ -618,9 +622,11 @@ function alternarCerebro(ocultar = !cerebroOculto) {
 document.getElementById('btn-ocultar-cerebro').addEventListener('click', () => alternarCerebro(true));
 document.getElementById('btn-mostrar-cerebro').addEventListener('click', () => alternarCerebro(false));
 pintarCerebroOculto();
+// (en el celular, la oficina también se encuadra sola en su recuadro)
 new ResizeObserver(() => {
   ajustarEscena();
-  if (vista === 'exhibicion') encuadrarExhibicion();
+  if (esCelular()) encuadrarSinPerderGiro();
+  else if (vista === 'exhibicion') encuadrarExhibicion();
 }).observe(elEscena);
 ajustarEscena();
 
@@ -689,6 +695,20 @@ let volviendo = null;
 function guardarCasa() {
   casa = { pos: camera.position.clone(), obj: controls.target.clone() };
   volviendo = null;
+}
+// En el celular el recuadro de la oficina cambia de tamaño (al girar el
+// teléfono o, en pantallas bajas, al cambiar de pestaña): se calcula la nueva
+// vista inicial, pero si la oficina estaba girada con el dedo, sigue girada
+// (si ya iba volviendo a su vista inicial, llega directo a la nueva)
+function encuadrarSinPerderGiro() {
+  const girada = camera.position.distanceTo(casa.pos) > 0.05 || controls.target.distanceTo(casa.obj) > 0.05;
+  if (!girada || volviendo) return encuadrarExhibicion();
+  const pos = camera.position.clone();
+  const obj = controls.target.clone();
+  encuadrarExhibicion();
+  camera.position.copy(pos);
+  controls.target.copy(obj);
+  controls.update();
 }
 function volverAVistaInicial() {
   // corta la inercia que dejó el mouse (si no, la oficina seguiría girando
@@ -763,6 +783,8 @@ function aplicarVista(nueva) {
 // Transición suave: se funde a oscuro, cambia, y vuelve a aparecer
 function cambiarVista(nueva = vista === 'control' ? 'exhibicion' : 'control', inmediato = false) {
   if (cambiandoVista || nueva === vista) return;
+  // En el celular no hay Exhibición (la pantalla ya es una sola vista)
+  if (esCelular() && nueva === 'exhibicion') return;
   if (inmediato) {
     aplicarVista(nueva);
     return;
@@ -840,7 +862,9 @@ const filasGrupo = {};
 cargarDatosCerebro()
   .then(async (datos) => {
     const real = await cargarActividadReal(datos);
-    cerebro = crearCerebro(document.getElementById('lienzo-cerebro'), datos, real);
+    cerebro = crearCerebro(document.getElementById('lienzo-cerebro'), datos, real, {
+      topeResolucion: () => (esCelular() ? 1.5 : 2),
+    });
     datos.info.grupos.forEach((g) => {
       const li = document.createElement('li');
       li.className = 'grupo';
@@ -1077,8 +1101,9 @@ function refrescarCerebro(dt, estado, cafeVisible, ahora) {
   // el azúcar del café; las reglas del juego deciden lo demás.
   cerebro.actualizar(dt, { enCurso: estado.enCurso, cafe: cafeVisible, apagado: estado.terminado || pausado });
   pintarBotonGiro();
-  // Oculto (y ya fuera de la pantalla): no se dibuja, así no gasta nada
-  if (vista === 'control' && cerebroOculto && factorIzq === 0) return;
+  // Oculto (y ya fuera de la pantalla) o, en el celular, en otra pestaña: no
+  // se dibuja, así no gasta nada
+  if (esCelular() ? vistaCelular() !== 'cerebro' : vista === 'control' && cerebroOculto && factorIzq === 0) return;
   cerebro.renderizar();
   if (!toca) return;
   const l = pintarLectura(estado);
@@ -1200,9 +1225,38 @@ function animar(ahora = performance.now()) {
   factorIzq = acercar(factorIzq, enExhibicion || cerebroOculto ? 0 : 1);
   factorDer = acercar(factorDer, enExhibicion || controlesOculto ? 0 : 1);
   aplicarEspacioPanel();
-  renderer.render(scene, camera);
+  // En el celular la oficina se dibuja solo si su pestaña está a la vista
+  if (!esCelular() || vistaCelular() === 'oficina') renderer.render(scene, camera);
   refrescarCerebro(dtReal, estado, mosca.tomandoCafe(), ahora);
 }
+
+// ---------- Celular: la misma partida, acomodada a la pantalla chica ----------
+// (src/celular.js) Al encenderse, la oficina se encuadra sola en su recuadro
+// (como en Exhibición) y se puede alejar hasta 12; al apagarse (un iPad que
+// agranda su ventana), todo vuelve a como estaba.
+iniciarCelular({
+  alCambiar(activo) {
+    if (activo && vista === 'exhibicion') aplicarVista('control');
+    controls.maxDistance = activo ? 12 : 7;
+    if (activo) document.body.classList.remove('cerebro-oculto', 'controles-oculto');
+    else {
+      pintarCerebroOculto();
+      pintarControlesOculto();
+      camera.position.copy(CAMARA_INICIAL.posicion);
+      controls.target.copy(CAMARA_INICIAL.objetivo);
+      controls.update();
+      guardarCasa();
+    }
+    ajustarEscena();
+    if (activo) encuadrarExhibicion();
+  },
+  // Al salir del cerebro se cierran su explicación y la tarjetita de una neurona
+  alCambiarVista(nueva) {
+    if (nueva === 'cerebro') return;
+    alternarInfo(false);
+    soltarFicha();
+  },
+});
 
 animar();
 // El script del <head> esconde la página mientras se ponen los textos en
@@ -1306,6 +1360,7 @@ if (import.meta.env.DEV) {
     },
     casiFin: () => (juego.minutoActual = 18 * 60 - 2),
     camaraInfo: () => ({ pos: camera.position.toArray(), obj: controls.target.toArray(), aspect: camera.aspect }),
+    celular: () => ({ activo: esCelular(), vista: vistaCelular(), ratio: renderer.getPixelRatio() }),
     cerebro: () => cerebro?.lectura(),
     cerebroVista: () => cerebro?.vista(),
     reencuadrar() {

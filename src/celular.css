@@ -1,0 +1,1437 @@
+/* =========================================================
+   Modo celular (Parte 5.2e, 2026-10-24): la opción B, "vertical, como una app"
+   Arriba la oficina (o el cerebro, o los días); abajo, una hoja fija con el
+   número de tareas y tres números; al pie, las pestañas Oficina, Cerebro y
+   Días. Girado: la vista a la izquierda y los controles a la derecha.
+   Todo vive bajo html.celular (lo ponen el script del <head> de
+   jugar/index.html y src/celular.js en pantallas táctiles chicas y en
+   tablets en vertical): en el computador nada de esto se aplica.
+   ========================================================= */
+
+/* Lo que existe solo en el celular */
+.solo-celular {
+  display: none !important;
+}
+
+html.celular {
+  --cel-margen: 12px;
+  /* lo que la hoja tapa del borde de abajo de la vista (igual que SOLAPE_HOJA
+     en src/celular.js) */
+  --cel-solape: 20px;
+  --cel-hoja-fondo: #fcfaf5;
+  --cel-noche: rgba(10, 14, 28, 0.86);
+  --cel-sombra-clara: 0 2px 8px rgba(60, 45, 25, 0.18);
+  --cel-sombra-oscura: 0 2px 10px rgba(0, 0, 0, 0.3);
+  /* manilla de la hoja: 3:1 contra el fondo, para que se vea */
+  --cel-manilla: #9a8b76;
+}
+
+/* ---------- La pantalla: la vista arriba, la hoja abajo y las pestañas al pie ---------- */
+html.celular body {
+  display: grid;
+  height: 100%;
+  height: 100dvh;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) var(--cel-hoja, 200px) auto;
+  grid-template-areas: 'vista' 'hoja' 'pestanas';
+  background: var(--cel-hoja-fondo);
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+html.celular #escena,
+html.celular #cerebro,
+html.celular #cel-dias {
+  grid-area: vista;
+  position: relative;
+  inset: auto;
+  z-index: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* Se ve solo la de la pestaña elegida (las otras guardan su tamaño) */
+html.celular:not([data-cel-vista='oficina']) #escena,
+html.celular:not([data-cel-vista='cerebro']) #cerebro,
+html.celular:not([data-cel-vista='dias']) #cel-dias {
+  visibility: hidden;
+}
+
+/* Lo del computador que en el celular no va (o va en otro lugar: la tabla y
+   el estrés del día se mueven a la pestaña Días, y la hora con sus botones a
+   la píldora de arriba) */
+html.celular #ex-inicio,
+html.celular #btn-mostrar-cerebro,
+html.celular #btn-mostrar-controles,
+html.celular #idioma-flotante,
+html.celular .cerebro-cabecera,
+html.celular .cifras,
+html.celular .cerebro-frase,
+html.celular .cerebro-leyenda,
+html.celular #panel > .cabecera,
+html.celular #panel .bloque-hora,
+html.celular #panel .bloque.ultimo,
+html.celular #cerebro .cerebro-dia,
+html.celular .atajos {
+  display: none !important;
+}
+
+/* ---------- La oficina ---------- */
+html.celular #escena {
+  overflow: hidden;
+}
+
+/* Estado de la mosca: arriba a la izquierda, bajo el botón de volver */
+html.celular #ex-mosca {
+  display: flex !important;
+  top: calc(var(--cel-margen) + 52px);
+  left: var(--cel-margen);
+  width: auto;
+  min-width: 164px;
+  max-width: min(250px, calc(100% - 2 * var(--cel-margen)));
+  gap: 5px;
+  padding: 9px 12px 10px;
+  border-radius: 14px;
+  background: var(--cel-noche);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+/* el título no se ve, pero el lector de pantalla lo lee */
+html.celular .estado-mosca-titulo {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+html.celular .estado-mosca-nivel {
+  gap: 7px;
+  font-size: 17px;
+}
+
+html.celular .estado-mosca-punto {
+  width: 9px;
+  height: 9px;
+}
+
+html.celular .estado-mosca-pct {
+  font-size: 14px;
+  color: #c9d0e0;
+}
+
+html.celular .estado-mosca-barra {
+  height: 4px;
+}
+
+html.celular .estado-mosca-hace {
+  font-size: 12.5px;
+  line-height: 1.3;
+  color: var(--oscuro-suave);
+}
+
+/* "Vista inicial": a la derecha, a la altura del estado de la mosca */
+html.celular .boton-vista-inicial {
+  top: calc(var(--cel-margen) + 52px);
+  right: var(--cel-margen);
+  left: auto;
+  min-height: 36px;
+  padding: 0 14px;
+  transform: none;
+  font-size: 13px;
+}
+
+/* ---------- Arriba: volver a la portada y la píldora del reloj ---------- */
+html.celular #cel-volver {
+  display: grid !important;
+  place-items: center;
+  grid-area: vista;
+  align-self: start;
+  justify-self: start;
+  z-index: 4;
+  width: 44px;
+  height: 44px;
+  margin: var(--cel-margen) 0 0 var(--cel-margen);
+  border-radius: 50%;
+  background: rgba(252, 250, 245, 0.94);
+  box-shadow: var(--cel-sombra-clara);
+  color: var(--tinta);
+}
+
+/* La hora, la pausa, la velocidad y reiniciar: los botones de siempre, que se
+   cambian aquí (src/celular.js) */
+html.celular #cel-controles {
+  display: flex !important;
+  grid-area: vista;
+  align-self: start;
+  justify-self: end;
+  z-index: 4;
+  align-items: center;
+  height: 44px;
+  margin: var(--cel-margen) var(--cel-margen) 0 0;
+  padding: 0 0 0 6px;
+  border-radius: 999px;
+  background: rgba(252, 250, 245, 0.94);
+  box-shadow: var(--cel-sombra-clara);
+  color: var(--tinta);
+}
+
+html.celular #cel-controles:empty {
+  visibility: hidden;
+}
+
+html.celular #reloj-texto {
+  padding: 0 6px 0 8px;
+  font-size: 15px;
+  font-weight: 650;
+}
+
+html.celular #cel-controles button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 44px;
+  padding: 4px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  background-clip: content-box;
+  color: inherit;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+/* Pausa y reiniciar: solo el dibujo (el nombre del botón lo sigue leyendo el
+   lector de pantalla) */
+html.celular #cel-controles #btn-pausa,
+html.celular #cel-controles #btn-reiniciar {
+  width: 44px;
+  font-size: 0;
+}
+
+html.celular #btn-pausa::before,
+html.celular #btn-reiniciar::before {
+  content: '';
+  width: 14px;
+  height: 14px;
+  background: currentColor;
+  -webkit-mask: var(--icono) center / contain no-repeat;
+  mask: var(--icono) center / contain no-repeat;
+}
+
+html.celular #cel-controles #btn-pausa {
+  --icono: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M5 3.5v9M11 3.5v9' stroke='%23000' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-color: var(--superficie);
+}
+
+/* En pausa: el botón se pinta y muestra "seguir" */
+html.celular #cel-controles #btn-pausa.activo {
+  --icono: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M5 3.3v9.4l7.6-4.7z' fill='%23000' stroke='%23000' stroke-width='1.4' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-color: var(--acento);
+  color: #fff;
+}
+
+html.celular #cel-controles #btn-reiniciar {
+  --icono: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M13 8a5 5 0 1 1-1.6-3.7M13 2.5v3h-3' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+html.celular #btn-reiniciar::before {
+  width: 16px;
+  height: 16px;
+}
+
+/* Sobre el cerebro (oscuro), la píldora y el botón de volver van oscuros */
+html.celular[data-cel-vista='cerebro'] #cel-volver,
+html.celular[data-cel-vista='cerebro'] #cel-controles {
+  background: var(--cel-noche);
+  box-shadow: var(--cel-sombra-oscura);
+  color: var(--oscuro-tinta);
+}
+
+html.celular[data-cel-vista='cerebro'] #cel-controles #btn-pausa:not(.activo) {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* ---------- La hoja de abajo: tareas a la vez y los números ---------- */
+html.celular #panel {
+  grid-area: hoja;
+  align-self: end;
+  position: relative;
+  inset: auto;
+  z-index: 3;
+  width: auto;
+  max-height: none;
+  overflow: visible;
+  padding: 2px 16px 12px;
+  border: 0;
+  border-radius: 22px 22px 0 0;
+  background: var(--cel-hoja-fondo);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: 0 -6px 24px rgba(60, 45, 25, 0.14);
+  transform: none;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: none;
+}
+
+/* En un iPad en vertical la hoja y la pestaña Días van de lado a lado, pero
+   lo de adentro queda al centro, con un ancho cómodo */
+html.celular #panel > *,
+html.celular #cel-dias > * {
+  max-width: 720px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+html.celular #panel .bloque {
+  padding: 0;
+  border: 0;
+}
+
+/* Manilla: un toque (o arrastrarla) abre y cierra la hoja */
+html.celular #cel-mas {
+  display: block !important;
+  position: relative;
+  width: 100%;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  touch-action: none;
+}
+
+html.celular #cel-mas::before {
+  content: '';
+  position: absolute;
+  top: 7px;
+  left: 50%;
+  width: 36px;
+  height: 5px;
+  margin-left: -18px;
+  border-radius: 3px;
+  background: var(--cel-manilla);
+}
+
+/* zona de toque de 44 px de alto, hacia abajo y sin salir de la hoja (si
+   subiera sobre la oficina, le quitaría el toque a "¿Es real?" o a lo último
+   de la pestaña Días) */
+html.celular #cel-mas::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: 0;
+  bottom: -20px;
+  left: 0;
+}
+
+html.celular .bloque-wip .bloque-fila {
+  align-items: center;
+}
+
+html.celular .bloque-wip .etiqueta {
+  font-size: 11.5px;
+  letter-spacing: 0.1em;
+}
+
+html.celular .wip-numero {
+  font-size: 30px;
+}
+
+/* Deslizador más grande para el dedo (perilla de 30 px, 44 px de alto para tocar) */
+html.celular #wip {
+  height: 44px;
+  margin: 0;
+  touch-action: none;
+}
+
+html.celular #wip::-webkit-slider-runnable-track {
+  height: 7px;
+  border-radius: 4px;
+}
+
+html.celular #wip::-webkit-slider-thumb {
+  box-sizing: border-box;
+  width: 30px;
+  height: 30px;
+  margin-top: -11.5px;
+  border-width: 3px;
+  box-shadow: 0 2px 6px rgba(60, 45, 25, 0.25);
+}
+
+html.celular #wip::-moz-range-track,
+html.celular #wip::-moz-range-progress {
+  height: 7px;
+}
+
+html.celular #wip::-moz-range-thumb {
+  box-sizing: border-box;
+  width: 30px;
+  height: 30px;
+  border-width: 3px;
+}
+
+/* los números de la escala, alineados con el centro de la perilla de 30 px */
+html.celular .escala {
+  height: 16px;
+  margin-top: -6px;
+  font-size: 12px;
+  pointer-events: none; /* el toque pasa al deslizador que queda debajo */
+}
+
+html.celular .escala span:nth-child(1) {
+  left: 15px;
+}
+
+html.celular .escala span:nth-child(2) {
+  left: calc(15px + (100% - 30px) * 2 / 9);
+}
+
+html.celular .escala span:nth-child(3) {
+  left: calc(100% - 15px);
+}
+
+/* una sola línea, así la hoja no cambia de alto */
+html.celular #wip-nota {
+  margin: -1px 0 0;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Los números en tarjetas: terminadas, tiempo por tarea y colillas; con la
+   hoja abierta, también cafés, estrés y eficiencia */
+html.celular .bloque-numeros {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+html.celular .bloque-numeros .metricas {
+  display: contents;
+}
+
+html.celular .bloque-numeros .metrica,
+html.celular .bloque-numeros > .bloque-fila,
+html.celular .bloque-numeros > .estres {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 1px;
+  min-width: 0;
+  margin: 0;
+  padding: 8px 10px 9px;
+  border-radius: 12px;
+  background: var(--superficie);
+}
+
+/* el número arriba y su nombre abajo, como en las tarjetas */
+html.celular .bloque-numeros > .bloque-fila,
+html.celular .bloque-numeros > .estres > .bloque-fila {
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 1px;
+}
+
+html.celular .bloque-numeros .metrica:nth-child(1) {
+  order: 1;
+}
+
+html.celular .bloque-numeros .tiempo-tarea {
+  order: 2;
+}
+
+html.celular .bloque-numeros .metrica:nth-child(2) {
+  order: 3;
+}
+
+html.celular .bloque-numeros .metrica:nth-child(3) {
+  order: 4;
+}
+
+/* el estrés al medio: es la columna más ancha ("Colapsada", "Overwhelmed") */
+html.celular .bloque-numeros .estres {
+  order: 5;
+}
+
+html.celular .bloque-numeros .eficiencia {
+  order: 6;
+}
+
+html.celular .metrica-valor,
+html.celular .bloque-numeros .tiempo-tarea-valor,
+html.celular .estres-nivel {
+  font-size: clamp(15px, 4.7vw, 19px);
+  font-weight: 700;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+/* en pantallas angostas, un poco más de espacio para el número ("Overwhelmed") */
+@media (max-width: 359px) {
+  html.celular .bloque-numeros .metrica,
+  html.celular .bloque-numeros > .bloque-fila,
+  html.celular .bloque-numeros > .estres {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+}
+
+html.celular .metrica-label,
+html.celular .bloque-numeros .etiqueta {
+  margin: 0;
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--tinta-suave);
+}
+
+html.celular .eficiencia-de {
+  display: block;
+  font-size: 11.5px;
+  white-space: normal;
+}
+
+html.celular .bloque-numeros .estres .barra {
+  width: 100%;
+  height: 5px;
+  margin-top: 6px;
+}
+
+@media (orientation: portrait) {
+  html.celular #panel:not(.cel-abierta) .metrica:nth-child(3),
+  html.celular #panel:not(.cel-abierta) .eficiencia,
+  html.celular #panel:not(.cel-abierta) .estres {
+    display: none;
+  }
+}
+
+/* Pantallas bajas (iPhone SE, Android chicos, el "Zoom de pantalla" del
+   iPhone): en el Cerebro y en Días la hoja cerrada lleva solo las tareas a la
+   vez, así el cerebro y la tabla tienen más lugar (los números están en la
+   Oficina y en la tabla). La rayita la abre con todos los números. */
+@media (orientation: portrait) and (max-height: 560px) {
+  html.celular:not([data-cel-vista='oficina']) #panel:not(.cel-abierta) .bloque-numeros {
+    display: none;
+  }
+}
+
+/* al abrir la hoja, las tarjetas nuevas aparecen suave desde abajo */
+html.celular #panel.cel-abierta .metrica:nth-child(3),
+html.celular #panel.cel-abierta .eficiencia,
+html.celular #panel.cel-abierta .estres {
+  animation: cel-aparece 0.22s ease-out both;
+}
+
+@keyframes cel-aparece {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+/* ---------- Al pie: las pestañas ---------- */
+html.celular #cel-pestanas {
+  display: grid !important;
+  grid-area: pestanas;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  z-index: 3;
+  /* en un iPad en vertical, los tres botones al centro */
+  padding: 0 max(0px, calc((100% - 720px) / 2)) env(safe-area-inset-bottom, 0px);
+  border-top: 1px solid var(--borde);
+  background: var(--cel-hoja-fondo);
+}
+
+html.celular #cel-pestanas [role='tab'] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 56px;
+  padding: 5px 4px 6px;
+  border: 0;
+  background: transparent;
+  color: var(--tinta-suave);
+  font: inherit;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* la elegida: en color y con su dibujo sobre una píldora (no solo el color) */
+html.celular #cel-pestanas [role='tab'][aria-selected='true'] {
+  color: var(--acento);
+  font-weight: 700;
+}
+
+html.celular .cel-icono {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 28px;
+  border-radius: 999px;
+}
+
+html.celular #cel-pestanas [role='tab'][aria-selected='true'] .cel-icono {
+  background: rgba(184, 88, 42, 0.12);
+}
+
+html.celular .cel-puntos {
+  display: grid;
+  grid-template-columns: 8px 8px;
+  gap: 3px;
+}
+
+html.celular .cel-puntos i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c);
+}
+
+/* ---------- Pestaña Cerebro: el cerebro a toda la vista ---------- */
+html.celular #cerebro {
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  max-height: none;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: #060a16;
+  box-shadow: none;
+  transform: none;
+  opacity: 1;
+  transition: none;
+  overflow: hidden;
+}
+
+html.celular .cerebro-cuerpo {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 0;
+}
+
+/* el cerebro empieza bajo el número y los botones: nada le tapa la cabeza */
+html.celular body .cerebro-lienzo {
+  position: absolute;
+  inset: calc(var(--cel-margen) + 100px) 0 0;
+  height: auto;
+  min-height: 0;
+  margin: 0;
+}
+
+/* Neuronas encendidas: arriba a la izquierda, bajo el botón de volver (también
+   con el día terminado: en el celular no hay resumen en su lugar) */
+html.celular body .cerebro-lectura,
+html.celular body.dia-terminado .cerebro-lectura {
+  display: block;
+  position: absolute;
+  top: calc(var(--cel-margen) + 52px);
+  left: 16px;
+  margin: 0;
+  pointer-events: none;
+  text-shadow: 0 1px 10px #060a16, 0 0 3px #060a16;
+}
+
+html.celular .cerebro-contador {
+  font-size: 13px;
+  color: var(--oscuro-tinta);
+}
+
+html.celular .cerebro-contador strong {
+  display: block;
+  margin: 0 0 2px;
+  font-size: 26px;
+  line-height: 1;
+}
+
+/* Detener y Centrar: en fila, arriba a la derecha y a la altura del número
+   (48 px sobre el lienzo del cerebro, que empieza más abajo) */
+html.celular .cerebro-botones {
+  top: -48px;
+  right: var(--cel-margen);
+  bottom: auto;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+/* en pantallas angostas no caben al lado del número: uno bajo el otro */
+@media (max-width: 359px) {
+  html.celular .cerebro-botones {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+}
+
+html.celular .boton-centrar {
+  position: relative;
+  min-height: 34px;
+  padding: 0 13px;
+  font-size: 12.5px;
+}
+
+/* zona de toque de 44 px: los botones miden 34 px con 1 px de borde, y "Vista
+   inicial", 36 px sin borde */
+html.celular .boton-centrar::after,
+html.celular .boton-es-real::after,
+html.celular .boton-vista-inicial::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+}
+
+html.celular .boton-vista-inicial::after {
+  inset: -4px;
+}
+
+/* De dónde viene la actividad: las zonas como fichas, abajo */
+html.celular .cerebro-zonas {
+  position: absolute;
+  right: var(--cel-margen);
+  bottom: calc(var(--cel-solape) + 54px);
+  left: var(--cel-margen);
+  margin: 0;
+  pointer-events: none;
+}
+
+html.celular .zonas-cabecera {
+  justify-content: flex-start;
+  margin: 0 0 6px;
+  text-shadow: 0 1px 6px #060a16;
+}
+
+html.celular .zonas-cabecera .etiqueta-oscura,
+html.celular .zonas-sub {
+  font-size: 11px;
+}
+
+html.celular .cerebro-grupos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+html.celular .grupo {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(10, 14, 28, 0.78);
+  font-size: 12.5px;
+  color: var(--oscuro-tinta);
+}
+
+html.celular .grupo-valor {
+  font-weight: 650;
+}
+
+/* pantallas bajas (iPhone SE, Android chicos): las zonas más compactas, para
+   que se vea la cabeza del cerebro */
+@media (orientation: portrait) and (max-height: 620px) {
+  html.celular .cerebro-zonas {
+    bottom: calc(var(--cel-solape) + 50px);
+  }
+
+  html.celular .zonas-cabecera {
+    margin-bottom: 4px;
+  }
+
+  html.celular .cerebro-grupos {
+    gap: 4px;
+  }
+
+  html.celular .grupo {
+    gap: 5px;
+    padding: 3px 8px;
+    font-size: 11.5px;
+  }
+}
+
+html.celular .grupo-barra {
+  display: none;
+}
+
+/* Si aun así la vista del cerebro queda baja (el "Zoom de pantalla" del
+   iPhone o la letra agrandada), las zonas no caben sin tapar Detener y
+   Centrar: se esconden, y quedan el cerebro, su número, "¿Es real?" y el
+   crédito. Se mide la vista del cerebro, no la pantalla. */
+html.celular #cerebro {
+  container: cerebro / size;
+}
+
+@container cerebro (max-width: 359px) and (max-height: 309px) {
+  html.celular .cerebro-zonas {
+    display: none;
+  }
+}
+
+@container cerebro (max-height: 249px) {
+  html.celular .cerebro-zonas {
+    display: none;
+  }
+}
+
+/* "¿Es real?" y el crédito de los datos, al fondo */
+html.celular .cerebro-pie {
+  position: absolute;
+  right: var(--cel-margen);
+  bottom: calc(var(--cel-solape) + 10px);
+  left: var(--cel-margen);
+  margin: 0;
+}
+
+html.celular .cerebro-pie-fila {
+  margin: 0;
+  gap: 12px;
+}
+
+html.celular .boton-es-real {
+  position: relative;
+  min-height: 34px;
+  padding: 0 14px;
+  background: rgba(10, 14, 28, 0.78);
+  font-size: 13px;
+}
+
+html.celular .cerebro-credito {
+  font-size: 11px;
+  color: var(--oscuro-suave);
+  text-shadow: 0 1px 6px #060a16;
+}
+
+/* "¿Es real?" abierto: una tarjeta de lado a lado, sobre la hoja */
+html.celular .cerebro-info {
+  top: auto !important;
+  right: var(--cel-margen);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 70px);
+  left: var(--cel-margen) !important;
+  width: auto;
+  max-height: 70dvh;
+  font-size: 14px;
+}
+
+html.celular .boton-info-cerrar {
+  width: 44px;
+  height: 44px;
+  margin: -10px -12px -10px 0;
+  font-size: 22px;
+}
+
+/* ---------- Pestaña Días: el estrés de hoy y la tabla para comparar ---------- */
+html.celular #cel-dias {
+  display: block !important;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: calc(var(--cel-margen) + 56px) 16px calc(var(--cel-solape) + 20px);
+  /* con el teclado, lo elegido no queda bajo los botones de arriba ni bajo la hoja */
+  scroll-padding: calc(var(--cel-margen) + 56px) 0 calc(var(--cel-solape) + 8px);
+  background: #f6f3ee;
+  color: var(--tinta);
+}
+
+html.celular .cel-dias-grafico {
+  padding: 12px 14px 10px;
+  border-radius: 14px;
+  background: #0d1222;
+  color: var(--oscuro-tinta);
+}
+
+html.celular .cel-dias-grafico .cerebro-dia {
+  padding: 0;
+}
+
+/* el título y la leyenda: si no caben lado a lado (en inglés, en pantallas
+   angostas), la leyenda baja a otra línea; letra de 11 px como mínimo */
+html.celular .cel-dias-grafico .cerebro-dia-cabecera {
+  flex-wrap: wrap;
+  row-gap: 4px;
+}
+
+html.celular .cel-dias-grafico .etiqueta-oscura,
+html.celular .cel-dias-grafico .dia-leyenda {
+  font-size: 11px;
+}
+
+html.celular .cel-dias-grafico .cerebro-dia-grafico {
+  height: 112px;
+}
+
+/* con el dedo: arrastrar a lo largo muestra cada hora; hacia arriba o abajo, desplaza */
+html.celular .cel-dias-grafico #lienzo-dia {
+  touch-action: pan-y;
+}
+
+html.celular #cel-dias-tabla {
+  margin-top: 20px;
+}
+
+/* (sin el margen que la tabla tiene en el panel del computador: va de borde a
+   borde, como el gráfico) */
+html.celular #cel-dias-tabla .bloque {
+  padding: 0;
+}
+
+/* la pestaña nunca se mueve hacia el lado: si la tabla no cabe, se desliza
+   ella sola dentro de su marco */
+html.celular #cel-dias {
+  overflow-x: hidden;
+}
+
+/* (relative: así también queda adentro el "Eliminar" escondido de la cabecera,
+   que es solo para el lector de pantalla) */
+html.celular .cel-tabla-marco {
+  position: relative;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+html.celular .cel-tabla-marco:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
+
+html.celular #cel-dias-tabla .etiqueta {
+  font-size: 11.5px;
+  letter-spacing: 0.1em;
+}
+
+html.celular #tabla-dias {
+  width: 100%;
+  margin: 8px 0 0;
+  font-size: 13px;
+}
+
+html.celular #tabla-dias th {
+  padding: 6px 2px;
+  font-size: 11px;
+}
+
+html.celular #tabla-dias td {
+  height: 44px;
+  padding: 0 2px;
+}
+
+html.celular .quitar-fila {
+  width: 44px;
+  height: 44px;
+  font-size: 18px;
+}
+
+/* Pantallas angostas (Android de 360 px, el "Zoom de pantalla" del iPhone):
+   la tabla más compacta, para que quepa sin deslizarse */
+@media (max-width: 374px) {
+  html.celular #cel-dias {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  html.celular #tabla-dias {
+    font-size: 12px;
+  }
+
+  html.celular #tabla-dias th,
+  html.celular #tabla-dias td {
+    padding-right: 1px;
+    padding-left: 1px;
+  }
+
+  /* la × más angosta, con su zona de toque de 44 px */
+  html.celular .quitar-fila {
+    position: relative;
+    width: 32px;
+  }
+
+  /* (crece hacia la izquierda, sobre la celda del estrés: hacia la derecha
+     haría que la tabla se deslice unos píxeles) */
+  html.celular .quitar-fila::after {
+    content: '';
+    position: absolute;
+    inset: 0 0 0 -12px;
+  }
+}
+
+html.celular .boton-texto {
+  min-height: 44px;
+  padding: 0 14px;
+  font-size: 13px;
+}
+
+html.celular .nota-ilustrativa {
+  margin-top: 12px;
+  font-size: 12px;
+}
+
+/* ES | EN al final de la pestaña Días */
+html.celular .cel-idioma {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid var(--borde);
+  font-size: 13px;
+  color: var(--tinta-suave);
+}
+
+html.celular .cel-idioma .idioma {
+  border-color: var(--borde);
+  border-radius: 10px;
+  background: var(--superficie);
+}
+
+html.celular .cel-idioma .idioma button {
+  min-width: 52px;
+  height: 44px;
+  border-radius: 8px;
+  color: var(--tinta-suave);
+  font-size: 13px;
+}
+
+html.celular .cel-idioma .idioma button[aria-pressed='true'] {
+  background: var(--tinta);
+  color: #fbf8f2;
+}
+
+/* ---------- Fin del día: ver los días o jugar otro (sobre la oficina) ---------- */
+html.celular #banner-fin-dia {
+  grid-area: vista;
+  align-self: end;
+  justify-self: center;
+  position: relative;
+  bottom: auto;
+  left: auto;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  max-width: calc(100% - 2 * var(--cel-margen));
+  margin: 0 0 calc(var(--cel-solape) + 12px);
+  padding: 12px 14px;
+  border-radius: 16px;
+  transform: none;
+  font-size: 14px;
+  text-align: center;
+}
+
+html.celular #banner-fin-dia.oculto,
+html.celular:not([data-cel-vista='oficina']) #banner-fin-dia,
+html.celular .banner-texto {
+  display: none;
+}
+
+html.celular .cel-banner-botones {
+  display: flex !important;
+  gap: 8px;
+}
+
+html.celular .cel-banner-botones button {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 999px;
+  background: transparent;
+  color: #fbf8f2;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+html.celular .cel-banner-botones #cel-reiniciar {
+  border-color: transparent;
+  background: #fbf8f2;
+  color: var(--tinta);
+}
+
+/* ---------- Al tocar y con teclado ---------- */
+html.celular #cel-volver:active,
+html.celular #cel-controles button:active,
+html.celular #cel-pestanas [role='tab']:active,
+html.celular .cel-banner-botones button:active,
+html.celular .cel-idioma button:active,
+html.celular .boton-es-real:active,
+html.celular .boton-centrar:active,
+html.celular .boton-vista-inicial:active {
+  opacity: 0.65;
+}
+
+html.celular #cel-volver:focus-visible,
+html.celular #cel-controles button:focus-visible,
+html.celular #cel-pestanas [role='tab']:focus-visible,
+html.celular #cel-mas:focus-visible,
+html.celular .cel-idioma button:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+html.celular[data-cel-vista='cerebro'] #cel-volver:focus-visible,
+html.celular[data-cel-vista='cerebro'] #cel-controles button:focus-visible,
+html.celular .cel-banner-botones button:focus-visible {
+  outline: 2px solid #8fb0ff;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.celular #panel.cel-abierta * {
+    animation: none;
+  }
+}
+
+/* ---------- Oficina angosta: "Vista inicial" con solo su dibujo ----------
+   (celular vertical de menos de 300 px, o girado de 600 px o menos, con el
+   "Zoom de pantalla" o la letra agrandada): así cabe junto al estado de la
+   mosca sin chocar */
+@media (max-width: 299px), (orientation: landscape) and (max-width: 600px) {
+  /* el estado de la mosca deja lugar a "Vista inicial", a su derecha */
+  html.celular #ex-mosca {
+    min-width: 0;
+    max-width: calc(100% - 2 * var(--cel-margen) - 52px);
+  }
+
+  /* "Vista inicial": solo su dibujo, un encuadre (distinto de la flecha de
+     reiniciar; el nombre lo sigue leyendo el lector de pantalla) */
+  html.celular .boton-vista-inicial {
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
+    padding: 0;
+    font-size: 0;
+  }
+
+  html.celular .boton-vista-inicial svg {
+    display: none;
+  }
+
+  html.celular .boton-vista-inicial::before {
+    content: '';
+    width: 18px;
+    height: 18px;
+    background: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M2 6.5V2h4.5M11.5 2H16v4.5M16 11.5V16h-4.5M6.5 16H2v-4.5' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='9' cy='9' r='2' fill='%23000'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M2 6.5V2h4.5M11.5 2H16v4.5M16 11.5V16h-4.5M6.5 16H2v-4.5' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='9' cy='9' r='2' fill='%23000'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+
+  html.celular .boton-vista-inicial::after {
+    inset: 0;
+  }
+}
+
+/* ---------- Pantallas muy angostas (menos de 300 px): un iPhone con la
+   letra de Safari agrandada (aA al 150 %, la página ve 260 px) ---------- */
+@media (max-width: 299px) {
+  html.celular {
+    --cel-margen: 8px;
+  }
+
+  html.celular #reloj-texto {
+    padding: 0 2px 0 6px;
+    font-size: 13.5px;
+  }
+
+  html.celular #cel-controles {
+    padding-left: 2px;
+  }
+
+  html.celular #panel {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  html.celular #wip-nota {
+    font-size: 12px;
+  }
+
+  /* Los números en filas, el nombre a la izquierda y el número a la derecha
+     (en tres columnas no caben "Terminadas" ni "10 h 15 min") */
+  html.celular .bloque-numeros {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    margin-top: 8px;
+    padding: 3px 12px;
+    border-radius: 12px;
+    background: var(--superficie);
+  }
+
+  html.celular .bloque-numeros .metrica,
+  html.celular .bloque-numeros > .bloque-fila,
+  html.celular .bloque-numeros > .estres {
+    padding: 4px 0;
+    border-radius: 0;
+    background: none;
+  }
+
+  html.celular .bloque-numeros .metrica,
+  html.celular .bloque-numeros > .bloque-fila,
+  html.celular .bloque-numeros > .estres > .bloque-fila {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    width: 100%;
+  }
+
+  /* en las tarjetas el número va antes que su nombre */
+  html.celular .bloque-numeros .metrica {
+    flex-direction: row-reverse;
+  }
+
+  html.celular .bloque-numeros > .estres {
+    align-items: stretch;
+  }
+
+  html.celular .bloque-numeros .estres .barra {
+    margin-top: 3px;
+  }
+
+  html.celular .eficiencia-de {
+    display: inline;
+  }
+
+  html.celular .metrica-valor,
+  html.celular .bloque-numeros .tiempo-tarea-valor,
+  html.celular .estres-nivel {
+    font-size: 15px;
+  }
+
+  html.celular .metrica-label,
+  html.celular .bloque-numeros .etiqueta {
+    font-size: 12px;
+  }
+}
+
+/* ---------- Celular girado: la vista a la izquierda, los controles a la derecha ---------- */
+@media (orientation: landscape) {
+  html.celular {
+    --cel-solape: 0px;
+  }
+
+  html.celular body {
+    grid-template-columns: minmax(0, 1fr) clamp(276px, 38vw, 310px);
+    grid-template-rows: minmax(0, 1fr) auto;
+    grid-template-areas: 'vista hoja' 'vista controles';
+  }
+
+  /* la hoja es la columna de la derecha */
+  html.celular #panel {
+    grid-area: 1 / 2 / 3 / 3;
+    align-self: stretch;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 10px 14px 68px;
+    border-left: 1px solid var(--borde);
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  html.celular #cel-mas {
+    display: none !important;
+  }
+
+  /* los números como en el computador: tres tarjetas y, abajo, el tiempo por
+     tarea y la eficiencia en filas. El estrés ya lo muestra el estado de la
+     mosca, sobre la oficina. */
+  html.celular .bloque-numeros {
+    display: block;
+    margin-top: 10px;
+  }
+
+  html.celular .bloque-numeros .metricas {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  html.celular .bloque-numeros .metrica {
+    padding: 7px 7px 8px;
+  }
+
+  html.celular .bloque-numeros > .bloque-fila {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: 9px;
+    padding: 0 2px;
+    border-radius: 0;
+    background: none;
+  }
+
+  html.celular .bloque-numeros > .eficiencia {
+    margin-top: 6px;
+  }
+
+  html.celular .bloque-numeros > .estres {
+    display: none;
+  }
+
+  html.celular .metrica-valor {
+    font-size: 18px;
+  }
+
+  html.celular .bloque-numeros .tiempo-tarea-valor {
+    font-size: 15px;
+  }
+
+  html.celular .metrica-label {
+    font-size: 11px;
+  }
+
+  html.celular .bloque-numeros .etiqueta {
+    font-size: 12.5px;
+  }
+
+  html.celular .eficiencia-de {
+    display: inline;
+  }
+
+  /* la píldora del reloj, al pie de la columna de la derecha */
+  html.celular #cel-controles,
+  html.celular[data-cel-vista='cerebro'] #cel-controles {
+    grid-area: controles;
+    align-self: end;
+    justify-self: stretch;
+    justify-content: space-between;
+    margin: 0 12px 10px;
+    background: var(--superficie);
+    box-shadow: none;
+    color: var(--tinta);
+  }
+
+  html.celular #cel-controles #btn-pausa:not(.activo),
+  html.celular[data-cel-vista='cerebro'] #cel-controles #btn-pausa:not(.activo) {
+    background-color: #fff;
+  }
+
+  /* las pestañas: arriba a la izquierda de la vista, junto a volver */
+  html.celular #cel-pestanas {
+    display: flex !important;
+    grid-area: vista;
+    align-self: start;
+    justify-self: start;
+    z-index: 4;
+    margin: var(--cel-margen) 0 0 calc(var(--cel-margen) + 52px);
+    padding: 0 3px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--cel-noche);
+  }
+
+  html.celular #cel-pestanas [role='tab'] {
+    flex-direction: row;
+    min-height: 44px;
+    padding: 4px 0;
+    color: #c9d0e0;
+    font-size: 13px;
+  }
+
+  html.celular .cel-icono {
+    display: none;
+  }
+
+  html.celular .cel-pestana-texto {
+    padding: 8px 12px;
+    border-radius: 999px;
+  }
+
+  html.celular #cel-pestanas [role='tab'][aria-selected='true'] {
+    color: #fff;
+  }
+
+  html.celular #cel-pestanas [role='tab'][aria-selected='true'] .cel-pestana-texto {
+    background: rgba(255, 255, 255, 0.16);
+  }
+
+  html.celular #cel-pestanas [role='tab']:focus-visible {
+    outline-color: #8fb0ff;
+  }
+
+  html.celular #cel-volver {
+    background: var(--cel-noche);
+    box-shadow: var(--cel-sombra-oscura);
+    color: var(--oscuro-tinta);
+  }
+
+  /* girado, el cerebro queda angosto al medio: empieza bajo la fila de arriba
+     y Detener y Centrar van uno bajo el otro, a la derecha */
+  html.celular body .cerebro-lienzo {
+    top: calc(var(--cel-margen) + 44px);
+  }
+
+  html.celular .cerebro-botones {
+    top: 8px;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+}
+
+/* Girado y bajo (el "Zoom de pantalla" del iPhone): la columna de la derecha
+   más apretada, para que todo quepa sin deslizarla */
+@media (orientation: landscape) and (max-height: 300px) {
+  html.celular #panel {
+    padding-top: 6px;
+    padding-bottom: 60px;
+  }
+
+  html.celular .wip-numero {
+    font-size: 26px;
+  }
+
+  html.celular .bloque-numeros {
+    margin-top: 6px;
+  }
+
+  html.celular .bloque-numeros .metrica {
+    padding-top: 5px;
+    padding-bottom: 6px;
+  }
+
+  html.celular .bloque-numeros > .bloque-fila {
+    margin-top: 6px;
+  }
+
+  html.celular .bloque-numeros > .eficiencia {
+    margin-top: 3px;
+  }
+}
+
+/* Girado y muy angosto (la letra agrandada): las pestañas no caben junto a
+   volver, van arriba de la columna de la derecha */
+@media (orientation: landscape) and (max-width: 552px) {
+  html.celular #cel-pestanas {
+    grid-area: 1 / 2 / 2 / 3;
+    justify-self: stretch;
+    justify-content: space-between;
+    margin: 8px 12px 0;
+  }
+
+  html.celular #panel {
+    padding-top: 60px;
+  }
+}

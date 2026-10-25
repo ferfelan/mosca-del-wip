@@ -5,7 +5,7 @@
 //   - ningún texto quede encima de otro ni cortado en el borde,
 //   - ninguna letra baje de 12 px,
 //   - en pantallas táctiles los botones y el control midan 44 px de alto,
-//   - en celular vertical el botón del PDF quede en la primera pantalla,
+//   - en celular vertical el botón Jugar quede en la primera pantalla,
 //   - el cerebro se encienda y no haya errores,
 //   - en inglés no quede ningún texto en español (salvo nombres propios),
 // y saca una foto de la primera pantalla y otra de la página completa.
@@ -111,16 +111,16 @@ function medir({ tactil, celularVertical, idioma }) {
     }
   }
   if (tactil) {
-    for (const el of document.querySelectorAll('.boton, .enlace-jugar, input[type=range], .selector button')) {
+    for (const el of document.querySelectorAll('.boton, input[type=range], .selector button')) {
       if (!seVe(el)) continue;
       const alto = el.getBoundingClientRect().height;
       if (alto < 44) problemas.push(`difícil de tocar (${Math.round(alto)} px de alto): «${corto(el.textContent || el.id)}»`);
     }
   }
   if (celularVertical) {
-    const boton = [...document.querySelectorAll('.hero .boton')].find(seVe);
+    const boton = [...document.querySelectorAll('.hero .boton.principal')].find(seVe);
     const abajo = boton ? boton.getBoundingClientRect().bottom + window.scrollY : Infinity;
-    if (abajo > window.innerHeight) problemas.push(`el botón del PDF queda bajo la primera pantalla (${Math.round(abajo)} px de ${window.innerHeight})`);
+    if (abajo > window.innerHeight) problemas.push(`el botón Jugar queda bajo la primera pantalla (${Math.round(abajo)} px de ${window.innerHeight})`);
   }
   if (!document.querySelector('.cerebro.vivo')) problemas.push('el cerebro no se encendió (queda la foto fija)');
   if (document.documentElement.lang !== idioma) problemas.push(`la página dice lang="${document.documentElement.lang}" y debía ser ${idioma}`);

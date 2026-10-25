@@ -125,6 +125,15 @@ export const PAGINA = {
   'Mostrar los controles (tecla C)': 'Show the controls (key C)',
   'Fin del día.': 'End of the day.',
   'Mira la tabla o reinicia para probar otro WIP.': 'Check the table, or restart to try another WIP.',
+  // Celular (Parte 5.2e): volver, la píldora del reloj, la hoja de abajo, las
+  // pestañas y el fin del día ("Cerebro", "Idioma" y "Reiniciar día" ya están)
+  'Volver a la portada': 'Back to the home page',
+  'Controles del día': 'Day controls',
+  'Más números': 'More numbers',
+  Vistas: 'Views',
+  Oficina: 'Office',
+  Días: 'Days',
+  'Ver los días': 'See the days',
 };
 
 // ---------- 2. Bloques que se cambian enteros (dónde está → inglés) ----------

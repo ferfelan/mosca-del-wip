@@ -39,10 +39,6 @@ export const INGLES = {
   total18: '<span class="cifra">18</span> finished',
   total9: '<span class="cifra">9</span> half as many',
   hechoNota: 'Average of 200 days played.',
-  celularTitulo: 'Best on a computer',
-  celularTexto: 'The game is 3D and made for a wide screen. On a phone, the panels cover the office.',
-  jugarIgual: 'Play anyway',
-  celularNota: 'If you try it, turn your phone sideways.',
 
   // Por dentro
   creditoTitulo: 'Inside, a real fly brain',
