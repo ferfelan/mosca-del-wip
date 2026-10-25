@@ -20,7 +20,7 @@ export const INGLES = {
   // Presentación y consola
   lema: 'Being busy all the time isn’t the same as making progress.',
   queEs:
-    'With too many tasks open, each one takes longer and the work spends more time waiting than moving. In this one-minute game with the brain of a real fly, you set the limit on tasks in progress (WIP) and see how much she finishes, how stressed she gets and how much of each hour really counts. It helps you find the limit your team can sustain.',
+    'With too many tasks open, each one takes longer and the work spends more time waiting than moving. In this one-minute game with the brain of a real fly, you set the limit on tasks in progress (WIP) and see how much she finishes, how stressed she gets and how much of each hour really counts. It gets your team talking about which limit to try.',
   jugar: 'Play',
   descargar: 'Download the report (PDF)',
   gratis: 'Free, no sign-up. Plays on a computer, phone or tablet.',
