@@ -35,15 +35,15 @@
   --memoria: #ffd84d;
   --mando: #ff4fd8;
   --movimiento: #ff7f66;
-  --tranqui: #5cc483;
+  --tranquila: #5cc483;
   --ocupada: #e3b341;
   --estresada: #f08a4b;
   --colapsada: #f0675c;
   --subrayado: rgba(238, 241, 248, 0.38);
 }
 :root {
-  --carga: var(--tranqui);
-  --nivel: var(--tranqui);
+  --carga: var(--tranquila);
+  --nivel: var(--tranquila);
   /* Vidrios y sombras de la página (no cambian dentro de .siempre-noche) */
   --vidrio: rgba(255, 255, 255, 0.03);
   --vidrio-hover: rgba(255, 255, 255, 0.08);
@@ -59,7 +59,7 @@
   --fuente: 'Mona Sans', 'Avenir Next', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
   --ancho: 1280px;
   --margen: clamp(20px, 4vw, 56px);
-  --alto-barra: 62px; /* la barra de arriba (idioma y fondo) */
+  --alto-barra: 64px; /* la barra de arriba (en celular, 56 px) */
   color-scheme: dark;
 }
 
@@ -76,7 +76,7 @@
   --suave: #3b4459;
   --tenue: #5d667c;
   --vision: #0786a6;
-  --tranqui: #18794a;
+  --tranquila: #18794a;
   --ocupada: #946500;
   --estresada: #b84e15;
   --colapsada: #cc3b30;
@@ -128,20 +128,112 @@ p { margin: 0; }
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
 
-/* ---------- La barra de arriba: la mosca, el idioma y el fondo ---------- */
+/* ---------- La barra de arriba (parte 5.2f) ----------
+   Siempre a la vista, pegada arriba. El logo lleva al inicio. Desde 1100 px:
+   el logo, las secciones, el idioma, el fondo y Jugar en una fila. Más
+   angosto: el logo, Jugar y el botón del menú, que abre las secciones, el
+   idioma y el fondo. Arriba de todo la barra no tiene fondo (la página se ve
+   como antes); al bajar toma el fondo de la página con una línea fina. */
 .barra {
-  position: relative;
-  z-index: 5;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.barra.desplazada {
+  background: color-mix(in srgb, var(--noche) 82%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
+  box-shadow: 0 1px 0 var(--borde);
+}
+.barra-dentro {
   max-width: var(--ancho);
+  height: var(--alto-barra);
   margin: 0 auto;
-  padding: 16px var(--margen) 0;
+  padding: 0 var(--margen);
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
 }
-.marca { display: block; width: 36px; height: 36px; border-radius: 9px; }
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding-right: 4px;
+  color: var(--tinta);
+  text-decoration: none;
+  border-radius: 12px;
+}
+.marca { display: block; flex: none; width: 34px; height: 34px; }
+/* El nombre aparece cuando el título grande ya pasó bajo la barra (lo marca
+   portada.js con .con-nombre); su lugar queda guardado, así nada se corre */
+.logo-nombre {
+  font-size: 17px;
+  font-weight: 720;
+  font-stretch: 108%;
+  letter-spacing: -0.015em;
+  line-height: 1;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.barra.con-nombre .logo-nombre { opacity: 1; }
+
+.menu-boton { display: none; }
+.raya {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.22s ease, opacity 0.18s ease;
+}
+/* Abierto, las tres rayas pasan a ser una cruz */
+.menu-boton[aria-expanded='true'] .raya-1 { transform: translateY(5px) rotate(45deg); }
+.menu-boton[aria-expanded='true'] .raya-2 { opacity: 0; }
+.menu-boton[aria-expanded='true'] .raya-3 { transform: translateY(-5px) rotate(-45deg); }
+
+.menu { flex: 1; display: flex; align-items: center; gap: 16px; min-width: 0; }
+.secciones { margin: 0 auto; }
+.menu-enlaces { list-style: none; margin: 0; padding: 0; display: flex; gap: 2px; }
+.menu-enlaces a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 13px;
+  border-radius: 999px;
+  color: var(--suave);
+  font-size: 15px;
+  font-weight: 560;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: color 0.18s ease, background-color 0.18s ease;
+}
+.menu-enlaces a:hover { color: var(--tinta); background: var(--vidrio-hover); }
+/* La sección que estás leyendo: su punto se enciende, como una neurona */
+.menu-enlaces a::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 3px;
+  width: 5px;
+  height: 5px;
+  margin-left: -2.5px;
+  border-radius: 50%;
+  background: var(--vision);
+  box-shadow: 0 0 8px var(--vision);
+  opacity: 0;
+  transform: scale(0.3);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.menu-enlaces a[aria-current='true'] { color: var(--tinta); }
+.menu-enlaces a[aria-current='true']::after { opacity: 1; transform: none; }
+
 .ajustes { display: flex; gap: 8px; }
+.ajuste-nombre { display: none; }
 .selector {
   display: flex;
   padding: 3px;
@@ -170,9 +262,46 @@ p { margin: 0; }
 .selector button:hover { color: var(--tinta); }
 .selector button[aria-pressed='true'] { background: var(--tinta); color: var(--noche); cursor: default; }
 .selector button:focus-visible { outline-offset: 1px; border-radius: 999px; }
+.barra .boton.barra-jugar {
+  flex: none;
+  min-height: 42px;
+  padding: 0 22px;
+  font-size: 15.5px;
+  transition: opacity 0.2s ease, visibility 0.2s, background-color 0.18s ease, box-shadow 0.18s ease;
+}
 /* En pantallas táctiles, del tamaño de un dedo */
 @media (pointer: coarse) {
   .selector button { min-width: 44px; height: 44px; }
+  .menu-enlaces a,
+  .barra .boton.barra-jugar { min-height: 44px; }
+}
+
+/* Saltar al contenido: invisible hasta que llega el foco con el teclado */
+.saltar:focus {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 40;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 10px 18px;
+  overflow: visible;
+  clip: auto;
+  border-radius: 999px;
+  background: var(--tinta);
+  color: var(--noche);
+  font-size: 15px;
+  font-weight: 650;
+  text-decoration: none;
+}
+.hero:focus { outline: none; }
+
+/* Al saltar a una sección, lo que queda bajo la barra no se pierde: el título
+   queda a 28 px de la barra. Con "reducir movimiento" el salto es directo. */
+html { scroll-padding-top: var(--alto-barra); }
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
 }
 
 /* ---------- Botones ---------- */
@@ -355,14 +484,14 @@ h1 {
   border-radius: 999px;
   background:
     linear-gradient(to right, transparent var(--pos), var(--riel-vacio) var(--pos)),
-    linear-gradient(to right, var(--tranqui) 0 27.8%, var(--ocupada) 27.8% 50%, var(--colapsada) 50% 100%);
+    linear-gradient(to right, var(--tranquila) 0 27.8%, var(--ocupada) 27.8% 50%, var(--colapsada) 50% 100%);
 }
 .wip::-moz-range-track {
   height: 6px;
   border-radius: 999px;
   background:
     linear-gradient(to right, transparent var(--pos), var(--riel-vacio) var(--pos)),
-    linear-gradient(to right, var(--tranqui) 0 27.8%, var(--ocupada) 27.8% 50%, var(--colapsada) 50% 100%);
+    linear-gradient(to right, var(--tranquila) 0 27.8%, var(--ocupada) 27.8% 50%, var(--colapsada) 50% 100%);
 }
 .wip::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -412,7 +541,7 @@ h1 {
 .marcas span:nth-child(9) { --i: 8; }
 .marcas span:nth-child(10) { --i: 9; }
 .marcas span:first-child { --i: 0; }
-.marcas .limite { color: var(--tranqui); font-weight: 650; }
+.marcas .limite { color: var(--tranquila); font-weight: 650; }
 .wip-limite { margin-top: 2px; font-size: 14px; font-weight: 550; color: var(--carga); transition: color 0.25s ease; }
 
 .consola-datos {
@@ -441,11 +570,18 @@ h1 {
 .juego,
 .credito,
 .informe,
+.preguntas,
 .cierre {
   max-width: var(--ancho);
   margin: 0 auto;
   padding: clamp(72px, 9vw, 132px) var(--margen) 0;
 }
+/* Las secciones del menú: al saltar a una, su borde de arriba (con su aire)
+   queda bajo la barra y el contenido empieza a 28 px de ella */
+.juego,
+.credito,
+.informe,
+.preguntas { scroll-margin-top: calc(28px - clamp(72px, 9vw, 132px)); }
 h2 {
   font-size: clamp(32px, 3.6vw, 50px);
   font-weight: 760;
@@ -498,7 +634,7 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 }
 .pantalla-estado span { display: inline-flex; align-items: center; gap: 8px; }
 .pantalla-estado span::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; box-shadow: 0 0 10px currentColor; }
-.estado-pocas { color: var(--tranqui); }
+.estado-pocas { color: var(--tranquila); }
 .estado-muchas { color: var(--colapsada); }
 .pantalla-estado .estado-muchas { display: none; }
 .juego[data-fase='muchas'] .pantalla-estado .estado-pocas { display: none; }
@@ -506,7 +642,7 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 
 .hecho { grid-area: hecho; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 .columna {
-  --col: var(--tranqui);
+  --col: var(--tranquila);
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -581,6 +717,78 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .informe-texto .acciones { margin-top: 30px; }
 .informe-texto .nota { margin-top: 14px; }
 
+/* Preguntas frecuentes (parte 5.2f): el título a la izquierda, a la vista
+   mientras bajas, y las preguntas a la derecha. Cada una se abre al tocarla y
+   su círculo se enciende, como las neuronas del cerebro. */
+.preguntas {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.6fr);
+  column-gap: clamp(24px, 5vw, 80px);
+  align-items: start;
+}
+.preguntas h2 { position: sticky; top: calc(var(--alto-barra) + 28px); }
+.preguntas-lista { border-bottom: 1px solid var(--borde); }
+.pregunta { border-top: 1px solid var(--borde); }
+.pregunta summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 72px;
+  padding: 18px 0;
+  font-size: 19px;
+  font-weight: 620;
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+  list-style: none;
+  cursor: pointer;
+  border-radius: 10px;
+}
+.pregunta summary::-webkit-details-marker { display: none; }
+.pregunta summary:focus-visible { outline-offset: 4px; }
+.signo {
+  position: relative;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--borde-fuerte);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+}
+.signo::before,
+.signo::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 2px;
+  margin: -1px 0 0 -6px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform 0.22s ease, opacity 0.22s ease;
+}
+.signo::after { transform: rotate(90deg); }
+.pregunta summary:hover .signo { border-color: var(--borde-hover); }
+.pregunta[open] .signo {
+  color: var(--vision);
+  border-color: var(--vision);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--vision) 12%, transparent), 0 0 18px color-mix(in srgb, var(--vision) 35%, transparent);
+}
+.pregunta[open] .signo::after { transform: rotate(0deg); opacity: 0; }
+.respuesta {
+  max-width: 62ch;
+  padding: 0 52px 26px 0;
+  color: var(--suave);
+  font-size: 17px;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+.pregunta[open] .respuesta { animation: respuesta-aparece 0.24s ease; }
+@keyframes respuesta-aparece {
+  from { opacity: 0; transform: translateY(-4px); }
+}
+
 /* Cierre: la respuesta del proyecto */
 .cierre { text-align: center; padding-bottom: clamp(72px, 9vw, 128px); }
 .cierre-frase {
@@ -613,8 +821,110 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .pie p { margin: 0; }
 .pie a { color: var(--suave); }
 
+/* ---------- La barra bajo 1100 px: el logo, Jugar y el botón del menú ----------
+   El menú baja de la barra: en celular a todo el ancho, en tablets como una
+   tarjeta bajo el botón. Jugar aparece en la barra cuando los botones grandes
+   de arriba ya no se ven (lo marca portada.js con .con-jugar). */
+@media (max-width: 1099px) {
+  .logo { margin-right: auto; }
+  .menu-boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    order: 3;
+    width: 44px;
+    height: 44px;
+    margin-right: -4px;
+    padding: 0;
+    border: 1px solid var(--borde);
+    border-radius: 999px;
+    background: var(--noche-2);
+    color: var(--tinta);
+    cursor: pointer;
+  }
+  .barra .boton.barra-jugar { order: 2; }
+  .barra:not(.con-jugar) .boton.barra-jugar { visibility: hidden; opacity: 0; }
+  /* Abierto, la barra va sólida (sin el vidrio, que encerraría la sombra de
+     abajo en la barra) y la página de atrás se oscurece: tocarla lo cierra */
+  .barra.abierta {
+    background: var(--noche);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: 0 1px 0 var(--borde);
+  }
+  .barra.abierta::after {
+    content: '';
+    position: fixed;
+    inset: var(--alto-barra) 0 0;
+    z-index: -1;
+    background: rgba(2, 4, 12, 0.55);
+    animation: menu-sombra 0.2s ease;
+  }
+  :root[data-tema='claro'] .barra.abierta::after { background: rgba(11, 17, 36, 0.3); }
+  .menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    max-height: calc(100svh - var(--alto-barra));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 4px var(--margen) 12px;
+    background: var(--noche);
+    border-bottom: 1px solid var(--borde);
+    /* La sombra solo hacia abajo: no ensucia la barra */
+    box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.6);
+  }
+  :root[data-tema='claro'] .menu { box-shadow: 0 30px 50px -20px rgba(16, 24, 48, 0.22); }
+  .barra.abierta .menu { display: flex; animation: menu-baja 0.2s ease; }
+  .secciones { margin: 0; }
+  .menu-enlaces { flex-direction: column; gap: 0; }
+  .menu-enlaces a {
+    min-height: 56px;
+    padding: 0 0 0 22px;
+    border-radius: 0;
+    border-bottom: 1px solid var(--borde);
+    color: var(--tinta);
+    font-size: 19px;
+    font-weight: 620;
+  }
+  .menu-enlaces a:hover { background: transparent; }
+  .menu-enlaces a::after { left: 5px; top: 50%; bottom: auto; width: 6px; height: 6px; margin: -3px 0 0; }
+  .ajustes { flex-direction: column; gap: 0; }
+  .ajuste { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; }
+  .ajuste + .ajuste { border-top: 1px solid var(--borde); }
+  .ajuste-nombre { display: block; font-size: 16px; font-weight: 560; color: var(--suave); }
+}
+@keyframes menu-baja {
+  from { opacity: 0; transform: translateY(-8px); }
+}
+@keyframes menu-sombra {
+  from { opacity: 0; }
+}
+@media (min-width: 600px) and (max-width: 1099px) {
+  .menu {
+    top: calc(100% + 6px);
+    left: auto;
+    right: var(--margen);
+    width: 340px;
+    max-height: calc(100svh - var(--alto-barra) - 18px);
+    padding: 4px 22px 8px;
+    border: 1px solid var(--borde);
+    border-radius: 20px;
+  }
+}
+
 /* ---------- Pantallas angostas y celular ---------- */
 @media (max-width: 899px) {
+  :root { --alto-barra: 56px; }
+  .logo { gap: 8px; }
+  .logo-nombre { font-size: 16px; }
+  .barra .boton.barra-jugar { padding: 0 18px; }
   body.portada { font-size: 17px; }
   .hero { grid-template-columns: 1fr; min-height: 0; }
   .hero-texto { padding: 16px 0 0; }
@@ -634,7 +944,6 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .cerebro-cuenta { top: 16px; max-width: 9em; font-size: 13.5px; }
   :root[data-tema='claro'] .cerebro { margin: 0; border-radius: 22px; }
   :root[data-tema='claro'] .cerebro-cuenta { left: 18px; top: 26px; }
-  .barra { padding-top: 12px; }
   .cerebro-cuenta .cifra { font-size: 28px; }
   .consola { margin-top: -40px; padding: 18px 18px 16px; border-radius: 20px; }
   .wip-numero { font-size: 38px; }
@@ -646,7 +955,12 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .juego,
   .credito,
   .informe,
+  .preguntas,
   .cierre { padding-top: 64px; }
+  .juego,
+  .credito,
+  .informe,
+  .preguntas { scroll-margin-top: -36px; }
   .juego { grid-template-columns: 1fr; grid-template-areas: 'texto' 'pantalla' 'pie' 'hecho' 'nota'; }
   .juego-texto { margin-bottom: 24px; }
   .juego-texto p { font-size: 17px; }
@@ -664,6 +978,11 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .informe-texto .acciones { display: block; }
   .informe-texto .boton { width: 100%; max-width: 440px; }
 
+  .preguntas { grid-template-columns: 1fr; }
+  .preguntas h2 { position: static; margin-bottom: 22px; }
+  .pregunta summary { min-height: 64px; padding: 16px 0; gap: 16px; font-size: 17.5px; }
+  .respuesta { padding-right: 0; font-size: 16.5px; }
+
   /* En celular el cierre lleva solo Jugar: el botón del informe está justo arriba. */
   .cierre-frase { margin-bottom: 28px; }
   .pie { flex-direction: column; padding: 24px var(--margen) 40px; }
@@ -672,6 +991,10 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 /* Celulares muy chicos (320 px, como el iPhone SE de primera generación): la
    letra del texto un punto más chica, para que el botón del PDF quepa en la
    primera pantalla también en inglés, que es más largo. */
+/* Bajo 360 px el nombre de la barra no cabe junto a Jugar y el menú: queda la mosca */
+@media (max-width: 359px) {
+  .logo-nombre { display: none; }
+}
 @media (max-width: 360px) {
   body.portada { font-size: 16px; }
   .que-es { margin-bottom: 20px; }
@@ -712,4 +1035,7 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; }
   .tapa:hover img { transform: rotateY(16deg) rotateX(3deg); }
+  .barra.abierta .menu,
+  .barra.abierta::after,
+  .pregunta[open] .respuesta { animation: none; }
 }

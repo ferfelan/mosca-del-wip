@@ -2,7 +2,7 @@
 // Todo lo visual lee el estado que produce esta clase.
 
 export const NIVELES_ESTRES = [
-  { max: 25, nombre: 'Tranqui', color: '#4f9d6a' },
+  { max: 25, nombre: 'Tranquila', color: '#4f9d6a' },
   { max: 50, nombre: 'Ocupada', color: '#c99a1e' },
   { max: 75, nombre: 'Estresada', color: '#d9732e' },
   { max: 101, nombre: 'Colapsada', color: '#cc4a43' },
@@ -28,13 +28,13 @@ const TOTAL_TAREAS_BACKLOG = 50;
 export const RENDIMIENTO_POR_WIP = [1, 0.85, 0.78, 0.72, 0.67, 0.62, 0.58, 0.55, 0.52, 0.5];
 // Estrés con techo según las tareas REALMENTE abiertas (Mark, Gudith y
 // Klocke 2008: más interrupciones = más estrés; Leroy 2009: lo que queda sin
-// terminar sigue ocupando la cabeza). 1–3 abiertas Tranqui, 4–5 Ocupada,
+// terminar sigue ocupando la cabeza). 1–3 abiertas Tranquila, 4–5 Ocupada,
 // 6–7 Estresada, 8–10 Colapsada.
 export const ESTRES_OBJETIVO_POR_WIP = [5, 10, 18, 32, 44, 57, 68, 84, 92, 100];
 // Sube rápido y baja lento (Dickerson y Kemeny 2004; modelo
 // Esfuerzo-Recuperación de Meijman y Mulder 1998). Minutos del juego en que
 // recorre 2/3 del camino hacia su techo. Con esto, bajar de WIP 10 a 2 lleva
-// de "Colapsada" a "Tranqui" en ~2 h 50 min del juego (ver simular-dias).
+// de "Colapsada" a "Tranquila" en ~2 h 50 min del juego (ver simular-dias).
 const MINUTOS_SUBE_ESTRES = 40;
 const MINUTOS_BAJA_ESTRES = 55;
 // Al bajar el límite, lo empezado sigue abierto: trabaja sólo en las más
@@ -51,7 +51,7 @@ const RESIDUO_POR_TAREA_ESPERANDO = 0.03;
 const PROBABILIDAD_BLOQUEO = 0.2; // ~20% de las tareas se bloquea una vez
 const BLOQUEO_MIN = 30; // minutos del juego que queda bloqueada (al azar entre 30 y 60)
 const BLOQUEO_MAX = 60;
-// Fumar: sólo sobre "Tranqui"; las ganas crecen con el estrés que sobra, y
+// Fumar: sólo sobre "Tranquila"; las ganas crecen con el estrés que sobra, y
 // más rápido mientras más alto (WIP 4 ≈ 1 colilla al día, WIP 9 ≈ 13).
 const ESTRES_MIN_FUMAR = 25;
 const URGENCIA_FUMAR_FACTOR = 0.04; // cuánta "urgencia" se acumula por minuto según el estrés
@@ -325,7 +325,7 @@ export class DayBrain {
       }
     }
 
-    // Urgencia de fumar: sólo sobre "Tranqui", y crece más rápido mientras
+    // Urgencia de fumar: sólo sobre "Tranquila", y crece más rápido mientras
     // más estrés hay (WIP 9 ≈ 13 colillas al día).
     if (!this.fumando && !this.tomandoCafe) {
       const sobra = Math.max(0, this.estres - ESTRES_MIN_FUMAR);

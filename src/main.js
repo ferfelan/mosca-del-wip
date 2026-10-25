@@ -194,7 +194,7 @@ elBtnBorrar.addEventListener('click', () => {
 escribirDias(cargarDias());
 
 // Carga: tareas a la vez contra el límite sostenible (3). Verde hasta 3, amarillo
-// con 4 o 5 y rojo desde 6 (los mismos cortes del estrés: Tranqui, Ocupada,
+// con 4 o 5 y rojo desde 6 (los mismos cortes del estrés: Tranquila, Ocupada,
 // Estresada o más).
 const LIMITE_SANO = 3;
 const nivelCarga = (n) => (n <= LIMITE_SANO ? 'ok' : n <= 5 ? 'medio' : 'alto');

@@ -60,7 +60,7 @@ sostenible**.
 | **H4** | **Con personas**: ver la mosca ayuda a que un equipo entienda la paradoja y se anime a probar un límite. | 4.5 (sólo cuando Felipe lo pida) | Por probar |
 
 Lo que ya se vio en el juego de hoy (con bloqueos, 2 tareas termina más que
-1 o 9; al bajar de 10 a 2 a las 12:00 queda Tranqui recién a las ~15:10)
+1 o 9; al bajar de 10 a 2 a las 12:00 queda Tranquila recién a las ~15:10)
 salió de una sola combinación de supuestos. No cuenta como prueba de H1, H2
 ni H3: para eso están la 4.1 y la 4.2.
 

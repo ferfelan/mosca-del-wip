@@ -86,13 +86,13 @@ for (const [clave, op] of Object.entries(OPCIONES)) {
   }
   const forma = texto.includes('Forma: todo bien');
   const problemas = texto.includes('PROBLEMAS:') ? texto.split('PROBLEMAS:')[1].trim().split('\n').map((s) => s.replace(/^\s*-\s*/, '')) : [];
-  const tranqui = (texto.match(/llega a "Tranqui": ~(\d\d:\d\d)/) || [])[1] ?? null;
+  const tranqui = (texto.match(/llega a "Tranquila": ~(\d\d:\d\d)/) || [])[1] ?? null;
   resultados.opciones[clave] = { ...op, filas, forma_todo_bien: forma, problemas, bajar_wip_tranqui: tranqui };
   console.log(`\n=== Opción ${clave}: ${op.nombre} ===`);
   console.log(` ${op.regla}`);
   console.log(' WIP  Terminadas  Colillas  Cafés  Estrés');
   for (const f of filas) console.log(` ${String(f.wip).padStart(3)}  ${String(f.terminadas).padStart(10)}  ${String(f.colillas).padStart(8)}  ${String(f.cafes).padStart(5)}  ${String(f.estres).padStart(5)}%`);
-  console.log(` simular-dias: ${forma ? 'Forma: todo bien' : 'PROBLEMAS: ' + problemas.join(' · ')} · bajar 10→2: Tranqui ~${tranqui}`);
+  console.log(` simular-dias: ${forma ? 'Forma: todo bien' : 'PROBLEMAS: ' + problemas.join(' · ')} · bajar 10→2: Tranquila ~${tranqui}`);
 }
 writeFileSync(SALIDA, JSON.stringify(resultados, null, 1) + '\n');
 console.log(`\nGuardado en docs/etapa3-3-opciones.json (copias temporales en ${base})`);

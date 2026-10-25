@@ -26,7 +26,10 @@
 // día: compartir v15 ("Dato freak", sin "[…]", pág. 8 con cinco tarjetas, pág. 9 en dos
 // filas, gráfico de la pág. 5 con valores en 2 y 9) y completo v8; arreglos de Felipe al
 // v15, el mismo día: compartir v16, datos freak nuevos y "Regla nuestra" en la pág. 2; v17, mismo
-// día: la tarjeta de DORA de la pág. 8 sin la frase del ideal, que ya está en el dato freak de la pág. 6).
+// día: la tarjeta de DORA de la pág. 8 sin la frase del ideal, que ya está en el dato freak de la pág. 6;
+// v18: la dirección del juego publicado; 25 oct.: compartir v19 y completo v9, el nivel "Tranqui"
+// pasa a llamarse "Tranquila", con las fotos de los grupos paneles y estres sacadas de nuevo;
+// completo v10, la Etapa 5 en la sección 27, con las fotos del grupo sitio).
 //
 // Uso: node scripts/documento.mjs                → los dos informes
 //      DOC=compartir node scripts/documento.mjs  → sólo uno (completo, compartir,
@@ -34,10 +37,11 @@
 //      FOTOS=1 node scripts/documento.mjs        → antes saca todas las imágenes
 //                                                  del juego (requiere npm run dev)
 //      FOTOS=paneles,cierre node …               → sólo esos grupos: holograma,
-//        paneles, es-real, escenas, cerebros, mundo, monitor-limite, monitor-bloqueo, cierre
+//        paneles, es-real, escenas, cerebros, estres, mundo, monitor-limite, monitor-bloqueo, cierre,
+//        sitio (la portada publicada y el juego en modo celular, para la sección 27)
 //      SALIDA=/otra/carpeta, FECHA=2026-10-19,   → otra carpeta, fecha o versión
 //      VERSION=v2
-import { chromium } from 'playwright';
+import { chromium, devices } from 'playwright';
 import { mkdirSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -48,8 +52,8 @@ const IMG = join(CARPETA, 'img');
 const SALIDA = process.env.SALIDA ?? join(homedir(), 'Desktop', 'Mosca del WIP');
 const FECHA = process.env.FECHA ?? new Date().toLocaleDateString('sv-SE'); // 2026-10-20
 const DOCUMENTOS = [
-  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v8' },
-  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v18', paginas: [16, 17] },
+  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v10' },
+  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v19', paginas: [16, 17] },
   { id: 'norte', html: 'norte.html', nombre: 'Norte del proyecto', version: 'v1', paginas: [1, 2], aparte: true },
   { id: 'etapa4-1', html: 'etapa4-1.html', nombre: 'Etapa 4.1 La paradoja', version: 'v1', paginas: [1, 3], aparte: true },
   { id: 'etapa4-2', html: 'etapa4-2.html', nombre: 'Etapa 4.2 Robustez', version: 'v1', paginas: [1, 3], aparte: true },
@@ -147,6 +151,65 @@ if (process.env.FOTOS) {
     await p.close();
   }
 
+  // El sitio (Etapa 5, sección 27 del informe completo): la portada en un
+  // computador con fondo negro, la portada en un iPhone 14 con el menú
+  // abierto, las preguntas frecuentes con fondo blanco y el juego en modo
+  // celular con 9 tareas a las 13:30 (pestañas Oficina y Cerebro). El iPhone
+  // es el de scripts/probar-celular.mjs: 390 × 664, lo que se ve con las
+  // barras de Safari.
+  if (quiero('sitio')) {
+    const iphone = { viewport: { width: 390, height: 664 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true, userAgent: devices['iPhone 14'].userAgent };
+    const portada = async (opciones, fondo) => {
+      const c = await b.newContext(opciones);
+      await c.addInitScript((fondo) => {
+        localStorage.setItem('mosca-idioma', 'es');
+        localStorage.setItem('mosca-fondo', fondo);
+      }, fondo);
+      const p = await c.newPage();
+      p.on('pageerror', (e) => console.log('ERROR', e.message));
+      await p.goto(`${SITIO}/`, { waitUntil: 'networkidle' });
+      await p.waitForTimeout(5000); // el cerebro se enciende y la consola sube sola de 2 a 9
+      return p;
+    };
+    let p = await portada({ viewport: { width: 1440, height: 800 }, deviceScaleFactor: 1.5 }, 'oscuro');
+    await p.mouse.move(8, 790);
+    await p.screenshot({ path: join(IMG, 'sitio-portada.jpg'), type: 'jpeg', quality: 88 });
+    console.log('foto sitio-portada');
+    await p.context().close();
+
+    p = await portada(iphone, 'oscuro');
+    await p.evaluate(() => scrollTo({ top: document.getElementById('juego').offsetTop, behavior: 'instant' }));
+    await p.waitForTimeout(1200);
+    await p.click('.menu-boton');
+    await p.waitForTimeout(900);
+    await p.screenshot({ path: join(IMG, 'sitio-celular-menu.jpg'), type: 'jpeg', quality: 88 });
+    console.log('foto sitio-celular-menu');
+    await p.context().close();
+
+    p = await portada({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1.5 }, 'claro');
+    await p.evaluate(() => {
+      const preguntas = [...document.querySelectorAll('.pregunta')];
+      preguntas[2].open = true; // ¿Cuántas tareas a la vez es lo mejor?
+      scrollTo({ top: document.getElementById('preguntas').offsetTop, behavior: 'instant' });
+    });
+    await p.waitForTimeout(1500);
+    await p.screenshot({ path: join(IMG, 'sitio-preguntas.jpg'), type: 'jpeg', quality: 88 });
+    console.log('foto sitio-preguntas');
+    await p.context().close();
+
+    const c = await b.newContext(iphone);
+    await c.addInitScript(() => localStorage.setItem('mosca-idioma', 'es'));
+    p = await c.newPage();
+    await abrirJuego(p);
+    console.log('   modo celular:', JSON.stringify(await p.evaluate(() => window.__mosca.celular())));
+    await jugar(p, { wip: 9 });
+    await foto(p, 'celular-oficina');
+    await p.click('#cel-pestana-cerebro');
+    await p.waitForTimeout(1500);
+    await foto(p, 'celular-cerebro');
+    await c.close();
+  }
+
   // Las dos vistas con el panel final (v4), en días jugados de verdad: WIP 2 y
   // WIP 9 a las 13:30 y al terminar el día, "¿Es real?" y la tarjetita
   if (quiero('paneles')) {
@@ -227,6 +290,19 @@ if (process.env.FOTOS) {
       await foto(p, `cerebro-wip${wip}`, { elemento: '#lienzo-cerebro' });
       console.log(`   WIP ${wip}: ${await p.evaluate(() => document.getElementById('c-activas').textContent)} neuronas encendidas (${e.enCurso.length ?? e.enCurso} abiertas)`);
       await jugar(p, { hora: '18:00' });
+      await foto(p, `estres-wip${wip}`, { elemento: '.cerebro-dia' });
+    }
+    await p.close();
+  }
+
+  // Solo el estrés de cada día completo (WIP 2 y WIP 9), sin volver a sacar el
+  // cerebro: para cuando cambia algo del gráfico (2026-10-25: "Tranquila")
+  if (quiero('estres') && !quiero('cerebros')) {
+    const p = await b.newPage({ viewport: { width: 1600, height: 1000 }, deviceScaleFactor: 2 });
+    await abrirJuego(p);
+    await enVista(p, 'exhibicion');
+    for (const wip of [2, 9]) {
+      await jugar(p, { wip, hora: '18:00' });
       await foto(p, `estres-wip${wip}`, { elemento: '.cerebro-dia' });
     }
     await p.close();

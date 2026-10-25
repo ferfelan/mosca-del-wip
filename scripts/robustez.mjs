@@ -235,7 +235,7 @@ const h3filas = [];
 for (const e of extremos) h3filas.push(await bajarDe10a2(e));
 const h3 = h3filas.every((r) => r.minutos_hasta_tranqui > 60);
 console.log('\nH3: WIP 10 y a las 12:00 baja a 2 (promedio de días)');
-for (const r of h3filas) console.log(`   ${r.escenario.padEnd(24)} queda Tranqui ${hhmm(r.minutos_hasta_tranqui)} después (día más rápido ${hhmm(r.dia_mas_rapido_min)}; ${Math.round(r.dias_mas_de_1_hora * 100)} % de los días > 1 h) · vuelve a 2 en curso ${hhmm(r.minutos_hasta_volver_a_2)} después`);
+for (const r of h3filas) console.log(`   ${r.escenario.padEnd(24)} queda Tranquila ${hhmm(r.minutos_hasta_tranqui)} después (día más rápido ${hhmm(r.dia_mas_rapido_min)}; ${Math.round(r.dias_mas_de_1_hora * 100)} % de los días > 1 h) · vuelve a 2 en curso ${hhmm(r.minutos_hasta_volver_a_2)} después`);
 console.log(`   → ${h3 ? 'SE CUMPLE' : 'NO SE CUMPLE'} (más de 1 hora en los 5)`);
 console.log(avisos.length ? '\nAVISOS:\n - ' + avisos.join('\n - ') : '\nControles técnicos: todo bien en los 20 escenarios.');
 if (avisos.length) process.exitCode = 1;

@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8" />
 <title>Mosca del WIP · Para compartir</title>
+<!-- v19 (2026-10-25, Etapa 5, pedido de Felipe): el nivel de estrés más bajo se llama
+     "Tranquila" (antes "Tranqui"), como los otros tres, que tienen el nombre completo:
+     pág. 2 (reglas), pág. 4 (tabla de 1 a 10) y pág. 7 (gráfico). Nada más cambia; el v18
+     está en docs/contexto/v18/. -->
 <!-- v18 (2026-10-24, Etapa 5): solo se agrega la dirección del juego publicado,
      como enlace: pág. 1 ("jugarlo en mosca.deliverycraft.ai") y cierre ("Juega en
      mosca.deliverycraft.ai"). Nada más cambia; el v17 está en docs/contexto/v17/. -->
@@ -637,7 +641,7 @@ const CON_QUE_HACER = [74.7, 96.3, 99.5, 100, 100, 100, 100, 100, 100, 100]; // 
 const AVANZA = [72.9, 47.2, 32.7, 24.3, 19.0, 15.1, 12.6, 10.4, 8.9, 7.7]; // % del tiempo en curso que se trabaja
 const CIGARROS = [0, 0, 0, 1, 3, 6, 8, 11, 13, 15];
 const CAFES = [6, 5, 4, 3, 1, 0, 0, 0, 0, 0];
-const ESTRES = ['Tranqui', 'Tranqui', 'Tranqui', 'Ocupada', 'Ocupada', 'Estresada', 'Estresada', 'Colapsada', 'Colapsada', 'Colapsada'];
+const ESTRES = ['Tranquila', 'Tranquila', 'Tranquila', 'Ocupada', 'Ocupada', 'Estresada', 'Estresada', 'Colapsada', 'Colapsada', 'Colapsada'];
 // Etapa 4.2: terminadas según cuántas tareas se traban (0, 20 y 40 %)
 const CURVAS = {
   'ninguna': [21.2, 18.0, 16.6, 15.1, 13.8, 12.2, 10.9, 9.8, 9.1, 8.2],
@@ -667,7 +671,7 @@ document.getElementById('t-reglas').innerHTML = [
   ['Cambiar de tarea cuesta. Con 2 tareas cada minuto rinde el 85&nbsp;% y con 10, el 50&nbsp;%.', 'Weinberg (1992)'],
   ['1 de cada 5 tareas se traba de 30 a 60 minutos esperando a otra persona.', 'Bertolotti y otros (2015)'],
   ['Lo que queda a medias le resta un poco de concentración.', 'Leroy (2009)'],
-  ['Más tareas abiertas, más estrés. Sube rápido y baja lento. El juego lo divide en cuatro niveles: Tranqui (menos de 25&nbsp;%), Ocupada, Estresada y Colapsada (desde 75&nbsp;%).', 'Dickerson y Kemeny (2004)'],
+  ['Más tareas abiertas, más estrés. Sube rápido y baja lento. El juego lo divide en cuatro niveles: Tranquila (menos de 25&nbsp;%), Ocupada, Estresada y Colapsada (desde 75&nbsp;%).', 'Dickerson y Kemeny (2004)'],
   ['Con estrés sale a "fumar" (8 minutos sin trabajar). Sin mucho estrés toma "café", una pausa corta.', 'Parrott (1999) · Taylor y otros (2014) · Albulescu y otros (2022) · Lovallo y otros (2005)'],
   ['Cada tarea tarda más mientras más hay abiertas.', 'Ley de Little (1961)'],
 ].map(([r, o]) => `<tr><td>${r}</td><td>${o}</td></tr>`).join('');
@@ -676,7 +680,7 @@ document.getElementById('t-reglas').innerHTML = [
 document.getElementById('t-dia-corta').innerHTML = TERMINADAS.map((t, i) => {
   const clase = i === 1 ? 'mejor' : i === 8 ? 'sobre' : '';
   const n = i === 1 ? '<b>2 · la que más termina</b>' : i === 8 ? '<b>9 · sobrecarga</b>' : `${i + 1}`; // v14: el 2 ya no se llama "sostenible" (eso es el letrero, hasta 3)
-  const nivel = ESTRES[i] === 'Tranqui' ? 'nivel-t' : ESTRES[i] === 'Colapsada' ? 'nivel-k' : 'nivel-m';
+  const nivel = ESTRES[i] === 'Tranquila' ? 'nivel-t' : ESTRES[i] === 'Colapsada' ? 'nivel-k' : 'nivel-m';
   return `<tr class="${clase}"><td>${n}</td><td><b>${coma(t)}</b></td><td>${horas(TIEMPO[i])}</td><td>${RINDEN[i]} min</td><td>${CIGARROS[i]}</td><td class="${nivel}">${ESTRES[i]}</td></tr>`;
 }).join('');
 
@@ -744,7 +748,7 @@ document.getElementById('t-dia-corta').innerHTML = TERMINADAS.map((t, i) => {
   document.getElementById('g-curvas').innerHTML = s + '</svg>';
 })();
 
-// ---------- Página 7: bajar el límite de 10 a 2 a las 12:00 (Tranqui en verde, Colapsada en rojo, los del medio en gris) ----------
+// ---------- Página 7: bajar el límite de 10 a 2 a las 12:00 (Tranquila en verde, Colapsada en rojo, los del medio en gris) ----------
 (function () {
   const W = 640, iz = 40, de = 72, hA = 80, hB = 118, gap = 24, ar = 18, ab = 22;
   const H = ar + hA + gap + hB + ab;
@@ -753,7 +757,7 @@ document.getElementById('t-dia-corta').innerHTML = TERMINADAS.map((t, i) => {
   const yB = (v) => ar + hA + gap + (1 - v / 100) * hB;
   const linea = (ys, f) => CURVA.min.map((m, i) => `${i ? 'L' : 'M'}${x(m).toFixed(1)},${f(ys[i]).toFixed(1)}`).join(' ');
   let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Tareas en curso y estrés al bajar el límite de 10 a 2 a las 12:00">`;
-  [[0, 25, '#4f9d6a', 0.13, 'Tranqui'], [25, 50, '#9aa1ab', 0.10, 'Ocupada'], [50, 75, '#9aa1ab', 0.18, 'Estresada'], [75, 100, '#cc4a43', 0.13, 'Colapsada']].forEach(([a, b, c, op, n]) => {
+  [[0, 25, '#4f9d6a', 0.13, 'Tranquila'], [25, 50, '#9aa1ab', 0.10, 'Ocupada'], [50, 75, '#9aa1ab', 0.18, 'Estresada'], [75, 100, '#cc4a43', 0.13, 'Colapsada']].forEach(([a, b, c, op, n]) => {
     s += `<rect x="${iz}" y="${yB(b)}" width="${W - iz - de}" height="${yB(a) - yB(b)}" fill="${c}" opacity="${op}"/>`;
     s += `<circle cx="${W - de + 10}" cy="${(yB(a) + yB(b)) / 2}" r="3.5" fill="${c}" opacity="${c === '#9aa1ab' ? 0.9 : 1}"/><text x="${W - de + 17}" y="${(yB(a) + yB(b)) / 2 + 3.5}" font-size="9.5" fill="${SUAVE}">${n}</text>`;
   });
@@ -766,7 +770,7 @@ document.getElementById('t-dia-corta').innerHTML = TERMINADAS.map((t, i) => {
   s += `<path d="${linea(CURVA.enCurso, yA)}" fill="none" stroke="${TEAL}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>`;
   s += `<path d="${linea(CURVA.estres, yB)}" fill="none" stroke="${TINTA}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
   s += `<circle cx="${x(875)}" cy="${yA(2.8)}" r="4" fill="${TEAL}" stroke="${PAPEL}" stroke-width="2"/><text x="${x(875) + 8}" y="${yA(2.8) - 7}" font-size="9.5" fill="${TEXTO}">vuelve a 2 · 14:35</text>`;
-  s += `<circle cx="${x(907)}" cy="${yB(25)}" r="4" fill="${TINTA}" stroke="${PAPEL}" stroke-width="2"/><text x="${x(907) + 8}" y="${yB(25) - 7}" font-size="9.5" fill="${TEXTO}">Tranqui · 15:07</text>`;
+  s += `<circle cx="${x(907)}" cy="${yB(25)}" r="4" fill="${TINTA}" stroke="${PAPEL}" stroke-width="2"/><text x="${x(907) + 8}" y="${yB(25) - 7}" font-size="9.5" fill="${TEXTO}">Tranquila · 15:07</text>`;
   s += `<text x="${x(862)}" y="${yB(100) + 11}" font-size="8.5" fill="${SUAVE}">los dientes son los cigarros</text>`;
   document.getElementById('g-bajar').innerHTML = s + '</svg>';
 })();

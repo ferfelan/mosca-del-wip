@@ -5,10 +5,10 @@
 //    y desde ahí bajan en cada escalón (Bertolotti y otros 2015). El script
 //    dice dónde queda el mejor WIP; no se fuerza cuál es. El tiempo por tarea
 //    sube en cada escalón; las colillas nunca bajan (y desde WIP 3 suben
-//    siempre); WIP 1–3 no fuma y queda "Tranqui".
+//    siempre); WIP 1–3 no fuma y queda "Tranquila".
 //  - la Ley de Little: WIP promedio ≈ terminadas por minuto × tiempo por tarea.
 //  - bajar el WIP a mitad del día (10 → 2 a las 12:00): las tareas empezadas
-//    drenan de a poco y el estrés pasa de Colapsada a Tranqui en 2 a 3,5
+//    drenan de a poco y el estrés pasa de Colapsada a Tranquila en 2 a 3,5
 //    horas (con bloqueos, unas 3 h 10 min).
 //  - la Eficiencia (de cada hora, cuántos minutos rinden de verdad): sale del
 //    mismo cálculo del juego (los minutos que rinden = el avance que recibieron
@@ -16,7 +16,7 @@
 //    baja en cada escalón desde ahí.
 //  - "Llega a su nivel": la hora promedio en que el estrés alcanza por primera
 //    vez el nivel más alto del día (Ocupada, Estresada o Colapsada); con WIP 1 a
-//    3 queda Tranqui desde las 09:00. Es la fila de la sección 3 del Informe
+//    3 queda Tranquila desde las 09:00. Es la fila de la sección 3 del Informe
 //    completo (pedido de la revisión independiente, 2026-10-20).
 //
 // Uso: node scripts/simular-dias.mjs            (200 días por WIP, semilla 2024:
@@ -135,7 +135,7 @@ for (let i = mejor.wip; i < filas.length; i++) {
 for (const r of filas) if (Math.abs(r.calce) > 0.005) problemas.push(`WIP ${r.wip}: la eficiencia no calza con el avance de las tareas (${f1(r.calce * 100)}%)`);
 for (const r of filas.slice(0, 3)) {
   if (r.colillas > 0) problemas.push(`WIP ${r.wip} fuma (${f1(r.colillas)} colillas)`);
-  if (nivelDeEstres(r.estres).nombre !== 'Tranqui') problemas.push(`WIP ${r.wip} no queda Tranqui`);
+  if (nivelDeEstres(r.estres).nombre !== 'Tranquila') problemas.push(`WIP ${r.wip} no queda Tranquila`);
 }
 const esperado = { 4: 'Ocupada', 5: 'Ocupada', 6: 'Estresada', 7: 'Estresada', 8: 'Colapsada', 9: 'Colapsada', 10: 'Colapsada' };
 // el estrés parte en 10% cada mañana: se compara el máximo del día con el nivel esperado
@@ -152,7 +152,7 @@ for (const r of filas) {
 
 // ---- Prueba: WIP 10 desde las 09:00 y a las 12:00 baja a 2 ----
 // Lo empezado no desaparece: drena de a poco, y el estrés baja más lento de
-// lo que subió (pero llega a Tranqui dentro del día).
+// lo que subió (pero llega a Tranquila dentro del día).
 const MARCAS = [9, 10, 11, 12, 12.5, 13, 13.5, 14, 14.5, 15, 16, 17, 18].map((h) => h * 60);
 const suma = MARCAS.map(() => ({ abiertas: 0, estres: 0, colillas: 0, cafes: 0 }));
 // La curva cada 15 minutos (tareas en curso y estrés) para los gráficos de los informes
@@ -217,12 +217,12 @@ MARCAS.forEach((m, i) => {
 const mDrena = t.drena / DIAS;
 const mSale = t.saleColapsada / DIAS;
 const mTranqui = t.tranqui / DIAS;
-console.log(`\n Vuelve a 2 tareas en curso: ~${hora(mDrena)} · deja "Colapsada": ~${hora(mSale)} · llega a "Tranqui": ~${hora(mTranqui)} (${f1((mTranqui - 720) / 60)} h después de bajar el WIP)`);
-console.log(` Días con un café antes de quedar Tranqui (la pausa ayuda a recuperarse): ${Math.round((t.cafeAntesTranqui / DIAS) * 100)}%`);
+console.log(`\n Vuelve a 2 tareas en curso: ~${hora(mDrena)} · deja "Colapsada": ~${hora(mSale)} · llega a "Tranquila": ~${hora(mTranqui)} (${f1((mTranqui - 720) / 60)} h después de bajar el WIP)`);
+console.log(` Días con un café antes de quedar Tranquila (la pausa ayuda a recuperarse): ${Math.round((t.cafeAntesTranqui / DIAS) * 100)}%`);
 const est1230 = suma[MARCAS.indexOf(750)].estres / DIAS;
 if (t.subeAlto) problemas.push('al bajar el WIP aparecieron tareas nuevas en curso');
 if (est1230 < 75) problemas.push(`a las 12:30 ya no está Colapsada (${Math.round(est1230)}%): se calma demasiado rápido`);
-if (mTranqui - 720 < 120 || mTranqui - 720 > 210) problemas.push(`llega a Tranqui ${f1((mTranqui - 720) / 60)} h después (se busca 2 a 3,5 h)`);
+if (mTranqui - 720 < 120 || mTranqui - 720 > 210) problemas.push(`llega a Tranquila ${f1((mTranqui - 720) / 60)} h después (se busca 2 a 3,5 h)`);
 if (suma[MARCAS.length - 1].abiertas / DIAS > 2.05) problemas.push('a las 18:00 todavía no vuelve al límite de 2');
 
 console.log('');

@@ -43,7 +43,7 @@ el juego digan lo mismo. Si quieres cambiar una palabra:
 | Dentro del / Sobre el límite sostenible (3) | Within / Over the sustainable limit (3) |
 | terminadas (en el día) | finished (in the day) |
 | estrés al cerrar | stress at the end of the day |
-| Tranqui / Ocupada / Estresada / Colapsada | Calm / Busy / Stressed / Overwhelmed |
+| Tranquila / Ocupada / Estresada / Colapsada | Calm / Busy / Stressed / Overwhelmed |
 | cigarros | cigarettes |
 | salir a fumar | go out for a smoke |
 | café | coffee |
@@ -68,6 +68,19 @@ el juego digan lo mismo. Si quieres cambiar una palabra:
 | Mando (conecta cerebro y cuerpo) | Command (connects brain and body) |
 | Movimiento (cordón nervioso y motoras) | Movement (nerve cord and motor neurons) |
 | en reposo | at rest |
+
+**La portada: la barra y las preguntas frecuentes** (parte 5.2f, 2026-10-25):
+
+| Español | Inglés |
+|---|---|
+| Saltar al contenido | Skip to content |
+| Mosca del WIP: ir al inicio (el logo, para lectores de pantalla) | Mosca del WIP: go to the top |
+| Menú | Menu |
+| Secciones de la página | Page sections |
+| El juego · El cerebro · El informe · Preguntas | The game · The brain · The report · FAQ |
+| Preguntas frecuentes | Frequently asked questions |
+| Gratis y sin registro. Se juega en el computador, el celular o la tablet. | Free, no sign-up. Plays on a computer, phone or tablet. (en inglés se agrega: The report is in Spanish.) |
+| Que cada tarea tarde más y se termine menos tiene respaldo; que suba el estrés es un supuesto nuestro. | That each task takes longer and fewer get finished is backed by evidence; that stress goes up is our own assumption. |
 
 ## 2. En la pantalla del juego
 

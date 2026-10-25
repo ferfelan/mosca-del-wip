@@ -15,7 +15,7 @@
    "cafes": 6,
    "estres_promedio": 5.494,
    "estres_maximo": 10,
-   "nivel": "Tranqui",
+   "nivel": "Tranquila",
    "llega_a_su_nivel": "desde las 09:00",
    "wip_promedio": 1,
    "little": 1.004
@@ -30,7 +30,7 @@
    "cafes": 5,
    "estres_promedio": 10,
    "estres_maximo": 10,
-   "nivel": "Tranqui",
+   "nivel": "Tranquila",
    "llega_a_su_nivel": "desde las 09:00",
    "wip_promedio": 2,
    "little": 2.001
@@ -45,7 +45,7 @@
    "cafes": 4,
    "estres_promedio": 17.409,
    "estres_maximo": 18,
-   "nivel": "Tranqui",
+   "nivel": "Tranquila",
    "llega_a_su_nivel": "desde las 09:00",
    "wip_promedio": 3,
    "little": 3.004

@@ -30,9 +30,11 @@
         }
       })();
     </script>
-    <link rel="icon" href="/favicon.ico?v=3" sizes="32x32" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=3" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
+    <link rel="icon" href="/favicon.ico?v=4" sizes="32x32" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=4" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4" />
+    <!-- Android y los demás celulares: nombre e íconos para la pantalla de inicio -->
+    <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="canonical" href="https://mosca.deliverycraft.ai/" />
 
     <!-- Vista previa al compartir el enlace (LinkedIn, WhatsApp) -->
@@ -42,14 +44,14 @@
     <meta property="og:url" content="https://mosca.deliverycraft.ai/" />
     <meta property="og:title" content="Mosca del WIP" />
     <meta property="og:description" content="Un juego con el cerebro de una mosca real para ver qué pasa cuando tienes demasiadas cosas abiertas a la vez. Estar siempre ocupado no es lo mismo que avanzar." />
-    <meta property="og:image" content="https://mosca.deliverycraft.ai/img/vista-previa.jpg?v=2" />
+    <meta property="og:image" content="https://mosca.deliverycraft.ai/img/vista-previa.jpg?v=3" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Las neuronas de una mosca real, encendidas en colores sobre fondo de noche, junto al título Mosca del WIP: estar siempre ocupado no es lo mismo que avanzar." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Mosca del WIP" />
     <meta name="twitter:description" content="Un juego con el cerebro de una mosca real para ver qué pasa cuando tienes demasiadas cosas abiertas a la vez." />
-    <meta name="twitter:image" content="https://mosca.deliverycraft.ai/img/vista-previa.jpg?v=2" />
+    <meta name="twitter:image" content="https://mosca.deliverycraft.ai/img/vista-previa.jpg?v=3" />
 
     <!-- La tipografía vive en el mismo sitio (no se pide a otro servidor) -->
     <link rel="preload" href="/fonts/mona-sans-latin-wdth.woff2" as="font" type="font/woff2" crossorigin />
@@ -58,25 +60,53 @@
     <script type="module" src="/src/visitas.js"></script>
   </head>
   <body class="portada">
-    <div class="barra">
-      <img class="marca" src="/favicon.svg?v=3" width="36" height="36" alt="" />
-      <div class="ajustes">
-        <div class="selector" role="group" aria-label="Idioma" data-t-aria="idioma">
-          <button type="button" data-idioma="es" aria-pressed="true" lang="es" aria-label="Español" title="Español">ES</button>
-          <button type="button" data-idioma="en" aria-pressed="false" lang="en" aria-label="English" title="English">EN</button>
+    <a class="saltar solo-lector" href="#inicio" data-t="saltar">Saltar al contenido</a>
+    <!-- La barra de arriba (parte 5.2f): siempre a la vista. El logo lleva al
+         inicio; en celular las secciones, el idioma y el fondo van en el menú. -->
+    <header class="barra" data-barra>
+      <div class="barra-dentro">
+        <a class="logo" href="/" data-logo aria-label="Mosca del WIP: ir al inicio" data-t-aria="logo">
+          <img class="marca" src="/favicon.svg?v=4" width="34" height="34" alt="" />
+          <span class="logo-nombre">Mosca del WIP</span>
+        </a>
+        <button class="menu-boton" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menú" data-t-aria="menu">
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path class="raya raya-1" d="M4 7h16" /><path class="raya raya-2" d="M4 12h16" /><path class="raya raya-3" d="M4 17h16" /></svg>
+        </button>
+        <div class="menu" id="menu">
+          <nav class="secciones" aria-label="Secciones de la página" data-t-aria="secciones">
+            <ul class="menu-enlaces">
+              <li><a href="#juego" data-seccion="juego" data-t="navJuego">El juego</a></li>
+              <li><a href="#por-dentro" data-seccion="por-dentro" data-t="navCerebro">El cerebro</a></li>
+              <li><a href="#informe" data-seccion="informe" data-t="navInforme">El informe</a></li>
+              <li><a href="#preguntas" data-seccion="preguntas" data-t="navPreguntas">Preguntas</a></li>
+            </ul>
+          </nav>
+          <div class="ajustes">
+            <div class="ajuste">
+              <span class="ajuste-nombre" data-t="idioma">Idioma</span>
+              <div class="selector" role="group" aria-label="Idioma" data-t-aria="idioma">
+                <button type="button" data-idioma="es" aria-pressed="true" lang="es" aria-label="Español" title="Español">ES</button>
+                <button type="button" data-idioma="en" aria-pressed="false" lang="en" aria-label="English" title="English">EN</button>
+              </div>
+            </div>
+            <div class="ajuste">
+              <span class="ajuste-nombre" data-t="fondo">Fondo</span>
+              <div class="selector" role="group" aria-label="Fondo" data-t-aria="fondo">
+                <button type="button" data-fondo="oscuro" aria-pressed="true" aria-label="Fondo negro" title="Fondo negro" data-t-aria="fondoNegro" data-t-title="fondoNegro">
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>
+                </button>
+                <button type="button" data-fondo="claro" aria-pressed="false" aria-label="Fondo blanco" title="Fondo blanco" data-t-aria="fondoBlanco" data-t-title="fondoBlanco">
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M12 2.5v2.3M12 19.2v2.3M2.5 12h2.3M19.2 12h2.3M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="selector" role="group" aria-label="Fondo" data-t-aria="fondo">
-          <button type="button" data-fondo="oscuro" aria-pressed="true" aria-label="Fondo negro" title="Fondo negro" data-t-aria="fondoNegro" data-t-title="fondoNegro">
-            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>
-          </button>
-          <button type="button" data-fondo="claro" aria-pressed="false" aria-label="Fondo blanco" title="Fondo blanco" data-t-aria="fondoBlanco" data-t-title="fondoBlanco">
-            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M12 2.5v2.3M12 19.2v2.3M2.5 12h2.3M19.2 12h2.3M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
-          </button>
-        </div>
+        <a class="boton principal barra-jugar" href="/jugar/" data-jugar data-t="jugar">Jugar</a>
       </div>
-    </div>
+    </header>
     <main>
-      <header class="hero">
+      <header class="hero" id="inicio" tabindex="-1">
         <div class="hero-texto">
           <h1>Mosca del WIP</h1>
           <p class="lema" data-t="lema">Estar siempre ocupado no es lo mismo que avanzar.</p>
@@ -89,7 +119,7 @@
             <a class="boton principal" href="/jugar/" data-jugar data-t="jugar">Jugar</a>
             <a class="boton" href="/Mosca-del-WIP-Informe.pdf" download="Mosca del WIP - Informe.pdf" data-t="descargar">Descargar el informe (PDF)</a>
           </div>
-          <p class="nota" data-t="gratis">Gratis y sin registro.</p>
+          <p class="nota" data-t="gratis">Gratis y sin registro. Se juega en el computador, el celular o la tablet.</p>
         </div>
 
         <!-- El cerebro del juego (las mismas neuronas y la misma actividad
@@ -114,7 +144,7 @@
             </div>
             <dl class="consola-datos">
               <div class="dato"><dt data-t="terminadas">terminadas en el día</dt><dd data-terminadas>18,0</dd></div>
-              <div class="dato"><dt data-t="estres">estrés al cerrar</dt><dd class="nivel" data-estres>Tranqui</dd></div>
+              <div class="dato"><dt data-t="estres">estrés al cerrar</dt><dd class="nivel" data-estres>Tranquila</dd></div>
               <div class="dato"><dt data-t="cigarros">cigarros</dt><dd data-cigarros>0</dd></div>
             </dl>
             <p class="nota consola-nota" data-t="consolaNota">Promedio de 200 días jugados. Son números del juego, no de personas.</p>
@@ -123,7 +153,7 @@
         </div>
       </header>
 
-      <section class="juego" aria-labelledby="t-juego" data-fase="pocas">
+      <section class="juego" id="juego" aria-labelledby="t-juego" data-fase="pocas">
         <div class="juego-texto">
           <h2 id="t-juego" data-t="juegoTitulo">Lo que muestra el juego</h2>
           <p data-t="juegoTexto">
@@ -161,7 +191,7 @@
         <p class="nota hecho-nota" data-t="hechoNota">Promedio de 200 días jugados.</p>
       </section>
 
-      <section class="credito" aria-labelledby="t-credito">
+      <section class="credito" id="por-dentro" aria-labelledby="t-credito">
         <h2 id="t-credito" data-t="creditoTitulo">Por dentro, un cerebro de mosca real</h2>
         <div class="credito-texto">
           <p data-t="credito1">
@@ -190,7 +220,7 @@
         </div>
       </section>
 
-      <section class="informe" aria-labelledby="t-informe">
+      <section class="informe" id="informe" aria-labelledby="t-informe">
         <a class="tapa" href="/Mosca-del-WIP-Informe.pdf" download="Mosca del WIP - Informe.pdf" tabindex="-1" aria-hidden="true">
           <img src="/img/tapa-informe.jpg" width="720" height="1019" alt="" loading="lazy" decoding="async" />
         </a>
@@ -204,6 +234,48 @@
             <a class="boton principal" href="/Mosca-del-WIP-Informe.pdf" download="Mosca del WIP - Informe.pdf" data-t="descargar">Descargar el informe (PDF)</a>
           </div>
           <p class="nota" data-t="informeNota">Son 17 páginas y pesa 4 MB.</p>
+        </div>
+      </section>
+
+      <section class="preguntas" id="preguntas" aria-labelledby="t-preguntas">
+        <h2 id="t-preguntas" data-t="preguntasTitulo">Preguntas frecuentes</h2>
+        <div class="preguntas-lista">
+          <details class="pregunta">
+            <summary><span class="pregunta-texto" data-t="pregunta1">¿Qué es la Mosca del WIP?</span><span class="signo" aria-hidden="true"></span></summary>
+            <p class="respuesta" data-t="respuesta1">Es un juego corto que se juega en el navegador. Una mosca pasa un día en la oficina, de 09:00 a 18:00, y tú eliges cuántas tareas tiene abiertas a la vez, de 1 a 10. Cada día dura más o menos un minuto, y al terminar lo puedes comparar con los días que ya jugaste.</p>
+          </details>
+          <details class="pregunta">
+            <summary><span class="pregunta-texto" data-t="pregunta2">¿Qué significa WIP?</span><span class="signo" aria-hidden="true"></span></summary>
+            <p class="respuesta" data-t="respuesta2">Es la sigla en inglés de <i lang="en">work in progress</i>, el trabajo en curso. Es todo lo que ya empezaste y todavía no terminas. En el juego, son las tareas que la mosca tiene abiertas al mismo tiempo.</p>
+          </details>
+          <details class="pregunta">
+            <summary><span class="pregunta-texto" data-t="pregunta3">¿Cuántas tareas a la vez es lo mejor?</span><span class="signo" aria-hidden="true"></span></summary>
+            <p class="respuesta" data-t="respuesta3">En el juego, la mosca termina más con 2 a la vez, 18 al día en promedio. Con cada tarea que se suma termina menos, y con 9 termina la mitad, aunque está ocupada todo el día. Hasta 3 sigue Tranquila y no sale a fumar, y por eso su límite sostenible es 3. El juego no dice cuál es el número de tu equipo, porque la mosca trabaja sola.</p>
+          </details>
+          <details class="pregunta">
+            <summary><span class="pregunta-texto" data-t="pregunta4">¿El cerebro es de una mosca de verdad?</span><span class="signo" aria-hidden="true"></span></summary>
+            <p class="respuesta" data-t="respuesta4">Las neuronas y sus conexiones sí. Vienen del Male CNS v1.0, el mapa del sistema nervioso central de una mosca macho, neurona por neurona, con licencia CC BY 4.0. La actividad que ves es simulada. Traducimos las tareas en algo que una mosca sí siente, como polvo en la antena, y simulamos cómo responde su cerebro. En pantalla se ve una parte de sus neuronas.</p>
+          </details>
+          <details class="pregunta">
+            <summary><span class="pregunta-texto" data-t="pregunta5">¿Los números son de personas?</span><span class="signo" aria-hidden="true"></span></summary>
+            <p class="respuesta" data-t="respuesta5">No. Son del juego, un experimento en el computador con una mosca sola, y cada uno es el promedio de 200 días jugados. Que cada tarea tarde más y se termine menos tiene respaldo; que suba el estrés es un supuesto nuestro. El informe dice de dónde sale cada número.</p>
+          </details>
+          <details class="pregunta">
+            <summary><span class="pregunta-texto" data-t="pregunta6">¿Por qué fuma la mosca?</span><span class="signo" aria-hidden="true"></span></summary>
+            <p class="respuesta" data-t="respuesta6">Las moscas no fuman. El cigarro es un disfraz de algo que sí hacen, limpiarse las antenas. Las tareas le llegan como polvo en la antena, lo que enciende en su cerebro el circuito de limpieza, y el juego dibuja eso como salir a fumar. Cuántos cigarros fuma lo decide el juego. Si está Tranquila no fuma nunca, y cada salida son 8 minutos sin trabajar.</p>
+          </details>
+          <details class="pregunta">
+            <summary><span class="pregunta-texto" data-t="pregunta7">¿Se puede jugar en el celular?</span><span class="signo" aria-hidden="true"></span></summary>
+            <p class="respuesta" data-t="respuesta7">Sí. Se juega en el computador, el celular o la tablet. En el celular la oficina va arriba y los controles abajo, con pestañas para ver el cerebro y los días jugados. También se juega con el celular girado.</p>
+          </details>
+          <details class="pregunta">
+            <summary><span class="pregunta-texto" data-t="pregunta8">¿Cuesta algo? ¿Guardan mis datos?</span><span class="signo" aria-hidden="true"></span></summary>
+            <p class="respuesta" data-t="respuesta8">Es gratis y no pide registro. No usamos cookies y solo contamos visitas, sin identificar a nadie. Tus días jugados y lo que eliges, como el idioma, quedan guardados solo en tu navegador.</p>
+          </details>
+          <details class="pregunta">
+            <summary><span class="pregunta-texto" data-t="pregunta9">¿Cómo lo uso con mi equipo?</span><span class="signo" aria-hidden="true"></span></summary>
+            <p class="respuesta" data-t="respuesta9">Jueguen un día con 2 tareas a la vez y otro con 9, y comparen la tabla de días jugados. En el computador, la vista Exhibición muestra el juego en grande, para una tele o un proyector. El informe trae cuatro pasos para probar un límite con tu equipo y se lee en 10 minutos.</p>
+          </details>
         </div>
       </section>
 

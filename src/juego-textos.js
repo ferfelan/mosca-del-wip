@@ -28,7 +28,7 @@ export const PAGINA = {
     'Back to the starting view of the office (or double-click the scene)',
   // Tarjeta "Estado de la mosca" (exhibición)
   'Estado de la mosca': 'How the fly is doing',
-  Tranqui: 'Calm',
+  Tranquila: 'Calm',
   'Nivel de estrés': 'Stress level',
   Trabajando: 'Working',
   // Resumen del fin del día (exhibición)
@@ -343,7 +343,7 @@ export const TEXTOS = {
 };
 
 // ---------- 4. Niveles de estrés y zonas del cerebro (su inglés) ----------
-const NIVELES_EN = { Tranqui: 'Calm', Ocupada: 'Busy', Estresada: 'Stressed', Colapsada: 'Overwhelmed' };
+const NIVELES_EN = { Tranquila: 'Calm', Ocupada: 'Busy', Estresada: 'Stressed', Colapsada: 'Overwhelmed' };
 const ZONAS_EN = {
   vision: { nombre: 'Vision', detalle: 'optic lobes' },
   central: { nombre: 'Central brain', detalle: 'integrates and decides' },
@@ -365,7 +365,7 @@ export function tx(clave, ...datos) {
   return typeof texto === 'function' ? texto(...datos) : texto;
 }
 
-// Nombre de un nivel de estrés ("Tranqui" → "Calm")
+// Nombre de un nivel de estrés ("Tranquila" → "Calm")
 export const nombreNivel = (nombre) => (idioma === 'en' ? (NIVELES_EN[nombre] ?? nombre) : nombre);
 
 // Nombre y detalle de una zona del cerebro (g = la zona de malecns-info.json)

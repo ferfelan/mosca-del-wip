@@ -146,7 +146,10 @@ for (const nombre of ['control', 'exhibicion']) {
   await p.mouse.move(donde.x, donde.y);
   await p.waitForTimeout(80);
   const donde2 = await p.evaluate(() => window.__mosca.cerebroDonde(2)); // ya gira lento
-  await p.mouse.click(donde2.x, donde2.y);
+  // En píxeles enteros, como un mouse de verdad: con medio píxel el paso del
+  // cursor y el clic podían elegir neuronas vecinas distintas (2026-10-25)
+  await p.mouse.move(Math.round(donde2.x), Math.round(donde2.y));
+  await p.mouse.click(Math.round(donde2.x), Math.round(donde2.y));
   await p.waitForTimeout(300);
   const texto = await p.evaluate(() => document.getElementById('cerebro-ficha').innerText.replace(/\n/g, ' | '));
   revisar(!(await vista()).girando && (await ficha()) && texto.includes('SAD093'), `clic en aBN1: se detiene y su tarjetita queda fija ("${texto}")`);

@@ -34,6 +34,17 @@ const TAMANOS = process.env.TAMANOS
     ];
 mkdirSync(CAPTURAS, { recursive: true });
 
+// Todos los botones ES | EN marcan el mismo idioma (son tres desde el modo
+// celular de la 5.2e: el del cerebro, el flotante y el de la hoja del celular;
+// antes la prueba esperaba exactamente dos y fallaba aunque el juego estaba bien)
+function marcaSolo(marcados, idioma) {
+  const partes = marcados.split(' ');
+  return partes.length >= 4 && partes.every((p) => {
+    const [i, v] = p.split(':');
+    return v === String(i === idioma);
+  });
+}
+
 // ---------- Palabras en español que no deberían verse en inglés ----------
 // Las del juego (todo lo que dice en español y no aparece en su inglés) más
 // las más comunes del idioma. Se permiten el nombre del juego, MaleCNS y el
@@ -245,7 +256,7 @@ function frasesDe(idioma) {
     const v = TEXTOS[clave][idioma];
     return typeof v === 'function' ? v(...datos) : v;
   };
-  const niveles = idioma === 'en' ? ['Calm', 'Busy', 'Stressed', 'Overwhelmed'] : ['Tranqui', 'Ocupada', 'Estresada', 'Colapsada'];
+  const niveles = idioma === 'en' ? ['Calm', 'Busy', 'Stressed', 'Overwhelmed'] : ['Tranquila', 'Ocupada', 'Estresada', 'Colapsada'];
   return {
     'ex-mosca-hace': Object.values(t('queHace')),
     'ex-mosca-nivel': niveles,
@@ -375,7 +386,7 @@ for (const [w, h] of TAMANOS) {
     carga.lang === 'en' && carga.url.includes('lang=en') && carga.escondida && carga.alMostrar === 'Pause' && !carga.sigue && carga.idioma === 'en',
     `abre en inglés: <html lang="${carga.lang}">, ${carga.url}, escondida mientras se traduce (${carga.escondida}) y al mostrarse ya decía "${carga.alMostrar}"`
   );
-  revisar(carga.marcados === 'es:false en:true es:false en:true', `el botón marca EN (${carga.marcados})`);
+  revisar(marcaSolo(carga.marcados, 'en'), `el botón marca EN (${carga.marcados})`);
   const cargaEs = await es.evaluate(() => ({ lang: document.documentElement.lang, escondida: window.__escondida === true }));
   revisar(cargaEs.lang === 'es' && !cargaEs.escondida, `sin ?lang abre en español y no se esconde (lang="${cargaEs.lang}")`);
 
@@ -423,7 +434,7 @@ for (const [w, h] of TAMANOS) {
     const escenaIgual = JSON.stringify(refEs.escena) === JSON.stringify(vuelta.escena);
     revisar(!difTextos && escenaIgual, `${nombre}: EN → ES dice exactamente lo mismo que la copia en español (${vuelta.textos.length} textos${escenaIgual ? ', escena 3D igual' : ', LA ESCENA 3D CAMBIA'})${difTextos}`);
     revisar(
-      estadoEs.lang === 'es' && !estadoEs.url.includes('lang') && estadoEs.guardado === 'es' && estadoEs.marcados === 'es:true en:false es:true en:false',
+      estadoEs.lang === 'es' && !estadoEs.url.includes('lang') && estadoEs.guardado === 'es' && marcaSolo(estadoEs.marcados, 'es'),
       `${nombre}: en español: lang="${estadoEs.lang}", dirección sin ?lang, recordado "${estadoEs.guardado}", botón ${estadoEs.marcados}`
     );
     await en.click(`${boton} [data-idioma="en"]`);

@@ -1,6 +1,6 @@
 // Mini gráfico "Estrés del día": el estrés de la mosca desde las 09:00 hasta
 // ahora (0 a 100 %, el mismo de la tarjeta "Estado de la mosca"), con la línea
-// del color de su nivel (Tranqui, Ocupada, Estresada, Colapsada) y una marca
+// del color de su nivel (Tranquila, Ocupada, Estresada, Colapsada) y una marca
 // por cada cigarro y cada café, en una franja bajo la línea. Así se ve en
 // 3 segundos que con más estrés fuma más. Al pasar el mouse: la hora, el
 // nivel y las tareas a la vez de ese momento.

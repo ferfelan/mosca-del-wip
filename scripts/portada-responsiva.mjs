@@ -8,7 +8,10 @@
 //   - en celular vertical el botón Jugar quede en la primera pantalla,
 //   - el cerebro se encienda y no haya errores,
 //   - en inglés no quede ningún texto en español (salvo nombres propios),
-// y saca una foto de la primera pantalla y otra de la página completa.
+//   - las respuestas de las preguntas frecuentes (se revisan abiertas) y,
+//     bajo 1100 px, el menú de la barra abierto (parte 5.2f) cumplan lo mismo,
+// y saca una foto de la primera pantalla, otra de la página completa (con
+// las respuestas abiertas) y, bajo 1100 px, otra con el menú abierto.
 // Lo hace con cada fondo (negro y blanco) y cada idioma (español e inglés).
 // Uso (con npm run dev, o con la dirección publicada):
 //   node scripts/portada-responsiva.mjs [dirección] [carpeta de fotos] [solo] [combinaciones]
@@ -55,9 +58,11 @@ const TAMANOS = [
   ['computador-2560x1440', 2560, 1440, false],
 ];
 
-// Corre dentro de la página
-function medir({ tactil, celularVertical, idioma }) {
+// Corre dentro de la página. Con "raiz" mide solo lo que está dentro de ese
+// elemento (el menú abierto tapa la página a propósito).
+function medir({ tactil, celularVertical, idioma, raiz }) {
   const problemas = [];
+  const base = raiz ? document.querySelector(raiz) : document.body;
   const vw = document.documentElement.clientWidth;
   if (document.documentElement.scrollWidth > vw) {
     problemas.push(`se puede desplazar hacia el lado (${document.documentElement.scrollWidth} px en ${vw} px)`);
@@ -74,7 +79,7 @@ function medir({ tactil, celularVertical, idioma }) {
 
   // Cada línea de texto, con su caja real
   const lineas = [];
-  const recorrido = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  const recorrido = document.createTreeWalker(base, NodeFilter.SHOW_TEXT);
   for (let nodo; (nodo = recorrido.nextNode()); ) {
     const el = nodo.parentElement;
     if (!nodo.textContent.trim() || el.closest('.solo-lector, script, style') || !seVe(el)) continue;
@@ -111,30 +116,30 @@ function medir({ tactil, celularVertical, idioma }) {
     }
   }
   if (tactil) {
-    for (const el of document.querySelectorAll('.boton, input[type=range], .selector button')) {
+    for (const el of base.querySelectorAll('.boton, input[type=range], .selector button, .menu-boton, .menu-enlaces a, .logo, .pregunta summary')) {
       if (!seVe(el)) continue;
       const alto = el.getBoundingClientRect().height;
       if (alto < 44) problemas.push(`difícil de tocar (${Math.round(alto)} px de alto): «${corto(el.textContent || el.id)}»`);
     }
   }
-  if (celularVertical) {
+  if (celularVertical && !raiz) {
     const boton = [...document.querySelectorAll('.hero .boton.principal')].find(seVe);
     const abajo = boton ? boton.getBoundingClientRect().bottom + window.scrollY : Infinity;
     if (abajo > window.innerHeight) problemas.push(`el botón Jugar queda bajo la primera pantalla (${Math.round(abajo)} px de ${window.innerHeight})`);
   }
-  if (!document.querySelector('.cerebro.vivo')) problemas.push('el cerebro no se encendió (queda la foto fija)');
+  if (!raiz && !document.querySelector('.cerebro.vivo')) problemas.push('el cerebro no se encendió (queda la foto fija)');
   if (document.documentElement.lang !== idioma) problemas.push(`la página dice lang="${document.documentElement.lang}" y debía ser ${idioma}`);
   // En inglés: ninguna palabra en español a la vista ni en lo que lee un lector de pantalla
   if (idioma === 'en') {
-    const ESPANOL = /\b(tareas?|terminadas?|estrés|cigarros|juego|informe|cerebro|neuronas|Descargar|Jugar|Promedio|límite|simulación|Hecho por|Sin cookies|Colores|Visión|Memoria|Mando|Movimiento|reposo|a la vez|Gratis|Fondo|Idioma|mosca|oficina|páginas)\b/i;
+    const ESPANOL = /\b(tareas?|terminadas?|estrés|cigarros|juego|informe|cerebro|neuronas|Descargar|Jugar|Promedio|límite|simulación|Hecho por|Sin cookies|Colores|Visión|Memoria|Mando|Movimiento|reposo|a la vez|Gratis|Fondo|Idioma|mosca|oficina|páginas|Preguntas|frecuentes|Saltar|contenido|Secciones|computador|celular|navegador|equipo|respaldo|supuesto|inicio)\b|Menú/i;
     const textos = [];
-    const recorrido = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    const recorrido = document.createTreeWalker(base, NodeFilter.SHOW_TEXT);
     while (recorrido.nextNode()) {
       const nodo = recorrido.currentNode;
       if (nodo.parentElement.closest('script, style') || !seVe(nodo.parentElement)) continue;
       textos.push(nodo.textContent);
     }
-    for (const el of document.querySelectorAll('[aria-label], [title], img[alt]')) textos.push(el.getAttribute('aria-label') || '', el.getAttribute('title') || '', el.getAttribute('alt') || '');
+    for (const el of base.querySelectorAll('[aria-label], [title], img[alt]')) textos.push(el.getAttribute('aria-label') || '', el.getAttribute('title') || '', el.getAttribute('alt') || '');
     for (const t of textos) {
       const limpio = t.replace(/Mosca del WIP|Male CNS|Felipe Fernández|Español/g, '');
       if (ESPANOL.test(limpio)) problemas.push(`en inglés quedó en español: «${corto(t)}»`);
@@ -171,15 +176,29 @@ for (const [fondo, idioma] of COMBINACIONES) for (const [nombreTamano, ancho, al
   pagina.on('console', (m) => { if (m.type() === 'error') errores.push(m.text()); });
   await pagina.goto(DIRECCION, { waitUntil: 'load' });
   // El cerebro solo se dibuja cuando se ve (en celular horizontal queda más abajo)
-  await pagina.evaluate(() => document.querySelector('.cerebro').scrollIntoView({ block: 'center' }));
+  // (los saltos son directos: con la página deslizándose sola, la barra de
+  // arriba quedaría encima del texto en la medición)
+  await pagina.evaluate(() => document.querySelector('.cerebro').scrollIntoView({ block: 'center', behavior: 'instant' }));
   await pagina.waitForFunction(() => document.querySelector('.cerebro.vivo'), null, { timeout: 25000 }).catch(() => {});
   await pagina.waitForTimeout(4800); // la consola sube sola hasta 9 (la palabra más larga: "Colapsada")
-  await pagina.evaluate(() => window.scrollTo(0, 0));
-  await pagina.waitForTimeout(300);
-  const problemas = await pagina.evaluate(medir, { tactil, celularVertical: tactil && ancho < 600 && alto > ancho, idioma });
-  problemas.push(...errores.map((e) => `error: ${e}`));
+  await pagina.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
   await pagina.screenshot({ path: join(CARPETA, `${nombre}-pantalla.png`) });
+  // Las preguntas frecuentes, todas abiertas
+  await pagina.evaluate(() => document.querySelectorAll('.pregunta').forEach((d) => (d.open = true)));
+  await pagina.waitForTimeout(400);
+  const problemas = await pagina.evaluate(medir, { tactil, celularVertical: tactil && ancho < 600 && alto > ancho, idioma });
   await pagina.screenshot({ path: join(CARPETA, `${nombre}-completa.png`), fullPage: true });
+  // Bajo 1100 px, el menú de la barra abierto
+  if (ancho < 1100) {
+    await pagina.click('.menu-boton');
+    await pagina.waitForTimeout(350);
+    const abierto = await pagina.evaluate(() => document.querySelector('.barra').classList.contains('abierta'));
+    if (!abierto) problemas.push('el botón del menú no abre el menú');
+    else problemas.push(...(await pagina.evaluate(medir, { tactil, idioma, raiz: '.barra' })).map((p) => `(menú abierto) ${p}`));
+    await pagina.screenshot({ path: join(CARPETA, `${nombre}-menu.png`) });
+    await pagina.keyboard.press('Escape');
+  }
+  problemas.push(...errores.map((e) => `error: ${e}`));
   total += problemas.length;
   console.log(`${problemas.length ? 'REVISAR' : 'ok     '} ${nombre}`);
   for (const p of problemas) console.log(`        - ${p}`);

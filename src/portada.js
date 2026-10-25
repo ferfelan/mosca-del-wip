@@ -6,12 +6,16 @@
 //    Al entrar sube sola de 2 a 9 una vez; después manda la persona.
 // 3. El clip del juego: se baja cuando está por verse, marca si son pocas o
 //    muchas tareas y se detiene fuera de la pantalla.
-// 4. Arriba a la derecha: idioma (español o inglés) y fondo (negro o blanco).
-//    Los dos se recuerdan en este navegador; el script corto del <head> los
-//    aplica antes de dibujar. Al llegar, siempre en español y fondo negro.
+// 4. Idioma (español o inglés) y fondo (negro o blanco), en la barra de
+//    arriba. Los dos se recuerdan en este navegador; el script corto del
+//    <head> los aplica antes de dibujar. Al llegar, siempre en español y
+//    fondo negro.
 // 5. El informe en PDF: en iPhone y iPad el botón lo abre en vez de bajarlo.
+// 6. La barra de arriba (parte 5.2f): el logo lleva al inicio, el menú de las
+//    secciones y la sección que estás leyendo marcada.
 // Con "reducir movimiento" el cerebro no gira, la consola no sube sola, el
-// clip queda con sus controles y los cambios de idioma y fondo no se funden.
+// clip queda con sus controles, los cambios de idioma y fondo no se funden y
+// los saltos de la barra son directos.
 import { leerIdioma, marcarIdioma, elegirIdioma, rutaEnIdioma, formatoNumero } from './idioma.js';
 import { INGLES, DINAMICOS } from './portada-textos.js';
 
@@ -20,14 +24,14 @@ import { INGLES, DINAMICOS } from './portada-textos.js';
 // cambia, se copian de nuevo, igual que en los informes.
 const TERMINADAS = [15.9, 18.0, 16.9, 15.4, 14.0, 12.3, 11.2, 10.0, 9.1, 8.2];
 const CIGARROS = [0, 0, 0, 1, 3, 6, 8, 11, 13, 15];
-const ESTRES = ['Tranqui', 'Tranqui', 'Tranqui', 'Ocupada', 'Ocupada', 'Estresada', 'Estresada', 'Colapsada', 'Colapsada', 'Colapsada'];
+const ESTRES = ['Tranquila', 'Tranquila', 'Tranquila', 'Ocupada', 'Ocupada', 'Estresada', 'Estresada', 'Colapsada', 'Colapsada', 'Colapsada'];
 // Neuronas encendidas en la simulación con 1 a 10 tareas
 // (public/cerebro/actividad-real.json); se muestran mientras carga el cerebro.
 const NEURONAS = [330, 423, 532, 633, 1026, 1114, 1184, 1247, 1328, 1398];
 
-const COLOR_NIVEL = { Tranqui: 'var(--tranqui)', Ocupada: 'var(--ocupada)', Estresada: 'var(--estresada)', Colapsada: 'var(--colapsada)' };
+const COLOR_NIVEL = { Tranquila: 'var(--tranquila)', Ocupada: 'var(--ocupada)', Estresada: 'var(--estresada)', Colapsada: 'var(--colapsada)' };
 // La carga, como en el juego: verde hasta 3, amarillo con 4 y 5, rojo desde 6
-const colorCarga = (n) => (n <= 3 ? 'var(--tranqui)' : n <= 5 ? 'var(--ocupada)' : 'var(--colapsada)');
+const colorCarga = (n) => (n <= 3 ? 'var(--tranquila)' : n <= 5 ? 'var(--ocupada)' : 'var(--colapsada)');
 const quieto = matchMedia('(prefers-reduced-motion: reduce)');
 // El idioma y cómo se escriben los números en él: 15,9 y 1.328 en español;
 // 15.9 y 1,328 en inglés (los pone ponerIdioma)
@@ -139,6 +143,7 @@ function ponerIdioma(nuevo, alEntrar = false) {
     for (const { nodo, es } of conTitulo) nodo.setAttribute('title', en ? (INGLES[nodo.dataset.tTitle] ?? es) : es);
   }
   for (const enlace of document.querySelectorAll('[data-jugar]')) enlace.href = rutaEnIdioma('/jugar/', idioma);
+  document.querySelector('[data-logo]').href = rutaEnIdioma('/', idioma);
   for (const boton of botonesIdioma) boton.setAttribute('aria-pressed', String(boton.dataset.idioma === idioma));
   decimal = formatoNumero(idioma, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
   miles = formatoNumero(idioma);
@@ -194,6 +199,93 @@ const enIPhoneOIPad =
 if (enIPhoneOIPad) {
   for (const enlace of document.querySelectorAll('a[download]')) enlace.removeAttribute('download');
 }
+
+// ---------- La barra de arriba ----------
+// Siempre a la vista. Bajo 1100 px las secciones, el idioma y el fondo van en
+// un menú que abre el botón de las tres rayas. La barra se marca con:
+//  - desplazada: ya bajaste un poco (toma el fondo de la página);
+//  - con-nombre: el título grande pasó bajo la barra (aparece "Mosca del WIP");
+//  - con-jugar: los botones de arriba ya no se ven (bajo 1100 px aparece Jugar);
+//  - abierta: el menú está abierto.
+const barra = document.querySelector('[data-barra]');
+const menuBoton = barra.querySelector('.menu-boton');
+const enlacesSeccion = [...barra.querySelectorAll('[data-seccion]')];
+
+const menuAbierto = () => barra.classList.contains('abierta');
+function abrirMenu(abrir) {
+  barra.classList.toggle('abierta', abrir);
+  menuBoton.setAttribute('aria-expanded', String(abrir));
+}
+menuBoton.addEventListener('click', () => abrirMenu(!menuAbierto()));
+// Se cierra con Esc (el foco vuelve al botón), al tocar fuera de la barra, al
+// elegir una sección y si la ventana se agranda hasta la barra completa
+addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape' || !menuAbierto()) return;
+  abrirMenu(false);
+  menuBoton.focus();
+});
+// (la sombra de atrás es parte de la barra: tocarla también cuenta como fuera)
+addEventListener('pointerdown', (e) => {
+  if (menuAbierto() && (e.target === barra || !barra.contains(e.target))) abrirMenu(false);
+});
+for (const enlace of enlacesSeccion) enlace.addEventListener('click', () => abrirMenu(false));
+matchMedia('(max-width: 1099px)').addEventListener('change', () => abrirMenu(false));
+
+// El logo siempre lleva al inicio. En la portada sube hasta arriba sin
+// recargar (abrirlo en otra pestaña sigue funcionando); si venías de una
+// sección, "atrás" te devuelve a ella
+barra.querySelector('[data-logo]').addEventListener('click', (e) => {
+  if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  e.preventDefault();
+  abrirMenu(false);
+  if (location.hash) history.pushState(history.state, '', location.pathname + location.search);
+  scrollTo({ top: 0, behavior: quieto.matches ? 'auto' : 'smooth' });
+});
+
+let desplazada;
+function marcarDesplazada() {
+  const ahora = scrollY > 2;
+  if (ahora !== desplazada) barra.classList.toggle('desplazada', (desplazada = ahora));
+}
+addEventListener('scroll', marcarDesplazada, { passive: true });
+marcarDesplazada();
+
+// El nombre aparece en la barra cuando el título grande pasa bajo ella, y
+// Jugar cuando los botones de arriba no se ven (en un celular girado pueden
+// quedar más abajo de la primera pantalla: ahí la barra lo muestra de entrada)
+const vigilar = (elemento, alCambiar) =>
+  new IntersectionObserver(([e]) => alCambiar(e), { rootMargin: '-64px 0px 0px 0px' }).observe(elemento);
+vigilar(document.querySelector('.hero h1'), (e) =>
+  barra.classList.toggle('con-nombre', !e.isIntersecting && e.boundingClientRect.top < 64)
+);
+vigilar(document.querySelector('.hero .acciones'), (e) => barra.classList.toggle('con-jugar', !e.isIntersecting));
+
+// La sección que estás leyendo queda marcada en el menú: la última cuyo
+// contenido ya llegó cerca de la barra (al elegir una en el menú, su
+// contenido queda justo ahí). Al final de la página, la última sección.
+const secciones = enlacesSeccion.map((a) => ({ a, el: document.getElementById(a.dataset.seccion), aire: 0 }));
+const medirAire = () => secciones.forEach((s) => (s.aire = parseFloat(getComputedStyle(s.el).paddingTop) || 0));
+let marcaPendiente = 0;
+function marcarSeccion() {
+  marcaPendiente = 0;
+  const linea = barra.getBoundingClientRect().bottom + Math.max(48, innerHeight * 0.2);
+  let actual = null;
+  for (const s of secciones) if (s.el.getBoundingClientRect().top + s.aire <= linea) actual = s.a;
+  const ultima = secciones.at(-1);
+  if (scrollY + innerHeight >= document.documentElement.scrollHeight - 4 && ultima.el.getBoundingClientRect().top < innerHeight) actual = ultima.a;
+  for (const { a } of secciones) {
+    if (a === actual) a.setAttribute('aria-current', 'true');
+    else a.removeAttribute('aria-current');
+  }
+}
+const pedirMarca = () => (marcaPendiente ||= requestAnimationFrame(marcarSeccion));
+addEventListener('scroll', pedirMarca, { passive: true });
+addEventListener('resize', () => {
+  medirAire();
+  pedirMarca();
+});
+medirAire();
+marcarSeccion();
 
 // Al entrar, una sola vez: sube de 2 a 9 tareas para mostrar qué pasa
 function subidaSola() {
