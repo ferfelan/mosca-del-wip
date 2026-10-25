@@ -34,7 +34,8 @@
 // pasa a llamarse "Tranquila", con las fotos de los grupos paneles y estres sacadas de nuevo;
 // completo v10, la Etapa 5 en la sección 27, con las fotos del grupo sitio; "Para compartir en
 // inglés" v19, la traducción del v19, con las fotos del juego en inglés; completo v11, la parte
-// 5.2g: el botón Empezar, el informe en inglés y la portada al día).
+// 5.2g: el botón Empezar, el informe en inglés y la portada al día; completo v12, el logo nítido
+// de la 5.2g, que se había caído del v11, y el cierre de la presentación).
 //
 // Uso: node scripts/documento.mjs                → los dos informes (y el de
 //                                                  compartir en inglés)
@@ -65,7 +66,7 @@ const IMG = join(CARPETA, IDIOMA === 'en' ? 'img-en' : 'img');
 const SALIDA = process.env.SALIDA ?? join(homedir(), 'Desktop', 'Mosca del WIP');
 const FECHA = process.env.FECHA ?? new Date().toLocaleDateString('sv-SE'); // 2026-10-20
 const DOCUMENTOS = [
-  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v11' },
+  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v12' },
   { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v19', paginas: [16, 17] },
   { id: 'compartir-en', html: 'compartir-en.html', nombre: 'Para compartir en inglés', version: 'v19', paginas: [16, 17] },
   { id: 'norte', html: 'norte.html', nombre: 'Norte del proyecto', version: 'v1', paginas: [1, 2], aparte: true },
