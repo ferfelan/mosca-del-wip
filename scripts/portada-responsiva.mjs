@@ -144,7 +144,7 @@ function medir({ tactil, celularVertical, idioma, raiz }) {
     }
     for (const el of base.querySelectorAll('[aria-label], [title], img[alt]')) textos.push(el.getAttribute('aria-label') || '', el.getAttribute('title') || '', el.getAttribute('alt') || '');
     for (const t of textos) {
-      const limpio = t.replace(/Mosca del WIP|Male CNS|Felipe Fernández|Español/g, '');
+      const limpio = t.replace(/Mosca del WIP|Mosca means fly in Spanish\.|Male CNS|Felipe Fernández|Español/g, ''); // (la línea en inglés bajo el título lleva "Mosca", 5.2h)
       if (ESPANOL.test(limpio)) problemas.push(`en inglés quedó en español: «${corto(t)}»`);
     }
   }

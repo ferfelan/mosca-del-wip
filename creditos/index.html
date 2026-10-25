@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Créditos y licencias · Mosca del WIP</title>
+    <meta name="description" content="Quién hizo Mosca del WIP, de dónde salen los datos del cerebro de la mosca (Male CNS v1.0, CC BY 4.0), qué programas y letras de otros usa el sitio y la privacidad: sin cookies." />
+    <meta name="theme-color" content="#060a16" />
+    <meta name="color-scheme" content="dark" />
+    <!-- Antes de dibujar: el fondo y el idioma que la persona eligió (el mismo
+         script de la portada), para que no se vea un instante con el otro -->
+    <script>
+      (function () {
+        var raiz = document.documentElement;
+        var idioma = new URLSearchParams(location.search).get('lang');
+        var fondo;
+        try {
+          fondo = localStorage.getItem('mosca-fondo');
+          if (idioma !== 'es' && idioma !== 'en') idioma = localStorage.getItem('mosca-idioma');
+        } catch (e) {}
+        if (fondo === 'claro') {
+          raiz.setAttribute('data-tema', 'claro');
+          document.querySelector('meta[name="theme-color"]').content = '#ffffff';
+          document.querySelector('meta[name="color-scheme"]').content = 'light';
+        }
+        if (idioma === 'en') {
+          raiz.lang = 'en';
+          raiz.className += ' traduciendo';
+          setTimeout(function () { raiz.classList.remove('traduciendo'); }, 2500);
+        }
+      })();
+    </script>
+    <link rel="icon" href="/favicon.ico?v=4" sizes="32x32" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=4" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="canonical" href="https://mosca.deliverycraft.ai/creditos/" />
+
+    <!-- Vista previa al compartir el enlace -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Mosca del WIP" />
+    <meta property="og:locale" content="es_CL" />
+    <meta property="og:url" content="https://mosca.deliverycraft.ai/creditos/" />
+    <meta property="og:title" content="Créditos y licencias · Mosca del WIP" />
+    <meta property="og:description" content="Quién hizo Mosca del WIP, de dónde salen los datos del cerebro de la mosca y qué puedes hacer con el juego y el informe." />
+    <meta property="og:image" content="https://mosca.deliverycraft.ai/img/vista-previa.jpg?v=3" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- La tipografía vive en el mismo sitio (no se pide a otro servidor) -->
+    <link rel="preload" href="/fonts/mona-sans-latin-wdth.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/src/portada.css" />
+    <link rel="stylesheet" href="/src/creditos.css" />
+    <script type="module" src="/src/creditos.js"></script>
+    <script type="module" src="/src/visitas.js"></script>
+  </head>
+  <body class="portada creditos">
+    <a class="saltar solo-lector" href="#inicio" data-t="saltar">Saltar al contenido</a>
+    <!-- La barra de la portada, en corto: el logo (al inicio), el idioma, el
+         fondo y Jugar. Sin menú de secciones: la página es una sola columna. -->
+    <header class="barra desplazada con-nombre con-jugar" data-barra>
+      <div class="barra-dentro">
+        <a class="logo" href="/" data-inicio aria-label="Mosca del WIP: ir al inicio" data-t-aria="logo">
+          <svg class="marca" viewBox="0 0 32 32" width="34" height="34" aria-hidden="true" focusable="false">
+            <g fill="#fff" stroke="#fff" stroke-width="3" stroke-linejoin="round"><ellipse cx="8.9" cy="20.5" rx="3.3" ry="8.6" transform="rotate(32 8.9 20.5)"/><ellipse cx="23.1" cy="20.5" rx="3.3" ry="8.6" transform="rotate(-32 23.1 20.5)"/><ellipse cx="16" cy="7.8" rx="3.6" ry="3.2"/><circle cx="16" cy="13.4" r="4.4"/><ellipse cx="16" cy="21.9" rx="3.8" ry="6.3"/><ellipse cx="12.3" cy="6.7" rx="3.1" ry="3.8"/><ellipse cx="19.7" cy="6.7" rx="3.1" ry="3.8"/></g>
+            <g fill="#e3eef8" stroke="#5a4c40" stroke-width="1.3"><ellipse cx="8.9" cy="20.5" rx="3.3" ry="8.6" transform="rotate(32 8.9 20.5)"/><ellipse cx="23.1" cy="20.5" rx="3.3" ry="8.6" transform="rotate(-32 23.1 20.5)"/></g>
+            <g fill="#6f6052"><ellipse cx="16" cy="7.8" rx="3.6" ry="3.2"/><circle cx="16" cy="13.4" r="4.4"/><ellipse cx="16" cy="21.9" rx="3.8" ry="6.3"/></g>
+            <g fill="#e8402c"><ellipse cx="12.3" cy="6.7" rx="3.1" ry="3.8"/><ellipse cx="19.7" cy="6.7" rx="3.1" ry="3.8"/></g>
+          </svg>
+          <span class="logo-nombre">Mosca del WIP</span>
+        </a>
+        <div class="creditos-ajustes">
+          <div class="selector" role="group" aria-label="Idioma" data-t-aria="idioma">
+            <button type="button" data-idioma="es" aria-pressed="true" lang="es" aria-label="Español" title="Español">ES</button>
+            <button type="button" data-idioma="en" aria-pressed="false" lang="en" aria-label="English" title="English">EN</button>
+          </div>
+          <div class="selector" role="group" aria-label="Fondo" data-t-aria="fondo">
+            <button type="button" data-fondo="oscuro" aria-pressed="true" aria-label="Fondo negro" title="Fondo negro" data-t-aria="fondoNegro" data-t-title="fondoNegro">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>
+            </button>
+            <button type="button" data-fondo="claro" aria-pressed="false" aria-label="Fondo blanco" title="Fondo blanco" data-t-aria="fondoBlanco" data-t-title="fondoBlanco">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M12 2.5v2.3M12 19.2v2.3M2.5 12h2.3M19.2 12h2.3M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+        <a class="boton principal barra-jugar" href="/jugar/" data-jugar data-t="jugar">Jugar</a>
+      </div>
+    </header>
+
+    <main class="creditos-main" id="inicio" tabindex="-1">
+      <p class="rotulo" data-t="rotulo">Mosca del WIP</p>
+      <h1 data-t="titulo">Créditos y licencias</h1>
+      <p class="intro" data-t="intro">
+        Quién hizo este juego, de dónde salen los datos del cerebro y qué puedes hacer con lo que
+        hay aquí. En palabras simples, sin letra chica.
+      </p>
+
+      <section id="autor">
+        <h2 data-t="autorTitulo">Autor y derechos</h2>
+        <p data-t="autor1">
+          Mosca del WIP lo hizo <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a>
+          en 2026. © 2026 Felipe Fernández. Todos los derechos reservados sobre el juego, el código,
+          las imágenes y los textos, incluidos los dos informes.
+        </p>
+        <p data-t="autor2">
+          Puedes jugar gratis, compartir el enlace y mostrar el juego en tu equipo, en una clase o en
+          una charla. El informe en PDF puedes compartirlo tal cual, citando al autor. Para usar el
+          código, las imágenes o los textos en otra cosa, escríbele a Felipe.
+        </p>
+      </section>
+
+      <section id="cerebro">
+        <h2 data-t="cerebroTitulo">Los datos del cerebro</h2>
+        <p data-t="cerebro1">
+          Las neuronas que se encienden en el juego vienen del
+          <a href="https://male-cns.janelia.org">Male CNS v1.0</a>, el mapa del sistema nervioso
+          central de una mosca macho, neurona por neurona. Sus autores piden este crédito:
+        </p>
+        <blockquote lang="en">
+          “This project is a collaboration between FlyEM (HHMI Janelia), the University of Cambridge
+          (Dept. of Zoology), the MRC Laboratory of Molecular Biology, and Google Research.”
+        </blockquote>
+        <p data-t="cerebro2">
+          Los datos tienen licencia <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>:
+          se pueden usar y adaptar diciendo de dónde vienen. Nosotros los adaptamos: el juego muestra
+          solo una parte de las neuronas, y las luces que ves son una simulación nuestra de cómo
+          responderían, no una grabación de una mosca de verdad.
+        </p>
+      </section>
+
+      <section id="otros">
+        <h2 data-t="otrosTitulo">Programas y letras de otros</h2>
+        <p data-t="otrosIntro">El sitio usa estas cosas hechas por otras personas, cada una con su licencia:</p>
+        <ul>
+          <li data-t="otroThree">
+            <b>Three.js</b> (versión 0.186.1) dibuja la oficina, la mosca y el cerebro en 3D. Licencia
+            <a href="https://github.com/mrdoob/three.js/blob/dev/LICENSE">MIT</a>, © 2010–2026 three.js authors.
+          </li>
+          <li data-t="otroMona">
+            <b>Mona Sans</b> es la letra de la portada y de esta página. La hizo GitHub (© 2022 The Mona
+            Sans Project Authors) y tiene licencia
+            <a href="/fonts/LICENCIA-mona-sans-OFL.txt">SIL Open Font License 1.1</a>.
+          </li>
+          <li data-t="otroVite"><b>Vite</b> arma el sitio para publicarlo. Licencia MIT.</li>
+          <li data-t="otroVercel">
+            <b>Vercel</b> aloja el sitio y cuenta las visitas con su Web Analytics, que solo se carga en
+            el sitio publicado.
+          </li>
+        </ul>
+        <p data-t="otrosNuestro">
+          Todo lo demás es nuestro: la mosca, la oficina, los dibujos, las fotos del juego y los textos.
+        </p>
+      </section>
+
+      <section id="privacidad">
+        <h2 data-t="privacidadTitulo">Privacidad</h2>
+        <p data-t="privacidad1">
+          Sin cookies. Solo contamos las visitas con Vercel Web Analytics, que no usa cookies ni
+          identifica a nadie: sirve para saber cuánta gente entra, nada más.
+        </p>
+        <p data-t="privacidad2">
+          Lo que eliges se queda en tu navegador y no nos llega: los días jugados, el idioma, el fondo
+          y qué paneles dejaste abiertos. Lo borras tú, con "Borrar historial" en el juego o limpiando
+          los datos de este sitio en tu navegador.
+        </p>
+      </section>
+
+      <section id="juego">
+        <h2 data-t="juegoTitulo">Es un juego</h2>
+        <p data-t="juego1">
+          Mosca del WIP es un juego y una simulación. Sus números salen del juego, no de personas ni
+          de equipos reales, y no es asesoría profesional de ningún tipo. Sirve para conversar con tu
+          equipo sobre qué límite probar; lo que decidan es cosa de ustedes.
+        </p>
+      </section>
+
+      <p class="acciones">
+        <a class="boton principal" href="/jugar/" data-jugar data-t="jugar">Jugar</a>
+        <a class="boton" href="/" data-inicio data-t="volver">Volver al inicio</a>
+      </p>
+    </main>
+
+    <footer class="pie">
+      <p data-t="hechoPor">Hecho por <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a> · <a href="https://deliverycraft.ai">deliverycraft.ai</a></p>
+      <p data-t="sinCookies">Sin cookies. Solo contamos visitas, sin identificar a nadie.</p>
+      <p class="pie-derechos" data-t="derechos">© 2026 Felipe Fernández. Todos los derechos reservados. Los datos del cerebro son del Male CNS v1.0, con licencia CC BY 4.0.</p>
+    </footer>
+  </body>
+</html>

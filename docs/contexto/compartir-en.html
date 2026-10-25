@@ -19,6 +19,16 @@
      · en el gráfico de la pág. 7 la columna de los niveles es 8 px más ancha,
        porque "Overwhelmed" es más largo que "Colapsada";
      · el anexo C dice que es la versión en inglés del original en español.
+     v20 (2026-10-25, parte 5.2h, detalles de Felipe): los mismos cambios del
+     español (ver compartir.html: "the two things you meant to finish today",
+     "central nervous system" en la pág. 1 y en el dato de la pág. 10, la foto de
+     la pág. 2 más alta, la tarjeta de Bertolotti sobre equipos, "You may share
+     this report as is, crediting the author." al pie de la página de cierre) y, solo en inglés,
+     palabras más naturales: "disguise" en vez de "costume" (título de la pág. 9 y
+     etiqueta del anexo A), "a computer experiment" (pág. 1), "Each task takes
+     longer the more tasks are open." (pág. 2), "extend her proboscis" y "those
+     who keep smoking" (pág. 9), y la línea "Mosca means fly in Spanish." bajo el
+     título de la portada.
      Si cambia el informe en español, cambiar también este y subir los dos a la
      misma versión. Se arma con: DOC=compartir-en node scripts/documento.mjs.
      En el sitio es public/Mosca-del-WIP-Report.pdf (lo descarga la portada en
@@ -76,7 +86,7 @@
   .adelanto { margin-top: 3mm; }
 
   /* Página 2: la foto y la tabla de reglas */
-  .banda-mundo { height: 31mm; object-fit: cover; object-position: center 30%; } /* v14: 7 mm menos, para que quepan los estudios bajo cada regla */
+  .banda-mundo { height: 56mm; object-fit: cover; object-position: center 47%; } /* v14: 7 mm menos, para que quepan los estudios bajo cada regla */
   .reglas { margin-top: 0; }
   .reglas td { padding: 0.7mm 1.8mm 0.7mm 0; font-size: 8.6pt; line-height: 1.36; }
   .reglas td:last-child { width: 52mm; font-size: 7.9pt; color: var(--suave); line-height: 1.35; }
@@ -184,6 +194,8 @@
   .portada.clara { background: var(--papel); color: var(--tinta); }
   .portada.clara .cabecera { position: absolute; left: 20mm; right: 20mm; top: 24mm; }
   .portada.clara h1 { font-size: 50pt; line-height: 1.1; color: var(--tinta); margin: 0 0 5mm; letter-spacing: -0.015em; }
+  /* v20: una línea chica bajo el título, solo en inglés (pedido de Felipe) */
+  .portada.clara .significa { font-family: var(--sans); font-size: 10.6pt; line-height: 1.5; color: var(--suave); margin: -2.5mm 0 4.5mm; }
   .portada.clara .lema { font-size: 19.5pt; line-height: 1.3; color: var(--teal); max-width: 150mm; margin: 0 0 4mm; }
   .portada.clara .subtitulo { font-family: var(--sans); font-size: 10.6pt; line-height: 1.5; color: var(--suave); max-width: 118mm; margin: 0; }
   .portada.clara .datos { position: absolute; left: 20mm; right: 20mm; bottom: 20mm; border-top-color: var(--linea); color: var(--suave); font-size: 8pt; }
@@ -207,6 +219,8 @@
   /* v18: la dirección del juego publicado, como enlace que se puede tocar en el PDF */
   a.sitio { color: var(--teal); text-decoration: underline; text-decoration-thickness: 0.6pt; text-underline-offset: 0.6mm; }
   .cierre .juega { font-family: var(--serif); font-size: 16pt; line-height: 1.3; color: var(--tinta); font-weight: 700; margin: 0 0 5mm; }
+  /* v20: la última línea del informe, al pie de la página de cierre (pedido de Felipe) */
+  .cierre .comparte { margin-top: 4mm; }
 </style>
 </head>
 <body>
@@ -216,6 +230,7 @@
   <img src="img/portada-torre.svg" alt="Illustration: the fly from the game, wearing a tie and with a drop of sweat, carries on her back a leaning tower of folders that is dropping papers, with a cup of coffee on top; on the floor, a single finished folder with a green check mark" />
   <div class="cabecera">
     <h1>Mosca del WIP</h1>
+    <p class="significa">Mosca means fly in Spanish.</p>
     <p class="lema">Being busy all the time isn’t the same as making progress</p>
     <p class="subtitulo">A game with a real fly that shows why it pays to limit work in progress</p>
   </div>
@@ -229,10 +244,10 @@
 <section class="hoja" data-k="gancho">
   <div class="kicker">Why you’re seeing this</div>
   <h1>Busy all day. So what did you finish?</h1>
-  <p class="bajada">Monday, 9 a.m. Three things left over from yesterday, two emails waiting for an answer, the report, a colleague’s emergency and whatever you meant to finish today. Nine things open. You work nonstop. By 6 you haven’t closed a single one.</p>
+  <p class="bajada">Monday, 9 a.m. Three things left over from yesterday, two emails waiting for an answer, the report, a colleague’s emergency and the two things you meant to finish today. Nine things open. You work nonstop. By 6 you haven’t closed a single one.</p>
   <p>Almost all of us work like this, and it feels productive. But there’s a question few people ask: how many things should you have open at once? The usual answer is “it depends.” This report shows the answer, in one minute and with a fly.</p>
-  <p>Why a fly? Because the fruit fly is one of the few animals whose entire nervous system has been mapped, neuron by neuron: 166,700 of them, in a map published in 2026. So we made a game. We gave her a tie, a task board and an office day that lasts one minute.</p>
-  <div class="recuadro"><span class="etiqueta">What this is</span><p>This report tells what the game shows and how to try it with your team. Underneath there’s an experiment on the computer, with rules based on studies and a real fly brain. It doesn’t measure people or teams, because it’s a single fly and a single day. That’s why every number says where it comes from, whether the game, the simulation or studies. The rules and the success criteria were written before running the simulations, and no number was adjusted afterward.</p></div>
+  <p>Why a fly? Because the fruit fly is one of the few animals whose entire central nervous system has been mapped, neuron by neuron: 166,700 of them, in a map published in 2026. So we made a game. We gave her a tie, a task board and an office day that lasts one minute.</p>
+  <div class="recuadro"><span class="etiqueta">What this is</span><p>This report tells what the game shows and how to try it with your team. Underneath there’s a computer experiment, with rules based on studies and a real fly brain. It doesn’t measure people or teams, because it’s a single fly and a single day. That’s why every number says where it comes from, whether the game, the simulation or studies. The rules and the success criteria were written before running the simulations, and no number was adjusted afterward.</p></div>
   <p class="con-esto"><span class="etiqueta">What you can do with it</span>read it in 10 minutes · play it at <a class="sitio" href="https://mosca.deliverycraft.ai/?lang=en">mosca.deliverycraft.ai</a> · try a limit with your team (page <span data-pag="hacer">11</span>).</p>
   <p style="margin-top:4mm">We put the same fly to work on the same office day twice: once with 2 tasks open at a time and once with 9. We repeated each day 200 times and took the average. With 2 she finished 18 tasks. With 9 she finished half as many, even though she was busy all day, and each task took almost nine times longer. Page <span data-pag="dia">3</span> shows that day from the inside.</p>
   <p class="cierre-pagina"><strong>Being busy all the time isn’t the same as making progress.</strong></p>
@@ -354,7 +369,7 @@
   <div class="estudios visual">
     <div class="estudio"><h3>Italian judges</h3><p>Judges who carried more cases at once, because of the lottery that assigned them, took longer to close them. The quality of their rulings didn’t change.</p><span class="cita">Coviello, Ichino and Persico (2014), <em>American Economic Review</em></span></div>
     <div class="estudio"><h3>Recruiters</h3><p>A bit of parallel work helped them finish more, but past a point they finished less.</p><span class="cita">Aral, Brynjolfsson and Van Alstyne (2012), <em>Information Systems Research</em></span></div>
-    <div class="estudio"><h3>Research teams</h3><p>People on very few teams at once, or on too many, performed worse than those at a middle point.</p><span class="cita">Bertolotti et al. (2015), <em>Research Policy</em></span></div>
+    <div class="estudio"><h3>Research teams</h3><p>Teams whose members were on very few or too many teams at once performed worse than those at a middle point.</p><span class="cita">Bertolotti et al. (2015), <em>Research Policy</em></span></div>
     <div class="estudio"><h3>Large surveys of software teams</h3><p>Limiting work in progress helps teams deliver better, especially together with visible boards and feedback.</p><span class="cita">DORA, “Work in process limits” (dora.dev) · Forsgren, Humble and Kim (2018), <em>Accelerate</em></span></div>
     <div class="estudio ancho"><h3>Real offices</h3><p>At three large companies, researchers tracked 137 people over 3,200 workdays. They switched applications or web pages almost 1,200 times a day and lost almost 4 hours a week getting reoriented, 9% of their time. It measures screen switches, not open tasks.</p><span class="cita">Murty, Dadlani and Das (2022), <em>Harvard Business Review</em>, “How Much Time and Energy Do We Waste Toggling Between Applications?”</span></div>
   </div>
@@ -367,8 +382,8 @@
 
 <!-- =============================== 9 · EL DISFRAZ =============================== -->
 <section class="hoja angosto" data-k="disfraz">
-  <div class="kicker">The costume</div>
-  <h1>The fly doesn’t smoke: the cigarette is a costume for cleaning her antennae</h1>
+  <div class="kicker">The disguise</div>
+  <h1>The fly doesn’t smoke: the cigarette is a disguise for cleaning her antennae</h1>
   <p class="bajada">If you were wondering why a fly smokes, the answer is that she doesn’t, and she doesn’t know what a task is either. So that her brain can feel the load, we translate the office into something she does feel.</p>
   <figure>
     <div class="viaje visual">
@@ -379,13 +394,13 @@
       <div class="paso"><b>Back in the office</b><strong>The cigarette</strong>Cleaning herself is drawn as going out for a smoke. The game decides how many cigarettes she smokes.</div>
       <div class="paso"><b>In the office</b><strong>A break with little stress</strong></div>
       <div class="fl">→</div>
-      <div class="paso mosca"><b>In the fly</b><strong>A taste of sugar</strong>It’s the signal that makes the fly put out her proboscis to eat.</div>
+      <div class="paso mosca"><b>In the fly</b><strong>A taste of sugar</strong>It’s the signal that makes the fly extend her proboscis to eat.</div>
       <div class="fl">→</div>
       <div class="paso"><b>Back in the office</b><strong>The coffee</strong>In the simulation this signal wasn’t enough to move the proboscis, so the coffee is just a drawing.</div>
     </div>
     <figcaption>Only these two stimuli. We never used pain.</figcaption>
   </figure>
-  <p>According to studies with people, smoking doesn’t calm you down. It gives brief relief followed by a rebound, and people who quit smoking have less stress than those who keep going. The game’s coffee shows up only when there isn’t much stress, because caffeine raises the stress hormone, even more so if you’re already tense. What helps is the break, not the caffeine. If coffee is your only break, it’s still a break.</p>
+  <p>According to studies with people, smoking doesn’t calm you down. It gives brief relief followed by a rebound, and people who quit smoking have less stress than those who keep smoking. The game’s coffee shows up only when there isn’t much stress, because caffeine raises the stress hormone, even more so if you’re already tense. What helps is the break, not the caffeine. If coffee is your only break, it’s still a break.</p>
   <p class="cierre-pagina">What’s a cigarette in the game is, in her brain, the order to clean her antennae.</p>
   <div class="sobremesa"><span class="rotulo">Fun fact</span><span>Pooling 22 studies, breaks of 10 minutes or less raised energy and lowered fatigue. Performance barely changed. <span class="de-donde">(Albulescu et al., 2022)</span></span></div>
   <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
@@ -407,7 +422,7 @@
   <p>That’s 166,700 neurons, each in its place and with its connections. Each neuron is simulated as a glass with a small hole, which fills up with signals and slowly empties. When it reaches the mark, it spills into the next ones. That model got 9 out of 10 predictions right in living flies, on another map (Shiu et al., 2024).</p>
   <p>Of the 815 neurons that move the body, with 2 tasks almost none fire in the simulation, and with 9, 65 fire. Even with 10 tasks, less than 1% of her neurons fire. So your nine open things light up something small and precise, the cleaning circuit.</p>
   <p class="cierre-pagina">Making the tasks dust on the antenna was our choice. The brain reacts to that irritation, but it doesn’t prove the game’s lessons. Those you have to test yourself, with your team.</p>
-  <div class="sobremesa"><span class="rotulo">Fun fact</span><span>Your brain has about 86 billion neurons. The fly’s entire nervous system, 166,700. <span class="de-donde">(Azevedo et al., 2009; Berg et al., 2026)</span></span></div>
+  <div class="sobremesa"><span class="rotulo">Fun fact</span><span>Your brain has about 86 billion neurons. The fly’s entire central nervous system, 166,700. <span class="de-donde">(Azevedo et al., 2009; Berg et al., 2026)</span></span></div>
   <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
 </section>
 
@@ -543,6 +558,7 @@
     <p class="grande">A sustainable limit, <span>not one thing at a time.</span></p>
     <p class="juega">Play at <a class="sitio" href="https://mosca.deliverycraft.ai/?lang=en">mosca.deliverycraft.ai</a></p>
     <p class="chico">Near the end of a good day, in the game: two tasks open, the Done column full and the coffee still hot.</p>
+    <p class="chico comparte">You may share this report as is, crediting the author.</p>
   </div>
   <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
 </section>
@@ -587,7 +603,7 @@ document.getElementById('t-reglas').innerHTML = [
   ['Whatever is left half-done takes away a little focus.', 'Leroy (2009)'],
   ['More open tasks, more stress. It rises fast and falls slowly. The game splits it into four levels: Calm (under 25%), Busy, Stressed and Overwhelmed (from 75%).', 'Dickerson and Kemeny (2004)'],
   ['When stressed she goes out to "smoke" (8 minutes without working). Without much stress she has a "coffee," a short break.', 'Parrott (1999) · Taylor et al. (2014) · Albulescu et al. (2022) · Lovallo et al. (2005)'],
-  ['Each task takes longer the more there are open.', 'Little’s law (1961)'],
+  ['Each task takes longer the more tasks are open.', 'Little’s law (1961)'],
 ].map(([r, o]) => `<tr><td>${r}</td><td>${o}</td></tr>`).join('');
 
 // ---------- Página 4: la tabla corta de 1 a 10, cinco columnas; los mismos datos que el anexo B ----------
@@ -699,7 +715,7 @@ document.getElementById('t-real').innerHTML = [
   ['The neurons and their connections', O('Real data'), 'A public scientific map of a male fly’s nervous system. Each dot is where a neuron is, and we simulate the ones whose connections are complete.'],
   ['The lights in the brain', O('Simulation'), 'A simple model calculates how that wiring would respond (each neuron is a glass with a small hole, and some signals take water out instead of pouring it in). It was validated in living flies with another map, and hasn’t been tested on this one. Where it starts lighting up depends on the tuning, not on the fly.'],
   ['"More tasks, more dust on the antenna"', O('Our choice'), 'The translation we chose. The brain reacts to the irritation, not to the tasks.'],
-  ['The cigarette and the coffee', O('Costume') + ' / ' + O('Illustrative'), 'Flies don’t smoke. The cigarette disguises the antenna cleaning, which really does light up, and the coffee is just a drawn break.'],
+  ['The cigarette and the coffee', O('Disguise') + ' / ' + O('Illustrative'), 'Flies don’t smoke. The cigarette disguises the antenna cleaning, which really does light up, and the coffee is just a drawn break.'],
 ].map(([q, e, p]) => `<tr><td>${q}</td><td>${e}</td><td>${p}</td></tr>`).join('');
 
 // ---------- Anexo B: tablas ----------

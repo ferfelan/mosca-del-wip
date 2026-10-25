@@ -18,6 +18,7 @@ export const INGLES = {
   fondoBlanco: 'Light background',
 
   // Presentación y consola
+  significa: 'Mosca means fly in Spanish.', // bajo el título; en español no hay línea
   lema: 'Being busy all the time isn’t the same as making progress.',
   queEs:
     'With too many tasks open, each one takes longer and the work spends more time waiting than moving. In this one-minute game with the brain of a real fly, you set the limit on tasks in progress (WIP) and see how much she finishes, how stressed she gets and how much of each hour really counts. It gets your team talking about which limit to try.',
@@ -81,7 +82,7 @@ export const INGLES = {
     'No. They come from the game, an experiment on a computer with a single fly, and each one is the average of 200 days played. That each task takes longer and fewer get finished is backed by evidence; that stress goes up is our own assumption. The report says where each number comes from.',
   pregunta6: 'Why does the fly smoke?',
   respuesta6:
-    'Flies don’t smoke. The cigarette is a costume for something they really do, cleaning their antennae. The tasks reach her as dust on her antenna, which lights up the cleaning circuit in her brain, and the game draws that as going out for a smoke. The game decides how many cigarettes she smokes. When she’s Calm she never smokes, and each break is 8 minutes without working.',
+    'Flies don’t smoke. The cigarette is a disguise for something they really do, cleaning their antennae. The tasks reach her as dust on her antenna, which lights up the cleaning circuit in her brain, and the game draws that as going out for a smoke. The game decides how many cigarettes she smokes. When she’s Calm she never smokes, and each break is 8 minutes without working.',
   pregunta7: 'Can I play on my phone?',
   respuesta7:
     'Yes. It plays on a computer, phone or tablet. On a phone the office is at the top and the controls at the bottom, with tabs for the brain and the days played. You can also play with the phone turned sideways.',
@@ -102,7 +103,8 @@ export const INGLES = {
   hechoPor:
     'Made by <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a> · <a href="https://deliverycraft.ai">deliverycraft.ai</a>',
   sinCookies: 'No cookies. We only count visits, without identifying anyone.',
-  derechos: '© 2026 Felipe Fernández. All rights reserved. The brain data come from Male CNS v1.0, licensed CC BY 4.0.',
+  derechos:
+    '© 2026 Felipe Fernández. All rights reserved. The brain data come from Male CNS v1.0, licensed CC BY 4.0. <a href="/creditos/?lang=en">Credits and licenses</a>',
 };
 
 // Lo que cambia con la consola, en los dos idiomas. El nivel de estrés llega

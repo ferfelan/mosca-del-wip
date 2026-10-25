@@ -346,6 +346,10 @@ h1 {
   margin: 0 0 30px;
   text-wrap: balance;
 }
+/* Solo en inglés (5.2h): "Mosca means fly in Spanish." bajo el título; en
+   español el párrafo queda vacío y no ocupa lugar */
+.significa { font-size: 15.5px; line-height: 1.3; color: var(--tenue); margin: -6px 0 10px; }
+.significa:empty { display: none; }
 .lema {
   font-size: clamp(22px, 2.2vw, 30px);
   font-weight: 560;
@@ -931,6 +935,7 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .hero { grid-template-columns: 1fr; min-height: 0; }
   .hero-texto { padding: 16px 0 0; }
   h1 { font-size: clamp(50px, 14vw, 76px); margin-bottom: 20px; }
+  .significa { margin: 0 0 10px; }
   .lema { font-size: 23px; max-width: none; }
   .que-es { margin-bottom: 24px; }
   /* En celular, justo después de la presentación, uno bajo el otro: Jugar (el
@@ -1023,6 +1028,7 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .hero { min-height: max(calc(100svh - var(--alto-barra)), 620px); }
   .hero-texto { padding: 40px 0 48px; }
   h1 { font-size: clamp(52px, 6.6vw, 100px); margin-bottom: 22px; }
+  .significa { margin-top: -2px; }
   .que-es { margin-bottom: 28px; }
   .laboratorio { padding: 20px 0 28px; }
   .cerebro { bottom: 120px; }

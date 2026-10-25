@@ -106,6 +106,7 @@ export const PAGINA = {
   'camino de la señal': 'signal path',
   '¿Es real?': 'Is it real?',
   'Datos: Male CNS v1.0 · CC BY 4.0': 'Data: Male CNS v1.0 · CC BY 4.0',
+  'Créditos y licencias': 'Credits and licenses',
   // "¿Es real?"
   Cerrar: 'Close',
   'Las neuronas y sus conexiones son de una mosca real.': 'The neurons and their connections come from a real fly.',
@@ -113,7 +114,7 @@ export const PAGINA = {
     'We turn the tasks into a signal and simulate how her brain responds.',
   'Las zonas muestran por dónde pasa la señal que le damos. Que una zona esté en 0% (por ejemplo, Memoria) no significa que la mosca no la use: la señal no llega ahí.':
     'The zones show where the signal we give her travels. A zone at 0% (Memory, for example) doesn’t mean the fly doesn’t use it: the signal doesn’t reach it.',
-  'Las moscas no fuman: el cigarro es un disfraz.': 'Flies don’t smoke: the cigarette is part of the costume.',
+  'Las moscas no fuman: el cigarro es un disfraz.': 'Flies don’t smoke: the cigarette is a disguise.',
   'Los números de la oficina son del juego. Que cada tarea tarde más y se termine menos tiene respaldo; que suba el estrés es un supuesto nuestro.':
     'The office numbers come from the game. That each task takes longer and fewer get finished is backed by evidence; that stress goes up is our own assumption.',
   'Datos: Male CNS v1.0. Una colaboración entre FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC Laboratory of Molecular Biology y Google Research. Licencia CC BY 4.0 · male-cns.janelia.org':

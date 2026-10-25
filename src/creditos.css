@@ -1,0 +1,84 @@
+/* La página "Créditos y licencias" (/creditos/, parte 5.2h, 2026-10-25).
+   Va después de src/portada.css: usa sus colores, su letra (Mona Sans), su
+   barra, sus botones y su pie, y agrega solo una columna de lectura. */
+
+/* La barra: siempre con fondo (no hay título grande que la pise) */
+body.creditos .barra { position: sticky; }
+.creditos-ajustes { display: flex; gap: 8px; margin-left: auto; }
+
+/* La columna de lectura */
+.creditos-main {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 44px var(--margen) 72px;
+}
+.creditos-main .rotulo {
+  margin: 0 0 14px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--vision);
+}
+.creditos-main h1 {
+  font-size: clamp(38px, 5.4vw, 60px);
+  font-weight: 800;
+  font-stretch: 110%;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin: 0 0 18px;
+  text-wrap: balance;
+}
+.creditos-main .intro {
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--suave);
+  max-width: 50ch;
+  margin: 0;
+  text-wrap: pretty;
+}
+.creditos-main section { padding-top: 40px; }
+.creditos-main h2 {
+  font-size: 24px;
+  font-weight: 720;
+  font-stretch: 105%;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  margin: 0 0 12px;
+  max-width: none;
+}
+.creditos-main p,
+.creditos-main li { color: var(--suave); max-width: 62ch; text-wrap: pretty; }
+.creditos-main p + p,
+.creditos-main ul + p { margin-top: 12px; }
+.creditos-main b { color: var(--tinta); font-weight: 650; }
+.creditos-main ul { margin: 0; padding-left: 22px; }
+.creditos-main li + li { margin-top: 10px; }
+.creditos-main li::marker { color: var(--tenue); }
+.creditos-main blockquote {
+  margin: 14px 0;
+  padding: 14px 20px;
+  border-left: 3px solid var(--vision);
+  border-radius: 0 12px 12px 0;
+  background: var(--vidrio);
+  color: var(--tinta);
+  font-size: 17px;
+  line-height: 1.55;
+  max-width: 62ch;
+}
+.creditos-main .acciones { margin-top: 48px; }
+
+@media (max-width: 899px) {
+  .creditos-main { padding: 28px var(--margen) 56px; }
+  .creditos-main .intro { font-size: 18px; }
+  .creditos-main section { padding-top: 32px; }
+  .creditos-main h2 { font-size: 22px; }
+  .creditos-main .acciones { display: grid; gap: 12px; margin-top: 40px; }
+  .creditos-main .acciones .boton { width: 100%; max-width: 440px; }
+}
+/* En celular la barra lleva solo la mosca y los dos selectores: Jugar y Volver
+   están al final de la página */
+@media (max-width: 599px) {
+  body.creditos .logo-nombre { display: none; }
+  body.creditos .barra .boton.barra-jugar { display: none; }
+}

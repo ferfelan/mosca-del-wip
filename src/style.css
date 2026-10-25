@@ -1126,6 +1126,23 @@ body.dia-terminado:not(.exhibicion):not(.controles-oculto) .cifra {
   line-height: 1.4;
   color: var(--oscuro-tenue);
 }
+/* Desde la 5.2h el crédito es un enlace a la página "Créditos y licencias"
+   (/creditos/): mismo color y tamaño, con una línea fina debajo */
+a.cerebro-credito {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  text-decoration-color: rgba(168, 154, 134, 0.45);
+  border-radius: 3px;
+}
+a.cerebro-credito:hover {
+  color: var(--oscuro-suave);
+  text-decoration-color: currentColor;
+}
+a.cerebro-credito:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(143, 176, 255, 0.45);
+}
 
 /* ---------- Sobre el dibujo: botones Detener/Girar y Centrar ---------- */
 .cerebro-lienzo canvas {

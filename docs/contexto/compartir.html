@@ -102,6 +102,15 @@
      v17 (2026-10-24, mismo día): en la pág. 8, la tarjeta de DORA pierde la frase
      "Su ideal es una cosa a la vez, como un norte." (ya está en el dato freak de
      la pág. 6). Pedido de Felipe. Nada más cambia.
+     v20 (2026-10-25, parte 5.2h, detalles de Felipe; ningún número ni regla
+     cambia): pág. 1, "las dos cosas que ibas a terminar hoy" (la lista del lunes
+     suma 8 y las "nueve cosas abiertas" necesitaban las dos de hoy) y "sistema
+     nervioso central"; pág. 2, la foto más alta (56 mm, centrada al 47 %) para
+     que se vean la mosca y el tablero; pág. 8, la tarjeta de Bertolotti habla de
+     equipos, no de personas (el estudio mide equipos); pág. 10, el dato freak
+     dice "sistema nervioso central"; al pie de la página de cierre, "Puedes
+     compartir este informe tal cual, citando al autor." (en el anexo C no cabía:
+     se desbordaba 9 px). Mismos cambios en el inglés (compartir-en.html, v20).
      Se arma con: DOC=compartir node scripts/documento.mjs; se revisa con:
      node scripts/revisar-paginas.mjs compartir. Los números de las tablas y
      los gráficos están al final y salen de la 4.1 y la 4.2
@@ -161,7 +170,7 @@
   .adelanto { margin-top: 3mm; }
 
   /* Página 2: la foto y la tabla de reglas */
-  .banda-mundo { height: 31mm; object-fit: cover; object-position: center 30%; } /* v14: 7 mm menos, para que quepan los estudios bajo cada regla */
+  .banda-mundo { height: 56mm; object-fit: cover; object-position: center 47%; } /* v14: 7 mm menos, para que quepan los estudios bajo cada regla */
   .reglas { margin-top: 0; }
   .reglas td { padding: 0.7mm 1.8mm 0.7mm 0; font-size: 8.6pt; line-height: 1.36; }
   .reglas td:last-child { width: 52mm; font-size: 7.9pt; color: var(--suave); line-height: 1.35; }
@@ -292,6 +301,8 @@
   /* v18: la dirección del juego publicado, como enlace que se puede tocar en el PDF */
   a.sitio { color: var(--teal); text-decoration: underline; text-decoration-thickness: 0.6pt; text-underline-offset: 0.6mm; }
   .cierre .juega { font-family: var(--serif); font-size: 16pt; line-height: 1.3; color: var(--tinta); font-weight: 700; margin: 0 0 5mm; }
+  /* v20: la última línea del informe, al pie de la página de cierre (pedido de Felipe) */
+  .cierre .comparte { margin-top: 4mm; }
 </style>
 </head>
 <body>
@@ -314,9 +325,9 @@
 <section class="hoja" data-k="gancho">
   <div class="kicker">Por qué estás viendo esto</div>
   <h1>Ocupado todo el día. ¿Y qué terminaste?</h1>
-  <p class="bajada">Lunes, 9 de la mañana. Tres pendientes de ayer, dos correos que esperan respuesta, el reporte, una urgencia de un colega y lo que ibas a terminar hoy. Nueve cosas abiertas. Trabajas sin parar. A las 6 no cerraste ninguna.</p>
+  <p class="bajada">Lunes, 9 de la mañana. Tres pendientes de ayer, dos correos que esperan respuesta, el reporte, una urgencia de un colega y las dos cosas que ibas a terminar hoy. Nueve cosas abiertas. Trabajas sin parar. A las 6 no cerraste ninguna.</p>
   <p>Casi todos trabajamos así, y se siente productivo. Pero hay una pregunta que pocos se hacen: ¿cuántas cosas a la vez conviene tener abiertas? La respuesta de siempre es “depende”. Este informe la muestra, en un minuto y con una mosca.</p>
-  <p>¿Por qué una mosca? Porque la mosca de la fruta es uno de los pocos animales con el mapa completo de su sistema nervioso, neurona por neurona: 166.700, publicado en 2026. Así que hicimos un juego: le pusimos una corbata, un tablero de tareas y un día de oficina que dura un minuto.</p>
+  <p>¿Por qué una mosca? Porque la mosca de la fruta es uno de los pocos animales con el mapa completo de su sistema nervioso central, neurona por neurona: 166.700, publicado en 2026. Así que hicimos un juego: le pusimos una corbata, un tablero de tareas y un día de oficina que dura un minuto.</p>
   <div class="recuadro"><span class="etiqueta">Qué es</span><p>Este informe cuenta lo que el juego muestra y cómo probarlo con tu equipo. Por dentro hay un experimento en el computador, con reglas basadas en estudios y un cerebro de mosca real. No mide personas ni equipos, porque es una mosca sola y un solo día. Por eso cada número dice de dónde sale, si del juego, de la simulación o de estudios. Las reglas y los criterios de éxito se escribieron antes de correr las simulaciones, y ningún número se ajustó después.</p></div>
   <p class="con-esto"><span class="etiqueta">Qué puedes hacer con esto</span>leerlo en 10 minutos · jugarlo en <a class="sitio" href="https://mosca.deliverycraft.ai/">mosca.deliverycraft.ai</a> · probar un límite con tu equipo (página <span data-pag="hacer">11</span>).</p>
   <p style="margin-top:4mm">Pusimos a la misma mosca a trabajar el mismo día de oficina dos veces: una con 2 tareas abiertas a la vez y otra con 9. Repetimos cada día 200 veces y sacamos el promedio. Con 2 terminó 18 tareas. Con 9 terminó la mitad, aunque estuvo ocupada todo el día, y cada tarea tardó casi nueve veces más. La página <span data-pag="dia">3</span> muestra ese día por dentro.</p>
@@ -439,7 +450,7 @@
   <div class="estudios visual">
     <div class="estudio"><h3>Jueces italianos</h3><p>Los jueces que llevaban más juicios a la vez, por el sorteo de las causas, tardaron más en cerrarlos. La calidad de sus fallos no cambió.</p><span class="cita">Coviello, Ichino y Persico (2014), <em>American Economic Review</em></span></div>
     <div class="estudio"><h3>Reclutadores</h3><p>Un poco de trabajo en paralelo ayudó a terminar más, pero pasado un punto terminaron menos.</p><span class="cita">Aral, Brynjolfsson y Van Alstyne (2012), <em>Information Systems Research</em></span></div>
-    <div class="estudio"><h3>Equipos de investigación</h3><p>Quienes estaban en muy pocos equipos a la vez, o en demasiados, rindieron menos que los de un punto intermedio.</p><span class="cita">Bertolotti y otros (2015), <em>Research Policy</em></span></div>
+    <div class="estudio"><h3>Equipos de investigación</h3><p>Los equipos cuyos miembros estaban en muy pocos o en demasiados equipos a la vez rindieron menos que los de un punto intermedio.</p><span class="cita">Bertolotti y otros (2015), <em>Research Policy</em></span></div>
     <div class="estudio"><h3>Encuestas grandes a equipos de software</h3><p>Limitar el trabajo en curso ayuda a entregar mejor, sobre todo junto a tableros visibles y retroalimentación.</p><span class="cita">DORA, “Work in process limits” (dora.dev) · Forsgren, Humble y Kim (2018), <em>Accelerate</em></span></div>
     <div class="estudio ancho"><h3>Oficinas reales</h3><p>En tres grandes empresas midieron a 137 personas durante 3.200 días de trabajo. Cambiaban de aplicación o de página web casi 1.200 veces al día y perdían casi 4 horas a la semana en volver a ubicarse, un 9 % de su tiempo. Mide cambios de pantalla, no tareas abiertas.</p><span class="cita">Murty, Dadlani y Das (2022), <em>Harvard Business Review</em>, “How Much Time and Energy Do We Waste Toggling Between Applications?”</span></div>
   </div>
@@ -492,7 +503,7 @@
   <p>Son 166.700 neuronas, cada una en su lugar y con sus conexiones. Cada neurona se simula como un vaso con un agujerito, que se llena con las señales y se vacía despacio. Cuando llega a la marca, se vuelca sobre las siguientes. Ese modelo acertó 9 de cada 10 predicciones en moscas vivas, en otro mapa (Shiu y otros, 2024).</p>
   <p>De las 815 neuronas que mueven el cuerpo, con 2 tareas casi ninguna se enciende en la simulación, y con 9 se encienden 65. Incluso con 10 tareas se enciende menos del 1 % de sus neuronas. O sea que tus nueve pendientes encienden algo poco y preciso, el circuito de limpiarse.</p>
   <p class="cierre-pagina">Que las tareas sean polvo en la antena lo elegimos nosotros. El cerebro reacciona a esa molestia, pero no prueba las lecciones del juego. Esas las tienes que probar tú, con tu equipo.</p>
-  <div class="sobremesa"><span class="rotulo">Dato freak</span><span>Tu cerebro tiene unos 86 mil millones de neuronas. Todo el sistema nervioso de la mosca, 166.700. <span class="de-donde">(Azevedo y otros, 2009; Berg y otros, 2026)</span></span></div>
+  <div class="sobremesa"><span class="rotulo">Dato freak</span><span>Tu cerebro tiene unos 86 mil millones de neuronas. Todo el sistema nervioso central de la mosca, 166.700. <span class="de-donde">(Azevedo y otros, 2009; Berg y otros, 2026)</span></span></div>
   <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
 </section>
 
@@ -628,6 +639,7 @@
     <p class="grande">Un límite sostenible, <span>no una cosa a la vez.</span></p>
     <p class="juega">Juega en <a class="sitio" href="https://mosca.deliverycraft.ai/">mosca.deliverycraft.ai</a></p>
     <p class="chico">Cerca del fin de un buen día, en el juego: dos tareas abiertas, la columna Hecho llena y el café todavía caliente.</p>
+    <p class="chico comparte">Puedes compartir este informe tal cual, citando al autor.</p>
   </div>
   <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
 </section>

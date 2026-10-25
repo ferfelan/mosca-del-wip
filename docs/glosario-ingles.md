@@ -141,7 +141,7 @@ el juego digan lo mismo. Si quieres cambiar una palabra:
 | sale a fumar · toma café (al pasar el mouse) | out for a smoke · having coffee |
 | encendida · camino de la señal | firing · signal path |
 | ¿Es real? | Is it real? |
-| Las moscas no fuman: el cigarro es un disfraz. | Flies don't smoke: the cigarette is part of the costume. |
+| Las moscas no fuman: el cigarro es un disfraz. | Flies don't smoke: the cigarette is a disguise. |
 | Datos: Male CNS v1.0 | Data: Male CNS v1.0 |
 
 **Tarjetita de una neurona** (al pasar el mouse por el cerebro):
@@ -207,7 +207,7 @@ inglés cambia con él (los dos con la misma versión).
 | eficiencia de recursos · eficiencia de flujo | resource efficiency · flow efficiency |
 | trabajo en curso crítico | critical WIP |
 | Regla nuestra · Inspirado en | Our rule · Inspired by |
-| Matemática · Teoría · Simulación · Según estudios · Supuesto nuestro · Dato real · Decisión nuestra · Disfraz · Ilustrativo | Math · Theory · Simulation · From studies · Our assumption · Real data · Our choice · Costume · Illustrative |
+| Matemática · Teoría · Simulación · Según estudios · Supuesto nuestro · Dato real · Decisión nuestra · Disfraz · Ilustrativo | Math · Theory · Simulation · From studies · Our assumption · Real data · Our choice · Disguise · Illustrative |
 | Para seguir leyendo · Anexos | Further reading · Appendices |
 | la ley de Little | Little's law |
 
