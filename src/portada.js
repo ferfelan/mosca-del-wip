@@ -9,6 +9,7 @@
 // 4. Arriba a la derecha: idioma (español o inglés) y fondo (negro o blanco).
 //    Los dos se recuerdan en este navegador; el script corto del <head> los
 //    aplica antes de dibujar. Al llegar, siempre en español y fondo negro.
+// 5. El informe en PDF: en iPhone y iPad el botón lo abre en vez de bajarlo.
 // Con "reducir movimiento" el cerebro no gira, la consola no sube sola, el
 // clip queda con sus controles y los cambios de idioma y fondo no se funden.
 import { leerIdioma, marcarIdioma, elegirIdioma, rutaEnIdioma, formatoNumero } from './idioma.js';
@@ -181,6 +182,19 @@ for (const boton of botonesFondo) {
 ponerFondo(document.documentElement.dataset.tema === 'claro' ? 'claro' : 'oscuro');
 ponerIdioma(idioma, true);
 
+// ---------- El informe en PDF ----------
+// En el computador y en Android el botón lo descarga. En iPhone y iPad (todos
+// sus navegadores usan el motor de Safari) descargar un PDF falla: Safari
+// pregunta "Ver o Descargar" y lo deja escondido en la app Archivos, y en el
+// navegador de otras apps (LinkedIn, Instagram, Gmail) a veces no pasa nada.
+// Ahí el botón abre el informe, que se lee al tiro y se guarda con "Compartir".
+// (El iPad se presenta como Mac: se lo reconoce porque tiene pantalla táctil.)
+const enIPhoneOIPad =
+  /iP(hone|ad|od)/.test(navigator.userAgent) || (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
+if (enIPhoneOIPad) {
+  for (const enlace of document.querySelectorAll('a[download]')) enlace.removeAttribute('download');
+}
+
 // Al entrar, una sola vez: sube de 2 a 9 tareas para mostrar qué pasa
 function subidaSola() {
   if (quieto.matches || tocado) return;
@@ -197,7 +211,10 @@ function subidaSola() {
 function hayWebGL() {
   try {
     const c = document.createElement('canvas');
-    return Boolean(c.getContext('webgl2') || c.getContext('webgl'));
+    const gl = c.getContext('webgl2') || c.getContext('webgl');
+    // La prueba se suelta al tiro: los celulares admiten pocos lienzos 3D a la vez
+    gl?.getExtension('WEBGL_lose_context')?.loseContext();
+    return Boolean(gl);
   } catch {
     return false;
   }
@@ -270,6 +287,9 @@ new IntersectionObserver(([e]) => {
 document.addEventListener('visibilitychange', () => {
   if (!document.hidden) despertar(400);
 });
+// Al girar el celular o cambiar el tamaño de la ventana, el cerebro se dibuja
+// de nuevo a su tamaño (con "reducir movimiento" no se dibuja solo)
+addEventListener('resize', () => despertar(400));
 
 // Después de dibujar la página: así el texto y los botones salen primero
 const despues = window.requestIdleCallback || ((fn) => setTimeout(fn, 200));
@@ -289,8 +309,9 @@ if (video) {
     if (enIngles()) return grande.matches && d.srcGrandeEn ? d.srcGrandeEn : d.srcEn;
     return grande.matches && d.srcGrande ? d.srcGrande : d.src;
   };
-  const posterEspanol = video.getAttribute('poster');
-  const ponerPoster = () => video.setAttribute('poster', enIngles() && d.posterEn ? d.posterEn : posterEspanol);
+  // La imagen del clip (data-poster) se pone desde aquí y no en el HTML: así,
+  // en inglés no se baja también la de español
+  const ponerPoster = () => video.setAttribute('poster', enIngles() && d.posterEn ? d.posterEn : d.poster);
   ponerPoster();
   const cargar = () => {
     if (video.getAttribute('src')) return;

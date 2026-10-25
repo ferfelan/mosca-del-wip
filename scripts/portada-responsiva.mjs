@@ -16,7 +16,9 @@
 // textos, separados por coma (por ejemplo: computador-9,1024x768); "todos"
 // revisa todos. "combinaciones" elige fondo e idioma (por omisión
 // oscuro-es,claro-es,oscuro-en,claro-en).
-import { chromium } from 'playwright';
+// Con NAVEGADOR=webkit revisa con el motor de Safari, el que usan todos los
+// navegadores del iPhone (la primera vez: npx playwright install webkit).
+import { chromium, webkit } from 'playwright';
 import { mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -145,7 +147,10 @@ const SOLO = process.argv[4] && process.argv[4] !== 'todos' ? process.argv[4].sp
 const COMBINACIONES = (process.argv[5] || 'oscuro-es,claro-es,oscuro-en,claro-en').split(',').map((c) => c.split('-'));
 const REVISAR = SOLO ? TAMANOS.filter(([nombre]) => SOLO.some((s) => nombre.includes(s))) : TAMANOS;
 
-const navegador = await chromium.launch({ args: ['--enable-unsafe-swiftshader', '--use-gl=angle', '--ignore-gpu-blocklist'] });
+const navegador =
+  process.env.NAVEGADOR === 'webkit'
+    ? await webkit.launch()
+    : await chromium.launch({ args: ['--enable-unsafe-swiftshader', '--use-gl=angle', '--ignore-gpu-blocklist'] });
 let total = 0;
 for (const [fondo, idioma] of COMBINACIONES) for (const [nombreTamano, ancho, alto, tactil] of REVISAR) {
   const nombre = `${fondo}-${idioma}-${nombreTamano}`;
