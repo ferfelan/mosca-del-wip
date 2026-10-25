@@ -820,6 +820,8 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 }
 .pie p { margin: 0; }
 .pie a { color: var(--suave); }
+/* Derechos: una línea propia abajo, más chica */
+.pie .pie-derechos { flex-basis: 100%; font-size: 13px; }
 
 /* ---------- La barra bajo 1100 px: el logo, Jugar y el botón del menú ----------
    El menú baja de la barra: en celular a todo el ancho, en tablets como una

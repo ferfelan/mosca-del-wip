@@ -77,9 +77,11 @@ el juego digan lo mismo. Si quieres cambiar una palabra:
 | Mosca del WIP: ir al inicio (el logo, para lectores de pantalla) | Mosca del WIP: go to the top |
 | Menú | Menu |
 | Secciones de la página | Page sections |
-| El juego · El cerebro · El informe · Preguntas | The game · The brain · The report · FAQ |
+| El juego · El cerebro · El informe · Preguntas frecuentes (desde el 2026-10-25; antes "Preguntas") | The game · The brain · The report · FAQ |
 | Preguntas frecuentes | Frequently asked questions |
-| Gratis y sin registro. Se juega en el computador, el celular o la tablet. | Free, no sign-up. Plays on a computer, phone or tablet. (en inglés se agrega: The report is in Spanish.) |
+| Gratis y sin registro. Se juega en el computador, el celular o la tablet. | Free, no sign-up. Plays on a computer, phone or tablet. (Desde el 2026-10-25 el informe también está en inglés: ya no se dice "The report is in Spanish.") |
+| el límite de tareas en curso (WIP) · cuánto rinde (presentación de la portada, 2026-10-25) | the limit on tasks in progress (WIP) · how much of each hour really counts |
+| © 2026 Felipe Fernández. Todos los derechos reservados. Los datos del cerebro son del Male CNS v1.0, con licencia CC BY 4.0. (pie, 2026-10-25) | © 2026 Felipe Fernández. All rights reserved. The brain data come from Male CNS v1.0, licensed CC BY 4.0. |
 | Que cada tarea tarde más y se termine menos tiene respaldo; que suba el estrés es un supuesto nuestro. | That each task takes longer and fewer get finished is backed by evidence; that stress goes up is our own assumption. |
 
 ## 2. En la pantalla del juego
@@ -89,6 +91,11 @@ el juego digan lo mismo. Si quieres cambiar una palabra:
 | Día de oficina · 09:00 a 18:00 | Office day · 09:00 to 18:00 |
 | Hora | Time |
 | Pausa / Reanudar | Pause / Resume |
+| Empezar (el día parte detenido hasta apretarlo; 2026-10-25) | Start |
+| Un día de oficina en un minuto (la tarjeta de Empezar) | An office day in one minute |
+| Elige cuántas tareas tiene la mosca a la vez y aprieta Empezar. | Choose how many tasks the fly has at once, then press Start. |
+| Por empezar (aviso de arriba en la Exhibición) | Not started |
+| Lista para empezar (estado de la mosca antes de Empezar) | Ready to start |
 | Velocidad | Speed |
 | Reiniciar día | Restart day |
 | Terminadas | Finished |
@@ -180,7 +187,31 @@ En inglés, "IN PROGRESS" es más largo que "EN CURSO": en el kanban ese título
 se achica un poco solo cuando no deja espacio para el número. En español
 todo queda del mismo tamaño que antes.
 
-## 4. Lo que queda en español a propósito
+## 4. El informe para compartir en inglés (2026-10-25)
+
+Con la portada en inglés, los botones del informe descargan su traducción:
+`public/Mosca-del-WIP-Report.pdf` (se guarda como "Mosca del WIP - Report.pdf"),
+armada desde `docs/contexto/compartir-en.html` con las fotos del juego en
+inglés (`docs/contexto/img-en/`). Es el mismo informe que el v19 en español:
+las mismas hojas, números y fuentes. Si el informe en español cambia, el de
+inglés cambia con él (los dos con la misma versión).
+
+| Español | Inglés |
+|---|---|
+| Para compartir (el informe) | Report |
+| Estar siempre ocupado no es lo mismo que avanzar | Being busy all the time isn't the same as making progress |
+| Un límite sostenible, no una cosa a la vez | A sustainable limit, not one thing at a time |
+| Dato freak | Fun fact |
+| y otros (en las citas) | et al. |
+| la que más termina · sobrecarga | finishes the most · overload |
+| eficiencia de recursos · eficiencia de flujo | resource efficiency · flow efficiency |
+| trabajo en curso crítico | critical WIP |
+| Regla nuestra · Inspirado en | Our rule · Inspired by |
+| Matemática · Teoría · Simulación · Según estudios · Supuesto nuestro · Dato real · Decisión nuestra · Disfraz · Ilustrativo | Math · Theory · Simulation · From studies · Our assumption · Real data · Our choice · Costume · Illustrative |
+| Para seguir leyendo · Anexos | Further reading · Appendices |
+| la ley de Little | Little's law |
+
+## 5. Lo que queda en español a propósito
 
 - **"Mosca del WIP"**: es el nombre del juego.
 - **El botón "ES"** se anuncia como "Español" (y "EN" como "English"): cada
@@ -188,7 +219,7 @@ todo queda del mismo tamaño que antes.
 - **Un aviso interno** ("No se pudo cargar el cerebro") que solo se ve en la
   consola del navegador si algo falla; el jugador no lo ve.
 
-## 5. Para revisar
+## 6. Para revisar
 
 Con el juego encendido (`npm run dev`):
 

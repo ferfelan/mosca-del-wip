@@ -23,6 +23,13 @@
         { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" },
         { "key": "Content-Disposition", "value": "inline; filename=\"Mosca del WIP - Informe.pdf\"" }
       ]
+    },
+    {
+      "source": "/Mosca-del-WIP-Report.pdf",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" },
+        { "key": "Content-Disposition", "value": "inline; filename=\"Mosca del WIP - Report.pdf\"" }
+      ]
     }
   ]
 }

@@ -204,6 +204,35 @@ const LETRA_CHICA = () => {
   return chicas;
 };
 
+// Antes de empezar (desde el 2026-10-25): el reloj no corre hasta tocar
+// Empezar; la tarjeta se ve entera sobre la oficina, sin chocar con lo de
+// arriba ni con la hoja, se toca con el dedo y hace partir el día
+async function probarEmpezar(p, etiqueta, nombre) {
+  await p.waitForTimeout(1200);
+  const antes = await p.evaluate(() => ({ hora: window.__mosca.estado().hora, empezado: window.__mosca.empezado() }));
+  revisar(antes.hora === '09:00' && !antes.empezado, etiqueta(`al entrar el reloj espera a Empezar (${antes.hora})`));
+  const tarjeta = await caja(p, '#aviso-empezar');
+  const vista = await p.evaluate(() => ({ ancho: innerWidth, alto: innerHeight }));
+  revisar(
+    tarjeta.visible && tarjeta.x >= 0 && tarjeta.derecha <= vista.ancho && tarjeta.y >= 0 && tarjeta.abajo <= vista.alto,
+    etiqueta('la tarjeta de Empezar se ve entera')
+  );
+  const choques = [];
+  for (const s of ['#cel-volver', '#cel-controles', '#ex-mosca', '#panel', '#cel-pestanas']) if (chocan(tarjeta, await caja(p, s))) choques.push(s);
+  revisar(!choques.length, etiqueta(`la tarjeta de Empezar no choca con nada${choques.length ? ` (choca con ${choques.join(', ')})` : ''}`));
+  const z = await p.evaluate(ZONA_TOQUE, '#btn-empezar');
+  revisar(z && !z.tapado && z.ancho >= 44 && z.alto >= 44, etiqueta(`zona de toque de #btn-empezar: ${z ? `${z.ancho}×${z.alto}` : 'no está'}${z?.tapado ? ' (tapado)' : ''}`));
+  await p.screenshot({ path: `${CAPTURAS}/${nombre}-0-empezar.png` });
+  await tocar(p, '#btn-empezar');
+  await p.waitForTimeout(1200);
+  const despues = await p.evaluate(() => ({
+    hora: window.__mosca.estado().hora,
+    corre: window.__mosca.empezado() && !window.__mosca.pausado(),
+    tarjeta: document.getElementById('aviso-empezar').hidden,
+  }));
+  revisar(despues.corre && despues.tarjeta && despues.hora !== '09:00', etiqueta(`Empezar hace correr el reloj y saca la tarjeta (${despues.hora})`));
+}
+
 // ---------- Un teléfono vertical ----------
 async function probarVertical(nombre, navegador) {
   const contexto = await navegador.newContext({ ...TELEFONOS[nombre], locale: 'es-CL' });
@@ -214,6 +243,7 @@ async function probarVertical(nombre, navegador) {
   const info = await p.evaluate(() => ({ ...window.__mosca.celular(), clase: document.documentElement.className }));
   revisar(info.activo && /celular/.test(info.clase), etiqueta('se enciende el modo celular'));
   revisar(info.ratio <= 1.5, etiqueta(`la oficina se dibuja a lo más a 1,5× (${info.ratio})`));
+  await probarEmpezar(p, etiqueta, nombre);
 
   // Un momento del día con números de verdad (WIP 3, a media mañana)
   await p.evaluate(() => {
@@ -478,6 +508,7 @@ async function probarGirado(nombre, navegador) {
   const contexto = await navegador.newContext({ ...TELEFONOS[nombre], locale: 'es-CL' });
   const { p, errores } = await abrir(contexto);
   const etiqueta = (t) => `${nombre}: ${t}`;
+  await probarEmpezar(p, etiqueta, nombre);
   await p.evaluate(() => {
     window.__mosca.setWip(9);
     window.__mosca.adelantar(300);
@@ -548,6 +579,7 @@ async function probarGirado(nombre, navegador) {
 async function probarCambios(navegador) {
   const contexto = await navegador.newContext({ ...TELEFONOS.iphone14, locale: 'es-CL' });
   const { p, errores } = await abrir(contexto);
+  await p.evaluate(() => window.__mosca.empezar()); // el juego parte detenido hasta apretar Empezar
   await p.evaluate(() => window.__mosca.adelantar(120));
   const lugares = () =>
     p.evaluate(() => ({

@@ -1044,6 +1044,50 @@ html.celular .banner-texto {
   display: none;
 }
 
+/* Antes de empezar: la tarjeta de Empezar sobre la oficina */
+html.celular #aviso-empezar {
+  grid-area: vista;
+  align-self: end;
+  justify-self: center;
+  position: relative;
+  top: auto;
+  left: auto;
+  z-index: 4;
+  width: auto;
+  max-width: min(340px, calc(100% - 2 * var(--cel-margen)));
+  margin: 0 0 calc(var(--cel-solape) + 12px);
+  padding: 14px 16px;
+  border-radius: 16px;
+  transform: none;
+  gap: 8px;
+}
+
+html.celular:not([data-cel-vista='oficina']) #aviso-empezar {
+  display: none;
+}
+
+/* Antes de empezar, el estado de la mosca no tiene nada que contar: se
+   esconde y le deja lugar a la tarjeta */
+html.celular.por-empezar #ex-mosca {
+  visibility: hidden;
+}
+
+/* Si la tarjeta no cabe entera entre los botones de arriba y la hoja, primero
+   pierde el título y después el texto (src/main.js, ajustarAvisoEmpezar) */
+html.celular #aviso-empezar.sin-titulo strong,
+html.celular #aviso-empezar.solo-boton strong,
+html.celular #aviso-empezar.solo-boton p {
+  display: none;
+}
+
+html.celular #aviso-empezar.solo-boton {
+  padding: 8px;
+}
+
+html.celular #aviso-empezar.solo-boton #btn-empezar {
+  margin-top: 0;
+}
+
 html.celular .cel-banner-botones {
   display: flex !important;
   gap: 8px;

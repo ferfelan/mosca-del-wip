@@ -5,7 +5,9 @@
 //   - ningún texto quede encima de otro ni cortado en el borde,
 //   - ninguna letra baje de 12 px,
 //   - en pantallas táctiles los botones y el control midan 44 px de alto,
-//   - en celular vertical el botón Jugar quede en la primera pantalla,
+//   - en celular vertical haya un Jugar en la primera pantalla: el grande
+//     entero o, si no cabe (desde la 5.2g, por ejemplo en 320×568), el de la
+//     barra,
 //   - el cerebro se encienda y no haya errores,
 //   - en inglés no quede ningún texto en español (salvo nombres propios),
 //   - las respuestas de las preguntas frecuentes (se revisan abiertas) y,
@@ -125,7 +127,8 @@ function medir({ tactil, celularVertical, idioma, raiz }) {
   if (celularVertical && !raiz) {
     const boton = [...document.querySelectorAll('.hero .boton.principal')].find(seVe);
     const abajo = boton ? boton.getBoundingClientRect().bottom + window.scrollY : Infinity;
-    if (abajo > window.innerHeight) problemas.push(`el botón Jugar queda bajo la primera pantalla (${Math.round(abajo)} px de ${window.innerHeight})`);
+    const enBarra = document.querySelector('.barra-jugar');
+    if (abajo > window.innerHeight && !(enBarra && seVe(enBarra))) problemas.push(`el botón Jugar queda bajo la primera pantalla (${Math.round(abajo)} px de ${window.innerHeight}) y la barra no muestra el suyo`);
   }
   if (!raiz && !document.querySelector('.cerebro.vivo')) problemas.push('el cerebro no se encendió (queda la foto fija)');
   if (document.documentElement.lang !== idioma) problemas.push(`la página dice lang="${document.documentElement.lang}" y debía ser ${idioma}`);

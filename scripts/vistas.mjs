@@ -9,6 +9,7 @@ p.on('console', (m) => { if (['error', 'warning'].includes(m.type()) && !m.text(
 const abrir = async () => {
   await p.goto('http://localhost:5173/jugar/', { waitUntil: 'networkidle' });
   await p.waitForFunction(() => window.__mosca && window.__mosca.cerebro());
+  await p.evaluate(() => window.__mosca.empezar()); // el juego parte detenido hasta apretar Empezar
 };
 await abrir();
 await p.evaluate(() => { localStorage.removeItem('mosca-del-wip-cerebro-oculto'); localStorage.removeItem('mosca-del-wip-controles-oculto'); });

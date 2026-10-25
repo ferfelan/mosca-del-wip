@@ -6,7 +6,7 @@ const p = await b.newPage({ viewport: { width: 800, height: 500 } });
 await p.goto('http://localhost:5173/jugar/', { waitUntil: 'networkidle' });
 await p.waitForFunction(() => window.__mosca);
 const r = await p.evaluate(() => {
-  const m = window.__mosca; m.pausar(true); m.congelar(true);
+  const m = window.__mosca; m.empezar(); m.pausar(true); m.congelar(true);
   const malos = []; let pasos = 0;
   const tramo = (nombre, seg, conf) => {
     m.forzar(conf);

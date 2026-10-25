@@ -124,6 +124,11 @@ export const PAGINA = {
   Controles: 'Controls',
   'Mostrar los controles (tecla C)': 'Show the controls (key C)',
   'Fin del día.': 'End of the day.',
+  // Antes de empezar el día (tarjeta sobre la oficina)
+  'Un día de oficina en un minuto': 'An office day in one minute',
+  'Elige cuántas tareas tiene la mosca a la vez y aprieta Empezar.':
+    'Choose how many tasks the fly has at once, then press Start.',
+  Empezar: 'Start',
   'Mira la tabla o reinicia para probar otro WIP.': 'Check the table, or restart to try another WIP.',
   // Celular (Parte 5.2e): volver, la píldora del reloj, la hoja de abajo, las
   // pestañas y el fin del día ("Cerebro", "Idioma" y "Reiniciar día" ya están)
@@ -165,6 +170,8 @@ export const TEXTOS = {
   // Botón de pausa
   pausa: { es: 'Pausa', en: 'Pause' },
   reanudar: { es: 'Reanudar', en: 'Resume' },
+  // ...y antes de empezar el día, el mismo botón lo empieza
+  empezar: { es: 'Empezar', en: 'Start' },
   // Qué está haciendo la mosca (tarjeta de la exhibición)
   queHace: {
     es: {
@@ -173,6 +180,7 @@ export const TEXTOS = {
       Café: 'Pausa sana: toma café',
       Espera: 'Espera: sus tareas están bloqueadas',
       'En pausa': 'Juego en pausa',
+      Lista: 'Lista para empezar',
       Descansa: 'Día terminado: descansa',
     },
     en: {
@@ -181,12 +189,14 @@ export const TEXTOS = {
       Café: 'Healthy break: having a coffee',
       Espera: 'Waiting: her tasks are blocked',
       'En pausa': 'Game paused',
+      Lista: 'Ready to start',
       Descansa: 'Day over: resting',
     },
   },
   // Aviso de arriba: en vivo o en pausa, y si son pocas o muchas tareas
   modoDemo: { es: 'Modo demo', en: 'Demo mode' },
   enPausa: { es: 'En pausa', en: 'Paused' },
+  porEmpezar: { es: 'Por empezar', en: 'Not started' },
   enVivo: { es: 'En vivo', en: 'Live' },
   avisoTerminando: {
     es: (n) => `Terminando lo empezado · nuevo límite ${n}`,

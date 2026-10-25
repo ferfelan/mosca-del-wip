@@ -476,6 +476,85 @@ tr.vacia td {
   display: none;
 }
 
+/* ---------- Antes de empezar: Empezar (mismo estilo que el fin de día) ---------- */
+
+/* Al centro del espacio libre entre el cerebro (16 + 360 px, a la izquierda)
+   y el panel (280 + 16 px, a la derecha), sin taparlos */
+#aviso-empezar {
+  --libre-izq: 376px;
+  --libre-der: 296px;
+  position: fixed;
+  top: 50%;
+  left: calc(var(--libre-izq) + (100vw - var(--libre-izq) - var(--libre-der)) / 2);
+  z-index: 5;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: clamp(260px, calc(100vw - var(--libre-izq) - var(--libre-der) - 32px), 340px);
+  padding: 20px 22px;
+  border-radius: 14px;
+  background: var(--tinta);
+  color: #fbf8f2;
+  text-align: center;
+  box-shadow: 0 14px 36px rgba(40, 30, 15, 0.32);
+}
+
+#aviso-empezar[hidden] {
+  display: none;
+}
+
+#aviso-empezar strong {
+  font-size: 17px;
+}
+
+#aviso-empezar p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.45;
+  opacity: 0.86;
+}
+
+#btn-empezar {
+  min-height: 44px;
+  margin-top: 4px;
+  padding: 0 34px;
+  border: none;
+  border-radius: 999px;
+  background: #fbf8f2;
+  color: var(--tinta);
+  font: inherit;
+  font-size: 15.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+#btn-empezar:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+#btn-empezar:focus-visible {
+  outline: 2px solid #fbf8f2;
+  outline-offset: 3px;
+}
+
+body.cerebro-oculto #aviso-empezar {
+  --libre-izq: 0px;
+}
+
+body.controles-oculto #aviso-empezar {
+  --libre-der: 0px;
+}
+
+/* En Exhibición la oficina ocupa el 60 % de la izquierda */
+body.exhibicion #aviso-empezar {
+  left: 30vw;
+  width: min(340px, calc(60vw - 32px));
+}
+
 /* ---------- Historial ---------- */
 
 .nota-tenue {

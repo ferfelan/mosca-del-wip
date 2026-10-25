@@ -20,10 +20,10 @@ export const INGLES = {
   // Presentación y consola
   lema: 'Being busy all the time isn’t the same as making progress.',
   queEs:
-    'A one-minute game with the brain of a real fly. You choose how many tasks she has open at once and watch what happens when there are too many: how much she finishes, how stressed she gets and how often she goes out for a smoke.',
+    'With too many tasks open, each one takes longer and the work spends more time waiting than moving. In this one-minute game with the brain of a real fly, you set the limit on tasks in progress (WIP) and see how much she finishes, how stressed she gets and how much of each hour really counts. It helps you find the limit your team can sustain.',
   jugar: 'Play',
   descargar: 'Download the report (PDF)',
-  gratis: 'Free, no sign-up. Plays on a computer, phone or tablet. The report is in Spanish.',
+  gratis: 'Free, no sign-up. Plays on a computer, phone or tablet.',
   neuronas: 'neurons firing',
   enSimulacion: 'in the simulation',
   consolaFrase: 'Real neurons from a fly. The more tasks she has on her plate, the more her brain lights up.',
@@ -90,18 +90,19 @@ export const INGLES = {
     'It’s free and needs no sign-up. We don’t use cookies and only count visits, without identifying anyone. Your days played and what you choose, like the language, are saved only in your browser.',
   pregunta9: 'How do I use it with my team?',
   respuesta9:
-    'Play one day with 2 tasks at once and another with 9, and compare the Days played table. On a computer, the Exhibition view shows the game large, for a TV or a projector. The report, in Spanish, has four steps to try a limit with your team and takes 10 minutes to read.',
+    'Play one day with 2 tasks at once and another with 9, and compare the Days played table. On a computer, the Exhibition view shows the game large, for a TV or a projector. The report has four steps to try a limit with your team and takes 10 minutes to read.',
 
   // El informe, el cierre y el pie
   informeTitulo: 'The report',
   informeTexto:
     'It explains where each number comes from and gives four steps to try a limit with your team. It takes 10 minutes to read.',
-  informeNota: '17 pages, 4 MB. Written in Spanish.',
+  informeNota: '17 pages, 4 MB.',
   cierre: 'Closing',
   cierreFrase: 'A sustainable limit, not one thing at a time.',
   hechoPor:
     'Made by <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a> · <a href="https://deliverycraft.ai">deliverycraft.ai</a>',
   sinCookies: 'No cookies. We only count visits, without identifying anyone.',
+  derechos: '© 2026 Felipe Fernández. All rights reserved. The brain data come from Male CNS v1.0, licensed CC BY 4.0.',
 };
 
 // Lo que cambia con la consola, en los dos idiomas. El nivel de estrés llega

@@ -2,7 +2,10 @@
 //  · "Informe completo": todo, para Felipe, para entender y retomar el
 //    proyecto (fuente: docs/contexto/completo.html).
 //  · "Para compartir": la historia corta (10 a 15 páginas), para cualquier
-//    persona (fuente: docs/contexto/compartir.html).
+//    persona (fuente: docs/contexto/compartir.html). Y su traducción al inglés
+//    (2026-10-25: la portada en inglés descarga el informe en inglés), con las
+//    mismas hojas y números (fuente: docs/contexto/compartir-en.html; sus fotos
+//    del juego, en inglés, van a docs/contexto/img-en/ con IDIOMA=en).
 // Y los cortos de la Etapa 4, que sólo se arman cuando se piden con DOC:
 //  · "Norte del proyecto" (1 a 2 páginas; fuente: docs/contexto/norte.html).
 //  · "Etapa 4.1 La paradoja" (1 a 3 páginas; fuente: docs/contexto/etapa4-1.html).
@@ -29,16 +32,24 @@
 // día: la tarjeta de DORA de la pág. 8 sin la frase del ideal, que ya está en el dato freak de la pág. 6;
 // v18: la dirección del juego publicado; 25 oct.: compartir v19 y completo v9, el nivel "Tranqui"
 // pasa a llamarse "Tranquila", con las fotos de los grupos paneles y estres sacadas de nuevo;
-// completo v10, la Etapa 5 en la sección 27, con las fotos del grupo sitio).
+// completo v10, la Etapa 5 en la sección 27, con las fotos del grupo sitio; "Para compartir en
+// inglés" v19, la traducción del v19, con las fotos del juego en inglés; completo v11, la parte
+// 5.2g: el botón Empezar, el informe en inglés y la portada al día).
 //
-// Uso: node scripts/documento.mjs                → los dos informes
+// Uso: node scripts/documento.mjs                → los dos informes (y el de
+//                                                  compartir en inglés)
 //      DOC=compartir node scripts/documento.mjs  → sólo uno (completo, compartir,
-//                                                  norte, etapa4-1 o etapa4-2)
+//                                                  compartir-en, norte, etapa4-1
+//                                                  o etapa4-2)
 //      FOTOS=1 node scripts/documento.mjs        → antes saca todas las imágenes
 //                                                  del juego (requiere npm run dev)
 //      FOTOS=paneles,cierre node …               → sólo esos grupos: holograma,
 //        paneles, es-real, escenas, cerebros, estres, mundo, monitor-limite, monitor-bloqueo, cierre,
 //        sitio (la portada publicada y el juego en modo celular, para la sección 27)
+//      IDIOMA=en FOTOS=mundo,escenas,cerebros,cierre node …
+//                                                → las fotos con el juego en
+//                                                  inglés, a docs/contexto/img-en/
+//                                                  (las del informe en inglés)
 //      SALIDA=/otra/carpeta, FECHA=2026-10-19,   → otra carpeta, fecha o versión
 //      VERSION=v2
 import { chromium, devices } from 'playwright';
@@ -48,12 +59,15 @@ import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const CARPETA = resolve('docs/contexto');
-const IMG = join(CARPETA, 'img');
+// El idioma del juego en las fotos: español (img/) o inglés (img-en/)
+const IDIOMA = process.env.IDIOMA === 'en' ? 'en' : 'es';
+const IMG = join(CARPETA, IDIOMA === 'en' ? 'img-en' : 'img');
 const SALIDA = process.env.SALIDA ?? join(homedir(), 'Desktop', 'Mosca del WIP');
 const FECHA = process.env.FECHA ?? new Date().toLocaleDateString('sv-SE'); // 2026-10-20
 const DOCUMENTOS = [
-  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v10' },
+  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v11' },
   { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v19', paginas: [16, 17] },
+  { id: 'compartir-en', html: 'compartir-en.html', nombre: 'Para compartir en inglés', version: 'v19', paginas: [16, 17] },
   { id: 'norte', html: 'norte.html', nombre: 'Norte del proyecto', version: 'v1', paginas: [1, 2], aparte: true },
   { id: 'etapa4-1', html: 'etapa4-1.html', nombre: 'Etapa 4.1 La paradoja', version: 'v1', paginas: [1, 3], aparte: true },
   { id: 'etapa4-2', html: 'etapa4-2.html', nombre: 'Etapa 4.2 Robustez', version: 'v1', paginas: [1, 3], aparte: true },
@@ -68,18 +82,21 @@ async function abrirJuego(p, { sinPaneles = false } = {}) {
   p.on('pageerror', (e) => console.log('ERROR', e.message));
   await p.goto(JUEGO, { waitUntil: 'networkidle' });
   await p.waitForFunction(() => window.__mosca && window.__mosca.cerebro());
-  await p.evaluate((sin) => {
+  await p.evaluate(({ sin, idioma }) => {
     localStorage.removeItem('mosca-del-wip-dias');
+    localStorage.setItem('mosca-idioma', idioma); // el juego abre en ese idioma al recargar
     for (const k of ['mosca-del-wip-cerebro-oculto', 'mosca-del-wip-controles-oculto']) {
       if (sin) localStorage.setItem(k, '1');
       else localStorage.removeItem(k);
     }
-  }, sinPaneles);
+  }, { sin: sinPaneles, idioma: IDIOMA });
   await p.reload({ waitUntil: 'networkidle' });
   await p.waitForFunction(() => window.__mosca && window.__mosca.cerebro());
+  await p.evaluate(() => window.__mosca.empezar()); // el juego parte detenido hasta apretar Empezar
   if (sinPaneles) {
-    // sólo la escena: sin botones ni avisos encima
-    await p.addStyleTag({ content: '#btn-mostrar-cerebro,#btn-mostrar-controles,#banner-fin-dia,#ex-inicio,#btn-vista-inicial{display:none!important}' });
+    // sólo la escena: sin botones ni avisos encima (ni el ES | EN que aparece
+    // con el cerebro oculto, desde la 5.2c)
+    await p.addStyleTag({ content: '#btn-mostrar-cerebro,#btn-mostrar-controles,#banner-fin-dia,#ex-inicio,#btn-vista-inicial,#idioma-flotante{display:none!important}' });
   }
 }
 

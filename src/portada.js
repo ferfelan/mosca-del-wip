@@ -133,6 +133,12 @@ const conTexto = [...document.querySelectorAll('[data-t]')].map((nodo) => ({ nod
 const conAria = [...document.querySelectorAll('[data-t-aria]')].map((nodo) => ({ nodo, es: nodo.getAttribute('aria-label') }));
 const conTitulo = [...document.querySelectorAll('[data-t-title]')].map((nodo) => ({ nodo, es: nodo.getAttribute('title') }));
 const botonesIdioma = document.querySelectorAll('[data-idioma]');
+// El informe en PDF en el idioma de la página (2026-10-25, pedido de Felipe):
+// en inglés se descarga su traducción, con su tapa
+const INFORMES = {
+  es: { pdf: '/Mosca-del-WIP-Informe.pdf', nombre: 'Mosca del WIP - Informe.pdf', tapa: '/img/tapa-informe.jpg' },
+  en: { pdf: '/Mosca-del-WIP-Report.pdf', nombre: 'Mosca del WIP - Report.pdf', tapa: '/img/tapa-report.jpg' },
+};
 
 function ponerIdioma(nuevo, alEntrar = false) {
   idioma = nuevo;
@@ -144,6 +150,14 @@ function ponerIdioma(nuevo, alEntrar = false) {
   }
   for (const enlace of document.querySelectorAll('[data-jugar]')) enlace.href = rutaEnIdioma('/jugar/', idioma);
   document.querySelector('[data-logo]').href = rutaEnIdioma('/', idioma);
+  // (el nombre con que se guarda, solo si el enlace descarga: en iPhone y iPad
+  // lo abre, ver "El informe en PDF")
+  const informe = INFORMES[idioma];
+  for (const enlace of document.querySelectorAll('[data-informe]')) {
+    enlace.href = informe.pdf;
+    if (enlace.hasAttribute('download')) enlace.download = informe.nombre;
+  }
+  document.querySelector('[data-tapa]').src = informe.tapa;
   for (const boton of botonesIdioma) boton.setAttribute('aria-pressed', String(boton.dataset.idioma === idioma));
   decimal = formatoNumero(idioma, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
   miles = formatoNumero(idioma);
@@ -251,14 +265,21 @@ addEventListener('scroll', marcarDesplazada, { passive: true });
 marcarDesplazada();
 
 // El nombre aparece en la barra cuando el título grande pasa bajo ella, y
-// Jugar cuando los botones de arriba no se ven (en un celular girado pueden
-// quedar más abajo de la primera pantalla: ahí la barra lo muestra de entrada)
-const vigilar = (elemento, alCambiar) =>
-  new IntersectionObserver(([e]) => alCambiar(e), { rootMargin: '-64px 0px 0px 0px' }).observe(elemento);
+// Jugar cuando el botón Jugar grande no se ve entero: apenas empieza a
+// esconderse bajo la barra (2026-10-25: antes se esperaba a que se fuera
+// también el del PDF y en el celular quedaba un tramo sin ningún Jugar) o si
+// queda cortado abajo o más abajo de la primera pantalla (celular chico o
+// girado: ahí la barra lo muestra de entrada).
+const vigilar = (elemento, alCambiar, umbrales = 0) =>
+  new IntersectionObserver(([e]) => alCambiar(e), { rootMargin: '-64px 0px 0px 0px', threshold: umbrales }).observe(elemento);
 vigilar(document.querySelector('.hero h1'), (e) =>
   barra.classList.toggle('con-nombre', !e.isIntersecting && e.boundingClientRect.top < 64)
 );
-vigilar(document.querySelector('.hero .acciones'), (e) => barra.classList.toggle('con-jugar', !e.isIntersecting));
+vigilar(
+  document.querySelector('.hero .acciones [data-jugar]'),
+  (e) => barra.classList.toggle('con-jugar', !e.isIntersecting || e.intersectionRatio < 0.99),
+  [0, 0.99]
+);
 
 // La sección que estás leyendo queda marcada en el menú: la última cuyo
 // contenido ya llegó cerca de la barra (al elegir una en el menú, su

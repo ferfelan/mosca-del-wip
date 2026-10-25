@@ -15,6 +15,31 @@ await p.evaluate(() => localStorage.clear());
 await p.reload({ waitUntil: 'networkidle' });
 await p.waitForTimeout(2500);
 
+// 0. Antes de empezar (desde el 2026-10-25): el reloj espera a Empezar; la
+// tarjeta va entre los dos paneles sin taparlos; elegir el WIP no lo hace
+// correr; Empezar lo hace correr y saca la tarjeta
+const inicio0 = await p.evaluate(() => {
+  const r = (id) => document.getElementById(id).getBoundingClientRect();
+  const cruza = (a, b) => !(a.right <= b.left || b.right <= a.left || a.bottom <= b.top || b.bottom <= a.top);
+  const t = r('aviso-empezar');
+  return {
+    hora: document.getElementById('reloj-texto').textContent,
+    boton: document.getElementById('btn-pausa').textContent,
+    visible: !document.getElementById('aviso-empezar').hidden && t.width > 0,
+    tapaPanel: cruza(t, r('cerebro')) || cruza(t, r('panel')),
+  };
+});
+revisar(inicio0.hora === '09:00' && inicio0.boton === 'Empezar' && inicio0.visible, `al entrar debe esperar a Empezar: ${JSON.stringify(inicio0)}`);
+revisar(!inicio0.tapaPanel, 'la tarjeta de Empezar tapa un panel');
+await p.$eval('#wip', (el) => { el.value = '4'; el.dispatchEvent(new Event('input')); });
+await p.waitForTimeout(1500);
+revisar((await p.textContent('#reloj-texto')) === '09:00', 'elegir el WIP antes de empezar hizo correr el reloj');
+await p.screenshot({ path: 'capturas/ux-empezar.png' });
+await p.click('#btn-empezar');
+await p.waitForTimeout(1500);
+revisar((await p.textContent('#reloj-texto')) !== '09:00' && (await p.isHidden('#aviso-empezar')), 'Empezar no hizo correr el reloj o no sacó la tarjeta');
+revisar((await p.textContent('#btn-pausa')) === 'Pausa', 'tras Empezar el botón debe decir Pausa');
+
 // 1. Botones con nombre accesible
 const sinNombre = await p.$$eval('button', (bs) => bs.filter((x) => x.offsetParent && !(x.textContent.trim() || x.getAttribute('aria-label') || x.title)).map((x) => x.id || x.className));
 revisar(!sinNombre.length, `botones sin nombre: ${sinNombre}`);

@@ -52,10 +52,14 @@ const elBarraEstres = document.getElementById('barra-estres-relleno');
 const elTablaBody = document.getElementById('tabla-dias-body');
 const elBanner = document.getElementById('banner-fin-dia');
 const elWipNota = document.getElementById('wip-nota');
+const elAvisoEmpezar = document.getElementById('aviso-empezar');
 
 const VELOCIDADES = [1, 2, 4];
 let indiceVelocidad = 0;
-let pausado = false;
+// El día parte detenido: el reloj corre recién al apretar Empezar (pedido de
+// Felipe, 2026-10-25: antes partía solo al entrar)
+let pausado = true;
+let empezado = false;
 let congelado = false; // sólo para capturas: deja la animación quieta
 let relojDetenido = false; // sólo para capturas: el reloj del juego no avanza (la mosca sí se anima)
 let diaYaRegistrado = false;
@@ -237,12 +241,59 @@ function ponerWip(valor) {
 elWip.addEventListener('input', () => ponerWip(Number(elWip.value)));
 pintarWip();
 
+// Lo primero que hace correr el reloj (Empezar, la pausa, Espacio, Reiniciar
+// día o el modo demo) empieza el día y saca la tarjeta de Empezar
 function alternarPausa() {
   pausado = !pausado;
-  elBtnPausa.textContent = tx(pausado ? 'reanudar' : 'pausa');
+  if (!pausado && !empezado) {
+    empezado = true;
+    elAvisoEmpezar.hidden = true;
+    document.documentElement.classList.remove('por-empezar');
+  }
+  pintarBotonPausa();
+}
+function pintarBotonPausa() {
+  elBtnPausa.textContent = tx(!empezado ? 'empezar' : pausado ? 'reanudar' : 'pausa');
   elBtnPausa.classList.toggle('activo', pausado);
 }
+document.documentElement.classList.add('por-empezar');
+pintarBotonPausa();
 elBtnPausa.addEventListener('click', alternarPausa);
+document.getElementById('btn-empezar').addEventListener('click', () => {
+  if (pausado) alternarPausa();
+});
+
+// En el celular la tarjeta de Empezar va sobre la oficina, entre los botones
+// de arriba y la hoja (el estado de la mosca se esconde hasta empezar: todavía
+// no tiene nada que contar). Si no cabe entera (pantallas con zoom o con la
+// letra agrandada), primero pierde el título y después el texto: queda el botón.
+const TAPAN_AVISO = ['cel-volver', 'cel-controles', 'cel-pestanas', 'panel'].map((id) => document.getElementById(id));
+function ajustarAvisoEmpezar() {
+  const niveles = ['sin-titulo', 'solo-boton'];
+  elAvisoEmpezar.classList.remove(...niveles);
+  if (!esCelular() || elAvisoEmpezar.hidden) return;
+  const choca = () => {
+    const a = elAvisoEmpezar.getBoundingClientRect();
+    return TAPAN_AVISO.some((el) => {
+      const b = el.getBoundingClientRect();
+      return b.width > 0 && b.height > 0 && a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
+    });
+  };
+  for (const nivel of niveles) {
+    if (!choca()) return;
+    elAvisoEmpezar.classList.add(nivel);
+  }
+}
+// (cuando cambia la oficina o la tarjeta: al girar, al medir la hoja, al
+// volver a la pestaña Oficina o al cambiar de idioma; en el cuadro siguiente,
+// como medirHoja en src/celular.js)
+let ajusteAviso = 0;
+const vigiaAviso = new ResizeObserver(() => {
+  cancelAnimationFrame(ajusteAviso);
+  ajusteAviso = requestAnimationFrame(ajustarAvisoEmpezar);
+});
+vigiaAviso.observe(document.getElementById('escena'));
+vigiaAviso.observe(elAvisoEmpezar);
 
 elBtnVelocidad.addEventListener('click', () => {
   indiceVelocidad = (indiceVelocidad + 1) % VELOCIDADES.length;
@@ -324,15 +375,17 @@ function refrescarUI(estado, cigarroEnMano) {
   elExMosca.classList.toggle('fin', estado.terminado);
   const queHace = estado.terminado
     ? 'Descansa'
-    : pausado
-      ? 'En pausa'
-      : cigarroEnMano
-        ? 'Fuma'
-        : mosca.tomandoCafe()
-          ? 'Café'
-          : estado.esperando
-            ? 'Espera'
-            : 'Trabaja';
+    : !empezado
+      ? 'Lista'
+      : pausado
+        ? 'En pausa'
+        : cigarroEnMano
+          ? 'Fuma'
+          : mosca.tomandoCafe()
+            ? 'Café'
+            : estado.esperando
+              ? 'Espera'
+              : 'Trabaja';
   if (elExMosca.dataset.hace !== queHace) {
     elExMosca.dataset.hace = queHace;
     elExMoscaHace.textContent = tx('queHace')[queHace];
@@ -344,7 +397,7 @@ function refrescarUI(estado, cigarroEnMano) {
   elRotulo.dataset.estado = situacion;
   // Aviso de arriba: en vivo o en pausa, y si son pocas o muchas tareas a la
   // vez (el número está en la Carga)
-  elExInicioTipo.textContent = tx(modoDemo ? 'modoDemo' : pausado ? 'enPausa' : 'enVivo');
+  elExInicioTipo.textContent = tx(modoDemo ? 'modoDemo' : !empezado ? 'porEmpezar' : pausado ? 'enPausa' : 'enVivo');
   const drenando = estado.enCurso > estado.wip && !estado.terminado;
   pintarNotaWip(estado.wip, estado.terminado ? 0 : estado.enCurso);
   const textoAviso = drenando
@@ -757,6 +810,7 @@ function alternarDemo(activar = !modoDemo) {
   if (vista !== 'exhibicion') return;
   modoDemo = activar;
   esperaDemo = 0;
+  if (activar && !empezado) alternarPausa();
   if (juego.terminado) pintarSiguienteDia();
 }
 
@@ -1148,8 +1202,8 @@ function cambiarIdioma(nuevo) {
 function repintarTextos() {
   pintarTabla(diasPintados);
   elBtnBorrar.textContent = tx(esperandoConfirmacion ? 'confirmarBorrado' : 'borrarHistorial');
-  // (el botón dice lo que ya decía: "Reanudar" mientras está marcado)
-  elBtnPausa.textContent = tx(elBtnPausa.classList.contains('activo') ? 'reanudar' : 'pausa');
+  // (el botón dice lo que ya decía: "Empezar", "Reanudar" o "Pausa")
+  pintarBotonPausa();
   if (elExMosca.dataset.hace) elExMoscaHace.textContent = tx('queHace')[elExMosca.dataset.hace];
   if (diasDelResumen?.length) pintarResumen();
   if (siguientePintado) escribirSiguienteDia();
@@ -1295,9 +1349,16 @@ if (import.meta.env.DEV) {
         while (juego.hechas.length < hechas && juego.porHacer.length) juego.hechas.push(juego.porHacer.shift());
       }
     },
+    // Como apretar la pausa (también pinta el botón; antes de Empezar, pausar
+    // no hace nada y quitarla empieza el día)
     pausar(v) {
-      pausado = v;
+      if (v !== pausado) alternarPausa();
     },
+    // Aprieta Empezar (las pruebas que necesitan el reloj corriendo)
+    empezar() {
+      if (!empezado) alternarPausa();
+    },
+    empezado: () => empezado,
     congelar(v) {
       congelado = v;
     },

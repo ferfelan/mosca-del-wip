@@ -7,7 +7,10 @@
 //   - el logo vuelve arriba sin recargar, saca la sección de la dirección y
 //     "atrás" devuelve a la sección;
 //   - el nombre "Mosca del WIP" aparece en la barra al bajar, y bajo 1100 px
-//     Jugar aparece cuando los botones grandes ya no se ven;
+//     Jugar aparece cuando los botones grandes ya no se ven (desde la 5.2g,
+//     apenas el Jugar grande no se ve entero: arriba de todo, en 320×568, la
+//     barra ya lo muestra) y, al bajar de a 10 px, siempre hay un Jugar a la
+//     vista;
 //   - el menú: abre, se cierra con Esc (el foco vuelve al botón) y tocando
 //     fuera;
 //   - "Saltar al contenido" aparece con la primera tecla Tab;
@@ -74,6 +77,11 @@ for (const [nombre, ancho, alto, tactil, sinMovimiento] of CASOS) for (const idi
       return {
         clases: barra.className,
         jugarSeVe: getComputedStyle(jugar).visibility === 'visible' && Number(getComputedStyle(jugar).opacity) > 0.5,
+        // el Jugar grande, entero entre la barra y el borde de abajo
+        grandeEntero: (() => {
+          const r = document.querySelector('.hero .acciones [data-jugar]').getBoundingClientRect();
+          return r.top >= barra.getBoundingClientRect().bottom && r.bottom <= innerHeight;
+        })(),
         menuBotonSeVe: getComputedStyle(barra.querySelector('.menu-boton')).display !== 'none',
         expandido: barra.querySelector('.menu-boton').getAttribute('aria-expanded'),
       };
@@ -82,9 +90,36 @@ for (const [nombre, ancho, alto, tactil, sinMovimiento] of CASOS) for (const idi
   // Arriba de todo
   let e = await estado();
   if (e.clases.includes('con-nombre')) mal('arriba de todo la barra ya muestra el nombre');
-  if (conMenu && e.jugarSeVe && alto > ancho) mal('arriba de todo la barra repite Jugar (los botones grandes se ven)');
+  if (conMenu && e.jugarSeVe && e.grandeEntero && alto > ancho) mal('arriba de todo la barra repite Jugar (el Jugar grande se ve entero)');
+  if (conMenu && !e.jugarSeVe && !e.grandeEntero) mal('arriba de todo no hay ningún Jugar entero a la vista');
   if (!conMenu && !e.jugarSeVe) mal('en computador la barra no muestra Jugar');
   if (conMenu !== e.menuBotonSeVe) mal(conMenu ? 'falta el botón del menú' : 'en computador sobra el botón del menú');
+
+  // Bajar de a poco (5.2g, pedido de Felipe: "el boton de jugar como que se
+  // borra"): bajo 1100 px siempre hay un Jugar a la vista, el grande (al menos
+  // la mitad de su alto bajo la barra) o el de la barra
+  if (conMenu) {
+    const sinJugar = [];
+    const hasta = Math.min(1600, await pagina.evaluate(() => document.documentElement.scrollHeight - innerHeight));
+    for (let y = 0; y <= hasta; y += 10) {
+      await pagina.evaluate((y) => scrollTo({ top: y, behavior: 'instant' }), y);
+      let hay = false;
+      for (const espera of [40, 350]) { // el de la barra aparece en 0,2 s: si falta, se mira de nuevo al terminar
+        await pagina.waitForTimeout(espera);
+        hay = await pagina.evaluate(() => {
+          const barra = document.querySelector('.barra');
+          const grande = document.querySelector('.hero .acciones [data-jugar]').getBoundingClientRect();
+          const aLaVista = Math.min(grande.bottom, innerHeight) - Math.max(grande.top, barra.getBoundingClientRect().bottom);
+          return getComputedStyle(barra.querySelector('.barra-jugar')).visibility === 'visible' || aLaVista >= grande.height * 0.5;
+        });
+        if (hay) break;
+      }
+      if (!hay) sinJugar.push(y);
+    }
+    if (sinJugar.length) mal(`al bajar no queda ningún Jugar a la vista (en ${sinJugar.join(', ')} px)`);
+    await pagina.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
+    await quieta(pagina);
+  }
 
   // Saltar al contenido: con la primera tecla Tab
   if (!tactil) {

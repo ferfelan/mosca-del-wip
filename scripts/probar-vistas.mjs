@@ -31,6 +31,33 @@ const leer = () => p.evaluate(() => ({
 }));
 const esperar = (ms) => p.waitForTimeout(ms);
 
+// 0. Antes de empezar (desde el 2026-10-25): en las dos vistas el reloj espera
+// a Empezar y se ve la tarjeta; elegir el WIP no lo hace correr; Espacio empieza
+await esperar(1500);
+let c0 = await leer();
+const tarjeta = () => p.evaluate(() => {
+  const t = document.getElementById('aviso-empezar');
+  const r = t.getBoundingClientRect();
+  return { visible: !t.hidden && r.width > 0, dentro: r.left >= 0 && r.right <= innerWidth && r.top >= 0 && r.bottom <= innerHeight, derecha: r.right };
+});
+let t0 = await tarjeta();
+revisar(c0.hora === '09:00' && c0.pausado && c0.cerebro === 'Lista' && c0.aviso.startsWith('Por empezar') && t0.visible && t0.dentro, `control: espera a Empezar (${c0.hora}, ${c0.cerebro}, «${c0.aviso}»)`);
+await p.keyboard.press('e');
+await esperar(1000);
+let x0 = await leer();
+t0 = await tarjeta();
+revisar(x0.vista === 'exhibición' && x0.hora === '09:00' && t0.visible && t0.derecha <= 1512 * 0.6, `exhibición: espera a Empezar con la tarjeta sobre la oficina (${x0.hora})`);
+await p.keyboard.press('Escape');
+await esperar(800);
+await p.keyboard.press('7');
+await esperar(1500);
+revisar((await leer()).hora === '09:00', 'elegir el WIP antes de empezar no hace correr el reloj');
+await p.keyboard.press('Space');
+await esperar(1500);
+c0 = await leer();
+t0 = await tarjeta();
+revisar(!c0.pausado && c0.hora !== '09:00' && !t0.visible && c0.wip === 7, `Espacio empieza el día con WIP 7 (${c0.hora})`);
+
 // 1. Pausa en control → la exhibición también está en pausa, misma hora
 await p.keyboard.press('7');
 await esperar(2500);

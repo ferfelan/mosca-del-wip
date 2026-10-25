@@ -17,6 +17,7 @@ for (const [w, h] of [[1920, 1080], [1906, 830], [1512, 860], [1280, 720], [1024
   await p.evaluate(() => { localStorage.clear(); });
   await p.reload({ waitUntil: 'networkidle' });
   await p.waitForFunction(() => window.__mosca && window.__mosca.cerebro());
+  await p.evaluate(() => window.__mosca.empezar()); // el juego parte detenido hasta apretar Empezar
   await p.evaluate(() => { window.__mosca.diaExhibicion(9); window.__mosca.adelantar(240); });
   await p.waitForTimeout(2000);
   // ¿algún texto del panel del cerebro queda cortado o se sale? (en las dos vistas)

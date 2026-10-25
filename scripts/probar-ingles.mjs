@@ -261,10 +261,10 @@ function frasesDe(idioma) {
     'ex-mosca-hace': Object.values(t('queHace')),
     'ex-mosca-nivel': niveles,
     'm-estres': niveles,
-    'ex-inicio-tipo': [t('modoDemo'), t('enPausa'), t('enVivo')],
+    'ex-inicio-tipo': [t('modoDemo'), t('enPausa'), t('enVivo'), t('porEmpezar')],
     'ex-inicio-texto': [t('avisoTerminando', 10), t('muchasTareas'), t('pocasTareas')],
     'wip-nota': [t('notaTerminando', 10), t('notaDentro', 3), t('notaSobre', 3)],
-    'btn-pausa': [t('pausa'), t('reanudar')],
+    'btn-pausa': [t('pausa'), t('reanudar'), t('empezar')],
     'btn-borrar-historial': [t('borrarHistorial'), t('confirmarBorrado')],
     'btn-girar-texto': [t('detener'), t('girar')],
     'cifras-titulo': [t('resumenDelDia'), t('hoyEnLaOficina')],
@@ -383,10 +383,16 @@ for (const [w, h] of TAMANOS) {
     marcados: [...document.querySelectorAll('[data-idioma]')].map((x) => `${x.dataset.idioma}:${x.getAttribute('aria-pressed')}`).join(' '),
   }));
   revisar(
-    carga.lang === 'en' && carga.url.includes('lang=en') && carga.escondida && carga.alMostrar === 'Pause' && !carga.sigue && carga.idioma === 'en',
+    carga.lang === 'en' && carga.url.includes('lang=en') && carga.escondida && carga.alMostrar === 'Start' && !carga.sigue && carga.idioma === 'en',
     `abre en inglés: <html lang="${carga.lang}">, ${carga.url}, escondida mientras se traduce (${carga.escondida}) y al mostrarse ya decía "${carga.alMostrar}"`
   );
   revisar(marcaSolo(carga.marcados, 'en'), `el botón marca EN (${carga.marcados})`);
+  // La tarjeta de Empezar (el juego parte detenido) ya está en inglés
+  const tarjeta = await en.evaluate(() => document.getElementById('aviso-empezar').innerText.replace(/\s+/g, ' ').trim());
+  revisar(
+    tarjeta === 'An office day in one minute Choose how many tasks the fly has at once, then press Start. Start',
+    `la tarjeta de Empezar en inglés («${tarjeta}»)`
+  );
   const cargaEs = await es.evaluate(() => ({ lang: document.documentElement.lang, escondida: window.__escondida === true }));
   revisar(cargaEs.lang === 'es' && !cargaEs.escondida, `sin ?lang abre en español y no se esconde (lang="${cargaEs.lang}")`);
 

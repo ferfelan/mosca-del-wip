@@ -21,6 +21,7 @@ await pagina.goto(URL, { waitUntil: 'networkidle' });
 await pagina.waitForFunction(() => window.__mosca !== undefined, { timeout: 15000 });
 await pagina.evaluate(() => {
   localStorage.removeItem('mosca-del-wip-dias');
+  window.__mosca.empezar(); // saca la tarjeta de Empezar (el juego parte detenido)
   window.__mosca.pausar(true);
   window.__mosca.congelar(true);
 });

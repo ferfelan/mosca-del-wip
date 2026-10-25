@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Mosca del WIP · Report</title>
+<!-- El informe para compartir en INGLÉS (2026-10-25, Etapa 5, pedido de Felipe:
+     "si la página está en español que se descargue en español, si está en inglés
+     que se descargue en inglés"). Es la traducción del v19 (compartir.html): el
+     mismo diseño (este bloque de estilos es una copia del de compartir.html), las
+     mismas 17 hojas, los mismos números y las mismas fuentes. Lo que cambia:
+     · el texto, en inglés de Estados Unidos, con las palabras del juego y la
+       portada (docs/glosario-ingles.md): Calm / Busy / Stressed / Overwhelmed,
+       "sustainable limit", "tasks at once", "flow efficiency"; "Dato freak" se
+       llama "Fun fact"; "y otros" es "et al.";
+     · los números se escriben en inglés (15.9, 1,328, 85%), como en el juego;
+     · las fotos del juego son las del juego en inglés (docs/contexto/img-en/,
+       FOTOS=mundo,escenas,cerebros,cierre IDIOMA=en node scripts/documento.mjs);
+       la portada ilustrada no tiene texto y es la misma (img/portada-torre.svg);
+     · en el gráfico de la pág. 7 la columna de los niveles es 8 px más ancha,
+       porque "Overwhelmed" es más largo que "Colapsada";
+     · el anexo C dice que es la versión en inglés del original en español.
+     Si cambia el informe en español, cambiar también este y subir los dos a la
+     misma versión. Se arma con: DOC=compartir-en node scripts/documento.mjs.
+     En el sitio es public/Mosca-del-WIP-Report.pdf (lo descarga la portada en
+     inglés). -->
+<link rel="stylesheet" href="estilo.css" />
+<style>
+  /* ===== Estilo v7 (guía: docs/etapa4-6-estilo.md) con los ajustes del v8 ===== */
+  body { font-size: 10.2pt; line-height: 1.58; }
+  /* v10 (2026-10-22, pedido de Felipe): las páginas en blanco puro. El tono papel (--papel, #fcfaf6) queda solo en la
+     portada (.portada.clara lo fija aparte); el separador sigue oscuro (.parte, más abajo). */
+  .hoja { background: #fff; }
+  h1 { font-size: 21pt; line-height: 1.15; margin: 0 0 4.5mm; }
+  h3 { font-size: 10.2pt; margin: 5mm 0 2mm; }
+  .bajada { font-size: 11.6pt; line-height: 1.5; color: var(--suave); margin-bottom: 5.5mm; max-width: 152mm; }
+  p { margin: 0 0 3.2mm; max-width: 142mm; }
+  figure { margin: 0 0 5.5mm; }
+  figure img { border-radius: 2mm; }
+  figcaption { font-size: 8.2pt; color: var(--suave); margin-top: 2.2mm; line-height: 1.45; max-width: none; }
+  figcaption b { font-weight: 600; color: var(--tinta); }
+  .grafico svg { display: block; width: 100%; height: auto; }
+  .foto { display: block; width: 100%; border-radius: 2mm; border: 0.5pt solid var(--linea); }
+  .chico { font-size: 8.2pt; color: var(--suave); }
+
+  /* El único recuadro: borde izquierdo teal */
+  .recuadro { border-left: 1.2mm solid var(--teal); background: #edf3f2; border-radius: 0 1.6mm 1.6mm 0; padding: 3.6mm 5mm; margin: 4.5mm 0 0; max-width: 152mm; break-inside: avoid; }
+  .recuadro .etiqueta { display: block; font-size: 7pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--suave); margin-bottom: 1.4mm; }
+  .recuadro p { font-family: var(--serif); font-size: 11.6pt; line-height: 1.42; color: var(--tinta); margin: 0; max-width: none; }
+  .recuadro q { quotes: '“' '”'; }
+  .recuadro .de { display: block; font-family: var(--sans); font-size: 8pt; color: var(--suave); margin-top: 1.6mm; line-height: 1.4; }
+
+  /* La frase de cierre de cada página */
+  .cierre-pagina { font-family: var(--serif); font-size: 13pt; line-height: 1.35; color: var(--tinta); margin: 5.5mm 0 0; max-width: 156mm; }
+  .cierre-pagina strong { font-weight: 700; color: var(--teal); }
+  .cierre-pagina .rojo { color: var(--colapsada); }
+  .cierre-pagina .verde { color: var(--tranqui); }
+
+  /* v8: la línea fija "Para la sobremesa", siempre en el mismo lugar (sobre el pie) y con el mismo estilo. v15: se llama "Dato freak" (la clase no cambia; el rótulo es más corto, 20 mm) */
+  .sobremesa { position: absolute; left: 20mm; right: 20mm; bottom: 19mm; display: grid; grid-template-columns: 20mm 1fr; gap: 0 3mm; align-items: baseline; border-top: 0.5pt solid var(--linea); padding-top: 1.9mm; font-size: 8.5pt; line-height: 1.42; color: var(--suave); }
+  .sobremesa .rotulo { font-size: 6.6pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); white-space: nowrap; }
+  .sobremesa .de-donde { color: var(--tenue); } /* no se llama "fuente": esa clase es la tarjeta de fuentes de estilo.css */
+
+  /* Las tres etiquetas de origen (grises, con texto); en el anexo A pueden ser más */
+  .origen { display: inline-block; font-size: 6.6pt; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.4mm 1.6mm; border-radius: 1mm; white-space: nowrap; vertical-align: 0.3mm; background: #ebe8e1; color: var(--suave); }
+
+  /* Números clave grandes (págs. 1 y 3): una tabla sin fondos */
+  .marcador { display: grid; grid-template-columns: 54mm 1fr 1fr; margin: 1mm 0 0; border-top: 0.5pt solid var(--linea); }
+  .marcador div { padding: 2.4mm 3mm 2.4mm 0; border-bottom: 0.5pt solid var(--linea); font-size: 8.8pt; color: var(--suave); }
+  .marcador .cab { font-size: 7pt; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--suave); padding-top: 2.2mm; padding-bottom: 2.2mm; }
+  .marcador .cab.bien { color: #2f7347; }
+  .marcador .cab.mal { color: var(--colapsada); }
+  .marcador .que { color: var(--tinta); font-weight: 600; font-size: 9pt; }
+  .marcador b { font-family: var(--serif); font-size: 18pt; font-weight: 700; color: var(--tinta); margin-right: 1.5mm; line-height: 1; }
+  .marcador .bien b { color: var(--tranqui); }
+  .marcador .mal b { color: var(--colapsada); }
+  .adelanto { margin-top: 3mm; }
+
+  /* Página 2: la foto y la tabla de reglas */
+  .banda-mundo { height: 31mm; object-fit: cover; object-position: center 30%; } /* v14: 7 mm menos, para que quepan los estudios bajo cada regla */
+  .reglas { margin-top: 0; }
+  .reglas td { padding: 0.7mm 1.8mm 0.7mm 0; font-size: 8.6pt; line-height: 1.36; }
+  .reglas td:last-child { width: 52mm; font-size: 7.9pt; color: var(--suave); line-height: 1.35; }
+  /* v15: la segunda columna ("Inspirado en") lleva solo la referencia; qué parte de cada número es nuestra está en el anexo B */
+  .reglas th { padding-left: 0; }
+  /* v14, pág. 1: "Qué puedes hacer con esto", una línea con su rótulo */
+  .con-esto { font-size: 9pt; color: var(--suave); margin: 2.2mm 0 0; max-width: 152mm; }
+  .con-esto .etiqueta { display: inline-block; font-size: 7pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin-right: 2mm; }
+  /* v14, pág. 11: "Para seguir leyendo", el recuadro con una lista corta de libros */
+  .recuadro.leer p { font-family: var(--sans); font-size: 8.6pt; line-height: 1.4; color: var(--suave); }
+  .recuadro.leer ul { list-style: none; padding: 0; margin: 1.4mm 0 0; }
+  .recuadro.leer li { margin: 0; font-size: 8.4pt; line-height: 1.4; color: var(--texto); max-width: none; }
+  /* v14, anexo B: la tabla "Cada número y de dónde sale" */
+  .origen-tabla { margin-bottom: 1.5mm; }
+  .origen-tabla th { padding-top: 0.8mm; padding-bottom: 0.8mm; }
+  .origen-tabla td { padding: 0.6mm 1.8mm 0.6mm 0; font-size: 7.3pt; line-height: 1.28; vertical-align: top; }
+  .origen-tabla td:first-child { width: 54mm; }
+  .origen-tabla td b { color: var(--tinta); font-weight: 600; }
+  .origen-tabla td:last-child { width: 29mm; }
+
+  /* Página 3: las dos fotos (la única excepción al visual único) */
+  .comparar { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+  .comparar img { height: 44mm; object-fit: cover; object-position: center 40%; }
+
+  /* Página 4 (nueva): la tabla de 1 a 10 tareas, cinco columnas, letra más grande que en el anexo */
+  .tabla-dia { margin: 0 0 1mm; }
+  .tabla-dia th { font-size: 7pt; padding: 1.2mm 2mm; }
+  .tabla-dia td { font-size: 9.6pt; padding: 1.25mm 2mm; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .tabla-dia td:first-child, .tabla-dia th:first-child { text-align: left; }
+  .tabla-dia th { text-align: right; }
+  .tabla-dia td b { color: var(--tinta); }
+  .tabla-dia tr.mejor td { background: #eaf3ec; }
+  .tabla-dia tr.sobre td { background: #fbe9e8; }
+  .tabla-dia .nivel-t { color: #2f7347; font-weight: 600; }
+  .tabla-dia .nivel-m { color: var(--suave); }
+  .tabla-dia .nivel-k { color: var(--colapsada); font-weight: 600; }
+
+  /* Página 8: las cuatro tarjetas, en cuadrícula con filetes, sin cajas */
+  .estudios { display: grid; grid-template-columns: 1fr 1fr; gap: 0 7mm; margin: 1mm 0 0; border-top: 0.5pt solid var(--linea); }
+  .estudio { padding: 3.2mm 0 3mm; border-bottom: 0.5pt solid var(--linea); font-size: 9.1pt; line-height: 1.48; }
+  .estudio h3 { margin: 0 0 1.2mm; font-family: var(--serif); font-size: 12.5pt; font-weight: 700; }
+  .estudio p { margin: 0 0 1.2mm; max-width: none; }
+  .estudio .cita { display: block; font-size: 7.6pt; color: var(--tenue); margin-top: 0.8mm; }
+  .estudio.ancho { grid-column: 1 / -1; } /* v15: la quinta tarjeta, "Oficinas reales", a lo ancho */
+
+  /* Página 9: el viaje de ida y vuelta. v15: dos filas de tres (el cigarro y el café), con el mismo estilo */
+  .viaje { display: grid; grid-template-columns: 1fr 7mm 1fr 7mm 1fr; row-gap: 3mm; align-items: stretch; margin: 3.5mm 0 0; }
+  .viaje .paso { background: var(--papel-2); border-radius: 1.6mm; padding: 4.6mm 4.6mm; font-size: 9.2pt; line-height: 1.5; color: var(--suave); min-height: 30mm; }
+  .angosto p { max-width: 124mm; }
+  .viaje .paso b { display: block; font-size: 6.8pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--suave); margin-bottom: 1.6mm; }
+  .viaje .paso strong { display: block; font-family: var(--serif); font-size: 12pt; color: var(--tinta); margin-bottom: 1.4mm; }
+  .viaje .mosca { background: var(--tinta); color: #b9c6e4; }
+  .viaje .mosca b { color: #b9c6e4; }
+  .viaje .mosca strong { color: #fff; }
+  .viaje .fl { align-self: center; text-align: center; font-size: 14pt; color: var(--tinta); line-height: 1; }
+
+  /* Página 10: las dos fotos del cerebro como una sola figura */
+  .cerebros { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; max-width: 116mm; margin: 0 auto; }
+  .cerebros img { display: block; width: 100%; border-radius: 2mm; }
+  .cerebros .rotulo { font-size: 7pt; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--suave); margin-bottom: 1.6mm; }
+
+  /* Página 11: los cuatro pasos */
+  .pasos4 { list-style: none; padding: 0; margin: 1mm 0 0; border-top: 0.5pt solid var(--linea); }
+  .pasos4 li { display: grid; grid-template-columns: 10mm 1fr; gap: 0 3mm; padding: 2.8mm 0; border-bottom: 0.5pt solid var(--linea); margin: 0; }
+  .pasos4 .n { font-family: var(--serif); font-size: 22pt; line-height: 1; color: var(--teal); font-weight: 700; }
+  .pasos4 h3 { margin: 0 0 1mm; font-size: 11pt; }
+  .pasos4 p { margin: 0; font-size: 9.6pt; max-width: 140mm; }
+
+  /* Anexos */
+  .real-tabla td { padding: 0.9mm 1.6mm 0.9mm 0; font-size: 8.1pt; line-height: 1.34; }
+  .real-tabla td:first-child { font-weight: 600; color: var(--tinta); width: 54mm; }
+  .real-tabla td:nth-child(2) { width: 40mm; }
+  .limites { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6mm 6mm; font-size: 8.2pt; margin-top: 1mm; }
+  .recuadro.chico-recuadro { padding: 2.6mm 4.2mm; }
+  .recuadro.chico-recuadro p { font-size: 9.8pt; }
+  .limites div { padding-left: 4mm; position: relative; line-height: 1.45; }
+  .limites div::before { content: '·'; position: absolute; left: 0.6mm; top: -0.2mm; color: var(--teal); font-weight: 700; font-size: 12pt; line-height: 1; }
+  .numeros td, .numeros th { font-variant-numeric: tabular-nums; }
+  .numeros td { padding: 0.65mm 1.5mm; font-size: 8.3pt; text-align: right; white-space: nowrap; }
+  .numeros th { padding: 0.9mm 1.5mm; }
+  .numeros { margin-bottom: 2mm; }
+  .numeros td:first-child, .numeros th:first-child { text-align: left; }
+  .numeros th { text-align: right; }
+  .numeros tr.mejor td { background: #eaf3ec; }
+  .numeros tr.sobre td { background: #fbe9e8; }
+  /* v14: la tabla acostada del anexo B (una fila por columna): las columnas 2 y 9 con fondo */
+  .numeros td.mejor, .numeros th.mejor { background: #eaf3ec; }
+  .numeros td.sobre, .numeros th.sobre { background: #fbe9e8; }
+  .acostada th { text-align: right; line-height: 1.25; padding-top: 0.8mm; padding-bottom: 0.8mm; }
+  .acostada td { padding-top: 0.55mm; padding-bottom: 0.55mm; }
+  .acostada td:first-child { white-space: normal; font-weight: 600; color: var(--tinta); }
+  .numeros td b { color: var(--tinta); }
+  .fuentes-simples { list-style: none; padding: 0; margin: 0; columns: 2; column-gap: 7mm; }
+  .fuentes-simples li { break-inside: avoid; margin: 0 0 0.8mm; font-size: 7.3pt; line-height: 1.26; } /* v15: 7,4 pt (era 7,6) para que quepan las dos fuentes nuevas; v16: 7,3 pt e interlineado 1,26 para que quepa Dorkenwald 2024 */
+  .fuentes-simples b { display: block; color: var(--tinta); font-weight: 600; }
+  .fuentes-simples .cita { color: var(--tenue); font-size: 6.8pt; }
+  .fuentes-simples h4 { column-span: all; font-size: 7.2pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 1mm 0 0.8mm; border-bottom: 0.5pt solid var(--linea); padding-bottom: 0.7mm; }
+  .fuentes-simples h4:first-child { margin-top: 0; }
+  .creditos { font-size: 7.8pt; line-height: 1.4; color: var(--suave); border-top: 0.5pt solid var(--linea); padding-top: 1.5mm; }
+  .creditos p { margin: 0 0 0.8mm; max-width: none; }
+  .creditos q { quotes: '“' '”'; }
+
+  /* Portada (v9: clara, con la ilustración de la mosca y su torre; el título arriba y los créditos abajo.
+     La clase "portada" se mantiene para que el pie no la numere; "clara" pisa el fondo oscuro de estilo.css) */
+  .portada.clara { background: var(--papel); color: var(--tinta); }
+  .portada.clara .cabecera { position: absolute; left: 20mm; right: 20mm; top: 24mm; }
+  .portada.clara h1 { font-size: 50pt; line-height: 1.1; color: var(--tinta); margin: 0 0 5mm; letter-spacing: -0.015em; }
+  .portada.clara .lema { font-size: 19.5pt; line-height: 1.3; color: var(--teal); max-width: 150mm; margin: 0 0 4mm; }
+  .portada.clara .subtitulo { font-family: var(--sans); font-size: 10.6pt; line-height: 1.5; color: var(--suave); max-width: 118mm; margin: 0; }
+  .portada.clara .datos { position: absolute; left: 20mm; right: 20mm; bottom: 20mm; border-top-color: var(--linea); color: var(--suave); font-size: 8pt; }
+  .portada.clara .datos b { color: var(--tinta); }
+  /* Separador y cierre */
+  .parte { display: flex; flex-direction: column; justify-content: center; background: var(--tinta); color: #e8ecf6; }
+  .parte .kicker { color: #8fe9ff; }
+  .parte h1 { color: #fff; font-size: 34pt; margin-bottom: 6mm; }
+  .parte > p { color: #b9c6e4; font-size: 11.5pt; max-width: 140mm; }
+  .parte .anexos { list-style: none; padding: 0; margin: 8mm 0 0; max-width: 150mm; }
+  .parte .anexos li { display: grid; grid-template-columns: 12mm 1fr 10mm; gap: 3mm; align-items: baseline; padding: 4.2mm 0; border-top: 0.5pt solid rgba(255,255,255,0.18); margin: 0; }
+  .parte .anexos li:last-child { border-bottom: 0.5pt solid rgba(255,255,255,0.18); }
+  .parte .anexos .letra { font-family: var(--serif); font-size: 24pt; line-height: 1; color: #8fe9ff; font-weight: 700; }
+  .parte .anexos b { display: block; font-family: var(--serif); font-size: 15.5pt; color: #fff; font-weight: 700; margin-bottom: 0.8mm; }
+  .parte .anexos div { color: #b9c6e4; font-size: 10pt; line-height: 1.45; }
+  .parte .anexos .pag { text-align: right; color: #8a93a0; font-variant-numeric: tabular-nums; font-size: 10pt; }
+  .parte .pie { border-top-color: rgba(255,255,255,0.15); color: #8a93a0; }
+  .parte .pie b { color: #b9c6e4; }
+  .cierre .grande { font-size: 28pt; margin: 0 0 4mm; }
+  .cierre .texto p { max-width: 160mm; }
+  /* v18: la dirección del juego publicado, como enlace que se puede tocar en el PDF */
+  a.sitio { color: var(--teal); text-decoration: underline; text-decoration-thickness: 0.6pt; text-underline-offset: 0.6mm; }
+  .cierre .juega { font-family: var(--serif); font-size: 16pt; line-height: 1.3; color: var(--tinta); font-weight: 700; margin: 0 0 5mm; }
+</style>
+</head>
+<body>
+
+<!-- =============================== PORTADA =============================== -->
+<section class="hoja portada clara">
+  <img src="img/portada-torre.svg" alt="Illustration: the fly from the game, wearing a tie and with a drop of sweat, carries on her back a leaning tower of folders that is dropping papers, with a cup of coffee on top; on the floor, a single finished folder with a green check mark" />
+  <div class="cabecera">
+    <h1>Mosca del WIP</h1>
+    <p class="lema">Being busy all the time isn’t the same as making progress</p>
+    <p class="subtitulo">A game with a real fly that shows why it pays to limit work in progress</p>
+  </div>
+  <div class="datos">
+    <div><b>Felipe Fernández</b> · October 2026</div>
+    <div style="text-align:right">Inside, a real fly brain<br />Male CNS v1.0 · CC BY 4.0</div>
+  </div>
+</section>
+
+<!-- =============================== 1 · EL GANCHO (texto de Felipe) =============================== -->
+<section class="hoja" data-k="gancho">
+  <div class="kicker">Why you’re seeing this</div>
+  <h1>Busy all day. So what did you finish?</h1>
+  <p class="bajada">Monday, 9 a.m. Three things left over from yesterday, two emails waiting for an answer, the report, a colleague’s emergency and whatever you meant to finish today. Nine things open. You work nonstop. By 6 you haven’t closed a single one.</p>
+  <p>Almost all of us work like this, and it feels productive. But there’s a question few people ask: how many things should you have open at once? The usual answer is “it depends.” This report shows the answer, in one minute and with a fly.</p>
+  <p>Why a fly? Because the fruit fly is one of the few animals whose entire nervous system has been mapped, neuron by neuron: 166,700 of them, in a map published in 2026. So we made a game. We gave her a tie, a task board and an office day that lasts one minute.</p>
+  <div class="recuadro"><span class="etiqueta">What this is</span><p>This report tells what the game shows and how to try it with your team. Underneath there’s an experiment on the computer, with rules based on studies and a real fly brain. It doesn’t measure people or teams, because it’s a single fly and a single day. That’s why every number says where it comes from, whether the game, the simulation or studies. The rules and the success criteria were written before running the simulations, and no number was adjusted afterward.</p></div>
+  <p class="con-esto"><span class="etiqueta">What you can do with it</span>read it in 10 minutes · play it at <a class="sitio" href="https://mosca.deliverycraft.ai/?lang=en">mosca.deliverycraft.ai</a> · try a limit with your team (page <span data-pag="hacer">11</span>).</p>
+  <p style="margin-top:4mm">We put the same fly to work on the same office day twice: once with 2 tasks open at a time and once with 9. We repeated each day 200 times and took the average. With 2 she finished 18 tasks. With 9 she finished half as many, even though she was busy all day, and each task took almost nine times longer. Page <span data-pag="dia">3</span> shows that day from the inside.</p>
+  <p class="cierre-pagina"><strong>Being busy all the time isn’t the same as making progress.</strong></p>
+  <div class="sobremesa"><span class="rotulo">Fun fact</span><span>Five Nobel Prizes in Medicine have gone to work done with this fly: the first in 1933, the most recent in 2017. <span class="de-donde">(nobelprize.org)</span></span></div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
+</section>
+
+<!-- =============================== 2 · LA PROTAGONISTA Y LAS REGLAS =============================== -->
+<section class="hoja" data-k="mundo">
+  <div class="kicker">The star and her rules</div>
+  <h1>A real fly in a make-believe office, with rules you can see</h1>
+  <p class="bajada">It’s your desk, but on a screen: a three-column board, a cup of coffee, an ashtray and an office worker in a tie.</p>
+  <figure><img class="foto banda-mundo" src="img-en/mundo-wip2.jpg" alt="The fly at her board: To do, In progress and Done" />
+    <figcaption>The fly at her three-column board: To do, In progress and Done.</figcaption>
+  </figure>
+  <p>The star is a fruit fly, one of the most studied animals in biology. She has been in labs for more than a century. Her brain is real (page <span data-pag="cerebro">10</span>), but her office is a game. Before the day starts, you choose how many tasks she can have in progress at once, from 1 to 10. Teams call this a work-in-progress limit, or WIP limit. Then she does her thing: she works, switches tasks, waits for answers and, if she gets overwhelmed, goes out for a smoke.</p>
+  <h3 style="margin-top:2.5mm">The rules of her world (which part of each number is ours, in Appendix B)</h3>
+  <div class="visual"><table class="reglas"><thead><tr><th>The rule</th><th>Inspired by</th></tr></thead><tbody id="t-reglas"></tbody></table></div>
+  <p style="margin-top:3mm">We played 200 days with each number of tasks and took the average. Your Monday with nine things open is on the next page, on the right.</p>
+  <div class="sobremesa"><span class="rotulo">Fun fact</span><span>The fly’s brain has about 139,000 neurons joined by about 50 million connections. The first complete map of all of them was published in 2024. <span class="de-donde">(Dorkenwald et al., 2024)</span></span></div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
+</section>
+
+<!-- =============================== 3 · MISMO DÍA =============================== -->
+<section class="hoja" data-k="dia">
+  <div class="kicker">The same day, twice</div>
+  <h1>With 9 tasks she was busy all day and finished half as many</h1>
+  <p class="bajada">In both photos it’s half past one in the afternoon. The only difference between the two days, in the game, is the limit on tasks at once. You can see it in the ashtray, the coffee and the stack of papers.</p>
+  <figure>
+    <div class="comparar">
+      <img class="foto" src="img-en/escena-wip2.jpg" alt="With two tasks in progress: the fly works calmly, the ashtray is empty and the coffee is hot" />
+      <img class="foto" src="img-en/escena-wip9.jpg" alt="With nine tasks in progress: sticky notes all over the monitor, a tower of papers, cigarette butts and sweat" />
+    </div>
+    <figcaption>Left, with 2 at once: calm, an empty ashtray and steaming coffee. Right, with 9: sticky notes, a tower of papers, sweat and cigarette butts.</figcaption>
+  </figure>
+  <div class="marcador visual">
+    <div class="cab">In the game, average of 200 days</div><div class="cab bien">2 tasks at once · finishes the most</div><div class="cab mal">9 tasks at once · overload</div>
+    <div class="que">Tasks finished in the day</div><div class="bien"><b>18</b></div><div class="mal"><b>9</b></div>
+    <div class="que">Time per task, from start to finish</div><div class="bien"><b>1 h</b></div><div class="mal"><b>8 h 54 min</b></div>
+    <div class="que">Minutes of each hour that really count</div><div class="bien"><b>50</b></div><div class="mal"><b>25</b> loses 35 of every 60</div>
+    <div class="que">Cigarettes and coffees</div><div class="bien"><b>0</b> cigarettes, 5 coffees</div><div class="mal"><b>13</b> cigarettes, 0 coffees</div>
+  </div>
+  <p style="margin-top:4.5mm">With 9 tasks she spent the same hours at the office and was busy almost the whole time. It will sound familiar, because she jumps between tasks, loses a while picking each one back up and goes out to smoke. Since she moves each task forward a little at a time, taking turns, they all take long. Her coffee went cold without her touching it. With 2 the opposite happened: each task was done in an hour, and she had time for five coffees.</p>
+  <p>The sign in the office says up to 3 and the table says 2. The next page explains why.</p>
+  <div class="sobremesa"><span class="rotulo">Fun fact</span><span>In the lab, each task switch costs just a few tenths of a second, and more if the task is hard or unfamiliar. It seems like nothing, but over a day full of switches it adds up. <span class="de-donde">(Rubinstein, Meyer and Evans, 2001)</span></span></div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
+</section>
+
+<!-- =============================== 4 · LA TABLA DE 1 A 10 =============================== -->
+<section class="hoja" data-k="tabla">
+  <div class="kicker">From 1 to 10 tasks</div>
+  <h1>There’s no number where everything breaks: each extra task costs a little more</h1>
+  <p class="bajada">Before you choose your limit, it’s worth seeing the whole table. Each row is an average day out of 200, in the game, with that number of tasks open at once.</p>
+  <div class="visual">
+    <table class="tabla-dia">
+      <thead><tr><th>Tasks at once</th><th>Finished</th><th>Time per task</th><th>Useful minutes per hour</th><th>Cigarettes</th><th>Stress at day’s end</th></tr></thead>
+      <tbody id="t-dia-corta"></tbody>
+    </table>
+    <p class="chico" style="max-width:none;margin-bottom:0">Shaded, the two days from the previous page: green for 2 and red for 9. Time per task in office hours. The other columns and the source of each number are in Appendix B.</p>
+  </div>
+  <p style="margin-top:2mm">With 1 she ends up waiting: when her only task gets stuck she has nothing else at hand, and in the game she spends more than 2 hours a day with nothing to do. That’s why she finishes less than with 2.</p>
+  <p>From 2 to 3 she finishes almost the same and ends the day calm, without a single cigarette. The sign in the office measures stress, and that’s why it says up to 3. Up to there she lasts the whole day, and the game calls that the sustainable limit. The table measures something else, what gets finished, and with 2 she finishes one more task a day than with 3. That one-task difference comes from the cost of switching tasks, an assumption of ours with no data behind it. If that cost were zero, 3 would win (Appendix B). That’s why the game says up to 3 and not a single number.</p>
+  <p>From 4 on, each extra task makes everything a little worse, and the order in which things show up is curious. Stress and cigarettes start at 4 tasks, but what she finishes only drops to half at 9. So it shows in the fly first and on the board much later.</p>
+  <div class="sobremesa"><span class="rotulo">Fun fact</span><span>In the labor courts of Milan, a lottery assigned cases to judges. The judges who by chance had more cases open at once took longer to close them, and the quality of their rulings didn’t change. <span class="de-donde">(Coviello, Ichino and Persico, 2014 and 2015)</span></span></div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
+</section>
+
+<!-- =============================== 5 · LA PARADOJA =============================== -->
+<section class="hoja" data-k="paradoja">
+  <div class="kicker">The paradox</div>
+  <h1>With more tasks she never runs out of things to do, but each one spends more time waiting</h1>
+  <p class="bajada">Your boss sees you busy and likes it. But there are two ways to be efficient: being busy all the time (resource efficiency) or keeping the work moving without waiting (flow efficiency). Optimizing the first ruins the second (Modig and Åhlström, 2012).</p>
+  <figure class="grafico"><div id="g-paradoja"></div>
+    <figcaption>In the game. For example, with 9 tasks she has something to work on 100% of the day, but each task moves forward only 9% of the time it’s open. The other 91% it waits its turn.</figcaption>
+  </figure>
+  <p>With today’s waits, from 3 tasks on she has enough to do all day. Opening more doesn’t give her more work, it just puts tasks in line to wait their turn. In factories that point has a name, “critical WIP” (Hopp and Spearman, <em>Factory Physics</em>).</p>
+  <p>That each task takes longer when more are open is almost a matter of splitting time among all of them, which makes it math and not a finding. It’s what happens when you split one hour among nine tasks: each one gets a few minutes and the other eight wait.</p>
+  <p class="cierre-pagina">The theory only says that what gets finished stops going up. That it also goes down comes from our rules, the cost of switching tasks and the cigarettes.</p>
+  <div class="sobremesa"><span class="rotulo">Fun fact</span><span>That each task takes longer when more are open is not an opinion. It’s a theorem, from 1961. <span class="de-donde">(Little’s law)</span></span></div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
+</section>
+
+<!-- =============================== 6 · EL LÍMITE =============================== -->
+<section class="hoja" data-k="limite">
+  <div class="kicker">The limit</div>
+  <h1>Your ideal limit depends on how much you wait on others</h1>
+  <p class="bajada">The obvious question is whether one thing at a time is best, then. It depends on how much you wait on others. We tried 20 combinations of rules, and in 16 of the 17 cases with waits the best limit landed between 2 and 4.</p>
+  <figure class="grafico"><div id="g-curvas"></div>
+    <figcaption>In the simulation: tasks finished per day by how many she has at once, and the circle marks the best.</figcaption>
+  </figure>
+  <p>Waits push toward more tasks, because if one gets stuck it helps to have another at hand. With just one, in the game, she waits more than 2 hours a day. Switching tasks pushes toward fewer, because every jump has a cost, and the more it costs, the less it pays to open more. Your limit sits between those two forces.</p>
+  <p>That 2 to 4 is a result of the simulation and not a scientific number, so your team has its own. The fly works alone and can’t unblock what she’s waiting for, but a team can. That’s what DORA recommends (page <span data-pag="estudios">8</span>): when someone is left waiting, go after the wait instead of opening something else.</p>
+  <div class="recuadro"><p>Reducing waits lets you lower the limit. Raising the limit doesn’t reduce the waits.</p></div>
+  <p class="cierre-pagina"><strong>A sustainable limit, not one thing at a time</strong> holds when there are waits you can’t avoid. With fewer waits, the limit gets closer to one.</p>
+  <div class="sobremesa"><span class="rotulo">Fun fact</span><span>For DORA, Google’s research program on software teams, the ideal would be for a team to work on a single thing at a time. It admits this may not be achievable, but proposes it as the direction to head in. <span class="de-donde">(dora.dev)</span></span></div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
+</section>
+
+<!-- =============================== 7 · LO EMPEZADO NO DESAPARECE =============================== -->
+<section class="hoja" data-k="empezado">
+  <div class="kicker">What’s started doesn’t disappear</div>
+  <h1>Lowering the limit doesn’t calm her right away: what’s started takes more than 2 hours to clear</h1>
+  <p class="bajada">Say that at noon you decide to get organized and go from ten open things down to two. In the game the ten are still there, so she doesn’t take new ones and closes the ones she has.</p>
+  <figure class="grafico"><div id="g-bajar"></div>
+    <figcaption>In the game, average of 200 days: 10 at once, and at 12:00 the limit drops to 2.</figcaption>
+  </figure>
+  <p>Only at 14:35 does she have two open again. That held with every set of rules we tried, because what’s started takes more than two hours to clear. The time she calms down, 15:07, does depend on how we modeled stress, which rises fast and falls slowly.</p>
+  <p>When we say sustainable we mean something simple: that the fly lasts the whole day without collapsing. The idea is years old, and not just in software.</p>
+  <div class="recuadro"><p>In British munitions factories during World War I, past a certain point each extra hour yielded less. Those who worked 70 hours a week produced almost the same as those who worked 56.<span class="de">Pencavel (2015), <em>The Economic Journal</em>.</span></p></div>
+  <div class="sobremesa"><span class="rotulo">Fun fact</span><span>In the lab, the stress hormone peaks in 20 to 40 minutes and takes longer to come down. <span class="de-donde">(Dickerson and Kemeny, 2004)</span></span></div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
+</section>
+
+<!-- =============================== 8 · NO ES SOLO LA MOSCA =============================== -->
+<section class="hoja" data-k="estudios">
+  <div class="kicker">With real people</div>
+  <h1>It’s not just the fly: judges, recruiters and teams point in the same direction</h1>
+  <p class="bajada">Maybe you’re thinking this is a game, and with a fly at that. You’re right. No study with people gives a number of tasks, but the ones we found point in the same direction.</p>
+  <div class="estudios visual">
+    <div class="estudio"><h3>Italian judges</h3><p>Judges who carried more cases at once, because of the lottery that assigned them, took longer to close them. The quality of their rulings didn’t change.</p><span class="cita">Coviello, Ichino and Persico (2014), <em>American Economic Review</em></span></div>
+    <div class="estudio"><h3>Recruiters</h3><p>A bit of parallel work helped them finish more, but past a point they finished less.</p><span class="cita">Aral, Brynjolfsson and Van Alstyne (2012), <em>Information Systems Research</em></span></div>
+    <div class="estudio"><h3>Research teams</h3><p>People on very few teams at once, or on too many, performed worse than those at a middle point.</p><span class="cita">Bertolotti et al. (2015), <em>Research Policy</em></span></div>
+    <div class="estudio"><h3>Large surveys of software teams</h3><p>Limiting work in progress helps teams deliver better, especially together with visible boards and feedback.</p><span class="cita">DORA, “Work in process limits” (dora.dev) · Forsgren, Humble and Kim (2018), <em>Accelerate</em></span></div>
+    <div class="estudio ancho"><h3>Real offices</h3><p>At three large companies, researchers tracked 137 people over 3,200 workdays. They switched applications or web pages almost 1,200 times a day and lost almost 4 hours a week getting reoriented, 9% of their time. It measures screen switches, not open tasks.</p><span class="cita">Murty, Dadlani and Das (2022), <em>Harvard Business Review</em>, “How Much Time and Energy Do We Waste Toggling Between Applications?”</span></div>
+  </div>
+  <p class="chico" style="margin-top:2.5mm;max-width:none">None of them is a lab experiment. The judges study comes close, because a lottery decided who got more cases. The rest show that things go together, but they don’t prove the cause.</p>
+  <p style="margin-top:4mm">What these studies have in common is that none of them measured how many tasks it’s best to have open. They measured what happens when there are too many, and found more delay per task, less finished, or both. The fly doesn’t add a proof to that list. What it does is put that same direction on a screen, in one minute, so your team can see it before arguing about it.</p>
+  <p class="cierre-pagina">That’s four studies and a survey. None of them gives a number, so you’ll have to measure yours.</p>
+  <div class="sobremesa"><span class="rotulo">Fun fact</span><span>In a 2008 experiment, one group was interrupted while answering emails and another wasn’t. Those interrupted finished a little sooner and just as well, but with more stress and a stronger sense of rush. <span class="de-donde">(Mark, Gudith and Klocke, 2008)</span></span></div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
+</section>
+
+<!-- =============================== 9 · EL DISFRAZ =============================== -->
+<section class="hoja angosto" data-k="disfraz">
+  <div class="kicker">The costume</div>
+  <h1>The fly doesn’t smoke: the cigarette is a costume for cleaning her antennae</h1>
+  <p class="bajada">If you were wondering why a fly smokes, the answer is that she doesn’t, and she doesn’t know what a task is either. So that her brain can feel the load, we translate the office into something she does feel.</p>
+  <figure>
+    <div class="viaje visual">
+      <div class="paso"><b>In the office</b><strong>Lots of open tasks</strong>More tasks, a stronger irritation.</div>
+      <div class="fl">→</div>
+      <div class="paso mosca"><b>In the fly</b><strong>A touch on the antenna, like dust</strong>It switches on the circuit she uses to clean her antennae with her legs.</div>
+      <div class="fl">→</div>
+      <div class="paso"><b>Back in the office</b><strong>The cigarette</strong>Cleaning herself is drawn as going out for a smoke. The game decides how many cigarettes she smokes.</div>
+      <div class="paso"><b>In the office</b><strong>A break with little stress</strong></div>
+      <div class="fl">→</div>
+      <div class="paso mosca"><b>In the fly</b><strong>A taste of sugar</strong>It’s the signal that makes the fly put out her proboscis to eat.</div>
+      <div class="fl">→</div>
+      <div class="paso"><b>Back in the office</b><strong>The coffee</strong>In the simulation this signal wasn’t enough to move the proboscis, so the coffee is just a drawing.</div>
+    </div>
+    <figcaption>Only these two stimuli. We never used pain.</figcaption>
+  </figure>
+  <p>According to studies with people, smoking doesn’t calm you down. It gives brief relief followed by a rebound, and people who quit smoking have less stress than those who keep going. The game’s coffee shows up only when there isn’t much stress, because caffeine raises the stress hormone, even more so if you’re already tense. What helps is the break, not the caffeine. If coffee is your only break, it’s still a break.</p>
+  <p class="cierre-pagina">What’s a cigarette in the game is, in her brain, the order to clean her antennae.</p>
+  <div class="sobremesa"><span class="rotulo">Fun fact</span><span>Pooling 22 studies, breaks of 10 minutes or less raised energy and lowered fatigue. Performance barely changed. <span class="de-donde">(Albulescu et al., 2022)</span></span></div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
+</section>
+
+<!-- =============================== 10 · EL CEREBRO =============================== -->
+<section class="hoja" data-k="cerebro">
+  <div class="kicker">The brain</div>
+  <h1>This is how her brain lights up with 2 and with 9 tasks</h1>
+  <p class="bajada">What you see lighting up comes from a real map. A public science project traced the central nervous system of a male fly, the brain and the nerve cord, neuron by neuron.</p>
+  <figure>
+    <div class="cerebros visual">
+      <div><div class="rotulo">With 2 tasks at once</div><img src="img-en/cerebro-wip2.jpg" alt="The brain with two tasks at once: almost all of it at rest" /></div>
+      <div><div class="rotulo">With 9 tasks at once</div><img src="img-en/cerebro-wip9.jpg" alt="The brain with nine tasks at once: three times as many neurons firing" /></div>
+      <div class="rotulo" style="grid-column:1/-1;text-align:center;margin:1.6mm 0 0">The brain on top. Below, the nerve cord that carries orders to the body</div>
+    </div>
+    <figcaption>In the simulation: 423 neurons firing with 2 tasks and 1,328 with 9, three times as many.</figcaption>
+  </figure>
+  <p>That’s 166,700 neurons, each in its place and with its connections. Each neuron is simulated as a glass with a small hole, which fills up with signals and slowly empties. When it reaches the mark, it spills into the next ones. That model got 9 out of 10 predictions right in living flies, on another map (Shiu et al., 2024).</p>
+  <p>Of the 815 neurons that move the body, with 2 tasks almost none fire in the simulation, and with 9, 65 fire. Even with 10 tasks, less than 1% of her neurons fire. So your nine open things light up something small and precise, the cleaning circuit.</p>
+  <p class="cierre-pagina">Making the tasks dust on the antenna was our choice. The brain reacts to that irritation, but it doesn’t prove the game’s lessons. Those you have to test yourself, with your team.</p>
+  <div class="sobremesa"><span class="rotulo">Fun fact</span><span>Your brain has about 86 billion neurons. The fly’s entire nervous system, 166,700. <span class="de-donde">(Azevedo et al., 2009; Berg et al., 2026)</span></span></div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
+</section>
+
+<!-- =============================== 11 · QUÉ HACER =============================== -->
+<section class="hoja" data-k="hacer">
+  <div class="kicker">What to do with this</div>
+  <h1>Four steps to try a limit with your team</h1>
+  <p class="bajada">The game doesn’t tell you your number, because the fly works alone and your team hands work off and helps each other. These four steps help you find it.</p>
+  <ol class="pasos4 visual">
+    <li><span class="n">1</span><div><h3>Make the work visible</h3><p>Three columns are enough: to do, in progress, done. What you can’t see, you can’t limit.</p></div></li>
+    <li><span class="n">2</span><div><h3>Count what’s open and set a limit</h3><p>Count how many things each person has open today. Agree on a low limit, write it on the board and stick to it; with unavoidable waits, not one.</p></div></li>
+    <li><span class="n">3</span><div><h3>When someone is left waiting, go after the wait</h3><p>Don’t open something else to "make good use of the time": help unblock what’s waiting. With fewer waits, the limit can go down.</p></div></li>
+    <li><span class="n">4</span><div><h3>Try it for two weeks and measure</h3><p>How many tasks get finished per week, how long each one takes, how much is open and how long each task waits. Compare with the two previous weeks; what’s started takes time to clear.</p></div></li>
+  </ol>
+  <p style="margin-top:2.5mm">Limiting work in progress is one of the habits of high-performing teams, and it helps most with a visible board and feedback on what happens in production. Don’t expect the change on day one, because what’s started takes time to clear.</p>
+  <p>The first step needs no meeting: count right now how many things you have open.</p>
+  <div class="recuadro leer" style="padding:2.2mm 4.5mm;margin-top:2.2mm"><span class="etiqueta">Further reading</span><p>Popular books and a practical guide. They aren’t studies, but they tell the same idea in other words.</p>
+    <ul>
+      <li>Modig and Åhlström, <em>This is Lean</em> (2012): the two efficiencies.</li>
+      <li>Goldratt and Cox, <em>The Goal</em> (1984): go after the bottleneck instead of loading on more.</li>
+      <li>McKeown, <em>Essentialism</em> (2014): less but better, and how to say no.</li>
+      <li>Newport, <em>Slow Productivity</em> (2024): “pseudo-productivity,” which is mistaking visible activity for progress.</li>
+      <li>DORA, <em>Work in process limits</em> (dora.dev): free, short and practical.</li>
+    </ul>
+    <p style="margin-top:1.4mm">The studies cited in this report are in Appendix C.</p>
+  </div>
+  <p class="cierre-pagina" style="margin-top:2.5mm"><strong>A sustainable limit, not one thing at a time.</strong></p>
+  <div class="sobremesa"><span class="rotulo">Fun fact</span><span>A Norwegian software company started working with a board and work-in-progress limits. The time it took to fix a bug dropped from 12 to 5 days. <span class="de-donde">(Sjøberg, Johnsen and Solberg, 2012)</span></span></div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
+</section>
+
+<!-- =============================== SEPARADOR ANEXOS =============================== -->
+<section class="hoja parte">
+  <div class="kicker">Appendices</div>
+  <h1>For anyone who wants to check</h1>
+  <p>To follow the story, what came before is enough. These three pages are for checking where everything comes from.</p>
+  <ol class="anexos">
+    <li><span class="letra">A</span><div><b>Is it real?</b>What’s math, what comes from studies and what we added.</div><span class="pag" data-pag="real"></span></li>
+    <li><span class="letra">B</span><div><b>The numbers</b>The columns missing from page 4, where each number comes from and how we tested that the result holds.</div><span class="pag" data-pag="numeros"></span></li>
+    <li><span class="letra">C</span><div><b>Sources and credits</b>Where each idea comes from.</div><span class="pag" data-pag="fuentes"></span></li>
+  </ol>
+  <div class="pie"><span><b>Mosca del WIP</b> · Appendices</span><span class="sin-numero"></span></div>
+</section>
+
+<!-- =============================== A · ¿ES REAL? =============================== -->
+<section class="hoja" data-k="real">
+  <div class="kicker">Appendix A <span>·</span>Is it real?</div>
+  <h1>What’s math, what comes from studies and what we added</h1>
+  <p class="bajada" style="margin-bottom:4mm">Every claim in the report, with its origin. In short, the direction is backed by evidence and the numbers come from the game.</p>
+  <table class="real-tabla">
+    <thead><tr><th>What we say</th><th>What it is</th><th>Why</th></tr></thead>
+    <tbody id="t-real"></tbody>
+  </table>
+  <h3>The limits of this experiment</h3>
+  <div class="limites">
+    <div><strong>A single fly.</strong> It doesn’t measure handoffs or help between people.</div>
+    <div><strong>A single day.</strong> With the same limit, each morning starts over the same way, and a week’s worth of fatigue isn’t in the game.</div>
+    <div><strong>It doesn’t measure people.</strong> It’s an experiment on a computer. A test with real teams would be another project.</div>
+    <div><strong>The brain doesn’t decide.</strong> It shows how a fly reacts to an irritation. The game’s rules are ours.</div>
+  </div>
+  <p class="chico" style="margin-top:3mm;max-width:none;font-size:7.8pt"><strong>Types of evidence, from strongest to weakest</strong> (page <span data-pag="estudios">8</span>): experiment, one thing is changed on purpose and measured (none of those cited is one) · field study with a cause, a lottery decides who gets more (the judges) · field study, correlation, you see what goes with what (recruiters, teams, offices) · survey (DORA) · simulation, rules and assumptions on a computer (the fly).</p>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
+</section>
+
+<!-- =============================== B · LOS NÚMEROS =============================== -->
+<section class="hoja" data-k="numeros">
+  <div class="kicker">Appendix B <span>·</span>The numbers</div>
+  <h1>Changing the rules barely moves the best limit, but it does change how much output drops</h1>
+  <p class="bajada" style="margin-bottom:2.5mm">It all comes from the same game: 200 days for each number of tasks, and then the same again, changing the rules one at a time.</p>
+  <h3 style="margin-top:0">What the table on page 4 doesn’t show (average of 200 days)</h3>
+  <table class="numeros acostada">
+    <thead><tr><th>Tasks at once</th><th>1</th><th class="mejor">2 · finishes<br />the most</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th class="sobre">9 ·<br />overload</th><th>10</th></tr></thead>
+    <tbody id="t-dia"></tbody>
+  </table>
+  <p class="chico" style="max-width:none;margin-bottom:0">Green, the 2, which finishes the most. Red, the 9, the day in the photos. Finished is repeated for reference, and has something to do and how much each task moves are the two curves on page 5.</p>
+  <h3 style="margin-top:3mm">Each number and where it comes from</h3>
+  <table class="origen-tabla">
+    <thead><tr><th>The rule and the number we use</th><th>The study that inspires it</th><th>Which part is ours</th></tr></thead>
+    <tbody id="t-origen"></tbody>
+  </table>
+  <h3 style="margin-top:3mm">Changing the rules: how much waiting, and which limit works best</h3>
+  <table class="numeros">
+    <thead><tr><th>Tasks that get stuck waiting on someone else</th><th>Best limit with today’s rules</th><th>If switching tasks cost nothing</th><th>If it cost much more</th><th>Has enough to do all day from</th></tr></thead>
+    <tbody id="t-esperas"></tbody>
+  </table>
+  <p class="chico" style="max-width:none;margin-bottom:0">In parentheses, the ones that finish almost the same. In 16 of the 17 cases with waits the best landed between 2 and 4, and with no waits, at 1. How much output drops with 10 tasks depends on the cost of switching: 21% with no cost, 55% today, 79% with full Weinberg. Going from 10 down to 2 at 12:00 took from 2 h 14 min to 3 h 25 min to get back to 2 open (5 cases). How it was tested is on page 1: the rules and criteria were written before running, and no number was adjusted afterward.</p>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
+</section>
+
+<!-- =============================== C · FUENTES =============================== -->
+<section class="hoja" data-k="fuentes">
+  <div class="kicker">Appendix C <span>·</span>Sources and credits</div>
+  <h1>Where each idea comes from</h1>
+  <p class="bajada" style="margin-bottom:2.5mm">Only sources we verified. They back the direction of the game, not its numbers.</p>
+  <ul class="fuentes-simples">
+    <h4>Flow and queues</h4>
+    <li><b>More open tasks, more time per task</b>If the same amount comes out and there’s more inside, each one takes longer. It’s a theorem.<br /><span class="cita">Little (1961), <em>Operations Research</em>, 9(3).</span></li>
+    <li><b>The two efficiencies</b>Being busy or keeping the work flowing. A popular book, not a study.<br /><span class="cita">Modig and Åhlström (2012), <em>This is Lean</em>.</span></li>
+    <li><b>Critical WIP</b>With less, the line runs out of things to do, and past a certain point more open work only makes the wait longer.<br /><span class="cita">Hopp and Spearman, <em>Factory Physics</em> (1996 and later editions).</span></li>
+    <h4>People and teams</h4>
+    <li><b>Judges: more juggling, more delay</b>With more cases at once, each one took longer, and quality didn’t change.<br /><span class="cita">Coviello, Ichino and Persico (2014), <em>American Economic Review</em>, 104(2); (2015), <em>J. of the European Economic Association</em>, 13(5).</span></li>
+    <li><b>Recruiters: neither too little nor too much</b><span class="cita">Aral, Brynjolfsson and Van Alstyne (2012), <em>Information Systems Research</em>, 23(3).</span></li>
+    <li><b>Teams at once: a middle point</b><span class="cita">Bertolotti et al. (2015), <em>Research Policy</em>, 44(4).</span></li>
+    <li><b>Limits help, with a board and feedback</b>Instead of raising the limit when someone is waiting, help unblock the work.<br /><span class="cita">DORA, dora.dev/capabilities/wip-limits (CC BY 4.0). Forsgren, Humble and Kim (2018), <em>Accelerate</em>.</span></li>
+    <li><b>Offices: switching screens has a cost</b>137 people at three companies: almost 1,200 application switches a day and almost 4 hours a week getting reoriented. It measures screen switches, not open tasks.<br /><span class="cita">Murty, Dadlani and Das (2022), <em>Harvard Business Review</em>, “How Much Time and Energy Do We Waste Toggling Between Applications?”.</span></li>
+    <li><b>A real team with a board and limits</b>A Norwegian software company switched to working with a board and work-in-progress limits, and the time to fix a bug dropped from 12 to 5 days. A single case.<br /><span class="cita">Sjøberg, Johnsen and Solberg (2012), <em>IEEE Software</em>, 29(5).</span></li>
+    <li><b>Long hours yield less and less</b>Women working in munitions factories, 1914–1918: below a certain number of hours a week, output rose in step with the hours, and beyond that, less and less.<br /><span class="cita">Pencavel (2015), <em>The Economic Journal</em>, 125(589).</span></li>
+    <h4>Task switching, stress, tobacco and coffee</h4>
+    <li><b>Every task switch has a cost</b>Tenths of a second that add up, and more if the task is hard or unfamiliar. The “20% per project” table is a rule of thumb, not a measurement.<br /><span class="cita">Rubinstein, Meyer and Evans (2001), <em>J. of Experimental Psychology: HPP</em>, 27(4). Weinberg (1992), <em>Quality Software Management</em>, vol. 1.</span></li>
+    <li><b>What’s left half-done stays on your mind</b><span class="cita">Leroy (2009), <em>Organizational Behavior and Human Decision Processes</em>, 109(2).</span></li>
+    <li><b>Interruptions are stressful</b>Those interrupted worked a little faster and just as well, but with more stress and more rush.<br /><span class="cita">Mark, Gudith and Klocke (2008), <em>CHI ’08</em>.</span></li>
+    <li><b>Stress rises fast and falls slowly</b>The stress hormone peaks in 20 to 40 minutes, in the lab.<br /><span class="cita">Dickerson and Kemeny (2004), <em>Psychological Bulletin</em>, 130(3).</span></li>
+    <li><b>Smoking doesn’t calm you down</b>It gives brief relief and a rebound, and people who quit have less stress.<br /><span class="cita">Parrott (1999), <em>American Psychologist</em>, 54(10). Taylor et al. (2014), <em>BMJ</em>, 348.</span></li>
+    <li><b>The break helps, and caffeine raises cortisol</b>Across 22 studies, breaks of 10 minutes or less raised energy and lowered fatigue, and performance barely changed. Since caffeine raises cortisol, the game’s coffee only appears without much stress.<br /><span class="cita">Albulescu et al. (2022), <em>PLOS ONE</em>, 17(8). Lovallo et al. (2005), <em>Psychosomatic Medicine</em>, 67(5); (2006), <em>Pharmacol. Biochem. Behav.</em>, 83(3).</span></li>
+    <h4>The fly and her brain</h4>
+    <li><b>How she cleans her antennae</b>Sensors in the antenna, relay neurons and the ones that give the order to the legs. With dust, the eyes come first.<br /><span class="cita">Hampel et al. (2015, 2020), <em>eLife</em>. Seeds et al. (2014), <em>eLife</em>.</span></li>
+    <li><b>Simulating the brain from its map</b>A simple model on the real wiring got 9 out of 10 tested predictions right. With the connections shuffled at random, the cleaning disappears.<br /><span class="cita">Shiu et al. (2024), <em>Nature</em>, 634.</span></li>
+    <li><b>The map of the male fly</b>166,700 neurons of the central nervous system, and we simulate 164,587, the ones whose connections are complete.<br /><span class="cita">Berg et al. (2026), <em>Cell</em>, 189(18).</span></li>
+    <li><b>The first complete map of an adult brain</b>About 139,000 neurons and 50 million connections in the brain of a female, without the nerve cord. The one in the game is another map, the male fly’s.<br /><span class="cita">Dorkenwald et al. (2024), <em>Nature</em>, 634.</span></li>
+    <li><b>The fly in science</b>Five Nobel Prizes in Medicine with flies (1933, 1946, 1995, 2011, 2017), and the neurons in the human brain.<br /><span class="cita">nobelprize.org/drosophila; nobelprize.org/prizes/medicine/1946/summary/ and /1995/summary/. Azevedo et al. (2009), <em>J. of Comparative Neurology</em>, 513(5).</span></li>
+  </ul>
+  <div class="creditos" style="margin-top:1mm">
+    <p><strong>Brain data:</strong> Male CNS v1.0. <q>This project is a collaboration between FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC Laboratory of Molecular Biology, and Google Research.</q> <q>The Male CNS dataset is licensed under CC-BY.</q> License CC BY 4.0 · male-cns.janelia.org.</p>
+    <p><strong>Images:</strong> all come from the Mosca del WIP game and its cover art. <strong>Author:</strong> Felipe Fernández, October 2026. This is the English version of the original report in Spanish.</p>
+  </div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
+</section>
+
+<!-- =============================== CIERRE =============================== -->
+<section class="hoja cierre">
+  <img src="img-en/cierre.jpg" alt="The fly has a coffee near the end of a calm day, with the Done column full" />
+  <div class="texto">
+    <p class="grande">A sustainable limit, <span>not one thing at a time.</span></p>
+    <p class="juega">Play at <a class="sitio" href="https://mosca.deliverycraft.ai/?lang=en">mosca.deliverycraft.ai</a></p>
+    <p class="chico">Near the end of a good day, in the game: two tasks open, the Done column full and the coffee still hot.</p>
+  </div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
+</section>
+
+<script>
+// ---------- Datos del juego: los mismos de compartir.html (Etapa 4.1: 200 días por cada número de tareas, semilla 2024) ----------
+const TERMINADAS = [15.9, 18.0, 16.9, 15.4, 14.0, 12.3, 11.2, 10.0, 9.1, 8.2];
+const TIEMPO = [34, 60, 96, 140, 194, 264, 340, 431, 534, 634]; // minutos por tarea (horas de oficina), redondeados de docs/corrida-oficial.json
+const RINDEN = [44, 50, 47, 43, 39, 34, 31, 28, 25, 23]; // minutos de cada hora
+const CON_QUE_HACER = [74.7, 96.3, 99.5, 100, 100, 100, 100, 100, 100, 100]; // % del día
+const AVANZA = [72.9, 47.2, 32.7, 24.3, 19.0, 15.1, 12.6, 10.4, 8.9, 7.7]; // % del tiempo en curso que se trabaja
+const CIGARROS = [0, 0, 0, 1, 3, 6, 8, 11, 13, 15];
+const CAFES = [6, 5, 4, 3, 1, 0, 0, 0, 0, 0];
+const ESTRES = ['Calm', 'Calm', 'Calm', 'Busy', 'Busy', 'Stressed', 'Stressed', 'Overwhelmed', 'Overwhelmed', 'Overwhelmed'];
+// Etapa 4.2: terminadas según cuántas tareas se traban (0, 20 y 40 %)
+const CURVAS = {
+  'ninguna': [21.2, 18.0, 16.6, 15.1, 13.8, 12.2, 10.9, 9.8, 9.1, 8.2],
+  '1 de cada 5 (hoy)': [15.9, 18.0, 16.9, 15.4, 14.0, 12.3, 11.2, 10.0, 9.1, 8.2],
+  '2 de cada 5': [12.4, 16.8, 16.9, 15.4, 13.9, 12.3, 11.1, 10.1, 9.3, 8.4],
+};
+const ESPERAS = [
+  ['None', '1', '2 (1 to 5)', '1', '1'],
+  ['1 in 10', '2 (1 to 2)', '3 (2 to 5)', '1 (1 to 2)', '2'],
+  ['1 in 5 (today’s game)', '2', '3 (2 to 5)', '2', '3'],
+  ['3 in 10', '2 (2 to 3)', '3 (3 to 5)', '2', '3'],
+  ['2 in 5', '3 (2 to 3)', '4 (3 to 5)', '2', '4'],
+];
+// 10 tareas desde las 09:00 y a las 12:00 baja a 2: promedio de 200 días, cada 15 minutos (la misma curva de compartir.html: docs/corrida-oficial.json)
+const CURVA = {"min":[540,555,570,585,600,615,630,645,660,675,690,705,720,735,750,765,780,795,810,825,840,855,870,885,900,915,930,945,960,975,990,1005,1020,1035,1050,1065,1080],"enCurso":[10,10,10,10,10,10,10,10,10,10,10,10,10,8.8,8.05,7.11,6.15,5.63,4.93,4.31,3.81,3.31,2.88,2.56,2.29,2.13,2.06,2.03,2,2,2,2,2,2,2,2,2],"estres":[10,38.1,57.5,70.8,79.9,91.2,90.5,88.5,95.5,96.9,97.9,98.5,100,98.1,98.1,90.2,81.8,77.2,70.1,62.5,55.7,48.3,41.5,35,29.2,24.6,20.8,18,16,14.5,13.3,12.5,11.9,11.4,11,10.8,10.6]};
+
+// En inglés los decimales van con punto (15.9) y el % pegado al número (85%), como en el juego
+const dec = (x, d = 1) => x.toFixed(d);
+const horas = (m) => (m < 60 ? `${m} min` : `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, '0')} min`);
+const O = (texto) => `<span class="origen">${texto}</span>`;
+const TEAL = '#2f7579', TINTA = '#1d2532', PAPEL = '#fcfaf6', LINEA = '#e2ddd2', TENUE = '#8a93a0', SUAVE = '#556070', TEXTO = '#2c3442';
+
+// ---------- Página 2: las reglas y, al lado, solo la referencia en que se inspira cada una ----------
+document.getElementById('t-reglas').innerHTML = [
+  ['Each task takes 15 to 35 minutes of work.', 'Our rule'],
+  ['Switching tasks has a cost. With 2 tasks each minute yields 85%, and with 10, 50%.', 'Weinberg (1992)'],
+  ['1 in 5 tasks gets stuck for 30 to 60 minutes waiting on someone else.', 'Bertolotti et al. (2015)'],
+  ['Whatever is left half-done takes away a little focus.', 'Leroy (2009)'],
+  ['More open tasks, more stress. It rises fast and falls slowly. The game splits it into four levels: Calm (under 25%), Busy, Stressed and Overwhelmed (from 75%).', 'Dickerson and Kemeny (2004)'],
+  ['When stressed she goes out to "smoke" (8 minutes without working). Without much stress she has a "coffee," a short break.', 'Parrott (1999) · Taylor et al. (2014) · Albulescu et al. (2022) · Lovallo et al. (2005)'],
+  ['Each task takes longer the more there are open.', 'Little’s law (1961)'],
+].map(([r, o]) => `<tr><td>${r}</td><td>${o}</td></tr>`).join('');
+
+// ---------- Página 4: la tabla corta de 1 a 10, cinco columnas; los mismos datos que el anexo B ----------
+document.getElementById('t-dia-corta').innerHTML = TERMINADAS.map((t, i) => {
+  const clase = i === 1 ? 'mejor' : i === 8 ? 'sobre' : '';
+  const n = i === 1 ? '<b>2 · finishes the most</b>' : i === 8 ? '<b>9 · overload</b>' : `${i + 1}`;
+  const nivel = ESTRES[i] === 'Calm' ? 'nivel-t' : ESTRES[i] === 'Overwhelmed' ? 'nivel-k' : 'nivel-m';
+  return `<tr class="${clase}"><td>${n}</td><td><b>${dec(t)}</b></td><td>${horas(TIEMPO[i])}</td><td>${RINDEN[i]} min</td><td>${CIGARROS[i]}</td><td class="${nivel}">${ESTRES[i]}</td></tr>`;
+}).join('');
+
+// ---------- Página 5: la paradoja (dos curvas) ----------
+(function () {
+  const W = 640, H = 262, iz = 42, de = 14, ar = 22, ab = 36;
+  const x = (i) => iz + (i / 9) * (W - iz - de);
+  const y = (v) => ar + (1 - v / 100) * (H - ar - ab);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="How much of the day she has something to work on, and how much each task moves forward, by how many she has at once">`;
+  [0, 25, 50, 75, 100].forEach((v) => { s += `<line x1="${iz}" x2="${W - de}" y1="${y(v)}" y2="${y(v)}" stroke="${LINEA}"/><text x="${iz - 6}" y="${y(v) + 3.5}" font-size="9.5" fill="${TENUE}" text-anchor="end">${v}%</text>`; });
+  for (let i = 0; i < 10; i++) s += `<text x="${x(i)}" y="${H - 18}" font-size="10" fill="${SUAVE}" text-anchor="middle">${i + 1}</text>`;
+  s += `<text x="${(iz + W - de) / 2}" y="${H - 4}" font-size="9.5" fill="${TENUE}" text-anchor="middle">Tasks at once</text>`;
+  s += `<text x="${W - de}" y="${ar - 10}" font-size="9" fill="${TENUE}" text-anchor="end">Average of 200 days</text>`;
+  s += `<text x="0" y="${ar - 10}" font-size="9" fill="${TENUE}">% of the time</text>`;
+  const serie = (datos, color, ancho, etiqueta, ex, ey, ancla) => {
+    s += `<path d="${datos.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ')}" fill="none" stroke="${color}" stroke-width="${ancho}" stroke-linejoin="round" stroke-linecap="round"/>`;
+    datos.forEach((v, i) => { s += `<circle cx="${x(i)}" cy="${y(v)}" r="2.8" fill="${color}" stroke="${PAPEL}" stroke-width="1.2"/>`; });
+    s += `<text x="${ex}" y="${ey}" font-size="10.5" fill="${color}" font-weight="700" text-anchor="${ancla}">${etiqueta}</text>`;
+  };
+  serie(CON_QUE_HACER, TEAL, 2.6, 'Share of the day she has something to work on', x(4.5), y(100) - 7, 'middle');
+  serie(AVANZA, TINTA, 2.2, 'Share of its time each task moves forward (flow efficiency)', x(5.5), H - 31, 'middle');
+  s += `<text x="${x(2) + 6}" y="${y(99.5) + 13}" font-size="9" fill="${TEAL}" text-anchor="middle">from 3 on: 99.5%</text>`;
+  const valor = (i, v, color, dx, dy, ancla) => { s += `<circle cx="${x(i)}" cy="${y(v)}" r="4.2" fill="${color}" stroke="${PAPEL}" stroke-width="1.4"/><text x="${x(i) + dx}" y="${y(v) + dy}" font-size="9.5" fill="${color}" font-weight="700" text-anchor="${ancla}">${dec(v, 0)}%</text>`; };
+  valor(1, CON_QUE_HACER[1], TEAL, 0, 16, 'middle'); // 2 tareas: 96 %
+  valor(8, CON_QUE_HACER[8], TEAL, 0, 16, 'middle'); // 9 tareas: 100 %
+  valor(1, AVANZA[1], TINTA, 8, -6, 'start');        // 2 tareas: 47 %
+  valor(8, AVANZA[8], TINTA, 0, -8, 'middle');       // 9 tareas: 9 %
+  document.getElementById('g-paradoja').innerHTML = s + '</svg>';
+})();
+
+// ---------- Página 6: terminadas según cuántas se traban ----------
+(function () {
+  const W = 640, H = 284, iz = 30, de = 150, ar = 14, ab = 40;
+  const x = (i) => iz + (i / 9) * (W - iz - de);
+  const y = (v) => ar + (1 - v / 24) * (H - ar - ab); // eje desde 0
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Tasks finished per day by tasks at once, with different amounts of waiting">`;
+  [0, 6, 12, 18, 24].forEach((v) => { s += `<line x1="${iz}" x2="${W - de}" y1="${y(v)}" y2="${y(v)}" stroke="${LINEA}"/><text x="${iz - 6}" y="${y(v) + 3.5}" font-size="9.5" fill="${TENUE}" text-anchor="end">${v}</text>`; });
+  for (let i = 0; i < 10; i++) s += `<text x="${x(i)}" y="${H - 20}" font-size="10" fill="${SUAVE}" text-anchor="middle">${i + 1}</text>`;
+  s += `<text x="${(iz + W - de) / 2}" y="${H - 5}" font-size="9.5" fill="${TENUE}" text-anchor="middle">Tasks at once</text>`;
+  const series = [
+    { datos: CURVAS['ninguna'], color: '#86b8bb', ancho: 1.7, trazo: '', r: 2.4, corto: 'None get stuck', texto: 'None get stuck · best: 1', fin: -18 },
+    { datos: CURVAS['2 de cada 5'], color: '#143537', ancho: 1.7, trazo: '1.5 4', r: 2.4, corto: '2 in 5', texto: '2 in 5 · best: 3 (tied with 2)', fin: 18 },
+    { datos: CURVAS['1 de cada 5 (hoy)'], color: TEAL, ancho: 3, trazo: '', r: 3.2, corto: '1 in 5, today’s game', texto: '1 in 5, today’s game · best: 2', fin: 0 },
+  ];
+  const muestra = (q, x1, y1, largo) => `<line x1="${x1}" x2="${x1 + largo}" y1="${y1}" y2="${y1}" stroke="${q.color}" stroke-width="${q.ancho}" stroke-linecap="round"${q.trazo ? ` stroke-dasharray="${q.trazo}"` : ''}/>`;
+  for (const q of series) {
+    s += `<path d="${q.datos.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ')}" fill="none" stroke="${q.color}" stroke-width="${q.ancho}" stroke-linejoin="round" stroke-linecap="round"${q.trazo ? ` stroke-dasharray="${q.trazo}"` : ''}/>`;
+    q.datos.forEach((v, i) => { s += `<circle cx="${x(i)}" cy="${y(v)}" r="${q.r}" fill="${q.color}" stroke="${PAPEL}" stroke-width="1.2"/>`; });
+    const mejor = q.datos.indexOf(Math.max(...q.datos));
+    s += `<circle cx="${x(mejor)}" cy="${y(q.datos[mejor])}" r="7.5" fill="none" stroke="${q.color}" stroke-width="1.8"/>`;
+    const xf = x(9), yf = y(q.datos[9]), xe = W - de + 16, ye = yf + q.fin;
+    s += `<path d="M${xf + 5},${yf} L${xe - 6},${ye}" fill="none" stroke="${q.color}" stroke-width="1" opacity="0.7"/>`;
+    s += `<text x="${xe}" y="${ye + 3.5}" font-size="9.5" fill="${TEXTO}">${q.corto}</text>`;
+  }
+  const lx = x(4.2), ly0 = ar + 12;
+  s += `<text x="${lx}" y="${ly0}" font-size="9" fill="${SUAVE}">Tasks that get stuck waiting on someone else</text>`;
+  [series[0], series[2], series[1]].forEach((q, i) => {
+    const ly = ly0 + 18 + 17 * i;
+    s += muestra(q, lx, ly - 3.5, 24);
+    s += `<text x="${lx + 32}" y="${ly}" font-size="10" fill="${TEXTO}">${q.texto}</text>`;
+  });
+  document.getElementById('g-curvas').innerHTML = s + '</svg>';
+})();
+
+// ---------- Página 7: bajar el límite de 10 a 2 a las 12:00 (Calm en verde, Overwhelmed en rojo, los del medio en gris) ----------
+// (columna de los niveles 8 px más ancha que en español: "Overwhelmed" es más largo que "Colapsada")
+(function () {
+  const W = 640, iz = 40, de = 80, hA = 80, hB = 118, gap = 24, ar = 18, ab = 22;
+  const H = ar + hA + gap + hB + ab;
+  const x = (m) => iz + ((m - 540) / 540) * (W - iz - de);
+  const yA = (v) => ar + (1 - v / 10) * hA;
+  const yB = (v) => ar + hA + gap + (1 - v / 100) * hB;
+  const linea = (ys, f) => CURVA.min.map((m, i) => `${i ? 'L' : 'M'}${x(m).toFixed(1)},${f(ys[i]).toFixed(1)}`).join(' ');
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Tasks in progress and stress when the limit drops from 10 to 2 at 12:00">`;
+  [[0, 25, '#4f9d6a', 0.13, 'Calm'], [25, 50, '#9aa1ab', 0.10, 'Busy'], [50, 75, '#9aa1ab', 0.18, 'Stressed'], [75, 100, '#cc4a43', 0.13, 'Overwhelmed']].forEach(([a, b, c, op, n]) => {
+    s += `<rect x="${iz}" y="${yB(b)}" width="${W - iz - de}" height="${yB(a) - yB(b)}" fill="${c}" opacity="${op}"/>`;
+    s += `<circle cx="${W - de + 10}" cy="${(yB(a) + yB(b)) / 2}" r="3.5" fill="${c}" opacity="${c === '#9aa1ab' ? 0.9 : 1}"/><text x="${W - de + 17}" y="${(yB(a) + yB(b)) / 2 + 3.5}" font-size="9.5" fill="${SUAVE}">${n}</text>`;
+  });
+  [0, 2, 5, 10].forEach((v) => { s += `<line x1="${iz}" x2="${W - de}" y1="${yA(v)}" y2="${yA(v)}" stroke="${LINEA}"/><text x="${iz - 6}" y="${yA(v) + 3.5}" font-size="9.5" fill="${TENUE}" text-anchor="end">${v}</text>`; });
+  for (let h = 9; h <= 18; h++) { s += `<text x="${x(h * 60)}" y="${H - 6}" font-size="9.5" fill="${TENUE}" text-anchor="middle">${String(h).padStart(2, '0')}:00</text>`; }
+  s += `<line x1="${x(720)}" x2="${x(720)}" y1="${ar - 4}" y2="${yB(0)}" stroke="${TINTA}" stroke-width="1"/>`;
+  s += `<text x="${x(720) + 5}" y="${ar - 6}" font-size="9.5" fill="${TINTA}" font-weight="600">12:00 · the limit drops to 2</text>`;
+  s += `<text x="${iz}" y="${ar - 6}" font-size="10" fill="${TEXTO}" font-weight="600">Tasks in progress</text>`;
+  s += `<text x="${iz}" y="${ar + hA + gap - 6}" font-size="10" fill="${TEXTO}" font-weight="600">Stress</text>`;
+  s += `<path d="${linea(CURVA.enCurso, yA)}" fill="none" stroke="${TEAL}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>`;
+  s += `<path d="${linea(CURVA.estres, yB)}" fill="none" stroke="${TINTA}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+  s += `<circle cx="${x(875)}" cy="${yA(2.8)}" r="4" fill="${TEAL}" stroke="${PAPEL}" stroke-width="2"/><text x="${x(875) + 8}" y="${yA(2.8) - 7}" font-size="9.5" fill="${TEXTO}">back to 2 · 14:35</text>`;
+  s += `<circle cx="${x(907)}" cy="${yB(25)}" r="4" fill="${TINTA}" stroke="${PAPEL}" stroke-width="2"/><text x="${x(907) + 8}" y="${yB(25) - 7}" font-size="9.5" fill="${TEXTO}">Calm · 15:07</text>`;
+  s += `<text x="${x(862)}" y="${yB(100) + 11}" font-size="8.5" fill="${SUAVE}">the spikes are the cigarettes</text>`;
+  document.getElementById('g-bajar').innerHTML = s + '</svg>';
+})();
+
+// ---------- Anexo A: qué es cada afirmación ----------
+document.getElementById('t-real').innerHTML = [
+  ['Each task takes longer with more tasks open', O('Math'), 'Little’s law: if the same amount comes out and there’s more inside, each one takes longer. The game follows it.'],
+  ['From 3 tasks on she has enough to do all day', O('Theory') + ' + ' + O('Simulation'), 'The "critical WIP" of production lines, applied to a single person by analogy. In the game, the number depends only on how much waiting there is.'],
+  ['Past the best limit, she finishes less', O('From studies') + ' + ' + O('Our assumption'), 'The direction shows up in judges and recruiters. The size of the drop (half with 9) comes from the cost of switching tasks and of smoking, which are our rules.'],
+  ['With waits, the best limit is 2 to 4', O('Simulation'), 'The result of 20 combinations of rules, in the game. It isn’t a scientific number.'],
+  ['What’s started takes more than 2 hours to clear', O('Simulation'), 'It holds when the rules change. That she calms down in about 3 hours depends on the stress assumption, inspired by lab studies.'],
+  ['More open tasks, more stress', O('Our assumption'), 'Inspired by studies of interruptions and of the stress hormone. No study measures open tasks against stress.'],
+  ['Smoking doesn’t calm you down, and what helps is the break, not the caffeine', O('From studies'), 'The direction comes from studies with people, and the minutes and stress points come from the game.'],
+  ['The neurons and their connections', O('Real data'), 'A public scientific map of a male fly’s nervous system. Each dot is where a neuron is, and we simulate the ones whose connections are complete.'],
+  ['The lights in the brain', O('Simulation'), 'A simple model calculates how that wiring would respond (each neuron is a glass with a small hole, and some signals take water out instead of pouring it in). It was validated in living flies with another map, and hasn’t been tested on this one. Where it starts lighting up depends on the tuning, not on the fly.'],
+  ['"More tasks, more dust on the antenna"', O('Our choice'), 'The translation we chose. The brain reacts to the irritation, not to the tasks.'],
+  ['The cigarette and the coffee', O('Costume') + ' / ' + O('Illustrative'), 'Flies don’t smoke. The cigarette disguises the antenna cleaning, which really does light up, and the coffee is just a drawn break.'],
+].map(([q, e, p]) => `<tr><td>${q}</td><td>${e}</td><td>${p}</td></tr>`).join('');
+
+// ---------- Anexo B: tablas ----------
+const marca = (i) => (i === 1 ? ' class="mejor"' : i === 8 ? ' class="sobre"' : '');
+document.getElementById('t-dia').innerHTML = [
+  ['Finished', TERMINADAS.map((v) => `<b>${dec(v)}</b>`)],
+  ['Has something to do', CON_QUE_HACER.map((v) => `${dec(v, v % 1 ? 1 : 0)}%`)],
+  ['How much each task moves', AVANZA.map((v) => `${dec(v, 0)}%`)],
+  ['Coffees', CAFES.map(String)],
+].map(([n, vs]) => `<tr><td>${n}</td>${vs.map((v, i) => `<td${marca(i)}>${v}</td>`).join('')}</tr>`).join('');
+document.getElementById('t-origen').innerHTML = [
+  ['<b>How much work each task has:</b> 15 to 35 minutes', 'None', 'The number.'],
+  ['<b>Switching tasks has a cost:</b> with 2 tasks each minute yields 85% and with 10, 50%', 'Weinberg (1992), a consulting rule of thumb with no data behind it', 'The softened version the game uses.'],
+  ['<b>Gets stuck waiting on someone else:</b> 1 in 5 tasks, for 30 to 60 minutes', 'Bertolotti et al. (2015): being on several teams has a middle point. It doesn’t measure blockers', 'Both numbers.'],
+  ['<b>What’s left half-done takes away focus:</b> 3% for each half-done task', 'Leroy (2009): what’s left half-done stays on your mind', 'The 3%.'],
+  ['<b>More tasks, more stress:</b> it rises fast and falls slowly, with levels at 25, 50 and 75%', 'Dickerson and Kemeny (2004): the stress hormone peaks in 20 to 40 minutes and comes down more slowly', 'That it rises with the tasks, and the three levels.'],
+  ['<b>Smoking and coffee:</b> smoking is 8 minutes without working, and coffee is a short break, only without much stress', 'Parrott (1999) and Taylor et al. (2014): smoking doesn’t calm you down. Albulescu et al. (2022): the break helps. Lovallo et al. (2005, 2006): caffeine raises cortisol', 'The minutes and the stress points.'],
+  ['<b>Each task takes longer with more open:</b> it follows on its own', 'Little’s law (1961): it’s math', 'Nothing.'],
+].map((f) => `<tr>${f.map((c) => `<td>${c}</td>`).join('')}</tr>`).join('');
+document.getElementById('t-esperas').innerHTML = ESPERAS.map((f, i) =>
+  `<tr class="${i === 2 ? 'mejor' : ''}"><td>${f[0]}</td><td><b>${f[1]}</b></td><td>${f[2]}</td><td>${f[3]}</td><td>${f[4]}</td></tr>`).join('');
+
+// ---------- Números de página: el pie numera solo el contenido (ni la portada ni el separador) ----------
+(function () {
+  const hojas = [...document.querySelectorAll('.hoja')];
+  const contenido = hojas.filter((h) => !h.classList.contains('portada') && !h.classList.contains('parte'));
+  contenido.forEach((h, i) => { const n = h.querySelector('.pie span:last-child'); if (n) n.textContent = `${i + 1} / ${contenido.length}`; });
+  document.querySelectorAll('[data-pag]').forEach((el) => {
+    el.textContent = contenido.findIndex((h) => h.dataset.k === el.dataset.pag) + 1;
+  });
+})();
+</script>
+</body>
+</html>

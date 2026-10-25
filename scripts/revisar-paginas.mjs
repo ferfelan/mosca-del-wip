@@ -28,7 +28,7 @@ import { fileURLToPath } from 'node:url';
 
 const CARPETA = join(dirname(fileURLToPath(import.meta.url)), '..', 'docs', 'contexto');
 const doc = process.argv[2] ?? 'compartir';
-const REGLAS = doc === 'compartir'
+const REGLAS = doc.startsWith('compartir') // también compartir-en, el mismo informe en inglés (2026-10-25)
   ? { llenado: [80, 95], palabras: 200, visuales: 1, lineasTitulo: 2, frase: 99, v7: true, voz: true }
   : { llenado: [80, 95], palabras: 190, visuales: 2, lineasTitulo: 99, frase: 99, v7: false };
 const b = await chromium.launch();
@@ -86,7 +86,7 @@ const filas = await p.evaluate((R) => [...document.querySelectorAll('.hoja')].ma
   const preguntas = (texto.match(/¿/g) ?? []).length;
   const negritas = [...clon.querySelectorAll('p strong, p b')].filter((el) => !el.closest('.visual, .limites, .fuentes-simples, .creditos, .cierre-pagina, .recuadro, .chico, .sobremesa, figure')).length;
   const graficos = h.querySelectorAll('.grafico svg, figure img, img.banda').length;
-  const tipo = h.classList.contains('portada') ? 'portada' : h.classList.contains('parte') ? 'separador' : h.classList.contains('cierre') ? 'cierre' : /anexo/i.test(h.querySelector('.kicker')?.textContent ?? '') ? 'anexo' : 'contenido';
+  const tipo = h.classList.contains('portada') ? 'portada' : h.classList.contains('parte') ? 'separador' : h.classList.contains('cierre') ? 'cierre' : /anexo|appendix/i.test(h.querySelector('.kicker')?.textContent ?? '') ? 'anexo' : 'contenido';
   return {
     pagina: i + 1,
     tipo,
