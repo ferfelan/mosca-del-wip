@@ -60,12 +60,17 @@
     <script type="module" src="/src/visitas.js"></script>
   </head>
   <body>
-    <header id="barra-exhibicion" class="solo-exhibicion" aria-hidden="true">
-      <div class="marca">
+    <header id="barra-exhibicion" class="solo-exhibicion">
+      <!-- "← Inicio" vuelve a la portada (5.2i). El enlace sí se lee con lector
+           de pantalla; el título y los atajos siguen fuera de él, como antes -->
+      <a class="volver-inicio volver-inicio-barra" href="/" title="Volver a la portada">
+        <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M13 8H3.5M7 4.5 3.5 8 7 11.5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>Inicio
+      </a>
+      <div class="marca" aria-hidden="true">
         <span class="marca-nombre">Mosca del WIP</span>
         <span class="marca-sub">La misma partida, en grande</span>
       </div>
-      <div class="barra-datos">
+      <div class="barra-datos" aria-hidden="true">
         <span class="atajo"><kbd>Espacio</kbd> pausa <kbd>R</kbd> otro día <kbd>1–9</kbd> WIP <kbd>D</kbd> demo <kbd>E</kbd> volver <span class="atajo-extra">· doble clic: vista inicial</span></span>
       </div>
     </header>
@@ -76,6 +81,23 @@
       <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path d="M10 3.5 5.5 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
     <div id="cel-controles" class="solo-celular" role="group" aria-label="Controles del día"></div>
+
+    <!-- Computador (5.2i): "← Inicio" fijo arriba a la izquierda en Control, con
+         los paneles abiertos o cerrados (la tarjeta del cerebro empieza debajo);
+         con el cerebro oculto, el botón "Cerebro" va a su lado. En Exhibición el
+         enlace está en la barra de arriba; en el celular es la flecha de más arriba. -->
+    <div id="arriba-izq">
+      <a id="volver-inicio" class="volver-inicio" href="/" title="Volver a la portada">
+        <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M13 8H3.5M7 4.5 3.5 8 7 11.5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>Inicio
+      </a>
+      <button id="btn-mostrar-cerebro" type="button" title="Mostrar el cerebro (tecla B)" aria-controls="cerebro">
+        <span class="icono-cerebro" aria-hidden="true">
+          <span style="--c: #2fe3ff"></span><span style="--c: #8b5cff"></span><span style="--c: #ffd84d"></span><span style="--c: #ff4fd8"></span>
+        </span>
+        Cerebro
+        <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
 
     <div id="escena">
       <canvas id="lienzo-3d"></canvas>
@@ -343,14 +365,6 @@
       <p>Los números de la oficina son del juego. Que cada tarea tarde más y se termine menos tiene respaldo; que suba el estrés es un supuesto nuestro.</p>
       <p class="cerebro-info-credito">Datos: Male CNS v1.0. Una colaboración entre FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC Laboratory of Molecular Biology y Google Research. Licencia CC BY 4.0 · male-cns.janelia.org</p>
     </div>
-
-    <button id="btn-mostrar-cerebro" type="button" title="Mostrar el cerebro (tecla B)" aria-controls="cerebro">
-      <span class="icono-cerebro" aria-hidden="true">
-        <span style="--c: #2fe3ff"></span><span style="--c: #8b5cff"></span><span style="--c: #ffd84d"></span><span style="--c: #ff4fd8"></span>
-      </span>
-      Cerebro
-      <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
 
     <button id="btn-mostrar-controles" type="button" title="Mostrar los controles (tecla C)" aria-controls="panel">
       <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M10 3.5 5.5 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>

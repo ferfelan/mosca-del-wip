@@ -9,7 +9,7 @@ import { cargarDatosCerebro, cargarActividadReal, crearCerebro, GRUPOS_VISUALES 
 import { sacarFoto } from './foto.js';
 import { crearGraficoDia } from './grafico.js';
 import { POS_CENICERO, POS_PILA, CENTRO_PANTALLA, ESCALA_MONITOR } from './layout.js';
-import { leerIdioma, marcarIdioma, elegirIdioma, formatoNumero } from './idioma.js';
+import { leerIdioma, marcarIdioma, elegirIdioma, formatoNumero, rutaEnIdioma } from './idioma.js';
 import { tx, ponerIdiomaJuego, nombreNivel, zona, prepararPagina, traducirPagina } from './juego-textos.js';
 import { iniciarCelular, esCelular, vistaCelular } from './celular.js';
 
@@ -22,6 +22,7 @@ marcarIdioma(idioma);
 ponerIdiomaJuego(idioma);
 prepararPagina();
 if (idioma === 'en') traducirPagina('en');
+ponerEnlacesInicio();
 // Números como se escriben en cada idioma: 1.328 en español, 1,328 en inglés
 let miles = formatoNumero(idioma);
 
@@ -1186,11 +1187,19 @@ function pintarBotonesIdioma() {
 pintarBotonesIdioma();
 for (const boton of botonesIdioma) boton.addEventListener('click', () => cambiarIdioma(boton.dataset.idioma));
 
+// Los enlaces a la portada ("← Inicio" en Control y en la barra de Exhibición,
+// y la flecha del celular) llevan al mismo idioma del juego (5.2i): en inglés,
+// /?lang=en
+function ponerEnlacesInicio() {
+  for (const a of document.querySelectorAll('.volver-inicio, #cel-volver')) a.setAttribute('href', rutaEnIdioma('/', idioma));
+}
+
 function cambiarIdioma(nuevo) {
   if (nuevo === idioma || !['es', 'en'].includes(nuevo)) return;
   elegirIdioma(nuevo);
   idioma = nuevo;
   ponerIdiomaJuego(nuevo);
+  ponerEnlacesInicio();
   miles = formatoNumero(nuevo);
   traducirPagina(nuevo);
   pintarBotonesIdioma();

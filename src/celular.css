@@ -62,6 +62,7 @@ html.celular:not([data-cel-vista='dias']) #cel-dias {
    el estrés del día se mueven a la pestaña Días, y la hora con sus botones a
    la píldora de arriba) */
 html.celular #ex-inicio,
+html.celular #arriba-izq,
 html.celular #btn-mostrar-cerebro,
 html.celular #btn-mostrar-controles,
 html.celular #idioma-flotante,

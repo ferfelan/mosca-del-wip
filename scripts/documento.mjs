@@ -35,7 +35,9 @@
 // completo v10, la Etapa 5 en la sección 27, con las fotos del grupo sitio; "Para compartir en
 // inglés" v19, la traducción del v19, con las fotos del juego en inglés; completo v11, la parte
 // 5.2g: el botón Empezar, el informe en inglés y la portada al día; completo v12, el logo nítido
-// de la 5.2g, que se había caído del v11, y el cierre de la presentación).
+// de la 5.2g, que se había caído del v11, y el cierre de la presentación; compartir v20 (ES y EN) y
+// completo v13, los detalles de la 5.2h; 26 oct., 5.2i: compartir v21 (ES y EN), la pág. 1 sin la caja
+// "Qué es", y completo v14, con el botón "← Inicio", la línea "Creado por" y las columnas 18/9 de la portada).
 //
 // Uso: node scripts/documento.mjs                → los dos informes (y el de
 //                                                  compartir en inglés)
@@ -66,9 +68,9 @@ const IMG = join(CARPETA, IDIOMA === 'en' ? 'img-en' : 'img');
 const SALIDA = process.env.SALIDA ?? join(homedir(), 'Desktop', 'Mosca del WIP');
 const FECHA = process.env.FECHA ?? new Date().toLocaleDateString('sv-SE'); // 2026-10-20
 const DOCUMENTOS = [
-  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v13' },
-  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v20', paginas: [16, 17] },
-  { id: 'compartir-en', html: 'compartir-en.html', nombre: 'Para compartir en inglés', version: 'v20', paginas: [16, 17] },
+  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v14' },
+  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v21', paginas: [16, 17] },
+  { id: 'compartir-en', html: 'compartir-en.html', nombre: 'Para compartir en inglés', version: 'v21', paginas: [16, 17] },
   { id: 'norte', html: 'norte.html', nombre: 'Norte del proyecto', version: 'v1', paginas: [1, 2], aparte: true },
   { id: 'etapa4-1', html: 'etapa4-1.html', nombre: 'Etapa 4.1 La paradoja', version: 'v1', paginas: [1, 3], aparte: true },
   { id: 'etapa4-2', html: 'etapa4-2.html', nombre: 'Etapa 4.2 Robustez', version: 'v1', paginas: [1, 3], aparte: true },

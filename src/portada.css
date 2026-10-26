@@ -362,6 +362,10 @@ h1 {
 .lema:lang(en) { max-width: 26ch; }
 .que-es { color: var(--suave); max-width: 44ch; margin-bottom: 34px; text-wrap: pretty; }
 .hero-texto .nota { margin-top: 16px; }
+/* "Creado por Felipe Fernández" (5.2i): la línea de abajo, pegada a la de arriba,
+   con el nombre como enlace discreto a su LinkedIn */
+.hero-texto .nota + .nota { margin-top: 5px; }
+.nota-autor a { color: var(--suave); }
 
 .laboratorio {
   position: relative;

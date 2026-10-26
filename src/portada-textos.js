@@ -25,6 +25,7 @@ export const INGLES = {
   jugar: 'Play',
   descargar: 'Download the report (PDF)',
   gratis: 'Free, no sign-up. Plays on a computer, phone or tablet.',
+  creadoPor: 'Created by <a href="https://www.linkedin.com/in/felipefernandezandrade/" target="_blank" rel="noopener">Felipe Fernández</a>', // 5.2i
   neuronas: 'neurons firing',
   enSimulacion: 'in the simulation',
   consolaFrase: 'Real neurons from a fly. The more tasks she has on her plate, the more her brain lights up.',
@@ -46,7 +47,7 @@ export const INGLES = {
   dosALaVez: '2 at once',
   nueveALaVez: '9 at once',
   total18: '<span class="cifra">18</span> finished',
-  total9: '<span class="cifra">9</span> half as many',
+  total9: '<span class="cifra">9</span> finished (half)', // 5.2i: las dos columnas dicen lo mismo
   hechoNota: 'Average of 200 days played.',
 
   // Por dentro

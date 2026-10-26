@@ -134,6 +134,7 @@ export const PAGINA = {
   // Celular (Parte 5.2e): volver, la píldora del reloj, la hoja de abajo, las
   // pestañas y el fin del día ("Cerebro", "Idioma" y "Reiniciar día" ya están)
   'Volver a la portada': 'Back to the home page',
+  Inicio: 'Home', // "← Inicio" en Control y en la barra de Exhibición (5.2i)
   'Controles del día': 'Day controls',
   'Más números': 'More numbers',
   Vistas: 'Views',
