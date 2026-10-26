@@ -76,6 +76,8 @@ const DOCUMENTOS = [
   { id: 'etapa4-2', html: 'etapa4-2.html', nombre: 'Etapa 4.2 Robustez', version: 'v1', paginas: [1, 3], aparte: true },
   { id: 'etapa4-3', html: 'etapa4-3.html', nombre: 'Etapa 4.3 Cruce con los estudios', version: 'v1', paginas: [1, 3], aparte: true },
   { id: 'maqueta', html: 'maqueta-v7.html', nombre: 'Maqueta compartir', version: 'v7', paginas: [3, 3], aparte: true },
+  // Etapa 6.0 (2026-10-26): la guía del taller, 16 hojas (se arma con DOC=taller)
+  { id: 'taller', html: 'taller.html', nombre: 'Taller - Guía', version: 'v1', paginas: [14, 16], aparte: true },
 ];
 const SITIO = 'http://localhost:5173'; // raíz del sitio (portada, docs)
 const JUEGO = `${SITIO}/jugar/`; // el juego vive en /jugar/ desde la Etapa 5.1
