@@ -80,6 +80,7 @@ const DOCUMENTOS = [
   { id: 'taller', html: 'taller.html', nombre: 'Taller - Guía', version: 'v1', paginas: [14, 16], aparte: true },
   // Etapa 6.0 v2 (2026-10-26): el manual del facilitador del taller "Deja de empezar, empieza a terminar", 12 hojas (DOC=taller-v2)
   { id: 'taller-v2', html: 'taller-v2.html', nombre: 'Taller - Manual del facilitador', version: 'v2', paginas: [11, 12], aparte: true },
+  { id: 'taller-v3', html: 'taller-v3.html', nombre: 'Taller - Guía rápida del facilitador', version: 'v3', paginas: [8, 8], aparte: true },
 ];
 const SITIO = 'http://localhost:5173'; // raíz del sitio (portada, docs)
 const JUEGO = `${SITIO}/jugar/`; // el juego vive en /jugar/ desde la Etapa 5.1
