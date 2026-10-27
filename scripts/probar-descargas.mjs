@@ -143,7 +143,9 @@ for (const [motor, nombre, opciones, abre] of CASOS) for (const idioma of ['es',
       const bytes = readFileSync(destino);
       const cabeza = ruta.endsWith('.pptx') ? 'PK' : '%PDF-';
       if (bytes.subarray(0, cabeza.length).toString() !== cabeza || bytes.length !== esperado.tamano) mal(`${cual} bajó un archivo raro (${bytes.length} bytes, se esperaban ${esperado.tamano})`);
-      if (PUBLICADA && descarga.suggestedFilename() !== esperado.nombre) mal(`${cual} lo guarda como «${descarga.suggestedFilename()}»`);
+      // WebKit en Mac entrega el nombre con las tildes descompuestas (NFD, "i" + acento);
+      // se comparan los dos en la misma forma (NFC) para no marcar como raro un nombre igual
+      if (PUBLICADA && descarga.suggestedFilename().normalize('NFC') !== esperado.nombre.normalize('NFC')) mal(`${cual} lo guarda como «${descarga.suggestedFilename()}»`);
       if (conDescarga && (await enlace.getAttribute('download')) !== esperado.nombre) mal(`${cual} propone el nombre «${await enlace.getAttribute('download')}»`);
     }
   }
