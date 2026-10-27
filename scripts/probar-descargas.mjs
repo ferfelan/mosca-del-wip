@@ -1,21 +1,29 @@
-// Prueba los botones del informe en PDF de la portada, como lo haría una
-// persona, en Chrome y en el motor de Safari (WebKit):
-//   - en computador y en Android, cada botón visible baja el PDF entero, con
-//     el nombre "Mosca del WIP - Informe.pdf" (con la dirección publicada; en
-//     npm run dev el nombre lo pone el navegador),
-//   - con la portada en inglés, todos los botones y la tapa son los del informe
-//     en inglés ("Mosca del WIP - Report.pdf"; 2026-10-25), también al cambiar
-//     de idioma con el botón ES | EN,
+// Prueba los botones y enlaces que bajan archivos desde la portada, como lo
+// haría una persona, en Chrome y en el motor de Safari (WebKit):
+//   - el informe en PDF (los botones del kit, de "Qué es y qué no es" y del
+//     cierre) y, desde la portada v2 (2026-10-26), los tres archivos del
+//     taller en la tarjeta "El taller" del kit (el manual en PDF, la
+//     presentación en PowerPoint y en PDF);
+//   - en computador y en Android, cada enlace visible baja el archivo entero,
+//     con su nombre limpio ("Mosca del WIP - Informe.pdf", "Mosca del WIP -
+//     Taller - Manual del facilitador.pdf"…; con la dirección publicada; en npm
+//     run dev el nombre lo pone el navegador);
+//   - con la portada en inglés, los botones del informe y la tapa son los del
+//     informe en inglés ("Mosca del WIP - Report.pdf"; 2026-10-25), también al
+//     cambiar de idioma con el botón ES | EN; los del taller son los mismos en
+//     los dos idiomas (por ahora el taller está solo en español);
 //   - en iPhone y en iPad (que se presenta como Mac con pantalla táctil), cada
-//     botón abre el PDF en la misma pestaña en vez de "descargarlo" (ver
-//     src/portada.js, "El informe en PDF"),
-//   - ningún botón queda tapado por otra cosa,
-// en español y en inglés. Necesita WebKit para Playwright la primera vez:
-// npx playwright install webkit
+//     enlace abre el archivo en la misma pestaña en vez de "descargarlo" (ver
+//     src/portada.js, "El informe en PDF");
+//   - ningún enlace queda tapado por otra cosa;
+//   - el interruptor del taller (data-taller en la sección .kit): con
+//     "con-descargas" se ven los tres archivos; con "muy-pronto", ninguno y se
+//     lee "Muy pronto".
+// Necesita WebKit para Playwright la primera vez: npx playwright install webkit
 // Uso (con npm run dev, o con la dirección publicada):
 //   node scripts/probar-descargas.mjs [dirección]
 import { chromium, webkit } from 'playwright';
-import { mkdtempSync, readFileSync, statSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, statSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -26,7 +34,15 @@ const INFORMES = {
   es: { pdf: '/Mosca-del-WIP-Informe.pdf', nombre: 'Mosca del WIP - Informe.pdf', tapa: '/img/tapa-informe.jpg' },
   en: { pdf: '/Mosca-del-WIP-Report.pdf', nombre: 'Mosca del WIP - Report.pdf', tapa: '/img/tapa-report.jpg' },
 };
-for (const informe of Object.values(INFORMES)) informe.tamano = statSync(new URL(`../public${informe.pdf}`, import.meta.url)).size;
+// Los archivos del taller (los mismos en los dos idiomas), como en index.html
+const TALLER = [
+  { ruta: '/taller/Mosca-del-WIP-Taller-Manual.pdf', nombre: 'Mosca del WIP - Taller - Manual del facilitador.pdf' },
+  { ruta: '/taller/Mosca-del-WIP-Taller-Presentacion.pptx', nombre: 'Mosca del WIP - Taller - Presentación.pptx' },
+  { ruta: '/taller/Mosca-del-WIP-Taller-Presentacion.pdf', nombre: 'Mosca del WIP - Taller - Presentación.pdf' },
+];
+const enPublic = (ruta) => new URL(`../public${ruta}`, import.meta.url);
+for (const informe of Object.values(INFORMES)) informe.tamano = statSync(enPublic(informe.pdf)).size;
+for (const archivo of TALLER) archivo.tamano = existsSync(enPublic(archivo.ruta)) ? statSync(enPublic(archivo.ruta)).size : 0;
 const CARPETA = mkdtempSync(join(tmpdir(), 'probar-descargas-'));
 
 const IPHONE = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1';
@@ -51,6 +67,9 @@ const navegadores = {};
 const abrir = async (motor) => (navegadores[motor] ??= await (motor === 'webkit' ? webkit : chromium).launch());
 let problemas = 0;
 const mal = (texto) => { problemas++; console.log(`        - ${texto}`); };
+const conIdioma = (idioma) => DIRECCION + (idioma === 'en' ? '?lang=en' : '');
+
+for (const archivo of TALLER) if (!archivo.tamano) mal(`falta public${archivo.ruta} (se copia desde la Parte B, el taller v2)`);
 
 for (const [motor, nombre, opciones, abre] of CASOS) for (const idioma of ['es', 'en']) {
   const contexto = await (await abrir(motor)).newContext({ ...opciones, acceptDownloads: true });
@@ -58,21 +77,41 @@ for (const [motor, nombre, opciones, abre] of CASOS) for (const idioma of ['es',
   const pagina = await contexto.newPage();
   const errores = [];
   pagina.on('pageerror', (e) => errores.push(e.message));
-  await pagina.goto(DIRECCION + (idioma === 'en' ? '?lang=en' : ''), { waitUntil: 'load' });
+  await pagina.goto(conIdioma(idioma), { waitUntil: 'load' });
   await pagina.waitForTimeout(1200);
   const antes = problemas;
   const informe = INFORMES[idioma];
   const tapa = await pagina.locator('[data-tapa]').getAttribute('src');
   if (tapa !== informe.tapa) mal(`la tapa es ${tapa} y no ${informe.tapa}`);
-  const total = await pagina.locator('a[href$=".pdf"]').count();
+  // El interruptor del taller
+  const interruptor = await pagina.locator('.kit').getAttribute('data-taller');
+  const tallerVisibles = await pagina.locator('[data-taller-archivo]:visible').count();
+  const prontoVisible = await pagina.locator('.muy-pronto:visible').count();
+  if (interruptor === 'con-descargas' && (tallerVisibles !== 3 || prontoVisible)) mal(`con data-taller="con-descargas" se ven ${tallerVisibles} archivos del taller y ${prontoVisible} "Muy pronto"`);
+  if (interruptor === 'muy-pronto' && (tallerVisibles || prontoVisible !== 1)) mal(`con data-taller="muy-pronto" se ven ${tallerVisibles} archivos del taller y ${prontoVisible} "Muy pronto"`);
+  if (!['con-descargas', 'muy-pronto'].includes(interruptor)) mal(`la sección .kit tiene data-taller="${interruptor}": debía ser con-descargas o muy-pronto`);
+
+  const enlaces = pagina.locator('a[href$=".pdf"], a[href$=".pptx"]');
+  const total = await enlaces.count();
   let probados = 0;
+  const probadosTaller = new Set();
   for (let i = 0; i < total; i++) {
-    const enlace = pagina.locator('a[href$=".pdf"]').nth(i);
+    const enlace = enlaces.nth(i);
     if (!(await enlace.isVisible())) continue;
     probados++;
-    const cual = `botón ${i + 1} (${(await enlace.getAttribute('class')) || ''})`;
+    const cual = `enlace ${i + 1} (${(await enlace.getAttribute('class')) || (await enlace.textContent()).trim()})`;
     const ruta = new URL(await enlace.evaluate((el) => el.href)).pathname;
-    if (ruta !== informe.pdf) mal(`${cual} lleva a ${ruta} y no al informe en ${idioma === 'en' ? 'inglés' : 'español'}`);
+    // Qué archivo debía ser: el informe del idioma o uno del taller
+    let esperado;
+    if ((await enlace.getAttribute('data-informe')) !== null) {
+      esperado = { ruta: informe.pdf, nombre: informe.nombre, tamano: informe.tamano };
+      if (ruta !== informe.pdf) mal(`${cual} lleva a ${ruta} y no al informe en ${idioma === 'en' ? 'inglés' : 'español'}`);
+    } else if ((await enlace.getAttribute('data-taller-archivo')) !== null) {
+      esperado = TALLER.find((a) => a.ruta === ruta);
+      if (!esperado) mal(`${cual} lleva a ${ruta}, que no es ninguno de los tres archivos del taller`);
+      else probadosTaller.add(ruta);
+    } else mal(`${cual} lleva a ${ruta} y no se sabe qué archivo es (sin data-informe ni data-taller-archivo)`);
+    if (!esperado) continue;
     await enlace.scrollIntoViewIfNeeded();
     await pagina.waitForTimeout(250);
     const tapado = await enlace.evaluate((el) => {
@@ -84,32 +123,34 @@ for (const [motor, nombre, opciones, abre] of CASOS) for (const idioma of ['es',
     const conDescarga = (await enlace.getAttribute('download')) !== null;
     const tocar = () => (opciones.hasTouch ? enlace.tap() : enlace.click());
     if (abre) {
-      if (conDescarga) mal(`${cual} todavía tiene "download": en ${nombre} debía abrir el PDF`);
+      if (conDescarga) mal(`${cual} todavía tiene "download": en ${nombre} debía abrir el archivo`);
       const [pedido] = await Promise.all([
-        pagina.waitForRequest((r) => r.isNavigationRequest() && r.url().endsWith(informe.pdf), { timeout: 15000 }).catch(() => null),
+        pagina.waitForRequest((r) => r.isNavigationRequest() && r.url().endsWith(esperado.ruta), { timeout: 15000 }).catch(() => null),
         tocar(),
       ]);
-      if (!pedido) mal(`${cual} no abrió el PDF`);
-      await pagina.goto(DIRECCION + (idioma === 'en' ? '?lang=en' : ''), { waitUntil: 'load' });
+      if (!pedido) mal(`${cual} no abrió ${esperado.ruta}`);
+      await pagina.goto(conIdioma(idioma), { waitUntil: 'load' });
       await pagina.waitForTimeout(600);
     } else {
       if (!conDescarga) mal(`${cual} no tiene "download"`);
       const [descarga] = await Promise.all([pagina.waitForEvent('download', { timeout: 15000 }).catch(() => null), tocar()]);
       if (!descarga) {
-        mal(`${cual} no bajó el PDF`);
+        mal(`${cual} no bajó ${esperado.ruta}`);
         continue;
       }
-      const destino = join(CARPETA, `${nombre}-${idioma}-${i}.pdf`);
+      const destino = join(CARPETA, `${nombre}-${idioma}-${i}${ruta.slice(ruta.lastIndexOf('.'))}`);
       await descarga.saveAs(destino);
       const bytes = readFileSync(destino);
-      if (bytes.subarray(0, 5).toString() !== '%PDF-' || bytes.length !== informe.tamano) mal(`${cual} bajó un archivo raro (${bytes.length} bytes)`);
-      if (PUBLICADA && descarga.suggestedFilename() !== informe.nombre) mal(`${cual} lo guarda como «${descarga.suggestedFilename()}»`);
-      if (conDescarga && (await enlace.getAttribute('download')) !== informe.nombre) mal(`${cual} propone el nombre «${await enlace.getAttribute('download')}»`);
+      const cabeza = ruta.endsWith('.pptx') ? 'PK' : '%PDF-';
+      if (bytes.subarray(0, cabeza.length).toString() !== cabeza || bytes.length !== esperado.tamano) mal(`${cual} bajó un archivo raro (${bytes.length} bytes, se esperaban ${esperado.tamano})`);
+      if (PUBLICADA && descarga.suggestedFilename() !== esperado.nombre) mal(`${cual} lo guarda como «${descarga.suggestedFilename()}»`);
+      if (conDescarga && (await enlace.getAttribute('download')) !== esperado.nombre) mal(`${cual} propone el nombre «${await enlace.getAttribute('download')}»`);
     }
   }
-  if (!probados) mal('no hay ningún botón del PDF a la vista');
+  if (!probados) mal('no hay ningún enlace de descarga a la vista');
+  if (interruptor === 'con-descargas' && probadosTaller.size !== 3) mal(`se probaron ${probadosTaller.size} archivos del taller y no 3`);
   // En español, pasar a inglés con el botón ES | EN cambia todos los enlaces y
-  // la tapa al informe en inglés (y volver, al de español)
+  // la tapa al informe en inglés (y volver, al de español); los del taller no cambian
   if (idioma === 'es') {
     for (const [otro, boton] of [['en', 'en'], ['es', 'es']]) {
       const visible = pagina.locator(`[data-idioma="${boton}"]:visible`).first();
@@ -121,15 +162,18 @@ for (const [motor, nombre, opciones, abre] of CASOS) for (const idioma of ['es',
         rutas: [...document.querySelectorAll('[data-informe]')].map((a) => new URL(a.href).pathname),
         nombres: [...document.querySelectorAll('[data-informe]')].map((a) => a.getAttribute('download')),
         tapa: document.querySelector('[data-tapa]').getAttribute('src'),
+        taller: [...document.querySelectorAll('[data-taller-archivo]')].map((a) => new URL(a.href).pathname),
       }));
       const esperado = INFORMES[otro];
       if (ahora.rutas.some((r) => r !== esperado.pdf) || ahora.tapa !== esperado.tapa) mal(`al pasar a ${otro} con el botón, los enlaces son ${[...new Set(ahora.rutas)].join(', ')} y la tapa ${ahora.tapa}`);
       if (ahora.nombres.some((n) => (abre ? n !== null : n !== esperado.nombre))) mal(`al pasar a ${otro} con el botón, el nombre para guardar es ${[...new Set(ahora.nombres)].join(', ')}`);
+      if (ahora.taller.join() !== TALLER.map((a) => a.ruta).join()) mal(`al pasar a ${otro} con el botón, los archivos del taller son ${ahora.taller.join(', ')}`);
     }
   }
   for (const e of errores) mal(`error: ${e}`);
-  console.log(`${problemas === antes ? 'ok     ' : 'REVISAR'} ${motor} ${nombre} ${idioma}: ${probados} botones, ${abre ? 'lo abren' : 'lo bajan'}`);
+  console.log(`${problemas === antes ? 'ok     ' : 'REVISAR'} ${motor} ${nombre} ${idioma}: ${probados} enlaces, ${abre ? 'lo abren' : 'lo bajan'}`);
   await contexto.close();
 }
 for (const n of Object.values(navegadores)) await n.close();
 console.log(problemas ? `\n${problemas} cosas para revisar` : '\ndescargas: todo bien');
+process.exit(problemas ? 1 : 0);

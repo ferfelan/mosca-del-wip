@@ -2,7 +2,7 @@
 // 5.2f) como lo haría una persona, en celular, tablet y computador, en
 // español e inglés:
 //   - cada sección del menú: lleva a su sección, el título no queda tapado
-//     por la barra, la dirección muestra la sección (#juego…), el menú queda
+//     por la barra, la dirección muestra la sección (#juego, #kit…), el menú queda
 //     marcando esa sección y, en celular, se cierra solo;
 //   - el logo vuelve arriba sin recargar, saca la sección de la dirección y
 //     "atrás" devuelve a la sección;
@@ -23,7 +23,8 @@
 import { chromium, webkit } from 'playwright';
 
 const DIRECCION = process.argv[2] || 'http://localhost:5173/';
-const SECCIONES = ['juego', 'por-dentro', 'informe', 'preguntas'];
+// Las secciones del menú (portada v2, 2026-10-26: El juego · El kit · El cerebro · FAQ)
+const SECCIONES = ['juego', 'kit', 'por-que-una-mosca', 'faq'];
 // [nombre, ancho, alto, táctil, reducir movimiento]
 const CASOS = [
   ['celular-390x844', 390, 844, true],
@@ -198,7 +199,7 @@ for (const [nombre, ancho, alto, tactil, sinMovimiento] of CASOS) for (const idi
   await pagina.goBack();
   await pagina.waitForTimeout(500);
   const atras = await pagina.evaluate(() => location.hash);
-  if (atras !== '#preguntas') mal(`"atrás" después del logo lleva a «${atras}» y no a #preguntas`);
+  if (atras !== `#${SECCIONES.at(-1)}`) mal(`"atrás" después del logo lleva a «${atras}» y no a #${SECCIONES.at(-1)}`);
   await quieta(pagina);
   await pagina.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
   await pagina.waitForTimeout(400);

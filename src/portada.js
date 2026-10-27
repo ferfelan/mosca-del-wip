@@ -1,4 +1,7 @@
-// Portada, versión 2 (parte 5.2b, 2026-10-24).
+// Portada, versión 2 (parte 5.2b, 2026-10-24; portada v2 de la Parte A el
+// 2026-10-26: la pregunta como título, "Cómo se juega", el kit, "¿Por qué una
+// mosca?" y la FAQ; el cerebro, la consola, el clip, la barra y el idioma
+// siguen igual).
 // 1. El cerebro del juego en grande: las mismas neuronas reales (MaleCNS) y
 //    la misma actividad simulada de src/cerebro.js, que se carga después de
 //    dibujar la página. Mientras tanto se ve una foto fija del mismo cerebro.
@@ -132,6 +135,10 @@ function conFundido(cambio) {
 const conTexto = [...document.querySelectorAll('[data-t]')].map((nodo) => ({ nodo, es: nodo.innerHTML }));
 const conAria = [...document.querySelectorAll('[data-t-aria]')].map((nodo) => ({ nodo, es: nodo.getAttribute('aria-label') }));
 const conTitulo = [...document.querySelectorAll('[data-t-title]')].map((nodo) => ({ nodo, es: nodo.getAttribute('title') }));
+// Las imágenes: su texto alternativo (data-t-alt) y, si la hay, su versión
+// sacada del juego en inglés (data-src-en: las fotos de "Cómo se juega")
+const conAlt = [...document.querySelectorAll('[data-t-alt]')].map((nodo) => ({ nodo, es: nodo.getAttribute('alt') }));
+const conFotoEn = [...document.querySelectorAll('img[data-src-en]')].map((nodo) => ({ nodo, es: nodo.getAttribute('src') }));
 const botonesIdioma = document.querySelectorAll('[data-idioma]');
 // El informe en PDF en el idioma de la página (2026-10-25, pedido de Felipe):
 // en inglés se descarga su traducción, con su tapa
@@ -147,6 +154,8 @@ function ponerIdioma(nuevo, alEntrar = false) {
     for (const { nodo, es } of conTexto) nodo.innerHTML = en ? (INGLES[nodo.dataset.t] ?? es) : es;
     for (const { nodo, es } of conAria) nodo.setAttribute('aria-label', en ? (INGLES[nodo.dataset.tAria] ?? es) : es);
     for (const { nodo, es } of conTitulo) nodo.setAttribute('title', en ? (INGLES[nodo.dataset.tTitle] ?? es) : es);
+    for (const { nodo, es } of conAlt) nodo.setAttribute('alt', en ? (INGLES[nodo.dataset.tAlt] ?? es) : es);
+    for (const { nodo, es } of conFotoEn) nodo.src = en ? nodo.dataset.srcEn : es;
   }
   for (const enlace of document.querySelectorAll('[data-jugar]')) enlace.href = rutaEnIdioma('/jugar/', idioma);
   document.querySelector('[data-logo]').href = rutaEnIdioma('/', idioma);

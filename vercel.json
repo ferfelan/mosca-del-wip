@@ -30,6 +30,27 @@
         { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" },
         { "key": "Content-Disposition", "value": "inline; filename=\"Mosca del WIP - Report.pdf\"" }
       ]
+    },
+    {
+      "source": "/taller/Mosca-del-WIP-Taller-Manual.pdf",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" },
+        { "key": "Content-Disposition", "value": "inline; filename=\"Mosca del WIP - Taller - Manual del facilitador.pdf\"" }
+      ]
+    },
+    {
+      "source": "/taller/Mosca-del-WIP-Taller-Presentacion.pdf",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" },
+        { "key": "Content-Disposition", "value": "inline; filename=\"Mosca del WIP - Taller - Presentacion.pdf\"; filename*=UTF-8''Mosca%20del%20WIP%20-%20Taller%20-%20Presentaci%C3%B3n.pdf" }
+      ]
+    },
+    {
+      "source": "/taller/Mosca-del-WIP-Taller-Presentacion.pptx",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" },
+        { "key": "Content-Disposition", "value": "attachment; filename=\"Mosca del WIP - Taller - Presentacion.pptx\"; filename*=UTF-8''Mosca%20del%20WIP%20-%20Taller%20-%20Presentaci%C3%B3n.pptx" }
+      ]
     }
   ]
 }

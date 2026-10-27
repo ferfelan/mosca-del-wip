@@ -134,7 +134,7 @@ function medir({ tactil, celularVertical, idioma, raiz }) {
   if (document.documentElement.lang !== idioma) problemas.push(`la página dice lang="${document.documentElement.lang}" y debía ser ${idioma}`);
   // En inglés: ninguna palabra en español a la vista ni en lo que lee un lector de pantalla
   if (idioma === 'en') {
-    const ESPANOL = /\b(tareas?|terminadas?|estrés|cigarros|juego|informe|cerebro|neuronas|Descargar|Jugar|Promedio|límite|simulación|Hecho por|Sin cookies|Colores|Visión|Memoria|Mando|Movimiento|reposo|a la vez|Gratis|Fondo|Idioma|mosca|oficina|páginas|Preguntas|frecuentes|Saltar|contenido|Secciones|computador|celular|navegador|equipo|respaldo|supuesto|inicio)\b|Menú/i;
+    const ESPANOL = /\b(tareas?|terminadas?|estrés|cigarros|juego|informe|cerebro|neuronas|Descargar|Jugar|Promedio|límite|simulación|Hecho por|Sin cookies|Colores|Visión|Memoria|Mando|Movimiento|reposo|a la vez|Gratis|Fondo|Idioma|mosca|oficina|páginas|Preguntas|frecuentes|Saltar|contenido|Secciones|computador|celular|navegador|equipo|respaldo|supuesto|inicio|taller|presentación|minutos?|pronto|líderes|semanas|piezas|pasos|hojas|imprimir|antenas)\b|Menú/i;
     const textos = [];
     const recorrido = document.createTreeWalker(base, NodeFilter.SHOW_TEXT);
     while (recorrido.nextNode()) {
@@ -144,7 +144,7 @@ function medir({ tactil, celularVertical, idioma, raiz }) {
     }
     for (const el of base.querySelectorAll('[aria-label], [title], img[alt]')) textos.push(el.getAttribute('aria-label') || '', el.getAttribute('title') || '', el.getAttribute('alt') || '');
     for (const t of textos) {
-      const limpio = t.replace(/Mosca del WIP|Mosca means fly in Spanish\.|Male CNS|Felipe Fernández|Español/g, ''); // (la línea en inglés bajo el título lleva "Mosca", 5.2h)
+      const limpio = t.replace(/Mosca del WIP|Mosca means fly in Spanish\.|mosca\.deliverycraft\.ai|Male CNS|Felipe Fernández|Español/g, ''); // (la línea en inglés bajo el título lleva "Mosca", 5.2h; la dirección del sitio lleva "mosca", portada v2)
       if (ESPANOL.test(limpio)) problemas.push(`en inglés quedó en español: «${corto(t)}»`);
     }
   }

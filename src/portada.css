@@ -1,4 +1,7 @@
-/* Portada de mosca.deliverycraft.ai, versión 2 (parte 5.2b, 2026-10-24).
+/* Portada de mosca.deliverycraft.ai, versión 3 (portada v2 de la Parte A,
+   2026-10-26: la pregunta como título, "Cómo se juega", el kit para tu
+   equipo, "¿Por qué una mosca?", "Qué es y qué no es" y "Por qué lo hice";
+   antes, la versión 2 de la parte 5.2b, 2026-10-24).
    De noche, como el panel del cerebro del juego: el fondo es el mismo del
    cerebro (#060a16), así el lienzo 3D se funde con la página. El color tiene
    significado: los cinco neón son las zonas del cerebro (src/cerebro.js) y el
@@ -166,8 +169,9 @@ p { margin: 0; }
   border-radius: 12px;
 }
 .marca { display: block; flex: none; width: 34px; height: 34px; }
-/* El nombre aparece cuando el título grande ya pasó bajo la barra (lo marca
-   portada.js con .con-nombre); su lugar queda guardado, así nada se corre */
+/* El nombre va siempre a la vista (portada v2): el título grande ya no dice
+   "Mosca del WIP". (portada.js sigue marcando .con-nombre cuando el título
+   pasa bajo la barra; aquí ya no cambia nada.) */
 .logo-nombre {
   font-size: 17px;
   font-weight: 720;
@@ -175,10 +179,7 @@ p { margin: 0; }
   letter-spacing: -0.015em;
   line-height: 1;
   white-space: nowrap;
-  opacity: 0;
-  transition: opacity 0.25s ease;
 }
-.barra.con-nombre .logo-nombre { opacity: 1; }
 
 .menu-boton { display: none; }
 .raya {
@@ -337,30 +338,32 @@ html { scroll-padding-top: var(--alto-barra); }
   min-height: clamp(640px, calc(100svh - var(--alto-barra)), 940px);
 }
 .hero-texto { align-self: center; padding: 64px 0 72px; }
+/* El rótulo ("Para equipos y líderes · un juego de 1 minuto") en letra normal,
+   con el gris de las notas */
+.rotulo {
+  font-size: 16.5px;
+  font-weight: 620;
+  line-height: 1.3;
+  color: var(--suave);
+  margin: 0 0 18px;
+}
+/* La pregunta: dos frases cortas. Más chica que el nombre de antes (116 px)
+   porque son 38 letras y no 13; cabe en dos líneas desde 1100 px. */
 h1 {
-  font-size: clamp(56px, 7.6vw, 116px);
+  font-size: clamp(40px, 3.5vw, 50px);
   font-weight: 800;
-  font-stretch: 110%;
-  line-height: 0.9;
-  letter-spacing: -0.035em;
-  margin: 0 0 30px;
+  font-stretch: 105%;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  margin: 0 0 22px;
+  max-width: 12.5em;
   text-wrap: balance;
 }
-/* Solo en inglés (5.2h): "Mosca means fly in Spanish." bajo el título; en
-   español el párrafo queda vacío y no ocupa lugar */
-.significa { font-size: 15.5px; line-height: 1.3; color: var(--tenue); margin: -6px 0 10px; }
+.bajada { color: var(--suave); max-width: 46ch; margin-bottom: 34px; text-wrap: pretty; }
+/* Solo en inglés (5.2h): "Mosca means fly in Spanish.", ahora al empezar
+   "¿Por qué una mosca?"; en español el párrafo queda vacío y no ocupa lugar */
+.significa { font-size: 15.5px; line-height: 1.3; color: var(--tenue); margin: 0 0 10px; }
 .significa:empty { display: none; }
-.lema {
-  font-size: clamp(22px, 2.2vw, 30px);
-  font-weight: 560;
-  line-height: 1.22;
-  letter-spacing: -0.012em;
-  max-width: 21ch;
-  margin-bottom: 20px;
-  text-wrap: balance;
-}
-.lema:lang(en) { max-width: 26ch; }
-.que-es { color: var(--suave); max-width: 44ch; margin-bottom: 34px; text-wrap: pretty; }
 .hero-texto .nota { margin-top: 16px; }
 /* "Creado por Felipe Fernández" (5.2i): la línea de abajo, pegada a la de arriba,
    con el nombre como enlace discreto a su LinkedIn */
@@ -576,19 +579,26 @@ h1 {
 
 /* ---------- Secciones ---------- */
 .juego,
+.pasos,
+.kit,
 .credito,
 .informe,
+.motivo,
 .preguntas,
 .cierre {
   max-width: var(--ancho);
   margin: 0 auto;
   padding: clamp(72px, 9vw, 132px) var(--margen) 0;
 }
-/* Las secciones del menú: al saltar a una, su borde de arriba (con su aire)
-   queda bajo la barra y el contenido empieza a 28 px de ella */
+/* Las secciones del menú (y el kit, al que lleva "Ver el kit"): al saltar a
+   una, su borde de arriba (con su aire) queda bajo la barra y el contenido
+   empieza a 28 px de ella */
 .juego,
+.pasos,
+.kit,
 .credito,
 .informe,
+.motivo,
 .preguntas { scroll-margin-top: calc(28px - clamp(72px, 9vw, 132px)); }
 h2 {
   font-size: clamp(32px, 3.6vw, 50px);
@@ -601,14 +611,16 @@ h2 {
 }
 h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px; }
 
-/* Lo que muestra el juego: el video y, al lado, la columna "Hecho" de cada día */
+/* Lo que vas a ver: el video y, al lado, la columna "Hecho" de cada día; al
+   final, la frase del proyecto */
 .juego {
   display: grid;
   grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
   grid-template-areas:
     'texto texto'
     'pantalla hecho'
-    'pie nota';
+    'pie nota'
+    'frase frase';
   column-gap: clamp(20px, 3vw, 40px);
 }
 .juego-texto { grid-area: texto; max-width: 40em; margin-bottom: 40px; }
@@ -680,8 +692,109 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .columna-total { font-size: 14.5px; color: var(--suave); line-height: 1.3; }
 .columna-total .cifra { display: block; font-size: 38px; font-weight: 760; letter-spacing: -0.02em; line-height: 1.05; color: var(--col); }
 .hecho-nota { grid-area: nota; margin-top: 14px; }
+.ver-frase {
+  grid-area: frase;
+  margin-top: 44px;
+  font-size: clamp(24px, 2.4vw, 32px);
+  font-weight: 560;
+  line-height: 1.22;
+  letter-spacing: -0.012em;
+  max-width: 24ch;
+  text-wrap: balance;
+}
 
-/* Por dentro: el crédito de MaleCNS y los colores del cerebro */
+/* Cómo se juega: tres pasos, cada uno con su foto del juego */
+.pasos-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px clamp(20px, 3vw, 40px);
+}
+.paso { display: flex; flex-direction: column; gap: 16px; }
+.paso-foto {
+  margin: 0;
+  aspect-ratio: 16 / 10;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--borde-fuerte);
+  background: var(--noche-2);
+}
+.paso-foto img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.paso p { color: var(--suave); font-size: 17px; max-width: 36ch; text-wrap: pretty; }
+.paso-numero { font-weight: 760; color: var(--tinta); margin-right: 8px; }
+
+/* El kit para tu equipo: tres piezas (el juego, el informe y el taller), lo
+   que gana el equipo y la licencia. Cada pieza lleva arriba cuánto tiempo
+   toma: es el orden en que se usan. */
+.kit-bajada { color: var(--suave); font-size: 19px; max-width: 40em; margin-bottom: 36px; }
+.piezas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.pieza {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px 24px 26px;
+  border-radius: 18px;
+  border: 1px solid var(--borde);
+  background: var(--noche-2);
+}
+.pieza-tiempo { font-size: 14px; font-weight: 600; color: var(--tenue); }
+.pieza h3 { margin: 0; }
+.pieza-texto { color: var(--suave); font-size: 16.5px; text-wrap: pretty; }
+.pieza-accion { margin-top: auto; padding-top: 14px; }
+.pieza .boton { padding-inline: 22px; font-size: 16px; }
+/* Solo en inglés: que el taller por ahora está en español */
+.pieza-idioma { color: var(--tenue); font-size: 14.5px; line-height: 1.5; }
+.pieza-idioma:empty { display: none; }
+/* Los tres archivos del taller, uno por fila, del tamaño de un dedo */
+.descargas { list-style: none; margin: auto 0 0; padding: 6px 0 0; border-top: 1px solid var(--borde); }
+.descargas li { border-bottom: 1px solid var(--borde); }
+.descargas a {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 6px 0;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration-color: var(--subrayado);
+}
+.descargas a:hover { text-decoration-color: currentColor; }
+/* "Muy pronto": solo cuando el interruptor del taller (data-taller) lo dice */
+.muy-pronto {
+  display: none;
+  margin-top: auto;
+  padding-top: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--tenue);
+}
+.kit[data-taller='muy-pronto'] .descargas { display: none; }
+.kit[data-taller='muy-pronto'] .muy-pronto { display: block; }
+.gana { margin-top: 44px; max-width: 60em; }
+.gana h3 { margin-bottom: 12px; }
+.gana-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 clamp(20px, 3vw, 40px);
+  border-top: 1px solid var(--borde);
+}
+.gana-lista li { padding: 12px 0; border-bottom: 1px solid var(--borde); font-size: 17px; line-height: 1.5; text-wrap: pretty; }
+.gana .nota { margin-top: 12px; }
+.kit-cierre { margin-top: 28px; color: var(--suave); font-size: 17px; max-width: 60ch; text-wrap: pretty; }
+
+/* ¿Por qué una mosca?: el texto a la izquierda y, al lado, las dos fotos del
+   cerebro (2 y 9 tareas a la vez), el crédito de MaleCNS y los colores */
 .credito {
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
@@ -691,6 +804,13 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .credito h2 { grid-column: 1 / -1; max-width: 16em; }
 .credito-texto p { color: var(--suave); max-width: 62ch; }
 .credito-texto p + p { margin-top: 14px; }
+.credito-texto .destacado { color: var(--tinta); font-size: 20px; }
+.credito-lado { display: grid; gap: 16px; align-content: start; }
+.cerebros { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.cerebros figure { margin: 0; }
+.cerebros img { display: block; width: 100%; height: auto; border-radius: 14px; border: 1px solid var(--borde); }
+.cerebros figcaption { margin-top: 8px; font-size: 14px; line-height: 1.4; color: var(--tenue); }
+.cerebros .cifra { color: var(--tinta); font-weight: 650; }
 .zonas { padding: 20px 22px; border-radius: 18px; border: 1px solid var(--borde); background: var(--noche-2); container-type: inline-size; }
 .zonas-titulo { font-size: 14px; font-weight: 600; color: var(--suave); margin-bottom: 12px; }
 .zonas ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; }
@@ -702,7 +822,8 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .zonas ul { grid-template-columns: 1fr; }
 }
 
-/* El informe: su tapa (la mosca con su torre) y el botón */
+/* Qué es y qué no es: las dos líneas, la tapa del informe (la mosca con su
+   torre) y el botón */
 .informe {
   display: grid;
   grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
@@ -722,8 +843,16 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 }
 .tapa:hover img { transform: rotateY(6deg) rotateX(1deg); }
 .informe-texto p { color: var(--suave); max-width: 42ch; }
+.informe-texto .destacado { color: var(--tinta); font-size: 21px; font-weight: 560; line-height: 1.4; max-width: 32ch; }
+.informe-texto .destacado + p { margin-top: 16px; }
 .informe-texto .acciones { margin-top: 30px; }
 .informe-texto .nota { margin-top: 14px; }
+
+/* Por qué lo hice: solo texto, angosto */
+.motivo-texto { max-width: 60ch; }
+.motivo-texto p { color: var(--suave); font-size: 19px; text-wrap: pretty; }
+.motivo-texto .nota { margin-top: 16px; }
+.motivo-texto .nota a { color: var(--suave); }
 
 /* Preguntas frecuentes (parte 5.2f): el título a la izquierda, a la vista
    mientras bajas, y las preguntas a la derecha. Cada una se abre al tocarla y
@@ -938,10 +1067,11 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   body.portada { font-size: 17px; }
   .hero { grid-template-columns: 1fr; min-height: 0; }
   .hero-texto { padding: 16px 0 0; }
-  h1 { font-size: clamp(50px, 14vw, 76px); margin-bottom: 20px; }
-  .significa { margin: 0 0 10px; }
-  .lema { font-size: 23px; max-width: none; }
-  .que-es { margin-bottom: 24px; }
+  .rotulo { margin-bottom: 14px; }
+  /* En el celular, cada frase de la pregunta en su línea: la letra se ajusta
+     al ancho (35 px en un iPhone de 390) y la familia va un poco más angosta */
+  h1 { font-size: clamp(28px, 8.9vw, 40px); font-stretch: 100%; letter-spacing: -0.034em; max-width: none; margin-bottom: 18px; }
+  .bajada { margin-bottom: 24px; }
   /* En celular, justo después de la presentación, uno bajo el otro: Jugar (el
      juego tiene su versión de celular) y el informe. */
   .hero .acciones { display: grid; gap: 12px; }
@@ -964,24 +1094,43 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .dato dd { font-size: 22px; }
 
   .juego,
+  .pasos,
+  .kit,
   .credito,
   .informe,
+  .motivo,
   .preguntas,
   .cierre { padding-top: 64px; }
   .juego,
+  .pasos,
+  .kit,
   .credito,
   .informe,
+  .motivo,
   .preguntas { scroll-margin-top: -36px; }
-  .juego { grid-template-columns: 1fr; grid-template-areas: 'texto' 'pantalla' 'pie' 'hecho' 'nota'; }
+  .juego { grid-template-columns: 1fr; grid-template-areas: 'texto' 'pantalla' 'pie' 'hecho' 'nota' 'frase'; }
   .juego-texto { margin-bottom: 24px; }
   .juego-texto p { font-size: 17px; }
   .pantalla-marco { border-radius: 14px; }
   .pantalla-estado { top: 10px; font-size: 12.5px; padding: 5px 12px 5px 10px; }
   .pantalla figcaption { margin: 10px 0 24px; }
   .tarjetas i { flex-basis: 10px; }
+  .ver-frase { margin-top: 36px; max-width: none; }
+
+  .pasos-lista { grid-template-columns: 1fr; gap: 28px; }
+  .paso { gap: 12px; }
+
+  .kit-bajada { font-size: 17px; margin-bottom: 24px; }
+  .piezas { grid-template-columns: 1fr; gap: 12px; }
+  .pieza { padding: 20px 20px 22px; }
+  .pieza .boton { width: 100%; max-width: 440px; }
+  .gana { margin-top: 36px; }
+  .gana-lista { grid-template-columns: 1fr; }
+  .motivo-texto p { font-size: 17px; }
 
   .credito { grid-template-columns: 1fr; }
-  .zonas { margin-top: 24px; }
+  .credito-lado { margin-top: 24px; }
+  .zonas { margin-top: 0; }
 
   .informe { grid-template-columns: 1fr; }
   .tapa { width: min(64vw, 260px); margin: 0 auto 36px; }
@@ -1008,7 +1157,10 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 }
 @media (max-width: 360px) {
   body.portada { font-size: 16px; }
-  .que-es { margin-bottom: 20px; }
+  .bajada { margin-bottom: 20px; }
+}
+@media (max-width: 599px) {
+  .cerebros { gap: 10px; }
 }
 
 /* Computadores angostos (900 a 1099 px, como el iPad en horizontal): el
@@ -1024,6 +1176,9 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .cerebro-cuenta { max-width: 8em; font-size: 14px; }
   .boton { padding-inline: 20px; }
   .boton.principal { padding-inline: 28px; }
+  h1 { font-size: clamp(36px, 3.4vw, 44px); }
+  .piezas { grid-template-columns: 1fr 1fr; }
+  .pieza-taller { grid-column: 1 / -1; }
 }
 
 /* Pantallas de computador bajas (proyector de 1280 × 720, ventanas chicas):
@@ -1031,9 +1186,9 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 @media (min-width: 900px) and (max-height: 820px) {
   .hero { min-height: max(calc(100svh - var(--alto-barra)), 620px); }
   .hero-texto { padding: 40px 0 48px; }
-  h1 { font-size: clamp(52px, 6.6vw, 100px); margin-bottom: 22px; }
-  .significa { margin-top: -2px; }
-  .que-es { margin-bottom: 28px; }
+  .rotulo { margin-bottom: 14px; }
+  h1 { font-size: clamp(38px, 3.2vw, 46px); margin-bottom: 18px; }
+  .bajada { margin-bottom: 28px; }
   .laboratorio { padding: 20px 0 28px; }
   .cerebro { bottom: 120px; }
   .consola { padding: 14px 20px 12px; }
