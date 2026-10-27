@@ -59,6 +59,7 @@
   --punto-halo: rgba(255, 255, 255, 0.06);
   --sombra-pantalla: 0 40px 90px rgba(0, 0, 0, 0.55), 0 0 0 6px rgba(255, 255, 255, 0.025);
   --sombra-tapa: -24px 34px 70px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --sombra-tapa-chica: -8px 14px 28px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.06);
   --fuente: 'Mona Sans', 'Avenir Next', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
   --ancho: 1280px;
   --margen: clamp(20px, 4vw, 56px);
@@ -95,6 +96,7 @@
   --punto-halo: rgba(16, 24, 48, 0.07);
   --sombra-pantalla: 0 30px 70px rgba(16, 24, 48, 0.2), 0 0 0 6px rgba(16, 24, 48, 0.035);
   --sombra-tapa: -18px 28px 56px rgba(16, 24, 48, 0.24), 0 0 0 1px rgba(16, 24, 48, 0.08);
+  --sombra-tapa-chica: -8px 14px 28px rgba(16, 24, 48, 0.22), 0 0 0 1px rgba(16, 24, 48, 0.08);
   color-scheme: light;
 }
 :root[data-tema='claro'] .siempre-noche { color: var(--tinta); }
@@ -578,6 +580,7 @@ h1 {
 .consola-nota { margin-top: 12px; font-size: 13.5px; }
 
 /* ---------- Secciones ---------- */
+.gana,
 .juego,
 .pasos,
 .kit,
@@ -725,9 +728,11 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .paso p { color: var(--suave); font-size: 17px; max-width: 36ch; text-wrap: pretty; }
 .paso-numero { font-weight: 760; color: var(--tinta); margin-right: 8px; }
 
-/* El kit para tu equipo: tres piezas (el juego, el informe y el taller), lo
-   que gana el equipo y la licencia. Cada pieza lleva arriba cuánto tiempo
-   toma: es el orden en que se usan. */
+/* El kit para tu equipo: tres piezas (el juego, el informe y el taller) y la
+   licencia. Cada pieza es una tarjeta con su imagen arriba (una foto del
+   juego, la tapa del informe y la tapa de la guía rápida del taller) y, abajo,
+   cuánto tiempo toma (el orden en que se usan), qué es y su botón o sus
+   archivos. Lo que gana el equipo está en su propia sección, arriba. */
 .kit-bajada { color: var(--suave); font-size: 19px; max-width: 40em; margin-bottom: 36px; }
 .piezas {
   list-style: none;
@@ -740,12 +745,34 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .pieza {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 24px 24px 26px;
-  border-radius: 18px;
+  border-radius: 20px;
   border: 1px solid var(--borde);
   background: var(--noche-2);
+  overflow: hidden;
 }
+.pieza-imagen {
+  margin: 0;
+  aspect-ratio: 16 / 10;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-bottom: 1px solid var(--borde);
+  background: var(--noche-3);
+}
+.pieza-imagen-juego img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* Las tapas: el documento de pie, un poco girado y con su sombra, sobre un
+   fondo con luz abajo. Su ancho es el 36 % de la tarjeta: con la hoja A4 y el
+   marco de 16:10, ocupa el 82 % del alto. */
+.pieza-imagen-tapa { background: radial-gradient(100% 85% at 50% 108%, var(--noche-3), var(--noche-2) 88%); }
+.pieza-tapa {
+  display: block;
+  width: 36%;
+  height: auto;
+  border-radius: 3px;
+  box-shadow: var(--sombra-tapa-chica);
+  transform: perspective(900px) rotateY(14deg);
+}
+.pieza-cuerpo { display: flex; flex-direction: column; gap: 10px; flex: 1; padding: 20px 24px 26px; }
 .pieza-tiempo { font-size: 14px; font-weight: 600; color: var(--tenue); }
 .pieza h3 { margin: 0; }
 .pieza-texto { color: var(--suave); font-size: 16.5px; text-wrap: pretty; }
@@ -778,20 +805,89 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 }
 .kit[data-taller='muy-pronto'] .descargas { display: none; }
 .kit[data-taller='muy-pronto'] .muy-pronto { display: block; }
-.gana { margin-top: 44px; max-width: 60em; }
-.gana h3 { margin-bottom: 12px; }
-.gana-lista {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 clamp(20px, 3vw, 40px);
-  border-top: 1px solid var(--borde);
-}
-.gana-lista li { padding: 12px 0; border-bottom: 1px solid var(--borde); font-size: 17px; line-height: 1.5; text-wrap: pretty; }
-.gana .nota { margin-top: 12px; }
 .kit-cierre { margin-top: 28px; color: var(--suave); font-size: 17px; max-width: 60ch; text-wrap: pretty; }
+
+/* Lo que gana tu equipo (portada v3, 2026-10-27): lo que la página ofrece,
+   justo después del inicio. Un solo tablero, no cuatro tarjetas sueltas: las
+   celdas se separan con líneas finas. A la izquierda el dato grande (×2), con
+   las dos filas de lo terminado (18 cuadros con 2 a la vez, 9 con 9: la fila
+   de 9 mide la mitad). A la derecha, cuatro ganancias, cada una con el dibujo
+   de una tarjeta del tablero de la mosca en el color que el juego le da:
+   terminada en verde, trabada en rojo con candado, a medias en ámbar y los
+   datos en el cian de la visión. */
+.gana-tablero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.18fr) minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  gap: 1px;
+  background: var(--borde-fuerte);
+  border: 1px solid var(--borde-fuerte);
+  border-radius: 24px;
+  overflow: hidden;
+}
+.gana-dato {
+  grid-row: 1 / 3;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: clamp(28px, 3.4vw, 46px);
+  background:
+    radial-gradient(90% 70% at 16% 20%, color-mix(in srgb, var(--tranquila) 24%, transparent), transparent 72%),
+    var(--noche-2);
+}
+.gana-cifra {
+  /* Las letras sobresalen de su caja por el line-height de 0.82 (0,3 em hacia
+     abajo en Mona Sans): el margen de abajo deja la frase fuera de su alcance,
+     como el aire bajo el título del inicio */
+  margin: 0 0 0.2em;
+  font-size: clamp(100px, 10.5vw, 150px);
+  font-weight: 800;
+  font-stretch: 112%;
+  line-height: 0.82;
+  letter-spacing: -0.07em;
+  color: var(--tinta);
+}
+.gana-texto { margin: 0; color: var(--suave); font-size: 19px; max-width: 26ch; text-wrap: pretty; }
+.gana-prueba { margin-top: auto; padding-top: 12px; display: grid; gap: 10px; }
+.gana-fila {
+  display: grid;
+  grid-template-columns: 6.4em minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--tenue);
+}
+/* Los cuadros no pasan de 14 px: en la tablet, con el dato acostado, la fila
+   tiene todo el ancho y sin tope quedaban del tamaño de un botón */
+.gana-cuadros { display: grid; grid-template-columns: repeat(18, minmax(0, 1fr)); gap: 3px; max-width: 320px; }
+.gana-cuadros i { display: block; aspect-ratio: 1; border-radius: 2px; background: var(--tranquila); }
+.gana-cuadros.muchas i { background: var(--tenue); opacity: 0.55; }
+.gana-item {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: clamp(22px, 2.6vw, 32px);
+  background: var(--noche-2);
+}
+.gana-item[data-color='tranquila'] { --acento: var(--tranquila); }
+.gana-item[data-color='colapsada'] { --acento: var(--colapsada); }
+.gana-item[data-color='ocupada'] { --acento: var(--ocupada); }
+.gana-item[data-color='vision'] { --acento: var(--vision); }
+.gana-icono {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  color: var(--acento);
+  background: var(--noche-3);
+  background: color-mix(in srgb, var(--acento) 16%, transparent);
+}
+.gana-icono svg { width: 32px; height: 32px; }
+.gana-item h3 { margin: 0 0 6px; font-size: 19.5px; text-wrap: balance; }
+.gana-item p { margin: 0; color: var(--suave); font-size: 16.5px; line-height: 1.5; text-wrap: pretty; }
+.gana-nota { margin-top: 18px; }
 
 /* ¿Por qué una mosca?: el texto a la izquierda y, al lado, las dos fotos del
    cerebro (2 y 9 tareas a la vez), el crédito de MaleCNS y los colores */
@@ -1046,6 +1142,8 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   from { opacity: 0; }
 }
 @media (min-width: 600px) and (max-width: 1099px) {
+  .gana-tablero { grid-template-columns: 1fr 1fr; }
+  .gana-dato { grid-column: 1 / -1; }
   .menu {
     top: calc(100% + 6px);
     left: auto;
@@ -1093,6 +1191,7 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .dato dt { font-size: 14.5px; }
   .dato dd { font-size: 22px; }
 
+  .gana,
   .juego,
   .pasos,
   .kit,
@@ -1122,10 +1221,21 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 
   .kit-bajada { font-size: 17px; margin-bottom: 24px; }
   .piezas { grid-template-columns: 1fr; gap: 12px; }
-  .pieza { padding: 20px 20px 22px; }
+  .pieza-cuerpo { padding: 18px 20px 22px; }
   .pieza .boton { width: 100%; max-width: 440px; }
-  .gana { margin-top: 36px; }
-  .gana-lista { grid-template-columns: 1fr; }
+
+  /* Lo que gana tu equipo: el dato arriba y las cuatro ganancias en una
+     columna, cada una con el dibujo a la izquierda del texto */
+  .gana-tablero { grid-template-columns: 1fr; grid-template-rows: none; border-radius: 20px; }
+  .gana-dato { grid-row: auto; gap: 16px; padding: 26px 22px 24px; }
+  .gana-cifra { font-size: clamp(88px, 26vw, 120px); }
+  .gana-texto { font-size: 17px; max-width: none; }
+  .gana-prueba { padding-top: 6px; }
+  .gana-item { flex-direction: row; align-items: flex-start; gap: 16px; padding: 18px 20px; }
+  .gana-icono { flex: 0 0 46px; width: 46px; height: 46px; border-radius: 13px; }
+  .gana-icono svg { width: 27px; height: 27px; }
+  .gana-item h3 { font-size: 18px; margin-bottom: 4px; }
+  .gana-item p { font-size: 16px; }
   .motivo-texto p { font-size: 17px; }
 
   .credito { grid-template-columns: 1fr; }
@@ -1178,7 +1288,21 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .boton.principal { padding-inline: 28px; }
   h1 { font-size: clamp(36px, 3.4vw, 44px); }
   .piezas { grid-template-columns: 1fr 1fr; }
-  .pieza-taller { grid-column: 1 / -1; }
+  .pieza-taller { grid-column: 1 / -1; flex-direction: row; }
+  .pieza-taller .pieza-imagen { flex: 0 0 42%; aspect-ratio: auto; border-bottom: 0; border-right: 1px solid var(--borde); }
+  .pieza-taller .pieza-tapa { width: 48%; }
+  .gana-dato {
+    grid-row: auto;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    column-gap: 36px;
+    row-gap: 18px;
+    align-items: center;
+  }
+  .gana-cifra { grid-row: 1 / 3; }
+  .gana-texto { max-width: none; }
+  .gana-prueba { margin-top: 0; padding-top: 0; }
 }
 
 /* Pantallas de computador bajas (proyector de 1280 × 720, ventanas chicas):

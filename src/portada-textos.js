@@ -22,7 +22,7 @@ export const INGLES = {
   rotulo: 'For teams and leaders · a 1-minute game',
   titulo: 'Busy all day. So what did you finish?', // el mismo título que la pág. 1 del informe en inglés
   bajada:
-    'Before asking for more people or more hours, try something free: fewer things at once. In the game, the same fly finishes twice as much with 2 tasks as with 9. See it in 1 minute and take the kit to your team.',
+    'Play for a minute and find out why starting less helps you finish more. An office fly with a real brain shows you how.',
   jugar: 'Play',
   jugarMinuto: 'Play (1 minute)',
   verKit: 'See the kit',
@@ -63,6 +63,22 @@ export const INGLES = {
   paso2Alt: 'The fly in front of her board for the day, with 2 tasks in progress, at 10:10.',
   paso3Alt: 'The Days played table, with one day at 2 tasks at once and another at 9.',
 
+  // Lo que gana tu equipo (portada v3): el dato grande, las dos filas de lo
+  // terminado, las cuatro ganancias y la línea del final
+  ganaTitulo: 'What your team gains',
+  ganaDato: 'In the game, the same fly finishes twice as much with 2 tasks at once as with 9.',
+  ganaPrueba2: '2 at once',
+  ganaPrueba9: '9 at once',
+  gana1Titulo: 'Each thing gets done sooner',
+  gana1: 'With fewer things open, each one waits less for its turn.',
+  gana2Titulo: 'You see where work gets stuck',
+  gana2: 'When something waits, it shows and gets dealt with.',
+  gana3Titulo: 'Fewer things half done',
+  gana3: 'Fewer jumps from one thing to another.',
+  gana4Titulo: 'You decide with your own data',
+  gana4: 'In two weeks you know whether your limit works.',
+  ganaNota: 'Your number is yours to measure: the game doesn’t measure teams.',
+
   // El kit para tu equipo
   kitTitulo: 'The kit for your team',
   kitBajada: 'Three pieces, from 1 minute to 60. Free.',
@@ -74,18 +90,12 @@ export const INGLES = {
   kitInformeTexto: 'Where each number comes from and what the studies say.',
   kitTaller: 'The workshop',
   kitTallerTiempo: '60 minutes',
-  kitTallerTexto: 'Slides, a facilitator’s manual and printable sheets, so your team finds its limit and tries it for 2 weeks.',
+  kitTallerTexto: 'Slides, a quick guide and printable sheets, so your team finds its limit and tries it for 2 weeks.',
   kitTallerIdioma: 'For now, the workshop is in Spanish.', // en español no hay línea
-  kitManual: 'Manual (PDF, in Spanish)',
+  kitGuia: 'Quick guide (PDF, in Spanish)',
   kitPptx: 'Slides (PowerPoint, in Spanish)',
   kitPdf: 'Slides (PDF, in Spanish)',
   kitPronto: 'Coming soon',
-  ganaTitulo: 'What your team gets',
-  gana1: 'Each thing gets done sooner, because it waits less for its turn.',
-  gana2: 'You see where the work gets stuck.',
-  gana3: 'Fewer things are left half done.',
-  gana4: 'In 2 weeks you have your own data to decide your limit.',
-  ganaNota: 'Your number is yours to measure: the game doesn’t measure teams.',
   kitCierre: 'Use it and adapt it, also in paid workshops, crediting the author.',
 
   // ¿Por qué una mosca?
@@ -137,16 +147,16 @@ export const INGLES = {
     'It’s free and needs no sign-up. We don’t use cookies and only count visits, without identifying anyone. Your days played and what you choose, like the language, are saved only in your browser.',
   pregunta9: 'How do I use it with my team?',
   respuesta9:
-    'Play one day with 2 tasks at once and another with 9, and compare the Days played table. On a computer, the Exhibition view shows the game large, for a TV or a projector. The kit on this page has the report, with four steps to try a limit, and a 60-minute workshop with the script ready to facilitate it.',
+    'Play one day with 2 tasks at once and another with 9, and compare the Days played table. On a computer, the Exhibition view shows the game large, for a TV or a projector. The kit on this page has the report, with four steps to try a limit, and a 60-minute workshop with its guide to facilitate it.',
   pregunta10: 'What does my team gain from limiting work in progress?',
   respuesta10:
     'Each thing gets done sooner, because it waits less for its turn. You see where the work gets stuck, and fewer things are left half done. In the game, the fly finishes twice as much with 2 tasks at once as with 9. Your team’s number is yours to measure: the game doesn’t measure teams.',
   pregunta11: 'Can I use the workshop with my team, or in paid workshops?',
   respuesta11:
-    'Yes. The workshop (the manual, the slides and the sheets) is licensed CC BY 4.0: you can use it and adapt it, also in paid workshops, crediting Felipe Fernández (mosca.deliverycraft.ai). For now it’s in Spanish. The report can be shared as it is, crediting the author, and the game is played on this page.',
+    'Yes. The workshop (the quick guide, the slides and the sheets) is licensed CC BY 4.0: you can use it and adapt it, also in paid workshops, crediting Felipe Fernández (mosca.deliverycraft.ai). For now it’s in Spanish. The report can be shared as it is, crediting the author, and the game is played on this page.',
   pregunta12: 'Do I need to know about WIP to facilitate it?',
   respuesta12:
-    'No. The facilitator’s manual has the full script: what to say, what to ask and what to do if something goes wrong. Read it once and, before the session, play the two days you’ll show: one with 9 tasks at once and one with 2.',
+    'No. The quick guide has the tips for each part, the key line to say and the answers to what you’ll be asked. Read it once and, before the session, play the two days you’ll show: one with 9 tasks at once and one with 2.',
 
   // Qué es y qué no es, por qué lo hice, el cierre y el pie
   informeTitulo: 'What it is and what it isn’t',

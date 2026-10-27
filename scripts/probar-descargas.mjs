@@ -2,11 +2,11 @@
 // haría una persona, en Chrome y en el motor de Safari (WebKit):
 //   - el informe en PDF (los botones del kit, de "Qué es y qué no es" y del
 //     cierre) y, desde la portada v2 (2026-10-26), los tres archivos del
-//     taller en la tarjeta "El taller" del kit (el manual en PDF, la
+//     taller en la tarjeta "El taller" del kit (la guía rápida en PDF, la
 //     presentación en PowerPoint y en PDF);
 //   - en computador y en Android, cada enlace visible baja el archivo entero,
 //     con su nombre limpio ("Mosca del WIP - Informe.pdf", "Mosca del WIP -
-//     Taller - Manual del facilitador.pdf"…; con la dirección publicada; en npm
+//     Taller - Guía rápida del facilitador.pdf"…; con la dirección publicada; en npm
 //     run dev el nombre lo pone el navegador);
 //   - con la portada en inglés, los botones del informe y la tapa son los del
 //     informe en inglés ("Mosca del WIP - Report.pdf"; 2026-10-25), también al
@@ -36,7 +36,7 @@ const INFORMES = {
 };
 // Los archivos del taller (los mismos en los dos idiomas), como en index.html
 const TALLER = [
-  { ruta: '/taller/Mosca-del-WIP-Taller-Manual.pdf', nombre: 'Mosca del WIP - Taller - Manual del facilitador.pdf' },
+  { ruta: '/taller/Mosca-del-WIP-Taller-Guia-rapida.pdf', nombre: 'Mosca del WIP - Taller - Guía rápida del facilitador.pdf' },
   { ruta: '/taller/Mosca-del-WIP-Taller-Presentacion.pptx', nombre: 'Mosca del WIP - Taller - Presentación.pptx' },
   { ruta: '/taller/Mosca-del-WIP-Taller-Presentacion.pdf', nombre: 'Mosca del WIP - Taller - Presentación.pdf' },
 ];
