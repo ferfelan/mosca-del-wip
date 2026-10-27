@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Deja de empezar, empieza a terminar · Manual del facilitador · v2</title>
+<!-- Manual del facilitador del taller "Deja de empezar, empieza a terminar"
+     (Etapa 6.0 v2, 2026-10-26). Rehace la guía v1 (taller.html, que se guarda
+     tal cual) más simple y para cualquiera: 12 hojas A4 = portada, la sesión
+     en una hoja, antes de la sesión (con el juego en vivo paso a paso), una
+     hoja por parte (Conexión 10, Conceptos 15, Práctica 25, Cierre 10), la
+     prueba de 2 semanas, preguntas difíciles, cómo adaptarlo con los créditos,
+     y dos hojas para imprimir (la hoja del equipo y la tabla de las 2 semanas).
+     Letras Lora y Figtree (las de la presentación), colores de los informes,
+     páginas en blanco. Reglas: sin las palabras que prohíbe docs/etapa6-plan.md
+     (ni "canvas" ni "cosecha" en lo que ve la sala); WIP se explica en español
+     la primera vez; cada número dice de dónde sale; al facilitador se le habla de tú.
+     Se arma con: DOC=taller-v2 node scripts/documento.mjs
+     Se revisa con: node scripts/revisar-paginas.mjs taller-v2 -->
+<link rel="stylesheet" href="estilo.css" />
+<style>
+  :root {
+    --serif: 'Lora', 'Iowan Old Style', Georgia, serif;
+    --sans: 'Figtree', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    --verde: #4f9d6a;
+  }
+  body { font-size: 10pt; line-height: 1.48; }
+  .hoja { background: #fff; }
+  h1 { font-size: 21pt; line-height: 1.15; margin: 0 0 3.2mm; letter-spacing: -0.005em; }
+  h2 { font-size: 13pt; margin: 4.5mm 0 2mm; }
+  h3 { font-size: 10.4pt; margin: 3.4mm 0 1.3mm; }
+  p { margin: 0 0 2.6mm; max-width: 156mm; }
+  ul, ol { max-width: 156mm; }
+  .bajada { font-size: 11pt; line-height: 1.45; color: var(--suave); margin-bottom: 4mm; max-width: 156mm; }
+  .chico { font-size: 8.3pt; color: var(--suave); line-height: 1.42; }
+  .kicker { margin-bottom: 1.6mm; }
+  figure { margin: 0; }
+  figure img { border-radius: 1.6mm; }
+  figcaption { font-size: 8.3pt; line-height: 1.42; color: var(--suave); }
+  q { quotes: '“' '”'; }
+  em { font-style: italic; }
+  .pie b { font-weight: 600; }
+
+  /* ---------- Portada: la escena del juego ---------- */
+  .portada.foto { background: #fff; color: var(--tinta); padding: 0; }
+  .portada.foto .imagen { position: absolute; left: 0; top: 0; width: 210mm; height: 156mm; overflow: hidden; }
+  .portada.foto .imagen img { position: static; width: 100%; height: 100%; object-fit: cover; object-position: 34% 42%; }
+  .portada.foto .imagen::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 26mm; background: linear-gradient(180deg, rgba(255,255,255,0) 0%, #fff 100%); }
+  .portada.foto .texto { position: absolute; left: 20mm; right: 20mm; top: 158mm; }
+  .portada.foto .rotulo { font-size: 8.6pt; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--teal); margin: 0 0 3.6mm; }
+  .portada.foto h1 { font-size: 38pt; line-height: 1.06; margin: 0 0 4.5mm; letter-spacing: -0.012em; color: var(--tinta); }
+  .portada.foto .lema { font-family: var(--serif); font-size: 14.5pt; line-height: 1.32; color: var(--teal); max-width: 150mm; margin: 0 0 5mm; }
+  .portada.foto .gana { font-size: 10.6pt; line-height: 1.5; color: var(--suave); max-width: 150mm; margin: 0; }
+  .portada.foto .gana b { color: var(--tinta); font-weight: 600; }
+  .portada.foto .datos { position: absolute; left: 20mm; right: 20mm; bottom: 18mm; display: flex; justify-content: space-between; gap: 8mm; border-top: 0.5pt solid var(--linea); padding-top: 3.2mm; font-size: 8.2pt; color: var(--suave); line-height: 1.45; }
+  .portada.foto .datos b { color: var(--tinta); font-weight: 600; }
+
+  /* ---------- "En corto": tres líneas al inicio de cada parte ---------- */
+  .corto { background: #f6f3ec; border-left: 1.4mm solid var(--teal); border-radius: 0 1.6mm 1.6mm 0; padding: 2.8mm 4mm 2.4mm; margin: 0 0 3mm; max-width: none; }
+  .corto .etiqueta { display: block; font-size: 7pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin-bottom: 1.2mm; }
+  .corto p { margin: 0 0 0.8mm; max-width: none; font-size: 9.6pt; line-height: 1.42; }
+  .corto p:last-child { margin: 0; }
+  .corto b { color: var(--tinta); font-weight: 600; }
+
+  /* ---------- El guion: un bloque por momento ---------- */
+  .guion { list-style: none; padding: 0; margin: 1mm 0 0; border-top: 0.5pt solid var(--linea); max-width: none; }
+  .guion > li { display: grid; grid-template-columns: 20mm 1fr; gap: 0 4.5mm; padding: 2.8mm 0 2.4mm; border-bottom: 0.5pt solid var(--linea); margin: 0; break-inside: avoid; }
+  .guion .cuando { font-family: var(--serif); font-size: 15pt; line-height: 1.1; color: var(--teal); font-weight: 700; }
+  .guion .cuando small { display: block; font-family: var(--sans); font-size: 7.2pt; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--tenue); margin-top: 1mm; }
+  .guion h3 { margin: 0 0 1.2mm; font-size: 11pt; }
+  .guion p { margin: 0 0 1.4mm; max-width: none; font-size: 9.8pt; }
+  .guion p:last-child { margin-bottom: 0; }
+  .guion ol, .guion ul { margin: 0 0 1.4mm; padding-left: 4.4mm; max-width: none; font-size: 9.8pt; }
+  .rot { display: inline-block; font-size: 6.8pt; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); margin-right: 1.6mm; vertical-align: 0.2mm; }
+  .rot.gris { color: var(--tenue); }
+  .rot.naranjo { color: #b35a1d; }
+  .dices { font-family: var(--serif); font-size: 10.2pt; line-height: 1.42; color: var(--tinta); }
+  .ojo { font-size: 8.8pt; color: var(--suave); border-left: 1.2mm solid var(--naranjo); padding-left: 3mm; margin-top: 1.6mm; max-width: none; }
+  .muestras { font-size: 8.6pt; color: var(--suave); }
+  .pregunta { font-family: var(--serif); font-size: 10.2pt; color: var(--tinta); }
+
+  /* ---------- La sesión en una hoja ---------- */
+  .plan { width: 100%; border-collapse: collapse; margin: 2mm 0 3mm; font-size: 9pt; }
+  .plan th { font-size: 6.9pt; padding: 1.4mm 2mm; }
+  .plan td { padding: 2.2mm 2mm; vertical-align: top; line-height: 1.4; }
+  .plan td:first-child { width: 25mm; }
+  .plan td:first-child b { display: block; font-family: var(--serif); font-size: 12.5pt; color: var(--tinta); font-weight: 700; line-height: 1.1; }
+  .plan td:first-child span { font-size: 7.4pt; color: var(--teal); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+  .plan td:nth-child(2) { width: 22mm; font-family: var(--serif); font-size: 13pt; color: var(--teal); font-weight: 700; }
+  .plan td:nth-child(2) small { display: block; font-family: var(--sans); font-size: 7.2pt; color: var(--tenue); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+  .plan td:nth-child(4) { width: 36mm; color: var(--suave); font-size: 8.4pt; }
+  .plan td:last-child { width: 34mm; color: var(--tinta); font-size: 8.6pt; }
+  .plan tr.exp td { background: #f6f3ec; }
+  .norte { font-family: var(--serif); font-size: 12.2pt; line-height: 1.38; color: var(--tinta); border-left: 1.4mm solid var(--teal); padding: 0.5mm 0 0.5mm 4.5mm; margin: 3.5mm 0 3mm; max-width: 160mm; }
+  .norte strong { color: var(--teal); }
+
+  /* ---------- Dos columnas y listas ---------- */
+  .dos-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0 8mm; max-width: none; }
+  .dos-col p, .dos-col ul, .dos-col ol { max-width: none; }
+  .lista-simple { list-style: none; padding: 0; margin: 0 0 2.6mm; max-width: none; }
+  .lista-simple li { position: relative; padding-left: 4mm; margin-bottom: 1.1mm; line-height: 1.42; }
+  .lista-simple li::before { content: ''; position: absolute; left: 0.4mm; top: 1.9mm; width: 1.6mm; height: 1.6mm; border-radius: 50%; background: var(--teal); }
+  .pasos-num { list-style: none; padding: 0; margin: 0 0 2.6mm; max-width: none; counter-reset: paso; }
+  .pasos-num li { position: relative; padding-left: 7mm; margin-bottom: 1.4mm; line-height: 1.42; counter-increment: paso; }
+  .pasos-num li::before { content: counter(paso); position: absolute; left: 0; top: 0.1mm; width: 5mm; height: 5mm; border-radius: 50%; background: var(--tinta); color: #fff; font-size: 7.6pt; font-weight: 700; text-align: center; line-height: 5mm; }
+
+  /* ---------- El juego en vivo: tres fotos ---------- */
+  .vivo { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; margin: 2mm 0 2.4mm; max-width: none; }
+  .vivo img { display: block; width: 100%; height: 36mm; object-fit: cover; object-position: var(--foco, center); border: 0.5pt solid var(--linea); border-radius: 1.6mm; }
+  .vivo figcaption { margin-top: 1.4mm; }
+  .vivo figcaption b { font-family: var(--serif); font-size: 10.5pt; color: var(--teal); margin-right: 1.2mm; }
+
+  /* ---------- Las ideas de los conceptos ---------- */
+  .idea { border-top: 0.5pt solid var(--linea); padding: 1.7mm 0 1.5mm; break-inside: avoid; }
+  .idea:last-of-type { border-bottom: 0.5pt solid var(--linea); }
+  .idea h3 { margin: 0 0 1.2mm; font-family: var(--serif); font-size: 12pt; font-weight: 700; }
+  .idea h3 small { font-family: var(--sans); font-size: 7.4pt; font-weight: 600; color: var(--tenue); letter-spacing: 0.06em; text-transform: uppercase; margin-left: 2mm; }
+  .idea p { max-width: none; font-size: 9.8pt; margin-bottom: 1mm; }
+  .idea p:last-child { margin-bottom: 0; }
+
+  /* ---------- Los tres pasos grandes de la prueba ---------- */
+  .tres { list-style: none; padding: 0; margin: 2mm 0 4mm; max-width: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 5mm; }
+  .tres li { border-top: 1.2pt solid var(--tinta); padding-top: 2.4mm; }
+  .tres li b { display: block; font-family: var(--serif); font-size: 22pt; line-height: 1; color: var(--teal); margin-bottom: 1.8mm; }
+  .tres li p { font-size: 10pt; margin: 0; max-width: none; color: var(--tinta); }
+
+  /* ---------- Preguntas difíciles ---------- */
+  .dificiles { list-style: none; padding: 0; margin: 1mm 0 0; border-top: 0.5pt solid var(--linea); max-width: none; }
+  .dificiles li { padding: 2.5mm 0 2.3mm; border-bottom: 0.5pt solid var(--linea); margin: 0; break-inside: avoid; }
+  .dificiles h3 { margin: 0 0 1.1mm; font-family: var(--serif); font-size: 12pt; font-weight: 700; }
+  .dificiles p { margin: 0 0 1mm; max-width: none; font-size: 9.6pt; }
+  .origen { display: inline-block; font-size: 6.4pt; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.3mm 1.5mm; border-radius: 1mm; white-space: nowrap; vertical-align: 0.4mm; background: #ebe8e1; color: var(--suave); margin-left: 1mm; }
+
+  /* ---------- Cómo adaptarlo ---------- */
+  .adapta { display: grid; grid-template-columns: 1fr 1fr; gap: 2mm 8mm; max-width: none; margin: 1mm 0 3mm; }
+  .adapta div { border-top: 0.5pt solid var(--linea); padding-top: 2mm; }
+  .adapta h3 { margin: 0 0 1mm; font-family: var(--serif); font-size: 11.5pt; font-weight: 700; }
+  .adapta p { max-width: none; font-size: 9.5pt; margin-bottom: 1.2mm; }
+  .creditos { margin-top: 2mm; }
+  .creditos p { font-size: 8.9pt; color: var(--suave); max-width: 160mm; margin-bottom: 1.8mm; }
+  .creditos b { color: var(--tinta); font-weight: 600; }
+  a.sitio { color: var(--teal); text-decoration: underline; text-decoration-thickness: 0.6pt; text-underline-offset: 0.6mm; }
+
+  /* ---------- Para saber más: los QR ---------- */
+  .qrs { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; margin: 1.2mm 0 1.2mm; max-width: none; }
+  .qr { display: grid; grid-template-columns: 22mm 1fr; gap: 1.6mm 3.5mm; align-items: start; border: 0.5pt solid var(--linea); border-radius: 2mm; padding: 2.6mm; }
+  .qr img { display: block; width: 22mm; height: 22mm; }
+  .qr b { display: block; font-family: var(--serif); font-size: 11.5pt; color: var(--tinta); font-weight: 700; margin-bottom: 0.8mm; }
+  .qr p { margin: 0; max-width: none; font-size: 8.4pt; color: var(--suave); }
+  .qr .url { grid-column: 1 / -1; color: var(--teal); font-weight: 600; border-top: 0.5pt solid var(--linea); padding-top: 1.8mm; font-size: 8.4pt; }
+
+  /* ---------- Para imprimir ---------- */
+  .imprimir .kicker { color: var(--suave); }
+  .hoja-equipo { border: 0.9pt solid var(--tinta); border-radius: 2mm; padding: 6mm 6mm 5mm; margin-top: 3mm; }
+  .hoja-equipo .cab { display: flex; justify-content: space-between; gap: 6mm; font-size: 9.5pt; color: var(--tinta); border-bottom: 0.6pt solid var(--tinta); padding-bottom: 2.4mm; margin-bottom: 1mm; }
+  .hoja-equipo .cab span { flex: 1; }
+  .hoja-equipo .cab .linea-llenar { display: inline-block; min-width: 40mm; border-bottom: 0.6pt solid var(--tinta); margin-left: 2mm; }
+  .campo { display: grid; grid-template-columns: 9mm 1fr; gap: 0 3mm; padding: 6.5mm 0 5.5mm; border-bottom: 0.5pt solid var(--linea); }
+  .campo:last-of-type { border-bottom: none; }
+  .campo .n { font-family: var(--serif); font-size: 21pt; color: var(--tinta); font-weight: 700; line-height: 1; }
+  .campo .texto { font-size: 12pt; line-height: 2.05; color: var(--tinta); max-width: none; }
+  .campo .texto .h { display: inline-block; min-width: 18mm; border-bottom: 0.6pt solid var(--tinta); vertical-align: baseline; height: 5.5mm; }
+  .campo .texto .h.ancha { min-width: 60mm; }
+  .campo .texto .h.larga { display: block; width: 100%; min-width: 0; margin-top: 2.5mm; height: 7mm; }
+  .campo .ayuda { font-size: 8.4pt; color: var(--suave); margin: 1mm 0 0; max-width: none; line-height: 1.4; }
+  .hoja-equipo .firma { font-size: 8.6pt; color: var(--suave); margin-top: 4mm; padding-top: 2.4mm; border-top: 0.6pt solid var(--tinta); display: flex; justify-content: space-between; gap: 6mm; }
+
+  .semanas { width: 100%; border-collapse: collapse; margin: 2mm 0 0; font-size: 9pt; }
+  .semanas th { font-size: 7pt; padding: 1.6mm 2mm; border-bottom: 0.9pt solid var(--tinta); color: var(--tinta); }
+  .semanas td { padding: 0; height: 11.2mm; border-bottom: 0.5pt solid #c9c2b4; border-right: 0.5pt solid #e2ddd2; vertical-align: middle; }
+  .semanas td:first-child { padding-left: 2mm; width: 24mm; color: var(--tinta); font-weight: 600; border-right: 0.5pt solid #c9c2b4; }
+  .semanas td:nth-child(2), .semanas td:nth-child(3) { width: 34mm; }
+  .semanas td:last-child { border-right: none; }
+  .semanas tr.semana td { height: 6.6mm; background: #f6f3ec; font-size: 7pt; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--suave); padding-left: 2mm; }
+  .semanas tr.total td { height: 8.4mm; background: #faf8f4; }
+  .semanas tr.total td:first-child { color: var(--teal); }
+  .decision { border: 0.9pt solid var(--tinta); border-radius: 2mm; padding: 3.4mm 4.5mm; margin-top: 4mm; font-size: 9.8pt; line-height: 2; color: var(--tinta); max-width: none; }
+  .decision b { font-family: var(--serif); font-size: 11pt; }
+  .decision .cuadro { display: inline-block; width: 3.6mm; height: 3.6mm; border: 0.7pt solid var(--tinta); border-radius: 0.6mm; vertical-align: -0.6mm; margin: 0 1.4mm 0 3mm; }
+  .decision .h { display: inline-block; min-width: 50mm; border-bottom: 0.6pt solid var(--tinta); height: 5mm; vertical-align: baseline; }
+  .numeros { width: 100%; border-collapse: collapse; margin: 2mm 0 0; font-size: 8.6pt; }
+  .numeros caption { caption-side: top; text-align: left; font-size: 8.2pt; color: var(--suave); padding: 0 0 1.4mm; line-height: 1.4; }
+  .numeros th { text-align: center; padding: 1mm 1mm; }
+  .numeros th:first-child, .numeros td:first-child { text-align: left; width: 44mm; color: var(--tinta); font-weight: 600; }
+  .numeros td { text-align: center; padding: 1.3mm 1mm; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .numeros td.mejor { color: var(--verde); font-weight: 700; }
+  table.plan tr > th:nth-child(3), table.plan tr > td:nth-child(3) { width: 41%; }
+  table.plan tr > th:nth-child(1), table.plan tr > td:nth-child(1) { width: 15%; }
+  table.plan tr > th:nth-child(2), table.plan tr > td:nth-child(2) { width: 10%; }
+</style>
+</head>
+<body>
+
+<!-- =============================== PORTADA =============================== -->
+<section class="hoja portada foto">
+  <div class="imagen"><img src="img/escena-wip9.jpg" alt="La mosca del juego en su oficina, con 9 tareas en curso en el tablero, post-its pegados alrededor del monitor, una pila de carpetas en el escritorio y el cenicero lleno" /></div>
+  <div class="texto">
+    <p class="rotulo">Manual del facilitador</p>
+    <h1>Deja de empezar,<br />empieza a terminar</h1>
+    <p class="lema">Taller de 60 minutos para encontrar el límite de tu equipo, con la Mosca del WIP</p>
+    <p class="gana">Tu equipo sale con <b>tres cosas escritas</b>: su límite de tareas a la vez, qué hace cuando algo queda esperando y una prueba de dos semanas con fecha. Este manual trae la sesión en una hoja, las frases listas y las hojas para imprimir.</p>
+  </div>
+  <div class="datos">
+    <div><b>Felipe Fernández</b> · octubre 2026 · versión 2</div>
+    <div style="text-align:right">mosca.deliverycraft.ai<br />Se puede usar y adaptar · CC BY 4.0</div>
+  </div>
+</section>
+
+<!-- =============================== 1 · LA SESIÓN EN UNA HOJA =============================== -->
+<section class="hoja">
+  <div class="kicker">La sesión en una hoja</div>
+  <h1>Sesenta minutos, cuatro partes y tres cosas escritas</h1>
+  <p class="bajada">Con esta hoja puedes facilitar la sesión completa. Las páginas que siguen traen las frases listas, las preguntas para la sala y qué hacer si algo sale mal.</p>
+  <p class="norte">Lo primero que dices en la sala: el equipo sale hoy con tres cosas escritas, <strong>su límite de tareas a la vez, qué hace cuando algo queda esperando y una prueba de dos semanas con fecha</strong>. Si sale solo con “qué entretenida la mosca”, la sesión falló.</p>
+  <table class="plan">
+    <thead><tr><th>Parte</th><th>Minutos</th><th>Qué haces</th><th>Qué necesitas</th><th>Qué se llevan</th></tr></thead>
+    <tbody>
+      <tr><td><span>1</span><b>Conexión</b></td><td>10<small>0:00 a 0:10</small></td><td>Dices lo que se llevan hoy. Cada persona anota en un post-it cuántas tareas tiene empezadas. Juegas dos días de la mosca en vivo, proyectados: uno con 9 tareas a la vez y otro con 2, y la tabla del juego los compara.</td><td>el juego abierto y proyectado, post-its, plumones, láminas 2 a 5</td><td>La pregunta “¿a cuál de los dos días se parece su semana?”</td></tr>
+      <tr><td><span>2</span><b>Conceptos</b></td><td>15<small>0:10 a 0:25</small></td><td>Cinco láminas, tres minutos cada una, con una pregunta para la sala: lo que vieron en promedio, qué es WIP (trabajo en curso, en inglés) y qué es un límite, estar ocupado no es avanzar, el límite depende de las esperas, lo empezado no desaparece.</td><td>láminas 6 a 10</td><td>Las ideas para elegir su límite con criterio</td></tr>
+      <tr><td><span>3</span><b>Práctica</b></td><td>25<small>0:25 a 0:50</small></td><td>El equipo llena su hoja: tareas empezadas hoy, límite para partir, qué hace cuando algo queda esperando y la fecha de revisión. Tú guías con el reloj y preguntas. No propones el número.</td><td>la hoja del equipo impresa (página 10), lámina 11</td><td>La hoja escrita</td></tr>
+      <tr><td><span>4</span><b>Cierre</b></td><td>10<small>0:50 a 1:00</small></td><td>El equipo lee su hoja en voz alta. Cada persona dice en una frase qué hará distinto mañana. Agendan la revisión y le sacan una foto a la hoja.</td><td>láminas 12 y 13, un celular para la foto</td><td>La revisión en el calendario y la foto en el grupo del equipo</td></tr>
+      <tr class="exp"><td><span>después</span><b>La prueba</b></td><td>2<small>semanas</small></td><td>Entra en lo que el equipo ya hace: el límite escrito en la columna “En curso” del tablero, el día de inicio y de término en cada tarjeta, y a las dos semanas comparan y deciden (página 7). Cuatro semanas si son líderes.</td><td>la tabla de las dos semanas (página 11)</td><td>Datos propios para decidir su límite</td></tr>
+    </tbody>
+  </table>
+  <p class="chico">Las cuatro partes siguen la estructura 4C de Sharon L. Bowman, <em>Training from the BACK of the Room!</em> (Pfeiffer, 2009): Conexión, Conceptos, Práctica concreta y Conclusiones. En la sala no hace falta nombrarlas. Si te atrasas, recorta en los conceptos (salta la lámina 10), nunca en la práctica ni en la fecha de revisión.</p>
+  <div class="pie"><span><b>Deja de empezar, empieza a terminar</b> · Manual del facilitador</span><span></span></div>
+</section>
+
+<!-- =============================== 2 · ANTES DE LA SESIÓN =============================== -->
+<section class="hoja">
+  <div class="kicker">Antes de la sesión · 15 minutos de preparación</div>
+  <h1>El juego probado, las hojas impresas y el proyector listo</h1>
+  <div class="dos-col">
+    <div>
+      <h3>Qué necesitas</h3>
+      <ul class="lista-simple">
+        <li>Un computador con internet y un proyector o una pantalla grande, con el juego abierto en <b>mosca.deliverycraft.ai/jugar/</b>.</li>
+        <li>La presentación (13 láminas, con el guion en las notas), abierta en la lámina 1.</li>
+        <li>La hoja del equipo impresa (página 10), una por equipo, y la tabla de las dos semanas (página 11).</li>
+        <li>Un post-it y un plumón por persona. Una pizarra ayuda, pero no es obligatoria.</li>
+        <li>Un reloj a la vista.</li>
+      </ul>
+      <h3>El día anterior</h3>
+      <p>Lee este manual entero una vez. Después juega en el computador los dos días que vas a mostrar, uno con 9 tareas a la vez y otro con 2, siguiendo los pasos de abajo. Así sabes dónde está cada cosa y puedes contestar lo que te pregunten.</p>
+    </div>
+    <div>
+      <h3>Los quince minutos antes</h3>
+      <ol class="pasos-num">
+        <li>Conecta el proyector y abre el juego. Juega un día entero (dura un minuto) para comprobar que se ve bien.</li>
+        <li>Borra ese día de prueba: en la vista normal, el panel de la derecha tiene “Borrar historial”, bajo la tabla “Días jugados”. Así la tabla de la sesión muestra solo los dos días en vivo.</li>
+        <li>Vuelve a cargar la página. El juego queda detenido en las 09:00, listo para empezar.</li>
+        <li>Deja un post-it y un plumón en cada puesto, y la hoja del equipo en la mesa.</li>
+        <li>Abre la presentación en la lámina 1 y déjala puesta mientras llega la gente.</li>
+      </ol>
+    </div>
+  </div>
+
+  <h2>El juego en vivo, paso a paso</h2>
+  <div class="vivo">
+    <figure><img src="img/taller-vivo-1-recorte.jpg" alt="La vista Exhibición del juego antes de empezar: a la derecha, Carga dice 9 a la vez, y en la oficina está la tarjeta con el botón Empezar" /><figcaption><b>1</b>Tecla E para la vista Exhibición. Tecla 9: arriba a la derecha, “Carga” dice “9 a la vez”. Espacio o el botón Empezar: parte el día.</figcaption></figure>
+    <figure><img src="img/taller-vivo-2-recorte.jpg" alt="El día con 9 tareas a la vez a las 13:30: la tarjeta Estado de la mosca dice Colapsada, el monitor está lleno de post-its y el cenicero tiene colillas" /><figcaption><b>2</b>Mientras corre el día: la tarjeta “Estado de la mosca” arriba a la izquierda, los post-its del monitor, la pila de carpetas y el cenicero.</figcaption></figure>
+    <figure><img src="img/taller-vivo-3-recorte.jpg" alt="El fin del segundo día: abajo a la derecha, la tabla compara el día con 9 y el día con 2, marcado HOY" /><figcaption><b>3</b>A las 18:00 el día termina solo. Tecla 2 y después tecla R: parte el segundo día. Al terminar, la tabla de abajo compara los dos días.</figcaption></figure>
+  </div>
+  <p>Un día de oficina dura <b>un minuto</b> a velocidad normal, y así conviene mostrarlo: la mosca se estresa de a poco y la sala alcanza a ver cómo pasa. La tabla del final trae terminadas, tiempo por tarea y colillas de cada día, con el de hoy marcado.</p>
+  <p>Si prefieres el mouse, la tecla E vuelve a la vista normal: el panel de la derecha tiene el control “Tareas en curso a la vez”, el botón Empezar, “Reiniciar día” y la tabla “Días jugados”. Lo que se ve es lo mismo, más chico.</p>
+  <p class="ojo"><span class="rot naranjo">Si un día sale raro</span>Cada día del juego es distinto, como en la vida. Si con 9 terminó más que con 2, dilo tal cual: un día no prueba nada. La lámina 6 muestra el promedio de 200 días. Si falla el internet, la lámina 4 tiene las fotos de los dos días y la 6 los números: cuenta el día con tus palabras.</p>
+  <div class="pie"><span><b>Deja de empezar, empieza a terminar</b> · Manual del facilitador</span><span></span></div>
+</section>
+
+<!-- =============================== 3 · PARTE 1 · CONEXIÓN =============================== -->
+<section class="hoja">
+  <div class="kicker">Parte 1 · Conexión · 10 minutos · 0:00 a 0:10</div>
+  <h1>Una pregunta y dos días de la mosca en vivo</h1>
+  <div class="corto">
+    <span class="etiqueta">En corto</span>
+    <p><b>Para qué sirve.</b> Para que cada persona conecte el tema con su propia semana antes de que hables de ideas.</p>
+    <p><b>Qué haces.</b> Dices lo que se llevan, haces la pregunta del post-it y juegas dos días proyectados, uno con 9 tareas a la vez y otro con 2.</p>
+    <p><b>Qué sale.</b> Una comparación que todos vieron y la pregunta “¿a cuál de los dos días se parece su semana?”.</p>
+  </div>
+  <ol class="guion">
+    <li>
+      <div class="cuando">0:00<small>1 min</small></div>
+      <div>
+        <h3>Lo que se llevan hoy</h3>
+        <p class="dices"><span class="rot">Qué dices</span><q>Hoy salen con tres cosas escritas: su límite de tareas a la vez, qué van a hacer cuando algo quede esperando y una prueba de dos semanas con fecha. Todo lo demás es para llegar ahí.</q></p>
+        <p class="muestras"><span class="rot gris">Qué muestras</span>Lámina 2.</p>
+      </div>
+    </li>
+    <li>
+      <div class="cuando">0:01<small>3 min</small></div>
+      <div>
+        <h3>¿Cuántas tareas tienes empezadas hoy?</h3>
+        <p><span class="rot">Qué haces</span>Cada persona escribe un número en su post-it y se lo guarda, porque se usa en la práctica. Después pides mano alzada.</p>
+        <p class="dices"><span class="rot">Qué dices</span><q>¿Cuántas tareas tienes empezadas hoy? Cuenta a nivel de tarea: una tarjeta del tablero, no cada correo ni cada subtarea. Escribe el número en el post-it y guárdalo.</q> Y luego: <q>Levante la mano quien tiene más de cinco.</q></p>
+        <p class="muestras"><span class="rot gris">Qué muestras</span>Lámina 3.</p>
+        <p class="ojo"><span class="rot naranjo">Si algo sale mal</span>Si alguien pregunta qué cuenta como tarea: lo que tu equipo pondría como una tarjeta en su tablero.</p>
+      </div>
+    </li>
+    <li>
+      <div class="cuando">0:04<small>5 min</small></div>
+      <div>
+        <h3>El juego en vivo: dos días</h3>
+        <p><span class="rot">Qué haces</span>Muestra la lámina 4 un momento (qué mirar) y pasa al juego. Juegas el día 1 con 9 tareas a la vez comentando lo que pasa, luego el día 2 con 2, y al final lees la tabla. Los pasos exactos están en la página 2.</p>
+        <p class="dices"><span class="rot">Qué dices</span>Día 1: <q>Esta mosca trabaja en una oficina con un tablero: por hacer, en curso, hecho. Hoy tiene 9 tareas a la vez. Miren cómo cambia su estado, los post-its que se le pegan al monitor, la pila de carpetas y el cenicero. En el juego, cada cigarro son ocho minutos sin trabajar.</q></p>
+        <p class="dices">Día 2: <q>Misma mosca, mismo día, 2 tareas a la vez.</q> Con la tabla: <q>Lean los tres números de cada día: cuántas terminó, cuánto tardó cada tarea y cuántos cigarros.</q></p>
+      </div>
+    </li>
+    <li>
+      <div class="cuando">0:09<small>1 min</small></div>
+      <div>
+        <h3>La pregunta</h3>
+        <p class="dices"><span class="rot">Qué preguntas</span><q>¿A cuál de los dos días se parece su semana?</q> Mano alzada por cada día, o dos o tres respuestas en voz alta. No comentes todavía: los conceptos vienen ahora.</p>
+        <p class="muestras"><span class="rot gris">Qué muestras</span>Lámina 5.</p>
+        <p class="ojo"><span class="rot naranjo">Opción, no la base</span>Si quieres que jueguen ellos: en parejas, en el celular, los mismos dos días (9 y 2) a velocidad x4, que dura 15 segundos por día. Suma unos cinco minutos, que salen de los conceptos.</p>
+      </div>
+    </li>
+  </ol>
+  <div class="pie"><span><b>Deja de empezar, empieza a terminar</b> · Manual del facilitador</span><span></span></div>
+</section>
+
+<!-- =============================== 4 · PARTE 2 · CONCEPTOS =============================== -->
+<section class="hoja">
+  <div class="kicker">Parte 2 · Conceptos · 15 minutos · 0:10 a 0:25</div>
+  <h1>Cinco láminas, cinco preguntas para la sala</h1>
+  <div class="corto">
+    <span class="etiqueta">En corto</span>
+    <p><b>Para qué sirve.</b> Para dar las pocas ideas que el equipo necesita para elegir su límite, sin dar una clase.</p>
+    <p><b>Qué haces.</b> Muestras cinco láminas, tres minutos cada una, cada una con una pregunta a la sala.</p>
+    <p><b>Qué sale.</b> Un equipo que entiende por qué menos cosas a la vez y ya habla de su propio trabajo.</p>
+  </div>
+
+  <div class="idea">
+    <h3>Lo que vieron, en promedio <small>lámina 6 · 0:10</small></h3>
+    <p class="dices"><span class="rot">Qué dices</span><q>Un día no prueba nada. Aquí está el promedio de 200 días del juego con cada límite, de 1 a 10: con 2 tareas a la vez la mosca termina 18 en el día, con 9 la mitad, y está ocupada todo el día.</q></p>
+    <p class="pregunta"><span class="rot">Qué preguntas</span>¿Dónde pondrían a su equipo en esta tira del 1 al 10?</p>
+  </div>
+  <div class="idea">
+    <h3>Qué es WIP y qué es un límite <small>lámina 7 · 0:13</small></h3>
+    <p class="dices"><span class="rot">Qué dices</span><q>WIP es trabajo en curso, en inglés: lo que ya está empezado y no terminado. Un límite de WIP es un número, cuántas cosas pueden estar empezadas a la vez. Al llegar al número no se empieza otra hasta terminar una.</q></p>
+    <p class="pregunta"><span class="rot">Qué preguntas</span>¿Cuántas tarjetas hay hoy en su columna En curso?</p>
+  </div>
+  <div class="idea">
+    <h3>Estar ocupado no es avanzar <small>lámina 8 · 0:16</small></h3>
+    <p class="dices"><span class="rot">Qué dices</span><q>Hay dos formas de mirar un día: cuánto estuvo ocupada la persona, o cuánto de su tiempo avanzó cada tarea y cuánto esperó. A eso se le llama eficiencia de flujo. En el juego, con 2 tareas a la vez cada tarea avanza el 47 por ciento de su tiempo y tarda una hora. Con 9 avanza el 9 por ciento y tarda casi nueve horas.</q></p>
+    <p class="pregunta"><span class="rot">Qué preguntas</span>¿Qué parte de su trabajo está esperando hoy?</p>
+  </div>
+  <div class="idea">
+    <h3>El límite depende de las esperas <small>lámina 9 · 0:19</small></h3>
+    <p class="dices"><span class="rot">Qué dices</span><q>En el juego, una de cada cinco tareas se traba entre 30 y 60 minutos esperando a otra persona. Por eso el mejor límite no es 1: en la simulación quedó entre 2 y 4 en 16 de 17 casos. De ahí sale la regla: reducir las esperas permite bajar el límite. Subir el límite no reduce las esperas.</q></p>
+    <p class="pregunta"><span class="rot">Qué preguntas</span>¿A quién o a qué esperan más?</p>
+  </div>
+  <div class="idea">
+    <h3>Lo empezado no desaparece <small>lámina 10 · 0:22</small></h3>
+    <p class="dices"><span class="rot">Qué dices</span><q>En la simulación, si a las 12 del día la mosca baja el límite de 10 a 2, sigue con 10 cosas abiertas hasta terminar 8, y recién a las 2 y 35 de la tarde queda con 2. En un equipo son días: la primera semana con un límite se siente más lenta, porque primero se termina lo empezado.</q></p>
+    <p class="pregunta"><span class="rot">Qué preguntas</span>¿Qué tendrían que terminar antes de empezar algo nuevo?</p>
+  </div>
+  <p class="ojo" style="margin-top:2.2mm"><span class="rot naranjo">Si algo sale mal</span>Si alguien pide el número correcto, no lo des: sale en la práctica. Cierra con dos frases: <q>Estar siempre ocupado no es lo mismo que avanzar. Y la meta no es una cosa a la vez, es un límite que puedan sostener.</q></p>
+  <table class="numeros visual">
+    <caption>Los números del juego, por si te preguntan por uno que no sale en las láminas. Promedio de 200 días con la mosca sola.</caption>
+    <thead><tr><th>Tareas a la vez</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th></tr></thead>
+    <tbody>
+      <tr><td>Terminadas en el día</td><td>15,9</td><td class="mejor">18,0</td><td>16,9</td><td>15,4</td><td>14,0</td><td>12,3</td><td>11,2</td><td>10,0</td><td>9,1</td><td>8,2</td></tr>
+      <tr><td>Tiempo por tarea</td><td>34 min</td><td>1 h</td><td>1 h 36</td><td>2 h 20</td><td>3 h 14</td><td>4 h 24</td><td>5 h 40</td><td>7 h 11</td><td>8 h 54</td><td>10 h 34</td></tr>
+      <tr><td>Cuánto de su tiempo avanza cada tarea</td><td>73 %</td><td>47 %</td><td>33 %</td><td>24 %</td><td>19 %</td><td>15 %</td><td>13 %</td><td>10 %</td><td>9 %</td><td>8 %</td></tr>
+    </tbody>
+  </table>
+  <div class="pie"><span><b>Deja de empezar, empieza a terminar</b> · Manual del facilitador</span><span></span></div>
+</section>
+
+<!-- =============================== 5 · PARTE 3 · PRÁCTICA =============================== -->
+<section class="hoja">
+  <div class="kicker">Parte 3 · Práctica · 25 minutos · 0:25 a 0:50</div>
+  <h1>La hoja del equipo: tres preguntas y una fecha</h1>
+  <div class="corto">
+    <span class="etiqueta">En corto</span>
+    <p><b>Para qué sirve.</b> Para que el equipo decida sobre su trabajo real, no sobre la mosca. Aquí se decide si la sesión sirvió.</p>
+    <p><b>Qué haces.</b> Guías con el reloj y haces preguntas. El equipo escribe en su hoja (página 10). No propones el número.</p>
+    <p><b>Qué sale.</b> La hoja llena: tareas empezadas hoy, el límite para partir, qué hacen cuando algo espera y la fecha de revisión.</p>
+  </div>
+  <ol class="guion">
+    <li>
+      <div class="cuando">0:25<small>5 min</small></div>
+      <div>
+        <h3>Hoy tenemos __ tareas empezadas</h3>
+        <p><span class="rot">Qué haces</span>Cada persona saca su post-it. Se cuentan como tarjetas del tablero: si dos personas tienen la misma tarea, cuenta una vez. El total va en la línea 1 de la hoja, tal cual.</p>
+        <p class="dices"><span class="rot">Qué dices</span><q>Saquen el post-it. Juntemos las tareas empezadas del equipo, contadas como tarjetas del tablero. Escríbanlo tal cual, sin arreglarlo.</q></p>
+        <p class="muestras"><span class="rot gris">Qué muestras</span>Lámina 11, durante toda la práctica.</p>
+      </div>
+    </li>
+    <li>
+      <div class="cuando">0:30<small>8 min</small></div>
+      <div>
+        <h3>Nuestro límite para partir: __</h3>
+        <p><span class="rot">Qué haces</span>El equipo elige un número un poco menor que el de hoy: incómodo, pero posible. Dilo así: la simulación es de una mosca sola y no da un número para equipos. Para una persona sola sí hay un punto de partida: 1 o 2 si casi nada espera, 2 si algo espera y 3 si mucho espera.</p>
+        <p class="dices"><span class="rot">Qué dices</span><q>No busquen el número perfecto. Busquen uno que les incomode un poco y que puedan sostener dos semanas. Después lo ajustan con sus propios datos.</q></p>
+      </div>
+    </li>
+    <li>
+      <div class="cuando">0:38<small>7 min</small></div>
+      <div>
+        <h3>Cuando algo quede esperando, vamos a: __</h3>
+        <p><span class="rot">Qué haces</span>Completan la frase con una acción: ayudar a destrabar lo que espera, pedir ayuda o terminar algo ya empezado. Escrita como algo que se hace.</p>
+        <p class="dices"><span class="rot">Qué dices</span><q>Cuando lleguen al límite y lo suyo esté esperando, ¿qué van a hacer en vez de empezar otra cosa? Escríbanlo como una acción.</q></p>
+      </div>
+    </li>
+    <li>
+      <div class="cuando">0:45<small>5 min</small></div>
+      <div>
+        <h3>Lo probamos 2 semanas y lo revisamos el __</h3>
+        <p><span class="rot">Qué haces</span>Fijan la fecha de revisión, en una reunión que ya tengan. Entrégales la tabla de las dos semanas (página 11) y explica los tres pasos de la prueba (página 7).</p>
+        <p class="dices"><span class="rot">Qué dices</span><q>Dos semanas y una fecha. La prueba entra en lo que ya hacen: el límite escrito en el tablero, el día de inicio y de término en cada tarjeta, y en la revisión comparan.</q></p>
+        <p class="ojo"><span class="rot naranjo">Según el grupo</span><b>5 a 6 personas:</b> una sola hoja. <b>10 a 12:</b> dos grupos proponen un límite cada uno y el equipo elige uno. Si empatan, gana el más bajo. <b>Líderes:</b> sus tareas son proyectos o iniciativas, la mosca es una analogía y conviene decirlo así. Su prueba dura cuatro semanas.</p>
+      </div>
+    </li>
+  </ol>
+  <p class="ojo" style="margin-top:3mm"><span class="rot naranjo">Si algo sale mal</span>Si discuten mucho el número, pide el más bajo que todos acepten probar dos semanas. Si el equipo no tiene tablero, su primera tarea es hacer uno: tres columnas en una pared o en una pizarra digital alcanzan.</p>
+  <div class="pie"><span><b>Deja de empezar, empieza a terminar</b> · Manual del facilitador</span><span></span></div>
+</section>
+
+<!-- =============================== 6 · PARTE 4 · CIERRE =============================== -->
+<section class="hoja">
+  <div class="kicker">Parte 4 · Cierre · 10 minutos · 0:50 a 1:00</div>
+  <h1>La hoja en voz alta, una frase por persona y la fecha</h1>
+  <div class="corto">
+    <span class="etiqueta">En corto</span>
+    <p><b>Para qué sirve.</b> Para que lo escrito salga de la sala con fecha y cada persona con una frase comprometida.</p>
+    <p><b>Qué haces.</b> El equipo lee su hoja, cada uno dice qué hará distinto mañana, agendan la revisión y sacan la foto.</p>
+    <p><b>Qué sale.</b> La revisión en el calendario y la foto de la hoja en el grupo del equipo.</p>
+  </div>
+  <ol class="guion">
+    <li>
+      <div class="cuando">0:50<small>2 min</small></div>
+      <div>
+        <h3>La hoja en voz alta</h3>
+        <p><span class="rot">Qué haces</span>Una persona del equipo lee la hoja completa, las tres respuestas y la fecha.</p>
+        <p class="dices"><span class="rot">Qué dices</span><q>Léanla entera, tal cual quedó.</q></p>
+        <p class="muestras"><span class="rot gris">Qué muestras</span>Lámina 12.</p>
+      </div>
+    </li>
+    <li>
+      <div class="cuando">0:52<small>4 min</small></div>
+      <div>
+        <h3>Una frase por persona</h3>
+        <p class="dices"><span class="rot">Qué preguntas</span><q>Una frase cada uno: ¿qué vas a hacer distinto mañana?</q> Sin explicar y sin discutir. En equipos grandes, una persona por grupo.</p>
+      </div>
+    </li>
+    <li>
+      <div class="cuando">0:56<small>2 min</small></div>
+      <div>
+        <h3>La revisión al calendario y la foto</h3>
+        <p><span class="rot">Qué haces</span>La fecha se agenda ahí mismo, con todos invitados. Alguien le saca una foto a la hoja y la manda al grupo del equipo.</p>
+        <p class="dices"><span class="rot">Qué dices</span><q>Foto a la hoja y la revisión al calendario ahora. Si sale de la sala sin fecha, no pasa.</q></p>
+      </div>
+    </li>
+    <li>
+      <div class="cuando">0:58<small>2 min</small></div>
+      <div>
+        <h3>Para saber más</h3>
+        <p class="dices"><span class="rot">Qué dices</span><q>Lo que vieron hoy es un juego con una mosca. Lo que vale es su hoja y dos semanas de datos. Quien quiera saber de dónde sale cada número tiene el informe, que se lee en diez minutos.</q></p>
+        <p class="muestras"><span class="rot gris">Qué muestras</span>Lámina 13, con los dos códigos. Déjala puesta mientras se van.</p>
+        <p class="ojo"><span class="rot naranjo">Si algo sale mal</span>Si se acabó el tiempo con la hoja a medias, cierra igual con la lectura y la fecha. Un límite escrito y una fecha valen más que una hoja perfecta sin fecha.</p>
+      </div>
+    </li>
+  </ol>
+  <div class="qrs">
+    <div class="qr"><img src="img/qr-jugar.svg" alt="Código QR al juego" /><div><b>El juego</b><p>Un día de oficina en un minuto. Gratis y sin registro.</p></div><p class="url">mosca.deliverycraft.ai/jugar/</p></div>
+    <div class="qr"><img src="img/qr-informe.svg" alt="Código QR al informe" /><div><b>El informe</b><p>De dónde sale cada número y cuatro pasos para probar un límite.</p></div><p class="url">mosca.deliverycraft.ai, botón “Descargar el informe”</p></div>
+  </div>
+  <h3>Para ti, al salir</h3>
+  <ul class="lista-simple">
+    <li>Anota las preguntas que no supiste responder y los números de los dos días: sirven para abrir la revisión.</li>
+    <li>Confirma que la foto llegó al grupo y que la revisión quedó en el calendario con todos invitados.</li>
+  </ul>
+  <div class="pie"><span><b>Deja de empezar, empieza a terminar</b> · Manual del facilitador</span><span></span></div>
+</section>
+
+<!-- =============================== 7 · LA PRUEBA DE DOS SEMANAS =============================== -->
+<section class="hoja">
+  <div class="kicker">Después de la sesión</div>
+  <h1>La prueba de dos semanas, dentro de lo que ya hacen</h1>
+  <p class="bajada">La prueba no agrega reuniones. Usa el tablero que el equipo ya tiene, su reunión diaria y su revisión. Son tres pasos. Cuatro semanas si son líderes y su trabajo son proyectos.</p>
+  <ol class="tres">
+    <li><b>1</b><p>Escriban el límite en la columna “En curso” del tablero, a la vista de todos.</p></li>
+    <li><b>2</b><p>En cada tarjeta anoten el día que empezó y el día que terminó.</p></li>
+    <li><b>3</b><p>A las dos semanas comparen cuántas terminaron y cuánto tardó cada una, y decidan si mantienen, bajan o suben el límite.</p></li>
+  </ol>
+  <div class="dos-col">
+    <div>
+      <h3>Qué esperar</h3>
+      <p>La primera semana puede sentirse más lenta, porque primero se termina lo que ya estaba empezado. En la simulación, bajar el límite de 10 a 2 a mediodía tarda dos horas y media en volver a 2 cosas abiertas, y tres horas en que la mosca se calme. En un equipo son días. Si a la segunda semana las cosas empiezan a salir antes, el límite está trabajando.</p>
+      <h3>El conteo de cada día</h3>
+      <p>La tabla de la página 11 es para la reunión diaria: diez segundos para anotar cuántas tareas hay abiertas, cuántas se terminaron hoy y una nota si algo quedó esperando o entró una urgencia. Con esa tabla y las fechas de las tarjetas, la revisión se hace en diez minutos.</p>
+    </div>
+    <div>
+      <h3>Tres preguntas para la revisión</h3>
+      <ol class="pasos-num">
+        <li>¿Cuántas terminamos y cuánto tardó cada una, comparado con las dos semanas anteriores?</li>
+        <li>¿Cuántos días pasamos el límite y por qué cada vez?</li>
+        <li>Cuando algo quedó esperando, ¿qué hicimos de verdad: destrabar, pedir ayuda, terminar otra cosa, o empezar una nueva?</li>
+      </ol>
+      <h3>La decisión: mantener, bajar o subir</h3>
+      <p>Si el límite se pasó muchas veces por razones reales, como urgencias que entraron, súbanlo en uno y anoten las razones. Si nunca se llegó al límite, bájenlo en uno. Si se cumplió y las cosas tardaron menos, manténganlo dos semanas más y después prueben uno menos. Se baja de a poco y con datos.</p>
+    </div>
+  </div>
+  <p class="chico">Lo que se mide sale del informe: cuántas cosas se terminan, cuánto tarda cada una y cuánto hay abierto. Lo firme es que cada cosa sale antes porque espera menos su turno. Limitar el trabajo en curso es uno de los hábitos de los equipos de alto desempeño, según la encuesta de DORA, y ayuda sobre todo con un tablero a la vista.</p>
+  <div class="pie"><span><b>Deja de empezar, empieza a terminar</b> · Manual del facilitador</span><span></span></div>
+</section>
+
+<!-- =============================== 8 · PREGUNTAS DIFÍCILES =============================== -->
+<section class="hoja">
+  <div class="kicker">Para cuando te pregunten</div>
+  <h1>Siete preguntas difíciles, con respuesta corta</h1>
+  <p class="bajada">Las respuestas sobre hechos salen del informe y llevan su origen. Las de práctica son sugerencias: ajústalas a tu grupo.</p>
+  <ul class="dificiles">
+    <li>
+      <h3>¿Esto es real?</h3>
+      <p>Las neuronas y sus conexiones sí: vienen del Male CNS v1.0, el mapa completo del sistema nervioso central de una mosca, con licencia abierta. La actividad que se ve es simulada. Que cada tarea tarde más cuando hay más cosas abiertas tiene respaldo en estudios con personas. Que suba el estrés es un supuesto del juego. El informe dice de dónde sale cada número. <span class="origen">Informe, páginas 8 y 10</span></p>
+    </li>
+    <li>
+      <h3>¿Cuál es el número correcto?</h3>
+      <p>No hay uno. En la simulación, con las esperas del juego, el mejor límite está entre 2 y 4, y sin esperas es 1. Pero la mosca trabaja sola. Para un equipo, el número se mide: partan un poco por debajo de lo que tienen hoy y ajusten con los datos de la prueba. <span class="origen">Simulación · sugerencia</span></p>
+    </li>
+    <li>
+      <h3>Mi jefe me asigna todo</h3>
+      <p>El límite no dice cuánto te asignan. Dice cuánto tienes empezado a la vez. Lo demás espera en “por hacer”, a la vista. Si alguien quiere que algo entre ya, la pregunta es qué sale. Esa conversación es parte de la prueba, y por eso conviene que los líderes hagan este mismo taller con sus proyectos. <span class="origen">Sugerencia</span></p>
+    </li>
+    <li>
+      <h3>¿Y las urgencias?</h3>
+      <p>Entran. Pero una urgencia que entra cuando están en el límite significa que algo se pausa, y eso se anota en la tabla. Si cada día entran tres urgencias, lo que hay que mirar en la revisión no es el límite. <span class="origen">Sugerencia</span></p>
+    </li>
+    <li>
+      <h3>Con un límite voy a quedar sin hacer nada</h3>
+      <p>Cuando llegues al límite y lo tuyo esté esperando, la hoja del equipo dice qué hacer: destrabar, pedir ayuda o terminar algo empezado. En el juego, con 2 tareas a la vez la mosca se queda sin qué hacer el 4 por ciento del día y termina el doble que con 9. Con 1 a la vez se queda parada una cuarta parte del día y aun así termina 15,9, mucho más que con 9. <span class="origen">Juego, promedio de 200 días</span></p>
+    </li>
+    <li>
+      <h3>Nuestro trabajo es muy distinto</h3>
+      <p>Seguro. El juego no es tu equipo: es una mosca sola y un día. Lo que se repite en los estudios con personas, jueces en Milán, reclutadores y equipos de investigación, es que pasado cierto punto más cosas abiertas a la vez significa que cada una tarda más y se termina menos. Cuánto, en su caso, lo mide la prueba. <span class="origen">Informe, página 8</span></p>
+    </li>
+    <li>
+      <h3>¿Por qué una mosca que fuma?</h3>
+      <p>Las moscas no fuman. El cigarro es un disfraz de algo que sí hacen, limpiarse las antenas. En el juego, las tareas le llegan como polvo en la antena, su cerebro enciende el circuito de limpieza y eso se dibuja como salir a fumar, ocho minutos sin trabajar cada vez. Y una mosca, porque es uno de los pocos animales con el mapa completo de su sistema nervioso central: 166.700 neuronas. <span class="origen">Informe, páginas 9 y 10</span></p>
+    </li>
+  </ul>
+  <div class="pie"><span><b>Deja de empezar, empieza a terminar</b> · Manual del facilitador</span><span></span></div>
+</section>
+
+<!-- =============================== 9 · CÓMO ADAPTARLO Y CRÉDITOS =============================== -->
+<section class="hoja">
+  <div class="kicker">Según el grupo y el lugar</div>
+  <h1>Cómo adaptarlo</h1>
+  <p class="bajada">La sesión aguanta grupos grandes, líderes, distancia y salas sin internet. Lo que no se negocia es la práctica con el caso real y la fecha de revisión.</p>
+  <div class="adapta">
+    <div>
+      <h3>Un equipo de 5 a 6 personas</h3>
+      <p>La versión base. Una sola hoja del equipo. Todos cuentan sus tareas y todos firman el límite.</p>
+    </div>
+    <div>
+      <h3>Un equipo de 10 a 12</h3>
+      <p>En la práctica, dos grupos proponen un límite cada uno con su propia copia de la hoja, y el equipo elige uno. Si empatan, gana el más bajo. Suma cinco minutos a la práctica y quítalos de los conceptos. En el cierre, una frase por persona igual, es lo que más vale.</p>
+    </div>
+    <div>
+      <h3>Líderes</h3>
+      <p>Sus tareas son proyectos o iniciativas del área, y la hoja se llena con eso. La mosca es una analogía, y conviene decirlo así desde el inicio. Su prueba dura cuatro semanas o hasta su próxima revisión mensual, con dos copias de la tabla. Muchas veces la sobrecarga de los equipos nace en este nivel, y vale la pena decirlo.</p>
+    </div>
+    <div>
+      <h3>Remoto</h3>
+      <p>Compartes la pantalla con el juego y la presentación. Los post-its son el chat privado o una pizarra digital (Miro, FigJam, Mural o la que usen), y la hoja del equipo es un documento compartido con las mismas cuatro líneas. Cámaras encendidas para la mano alzada y para la frase de cada uno. La foto es una captura de pantalla.</p>
+    </div>
+    <div>
+      <h3>Sin internet</h3>
+      <p>El juego no se puede jugar sin conexión. Usa la lámina 4, que tiene las fotos de los dos días, y la lámina 6, con el promedio de 200 días, y cuenta el día de la mosca con tus palabras: con 9 tareas a la vez se estresa, sale a fumar y termina la mitad. Pasa antes a la práctica.</p>
+    </div>
+    <div>
+      <h3>Sin proyector</h3>
+      <p>Pon el juego en la pantalla más grande que tengas y a la gente cerca. Imprime las páginas 3 y 4 del informe para compartir, que traen los dos días de la mosca y la tabla de 1 a 10, y pásalas por la mesa en vez de las láminas 6 a 10. Con este manual, post-its y una pizarra, la sesión igual funciona.</p>
+    </div>
+  </div>
+
+  <h2>Para saber más y créditos</h2>
+  <div class="creditos">
+    <p><b>La estructura.</b> Las cuatro partes vienen de Sharon L. Bowman, <em>Training from the BACK of the Room! 65 Ways to Step Aside and Let Them Learn</em> (Pfeiffer, 2009): Connections, Concepts, Concrete Practice y Conclusions.</p>
+    <p><b>Los números.</b> Todos los números del juego son el promedio de 200 días jugados por cada límite, con la misma mosca y las mismas reglas. Las reglas se basan en estudios y están en el informe, con lo que es evidencia y lo que es supuesto nuestro. El juego no mide personas ni equipos: el número de tu equipo lo mide tu equipo.</p>
+    <p><b>El cerebro.</b> Las neuronas que se encienden en el juego vienen del Male CNS v1.0, el mapa completo del sistema nervioso central de una mosca macho, hecho por FlyEM (HHMI Janelia), la Universidad de Cambridge, el MRC Laboratory of Molecular Biology y Google Research, con licencia CC BY 4.0. La actividad que se ve es simulada.</p>
+    <p><b>Licencia y autor.</b> Este manual, la presentación y las hojas para imprimir son de Felipe Fernández y tienen licencia <a class="sitio" href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>. Puedes usar y adaptar este taller, también en talleres pagados, citando a Felipe Fernández (mosca.deliverycraft.ai).</p>
+    <p><b>Cómo te fue.</b> Si facilitas el taller y quieres contarlo, escríbeme por LinkedIn: <a class="sitio" href="https://www.linkedin.com/in/felipefernandezandrade/">linkedin.com/in/felipefernandezandrade</a>. Con eso se mejora el taller.</p>
+    <p class="chico">Versión 2, 26 de octubre de 2026. Antes del piloto. La versión 1 se llamaba “¿Cuántas cosas a la vez?”.</p>
+  </div>
+  <div class="pie"><span><b>Deja de empezar, empieza a terminar</b> · Manual del facilitador</span><span></span></div>
+</section>
+
+<!-- =============================== 10 · PARA IMPRIMIR: LA HOJA DEL EQUIPO =============================== -->
+<section class="hoja imprimir">
+  <div class="kicker">Para imprimir · una por equipo</div>
+  <h1>La hoja del equipo</h1>
+  <div class="hoja-equipo">
+    <div class="cab"><span>Equipo<span class="linea-llenar"></span></span><span>Fecha<span class="linea-llenar"></span></span></div>
+    <div class="campo">
+      <div class="n">1</div>
+      <div>
+        <p class="texto">Hoy tenemos <span class="h"></span> tareas empezadas.</p>
+        <p class="ayuda">Contadas como tarjetas del tablero, no como correos ni subtareas. Si dos personas tienen la misma tarea, cuenta una vez. Tal cual, sin arreglarlo.</p>
+      </div>
+    </div>
+    <div class="campo">
+      <div class="n">2</div>
+      <div>
+        <p class="texto">Nuestro límite para partir: <span class="h"></span></p>
+        <p class="ayuda">Un poco menos que lo de hoy: incómodo, pero posible. La simulación es de una persona sola y no da un número para equipos. Para una persona: 1 o 2 si casi nada espera, 2 si algo espera, 3 si mucho espera.</p>
+      </div>
+    </div>
+    <div class="campo">
+      <div class="n">3</div>
+      <div>
+        <p class="texto">Cuando algo quede esperando, en vez de empezar otra cosa, vamos a: <span class="h larga"></span><span class="h larga"></span></p>
+        <p class="ayuda">Escríbanla como algo que se hace. Por ejemplo: ayudar a destrabar lo que espera, pedir ayuda o terminar algo ya empezado.</p>
+      </div>
+    </div>
+    <div class="campo">
+      <div class="n">4</div>
+      <div>
+        <p class="texto">Lo probamos 2 semanas y lo revisamos el <span class="h ancha"></span></p>
+        <p class="ayuda">En una reunión que ya tengan. Cuatro semanas si son líderes y su trabajo son proyectos.</p>
+      </div>
+    </div>
+    <div class="firma"><span>Nombres</span><span>Foto al grupo del equipo y la revisión al calendario, antes de salir de la sala.</span></div>
+  </div>
+  <p class="chico" style="margin-top:4mm">Esta hoja se puede copiar tal cual a un documento compartido. Es parte del taller “Deja de empezar, empieza a terminar”, de Felipe Fernández, mosca.deliverycraft.ai, licencia CC BY 4.0.</p>
+  <div class="pie"><span><b>Deja de empezar, empieza a terminar</b> · Manual del facilitador</span><span></span></div>
+</section>
+
+<!-- =============================== 11 · PARA IMPRIMIR: LA TABLA DE LAS DOS SEMANAS =============================== -->
+<section class="hoja imprimir">
+  <div class="kicker">Para imprimir · una por equipo · dos semanas</div>
+  <h1>La tabla de las dos semanas</h1>
+  <p class="bajada" style="margin-bottom:2mm">Diez segundos en la reunión diaria: cuántas tareas hay abiertas, cuántas se terminaron hoy y una nota si algo quedó esperando o entró una urgencia. Nuestro límite: <span style="display:inline-block;min-width:16mm;border-bottom:0.6pt solid var(--tinta)"></span></p>
+  <table class="semanas">
+    <thead><tr><th>Día</th><th>Tareas abiertas</th><th>Terminadas hoy</th><th>Nota</th></tr></thead>
+    <tbody>
+      <tr class="semana"><td colspan="4">Semana 1</td></tr>
+      <tr><td>Lunes</td><td></td><td></td><td></td></tr>
+      <tr><td>Martes</td><td></td><td></td><td></td></tr>
+      <tr><td>Miércoles</td><td></td><td></td><td></td></tr>
+      <tr><td>Jueves</td><td></td><td></td><td></td></tr>
+      <tr><td>Viernes</td><td></td><td></td><td></td></tr>
+      <tr class="total"><td>Total</td><td></td><td></td><td></td></tr>
+      <tr class="semana"><td colspan="4">Semana 2</td></tr>
+      <tr><td>Lunes</td><td></td><td></td><td></td></tr>
+      <tr><td>Martes</td><td></td><td></td><td></td></tr>
+      <tr><td>Miércoles</td><td></td><td></td><td></td></tr>
+      <tr><td>Jueves</td><td></td><td></td><td></td></tr>
+      <tr><td>Viernes</td><td></td><td></td><td></td></tr>
+      <tr class="total"><td>Total</td><td></td><td></td><td></td></tr>
+    </tbody>
+  </table>
+  <div class="decision">
+    <b>En la revisión</b><br />
+    <span class="cuadro"></span>Mantener <span class="cuadro"></span>Bajar a <span class="h" style="min-width:12mm"></span> <span class="cuadro"></span>Subir a <span class="h" style="min-width:12mm"></span><br />
+    Por qué: <span class="h" style="min-width:118mm"></span>
+  </div>
+  <p class="chico" style="margin-top:3mm">En cada tarjeta del tablero, anoten el día que empezó y el día que terminó: con eso se compara cuánto tardó cada una. Para líderes con una prueba de cuatro semanas, dos copias de esta tabla.</p>
+  <div class="pie"><span><b>Deja de empezar, empieza a terminar</b> · Manual del facilitador</span><span></span></div>
+</section>
+
+<script>
+  // El pie: "página N de M" (la portada no se numera y no cuenta)
+  (() => {
+    const hojas = [...document.querySelectorAll('.hoja:not(.portada)')];
+    hojas.forEach((h, i) => {
+      const pie = h.querySelector('.pie span:last-child');
+      if (pie) pie.textContent = `página ${i + 1} de ${hojas.length}`;
+    });
+  })();
+</script>
+</body>
+</html>
