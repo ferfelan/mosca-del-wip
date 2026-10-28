@@ -24,7 +24,9 @@ for (const idioma of ['es', 'en']) {
   p.on('pageerror', (e) => mal.push(`error ${idioma}: ${e.message}`));
   p.on('dialog', (d) => { mal.push(`diálogo del navegador: ${d.message()}`); d.dismiss(); });
   await p.goto(U + (idioma === 'en' ? '?lang=en' : ''), { waitUntil: 'networkidle' });
-  await p.waitForFunction(() => window.__mosca && window.__mosca.cerebro());
+  // (sin window.__mosca, que solo existe con npm run dev: así también corre contra el sitio publicado)
+  await p.waitForSelector('#btn-empezar', { state: 'visible' });
+  await p.waitForTimeout(800);
   // Antes de empezar: pregunta igual, texto sin día a medias
   await p.click('#volver-inicio'); await p.waitForTimeout(300);
   let e = await estado(p);
