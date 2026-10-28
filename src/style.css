@@ -623,6 +623,99 @@ body.exhibicion #aviso-empezar {
   width: min(340px, calc(60vw - 32px));
 }
 
+/* ---------- Salir del juego: la pregunta antes de ir a la portada (2026-10-28) ----------
+   Al centro de la pantalla, con el mismo estilo que la tarjeta Empezar. El
+   <dialog> no lleva relleno: así un clic en el fondo oscuro cae en el propio
+   dialog y se lee como "seguir jugando" (src/main.js) */
+#salir-juego {
+  width: min(360px, calc(100vw - 32px));
+  max-width: none;
+  padding: 0;
+  border: none;
+  border-radius: 14px;
+  background: var(--tinta);
+  color: #fbf8f2;
+  box-shadow: 0 14px 36px rgba(40, 30, 15, 0.32);
+}
+
+#salir-juego::backdrop {
+  background: rgba(7, 11, 21, 0.55);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+.salir-tarjeta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 22px 22px 20px;
+  text-align: center;
+}
+
+.salir-tarjeta strong {
+  font-size: 17px;
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+.salir-tarjeta p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.45;
+  opacity: 0.86;
+  text-wrap: pretty;
+}
+
+.salir-botones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.salir-botones > * {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 22px;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+#btn-seguir-jugando {
+  border: none;
+  background: #fbf8f2;
+  color: var(--tinta);
+}
+
+#btn-salir-juego {
+  border: 1.5px solid rgba(251, 248, 242, 0.45);
+  background: transparent;
+  color: #fbf8f2;
+}
+
+#btn-seguir-jugando:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+#btn-salir-juego:hover {
+  background: rgba(251, 248, 242, 0.1);
+}
+
+.salir-botones > *:focus-visible {
+  outline: 2px solid #fbf8f2;
+  outline-offset: 3px;
+}
+
 /* ---------- Historial ---------- */
 
 .nota-tenue {

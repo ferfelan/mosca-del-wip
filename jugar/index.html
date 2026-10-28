@@ -410,6 +410,23 @@
       <button id="btn-empezar" type="button">Empezar</button>
     </section>
 
+    <!-- Salir del juego (2026-10-28, pedido de Felipe): "← Inicio" (Control y
+         Exhibición) y la flecha del celular preguntan antes de ir a la portada.
+         Mientras pregunta, el día queda en pausa; "Seguir jugando", Esc o un
+         clic fuera de la tarjeta lo dejan como estaba. Es un <dialog> modal:
+         tapa el juego y el foco no se escapa. Mismo estilo que la tarjeta
+         Empezar. El texto de abajo cambia si hay un día a medias (src/main.js) -->
+    <dialog id="salir-juego" aria-labelledby="salir-titulo" aria-describedby="salir-texto">
+      <div class="salir-tarjeta">
+        <strong id="salir-titulo">¿Seguro que quieres salir del juego?</strong>
+        <p id="salir-texto">Vas a volver a la portada. Los días que ya terminaste quedan guardados.</p>
+        <div class="salir-botones">
+          <a id="btn-salir-juego" href="/">Salir del juego</a>
+          <button id="btn-seguir-jugando" type="button" autofocus>Seguir jugando</button>
+        </div>
+      </div>
+    </dialog>
+
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

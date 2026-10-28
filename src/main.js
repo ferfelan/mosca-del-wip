@@ -872,6 +872,9 @@ document.addEventListener('click', (e) => {
 });
 
 window.addEventListener('keydown', (e) => {
+  // Con la pregunta de salir abierta, las teclas del juego no hacen nada (Esc
+  // la cierra sola: es un <dialog>)
+  if (elSalir.open) return;
   if (e.target instanceof HTMLInputElement && e.key !== 'Escape') {
     if (e.target.type !== 'range') return;
   }
@@ -1196,11 +1199,39 @@ pintarBotonesIdioma();
 for (const boton of botonesIdioma) boton.addEventListener('click', () => cambiarIdioma(boton.dataset.idioma));
 
 // Los enlaces a la portada ("← Inicio" en Control y en la barra de Exhibición,
-// y la flecha del celular) llevan al mismo idioma del juego (5.2i): en inglés,
-// /?lang=en
+// la flecha del celular y "Salir del juego" de la pregunta) llevan al mismo
+// idioma del juego (5.2i): en inglés, /?lang=en
 function ponerEnlacesInicio() {
-  for (const a of document.querySelectorAll('.volver-inicio, #cel-volver')) a.setAttribute('href', rutaEnIdioma('/', idioma));
+  for (const a of document.querySelectorAll('.volver-inicio, #cel-volver, #btn-salir-juego')) a.setAttribute('href', rutaEnIdioma('/', idioma));
 }
+
+// Antes de ir a la portada, el juego pregunta (2026-10-28, pedido de Felipe:
+// quien estaba jugando apretaba "← Inicio" y salía sin querer). Mientras
+// pregunta, el día queda en pausa; al seguir jugando, vuelve a correr si
+// corría. Abrir el enlace en otra pestaña (Cmd o Ctrl + clic, botón del medio)
+// no saca del juego, así que no pregunta.
+const elSalir = document.getElementById('salir-juego');
+const elSalirTexto = document.getElementById('salir-texto');
+let corriaAlPreguntar = false;
+function preguntarSalida(e) {
+  if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  e.preventDefault();
+  const diaAMedias = empezado && !juego.terminado;
+  elSalirTexto.textContent = tx(diaAMedias ? 'salirConDia' : 'salirSinDia');
+  corriaAlPreguntar = !pausado;
+  if (corriaAlPreguntar) alternarPausa();
+  elSalir.showModal();
+}
+for (const a of document.querySelectorAll('.volver-inicio, #cel-volver')) a.addEventListener('click', preguntarSalida);
+document.getElementById('btn-seguir-jugando').addEventListener('click', () => elSalir.close());
+// Un clic fuera de la tarjeta (en el fondo oscuro) también es seguir jugando
+elSalir.addEventListener('click', (e) => {
+  if (e.target === elSalir) elSalir.close();
+});
+elSalir.addEventListener('close', () => {
+  if (corriaAlPreguntar && pausado) alternarPausa();
+  corriaAlPreguntar = false;
+});
 
 function cambiarIdioma(nuevo) {
   if (nuevo === idioma || !['es', 'en'].includes(nuevo)) return;

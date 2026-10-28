@@ -3,8 +3,9 @@
 // e inglés y en dos tamaños (1440×900 y la ventana de Felipe, 1906×830), y
 // comprueba que el enlace se vea en la esquina, no se monte con la tarjeta del
 // cerebro ni con el botón Cerebro, sea lo primero con la tecla Tab, lleve a la
-// portada en el mismo idioma sin ningún cuadro de confirmación y que los días
-// jugados sigan iguales al volver. Requiere npm run dev.
+// portada en el mismo idioma (desde el 2026-10-28, después de la pregunta "¿Seguro
+// que quieres salir del juego?", que se prueba entera en probar-salir) y que los
+// días jugados sigan iguales al volver. Requiere npm run dev.
 // Uso: node scripts/probar-inicio.mjs   → debe decir "inicio: todo bien"
 //   CAPTURAS=<carpeta> (docs/etapa5-2i-capturas por defecto), JUEGO=<dirección>,
 //   TAMANOS=1440x900,1906x830
@@ -105,10 +106,12 @@ for (const [w, h] of TAMANOS) for (const idioma of ['es', 'en']) {
     return [...document.querySelectorAll('a[href], button, input, [tabindex]')].find((el) => visible(el) && el.tabIndex >= 0)?.className;
   });
   ok(String(primero).includes('volver-inicio-barra'), `${tag} exhibición: lo primero con Tab es "${primero}"`);
-  // --- Clic: lleva a la portada en el mismo idioma, sin preguntar, y los días siguen ---
+  // --- Clic: pregunta y, con "Salir del juego", lleva a la portada en el mismo idioma; los días siguen ---
   const tablaAntes = await p.evaluate(() => document.getElementById('tabla-dias-body').textContent.replace(/\s+/g, ''));
   ok(tablaAntes.trim().length > 0, `${tag}: la tabla de días está vacía antes del clic`);
   await p.click('.volver-inicio-barra');
+  await p.waitForSelector('#salir-juego[open]');
+  await p.click('#btn-salir-juego');
   await p.waitForURL((u) => u.pathname === '/', { timeout: 10000 });
   await p.waitForTimeout(500);
   const url1 = new URL(p.url());
@@ -121,6 +124,8 @@ for (const [w, h] of TAMANOS) for (const idioma of ['es', 'en']) {
   ok(tablaAntes === tablaDespues, `${tag}: la tabla de días cambió al volver:\n${tablaAntes}\n---\n${tablaDespues}`);
   // y el de Control
   await p.click('#volver-inicio');
+  await p.waitForSelector('#salir-juego[open]');
+  await p.click('#btn-salir-juego');
   await p.waitForURL((u) => u.pathname === '/', { timeout: 10000 });
   const url2 = new URL(p.url());
   ok(url2.search === (idioma === 'en' ? '?lang=en' : ''), `${tag} control: llegó a ${url2.pathname}${url2.search}`);

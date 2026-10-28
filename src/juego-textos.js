@@ -138,6 +138,12 @@ export const PAGINA = {
   // "Volver a la oficina" en la barra de Exhibición (2026-10-28)
   'Volver a la oficina': 'Back to the office',
   'Volver a la vista normal del juego (tecla E)': 'Back to the normal game view (key E)',
+  // La pregunta antes de ir a la portada (2026-10-28)
+  '¿Seguro que quieres salir del juego?': 'Are you sure you want to leave the game?',
+  'Vas a volver a la portada. Los días que ya terminaste quedan guardados.':
+    'You’ll go back to the home page. The days you already finished stay saved.',
+  'Salir del juego': 'Leave the game',
+  'Seguir jugando': 'Keep playing',
   'Controles del día': 'Day controls',
   'Más números': 'More numbers',
   Vistas: 'Views',
@@ -178,6 +184,15 @@ export const TEXTOS = {
   reanudar: { es: 'Reanudar', en: 'Resume' },
   // ...y antes de empezar el día, el mismo botón lo empieza
   empezar: { es: 'Empezar', en: 'Start' },
+  // La pregunta antes de ir a la portada: con un día a medias, o sin él
+  salirConDia: {
+    es: 'Vas a volver a la portada y el día que estás jugando no se guarda. Los días que ya terminaste quedan guardados.',
+    en: 'You’ll go back to the home page, and the day you’re playing won’t be saved. The days you already finished stay saved.',
+  },
+  salirSinDia: {
+    es: 'Vas a volver a la portada. Los días que ya terminaste quedan guardados.',
+    en: 'You’ll go back to the home page. The days you already finished stay saved.',
+  },
   // Qué está haciendo la mosca (tarjeta de la exhibición)
   queHace: {
     es: {
