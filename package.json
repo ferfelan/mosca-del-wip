@@ -7,9 +7,9 @@
     "node": "24.x"
   },
   "scripts": {
-    "predev": "node scripts/generar-ingles.mjs && node scripts/informe-web.mjs && node scripts/paginas.mjs",
+    "predev": "node scripts/poner-barra.mjs && node scripts/generar-ingles.mjs && node scripts/informe-web.mjs && node scripts/paginas.mjs",
     "dev": "vite",
-    "prebuild": "node scripts/generar-ingles.mjs && node scripts/informe-web.mjs && node scripts/paginas.mjs",
+    "prebuild": "node scripts/poner-barra.mjs && node scripts/generar-ingles.mjs && node scripts/informe-web.mjs && node scripts/paginas.mjs",
     "build": "vite build",
     "preview": "vite preview"
   },

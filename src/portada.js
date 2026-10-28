@@ -15,13 +15,17 @@
 //    <head> los aplica antes de dibujar. Al llegar, siempre en español y
 //    fondo negro.
 // 5. El informe en PDF: en iPhone y iPad el botón lo abre en vez de bajarlo.
-// 6. La barra de arriba (parte 5.2f): el logo lleva al inicio, el menú de las
-//    secciones y la sección que estás leyendo marcada.
+// 6. La barra de arriba: es la misma de todo el sitio (src/barra.js abre y
+//    cierra el menú y cambia el idioma y el fondo). Aquí solo lo propio de la
+//    portada: el logo sube hasta arriba sin recargar, la barra toma fondo al
+//    bajar, Jugar aparece cuando el grande ya no se ve y la sección que estás
+//    leyendo queda marcada.
 // Con "reducir movimiento" el cerebro no gira, la consola no sube sola, el
 // clip queda con sus controles, los cambios de idioma y fondo no se funden y
 // los saltos de la barra son directos.
-import { leerIdioma, idiomaDeLaPagina, elegirIdioma, rutaEnIdioma, formatoNumero } from './idioma.js';
+import { leerIdioma, idiomaDeLaPagina, rutaEnIdioma, formatoNumero } from './idioma.js';
 import { DINAMICOS } from './portada-textos.js';
+import { iniciarBarra } from './barra.js';
 
 // Tabla de 1 a 10 del informe (pág. 4): corrida oficial, 200 días por cada
 // número de tareas, semilla 2024 (docs/corrida-oficial.json). Si la corrida
@@ -128,26 +132,15 @@ rango.addEventListener('change', () => {
 });
 
 // ---------- Idioma y fondo ----------
-// Cambio con un fundido corto, si el navegador lo permite
-function conFundido(cambio) {
-  if (document.startViewTransition && !quieto.matches) document.startViewTransition(cambio);
-  else cambio();
-}
-
 // Los textos fijos de la página ya vienen en su idioma desde el HTML (el
 // inglés lo arma scripts/generar-ingles.mjs). Aquí solo se ajusta lo que se
 // escribe mientras se usa la página: la consola, el clip, los números y los
-// enlaces que le pasan el idioma al juego.
-const enlacesIdioma = document.querySelectorAll('a[data-idioma]');
-
+// enlaces que le pasan el idioma al juego. ES | EN y el fondo son de la barra
+// (src/barra.js); al cambiar el fondo, el cerebro se dibuja de nuevo (con
+// fondo blanco va en un recuadro).
 function ponerIdioma(nuevo) {
   idioma = nuevo;
   for (const enlace of document.querySelectorAll('[data-jugar]')) enlace.href = rutaEnIdioma('/jugar/', idioma);
-  document.querySelector('[data-logo]').href = rutaEnIdioma('/', idioma);
-  for (const enlace of enlacesIdioma) {
-    if (enlace.dataset.idioma === idioma) enlace.setAttribute('aria-current', 'page');
-    else enlace.removeAttribute('aria-current');
-  }
   decimal = formatoNumero(idioma, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
   miles = formatoNumero(idioma);
   ultimaCuenta = -1; // el contador de neuronas se vuelve a escribir con el formato nuevo
@@ -155,41 +148,7 @@ function ponerIdioma(nuevo) {
   avisosIdioma.forEach((aviso) => aviso());
 }
 
-// ES | EN son enlaces a cada versión de la portada (/ y /en/). Al elegir uno
-// se recuerda el idioma, para que el juego y los créditos abran en ese idioma.
-for (const enlace of enlacesIdioma) {
-  enlace.addEventListener('click', (e) => {
-    if (enlace.dataset.idioma === idioma) {
-      e.preventDefault(); // ya estás en esta versión: no recarga la página
-      return;
-    }
-    elegirIdioma(enlace.dataset.idioma);
-  });
-}
-
-const botonesFondo = document.querySelectorAll('[data-fondo]');
-function ponerFondo(fondo) {
-  const claro = fondo === 'claro';
-  if (claro) document.documentElement.dataset.tema = 'claro';
-  else delete document.documentElement.dataset.tema;
-  document.querySelector('meta[name="theme-color"]').content = claro ? '#ffffff' : '#060a16';
-  document.querySelector('meta[name="color-scheme"]').content = claro ? 'light' : 'dark';
-  for (const boton of botonesFondo) boton.setAttribute('aria-pressed', String(boton.dataset.fondo === fondo));
-  despertar(600); // con fondo blanco el cerebro va en un recuadro: se dibuja de nuevo
-}
-for (const boton of botonesFondo) {
-  boton.addEventListener('click', () => {
-    const fondo = boton.dataset.fondo;
-    try {
-      localStorage.setItem('mosca-fondo', fondo);
-    } catch {
-      // sin almacenamiento: vale solo para esta visita
-    }
-    conFundido(() => ponerFondo(fondo));
-  });
-}
-
-ponerFondo(document.documentElement.dataset.tema === 'claro' ? 'claro' : 'oscuro');
+const barraUI = iniciarBarra({ alCambiarFondo: () => despertar(600) });
 ponerIdioma(idioma);
 
 // ---------- El informe en PDF ----------
@@ -206,35 +165,13 @@ if (enIPhoneOIPad) {
 }
 
 // ---------- La barra de arriba ----------
-// Siempre a la vista. Bajo 1100 px las secciones, el idioma y el fondo van en
-// un menú que abre el botón de las tres rayas. La barra se marca con:
+// La misma de todo el sitio (src/barra.js: el menú, el idioma y el fondo). En
+// la portada además se marca con:
 //  - desplazada: ya bajaste un poco (toma el fondo de la página);
-//  - con-nombre: el título grande pasó bajo la barra (aparece "Mosca del WIP");
-//  - con-jugar: los botones de arriba ya no se ven (bajo 1100 px aparece Jugar);
-//  - abierta: el menú está abierto.
+//  - con-nombre: el título grande pasó bajo la barra;
+//  - con-jugar: los botones de arriba ya no se ven (bajo 1100 px aparece Jugar).
 const barra = document.querySelector('[data-barra]');
-const menuBoton = barra.querySelector('.menu-boton');
 const enlacesSeccion = [...barra.querySelectorAll('[data-seccion]')];
-
-const menuAbierto = () => barra.classList.contains('abierta');
-function abrirMenu(abrir) {
-  barra.classList.toggle('abierta', abrir);
-  menuBoton.setAttribute('aria-expanded', String(abrir));
-}
-menuBoton.addEventListener('click', () => abrirMenu(!menuAbierto()));
-// Se cierra con Esc (el foco vuelve al botón), al tocar fuera de la barra, al
-// elegir una sección y si la ventana se agranda hasta la barra completa
-addEventListener('keydown', (e) => {
-  if (e.key !== 'Escape' || !menuAbierto()) return;
-  abrirMenu(false);
-  menuBoton.focus();
-});
-// (la sombra de atrás es parte de la barra: tocarla también cuenta como fuera)
-addEventListener('pointerdown', (e) => {
-  if (menuAbierto() && (e.target === barra || !barra.contains(e.target))) abrirMenu(false);
-});
-for (const enlace of enlacesSeccion) enlace.addEventListener('click', () => abrirMenu(false));
-matchMedia('(max-width: 1099px)').addEventListener('change', () => abrirMenu(false));
 
 // El logo siempre lleva al inicio. En la portada sube hasta arriba sin
 // recargar (abrirlo en otra pestaña sigue funcionando); si venías de una
@@ -242,7 +179,7 @@ matchMedia('(max-width: 1099px)').addEventListener('change', () => abrirMenu(fal
 barra.querySelector('[data-logo]').addEventListener('click', (e) => {
   if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
   e.preventDefault();
-  abrirMenu(false);
+  barraUI.cerrarMenu();
   if (location.hash) history.pushState(history.state, '', location.pathname + location.search);
   scrollTo({ top: 0, behavior: quieto.matches ? 'auto' : 'smooth' });
 });
@@ -274,8 +211,15 @@ vigilar(
 
 // La sección que estás leyendo queda marcada en el menú: la última cuyo
 // contenido ya llegó cerca de la barra (al elegir una en el menú, su
-// contenido queda justo ahí). Al final de la página, la última sección.
-const secciones = enlacesSeccion.map((a) => ({ a, el: document.getElementById(a.dataset.seccion), aire: 0 }));
+// contenido queda justo ahí). Al final de la página, la última sección. El
+// kit no está en el menú (desde 2026-10-28 son la guía, el informe y el
+// taller): mientras lo lees no se marca nada, en vez de seguir "El juego".
+const secciones = [
+  ...enlacesSeccion.map((a) => ({ a, el: document.getElementById(a.dataset.seccion), aire: 0 })),
+  { a: null, el: document.getElementById('kit'), aire: 0 },
+]
+  .filter((s) => s.el)
+  .sort((x, y) => (x.el.compareDocumentPosition(y.el) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1));
 const medirAire = () => secciones.forEach((s) => (s.aire = parseFloat(getComputedStyle(s.el).paddingTop) || 0));
 let marcaPendiente = 0;
 function marcarSeccion() {
@@ -286,6 +230,7 @@ function marcarSeccion() {
   const ultima = secciones.at(-1);
   if (scrollY + innerHeight >= document.documentElement.scrollHeight - 4 && ultima.el.getBoundingClientRect().top < innerHeight) actual = ultima.a;
   for (const { a } of secciones) {
+    if (!a) continue;
     if (a === actual) a.setAttribute('aria-current', 'true');
     else a.removeAttribute('aria-current');
   }

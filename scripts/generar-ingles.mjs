@@ -15,12 +15,14 @@
 //    cambian ese atributo; las fotos con data-src-en usan esa foto;
 //  - el informe en PDF es el de inglés (Report), con su tapa;
 //  - los enlaces van a las páginas en inglés (/en/wip-limit/, /en/report/,
-//    /en/workshop/), al juego y a los créditos con ?lang=en, y el logo a /en/;
-//  - ES | EN marca EN.
+//    /en/workshop/), al juego y a los créditos con ?lang=en;
+//  - la barra de arriba es la de todo el sitio en inglés (src/barra.js, la
+//    misma función que la pone en español con scripts/poner-barra.mjs).
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 import { INGLES } from '../src/portada-textos.js';
+import { conBarra } from './poner-barra.mjs';
 
 const RAIZ = fileURLToPath(new URL('..', import.meta.url));
 const ORIGEN = join(RAIZ, 'index.html');
@@ -182,6 +184,9 @@ enEtiquetas(/^<a\b[^>]*\shref="([^"]*)"/, (etiqueta, m) => {
   if (/\sdata-logo(?=[\s/>])/.test(etiqueta)) return ponerAtributo(etiqueta, 'href', '/en/');
   return m[1] in RUTAS ? ponerAtributo(etiqueta, 'href', RUTAS[m[1]]) : etiqueta;
 });
+
+// La barra de arriba: el componente común, en inglés (reemplaza la del español)
+html = conBarra(html, { idioma: 'en', pagina: 'portada' }, 'en/index.html');
 
 // ---------- Revisión ----------
 const sobras = [...html.matchAll(/\sdata-t="([^"]*)"/g)].map((m) => m[1]).filter((k) => !(k in INGLES));

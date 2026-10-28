@@ -4,22 +4,9 @@
 // sentido y tono que el español, sin agregar ni quitar nada; los términos son
 // los de docs/glosario-ingles.md (los mismos del juego y del informe en inglés).
 export const INGLES = {
-  // Barra de arriba (la barra con el menú, parte 5.2f)
+  // La barra de arriba tiene sus textos en los dos idiomas en src/barra.js
+  // (es un solo componente para todo el sitio, 2026-10-28)
   saltar: 'Skip to content',
-  logo: 'Mosca del WIP: go to the top',
-  menu: 'Menu',
-  secciones: 'Page sections',
-  navJuego: 'The game',
-  navKit: 'The kit',
-  navCerebro: 'The brain',
-  navPreguntas: 'FAQ',
-  navGuia: 'Guide',
-  navInforme: 'Report',
-  navTaller: 'Workshop',
-  idioma: 'Language',
-  fondo: 'Background',
-  fondoNegro: 'Dark background',
-  fondoBlanco: 'Light background',
 
   // El inicio (portada v2) y la consola
   rotulo: 'For teams and leaders · a 1-minute game',

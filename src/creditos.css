@@ -1,10 +1,8 @@
 /* La página "Créditos y licencias" (/creditos/, parte 5.2h, 2026-10-25).
-   Va después de src/portada.css: usa sus colores, su letra (Mona Sans), su
-   barra, sus botones y su pie, y agrega solo una columna de lectura. */
-
-/* La barra: siempre con fondo (no hay título grande que la pise) */
-body.creditos .barra { position: sticky; }
-.creditos-ajustes { display: flex; gap: 8px; margin-left: auto; }
+   Importa src/portada.css: usa sus colores, su letra (Mona Sans), la barra
+   (src/barra.css), sus botones y su pie, y agrega solo una columna de
+   lectura. */
+@import './portada.css';
 
 /* La columna de lectura */
 .creditos-main {
@@ -75,10 +73,4 @@ body.creditos .barra { position: sticky; }
   .creditos-main h2 { font-size: 22px; }
   .creditos-main .acciones { display: grid; gap: 12px; margin-top: 40px; }
   .creditos-main .acciones .boton { width: 100%; max-width: 440px; }
-}
-/* En celular la barra lleva solo la mosca y los dos selectores: Jugar y Volver
-   están al final de la página */
-@media (max-width: 599px) {
-  body.creditos .logo-nombre { display: none; }
-  body.creditos .barra .boton.barra-jugar { display: none; }
 }

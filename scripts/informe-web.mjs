@@ -16,7 +16,8 @@ import vm from 'node:vm';
 import { pagina, migas, autor, enlacesKit, SITIO, AUTOR, RUTAS } from './plantilla.mjs';
 
 const RAIZ = fileURLToPath(new URL('..', import.meta.url));
-const VERSION_PDF = 22; // la versión del PDF que es igual a esta página
+// Esta página es igual al PDF "Para compartir v22". Ese número es interno y
+// no se muestra (pedido de Felipe, 2026-10-28): la página dice solo la fecha.
 
 const IDIOMAS = {
   es: {
@@ -34,7 +35,7 @@ const IDIOMAS = {
     miga: 'El informe',
     porAutor: 'Por',
     publicado: 'Publicado el',
-    actualizado: 'Versión',
+    actualizado: 'Actualizado el',
     bajarPdf: 'Descargar el informe (PDF)',
     pdfNota: (p) => `El PDF tiene ${p.paginas} y pesa ${p.peso}. Puedes compartirlo tal cual, citando al autor.`,
     enEstaPagina: 'En esta página',
@@ -72,7 +73,7 @@ const IDIOMAS = {
     miga: 'The report',
     porAutor: 'By',
     publicado: 'Published on',
-    actualizado: 'Version',
+    actualizado: 'Updated on',
     bajarPdf: 'Download the report (PDF)',
     pdfNota: (p) => `The PDF has ${p.paginas} and weighs ${p.peso}. You can share it as is, crediting the author.`,
     enEstaPagina: 'On this page',
@@ -232,7 +233,7 @@ function armar(idioma) {
     <div>
       <h1>${lema}</h1>
       <p class="pagina-bajada">${C.bajada}</p>
-      <p class="pagina-meta"><span>${C.porAutor} <a href="${AUTOR.linkedin}">${AUTOR.nombre}</a></span><span>${C.publicado} <time datetime="2026-10-24">${fechaLarga('2026-10-24')}</time></span><span>${C.actualizado} ${VERSION_PDF} · <time datetime="2026-10-28">${fechaLarga('2026-10-28')}</time></span></p>
+      <p class="pagina-meta"><span>${C.porAutor} <a href="${AUTOR.linkedin}">${AUTOR.nombre}</a></span><span>${C.publicado} <time datetime="2026-10-24">${fechaLarga('2026-10-24')}</time></span><span>${C.actualizado} <time datetime="2026-10-28">${fechaLarga('2026-10-28')}</time></span></p>
       <div class="acciones-pagina">
         <a class="boton principal" href="${C.pdf.ruta}" download="${C.pdf.nombre}">${C.bajarPdf}</a>
       </div>
@@ -304,7 +305,7 @@ ${autor(idioma)}
     jsonLd,
     cuerpo: cabeza,
     claseBody: 'informe-web',
-    cssExtra: ['/src/informe.css'],
+    css: '/src/informe.css',
   });
   mkdirSync(join(RAIZ, C.salida, '..'), { recursive: true });
   writeFileSync(join(RAIZ, C.salida), html);

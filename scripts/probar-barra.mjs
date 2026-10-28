@@ -24,7 +24,7 @@ import { chromium, webkit } from 'playwright';
 
 const DIRECCION = process.argv[2] || 'http://localhost:5173/';
 // Las secciones del menú (portada v2, 2026-10-26: El juego · El kit · El cerebro · FAQ)
-const SECCIONES = ['juego', 'kit', 'por-que-una-mosca', 'faq'];
+const SECCIONES = ['juego', 'por-que-una-mosca', 'faq']; // las secciones de la portada que están en el menú (2026-10-28: el kit salió)
 // [nombre, ancho, alto, táctil, reducir movimiento]
 const CASOS = [
   ['celular-390x844', 390, 844, true],

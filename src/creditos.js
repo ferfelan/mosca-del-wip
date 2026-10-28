@@ -1,10 +1,13 @@
 // La página "Créditos y licencias" (/creditos/, parte 5.2h, 2026-10-25).
-// Hace lo mismo que la portada con el idioma y el fondo (src/portada.js), sin
-// la consola, el cerebro ni el menú: cambia los textos marcados con data-t,
-// recuerda lo elegido y manda los enlaces al inicio y al juego en el mismo
-// idioma. Lo común con el juego y la portada vive en src/idioma.js.
-import { leerIdioma, marcarIdioma, elegirIdioma, rutaEnIdioma } from './idioma.js';
+// Una sola dirección para los dos idiomas (como el juego): ES | EN de la barra
+// cambia los textos marcados con data-t ahí mismo, sin recargar, recuerda lo
+// elegido y manda los enlaces al inicio, al juego y a las páginas en el mismo
+// idioma. La barra de arriba es la de todo el sitio (src/barra.js): al
+// cambiar de idioma se pone la barra en ese idioma. Lo común con el juego y
+// la portada vive en src/idioma.js.
+import { leerIdioma, marcarIdioma, rutaEnIdioma } from './idioma.js';
 import { INGLES } from './creditos-textos.js';
+import { iniciarBarra, ponerBarra } from './barra.js';
 
 let idioma = leerIdioma();
 
@@ -13,12 +16,12 @@ const conTexto = [...document.querySelectorAll('[data-t]')].map((nodo) => ({ nod
 const conAria = [...document.querySelectorAll('[data-t-aria]')].map((nodo) => ({ nodo, es: nodo.getAttribute('aria-label') }));
 const conTitulo = [...document.querySelectorAll('[data-t-title]')].map((nodo) => ({ nodo, es: nodo.getAttribute('title') }));
 const TITULO_PESTANA = { es: document.title, en: INGLES.tituloPagina };
-const botonesIdioma = document.querySelectorAll('[data-idioma]');
-const botonesFondo = document.querySelectorAll('[data-fondo]');
+const idiomaDeLaBarra = () => document.querySelector('[data-barra] [data-idioma][aria-current]')?.dataset.idioma;
 
 function ponerIdioma(nuevo) {
   idioma = nuevo;
   const en = idioma === 'en';
+  if (idiomaDeLaBarra() !== idioma) ponerBarra({ idioma, pagina: 'creditos' });
   for (const { nodo, es } of conTexto) nodo.innerHTML = en ? (INGLES[nodo.dataset.t] ?? es) : es;
   for (const { nodo, es } of conAria) nodo.setAttribute('aria-label', en ? (INGLES[nodo.dataset.tAria] ?? es) : es);
   for (const { nodo, es } of conTitulo) nodo.setAttribute('title', en ? (INGLES[nodo.dataset.tTitle] ?? es) : es);
@@ -27,38 +30,10 @@ function ponerIdioma(nuevo) {
   for (const enlace of document.querySelectorAll('[data-inicio]')) enlace.href = rutaEnIdioma('/', idioma);
   // las páginas con dirección propia en inglés (la guía, el informe, el taller)
   for (const enlace of document.querySelectorAll('[data-ruta]')) enlace.href = rutaEnIdioma(enlace.dataset.ruta, idioma);
-  for (const boton of botonesIdioma) boton.setAttribute('aria-pressed', String(boton.dataset.idioma === idioma));
   marcarIdioma(idioma);
   document.documentElement.classList.remove('traduciendo');
 }
 
-for (const boton of botonesIdioma) {
-  boton.addEventListener('click', () => {
-    if (boton.dataset.idioma === idioma) return;
-    elegirIdioma(boton.dataset.idioma);
-    ponerIdioma(boton.dataset.idioma);
-  });
-}
-
-// El fondo: negro (de noche, como el juego) o blanco. Igual que en la portada.
-function ponerFondo(fondo) {
-  const claro = fondo === 'claro';
-  if (claro) document.documentElement.dataset.tema = 'claro';
-  else delete document.documentElement.dataset.tema;
-  document.querySelector('meta[name="theme-color"]').content = claro ? '#ffffff' : '#060a16';
-  document.querySelector('meta[name="color-scheme"]').content = claro ? 'light' : 'dark';
-  for (const boton of botonesFondo) boton.setAttribute('aria-pressed', String(boton.dataset.fondo === fondo));
-}
-for (const boton of botonesFondo) {
-  boton.addEventListener('click', () => {
-    try {
-      localStorage.setItem('mosca-fondo', boton.dataset.fondo);
-    } catch {
-      // sin almacenamiento: vale solo para esta visita
-    }
-    ponerFondo(boton.dataset.fondo);
-  });
-}
-
-ponerFondo(document.documentElement.dataset.tema === 'claro' ? 'claro' : 'oscuro');
+// ES | EN no cambia de página: traduce esta (la barra ya recordó lo elegido)
+iniciarBarra({ alElegirIdioma: (nuevo) => ponerIdioma(nuevo) });
 ponerIdioma(idioma);

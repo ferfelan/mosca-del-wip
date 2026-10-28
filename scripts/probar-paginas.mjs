@@ -54,6 +54,11 @@ for (const pantalla of PANTALLAS) {
     hasTouch: !!pantalla.movil,
     deviceScaleFactor: pantalla.movil ? 2 : 1,
   });
+  // El contador de visitas de Vercel solo existe en el sitio publicado: en
+  // npx vite preview responde 404 (un error que no es de la página). La consola
+  // no dice qué dirección falló, así que en local se reemplaza por un archivo vacío.
+  if (/localhost|127\.0\.0\.1/.test(DIRECCION))
+    await contexto.route('**/_vercel/insights/**', (r) => r.fulfill({ status: 200, contentType: 'text/javascript', body: '' }));
   for (const pagina of PAGINAS) {
     const p = await contexto.newPage();
     const errores = [];

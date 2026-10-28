@@ -1,0 +1,285 @@
+/* La barra de arriba: UN SOLO COMPONENTE para todo el sitio (2026-10-28).
+   Su HTML y lo que hace están en src/barra.js; aquí, todos sus estilos.
+   Entra con src/portada.css (la primera línea lo importa), que cargan la
+   portada, la guía, el informe, el taller, los créditos y la 404: así la
+   barra se ve igual en todas. No poner reglas de la barra en el CSS de una
+   página (antes cada página tenía las suyas y el menú se desordenó).
+
+   Siempre a la vista, pegada arriba. El logo lleva a la portada. Desde
+   1100 px: el logo, los seis enlaces, el idioma, el fondo y Jugar en una
+   fila. Más angosto: el logo, Jugar y el botón del menú, que abre los
+   enlaces, el idioma y el fondo. En la portada, arriba de todo, la barra no
+   tiene fondo (la página se ve como antes) y Jugar aparece cuando el Jugar
+   grande ya no se ve; en las demás páginas va siempre con fondo y con Jugar
+   (clases desplazada y con-jugar, puestas en el HTML). */
+:root { --alto-barra: 64px; /* en celular, 56 px (más abajo) */ }
+
+.barra {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.barra.desplazada {
+  background: color-mix(in srgb, var(--noche) 82%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
+  box-shadow: 0 1px 0 var(--borde);
+}
+.barra-dentro {
+  max-width: var(--ancho);
+  height: var(--alto-barra);
+  margin: 0 auto;
+  padding: 0 var(--margen);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding-right: 4px;
+  color: var(--tinta);
+  text-decoration: none;
+  border-radius: 12px;
+}
+.marca { display: block; flex: none; width: 34px; height: 34px; }
+/* El nombre va siempre a la vista (portada v2): el título grande ya no dice
+   "Mosca del WIP". (portada.js sigue marcando .con-nombre cuando el título
+   pasa bajo la barra; aquí ya no cambia nada.) */
+.logo-nombre {
+  font-size: 17px;
+  font-weight: 720;
+  font-stretch: 108%;
+  letter-spacing: -0.015em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.menu-boton { display: none; }
+.raya {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.22s ease, opacity 0.18s ease;
+}
+/* Abierto, las tres rayas pasan a ser una cruz */
+.menu-boton[aria-expanded='true'] .raya-1 { transform: translateY(5px) rotate(45deg); }
+.menu-boton[aria-expanded='true'] .raya-2 { opacity: 0; }
+.menu-boton[aria-expanded='true'] .raya-3 { transform: translateY(-5px) rotate(-45deg); }
+
+.menu { flex: 1; display: flex; align-items: center; gap: 16px; min-width: 0; }
+.secciones { margin: 0 auto; }
+.menu-enlaces { list-style: none; margin: 0; padding: 0; display: flex; gap: 2px; }
+.menu-enlaces a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 13px;
+  border-radius: 999px;
+  color: var(--suave);
+  font-size: 15px;
+  font-weight: 560;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: color 0.18s ease, background-color 0.18s ease;
+}
+.menu-enlaces a:hover { color: var(--tinta); background: var(--vidrio-hover); }
+/* Dónde estás: su punto se enciende, como una neurona. En la portada, la
+   sección que estás leyendo (aria-current="true", lo marca portada.js); en
+   la guía, el informe y el taller, esa página (aria-current="page", en el
+   HTML). */
+.menu-enlaces a::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 3px;
+  width: 5px;
+  height: 5px;
+  margin-left: -2.5px;
+  border-radius: 50%;
+  background: var(--vision);
+  box-shadow: 0 0 8px var(--vision);
+  opacity: 0;
+  transform: scale(0.3);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.menu-enlaces a[aria-current] { color: var(--tinta); }
+.menu-enlaces a[aria-current]::after { opacity: 1; transform: none; }
+
+.ajustes { display: flex; gap: 8px; }
+.ajuste-nombre { display: none; }
+.selector {
+  display: flex;
+  padding: 3px;
+  border-radius: 999px;
+  border: 1px solid var(--borde);
+  background: var(--noche-2);
+}
+.selector button,
+.selector a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 38px;
+  padding: 0 11px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--tenue);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 650;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+.selector a { text-decoration: none; }
+.selector button:hover,
+.selector a:hover { color: var(--tinta); }
+.selector button[aria-pressed='true'],
+.selector a[aria-current] { background: var(--tinta); color: var(--noche); cursor: default; }
+.selector button:focus-visible,
+.selector a:focus-visible { outline-offset: 1px; border-radius: 999px; }
+.barra .boton.barra-jugar {
+  flex: none;
+  min-height: 42px;
+  padding: 0 22px;
+  font-size: 15.5px;
+  transition: opacity 0.2s ease, visibility 0.2s, background-color 0.18s ease, box-shadow 0.18s ease;
+}
+/* En pantallas táctiles, del tamaño de un dedo */
+@media (pointer: coarse) {
+  .selector button,
+  .selector a { min-width: 44px; height: 44px; }
+  .menu-enlaces a,
+  .barra .boton.barra-jugar { min-height: 44px; }
+}
+
+/* ---------- Bajo 1100 px: el logo, Jugar y el botón del menú ----------
+   El menú baja de la barra: en celular a todo el ancho, en tablets como una
+   tarjeta bajo el botón. En la portada, Jugar aparece en la barra cuando los
+   botones grandes de arriba ya no se ven (lo marca portada.js con
+   .con-jugar); en las demás páginas está siempre. */
+@media (max-width: 1099px) {
+  .logo { margin-right: auto; }
+  .menu-boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    order: 3;
+    width: 44px;
+    height: 44px;
+    margin-right: -4px;
+    padding: 0;
+    border: 1px solid var(--borde);
+    border-radius: 999px;
+    background: var(--noche-2);
+    color: var(--tinta);
+    cursor: pointer;
+  }
+  .barra .boton.barra-jugar { order: 2; }
+  .barra:not(.con-jugar) .boton.barra-jugar { visibility: hidden; opacity: 0; }
+  /* Abierto, la barra va sólida (sin el vidrio, que encerraría la sombra de
+     abajo en la barra) y la página de atrás se oscurece: tocarla lo cierra */
+  .barra.abierta {
+    background: var(--noche);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: 0 1px 0 var(--borde);
+  }
+  .barra.abierta::after {
+    content: '';
+    position: fixed;
+    inset: var(--alto-barra) 0 0;
+    z-index: -1;
+    background: rgba(2, 4, 12, 0.55);
+    animation: menu-sombra 0.2s ease;
+  }
+  :root[data-tema='claro'] .barra.abierta::after { background: rgba(11, 17, 36, 0.3); }
+  .menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    max-height: calc(100svh - var(--alto-barra));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 4px var(--margen) 12px;
+    background: var(--noche);
+    border-bottom: 1px solid var(--borde);
+    /* La sombra solo hacia abajo: no ensucia la barra */
+    box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.6);
+  }
+  :root[data-tema='claro'] .menu { box-shadow: 0 30px 50px -20px rgba(16, 24, 48, 0.22); }
+  .barra.abierta .menu { display: flex; animation: menu-baja 0.2s ease; }
+  .secciones { margin: 0; }
+  .menu-enlaces { flex-direction: column; gap: 0; }
+  .menu-enlaces a {
+    min-height: 56px;
+    padding: 0 0 0 22px;
+    border-radius: 0;
+    border-bottom: 1px solid var(--borde);
+    color: var(--tinta);
+    font-size: 19px;
+    font-weight: 620;
+  }
+  .menu-enlaces a:hover { background: transparent; }
+  .menu-enlaces a::after { left: 5px; top: 50%; bottom: auto; width: 6px; height: 6px; margin: -3px 0 0; }
+  .ajustes { flex-direction: column; gap: 0; }
+  .ajuste { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; }
+  .ajuste + .ajuste { border-top: 1px solid var(--borde); }
+  .ajuste-nombre { display: block; font-size: 16px; font-weight: 560; color: var(--suave); }
+}
+@keyframes menu-baja {
+  from { opacity: 0; transform: translateY(-8px); }
+}
+@keyframes menu-sombra {
+  from { opacity: 0; }
+}
+@media (min-width: 600px) and (max-width: 1099px) {
+  .menu {
+    top: calc(100% + 6px);
+    left: auto;
+    right: var(--margen);
+    width: 340px;
+    max-height: calc(100svh - var(--alto-barra) - 18px);
+    padding: 4px 22px 8px;
+    border: 1px solid var(--borde);
+    border-radius: 20px;
+  }
+}
+@media (max-width: 899px) {
+  :root { --alto-barra: 56px; }
+  .logo { gap: 8px; }
+  .logo-nombre { font-size: 16px; }
+  .barra .boton.barra-jugar { padding: 0 18px; }
+}
+/* Bajo 360 px el nombre de la barra no cabe junto a Jugar y el menú: queda la mosca */
+@media (max-width: 359px) {
+  .logo-nombre { display: none; }
+}
+/* Pantallas bajas (un iPhone SE de 320×568 con el menú abierto): filas más
+   compactas para que el menú no llene la pantalla y se pueda tocar fuera
+   para cerrarlo. Las filas siguen con 44 px, el mínimo para el dedo. */
+@media (max-width: 1099px) and (max-height: 620px) {
+  .menu-enlaces a { min-height: 44px; font-size: 17px; }
+  .ajuste { min-height: 52px; }
+  .menu { padding-bottom: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .barra.abierta .menu,
+  .barra.abierta::after { animation: none; }
+}

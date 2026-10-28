@@ -50,18 +50,18 @@
 
     <!-- La tipografía vive en el mismo sitio (no se pide a otro servidor) -->
     <link rel="preload" href="/fonts/mona-sans-latin-wdth.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="/src/portada.css" />
+    <!-- Un solo CSS (importa src/portada.css y la barra): así el orden de las
+         reglas es el mismo en desarrollo y publicado -->
     <link rel="stylesheet" href="/src/creditos.css" />
     <script type="module" src="/src/creditos.js"></script>
     <script type="module" src="/src/visitas.js"></script>
   </head>
   <body class="portada creditos">
     <a class="saltar solo-lector" href="#inicio" data-t="saltar">Saltar al contenido</a>
-    <!-- La barra de la portada, en corto: el logo (al inicio), el idioma, el
-         fondo y Jugar. Sin menú de secciones: la página es una sola columna. -->
-    <header class="barra desplazada con-nombre con-jugar" data-barra>
+    <!-- BARRA: la pone scripts/poner-barra.mjs con src/barra.js. No editar aquí: los cambios van en src/barra.js y src/barra.css -->
+    <header class="barra desplazada con-jugar" data-barra="creditos">
       <div class="barra-dentro">
-        <a class="logo" href="/" data-inicio aria-label="Mosca del WIP: ir al inicio" data-t-aria="logo">
+        <a class="logo" href="/" data-logo data-inicio aria-label="Mosca del WIP: ir al inicio">
           <svg class="marca" viewBox="0 0 32 32" width="34" height="34" aria-hidden="true" focusable="false">
             <g fill="#fff" stroke="#fff" stroke-width="3" stroke-linejoin="round"><ellipse cx="8.9" cy="20.5" rx="3.3" ry="8.6" transform="rotate(32 8.9 20.5)"/><ellipse cx="23.1" cy="20.5" rx="3.3" ry="8.6" transform="rotate(-32 23.1 20.5)"/><ellipse cx="16" cy="7.8" rx="3.6" ry="3.2"/><circle cx="16" cy="13.4" r="4.4"/><ellipse cx="16" cy="21.9" rx="3.8" ry="6.3"/><ellipse cx="12.3" cy="6.7" rx="3.1" ry="3.8"/><ellipse cx="19.7" cy="6.7" rx="3.1" ry="3.8"/></g>
             <g fill="#e3eef8" stroke="#5a4c40" stroke-width="1.3"><ellipse cx="8.9" cy="20.5" rx="3.3" ry="8.6" transform="rotate(32 8.9 20.5)"/><ellipse cx="23.1" cy="20.5" rx="3.3" ry="8.6" transform="rotate(-32 23.1 20.5)"/></g>
@@ -70,23 +70,45 @@
           </svg>
           <span class="logo-nombre">Mosca del WIP</span>
         </a>
-        <div class="creditos-ajustes">
-          <div class="selector" role="group" aria-label="Idioma" data-t-aria="idioma">
-            <button type="button" data-idioma="es" aria-pressed="true" lang="es" aria-label="Español" title="Español">ES</button>
-            <button type="button" data-idioma="en" aria-pressed="false" lang="en" aria-label="English" title="English">EN</button>
-          </div>
-          <div class="selector" role="group" aria-label="Fondo" data-t-aria="fondo">
-            <button type="button" data-fondo="oscuro" aria-pressed="true" aria-label="Fondo negro" title="Fondo negro" data-t-aria="fondoNegro" data-t-title="fondoNegro">
-              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>
-            </button>
-            <button type="button" data-fondo="claro" aria-pressed="false" aria-label="Fondo blanco" title="Fondo blanco" data-t-aria="fondoBlanco" data-t-title="fondoBlanco">
-              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M12 2.5v2.3M12 19.2v2.3M2.5 12h2.3M19.2 12h2.3M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
-            </button>
+        <button class="menu-boton" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menú">
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path class="raya raya-1" d="M4 7h16" /><path class="raya raya-2" d="M4 12h16" /><path class="raya raya-3" d="M4 17h16" /></svg>
+        </button>
+        <div class="menu" id="menu">
+          <nav class="secciones" aria-label="Menú del sitio">
+            <ul class="menu-enlaces">
+              <li><a href="/#juego">El juego</a></li>
+              <li><a href="/#por-que-una-mosca">El cerebro</a></li>
+              <li><a href="/limite-wip/">Guía</a></li>
+              <li><a href="/informe/">Informe</a></li>
+              <li><a href="/taller/">Taller</a></li>
+              <li><a href="/#faq">FAQ</a></li>
+            </ul>
+          </nav>
+          <div class="ajustes">
+            <div class="ajuste">
+              <span class="ajuste-nombre">Idioma</span>
+              <div class="selector" role="group" aria-label="Idioma">
+                <a href="/creditos/?lang=es" data-idioma="es" aria-current="page" lang="es" hreflang="es" aria-label="ES: español" title="Español">ES</a>
+                <a href="/creditos/?lang=en" data-idioma="en" lang="en" hreflang="en" aria-label="EN: English" title="English">EN</a>
+              </div>
+            </div>
+            <div class="ajuste">
+              <span class="ajuste-nombre">Fondo</span>
+              <div class="selector" role="group" aria-label="Fondo">
+                <button type="button" data-fondo="oscuro" aria-pressed="true" aria-label="Fondo negro" title="Fondo negro">
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>
+                </button>
+                <button type="button" data-fondo="claro" aria-pressed="false" aria-label="Fondo blanco" title="Fondo blanco">
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M12 2.5v2.3M12 19.2v2.3M2.5 12h2.3M19.2 12h2.3M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-        <a class="boton principal barra-jugar" href="/jugar/" data-jugar data-t="jugar">Jugar</a>
+        <a class="boton principal barra-jugar" href="/jugar/" data-jugar>Jugar</a>
       </div>
     </header>
+    <!-- /BARRA -->
 
     <main class="creditos-main" id="inicio" tabindex="-1">
       <p class="rotulo" data-t="rotulo">Mosca del WIP</p>

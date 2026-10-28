@@ -2,11 +2,12 @@
 // guía del límite WIP, el informe en la web, el taller, sus versiones en
 // inglés y la página 404. La usan scripts/paginas.mjs y scripts/informe-web.mjs.
 // Pone lo que todas comparten: el <head> completo (título, descripción,
-// canonical, hreflang, vista previa, datos estructurados), la barra de la
-// portada en corto (logo, Guía · Informe · Taller, ES | EN, fondo, Jugar) y el
-// pie con las páginas del sitio. Los textos en inglés de la barra y el pie
-// salen de src/portada-textos.js, para que cambien en un solo lugar.
+// canonical, hreflang, vista previa, datos estructurados), la barra de arriba
+// (la misma de todo el sitio: src/barra.js) y el pie con las páginas del
+// sitio. Los textos en inglés del pie salen de src/portada-textos.js, para que
+// cambien en un solo lugar.
 import { INGLES } from '../src/portada-textos.js';
+import { barraConSangria } from '../src/barra.js';
 
 export const SITIO = 'https://mosca.deliverycraft.ai';
 export const AUTOR = { nombre: 'Felipe Fernández', linkedin: 'https://www.linkedin.com/in/felipefernandezandrade/' };
@@ -22,20 +23,11 @@ export const RUTAS = {
   creditos: { es: '/creditos/', en: '/creditos/?lang=en' },
 };
 
-// Los textos de la barra y el pie (el español tal como está en index.html)
+// Los textos del pie (el español tal como está en index.html)
 const T = {
   es: {
     saltar: 'Saltar al contenido',
-    logo: 'Mosca del WIP: ir al inicio',
-    idioma: 'Idioma',
-    fondo: 'Fondo',
-    fondoNegro: 'Fondo negro',
-    fondoBlanco: 'Fondo blanco',
-    jugar: 'Jugar',
     paginas: 'Páginas del sitio',
-    navGuia: 'Guía',
-    navInforme: 'Informe',
-    navTaller: 'Taller',
     hechoPor: 'Hecho por <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a> · <a href="https://deliverycraft.ai">deliverycraft.ai</a>',
     sinCookies: 'Sin cookies. Solo contamos visitas, sin identificar a nadie.',
     pieJuego: 'El juego',
@@ -52,16 +44,7 @@ const T = {
   },
   en: {
     saltar: INGLES.saltar,
-    logo: INGLES.logo,
-    idioma: INGLES.idioma,
-    fondo: INGLES.fondo,
-    fondoNegro: INGLES.fondoNegro,
-    fondoBlanco: INGLES.fondoBlanco,
-    jugar: INGLES.jugar,
     paginas: INGLES.pieMapa,
-    navGuia: INGLES.navGuia,
-    navInforme: INGLES.navInforme,
-    navTaller: INGLES.navTaller,
     hechoPor: INGLES.hechoPor,
     sinCookies: INGLES.sinCookies,
     pieJuego: INGLES.pieJuego,
@@ -80,50 +63,6 @@ const T = {
 export const textos = (idioma) => T[idioma];
 
 export const escapar = (v) => String(v).replace(/&(?!(amp|lt|gt|quot|#\d+);)/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
-
-// La mosca del logo (la misma de index.html)
-const MARCA = `<svg class="marca" viewBox="0 0 32 32" width="34" height="34" aria-hidden="true" focusable="false">
-            <g fill="#fff" stroke="#fff" stroke-width="3" stroke-linejoin="round"><ellipse cx="8.9" cy="20.5" rx="3.3" ry="8.6" transform="rotate(32 8.9 20.5)"/><ellipse cx="23.1" cy="20.5" rx="3.3" ry="8.6" transform="rotate(-32 23.1 20.5)"/><ellipse cx="16" cy="7.8" rx="3.6" ry="3.2"/><circle cx="16" cy="13.4" r="4.4"/><ellipse cx="16" cy="21.9" rx="3.8" ry="6.3"/><ellipse cx="12.3" cy="6.7" rx="3.1" ry="3.8"/><ellipse cx="19.7" cy="6.7" rx="3.1" ry="3.8"/></g>
-            <g fill="#e3eef8" stroke="#5a4c40" stroke-width="1.3"><ellipse cx="8.9" cy="20.5" rx="3.3" ry="8.6" transform="rotate(32 8.9 20.5)"/><ellipse cx="23.1" cy="20.5" rx="3.3" ry="8.6" transform="rotate(-32 23.1 20.5)"/></g>
-            <g fill="#6f6052"><ellipse cx="16" cy="7.8" rx="3.6" ry="3.2"/><circle cx="16" cy="13.4" r="4.4"/><ellipse cx="16" cy="21.9" rx="3.8" ry="6.3"/></g>
-            <g fill="#e8402c"><ellipse cx="12.3" cy="6.7" rx="3.1" ry="3.8"/><ellipse cx="19.7" cy="6.7" rx="3.1" ry="3.8"/></g>
-          </svg>`;
-
-// La barra: logo, las tres páginas (en pantallas anchas), ES | EN, el fondo y Jugar
-function barra(idioma, actual) {
-  const t = T[idioma];
-  const otro = idioma === 'es' ? 'en' : 'es';
-  const enlace = (clave, texto) =>
-    `<li><a href="${RUTAS[clave][idioma]}"${actual === clave ? ' aria-current="page"' : ''}>${texto}</a></li>`;
-  return `    <header class="barra desplazada con-nombre con-jugar" data-barra>
-      <div class="barra-dentro">
-        <a class="logo" href="${RUTAS.inicio[idioma]}" data-inicio aria-label="${escapar(t.logo)}">
-          ${MARCA}
-          <span class="logo-nombre">Mosca del WIP</span>
-        </a>
-        <ul class="menu-enlaces barra-paginas" aria-label="${escapar(t.paginas)}">
-          ${enlace('guia', t.navGuia)}
-          ${enlace('informe', t.navInforme)}
-          ${enlace('taller', t.navTaller)}
-        </ul>
-        <div class="pagina-ajustes">
-          <div class="selector" role="group" aria-label="${escapar(t.idioma)}">
-            <a href="${idioma === 'es' ? '#' : RUTAS[actual]?.es ?? '/'}" data-idioma="es" lang="es" aria-label="ES: español" title="Español" hreflang="es"${idioma === 'es' ? ' aria-current="page"' : ''}>ES</a>
-            <a href="${idioma === 'en' ? '#' : RUTAS[actual]?.en ?? '/en/'}" data-idioma="en" lang="en" aria-label="EN: English" title="English" hreflang="en"${idioma === 'en' ? ' aria-current="page"' : ''}>EN</a>
-          </div>
-          <div class="selector" role="group" aria-label="${escapar(t.fondo)}">
-            <button type="button" data-fondo="oscuro" aria-pressed="true" aria-label="${escapar(t.fondoNegro)}" title="${escapar(t.fondoNegro)}">
-              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>
-            </button>
-            <button type="button" data-fondo="claro" aria-pressed="false" aria-label="${escapar(t.fondoBlanco)}" title="${escapar(t.fondoBlanco)}">
-              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M12 2.5v2.3M12 19.2v2.3M2.5 12h2.3M19.2 12h2.3M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
-            </button>
-          </div>
-        </div>
-        <a class="boton principal barra-jugar" href="${RUTAS.juego[idioma]}" data-jugar>${t.jugar}</a>
-      </div>
-    </header>`.replace(`href="#" data-idioma="${idioma}"`, `href="${RUTAS[actual]?.[idioma] ?? RUTAS.inicio[idioma]}" data-idioma="${idioma}"`);
-}
 
 function pie(idioma) {
   const t = T[idioma];
@@ -155,12 +94,11 @@ export function migas(idioma, pasos) {
   }, t };
 }
 
-// Quien escribe: el bloque corto para la guía y el informe. Marcado con
-// data-revisar="felipe": Felipe pidió revisar este texto antes de publicar.
+// Quien escribe: el bloque corto para la guía, el informe y el taller
+// (revisado por Felipe el 2026-10-28: queda tal como está).
 export function autor(idioma) {
   const es = idioma === 'es';
-  return `<aside class="autor" data-revisar="felipe" aria-label="${es ? 'Sobre el autor' : 'About the author'}">
-  <!-- REVISAR (Felipe): este texto lo escribí yo con lo que había en el proyecto. Sin nombres de empresas donde trabaja. -->
+  return `<aside class="autor" aria-label="${es ? 'Sobre el autor' : 'About the author'}">
   <div class="inicial" aria-hidden="true">F</div>
   <div>
     <h2>${es ? 'Quién escribe' : 'Who writes this'}</h2>
@@ -187,7 +125,7 @@ export function enlacesKit(idioma, sin) {
 }
 
 // La página completa
-export function pagina({ idioma, clave, titulo, descripcion, imagen, imagenAlt, jsonLd = [], cuerpo, claseBody = '', cssExtra = [], sinIndexar = false }) {
+export function pagina({ idioma, clave, titulo, descripcion, imagen, imagenAlt, jsonLd = [], cuerpo, claseBody = '', css = '/src/paginas.css', sinIndexar = false }) {
   const t = T[idioma];
   const rutas = RUTAS[clave] ?? { es: '/', en: '/en/' };
   const ruta = rutas[idioma];
@@ -251,8 +189,9 @@ ${sinIndexar ? '' : `    <meta property="og:url" content="${SITIO}${ruta}" />
 
     <!-- La tipografía vive en el mismo sitio (no se pide a otro servidor) -->
     <link rel="preload" href="/fonts/mona-sans-latin-wdth.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="/src/portada.css" />
-    <link rel="stylesheet" href="/src/paginas.css" />${cssExtra.map((c) => `\n    <link rel="stylesheet" href="${c}" />`).join('')}
+    <!-- Un solo CSS por página (importa src/portada.css y la barra): así el
+         orden de las reglas es el mismo en desarrollo y publicado -->
+    <link rel="stylesheet" href="${css}" />
     <script type="module" src="/src/pagina.js"></script>
     <script type="module" src="/src/visitas.js"></script>
 ${jsonLd.length ? `    <!-- Datos estructurados (schema.org), solo tipos estándar -->
@@ -262,7 +201,7 @@ ${JSON.stringify(grafo, null, 2).replace(/</g, '\\u003c')}
   </head>
   <body class="portada lectura-pagina ${claseBody}">
     <a class="saltar solo-lector" href="#contenido">${t.saltar}</a>
-${barra(idioma, clave)}
+${barraConSangria({ idioma, pagina: clave }, '    ')}
 
 ${cuerpo}
 

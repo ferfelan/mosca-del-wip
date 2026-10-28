@@ -1,18 +1,14 @@
 // Textos en inglés de la página "Créditos y licencias" (/creditos/, parte
 // 5.2h, 2026-10-25). El español está en creditos/index.html: cada clave es el
 // data-t (contenido) o el data-t-aria de un elemento. Lo que comparte con la
-// portada (la barra y el pie) se toma de src/portada-textos.js, para que
-// cambie en un solo lugar.
+// portada (el pie) se toma de src/portada-textos.js, para que cambie en un
+// solo lugar; la barra de arriba tiene los suyos en src/barra.js.
 import { INGLES as PORTADA } from './portada-textos.js';
 
 export const INGLES = {
-  // La barra y el pie, iguales a la portada
+  // El pie y el Jugar de abajo, iguales a la portada (la barra de arriba
+  // tiene sus textos en src/barra.js)
   saltar: PORTADA.saltar,
-  logo: PORTADA.logo,
-  idioma: PORTADA.idioma,
-  fondo: PORTADA.fondo,
-  fondoNegro: PORTADA.fondoNegro,
-  fondoBlanco: PORTADA.fondoBlanco,
   jugar: PORTADA.jugar,
   hechoPor: PORTADA.hechoPor,
   sinCookies: PORTADA.sinCookies,

@@ -1,8 +1,9 @@
-/* El informe para leer en la web (/informe/ y /en/report/, Etapa 7). Va
-   después de src/portada.css y src/paginas.css: aquí solo están las piezas
+/* El informe para leer en la web (/informe/ y /en/report/, Etapa 7). Importa
+   src/paginas.css (que trae src/portada.css y la barra): aquí solo están las piezas
    que el informe trae del PDF (la tabla de reglas, el marcador de 2 contra
    9, las tarjetas de estudios, el viaje del disfraz, los cuatro pasos, los
    anexos) con los colores del sitio, para fondo negro y fondo blanco. */
+@import './paginas.css';
 
 :root {
   /* Los colores de los gráficos del PDF, traducidos a la noche */

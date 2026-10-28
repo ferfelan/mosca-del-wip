@@ -56,7 +56,8 @@
 
     <!-- La tipografía vive en el mismo sitio (no se pide a otro servidor) -->
     <link rel="preload" href="/fonts/mona-sans-latin-wdth.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="/src/portada.css" />
+    <!-- Un solo CSS por página (importa src/portada.css y la barra): así el
+         orden de las reglas es el mismo en desarrollo y publicado -->
     <link rel="stylesheet" href="/src/paginas.css" />
     <script type="module" src="/src/pagina.js"></script>
     <script type="module" src="/src/visitas.js"></script>
@@ -124,9 +125,9 @@
   </head>
   <body class="portada lectura-pagina taller">
     <a class="saltar solo-lector" href="#contenido">Skip to content</a>
-    <header class="barra desplazada con-nombre con-jugar" data-barra>
+    <header class="barra desplazada con-jugar" data-barra="taller">
       <div class="barra-dentro">
-        <a class="logo" href="/en/" data-inicio aria-label="Mosca del WIP: go to the top">
+        <a class="logo" href="/en/" data-logo data-inicio aria-label="Mosca del WIP: go to the home page">
           <svg class="marca" viewBox="0 0 32 32" width="34" height="34" aria-hidden="true" focusable="false">
             <g fill="#fff" stroke="#fff" stroke-width="3" stroke-linejoin="round"><ellipse cx="8.9" cy="20.5" rx="3.3" ry="8.6" transform="rotate(32 8.9 20.5)"/><ellipse cx="23.1" cy="20.5" rx="3.3" ry="8.6" transform="rotate(-32 23.1 20.5)"/><ellipse cx="16" cy="7.8" rx="3.6" ry="3.2"/><circle cx="16" cy="13.4" r="4.4"/><ellipse cx="16" cy="21.9" rx="3.8" ry="6.3"/><ellipse cx="12.3" cy="6.7" rx="3.1" ry="3.8"/><ellipse cx="19.7" cy="6.7" rx="3.1" ry="3.8"/></g>
             <g fill="#e3eef8" stroke="#5a4c40" stroke-width="1.3"><ellipse cx="8.9" cy="20.5" rx="3.3" ry="8.6" transform="rotate(32 8.9 20.5)"/><ellipse cx="23.1" cy="20.5" rx="3.3" ry="8.6" transform="rotate(-32 23.1 20.5)"/></g>
@@ -135,23 +136,39 @@
           </svg>
           <span class="logo-nombre">Mosca del WIP</span>
         </a>
-        <ul class="menu-enlaces barra-paginas" aria-label="Pages on this site">
-          <li><a href="/en/wip-limit/">Guide</a></li>
-          <li><a href="/en/report/">Report</a></li>
-          <li><a href="/en/workshop/" aria-current="page">Workshop</a></li>
-        </ul>
-        <div class="pagina-ajustes">
-          <div class="selector" role="group" aria-label="Language">
-            <a href="/taller/" data-idioma="es" lang="es" aria-label="ES: español" title="Español" hreflang="es">ES</a>
-            <a href="/en/workshop/" data-idioma="en" lang="en" aria-label="EN: English" title="English" hreflang="en" aria-current="page">EN</a>
-          </div>
-          <div class="selector" role="group" aria-label="Background">
-            <button type="button" data-fondo="oscuro" aria-pressed="true" aria-label="Dark background" title="Dark background">
-              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>
-            </button>
-            <button type="button" data-fondo="claro" aria-pressed="false" aria-label="Light background" title="Light background">
-              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M12 2.5v2.3M12 19.2v2.3M2.5 12h2.3M19.2 12h2.3M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
-            </button>
+        <button class="menu-boton" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path class="raya raya-1" d="M4 7h16" /><path class="raya raya-2" d="M4 12h16" /><path class="raya raya-3" d="M4 17h16" /></svg>
+        </button>
+        <div class="menu" id="menu">
+          <nav class="secciones" aria-label="Site menu">
+            <ul class="menu-enlaces">
+              <li><a href="/en/#juego">The game</a></li>
+              <li><a href="/en/#por-que-una-mosca">The brain</a></li>
+              <li><a href="/en/wip-limit/">Guide</a></li>
+              <li><a href="/en/report/">Report</a></li>
+              <li><a href="/en/workshop/" aria-current="page">Workshop</a></li>
+              <li><a href="/en/#faq">FAQ</a></li>
+            </ul>
+          </nav>
+          <div class="ajustes">
+            <div class="ajuste">
+              <span class="ajuste-nombre">Language</span>
+              <div class="selector" role="group" aria-label="Language">
+                <a href="/taller/" data-idioma="es" lang="es" hreflang="es" aria-label="ES: español" title="Español">ES</a>
+                <a href="/en/workshop/" data-idioma="en" aria-current="page" lang="en" hreflang="en" aria-label="EN: English" title="English">EN</a>
+              </div>
+            </div>
+            <div class="ajuste">
+              <span class="ajuste-nombre">Background</span>
+              <div class="selector" role="group" aria-label="Background">
+                <button type="button" data-fondo="oscuro" aria-pressed="true" aria-label="Dark background" title="Dark background">
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>
+                </button>
+                <button type="button" data-fondo="claro" aria-pressed="false" aria-label="Light background" title="Light background">
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M12 2.5v2.3M12 19.2v2.3M2.5 12h2.3M19.2 12h2.3M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
         <a class="boton principal barra-jugar" href="/jugar/?lang=en" data-jugar>Play</a>
@@ -162,7 +179,7 @@
   <nav class="migas" aria-label="Where you are"><ol><li><a href="/en/">Mosca del WIP</a></li><li aria-current="page">The workshop</li></ol></nav>
   <h1>WIP limit workshop: a 60-minute session with a game</h1>
   <p class="pagina-bajada">It is called “Stop starting, start finishing” (in Spanish, “Deja de empezar, empieza a terminar”). The team counts how many things it has in progress, watches the fly work one day with 9 tasks at once and another with 2, and leaves with its own WIP limit written down, what it does when something is left waiting, and a two-week test with a date.</p>
-  <p class="pagina-meta"><span>By <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a></span><span>Updated on <time datetime="2026-10-28">October 28, 2026</time></span><span>Version 4, before the pilot</span></p>
+  <p class="pagina-meta"><span>By <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a></span><span>Updated on <time datetime="2026-10-28">October 28, 2026</time></span><span>Before the first pilot</span></p>
 
   <div class="recuadro ojo"><p><strong>The workshop material is in Spanish for now.</strong> The slides, the facilitator’s quick guide and the team sheet are written in Spanish. The <a href="/jugar/?lang=en" data-jugar>game</a> and the <a href="/en/report/">report</a> are available in English, and the <a href="/en/wip-limit/">WIP limit guide</a> explains the ideas the workshop uses. If you facilitate it in another language and want to share how it went, write to Felipe on <a href="https://www.linkedin.com/in/felipefernandezandrade/">LinkedIn</a>.</p></div>
 
@@ -214,8 +231,7 @@
     <ul class="enlaces-kit"><li><a href="/jugar/?lang=en" data-jugar><b>The game</b><span>An office day in one minute, with 1 to 10 tasks at once.</span></a></li><li><a href="/en/wip-limit/"><b>The WIP limit guide</b><span>What it is, how to pick your team’s and what to do when something waits.</span></a></li><li><a href="/en/report/"><b>The report</b><span>Where each number comes from and what the studies say.</span></a></li></ul>
   </section>
 
-  <aside class="autor" data-revisar="felipe" aria-label="About the author">
-  <!-- REVISAR (Felipe): este texto lo escribí yo con lo que había en el proyecto. Sin nombres de empresas donde trabaja. -->
+  <aside class="autor" aria-label="About the author">
   <div class="inicial" aria-hidden="true">F</div>
   <div>
     <h2>Who writes this</h2>
