@@ -856,6 +856,14 @@ function cambiarVista(nueva = vista === 'control' ? 'exhibicion' : 'control', in
 }
 
 document.getElementById('btn-exhibicion').addEventListener('click', () => cambiarVista('exhibicion'));
+// "Volver a la oficina" (Exhibición, 2026-10-28): la misma partida en la vista
+// normal, sin pausar ni reiniciar. Con teclado, el foco queda en el botón
+// Exhibición, para poder volver a entrar
+document.getElementById('btn-volver-oficina').addEventListener('click', (e) => {
+  const conTeclado = e.detail === 0;
+  cambiarVista('control');
+  if (conTeclado) setTimeout(() => document.getElementById('btn-exhibicion').focus(), 720);
+});
 // Un botón apretado con el mouse suelta el foco: así Espacio pausa el juego
 // en vez de volver a apretar ese botón (con teclado, el foco se mantiene)
 document.addEventListener('click', (e) => {

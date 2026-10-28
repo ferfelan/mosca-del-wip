@@ -22,7 +22,7 @@ export const INGLES = {
   rotulo: 'For teams and leaders · a 1-minute game',
   titulo: 'Busy all day. So what did you finish?', // el mismo título que la pág. 1 del informe en inglés
   bajada:
-    'Play for a minute and find out why starting less helps you finish more. An office fly with a real brain shows you how.',
+    'Play for a minute and watch what happens to an office fly with a real brain when she has too many things started at once.',
   jugar: 'Play',
   jugarMinuto: 'Play (1 minute)',
   verKit: 'See the kit',
@@ -41,17 +41,17 @@ export const INGLES = {
   // Lo que vas a ver
   juegoTitulo: 'What you’ll see',
   juegoTexto:
-    'The same fly, the same day at the office, twice. With 2 tasks at once she finishes 18. With 9 she finishes half as many, even though she’s busy all day.',
+    'The same fly, the same day at the office, twice. In the game, with 2 tasks at once she finishes 18. With 9 she finishes half as many, even though she’s busy all day.',
   video: 'The fly in her office: first with 2 tasks at once, calm; then with 9, stressed and smoking.',
   pocas: 'Few tasks at once',
   muchas: 'Many tasks at once',
   figcaption: 'First with 2 tasks at once. Then with 9.',
-  hecho: 'With 2 tasks at once she finishes 18. With 9 tasks at once she finishes 9, half as many.',
+  hecho: 'In the game, with 2 tasks at once she finishes 18. With 9 tasks at once she finishes 9, half as many.',
   dosALaVez: '2 at once',
   nueveALaVez: '9 at once',
   total18: '<span class="cifra">18</span> finished',
   total9: '<span class="cifra">9</span> finished (half)', // 5.2i: las dos columnas dicen lo mismo
-  hechoNota: 'Average of 200 days played.',
+  hechoNota: 'Average of 200 days in the game.',
   verFrase: 'Being busy all the time isn’t the same as making progress.',
 
   // Cómo se juega
@@ -63,21 +63,19 @@ export const INGLES = {
   paso2Alt: 'The fly in front of her board for the day, with 2 tasks in progress, at 10:10.',
   paso3Alt: 'The Days played table, with one day at 2 tasks at once and another at 9.',
 
-  // Lo que gana tu equipo (portada v3): el dato grande, las dos filas de lo
-  // terminado, las cuatro ganancias y la línea del final
-  ganaTitulo: 'What your team gains',
-  ganaDato: 'In the game, the same fly finishes twice as much with 2 tasks at once as with 9.',
-  ganaPrueba2: '2 at once',
-  ganaPrueba9: '9 at once',
-  gana1Titulo: 'Each thing gets done sooner',
-  gana1: 'With fewer things open, each one waits less for its turn.',
-  gana2Titulo: 'You see where work gets stuck',
-  gana2: 'When something waits, it shows and gets dealt with.',
-  gana3Titulo: 'Fewer things half done',
-  gana3: 'Fewer jumps from one thing to another.',
-  gana4Titulo: 'You decide with your own data',
-  gana4: 'In two weeks you know whether your limit works.',
-  ganaNota: 'Your number is yours to measure: the game doesn’t measure teams.',
+  // Lo que se lleva tu equipo (portada v4, 2026-10-28; antes "Lo que gana tu
+  // equipo", sin el ×2): las cuatro cosas y la línea de que no prometemos un
+  // resultado. "Capacity" para capacidad (pedido de Felipe)
+  ganaTitulo: 'What your team takes away',
+  gana1Titulo: 'Your capacity, in plain sight',
+  gana1: 'How many things you can carry at once without everything getting stuck.',
+  gana2Titulo: 'Where the work waits',
+  gana2: 'What gets stuck and who you’re waiting on.',
+  gana3Titulo: 'A team agreement',
+  gana3: 'A written limit, and what to do when something waits.',
+  gana4Titulo: 'Your own data',
+  gana4: 'In two weeks your own numbers tell you whether your limit works.',
+  ganaNota: 'We don’t promise a result: it depends on each team and on what goes on around it. Your number is yours to measure.',
 
   // El kit para tu equipo
   kitTitulo: 'The kit for your team',
@@ -90,7 +88,7 @@ export const INGLES = {
   kitInformeTexto: 'Where each number comes from and what the studies say.',
   kitTaller: 'The workshop',
   kitTallerTiempo: '60 minutes',
-  kitTallerTexto: 'Slides, a quick guide and printable sheets, so your team finds its limit and tries it for 2 weeks.',
+  kitTallerTexto: 'Slides, a quick guide and the team sheet to print, so your team finds its limit and tries it for 2 weeks.',
   kitTallerIdioma: 'For now, the workshop is in Spanish.', // en español no hay línea
   kitGuia: 'Quick guide (PDF, in Spanish)',
   kitPptx: 'Slides (PowerPoint, in Spanish)',
@@ -129,7 +127,7 @@ export const INGLES = {
     'It’s short for work in progress. It’s everything you’ve started and haven’t finished yet. In the game, it’s the tasks the fly has open at the same time.',
   pregunta3: 'How many tasks at once is best?',
   respuesta3:
-    'In the game, the fly finishes the most with 2 at once, 18 a day on average. With each task added she finishes less, and with 9 she finishes half as many, even though she’s busy all day. Up to 3 she stays Calm and doesn’t go out for a smoke, which is why her sustainable limit is 3. The game doesn’t tell you your team’s number, because the fly works alone.',
+    'There’s no number for everyone. In the game, the fly’s sustainable limit is 3, because up to 3 she stays Calm and doesn’t go out for a smoke. But the fly works alone, and the game doesn’t tell you your team’s number. It depends on how much your work waits, and you find it by trying a limit.',
   pregunta4: 'Is the brain from a real fly?',
   respuesta4:
     'The neurons and their connections are. They come from Male CNS v1.0, the map of a male fly’s central nervous system, neuron by neuron, licensed under CC BY 4.0. The activity you see is simulated. We translate the tasks into something a fly can feel, like dust on her antenna, and simulate how her brain responds. Only some of her neurons are shown.',
@@ -148,15 +146,15 @@ export const INGLES = {
   pregunta9: 'How do I use it with my team?',
   respuesta9:
     'Play one day with 2 tasks at once and another with 9, and compare the Days played table. On a computer, the Exhibition view shows the game large, for a TV or a projector. The kit on this page has the report, with four steps to try a limit, and a 60-minute workshop with its guide to facilitate it.',
-  pregunta10: 'What does my team gain from limiting work in progress?',
+  pregunta10: 'What does my team take away?',
   respuesta10:
-    'Each thing gets done sooner, because it waits less for its turn. You see where the work gets stuck, and fewer things are left half done. In the game, the fly finishes twice as much with 2 tasks at once as with 9. Your team’s number is yours to measure: the game doesn’t measure teams.',
+    'Your capacity in plain sight: how many things you can carry at once without everything getting stuck. You also see where the work waits, what gets stuck and who you’re waiting on. You leave with a team agreement, which is a written limit and what to do when something waits, and in two weeks your own numbers tell you whether that limit works. We don’t promise a result, because it depends on each team and on what goes on around it.',
   pregunta11: 'Can I use the workshop with my team, or in paid workshops?',
   respuesta11:
-    'Yes. The workshop (the quick guide, the slides and the sheets) is licensed CC BY 4.0: you can use it and adapt it, also in paid workshops, crediting Felipe Fernández (mosca.deliverycraft.ai). For now it’s in Spanish. The report can be shared as it is, crediting the author, and the game is played on this page.',
+    'Yes. The workshop (the quick guide, the slides and the team sheet) is licensed CC BY 4.0: you can use it and adapt it, also in paid workshops, crediting Felipe Fernández (mosca.deliverycraft.ai). For now it’s in Spanish. The report can be shared as it is, crediting the author, and the game is played on this page.',
   pregunta12: 'Do I need to know about WIP to facilitate it?',
   respuesta12:
-    'No. The quick guide has the tips for each part, the key line to say and the answers to what you’ll be asked. Read it once and, before the session, play the two days you’ll show: one with 9 tasks at once and one with 2.',
+    'No. For each part, the quick guide has the minutes, one or two tips and the question for the room, plus the answers to what you’ll be asked. Read it once and, before the session, play the two days you’ll show: one with 9 tasks at once and one with 2.',
 
   // Qué es y qué no es, por qué lo hice, el cierre y el pie
   informeTitulo: 'What it is and what it isn’t',

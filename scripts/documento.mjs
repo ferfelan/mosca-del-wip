@@ -81,6 +81,7 @@ const DOCUMENTOS = [
   // Etapa 6.0 v2 (2026-10-26): el manual del facilitador del taller "Deja de empezar, empieza a terminar", 12 hojas (DOC=taller-v2)
   { id: 'taller-v2', html: 'taller-v2.html', nombre: 'Taller - Manual del facilitador', version: 'v2', paginas: [11, 12], aparte: true },
   { id: 'taller-v3', html: 'taller-v3.html', nombre: 'Taller - Guía rápida del facilitador', version: 'v3', paginas: [8, 8], aparte: true },
+  { id: 'taller-v4', html: 'taller-v4.html', nombre: 'Taller - Guía rápida del facilitador', version: 'v4', paginas: [5, 5], aparte: true },
 ];
 const SITIO = 'http://localhost:5173'; // raíz del sitio (portada, docs)
 const JUEGO = `${SITIO}/jugar/`; // el juego vive en /jugar/ desde la Etapa 5.1
@@ -193,7 +194,7 @@ if (process.env.FOTOS) {
       const p = await c.newPage();
       p.on('pageerror', (e) => console.log('ERROR', e.message));
       await p.goto(`${SITIO}/`, { waitUntil: 'networkidle' });
-      await p.waitForTimeout(5000); // el cerebro se enciende y la consola sube sola de 2 a 9
+      await p.waitForTimeout(5000); // el cerebro se enciende y la consola sube sola de 2 a 10
       return p;
     };
     let p = await portada({ viewport: { width: 1440, height: 800 }, deviceScaleFactor: 1.5 }, 'oscuro');

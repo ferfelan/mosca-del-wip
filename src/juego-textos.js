@@ -135,6 +135,9 @@ export const PAGINA = {
   // pestañas y el fin del día ("Cerebro", "Idioma" y "Reiniciar día" ya están)
   'Volver a la portada': 'Back to the home page',
   Inicio: 'Home', // "← Inicio" en Control y en la barra de Exhibición (5.2i)
+  // "Volver a la oficina" en la barra de Exhibición (2026-10-28)
+  'Volver a la oficina': 'Back to the office',
+  'Volver a la vista normal del juego (tecla E)': 'Back to the normal game view (key E)',
   'Controles del día': 'Day controls',
   'Más números': 'More numbers',
   Vistas: 'Views',
@@ -147,8 +150,9 @@ export const PAGINA = {
 // Las letras de las teclas no cambian; "Espacio" sí, porque es su nombre.
 export const BLOQUES = {
   // <kbd>Espacio</kbd> pausa <kbd>R</kbd> otro día … · doble clic: vista inicial
+  // (la E pasó al botón "Volver a la oficina", 2026-10-28)
   '#barra-exhibicion .atajo':
-    '<kbd>Space</kbd> pause <kbd>R</kbd> new day <kbd>1–9</kbd> WIP <kbd>D</kbd> demo <kbd>E</kbd> back <span class="atajo-extra">· double-click: reset view</span>',
+    '<kbd>Space</kbd> pause <kbd>R</kbd> new day <kbd>1–9</kbd> WIP <kbd>D</kbd> demo <span class="atajo-extra">· double-click: reset view</span>',
   // <kbd>Espacio</kbd> pausa · <kbd>R</kbd> reinicia · … <kbd>C</kbd> controles
   '#panel .atajos':
     '<kbd>Space</kbd>&nbsp;pause · <kbd>R</kbd>&nbsp;restart · <kbd>1–9</kbd>&nbsp;WIP · <kbd>E</kbd>&nbsp;exhibition · <kbd>B</kbd>&nbsp;brain · <kbd>C</kbd>&nbsp;controls',

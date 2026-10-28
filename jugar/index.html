@@ -71,8 +71,20 @@
         <span class="marca-sub">La misma partida, en grande</span>
       </div>
       <div class="barra-datos" aria-hidden="true">
-        <span class="atajo"><kbd>Espacio</kbd> pausa <kbd>R</kbd> otro día <kbd>1–9</kbd> WIP <kbd>D</kbd> demo <kbd>E</kbd> volver <span class="atajo-extra">· doble clic: vista inicial</span></span>
+        <span class="atajo"><kbd>Espacio</kbd> pausa <kbd>R</kbd> otro día <kbd>1–9</kbd> WIP <kbd>D</kbd> demo <span class="atajo-extra">· doble clic: vista inicial</span></span>
       </div>
+      <!-- "Volver a la oficina" (2026-10-28, pedido de Felipe): vuelve a la vista
+           normal del juego (Control) sin pausar ni reiniciar el día, igual que
+           la tecla E. Antes solo se volvía con E o Esc, y quien no lo sabía
+           apretaba "← Inicio" y terminaba en la portada. Va a la derecha, como la
+           salida de una pantalla completa, lejos de "← Inicio", y es claro (el
+           estilo del botón Empezar) para no confundirse con él, que es oscuro.
+           La E de la barra de atajos pasó a este botón. -->
+      <button id="btn-volver-oficina" class="volver-oficina" type="button" title="Volver a la vista normal del juego (tecla E)" aria-keyshortcuts="E">
+        <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M2.5 6.5h4v-4M6.5 6.5 2 2M13.5 9.5h-4v4M9.5 9.5 14 14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Volver a la oficina</span>
+        <kbd aria-hidden="true">E</kbd>
+      </button>
     </header>
 
     <!-- Celular (src/celular.js): volver a la portada y la píldora del reloj,

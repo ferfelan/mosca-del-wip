@@ -2654,8 +2654,69 @@ body.exhibicion .idioma-flotante button {
 }
 
 body.exhibicion .barra-datos {
-  margin-right: 78px;
   margin-left: auto; /* "← Inicio" y la marca quedan juntos a la izquierda (5.2i) */
+}
+
+/* "Volver a la oficina" (2026-10-28): a la derecha de la barra, antes de la
+   píldora ES | EN (por eso los 78 px, que antes tenía la barra de atajos).
+   Claro como el botón Empezar, para que no se confunda con "← Inicio", que es
+   oscuro y está a la izquierda; con su tecla E. En pantallas táctiles (tablet)
+   mide 44 px de alto, para el dedo. */
+.volver-oficina {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+  height: 34px;
+  margin-right: 78px;
+  padding: 0 7px 0 13px;
+  border: none;
+  border-radius: 999px;
+  background: #fbf8f2;
+  color: var(--tinta);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.volver-oficina kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 5px;
+  border: 1px solid rgba(51, 41, 30, 0.2);
+  border-radius: 6px;
+  background: rgba(51, 41, 30, 0.07);
+  color: var(--tinta);
+  font: inherit;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.volver-oficina:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.36);
+}
+
+.volver-oficina:focus {
+  outline: none;
+}
+
+.volver-oficina:focus-visible {
+  outline: 2px solid #fbf8f2;
+  outline-offset: 3px;
+}
+
+@media (pointer: coarse) {
+  .volver-oficina {
+    height: 44px;
+    padding: 0 10px 0 16px;
+  }
 }
 
 @media (max-height: 800px) {

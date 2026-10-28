@@ -210,6 +210,12 @@ inglés cambia con él (los dos con la misma versión).
 | Matemática · Teoría · Simulación · Según estudios · Supuesto nuestro · Dato real · Decisión nuestra · Disfraz · Ilustrativo | Math · Theory · Simulation · From studies · Our assumption · Real data · Our choice · Disguise · Illustrative |
 | Para seguir leyendo · Anexos | Further reading · Appendices |
 | la ley de Little | Little's law |
+| Lo que se lleva tu equipo (portada v4, 2026-10-28) | What your team takes away |
+| Su capacidad, a la vista · Dónde espera el trabajo · Un acuerdo del equipo · Datos propios | Your capacity, in plain sight · Where the work waits · A team agreement · Your own data |
+| capacidad (del equipo) | capacity |
+| No prometemos un resultado | We don't promise a result |
+| la hoja del equipo | the team sheet |
+| Volver a la oficina (botón del juego en Exhibición, 2026-10-28) | Back to the office |
 
 ## 5. Lo que queda en español a propósito
 

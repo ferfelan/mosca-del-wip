@@ -183,7 +183,7 @@ for (const [fondo, idioma] of COMBINACIONES) for (const [nombreTamano, ancho, al
   // arriba quedaría encima del texto en la medición)
   await pagina.evaluate(() => document.querySelector('.cerebro').scrollIntoView({ block: 'center', behavior: 'instant' }));
   await pagina.waitForFunction(() => document.querySelector('.cerebro.vivo'), null, { timeout: 25000 }).catch(() => {});
-  await pagina.waitForTimeout(4800); // la consola sube sola hasta 9 (la palabra más larga: "Colapsada")
+  await pagina.waitForTimeout(4800); // la consola sube sola hasta 10 (la palabra más larga: "Colapsada")
   await pagina.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
   await pagina.screenshot({ path: join(CARPETA, `${nombre}-pantalla.png`) });
   // Las preguntas frecuentes, todas abiertas

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mosca del WIP</title>
-    <meta name="description" content="Juega un minuto y descubre por qué empezar menos te ayuda a terminar más. Te lo muestra una mosca oficinista con cerebro real. Con el kit para tu equipo." />
+    <meta name="description" content="Juega un minuto y mira qué le pasa a una mosca oficinista, con cerebro real, cuando tiene demasiadas cosas empezadas a la vez. Con el kit para tu equipo." />
     <meta name="theme-color" content="#060a16" />
     <meta name="color-scheme" content="dark" />
     <!-- Antes de dibujar: el fondo y el idioma que la persona eligió, para que
@@ -44,14 +44,14 @@
     <meta property="og:locale" content="es_CL" />
     <meta property="og:url" content="https://mosca.deliverycraft.ai/" />
     <meta property="og:title" content="Mosca del WIP" />
-    <meta property="og:description" content="Juega un minuto y descubre por qué empezar menos te ayuda a terminar más. Te lo muestra una mosca oficinista con cerebro real. Con el kit para tu equipo." />
+    <meta property="og:description" content="Juega un minuto y mira qué le pasa a una mosca oficinista, con cerebro real, cuando tiene demasiadas cosas empezadas a la vez. Con el kit para tu equipo." />
     <meta property="og:image" content="https://mosca.deliverycraft.ai/img/vista-previa.jpg?v=4" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="La mosca del juego en su escritorio, con muchas tareas a la vez, junto a la pregunta: Ocupado todo el día. ¿Y qué terminaste? Un juego de 1 minuto, mosca.deliverycraft.ai." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Mosca del WIP" />
-    <meta name="twitter:description" content="Juega un minuto y descubre por qué empezar menos te ayuda a terminar más. Te lo muestra una mosca oficinista con cerebro real." />
+    <meta name="twitter:description" content="Juega un minuto y mira qué le pasa a una mosca oficinista, con cerebro real, cuando tiene demasiadas cosas empezadas a la vez." />
     <meta name="twitter:image" content="https://mosca.deliverycraft.ai/img/vista-previa.jpg?v=4" />
 
     <!-- La tipografía vive en el mismo sitio (no se pide a otro servidor) -->
@@ -124,8 +124,8 @@
           <p class="rotulo" data-t="rotulo">Para equipos y líderes · un juego de 1 minuto</p>
           <h1 data-t="titulo">Ocupado todo el día. ¿Y qué terminaste?</h1>
           <p class="bajada" data-t="bajada">
-            Juega un minuto y descubre por qué empezar menos te ayuda a terminar más. Te lo
-            muestra una mosca oficinista con cerebro real.
+            Juega un minuto y mira qué le pasa a una mosca oficinista, con cerebro real, cuando
+            tiene demasiadas cosas empezadas a la vez.
           </p>
           <div class="acciones">
             <a class="boton principal" href="/jugar/" data-jugar data-t="jugarMinuto">Jugar (1 minuto)</a>
@@ -167,52 +167,46 @@
         </div>
       </header>
 
-      <!-- 2. Lo que gana tu equipo (portada v3, 2026-10-27): lo que la página
-           ofrece, justo después del inicio. Un solo tablero: el dato grande (×2)
-           con las dos filas de lo terminado (18 cuadros con 2 a la vez, 9 con 9),
-           cuatro ganancias con el dibujo de una tarjeta del tablero de la mosca
-           en cada una, y la línea de que el juego no mide equipos. -->
-      <section class="gana" id="lo-que-gana" aria-labelledby="t-gana">
-        <h2 id="t-gana" data-t="ganaTitulo">Lo que gana tu equipo</h2>
+      <!-- 2. Lo que se lleva tu equipo (portada v4, 2026-10-28; antes "Lo que
+           gana tu equipo"): lo que el kit deja en el equipo, sin prometer
+           resultados (pedido de Felipe: a un equipo no se le puede asegurar
+           ninguno, porque también influye lo de afuera). Un solo tablero con
+           cuatro celdas, cada una con el dibujo de una tarjeta del tablero de la
+           mosca en un color del juego, y la línea de que no prometemos un
+           resultado. Los resultados del juego van solo en "Lo que vas a ver". -->
+      <section class="gana" id="lo-que-se-lleva" aria-labelledby="t-gana">
+        <h2 id="t-gana" data-t="ganaTitulo">Lo que se lleva tu equipo</h2>
         <div class="gana-tablero">
-          <div class="gana-dato">
-            <p class="gana-cifra">×2</p>
-            <p class="gana-texto" data-t="ganaDato">En el juego, la misma mosca termina el doble con 2 tareas a la vez que con 9.</p>
-            <div class="gana-prueba" aria-hidden="true">
-              <div class="gana-fila"><span class="gana-fila-nombre" data-t="ganaPrueba2">2 a la vez</span><span class="gana-cuadros"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
-              <div class="gana-fila"><span class="gana-fila-nombre" data-t="ganaPrueba9">9 a la vez</span><span class="gana-cuadros muchas"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
-            </div>
-          </div>
           <div class="gana-item" data-color="tranquila">
-            <span class="gana-icono"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="14" y="9" width="21" height="22" rx="3" fill="currentColor" fill-opacity="0.14" /><path d="M19.5 20.5l3.4 3.4L29.5 17" /><path d="M5 15h6M3 20h8M5 25h6" /></svg></span>
+            <span class="gana-icono"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="4" width="22" height="32" rx="3" fill="currentColor" fill-opacity="0.14" /><rect x="13.5" y="9.5" width="13" height="6" rx="1.5" fill="currentColor" fill-opacity="0.45" /><rect x="13.5" y="17.5" width="13" height="6" rx="1.5" fill="currentColor" fill-opacity="0.45" /><rect x="13.5" y="25.5" width="13" height="6" rx="1.5" stroke-opacity="0.5" /></svg></span>
             <div class="gana-item-texto">
-              <h3 data-t="gana1Titulo">Cada cosa sale antes</h3>
-              <p data-t="gana1">Con menos cosas abiertas, cada una espera menos su turno.</p>
+              <h3 data-t="gana1Titulo">Su capacidad, a la vista</h3>
+              <p data-t="gana1">Cuántas cosas pueden llevar a la vez sin que todo se trabe.</p>
             </div>
           </div>
           <div class="gana-item" data-color="colapsada">
             <span class="gana-icono"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="7" width="24" height="26" rx="3" fill="currentColor" fill-opacity="0.14" /><path d="M13 13h9" /><rect x="15" y="20" width="10" height="8" rx="1.5" /><path d="M17 20v-3a3 3 0 0 1 6 0v3" /></svg></span>
             <div class="gana-item-texto">
-              <h3 data-t="gana2Titulo">Ves dónde se traba el trabajo</h3>
-              <p data-t="gana2">Cuando algo espera, se nota y se ataca.</p>
+              <h3 data-t="gana2Titulo">Dónde espera el trabajo</h3>
+              <p data-t="gana2">Qué se traba y a quién esperan.</p>
             </div>
           </div>
           <div class="gana-item" data-color="ocupada">
-            <span class="gana-icono"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="8" width="28" height="24" rx="3" fill="currentColor" fill-opacity="0.14" /><path d="M11 14h12" /><rect x="11" y="21" width="18" height="5" rx="2.5" /><rect x="11" y="21" width="9" height="5" rx="2.5" fill="currentColor" stroke="none" /></svg></span>
+            <span class="gana-icono"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="4" width="22" height="32" rx="3" fill="currentColor" fill-opacity="0.14" /><path d="M14 11h12M14 16.5h12M14 22h7" /><path d="M19 29l2.6 2.6L27.5 25.8" /></svg></span>
             <div class="gana-item-texto">
-              <h3 data-t="gana3Titulo">Menos cosas a medias</h3>
-              <p data-t="gana3">Menos saltos de una cosa a otra.</p>
+              <h3 data-t="gana3Titulo">Un acuerdo del equipo</h3>
+              <p data-t="gana3">Un límite escrito y qué hacer cuando algo espera.</p>
             </div>
           </div>
           <div class="gana-item" data-color="vision">
             <span class="gana-icono"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 33h28" /><rect x="11" y="10" width="7" height="23" rx="1.5" fill="currentColor" fill-opacity="0.3" /><rect x="23" y="21" width="7" height="12" rx="1.5" /></svg></span>
             <div class="gana-item-texto">
-              <h3 data-t="gana4Titulo">Decides con tus datos</h3>
-              <p data-t="gana4">En dos semanas sabes si tu límite funciona.</p>
+              <h3 data-t="gana4Titulo">Datos propios</h3>
+              <p data-t="gana4">En dos semanas saben, con sus números, si su límite funciona.</p>
             </div>
           </div>
         </div>
-        <p class="nota gana-nota" data-t="ganaNota">Tu número lo mides tú: el juego no mide equipos.</p>
+        <p class="nota gana-nota" data-t="ganaNota">No prometemos un resultado: depende de cada equipo y de lo que pasa alrededor. Su número lo miden ustedes.</p>
       </section>
 
       <!-- 3. Lo que vas a ver: el clip del juego y los dos días, 2 contra 9 -->
@@ -239,7 +233,7 @@
           <figcaption data-t="figcaption">Primero con 2 tareas a la vez. Después con 9.</figcaption>
         </figure>
 
-        <div class="hecho" role="img" data-t-aria="hecho" aria-label="Con 2 tareas a la vez termina 18. Con 9 tareas a la vez termina 9, la mitad.">
+        <div class="hecho" role="img" data-t-aria="hecho" aria-label="En el juego, con 2 tareas a la vez termina 18. Con 9 tareas a la vez termina 9, la mitad.">
           <div class="columna pocas">
             <p class="columna-titulo" data-t="dosALaVez">2 a la vez</p>
             <div class="tarjetas" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
@@ -251,7 +245,7 @@
             <p class="columna-total" data-t="total9"><span class="cifra">9</span> terminadas (la mitad)</p>
           </div>
         </div>
-        <p class="nota hecho-nota" data-t="hechoNota">Promedio de 200 días jugados.</p>
+        <p class="nota hecho-nota" data-t="hechoNota">Promedio de 200 días en el juego.</p>
         <p class="ver-frase" data-t="verFrase">Estar siempre ocupado no es lo mismo que avanzar.</p>
       </section>
 
@@ -277,7 +271,7 @@
 
       <!-- 5. El kit para tu equipo: el juego, el informe y el taller, cada uno
            con su imagen (una foto del juego, la tapa del informe y la de la guía
-           rápida). Lo que gana el equipo está arriba, en su propia sección.
+           rápida). Lo que se lleva el equipo está arriba, en su propia sección.
            INTERRUPTOR del taller (una sola cosa que cambiar):
              data-taller="con-descargas"  muestra los tres archivos del taller
              data-taller="muy-pronto"     esconde las descargas y muestra "Muy pronto" -->
@@ -316,7 +310,7 @@
             <div class="pieza-cuerpo">
               <p class="pieza-tiempo" data-t="kitTallerTiempo">60 minutos</p>
               <h3 data-t="kitTaller">El taller</h3>
-              <p class="pieza-texto" data-t="kitTallerTexto">Presentación, guía rápida y hojas para imprimir, para que tu equipo encuentre su límite y lo pruebe 2 semanas.</p>
+              <p class="pieza-texto" data-t="kitTallerTexto">Presentación, guía rápida y la hoja del equipo para imprimir, para que tu equipo encuentre su límite y lo pruebe 2 semanas.</p>
               <!-- Solo en inglés: que por ahora el taller está en español (en español queda vacío y no se ve) -->
               <p class="pieza-idioma" data-t="kitTallerIdioma"></p>
               <ul class="descargas">
@@ -430,11 +424,11 @@
           </details>
           <details class="pregunta">
             <summary><span class="pregunta-texto" data-t="pregunta3">¿Cuántas tareas a la vez es lo mejor?</span><span class="signo" aria-hidden="true"></span></summary>
-            <p class="respuesta" data-t="respuesta3">En el juego, la mosca termina más con 2 a la vez, 18 al día en promedio. Con cada tarea que se suma termina menos, y con 9 termina la mitad, aunque está ocupada todo el día. Hasta 3 sigue Tranquila y no sale a fumar, y por eso su límite sostenible es 3. El juego no dice cuál es el número de tu equipo, porque la mosca trabaja sola.</p>
+            <p class="respuesta" data-t="respuesta3">No hay un número para todos. En el juego, el límite sostenible de la mosca es 3, porque hasta ahí sigue Tranquila y no sale a fumar. Pero la mosca trabaja sola, y el juego no dice cuál es el número de tu equipo. Depende de cuánto espera su trabajo, y lo encuentran ustedes probando un límite.</p>
           </details>
           <details class="pregunta">
-            <summary><span class="pregunta-texto" data-t="pregunta10">¿Qué gana mi equipo con limitar el trabajo en curso?</span><span class="signo" aria-hidden="true"></span></summary>
-            <p class="respuesta" data-t="respuesta10">Cada cosa sale antes, porque espera menos su turno. Ven dónde se traba el trabajo y quedan menos cosas a medias. En el juego, la mosca termina el doble con 2 tareas a la vez que con 9. El número de tu equipo lo miden ustedes: el juego no mide equipos.</p>
+            <summary><span class="pregunta-texto" data-t="pregunta10">¿Qué se lleva mi equipo?</span><span class="signo" aria-hidden="true"></span></summary>
+            <p class="respuesta" data-t="respuesta10">Su capacidad a la vista: cuántas cosas pueden llevar a la vez sin que todo se trabe. También ven dónde espera el trabajo, qué se traba y a quién esperan. Salen con un acuerdo del equipo, que es un límite escrito y qué hacer cuando algo espera, y en dos semanas saben, con sus números, si ese límite funciona. No prometemos un resultado, porque depende de cada equipo y de lo que pasa alrededor.</p>
           </details>
           <details class="pregunta">
             <summary><span class="pregunta-texto" data-t="pregunta4">¿El cerebro es de una mosca de verdad?</span><span class="signo" aria-hidden="true"></span></summary>
@@ -462,11 +456,11 @@
           </details>
           <details class="pregunta">
             <summary><span class="pregunta-texto" data-t="pregunta11">¿Puedo usar el taller con mi equipo o en talleres pagados?</span><span class="signo" aria-hidden="true"></span></summary>
-            <p class="respuesta" data-t="respuesta11">Sí. El taller (la guía rápida, la presentación y las hojas) tiene licencia CC BY 4.0: puedes usarlo y adaptarlo, también en talleres pagados, citando a Felipe Fernández (mosca.deliverycraft.ai). El informe se puede compartir tal cual, citando al autor, y el juego se juega en esta página.</p>
+            <p class="respuesta" data-t="respuesta11">Sí. El taller (la guía rápida, la presentación y la hoja del equipo) tiene licencia CC BY 4.0: puedes usarlo y adaptarlo, también en talleres pagados, citando a Felipe Fernández (mosca.deliverycraft.ai). El informe se puede compartir tal cual, citando al autor, y el juego se juega en esta página.</p>
           </details>
           <details class="pregunta">
             <summary><span class="pregunta-texto" data-t="pregunta12">¿Necesito saber de WIP para facilitarlo?</span><span class="signo" aria-hidden="true"></span></summary>
-            <p class="respuesta" data-t="respuesta12">No. La guía rápida trae las pautas de cada parte, la frase clave para decir y las respuestas a lo que te van a preguntar. Léela una vez y, antes de la sesión, juega los dos días que vas a mostrar: uno con 9 tareas a la vez y otro con 2.</p>
+            <p class="respuesta" data-t="respuesta12">No. La guía rápida trae, para cada parte, los minutos, uno o dos tips y la pregunta para la sala, y las respuestas a lo que te van a preguntar. Léela una vez y, antes de la sesión, juega los dos días que vas a mostrar: uno con 9 tareas a la vez y otro con 2.</p>
           </details>
         </div>
       </section>

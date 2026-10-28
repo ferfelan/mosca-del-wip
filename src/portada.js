@@ -6,7 +6,8 @@
 //    la misma actividad simulada de src/cerebro.js, que se carga después de
 //    dibujar la página. Mientras tanto se ve una foto fija del mismo cerebro.
 // 2. La consola: de 1 a 10 tareas a la vez, con los números del informe.
-//    Al entrar sube sola de 2 a 9 una vez; después manda la persona.
+//    Al entrar sube sola de 2 a 10 una vez (hasta 10 desde la portada v4,
+//    2026-10-28: el tope del juego); después manda la persona.
 // 3. El clip del juego: se baja cuando está por verse, marca si son pocas o
 //    muchas tareas y se detiene fuera de la pantalla.
 // 4. Idioma (español o inglés) y fondo (negro o blanco), en la barra de
@@ -317,11 +318,14 @@ addEventListener('resize', () => {
 medirAire();
 marcarSeccion();
 
-// Al entrar, una sola vez: sube de 2 a 9 tareas para mostrar qué pasa
+// Al entrar, una sola vez: sube de 2 a 10 tareas (el tope del juego) para
+// mostrar qué pasa. Con 10 quedan los números del juego para 10 (8,2
+// terminadas, Colapsada, 15 cigarros) y el cerebro de 10 tareas
+const TOPE_SUBIDA = 10;
 function subidaSola() {
   if (quieto.matches || tocado) return;
   const paso = () => {
-    if (tocado || tareas >= 9) return;
+    if (tocado || tareas >= TOPE_SUBIDA) return;
     ponerTareas(tareas + 1);
     introPaso = setTimeout(paso, 340);
   };
