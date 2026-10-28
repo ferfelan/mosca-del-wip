@@ -244,7 +244,8 @@ p { margin: 0; }
   border: 1px solid var(--borde);
   background: var(--noche-2);
 }
-.selector button {
+.selector button,
+.selector a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -262,9 +263,13 @@ p { margin: 0; }
   cursor: pointer;
   transition: background-color 0.18s ease, color 0.18s ease;
 }
-.selector button:hover { color: var(--tinta); }
-.selector button[aria-pressed='true'] { background: var(--tinta); color: var(--noche); cursor: default; }
-.selector button:focus-visible { outline-offset: 1px; border-radius: 999px; }
+.selector a { text-decoration: none; }
+.selector button:hover,
+.selector a:hover { color: var(--tinta); }
+.selector button[aria-pressed='true'],
+.selector a[aria-current] { background: var(--tinta); color: var(--noche); cursor: default; }
+.selector button:focus-visible,
+.selector a:focus-visible { outline-offset: 1px; border-radius: 999px; }
 .barra .boton.barra-jugar {
   flex: none;
   min-height: 42px;
@@ -274,7 +279,8 @@ p { margin: 0; }
 }
 /* En pantallas táctiles, del tamaño de un dedo */
 @media (pointer: coarse) {
-  .selector button { min-width: 44px; height: 44px; }
+  .selector button,
+  .selector a { min-width: 44px; height: 44px; }
   .menu-enlaces a,
   .barra .boton.barra-jugar { min-height: 44px; }
 }
@@ -777,6 +783,11 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .pieza h3 { margin: 0; }
 .pieza-texto { color: var(--suave); font-size: 16.5px; text-wrap: pretty; }
 .pieza-accion { margin-top: auto; padding-top: 14px; }
+.pieza-acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
+.pieza-enlace { font-size: 15.5px; color: var(--suave); text-underline-offset: 3px; }
+.pieza-enlace:hover { color: var(--tinta); }
+.pieza-titulo-enlace { color: inherit; text-decoration: none; }
+.pieza-titulo-enlace:hover { text-decoration: underline; text-underline-offset: 4px; }
 .pieza .boton { padding-inline: 22px; font-size: 16px; }
 /* Solo en inglés: que el taller por ahora está en español */
 .pieza-idioma { color: var(--tenue); font-size: 14.5px; line-height: 1.5; }
@@ -1018,6 +1029,8 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .pie a { color: var(--suave); }
 /* Derechos: una línea propia abajo, más chica */
 .pie .pie-derechos { flex-basis: 100%; font-size: 13px; }
+.pie-mapa { flex-basis: 100%; display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0; padding: 0; list-style: none; }
+.pie-mapa li { margin: 0; }
 
 /* ---------- La barra bajo 1100 px: el logo, Jugar y el botón del menú ----------
    El menú baja de la barra: en celular a todo el ancho, en tablets como una

@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" data-idioma-pagina="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mosca del WIP</title>
-    <meta name="description" content="Juega un minuto y mira qué le pasa a una mosca oficinista, con cerebro real, cuando tiene demasiadas cosas empezadas a la vez. Con el kit para tu equipo." />
+    <title>Límite WIP: el juego con una mosca real · Mosca del WIP</title>
+    <meta name="description" content="Juega un minuto y mira qué le pasa a una mosca con cerebro real cuando tiene demasiadas tareas a la vez. Guía, informe y taller gratis para elegir el límite WIP de tu equipo." />
     <meta name="theme-color" content="#060a16" />
     <meta name="color-scheme" content="dark" />
     <!-- Antes de dibujar: el fondo y el idioma que la persona eligió, para que
@@ -12,21 +12,21 @@
     <script>
       (function () {
         var raiz = document.documentElement;
-        var idioma = new URLSearchParams(location.search).get('lang');
+        // Etapa 7 (2026-10-28): la portada en inglés vive en /en/. Un enlace
+        // viejo con ?lang=en va para allá (y /en/?lang=es vuelve a /).
+        var lang = new URLSearchParams(location.search).get('lang');
+        var propio = raiz.getAttribute('data-idioma-pagina');
+        if ((lang === 'en' || lang === 'es') && lang !== propio) {
+          location.replace((lang === 'en' ? '/en/' : '/') + location.hash);
+        }
         var fondo;
         try {
           fondo = localStorage.getItem('mosca-fondo');
-          if (idioma !== 'es' && idioma !== 'en') idioma = localStorage.getItem('mosca-idioma');
         } catch (e) {}
         if (fondo === 'claro') {
           raiz.setAttribute('data-tema', 'claro');
           document.querySelector('meta[name="theme-color"]').content = '#ffffff';
           document.querySelector('meta[name="color-scheme"]').content = 'light';
-        }
-        if (idioma === 'en') {
-          raiz.lang = 'en';
-          raiz.className += ' traduciendo';
-          setTimeout(function () { raiz.classList.remove('traduciendo'); }, 2500);
         }
       })();
     </script>
@@ -36,21 +36,25 @@
     <!-- Android y los demás celulares: nombre e íconos para la pantalla de inicio -->
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="canonical" href="https://mosca.deliverycraft.ai/" />
+    <link rel="alternate" hreflang="es" href="https://mosca.deliverycraft.ai/" />
+    <link rel="alternate" hreflang="en" href="https://mosca.deliverycraft.ai/en/" />
+    <link rel="alternate" hreflang="x-default" href="https://mosca.deliverycraft.ai/" />
 
     <!-- Vista previa al compartir el enlace (LinkedIn, WhatsApp). Portada v2
          (2026-10-26): la pregunta y la mosca en su escritorio (?v=4) -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Mosca del WIP" />
     <meta property="og:locale" content="es_CL" />
+    <meta property="og:locale:alternate" content="en_US" />
     <meta property="og:url" content="https://mosca.deliverycraft.ai/" />
-    <meta property="og:title" content="Mosca del WIP" />
+    <meta property="og:title" content="Mosca del WIP: el juego del límite WIP con una mosca real" />
     <meta property="og:description" content="Juega un minuto y mira qué le pasa a una mosca oficinista, con cerebro real, cuando tiene demasiadas cosas empezadas a la vez. Con el kit para tu equipo." />
     <meta property="og:image" content="https://mosca.deliverycraft.ai/img/vista-previa.jpg?v=4" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="La mosca del juego en su escritorio, con muchas tareas a la vez, junto a la pregunta: Ocupado todo el día. ¿Y qué terminaste? Un juego de 1 minuto, mosca.deliverycraft.ai." />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Mosca del WIP" />
+    <meta name="twitter:title" content="Mosca del WIP: el juego del límite WIP con una mosca real" />
     <meta name="twitter:description" content="Juega un minuto y mira qué le pasa a una mosca oficinista, con cerebro real, cuando tiene demasiadas cosas empezadas a la vez." />
     <meta name="twitter:image" content="https://mosca.deliverycraft.ai/img/vista-previa.jpg?v=4" />
 
@@ -59,6 +63,72 @@
     <link rel="stylesheet" href="/src/portada.css" />
     <script type="module" src="/src/portada.js"></script>
     <script type="module" src="/src/visitas.js"></script>
+    <!-- Datos estructurados (schema.org), para buscadores y asistentes: el
+         sitio, el juego, el autor y quien publica. Solo tipos estándar. -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://mosca.deliverycraft.ai/#sitio",
+          "url": "https://mosca.deliverycraft.ai/",
+          "name": "Mosca del WIP",
+          "description": "Un juego con el cerebro de una mosca real para ver por qué conviene limitar el trabajo en curso (WIP), con una guía, un informe y un taller gratis para equipos.",
+          "inLanguage": ["es", "en"],
+          "publisher": { "@id": "https://mosca.deliverycraft.ai/#deliverycraft" },
+          "author": { "@id": "https://mosca.deliverycraft.ai/#felipe" }
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://mosca.deliverycraft.ai/#pagina",
+          "url": "https://mosca.deliverycraft.ai/",
+          "name": "Límite WIP: el juego con una mosca real · Mosca del WIP",
+          "description": "Juega un minuto y mira qué le pasa a una mosca con cerebro real cuando tiene demasiadas tareas a la vez. Guía, informe y taller gratis para elegir el límite WIP de tu equipo.",
+          "inLanguage": "es",
+          "isPartOf": { "@id": "https://mosca.deliverycraft.ai/#sitio" },
+          "primaryImageOfPage": "https://mosca.deliverycraft.ai/img/vista-previa.jpg",
+          "datePublished": "2026-10-24",
+          "dateModified": "2026-10-28"
+        },
+        {
+          "@type": "VideoGame",
+          "@id": "https://mosca.deliverycraft.ai/jugar/#juego",
+          "name": "Mosca del WIP",
+          "url": "https://mosca.deliverycraft.ai/jugar/",
+          "description": "Una mosca oficinista con cerebro real pasa un día en la oficina. Eliges cuántas tareas tiene en curso a la vez, de 1 a 10, y ves cuántas termina, cuánto tarda cada una y cuánto se estresa. Un juego de un minuto para enseñar el límite WIP.",
+          "genre": "Educational",
+          "applicationCategory": "Game",
+          "gamePlatform": "Web browser",
+          "operatingSystem": "Any",
+          "playMode": "SinglePlayer",
+          "inLanguage": ["es", "en"],
+          "isAccessibleForFree": true,
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
+          "image": "https://mosca.deliverycraft.ai/img/tapa-juego.jpg",
+          "author": { "@id": "https://mosca.deliverycraft.ai/#felipe" },
+          "publisher": { "@id": "https://mosca.deliverycraft.ai/#deliverycraft" },
+          "datePublished": "2026-10-24"
+        },
+        {
+          "@type": "Person",
+          "@id": "https://mosca.deliverycraft.ai/#felipe",
+          "name": "Felipe Fernández",
+          "url": "https://www.linkedin.com/in/felipefernandezandrade/",
+          "sameAs": ["https://www.linkedin.com/in/felipefernandezandrade/"],
+          "jobTitle": "Coach de equipos",
+          "worksFor": { "@id": "https://mosca.deliverycraft.ai/#deliverycraft" }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://mosca.deliverycraft.ai/#deliverycraft",
+          "name": "Deliverycraft",
+          "url": "https://deliverycraft.ai/",
+          "founder": { "@id": "https://mosca.deliverycraft.ai/#felipe" }
+        }
+      ]
+    }
+    </script>
   </head>
   <body class="portada">
     <a class="saltar solo-lector" href="#inicio" data-t="saltar">Saltar al contenido</a>
@@ -89,14 +159,17 @@
               <li><a href="#kit" data-seccion="kit" data-t="navKit">El kit</a></li>
               <li><a href="#por-que-una-mosca" data-seccion="por-que-una-mosca" data-t="navCerebro">El cerebro</a></li>
               <li><a href="#faq" data-seccion="faq" data-t="navPreguntas">FAQ</a></li>
+              <li><a href="/limite-wip/" class="menu-pagina" data-pagina data-t="navGuia">Guía</a></li>
+              <li><a href="/informe/" class="menu-pagina" data-pagina data-t="navInforme">Informe</a></li>
+              <li><a href="/taller/" class="menu-pagina" data-pagina data-t="navTaller">Taller</a></li>
             </ul>
           </nav>
           <div class="ajustes">
             <div class="ajuste">
               <span class="ajuste-nombre" data-t="idioma">Idioma</span>
               <div class="selector" role="group" aria-label="Idioma" data-t-aria="idioma">
-                <button type="button" data-idioma="es" aria-pressed="true" lang="es" aria-label="Español" title="Español">ES</button>
-                <button type="button" data-idioma="en" aria-pressed="false" lang="en" aria-label="English" title="English">EN</button>
+                <a href="/" data-idioma="es" aria-current="page" lang="es" aria-label="Español" title="Español" hreflang="es">ES</a>
+                <a href="/en/" data-idioma="en" lang="en" aria-label="English" title="English" hreflang="en">EN</a>
               </div>
             </div>
             <div class="ajuste">
@@ -140,7 +213,7 @@
              simulada) y una prueba rápida: cuántas tareas a la vez. -->
         <div class="laboratorio">
           <div class="cerebro siempre-noche" data-tareas="2">
-            <img class="cerebro-foto" src="/img/cerebro-portada.jpg" width="1000" height="1018" alt="" aria-hidden="true" decoding="async" />
+            <img class="cerebro-foto" src="/img/cerebro-portada.jpg" width="1000" height="1018" alt="" aria-hidden="true" decoding="async" fetchpriority="high" />
             <canvas class="cerebro-lienzo" aria-hidden="true"></canvas>
           </div>
           <p class="cerebro-cuenta siempre-noche"><span class="cifra" data-neuronas>423</span> <span data-t="neuronas">neuronas encendidas</span> <span class="origen" data-t="enSimulacion">en la simulación</span></p>
@@ -206,7 +279,7 @@
             </div>
           </div>
         </div>
-        <p class="nota gana-nota" data-t="ganaNota">No prometemos un resultado: depende de cada equipo y de lo que pasa alrededor. Su número lo miden ustedes.</p>
+        <p class="nota gana-nota" data-t="ganaNota">No prometemos un resultado: depende de cada equipo y de lo que pasa alrededor. Su número lo miden ustedes. Cómo elegir el límite y qué hacer cuando algo espera está en la <a href="/limite-wip/">guía del límite WIP</a>.</p>
       </section>
 
       <!-- 3. Lo que vas a ver: el clip del juego y los dos días, 2 contra 9 -->
@@ -255,15 +328,15 @@
         <h2 id="t-pasos" data-t="pasosTitulo">Cómo se juega</h2>
         <ol class="pasos-lista">
           <li class="paso">
-            <figure class="paso-foto"><img src="/img/paso-1.jpg" data-src-en="/img/paso-1-en.jpg" width="1080" height="675" alt="El control del juego: tareas en curso a la vez, de 1 a 10, dentro del límite sostenible." data-t-alt="paso1Alt" loading="lazy" decoding="async" /></figure>
+            <figure class="paso-foto"><img src="/img/paso-1-elegir-tareas-a-la-vez.jpg" data-src-en="/img/step-1-choose-tasks-at-once.jpg" width="1080" height="675" alt="El control del juego: tareas en curso a la vez, de 1 a 10, dentro del límite sostenible." data-t-alt="paso1Alt" loading="lazy" decoding="async" /></figure>
             <p><span class="paso-numero" aria-hidden="true">1</span><span data-t="paso1">Eliges cuántas tareas puede tener empezadas a la vez, de 1 a 10. A eso se le llama límite de trabajo en curso (WIP, por su sigla en inglés).</span></p>
           </li>
           <li class="paso">
-            <figure class="paso-foto"><img src="/img/paso-2.jpg" width="1200" height="750" alt="La mosca frente a su tablero del día, con 2 tareas en curso, a las 10:10." data-t-alt="paso2Alt" loading="lazy" decoding="async" /></figure>
+            <figure class="paso-foto"><img src="/img/paso-2-mosca-en-su-oficina.jpg" width="1200" height="750" alt="La mosca frente a su tablero del día, con 2 tareas en curso, a las 10:10." data-t-alt="paso2Alt" loading="lazy" decoding="async" /></figure>
             <p><span class="paso-numero" aria-hidden="true">2</span><span data-t="paso2">Miras su día de oficina, de 9 a 18, en un minuto.</span></p>
           </li>
           <li class="paso">
-            <figure class="paso-foto"><img src="/img/paso-3.jpg" data-src-en="/img/paso-3-en.jpg" width="1080" height="675" alt="La tabla de días jugados, con un día de 2 tareas a la vez y otro de 9." data-t-alt="paso3Alt" loading="lazy" decoding="async" /></figure>
+            <figure class="paso-foto"><img src="/img/paso-3-tabla-de-dias-jugados.jpg" data-src-en="/img/step-3-days-played-table.jpg" width="1080" height="675" alt="La tabla de días jugados, con un día de 2 tareas a la vez y otro de 9." data-t-alt="paso3Alt" loading="lazy" decoding="async" /></figure>
             <p><span class="paso-numero" aria-hidden="true">3</span><span data-t="paso3">Comparas cuánto terminó, cuánto tardó cada tarea y cuántas veces salió a fumar.</span></p>
           </li>
         </ol>
@@ -281,7 +354,7 @@
         <ul class="piezas">
           <li class="pieza">
             <figure class="pieza-imagen pieza-imagen-juego">
-              <img src="/img/tapa-juego.jpg" width="1200" height="750" alt="" loading="lazy" decoding="async" />
+              <img src="/img/tapa-juego.jpg" width="1200" height="750" alt="La mosca del juego en su oficina, frente a su tablero kanban." data-t-alt="tapaJuegoAlt" loading="lazy" decoding="async" />
             </figure>
             <div class="pieza-cuerpo">
               <p class="pieza-tiempo" data-t="kitJuegoTiempo">1 minuto</p>
@@ -293,30 +366,35 @@
           <li class="pieza">
             <!-- La tapa cambia con el idioma (data-src-en), como las fotos de "Cómo se juega" -->
             <figure class="pieza-imagen pieza-imagen-tapa">
-              <img class="pieza-tapa" src="/img/tapa-informe.jpg" data-src-en="/img/tapa-report.jpg" width="720" height="1019" alt="" loading="lazy" decoding="async" />
+              <img class="pieza-tapa" src="/img/tapa-informe.jpg" data-src-en="/img/tapa-report.jpg" width="720" height="1019" alt="La tapa del informe: la mosca cargando una torre de carpetas." data-t-alt="tapaInformeAlt" loading="lazy" decoding="async" />
             </figure>
             <div class="pieza-cuerpo">
               <p class="pieza-tiempo" data-t="kitInformeTiempo">10 minutos</p>
               <h3 data-t="kitInforme">El informe</h3>
               <p class="pieza-texto" data-t="kitInformeTexto">De dónde sale cada número y qué dicen los estudios.</p>
-              <div class="pieza-accion"><a class="boton" href="/Mosca-del-WIP-Informe.pdf" download="Mosca del WIP - Informe.pdf" data-informe data-t="descargar">Descargar el informe (PDF)</a></div>
+              <div class="pieza-accion pieza-acciones">
+                <a class="boton" href="/informe/" data-informe-web data-t="kitInformeLeer">Leer en la web</a>
+                <a class="pieza-enlace" href="/Mosca-del-WIP-Informe.pdf" download="Mosca del WIP - Informe.pdf" data-informe data-t="descargarCorto">Descargar el PDF</a>
+              </div>
             </div>
           </li>
           <li class="pieza pieza-taller">
             <!-- La tapa de la guía rápida (está solo en español) -->
             <figure class="pieza-imagen pieza-imagen-tapa">
-              <img class="pieza-tapa" src="/img/tapa-taller.jpg" width="720" height="1019" alt="" loading="lazy" decoding="async" />
+              <img class="pieza-tapa" src="/img/tapa-taller.jpg" width="720" height="1019" alt="La tapa de la guía rápida del taller: la mosca con 9 tareas en curso." data-t-alt="tapaTallerAlt" loading="lazy" decoding="async" />
             </figure>
             <div class="pieza-cuerpo">
               <p class="pieza-tiempo" data-t="kitTallerTiempo">60 minutos</p>
-              <h3 data-t="kitTaller">El taller</h3>
+              <h3><a class="pieza-titulo-enlace" href="/taller/" data-taller-pagina data-t="kitTaller">El taller</a></h3>
               <p class="pieza-texto" data-t="kitTallerTexto">Presentación, guía rápida y la hoja del equipo para imprimir, para que tu equipo encuentre su límite y lo pruebe 2 semanas.</p>
+              <div class="pieza-accion pieza-acciones"><a class="boton" href="/taller/" data-taller-pagina data-t="kitTallerVer">Ver el taller (60 minutos)</a></div>
               <!-- Solo en inglés: que por ahora el taller está en español (en español queda vacío y no se ve) -->
               <p class="pieza-idioma" data-t="kitTallerIdioma"></p>
               <ul class="descargas">
                 <li><a href="/taller/Mosca-del-WIP-Taller-Guia-rapida.pdf" download="Mosca del WIP - Taller - Guía rápida del facilitador.pdf" data-taller-archivo data-t="kitGuia">Guía rápida (PDF)</a></li>
                 <li><a href="/taller/Mosca-del-WIP-Taller-Presentacion.pptx" download="Mosca del WIP - Taller - Presentación.pptx" data-taller-archivo data-t="kitPptx">Presentación (PowerPoint)</a></li>
                 <li><a href="/taller/Mosca-del-WIP-Taller-Presentacion.pdf" download="Mosca del WIP - Taller - Presentación.pdf" data-taller-archivo data-t="kitPdf">Presentación (PDF)</a></li>
+                <li><a href="/taller/Mosca-del-WIP-Taller-Hoja-del-equipo.pdf" download="Mosca del WIP - Taller - Hoja del equipo.pdf" data-taller-archivo data-t="kitHoja">Hoja del equipo (PDF)</a></li>
               </ul>
               <p class="muy-pronto" data-t="kitPronto">Muy pronto</p>
             </div>
@@ -353,11 +431,11 @@
         <div class="credito-lado">
           <div class="cerebros siempre-noche">
             <figure>
-              <img src="/img/cerebro-2.jpg" width="610" height="804" alt="El cerebro con 2 tareas a la vez: pocas neuronas encendidas." data-t-alt="cerebro2Alt" loading="lazy" decoding="async" />
+              <img src="/img/cerebro-mosca-2-tareas.jpg" width="610" height="804" alt="El cerebro con 2 tareas a la vez: pocas neuronas encendidas." data-t-alt="cerebro2Alt" loading="lazy" decoding="async" />
               <figcaption data-t="cerebro2Pie">2 tareas a la vez: <span class="cifra">423</span> neuronas encendidas en la simulación</figcaption>
             </figure>
             <figure>
-              <img src="/img/cerebro-9.jpg" width="610" height="804" alt="El cerebro con 9 tareas a la vez: muchas más neuronas encendidas." data-t-alt="cerebro9Alt" loading="lazy" decoding="async" />
+              <img src="/img/cerebro-mosca-9-tareas.jpg" width="610" height="804" alt="El cerebro con 9 tareas a la vez: muchas más neuronas encendidas." data-t-alt="cerebro9Alt" loading="lazy" decoding="async" />
               <figcaption data-t="cerebro9Pie">9 a la vez: <span class="cifra">1.328</span> neuronas encendidas en la simulación</figcaption>
             </figure>
           </div>
@@ -391,7 +469,8 @@
             límite con tu equipo. Se lee en 10 minutos.
           </p>
           <div class="acciones">
-            <a class="boton principal" href="/Mosca-del-WIP-Informe.pdf" download="Mosca del WIP - Informe.pdf" data-informe data-t="descargar">Descargar el informe (PDF)</a>
+            <a class="boton principal" href="/informe/" data-informe-web data-t="leerInforme">Leer el informe en la web</a>
+            <a class="boton" href="/Mosca-del-WIP-Informe.pdf" download="Mosca del WIP - Informe.pdf" data-informe data-t="descargar">Descargar el informe (PDF)</a>
           </div>
           <p class="nota" data-t="informeNota">Son 17 páginas y pesa 4 MB.</p>
         </div>
@@ -424,7 +503,7 @@
           </details>
           <details class="pregunta">
             <summary><span class="pregunta-texto" data-t="pregunta3">¿Cuántas tareas a la vez es lo mejor?</span><span class="signo" aria-hidden="true"></span></summary>
-            <p class="respuesta" data-t="respuesta3">No hay un número para todos. En el juego, el límite sostenible de la mosca es 3, porque hasta ahí sigue Tranquila y no sale a fumar. Pero la mosca trabaja sola, y el juego no dice cuál es el número de tu equipo. Depende de cuánto espera su trabajo, y lo encuentran ustedes probando un límite.</p>
+            <p class="respuesta" data-t="respuesta3">No hay un número para todos. En el juego, el límite sostenible de la mosca es 3, porque hasta ahí sigue Tranquila y no sale a fumar. Pero la mosca trabaja sola, y el juego no dice cuál es el número de tu equipo. Depende de cuánto espera su trabajo, y lo encuentran ustedes probando un límite. Cómo hacerlo está en la guía <a href="/limite-wip/">Límite WIP: qué es y cómo encontrar el de tu equipo</a>.</p>
           </details>
           <details class="pregunta">
             <summary><span class="pregunta-texto" data-t="pregunta10">¿Qué se lleva mi equipo?</span><span class="signo" aria-hidden="true"></span></summary>
@@ -452,7 +531,7 @@
           </details>
           <details class="pregunta">
             <summary><span class="pregunta-texto" data-t="pregunta9">¿Cómo lo uso con mi equipo?</span><span class="signo" aria-hidden="true"></span></summary>
-            <p class="respuesta" data-t="respuesta9">Jueguen un día con 2 tareas a la vez y otro con 9, y comparen la tabla de días jugados. En el computador, la vista Exhibición muestra el juego en grande, para una tele o un proyector. El kit de esta página trae el informe, con cuatro pasos para probar un límite, y un taller de 60 minutos con su guía para facilitarlo.</p>
+            <p class="respuesta" data-t="respuesta9">Jueguen un día con 2 tareas a la vez y otro con 9, y comparen la tabla de días jugados. En el computador, la vista Exhibición muestra el juego en grande, para una tele o un proyector. El kit de esta página trae el <a href="/informe/">informe</a>, con cuatro pasos para probar un límite, y un <a href="/taller/">taller de 60 minutos</a> con su guía para facilitarlo.</p>
           </details>
           <details class="pregunta">
             <summary><span class="pregunta-texto" data-t="pregunta11">¿Puedo usar el taller con mi equipo o en talleres pagados?</span><span class="signo" aria-hidden="true"></span></summary>
@@ -477,6 +556,13 @@
     <footer class="pie">
       <p data-t="hechoPor">Hecho por <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a> · <a href="https://deliverycraft.ai">deliverycraft.ai</a></p>
       <p data-t="sinCookies">Sin cookies. Solo contamos visitas, sin identificar a nadie.</p>
+      <ul class="pie-mapa" aria-label="Páginas del sitio" data-t-aria="pieMapa">
+        <li><a href="/jugar/" data-jugar data-t="pieJuego">El juego</a></li>
+        <li><a href="/limite-wip/" data-t="pieGuia">Guía del límite WIP</a></li>
+        <li><a href="/informe/" data-t="pieInforme">El informe</a></li>
+        <li><a href="/taller/" data-t="pieTaller">El taller</a></li>
+        <li><a href="/creditos/" data-t="pieCreditos">Créditos y licencias</a></li>
+      </ul>
       <p class="pie-derechos" data-t="derechos">© 2026 Felipe Fernández. Todos los derechos reservados. Los datos del cerebro son del Male CNS v1.0, con licencia CC BY 4.0. <a href="/creditos/">Créditos y licencias</a></p>
     </footer>
   </body>

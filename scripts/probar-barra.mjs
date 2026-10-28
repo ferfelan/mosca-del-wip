@@ -68,7 +68,8 @@ for (const [nombre, ancho, alto, tactil, sinMovimiento] of CASOS) for (const idi
   pagina.on('console', (m) => { if (m.type() === 'error') errores.push(m.text()); });
   const problemas = [];
   const mal = (texto) => problemas.push(texto);
-  await pagina.goto(DIRECCION, { waitUntil: 'load' });
+  // La portada en inglés vive en /en/ (Etapa 7)
+  await pagina.goto(DIRECCION + (idioma === 'en' ? 'en/' : ''), { waitUntil: 'load' });
   await pagina.waitForTimeout(800);
   const conMenu = ancho < 1100;
   const estado = () =>
@@ -191,11 +192,11 @@ for (const [nombre, ancho, alto, tactil, sinMovimiento] of CASOS) for (const idi
   await pagina.evaluate(() => (window.__sinRecargar = true));
   await pagina.click('[data-logo]');
   await quieta(pagina);
-  const arriba = await pagina.evaluate(() => ({ y: scrollY, hash: location.hash, igual: window.__sinRecargar === true, busqueda: location.search }));
+  const arriba = await pagina.evaluate(() => ({ y: scrollY, hash: location.hash, igual: window.__sinRecargar === true, ruta: location.pathname }));
   if (arriba.y !== 0) mal(`el logo no vuelve arriba (queda en ${arriba.y} px)`);
   if (arriba.hash) mal(`después del logo la dirección sigue con «${arriba.hash}»`);
   if (!arriba.igual) mal('el logo recarga la página');
-  if (idioma === 'en' && arriba.busqueda !== '?lang=en') mal(`después del logo la dirección perdió el idioma («${arriba.busqueda}»)`);
+  if (arriba.ruta !== (idioma === 'en' ? '/en/' : '/')) mal(`después del logo la dirección es «${arriba.ruta}» y no ${idioma === 'en' ? '/en/' : '/'}`);
   await pagina.goBack();
   await pagina.waitForTimeout(500);
   const atras = await pagina.evaluate(() => location.hash);

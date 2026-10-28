@@ -13,6 +13,9 @@ export const INGLES = {
   navKit: 'The kit',
   navCerebro: 'The brain',
   navPreguntas: 'FAQ',
+  navGuia: 'Guide',
+  navInforme: 'Report',
+  navTaller: 'Workshop',
   idioma: 'Language',
   fondo: 'Background',
   fondoNegro: 'Dark background',
@@ -27,6 +30,8 @@ export const INGLES = {
   jugarMinuto: 'Play (1 minute)',
   verKit: 'See the kit',
   descargar: 'Download the report (PDF)',
+  descargarCorto: 'Download the PDF',
+  leerInforme: 'Read the report on the web',
   gratis: 'Free, no sign-up. Plays on a computer, phone or tablet.',
   creadoPor: 'Created by <a href="https://www.linkedin.com/in/felipefernandezandrade/" target="_blank" rel="noopener">Felipe Fernández</a>', // 5.2i
   neuronas: 'neurons firing',
@@ -75,7 +80,8 @@ export const INGLES = {
   gana3: 'A written limit, and what to do when something waits.',
   gana4Titulo: 'Your own data',
   gana4: 'In two weeks your own numbers tell you whether your limit works.',
-  ganaNota: 'We don’t promise a result: it depends on each team and on what goes on around it. Your number is yours to measure.',
+  ganaNota:
+    'We don’t promise a result: it depends on each team and on what goes on around it. Your number is yours to measure. How to choose the limit and what to do when something is waiting is in the <a href="/en/wip-limit/">WIP limit guide</a>.',
 
   // El kit para tu equipo
   kitTitulo: 'The kit for your team',
@@ -86,13 +92,19 @@ export const INGLES = {
   kitInforme: 'The report',
   kitInformeTiempo: '10 minutes',
   kitInformeTexto: 'Where each number comes from and what the studies say.',
+  kitInformeLeer: 'Read it on the web',
   kitTaller: 'The workshop',
   kitTallerTiempo: '60 minutes',
   kitTallerTexto: 'Slides, a quick guide and the team sheet to print, so your team finds its limit and tries it for 2 weeks.',
+  kitTallerVer: 'See the workshop (60 minutes)',
   kitTallerIdioma: 'For now, the workshop is in Spanish.', // en español no hay línea
   kitGuia: 'Quick guide (PDF, in Spanish)',
   kitPptx: 'Slides (PowerPoint, in Spanish)',
   kitPdf: 'Slides (PDF, in Spanish)',
+  kitHoja: 'Team sheet (PDF, in Spanish)',
+  tapaJuegoAlt: 'The fly from the game at her office, in front of her kanban board.',
+  tapaInformeAlt: 'The report’s cover: the fly carrying a tower of folders.',
+  tapaTallerAlt: 'The cover of the workshop’s quick guide: the fly with 9 tasks in progress.',
   kitPronto: 'Coming soon',
   kitCierre: 'Use it and adapt it, also in paid workshops, crediting the author.',
 
@@ -127,7 +139,7 @@ export const INGLES = {
     'It’s short for work in progress. It’s everything you’ve started and haven’t finished yet. In the game, it’s the tasks the fly has open at the same time.',
   pregunta3: 'How many tasks at once is best?',
   respuesta3:
-    'There’s no number for everyone. In the game, the fly’s sustainable limit is 3, because up to 3 she stays Calm and doesn’t go out for a smoke. But the fly works alone, and the game doesn’t tell you your team’s number. It depends on how much your work waits, and you find it by trying a limit.',
+    'There’s no number for everyone. In the game, the fly’s sustainable limit is 3, because up to 3 she stays Calm and doesn’t go out for a smoke. But the fly works alone, and the game doesn’t tell you your team’s number. It depends on how much your work waits, and you find it by trying a limit. How to do it is in the guide <a href="/en/wip-limit/">WIP limit: what it is and how to find your team’s</a>.',
   pregunta4: 'Is the brain from a real fly?',
   respuesta4:
     'The neurons and their connections are. They come from Male CNS v1.0, the map of a male fly’s central nervous system, neuron by neuron, licensed under CC BY 4.0. The activity you see is simulated. We translate the tasks into something a fly can feel, like dust on her antenna, and simulate how her brain responds. Only some of her neurons are shown.',
@@ -145,7 +157,7 @@ export const INGLES = {
     'It’s free and needs no sign-up. We don’t use cookies and only count visits, without identifying anyone. Your days played and what you choose, like the language, are saved only in your browser.',
   pregunta9: 'How do I use it with my team?',
   respuesta9:
-    'Play one day with 2 tasks at once and another with 9, and compare the Days played table. On a computer, the Exhibition view shows the game large, for a TV or a projector. The kit on this page has the report, with four steps to try a limit, and a 60-minute workshop with its guide to facilitate it.',
+    'Play one day with 2 tasks at once and another with 9, and compare the Days played table. On a computer, the Exhibition view shows the game large, for a TV or a projector. The kit on this page has the <a href="/en/report/">report</a>, with four steps to try a limit, and a <a href="/en/workshop/">60-minute workshop</a> with its guide to facilitate it.',
   pregunta10: 'What does my team take away?',
   respuesta10:
     'Your capacity in plain sight: how many things you can carry at once without everything getting stuck. You also see where the work waits, what gets stuck and who you’re waiting on. You leave with a team agreement, which is a written limit and what to do when something waits, and in two weeks your own numbers tell you whether that limit works. We don’t promise a result, because it depends on each team and on what goes on around it.',
@@ -171,6 +183,12 @@ export const INGLES = {
   hechoPor:
     'Made by <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a> · <a href="https://deliverycraft.ai">deliverycraft.ai</a>',
   sinCookies: 'No cookies. We only count visits, without identifying anyone.',
+  pieMapa: 'Pages on this site',
+  pieJuego: 'The game',
+  pieGuia: 'WIP limit guide',
+  pieInforme: 'The report',
+  pieTaller: 'The workshop',
+  pieCreditos: 'Credits and licenses',
   derechos:
     '© 2026 Felipe Fernández. All rights reserved. The brain data come from Male CNS v1.0, licensed CC BY 4.0. <a href="/creditos/?lang=en">Credits and licenses</a>',
 };

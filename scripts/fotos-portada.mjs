@@ -1,9 +1,9 @@
 // Las fotos de "Cómo se juega" de la portada (portada v2, 2026-10-26),
 // sacadas del juego en español y en inglés:
-//   public/img/paso-1.jpg y paso-1-en.jpg   el control de 1 a 10, antes de Empezar
-//   public/img/paso-3.jpg y paso-3-en.jpg   la tabla de días jugados: un día con 2 y otro con 9
-// (paso-2.jpg, la mosca frente a su tablero a las 10:10, y cerebro-2.jpg y
-// cerebro-9.jpg vienen de la propuesta, docs/propuesta-portada/img/.)
+//   public/img/paso-1-elegir-tareas-a-la-vez.jpg y step-1-choose-tasks-at-once.jpg (Etapa 7: antes paso-1.jpg y paso-1-en.jpg)   el control de 1 a 10, antes de Empezar
+//   public/img/paso-3-tabla-de-dias-jugados.jpg y step-3-days-played-table.jpg (antes paso-3.jpg y paso-3-en.jpg)   la tabla de días jugados: un día con 2 y otro con 9
+// (paso-2-mosca-en-su-oficina.jpg, la mosca frente a su tablero a las 10:10, y cerebro-mosca-2-tareas.jpg y
+// cerebro-mosca-9-tareas.jpg vienen de la propuesta, docs/propuesta-portada/img/.)
 // Igual que "fotos" de scripts/propuesta-portada.mjs, pero en los dos idiomas.
 // Necesita npm run dev. Uso: node scripts/fotos-portada.mjs [dirección]
 import { chromium } from 'playwright';
@@ -34,7 +34,7 @@ for (const idioma of ['es', 'en']) {
   const panel = await caja('#panel');
   const x = Math.min(panel.x - 42, 1440 - ANCHO);
   // Paso 1: el control de 1 a 10, con el título de la tarjeta (día de oficina)
-  await pagina.screenshot({ path: `${IMG}/paso-1${sufijo}.jpg`, type: 'jpeg', quality: 90, clip: { x, y: Math.max(0, panel.y - 8), width: ANCHO, height: ALTO } });
+  await pagina.screenshot({ path: `${IMG}/${idioma === 'en' ? 'step-1-choose-tasks-at-once' : 'paso-1-elegir-tareas-a-la-vez'}.jpg`, type: 'jpeg', quality: 90, clip: { x, y: Math.max(0, panel.y - 8), width: ANCHO, height: ALTO } });
   // Paso 3: la tabla de días jugados con dos días, 2 y 9 tareas a la vez
   await pagina.evaluate(() => window.__mosca.setWip(2));
   await pagina.evaluate(() => window.__mosca.empezar());
@@ -53,8 +53,8 @@ for (const idioma of ['es', 'en']) {
     console.log(`  FALLA (${idioma}): la tabla de días tiene ${filas} fila(s), se esperaban 2`);
   }
   const ultimo = await caja('#panel .bloque.ultimo');
-  await pagina.screenshot({ path: `${IMG}/paso-3${sufijo}.jpg`, type: 'jpeg', quality: 90, clip: { x, y: Math.min(ultimo.y - 14, 900 - ALTO), width: ANCHO, height: ALTO } });
-  console.log(`${idioma}: paso-1${sufijo}.jpg y paso-3${sufijo}.jpg (${ANCHO * 3} × ${ALTO * 3}); la tabla dice: ${(await pagina.locator('#tabla-dias').innerText()).replace(/\s+/g, ' ').trim().slice(0, 120)}`);
+  await pagina.screenshot({ path: `${IMG}/${idioma === 'en' ? 'step-3-days-played-table' : 'paso-3-tabla-de-dias-jugados'}.jpg`, type: 'jpeg', quality: 90, clip: { x, y: Math.min(ultimo.y - 14, 900 - ALTO), width: ANCHO, height: ALTO } });
+  console.log(`${idioma}: las fotos de los pasos 1 y 3 (${ANCHO * 3} × ${ALTO * 3}); la tabla dice: ${(await pagina.locator('#tabla-dias').innerText()).replace(/\s+/g, ' ').trim().slice(0, 120)}`);
   await contexto.close();
 }
 await navegador.close();

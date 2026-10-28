@@ -1,0 +1,265 @@
+/* Las páginas de lectura del sitio (Etapa 7, 2026-10-28): la guía del límite
+   WIP (/limite-wip/), el informe en la web (/informe/), el taller (/taller/),
+   sus versiones en inglés (/en/...) y la página "no encontrada" (404).
+   Usan los colores, la letra, la barra, los botones y el pie de la portada
+   (src/portada.css) y agregan lo de leer largo: una columna angosta, títulos
+   con jerarquía, tablas, figuras, recuadros y el índice "En esta página".
+   El mismo diseño de noche de la portada; con fondo blanco cambian los
+   colores igual que allá. */
+
+:root {
+  /* Texto de lectura: un poco menos brillante que los títulos, para leer
+     largo sin cansar; con fondo blanco usa la tinta normal (más abajo) */
+  --lectura: #d6dbe8;
+  --columna: 760px;
+  --columna-ancha: 980px;
+}
+:root[data-tema='claro'] {
+  --lectura: #1c2437;
+}
+
+.lectura {
+  max-width: var(--columna-ancha);
+  margin: 0 auto;
+  padding: calc(var(--alto-barra) + 40px) var(--margen) 72px;
+}
+.lectura > *,
+.lectura section > * {
+  max-width: var(--columna);
+}
+/* Lo que puede ir más ancho que el texto: tablas, gráficos y figuras */
+.lectura .ancho,
+.lectura section > .ancho {
+  max-width: var(--columna-ancha);
+}
+
+/* ---------- La cabeza de la página ---------- */
+.migas {
+  margin: 0 0 18px;
+  font-size: 14.5px;
+  color: var(--tenue);
+}
+.migas ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 8px; }
+.migas li + li::before { content: '›'; margin-right: 8px; color: var(--tenue); }
+.migas a { color: var(--suave); }
+.migas [aria-current] { color: var(--tinta); }
+.lectura h1 {
+  margin: 0 0 18px;
+  font-size: clamp(32px, 5vw, 46px);
+  font-weight: 760;
+  font-stretch: 104%;
+  letter-spacing: -0.022em;
+  line-height: 1.06;
+  text-wrap: balance;
+  max-width: 22ch;
+}
+.pagina-bajada {
+  margin: 0 0 22px;
+  font-size: clamp(18px, 2.2vw, 21px);
+  line-height: 1.5;
+  color: var(--suave);
+  text-wrap: pretty;
+  max-width: 60ch;
+}
+.pagina-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: 0 0 36px;
+  padding: 14px 0;
+  border-top: 1px solid var(--borde);
+  border-bottom: 1px solid var(--borde);
+  font-size: 14.5px;
+  color: var(--tenue);
+}
+.pagina-meta a { color: var(--suave); }
+.pagina-meta time { color: var(--suave); }
+
+/* ---------- "En esta página": el índice ---------- */
+.indice {
+  margin: 0 0 44px;
+  padding: 20px 24px;
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+  background: var(--vidrio);
+}
+.indice h2 { margin: 0 0 10px; font-size: 14px; font-weight: 650; color: var(--tenue); }
+.indice ol { margin: 0; padding: 0 0 0 22px; columns: 2; column-gap: 28px; font-size: 15.5px; line-height: 1.45; }
+.indice li { margin: 4px 0; break-inside: avoid; padding-left: 2px; }
+.indice a { color: var(--suave); text-decoration: none; }
+.indice a:hover { color: var(--tinta); text-decoration: underline; }
+
+/* ---------- El texto ---------- */
+.lectura p,
+.lectura li,
+.lectura dd,
+.lectura figcaption,
+.lectura td,
+.lectura th {
+  color: var(--lectura);
+}
+.lectura p { margin: 0 0 18px; font-size: 17.5px; line-height: 1.62; text-wrap: pretty; }
+.lectura ul,
+.lectura ol { margin: 0 0 20px; padding-left: 24px; font-size: 17.5px; line-height: 1.6; }
+.lectura li { margin: 6px 0; }
+.lectura li::marker { color: var(--tenue); }
+.lectura a { color: var(--tinta); text-decoration-color: var(--subrayado); text-underline-offset: 3px; }
+.lectura a:hover { text-decoration-color: currentColor; }
+.lectura section { padding-top: 36px; margin-top: 8px; scroll-margin-top: calc(var(--alto-barra) + 16px); }
+.lectura section + section { border-top: 1px solid var(--borde); }
+.lectura h2 {
+  margin: 0 0 16px;
+  font-size: clamp(24px, 3vw, 30px);
+  font-weight: 720;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  text-wrap: balance;
+  max-width: 28ch;
+}
+.lectura h3 { margin: 28px 0 10px; font-size: 20px; font-weight: 680; line-height: 1.3; }
+.lectura h4 { margin: 22px 0 8px; font-size: 16.5px; font-weight: 660; color: var(--suave); }
+.lectura strong { color: var(--tinta); font-weight: 650; }
+.lectura small,
+.lectura .nota { font-size: 14.5px; color: var(--tenue); line-height: 1.5; }
+.lectura .nota { margin-top: -8px; }
+.lectura dfn { font-style: normal; font-weight: 650; color: var(--tinta); }
+.lectura blockquote { margin: 0 0 20px; padding: 2px 0 2px 20px; border-left: 3px solid var(--vision); }
+.lectura blockquote p { font-size: 18.5px; color: var(--tinta); }
+.lectura blockquote cite { font-style: normal; font-size: 14.5px; color: var(--tenue); }
+.lectura .respuesta { font-size: 19px; color: var(--tinta); line-height: 1.55; }
+
+/* El recuadro: la idea que vale la pena recordar, con el borde del color de la mosca tranquila */
+.recuadro {
+  margin: 24px 0;
+  padding: 18px 22px;
+  border-radius: 14px;
+  border: 1px solid var(--borde);
+  border-left: 4px solid var(--tranquila);
+  background: var(--vidrio);
+}
+.recuadro p { margin: 0; font-size: 17px; }
+.recuadro p + p { margin-top: 10px; }
+.recuadro.ojo { border-left-color: var(--ocupada); }
+
+/* "De dónde sale": el rótulo chico junto a un número (en el juego, en la simulación, según estudios) */
+.origen {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--borde-fuerte);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--tenue);
+  vertical-align: 2px;
+  white-space: nowrap;
+}
+
+/* ---------- Tablas ---------- */
+.tabla-marco { overflow-x: auto; margin: 0 0 20px; -webkit-overflow-scrolling: touch; }
+.lectura table { border-collapse: collapse; width: 100%; font-size: 15.5px; line-height: 1.4; }
+.lectura th,
+.lectura td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--borde); vertical-align: top; }
+.lectura th { font-size: 13.5px; font-weight: 650; color: var(--suave); border-bottom: 1px solid var(--borde-fuerte); }
+.lectura td.numero,
+.lectura th.numero { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.lectura caption { caption-side: bottom; padding: 10px 0 0; font-size: 14px; color: var(--tenue); text-align: left; }
+/* La tabla de 1 a 10 tareas: la fila que más termina y la de sobrecarga */
+.tabla-dias tr.mejor td { background: color-mix(in srgb, var(--tranquila) 14%, transparent); }
+.tabla-dias tr.sobre td { background: color-mix(in srgb, var(--colapsada) 14%, transparent); }
+.tabla-dias tr.mejor td:first-child,
+.tabla-dias tr.sobre td:first-child { font-weight: 700; color: var(--tinta); }
+.nivel-tranquila { color: var(--tranquila); font-weight: 600; }
+.nivel-ocupada { color: var(--ocupada); font-weight: 600; }
+.nivel-estresada { color: var(--estresada); font-weight: 600; }
+.nivel-colapsada { color: var(--colapsada); font-weight: 600; }
+/* La barrita de terminadas dentro de la celda */
+.barra-dato { display: inline-block; height: 9px; border-radius: 4px; background: var(--tranquila); vertical-align: middle; margin-right: 8px; opacity: 0.85; }
+
+/* ---------- Figuras ---------- */
+.lectura figure { margin: 8px 0 28px; }
+.lectura figure img { display: block; width: 100%; height: auto; border-radius: 14px; border: 1px solid var(--borde); }
+.lectura figcaption { margin-top: 10px; font-size: 14.5px; line-height: 1.5; color: var(--tenue); }
+.dos-fotos { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.dos-fotos figure { margin: 0; }
+.grafico svg { display: block; width: 100%; height: auto; }
+
+/* ---------- Acciones y enlaces a las otras piezas ---------- */
+.acciones-pagina { display: flex; flex-wrap: wrap; gap: 12px; margin: 8px 0 24px; }
+.enlaces-kit { list-style: none; padding: 0; margin: 0 0 20px; display: grid; gap: 12px; }
+.enlaces-kit li { margin: 0; }
+.enlaces-kit a {
+  display: block;
+  padding: 16px 20px;
+  border-radius: 14px;
+  border: 1px solid var(--borde);
+  background: var(--vidrio);
+  text-decoration: none;
+  color: var(--tinta);
+}
+.enlaces-kit a:hover { background: var(--vidrio-hover); border-color: var(--borde-hover); }
+.enlaces-kit b { display: block; font-weight: 680; margin-bottom: 2px; }
+.enlaces-kit span { display: block; font-size: 15px; color: var(--suave); }
+.descargas-pagina { list-style: none; padding: 0; margin: 0 0 20px; display: grid; gap: 10px; }
+.descargas-pagina li { margin: 0; }
+.descargas-pagina a { display: flex; gap: 12px; align-items: baseline; padding: 12px 16px; border: 1px solid var(--borde); border-radius: 12px; text-decoration: none; }
+.descargas-pagina a:hover { background: var(--vidrio-hover); }
+.descargas-pagina b { color: var(--tinta); font-weight: 650; }
+.descargas-pagina small { margin-left: auto; white-space: nowrap; }
+
+/* ---------- Quién escribe (para que Felipe lo revise) ---------- */
+.autor {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: start;
+  margin: 44px 0 0;
+  padding: 22px 24px;
+  border-radius: 16px;
+  border: 1px solid var(--borde);
+  background: var(--vidrio);
+}
+.autor .inicial {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--noche-3);
+  color: var(--tinta);
+  font-weight: 760;
+  font-size: 20px;
+}
+.autor h2 { margin: 0 0 6px; font-size: 14px; font-weight: 650; color: var(--tenue); }
+.autor p { margin: 0; font-size: 16px; }
+.autor p + p { margin-top: 8px; }
+
+/* ---------- El pie con los enlaces del sitio ---------- */
+.pie-mapa { flex-basis: 100%; display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0; padding: 0; list-style: none; }
+.pie-mapa li { margin: 0; }
+
+/* ---------- La página "no encontrada" ---------- */
+.no-encontrada { text-align: center; padding-top: calc(var(--alto-barra) + 80px); min-height: 70vh; }
+.no-encontrada > * { margin-left: auto; margin-right: auto; }
+.no-encontrada h1 { max-width: none; }
+.no-encontrada .acciones-pagina { justify-content: center; }
+.no-encontrada p:lang(en) { color: var(--tenue); }
+
+/* ---------- Celular ---------- */
+@media (max-width: 899px) {
+  .lectura { padding-top: calc(var(--alto-barra) + 28px); }
+  .indice ol { columns: 1; }
+  .dos-fotos { grid-template-columns: 1fr; }
+  .lectura p,
+  .lectura ul,
+  .lectura ol { font-size: 17px; }
+}
+@media (max-width: 599px) {
+  .lectura table { font-size: 14.5px; }
+  .lectura th,
+  .lectura td { padding: 8px 8px; }
+  .autor { grid-template-columns: 1fr; }
+  .pagina-meta { gap: 4px 14px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}

@@ -32,7 +32,7 @@ for (const idioma of ['es', 'en']) {
   let e = await estado(p);
   ok(e.abierto, `${idioma}: antes de empezar no preguntó`);
   ok(e.foco === 'btn-seguir-jugando', `${idioma}: el foco está en ${e.foco}`);
-  ok(e.href === (idioma === 'en' ? '/?lang=en' : '/'), `${idioma}: Salir lleva a ${e.href}`);
+  ok(e.href === (idioma === 'en' ? '/en/' : '/'), `${idioma}: Salir lleva a ${e.href}`);
   console.log(idioma, 'antes de empezar:', e.texto);
   await p.keyboard.press('Escape'); await p.waitForTimeout(300);
   e = await estado(p); ok(!e.abierto, `${idioma}: Esc no cerró`); ok(e.url.startsWith('/jugar/'), `${idioma}: salió con Esc`);
@@ -61,8 +61,8 @@ for (const idioma of ['es', 'en']) {
   await p.screenshot({ path: `${C}/salir-exhibicion-${idioma}.png` });
   // Salir del juego → portada en el mismo idioma
   await p.click('#btn-salir-juego');
-  await p.waitForURL((u) => u.pathname === '/', { timeout: 10000 });
-  const u = new URL(p.url()); ok(u.search === (idioma === 'en' ? '?lang=en' : ''), `${idioma}: llegó a ${u.pathname}${u.search}`);
+  await p.waitForURL((u) => u.pathname === '/' || u.pathname === '/en/', { timeout: 10000 });
+  const u = new URL(p.url()); ok(u.pathname === (idioma === 'en' ? '/en/' : '/'), `${idioma}: llegó a ${u.pathname}${u.search}`);
   await ctx.close();
 }
 // Celular: la flecha también pregunta y la tarjeta cabe

@@ -39,6 +39,7 @@ const TALLER = [
   { ruta: '/taller/Mosca-del-WIP-Taller-Guia-rapida.pdf', nombre: 'Mosca del WIP - Taller - Guía rápida del facilitador.pdf' },
   { ruta: '/taller/Mosca-del-WIP-Taller-Presentacion.pptx', nombre: 'Mosca del WIP - Taller - Presentación.pptx' },
   { ruta: '/taller/Mosca-del-WIP-Taller-Presentacion.pdf', nombre: 'Mosca del WIP - Taller - Presentación.pdf' },
+  { ruta: '/taller/Mosca-del-WIP-Taller-Hoja-del-equipo.pdf', nombre: 'Mosca del WIP - Taller - Hoja del equipo.pdf' }, // desde la Etapa 7
 ];
 const enPublic = (ruta) => new URL(`../public${ruta}`, import.meta.url);
 for (const informe of Object.values(INFORMES)) informe.tamano = statSync(enPublic(informe.pdf)).size;
@@ -67,7 +68,7 @@ const navegadores = {};
 const abrir = async (motor) => (navegadores[motor] ??= await (motor === 'webkit' ? webkit : chromium).launch());
 let problemas = 0;
 const mal = (texto) => { problemas++; console.log(`        - ${texto}`); };
-const conIdioma = (idioma) => DIRECCION + (idioma === 'en' ? '?lang=en' : '');
+const conIdioma = (idioma) => DIRECCION + (idioma === 'en' ? 'en/' : ''); // la portada en inglés vive en /en/ (Etapa 7)
 
 for (const archivo of TALLER) if (!archivo.tamano) mal(`falta public${archivo.ruta} (se copia desde la Parte B, el taller v2)`);
 
@@ -87,7 +88,7 @@ for (const [motor, nombre, opciones, abre] of CASOS) for (const idioma of ['es',
   const interruptor = await pagina.locator('.kit').getAttribute('data-taller');
   const tallerVisibles = await pagina.locator('[data-taller-archivo]:visible').count();
   const prontoVisible = await pagina.locator('.muy-pronto:visible').count();
-  if (interruptor === 'con-descargas' && (tallerVisibles !== 3 || prontoVisible)) mal(`con data-taller="con-descargas" se ven ${tallerVisibles} archivos del taller y ${prontoVisible} "Muy pronto"`);
+  if (interruptor === 'con-descargas' && (tallerVisibles !== TALLER.length || prontoVisible)) mal(`con data-taller="con-descargas" se ven ${tallerVisibles} archivos del taller y ${prontoVisible} "Muy pronto"`);
   if (interruptor === 'muy-pronto' && (tallerVisibles || prontoVisible !== 1)) mal(`con data-taller="muy-pronto" se ven ${tallerVisibles} archivos del taller y ${prontoVisible} "Muy pronto"`);
   if (!['con-descargas', 'muy-pronto'].includes(interruptor)) mal(`la sección .kit tiene data-taller="${interruptor}": debía ser con-descargas o muy-pronto`);
 
@@ -150,16 +151,19 @@ for (const [motor, nombre, opciones, abre] of CASOS) for (const idioma of ['es',
     }
   }
   if (!probados) mal('no hay ningún enlace de descarga a la vista');
-  if (interruptor === 'con-descargas' && probadosTaller.size !== 3) mal(`se probaron ${probadosTaller.size} archivos del taller y no 3`);
-  // En español, pasar a inglés con el botón ES | EN cambia todos los enlaces y
-  // la tapa al informe en inglés (y volver, al de español); los del taller no cambian
+  if (interruptor === 'con-descargas' && probadosTaller.size !== TALLER.length) mal(`se probaron ${probadosTaller.size} archivos del taller y no ${TALLER.length}`);
+  // En español, ES | EN lleva a la portada en inglés (/en/), donde todos los
+  // enlaces y la tapa son del informe en inglés, y ES devuelve a la de
+  // español (desde la Etapa 7 cada idioma tiene su dirección); los del taller no cambian
   if (idioma === 'es') {
-    for (const [otro, boton] of [['en', 'en'], ['es', 'es']]) {
+    for (const [otro, boton, ruta] of [['en', 'en', '/en/'], ['es', 'es', '/']]) {
       const visible = pagina.locator(`[data-idioma="${boton}"]:visible`).first();
       if (!(await visible.count())) {
         await pagina.evaluate((b) => document.querySelector(`[data-idioma="${b}"]`).click(), boton);
       } else await (opciones.hasTouch ? visible.tap() : visible.click());
+      await pagina.waitForURL((u) => u.pathname === ruta, { timeout: 15000 }).catch(() => {});
       await pagina.waitForTimeout(700);
+      if (new URL(pagina.url()).pathname !== ruta) mal(`al apretar ${boton.toUpperCase()} la dirección es ${new URL(pagina.url()).pathname} y no ${ruta}`);
       const ahora = await pagina.evaluate(() => ({
         rutas: [...document.querySelectorAll('[data-informe]')].map((a) => new URL(a.href).pathname),
         nombres: [...document.querySelectorAll('[data-informe]')].map((a) => a.getAttribute('download')),

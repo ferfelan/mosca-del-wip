@@ -1,6 +1,20 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "trailingSlash": true,
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "mosca-del-wip\\.vercel\\.app" }],
+      "destination": "https://mosca.deliverycraft.ai/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "mosca-del-wip-ferfelans-projects\\.vercel\\.app" }],
+      "destination": "https://mosca.deliverycraft.ai/$1",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
@@ -18,31 +32,51 @@
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }]
     },
     {
+      "source": "/datos/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Link", "value": "<https://mosca.deliverycraft.ai/limite-wip/#datos>; rel=\"canonical\"" }
+      ]
+    },
+    {
       "source": "/Mosca-del-WIP-Informe.pdf",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" },
-        { "key": "Content-Disposition", "value": "inline; filename=\"Mosca del WIP - Informe.pdf\"" }
+        { "key": "Content-Disposition", "value": "inline; filename=\"Mosca del WIP - Informe.pdf\"" },
+        { "key": "Link", "value": "<https://mosca.deliverycraft.ai/informe/>; rel=\"canonical\"" }
       ]
     },
     {
       "source": "/Mosca-del-WIP-Report.pdf",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" },
-        { "key": "Content-Disposition", "value": "inline; filename=\"Mosca del WIP - Report.pdf\"" }
+        { "key": "Content-Disposition", "value": "inline; filename=\"Mosca del WIP - Report.pdf\"" },
+        { "key": "Link", "value": "<https://mosca.deliverycraft.ai/en/report/>; rel=\"canonical\"" }
       ]
     },
     {
       "source": "/taller/Mosca-del-WIP-Taller-Guia-rapida.pdf",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" },
-        { "key": "Content-Disposition", "value": "inline; filename=\"Mosca del WIP - Taller - Guia rapida del facilitador.pdf\"; filename*=UTF-8''Mosca%20del%20WIP%20-%20Taller%20-%20Gu%C3%ADa%20r%C3%A1pida%20del%20facilitador.pdf" }
+        { "key": "Content-Disposition", "value": "inline; filename=\"Mosca del WIP - Taller - Guia rapida del facilitador.pdf\"; filename*=UTF-8''Mosca%20del%20WIP%20-%20Taller%20-%20Gu%C3%ADa%20r%C3%A1pida%20del%20facilitador.pdf" },
+        { "key": "Link", "value": "<https://mosca.deliverycraft.ai/taller/>; rel=\"canonical\"" }
       ]
     },
     {
       "source": "/taller/Mosca-del-WIP-Taller-Presentacion.pdf",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" },
-        { "key": "Content-Disposition", "value": "inline; filename=\"Mosca del WIP - Taller - Presentacion.pdf\"; filename*=UTF-8''Mosca%20del%20WIP%20-%20Taller%20-%20Presentaci%C3%B3n.pdf" }
+        { "key": "Content-Disposition", "value": "inline; filename=\"Mosca del WIP - Taller - Presentacion.pdf\"; filename*=UTF-8''Mosca%20del%20WIP%20-%20Taller%20-%20Presentaci%C3%B3n.pdf" },
+        { "key": "Link", "value": "<https://mosca.deliverycraft.ai/taller/>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/taller/Mosca-del-WIP-Taller-Hoja-del-equipo.pdf",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" },
+        { "key": "Content-Disposition", "value": "inline; filename=\"Mosca del WIP - Taller - Hoja del equipo.pdf\"" },
+        { "key": "Link", "value": "<https://mosca.deliverycraft.ai/taller/>; rel=\"canonical\"" }
       ]
     },
     {

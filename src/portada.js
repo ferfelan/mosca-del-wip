@@ -20,8 +20,8 @@
 // Con "reducir movimiento" el cerebro no gira, la consola no sube sola, el
 // clip queda con sus controles, los cambios de idioma y fondo no se funden y
 // los saltos de la barra son directos.
-import { leerIdioma, marcarIdioma, elegirIdioma, rutaEnIdioma, formatoNumero } from './idioma.js';
-import { INGLES, DINAMICOS } from './portada-textos.js';
+import { leerIdioma, idiomaDeLaPagina, elegirIdioma, rutaEnIdioma, formatoNumero } from './idioma.js';
+import { DINAMICOS } from './portada-textos.js';
 
 // Tabla de 1 a 10 del informe (pág. 4): corrida oficial, 200 días por cada
 // número de tareas, semilla 2024 (docs/corrida-oficial.json). Si la corrida
@@ -37,9 +37,12 @@ const COLOR_NIVEL = { Tranquila: 'var(--tranquila)', Ocupada: 'var(--ocupada)', 
 // La carga, como en el juego: verde hasta 3, amarillo con 4 y 5, rojo desde 6
 const colorCarga = (n) => (n <= 3 ? 'var(--tranquila)' : n <= 5 ? 'var(--ocupada)' : 'var(--colapsada)');
 const quieto = matchMedia('(prefers-reduced-motion: reduce)');
-// El idioma y cómo se escriben los números en él: 15,9 y 1.328 en español;
-// 15.9 y 1,328 en inglés (los pone ponerIdioma)
-let idioma = leerIdioma();
+// El idioma lo decide la dirección (Etapa 7, 2026-10-28): / es la portada en
+// español y /en/ la portada en inglés, que scripts/generar-ingles.mjs arma a
+// partir de index.html y de portada-textos.js. Si una copia de la portada no
+// dijera su idioma, vale el recordado. Los números se escriben según el
+// idioma: 15,9 y 1.328 en español; 15.9 y 1,328 en inglés (los pone ponerIdioma)
+let idioma = idiomaDeLaPagina() ?? leerIdioma();
 let decimal;
 let miles;
 const conDecimal = (x) => decimal.format(x);
@@ -131,58 +134,36 @@ function conFundido(cambio) {
   else cambio();
 }
 
-// El español queda guardado tal como está en index.html; el inglés viene de
-// portada-textos.js
-const conTexto = [...document.querySelectorAll('[data-t]')].map((nodo) => ({ nodo, es: nodo.innerHTML }));
-const conAria = [...document.querySelectorAll('[data-t-aria]')].map((nodo) => ({ nodo, es: nodo.getAttribute('aria-label') }));
-const conTitulo = [...document.querySelectorAll('[data-t-title]')].map((nodo) => ({ nodo, es: nodo.getAttribute('title') }));
-// Las imágenes: su texto alternativo (data-t-alt) y, si la hay, su versión
-// sacada del juego en inglés (data-src-en: las fotos de "Cómo se juega")
-const conAlt = [...document.querySelectorAll('[data-t-alt]')].map((nodo) => ({ nodo, es: nodo.getAttribute('alt') }));
-const conFotoEn = [...document.querySelectorAll('img[data-src-en]')].map((nodo) => ({ nodo, es: nodo.getAttribute('src') }));
-const botonesIdioma = document.querySelectorAll('[data-idioma]');
-// El informe en PDF en el idioma de la página (2026-10-25, pedido de Felipe):
-// en inglés se descarga su traducción, con su tapa
-const INFORMES = {
-  es: { pdf: '/Mosca-del-WIP-Informe.pdf', nombre: 'Mosca del WIP - Informe.pdf', tapa: '/img/tapa-informe.jpg' },
-  en: { pdf: '/Mosca-del-WIP-Report.pdf', nombre: 'Mosca del WIP - Report.pdf', tapa: '/img/tapa-report.jpg' },
-};
+// Los textos fijos de la página ya vienen en su idioma desde el HTML (el
+// inglés lo arma scripts/generar-ingles.mjs). Aquí solo se ajusta lo que se
+// escribe mientras se usa la página: la consola, el clip, los números y los
+// enlaces que le pasan el idioma al juego.
+const enlacesIdioma = document.querySelectorAll('a[data-idioma]');
 
-function ponerIdioma(nuevo, alEntrar = false) {
+function ponerIdioma(nuevo) {
   idioma = nuevo;
-  const en = idioma === 'en';
-  if (!(alEntrar && !en)) {
-    for (const { nodo, es } of conTexto) nodo.innerHTML = en ? (INGLES[nodo.dataset.t] ?? es) : es;
-    for (const { nodo, es } of conAria) nodo.setAttribute('aria-label', en ? (INGLES[nodo.dataset.tAria] ?? es) : es);
-    for (const { nodo, es } of conTitulo) nodo.setAttribute('title', en ? (INGLES[nodo.dataset.tTitle] ?? es) : es);
-    for (const { nodo, es } of conAlt) nodo.setAttribute('alt', en ? (INGLES[nodo.dataset.tAlt] ?? es) : es);
-    for (const { nodo, es } of conFotoEn) nodo.src = en ? nodo.dataset.srcEn : es;
-  }
   for (const enlace of document.querySelectorAll('[data-jugar]')) enlace.href = rutaEnIdioma('/jugar/', idioma);
   document.querySelector('[data-logo]').href = rutaEnIdioma('/', idioma);
-  // (el nombre con que se guarda, solo si el enlace descarga: en iPhone y iPad
-  // lo abre, ver "El informe en PDF")
-  const informe = INFORMES[idioma];
-  for (const enlace of document.querySelectorAll('[data-informe]')) {
-    enlace.href = informe.pdf;
-    if (enlace.hasAttribute('download')) enlace.download = informe.nombre;
+  for (const enlace of enlacesIdioma) {
+    if (enlace.dataset.idioma === idioma) enlace.setAttribute('aria-current', 'page');
+    else enlace.removeAttribute('aria-current');
   }
-  document.querySelector('[data-tapa]').src = informe.tapa;
-  for (const boton of botonesIdioma) boton.setAttribute('aria-pressed', String(boton.dataset.idioma === idioma));
   decimal = formatoNumero(idioma, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
   miles = formatoNumero(idioma);
   ultimaCuenta = -1; // el contador de neuronas se vuelve a escribir con el formato nuevo
   pintar(tareas);
   avisosIdioma.forEach((aviso) => aviso());
-  marcarIdioma(idioma);
-  document.documentElement.classList.remove('traduciendo');
 }
 
-for (const boton of botonesIdioma) {
-  boton.addEventListener('click', () => {
-    if (boton.dataset.idioma === idioma) return;
-    elegirIdioma(boton.dataset.idioma);
-    conFundido(() => ponerIdioma(boton.dataset.idioma));
+// ES | EN son enlaces a cada versión de la portada (/ y /en/). Al elegir uno
+// se recuerda el idioma, para que el juego y los créditos abran en ese idioma.
+for (const enlace of enlacesIdioma) {
+  enlace.addEventListener('click', (e) => {
+    if (enlace.dataset.idioma === idioma) {
+      e.preventDefault(); // ya estás en esta versión: no recarga la página
+      return;
+    }
+    elegirIdioma(enlace.dataset.idioma);
   });
 }
 
@@ -209,7 +190,7 @@ for (const boton of botonesFondo) {
 }
 
 ponerFondo(document.documentElement.dataset.tema === 'claro' ? 'claro' : 'oscuro');
-ponerIdioma(idioma, true);
+ponerIdioma(idioma);
 
 // ---------- El informe en PDF ----------
 // En el computador y en Android el botón lo descarga. En iPhone y iPad (todos
@@ -417,10 +398,37 @@ document.addEventListener('visibilitychange', () => {
 // de nuevo a su tamaño (con "reducir movimiento" no se dibuja solo)
 addEventListener('resize', () => despertar(400));
 
-// Después de dibujar la página: así el texto y los botones salen primero
+// Después de dibujar la página: así el texto y los botones salen primero.
+// En celulares y tablets (puntero grueso) el cerebro en 3D pesa unos 600 KB y
+// armarlo ocupa el procesador justo cuando la página recién aparece (Etapa 7,
+// medido con Lighthouse): ahí parte con el primer toque, desplazamiento o
+// tecla, o a los 3 segundos si nadie toca nada. Mientras tanto se ve la foto
+// del cerebro. En el computador parte apenas la página está dibujada.
 const despues = window.requestIdleCallback || ((fn) => setTimeout(fn, 200));
-if (document.readyState === 'complete') despues(encenderCerebro, { timeout: 1200 });
-else addEventListener('load', () => despues(encenderCerebro, { timeout: 1200 }), { once: true });
+const tactil = matchMedia('(pointer: coarse)').matches;
+let cerebroPedido = false;
+function pedirCerebro() {
+  if (cerebroPedido) return;
+  cerebroPedido = true;
+  despues(encenderCerebro, { timeout: 1200 });
+}
+function programarCerebro() {
+  if (!tactil) {
+    pedirCerebro();
+    return;
+  }
+  const senales = ['scroll', 'pointerdown', 'touchstart', 'keydown'];
+  let espera = 0;
+  const alTocar = () => {
+    clearTimeout(espera);
+    for (const s of senales) removeEventListener(s, alTocar);
+    pedirCerebro();
+  };
+  for (const s of senales) addEventListener(s, alTocar, { passive: true });
+  espera = setTimeout(alTocar, 3000);
+}
+if (document.readyState === 'complete') programarCerebro();
+else addEventListener('load', programarCerebro, { once: true });
 
 // ---------- El clip del juego ----------
 const seccionJuego = document.querySelector('.juego');

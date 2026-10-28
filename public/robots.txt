@@ -1,0 +1,38 @@
+# Mosca del WIP · mosca.deliverycraft.ai
+# Todo el sitio se puede leer e indexar, también por los buscadores y
+# asistentes con inteligencia artificial que se nombran abajo.
+
+User-agent: *
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://mosca.deliverycraft.ai/sitemap.xml

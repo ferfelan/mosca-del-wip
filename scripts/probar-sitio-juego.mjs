@@ -27,8 +27,8 @@ for (const idioma of ['es', 'en']) {
   p.on('dialog', (d) => { mal(`${idioma}: apareció un diálogo: ${d.message()}`); d.dismiss(); });
   const juego = idioma === 'es' ? `${U}/jugar/` : `${U}/jugar/?lang=en`;
   const esperado = idioma === 'es'
-    ? { texto: 'Inicio', href: '/', title: 'Volver a la portada', lang: 'es', search: '' }
-    : { texto: 'Home', href: '/?lang=en', title: 'Back to the home page', lang: 'en', search: '?lang=en' };
+    ? { texto: 'Inicio', href: '/', title: 'Volver a la portada', lang: 'es', ruta: '/' }
+    : { texto: 'Home', href: '/en/', title: 'Back to the home page', lang: 'en', ruta: '/en/' }; // la portada en inglés vive en /en/ (Etapa 7)
 
   const abrir = async () => {
     await p.goto(juego, { waitUntil: 'networkidle' });
@@ -87,7 +87,7 @@ for (const idioma of ['es', 'en']) {
   await p.waitForLoadState('networkidle');
   let u = new URL(p.url());
   let lang = await p.evaluate(() => document.documentElement.lang);
-  if (u.pathname !== '/' || u.search !== esperado.search || lang !== esperado.lang) mal(`${idioma}: desde Exhibición llegó a ${u.pathname}${u.search} (lang=${lang})`);
+  if (u.pathname !== esperado.ruta || lang !== esperado.lang) mal(`${idioma}: desde Exhibición llegó a ${u.pathname}${u.search} (lang=${lang})`);
   // Clic desde Control → portada en el mismo idioma
   await abrir();
   await p.click('#volver-inicio');
@@ -97,7 +97,7 @@ for (const idioma of ['es', 'en']) {
   await p.waitForLoadState('networkidle');
   u = new URL(p.url());
   lang = await p.evaluate(() => document.documentElement.lang);
-  if (u.pathname !== '/' || u.search !== esperado.search || lang !== esperado.lang) mal(`${idioma}: desde Control llegó a ${u.pathname}${u.search} (lang=${lang})`);
+  if (u.pathname !== esperado.ruta || lang !== esperado.lang) mal(`${idioma}: desde Control llegó a ${u.pathname}${u.search} (lang=${lang})`);
   const creado = await p.evaluate(() => document.querySelector('.nota-autor')?.textContent.trim());
   const col9 = await p.evaluate(() => document.querySelector('[data-t="total9"]')?.textContent.replace(/\s+/g, ' ').trim());
   const esperadoCreado = idioma === 'es' ? 'Creado por Felipe Fernández' : 'Created by Felipe Fernández';
@@ -121,7 +121,7 @@ for (const idioma of ['es', 'en']) {
   if (await caja(p, '#volver-inicio')) mal(`celular ${idioma}: se ve la píldora de computador`);
   const flecha = await caja(p, '#cel-volver');
   if (!flecha) mal(`celular ${idioma}: no se ve la flecha para volver`);
-  else if (flecha.href !== (idioma === 'es' ? '/' : '/?lang=en')) mal(`celular ${idioma}: la flecha lleva a "${flecha.href}"`);
+  else if (flecha.href !== (idioma === 'es' ? '/' : '/en/')) mal(`celular ${idioma}: la flecha lleva a "${flecha.href}"`);
   await p.screenshot({ path: `${C}/celular-${idioma}.png` });
   await ctx.close();
 }

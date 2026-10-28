@@ -189,7 +189,9 @@ for (const [nombre, ancho, alto] of PANTALLAS)
   const pagina = await contexto.newPage();
   await pagina.goto(DIRECCION, { waitUntil: 'networkidle' });
   revisar((await pagina.locator('.pie a[href="/creditos/"]').count()) === 1, 'la portada en español no enlaza a /creditos/ desde el pie');
+  // EN lleva a la portada en inglés, /en/ (Etapa 7)
   await pagina.locator('.barra [data-idioma="en"]').click();
+  await pagina.waitForURL((u) => u.pathname === '/en/', { timeout: 15000 });
   await pagina.waitForFunction(() => document.documentElement.lang === 'en');
   revisar((await pagina.locator('.pie a[href="/creditos/?lang=en"]').count()) === 1, 'la portada en inglés no enlaza a /creditos/?lang=en desde el pie');
   // El juego (queda en inglés: el idioma se recuerda)

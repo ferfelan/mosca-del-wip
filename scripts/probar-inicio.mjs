@@ -47,7 +47,7 @@ for (const [w, h] of TAMANOS) for (const idioma of ['es', 'en']) {
     const cs = getComputedStyle(el);
     return { x: Math.round(r.left), y: Math.round(r.top), w: Math.round(r.width), h: Math.round(r.height), vis: el.getClientRects().length > 0 && cs.visibility === 'visible' && cs.opacity !== '0', texto: el.textContent.trim(), href: el.getAttribute('href'), title: el.getAttribute('title') };
   }, sel);
-  const esperado = idioma === 'en' ? { texto: 'Home', href: '/?lang=en', title: 'Back to the home page' } : { texto: 'Inicio', href: '/', title: 'Volver a la portada' };
+  const esperado = idioma === 'en' ? { texto: 'Home', href: '/en/', title: 'Back to the home page' } : { texto: 'Inicio', href: '/', title: 'Volver a la portada' };
   const revisarEnlace = async (sel, estado) => {
     const e = await medir(sel);
     ok(e && e.vis, `${tag} ${estado}: ${sel} no se ve`);

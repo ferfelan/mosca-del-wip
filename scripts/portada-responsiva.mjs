@@ -177,7 +177,8 @@ for (const [fondo, idioma] of COMBINACIONES) for (const [nombreTamano, ancho, al
   const errores = [];
   pagina.on('pageerror', (e) => errores.push(e.message));
   pagina.on('console', (m) => { if (m.type() === 'error') errores.push(m.text()); });
-  await pagina.goto(DIRECCION, { waitUntil: 'load' });
+  // La portada en inglés vive en /en/ (Etapa 7); lo recordado solo vale para el juego y los créditos
+  await pagina.goto(DIRECCION + (idioma === 'en' ? 'en/' : ''), { waitUntil: 'load' });
   // El cerebro solo se dibuja cuando se ve (en celular horizontal queda más abajo)
   // (los saltos son directos: con la página deslizándose sola, la barra de
   // arriba quedaría encima del texto en la medición)

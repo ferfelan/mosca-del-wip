@@ -1,0 +1,541 @@
+<!doctype html>
+<!-- GENERADO por scripts/generar-ingles.mjs a partir de index.html y src/portada-textos.js. NO EDITAR A MANO: los cambios van en esos dos archivos. -->
+<html lang="en" data-idioma-pagina="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WIP limit: the game with a real fly brain · Mosca del WIP</title>
+    <meta name="description" content="Play for a minute and watch a fly with a real brain handle too many tasks at once. A free guide, report and workshop to choose your team’s WIP limit." />
+    <meta name="theme-color" content="#060a16" />
+    <meta name="color-scheme" content="dark" />
+    <!-- Antes de dibujar: el fondo y el idioma que la persona eligió, para que
+         no se vea un instante con el otro (los botones están arriba a la derecha) -->
+    <script>
+      (function () {
+        var raiz = document.documentElement;
+        // Etapa 7 (2026-10-28): la portada en inglés vive en /en/. Un enlace
+        // viejo con ?lang=en va para allá (y /en/?lang=es vuelve a /).
+        var lang = new URLSearchParams(location.search).get('lang');
+        var propio = raiz.getAttribute('data-idioma-pagina');
+        if ((lang === 'en' || lang === 'es') && lang !== propio) {
+          location.replace((lang === 'en' ? '/en/' : '/') + location.hash);
+        }
+        var fondo;
+        try {
+          fondo = localStorage.getItem('mosca-fondo');
+        } catch (e) {}
+        if (fondo === 'claro') {
+          raiz.setAttribute('data-tema', 'claro');
+          document.querySelector('meta[name="theme-color"]').content = '#ffffff';
+          document.querySelector('meta[name="color-scheme"]').content = 'light';
+        }
+      })();
+    </script>
+    <link rel="icon" href="/favicon.ico?v=4" sizes="32x32" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=4" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4" />
+    <!-- Android y los demás celulares: nombre e íconos para la pantalla de inicio -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="canonical" href="https://mosca.deliverycraft.ai/en/" />
+    <link rel="alternate" hreflang="es" href="https://mosca.deliverycraft.ai/" />
+    <link rel="alternate" hreflang="en" href="https://mosca.deliverycraft.ai/en/" />
+    <link rel="alternate" hreflang="x-default" href="https://mosca.deliverycraft.ai/" />
+
+    <!-- Vista previa al compartir el enlace (LinkedIn, WhatsApp). Portada v2
+         (2026-10-26): la pregunta y la mosca en su escritorio (?v=4) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Mosca del WIP" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="es_CL" />
+    <meta property="og:url" content="https://mosca.deliverycraft.ai/en/" />
+    <meta property="og:title" content="Mosca del WIP: the WIP limit game with a real fly brain" />
+    <meta property="og:description" content="Play for a minute and watch what happens to a fly with a real brain when she has too many things started at once. With the kit for your team." />
+    <meta property="og:image" content="https://mosca.deliverycraft.ai/img/vista-previa.jpg?v=4" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="The fly from the game at her desk, with many tasks at once, next to the question: Busy all day. So what did you finish? A 1-minute game, mosca.deliverycraft.ai." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Mosca del WIP: the WIP limit game with a real fly brain" />
+    <meta name="twitter:description" content="Play for a minute and watch what happens to a fly with a real brain when she has too many things started at once. With the kit for your team." />
+    <meta name="twitter:image" content="https://mosca.deliverycraft.ai/img/vista-previa.jpg?v=4" />
+
+    <!-- La tipografía vive en el mismo sitio (no se pide a otro servidor) -->
+    <link rel="preload" href="/fonts/mona-sans-latin-wdth.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/src/portada.css" />
+    <script type="module" src="/src/portada.js"></script>
+    <script type="module" src="/src/visitas.js"></script>
+    <!-- Datos estructurados (schema.org), para buscadores y asistentes: el
+         sitio, el juego, el autor y quien publica. Solo tipos estándar. -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://mosca.deliverycraft.ai/#sitio",
+          "url": "https://mosca.deliverycraft.ai/",
+          "name": "Mosca del WIP",
+          "description": "A game with the brain of a real fly that shows why limiting work in progress (WIP) pays off, with a free guide, report and workshop for teams.",
+          "inLanguage": ["es", "en"],
+          "publisher": { "@id": "https://mosca.deliverycraft.ai/#deliverycraft" },
+          "author": { "@id": "https://mosca.deliverycraft.ai/#felipe" }
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://mosca.deliverycraft.ai/en/#pagina",
+          "url": "https://mosca.deliverycraft.ai/en/",
+          "name": "WIP limit: the game with a real fly brain · Mosca del WIP",
+          "description": "Play for a minute and watch a fly with a real brain handle too many tasks at once. A free guide, report and workshop to choose your team’s WIP limit.",
+          "inLanguage": "en",
+          "isPartOf": { "@id": "https://mosca.deliverycraft.ai/#sitio" },
+          "primaryImageOfPage": "https://mosca.deliverycraft.ai/img/vista-previa.jpg",
+          "datePublished": "2026-10-24",
+          "dateModified": "2026-10-28"
+        },
+        {
+          "@type": "VideoGame",
+          "@id": "https://mosca.deliverycraft.ai/jugar/#juego",
+          "name": "Mosca del WIP",
+          "url": "https://mosca.deliverycraft.ai/jugar/",
+          "description": "An office fly with a real brain spends a day at the office. You choose how many tasks she has in progress at once, from 1 to 10, and see how many she finishes, how long each one takes and how stressed she gets. A one-minute game to teach the WIP limit.",
+          "genre": "Educational",
+          "applicationCategory": "Game",
+          "gamePlatform": "Web browser",
+          "operatingSystem": "Any",
+          "playMode": "SinglePlayer",
+          "inLanguage": ["es", "en"],
+          "isAccessibleForFree": true,
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
+          "image": "https://mosca.deliverycraft.ai/img/tapa-juego.jpg",
+          "author": { "@id": "https://mosca.deliverycraft.ai/#felipe" },
+          "publisher": { "@id": "https://mosca.deliverycraft.ai/#deliverycraft" },
+          "datePublished": "2026-10-24"
+        },
+        {
+          "@type": "Person",
+          "@id": "https://mosca.deliverycraft.ai/#felipe",
+          "name": "Felipe Fernández",
+          "url": "https://www.linkedin.com/in/felipefernandezandrade/",
+          "sameAs": ["https://www.linkedin.com/in/felipefernandezandrade/"],
+          "jobTitle": "Team coach",
+          "worksFor": { "@id": "https://mosca.deliverycraft.ai/#deliverycraft" }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://mosca.deliverycraft.ai/#deliverycraft",
+          "name": "Deliverycraft",
+          "url": "https://deliverycraft.ai/",
+          "founder": { "@id": "https://mosca.deliverycraft.ai/#felipe" }
+        }
+      ]
+    }
+    </script>
+  </head>
+  <body class="portada">
+    <a class="saltar solo-lector" href="#inicio" data-t="saltar">Skip to content</a>
+    <!-- La barra de arriba (parte 5.2f): siempre a la vista. El logo lleva al
+         inicio; en celular las secciones, el idioma y el fondo van en el menú.
+         Portada v2: el nombre "Mosca del WIP" va siempre en la barra, porque el
+         título grande ya no lo dice. -->
+    <header class="barra" data-barra>
+      <div class="barra-dentro">
+        <a class="logo" href="/en/" data-logo aria-label="Mosca del WIP: go to the top" data-t-aria="logo">
+          <!-- El ícono dibujado aquí mismo (no como imagen): bajo el vidrio de la
+               barra el iPhone pintaba la imagen borrosa. Igual a public/favicon.svg -->
+          <svg class="marca" viewBox="0 0 32 32" width="34" height="34" aria-hidden="true" focusable="false">
+            <g fill="#fff" stroke="#fff" stroke-width="3" stroke-linejoin="round"><ellipse cx="8.9" cy="20.5" rx="3.3" ry="8.6" transform="rotate(32 8.9 20.5)"/><ellipse cx="23.1" cy="20.5" rx="3.3" ry="8.6" transform="rotate(-32 23.1 20.5)"/><ellipse cx="16" cy="7.8" rx="3.6" ry="3.2"/><circle cx="16" cy="13.4" r="4.4"/><ellipse cx="16" cy="21.9" rx="3.8" ry="6.3"/><ellipse cx="12.3" cy="6.7" rx="3.1" ry="3.8"/><ellipse cx="19.7" cy="6.7" rx="3.1" ry="3.8"/></g>
+            <g fill="#e3eef8" stroke="#5a4c40" stroke-width="1.3"><ellipse cx="8.9" cy="20.5" rx="3.3" ry="8.6" transform="rotate(32 8.9 20.5)"/><ellipse cx="23.1" cy="20.5" rx="3.3" ry="8.6" transform="rotate(-32 23.1 20.5)"/></g>
+            <g fill="#6f6052"><ellipse cx="16" cy="7.8" rx="3.6" ry="3.2"/><circle cx="16" cy="13.4" r="4.4"/><ellipse cx="16" cy="21.9" rx="3.8" ry="6.3"/></g>
+            <g fill="#e8402c"><ellipse cx="12.3" cy="6.7" rx="3.1" ry="3.8"/><ellipse cx="19.7" cy="6.7" rx="3.1" ry="3.8"/></g>
+          </svg>
+          <span class="logo-nombre">Mosca del WIP</span>
+        </a>
+        <button class="menu-boton" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menu" data-t-aria="menu">
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path class="raya raya-1" d="M4 7h16" /><path class="raya raya-2" d="M4 12h16" /><path class="raya raya-3" d="M4 17h16" /></svg>
+        </button>
+        <div class="menu" id="menu">
+          <nav class="secciones" aria-label="Page sections" data-t-aria="secciones">
+            <ul class="menu-enlaces">
+              <li><a href="#juego" data-seccion="juego" data-t="navJuego">The game</a></li>
+              <li><a href="#kit" data-seccion="kit" data-t="navKit">The kit</a></li>
+              <li><a href="#por-que-una-mosca" data-seccion="por-que-una-mosca" data-t="navCerebro">The brain</a></li>
+              <li><a href="#faq" data-seccion="faq" data-t="navPreguntas">FAQ</a></li>
+              <li><a href="/en/wip-limit/" class="menu-pagina" data-pagina data-t="navGuia">Guide</a></li>
+              <li><a href="/en/report/" class="menu-pagina" data-pagina data-t="navInforme">Report</a></li>
+              <li><a href="/en/workshop/" class="menu-pagina" data-pagina data-t="navTaller">Workshop</a></li>
+            </ul>
+          </nav>
+          <div class="ajustes">
+            <div class="ajuste">
+              <span class="ajuste-nombre" data-t="idioma">Language</span>
+              <div class="selector" role="group" aria-label="Language" data-t-aria="idioma">
+                <a href="/" data-idioma="es" lang="es" aria-label="Español" title="Español" hreflang="es">ES</a>
+                <a href="/en/" data-idioma="en" lang="en" aria-label="English" title="English" hreflang="en" aria-current="page">EN</a>
+              </div>
+            </div>
+            <div class="ajuste">
+              <span class="ajuste-nombre" data-t="fondo">Background</span>
+              <div class="selector" role="group" aria-label="Background" data-t-aria="fondo">
+                <button type="button" data-fondo="oscuro" aria-pressed="true" aria-label="Dark background" title="Dark background" data-t-aria="fondoNegro" data-t-title="fondoNegro">
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>
+                </button>
+                <button type="button" data-fondo="claro" aria-pressed="false" aria-label="Light background" title="Light background" data-t-aria="fondoBlanco" data-t-title="fondoBlanco">
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M12 2.5v2.3M12 19.2v2.3M2.5 12h2.3M19.2 12h2.3M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a class="boton principal barra-jugar" href="/jugar/?lang=en" data-jugar data-t="jugar">Play</a>
+      </div>
+    </header>
+    <main>
+      <!-- 1. El inicio (portada v2, 2026-10-26): la pregunta, la bajada y los
+           dos botones a la izquierda; el cerebro en vivo y la consola a la
+           derecha, como antes -->
+      <header class="hero" id="inicio" tabindex="-1">
+        <div class="hero-texto">
+          <p class="rotulo" data-t="rotulo">For teams and leaders · a 1-minute game</p>
+          <h1 data-t="titulo">Busy all day. So what did you finish?</h1>
+          <p class="bajada" data-t="bajada">Play for a minute and watch what happens to an office fly with a real brain when she has too many things started at once.</p>
+          <div class="acciones">
+            <a class="boton principal" href="/jugar/?lang=en" data-jugar data-t="jugarMinuto">Play (1 minute)</a>
+            <a class="boton" href="#kit" data-t="verKit">See the kit</a>
+          </div>
+          <p class="nota" data-t="gratis">Free, no sign-up. Plays on a computer, phone or tablet.</p>
+          <!-- 5.2i: el autor, con enlace a su LinkedIn (abre en otra pestaña) -->
+          <p class="nota nota-autor" data-t="creadoPor">Created by <a href="https://www.linkedin.com/in/felipefernandezandrade/" target="_blank" rel="noopener">Felipe Fernández</a></p>
+        </div>
+
+        <!-- El cerebro del juego (las mismas neuronas y la misma actividad
+             simulada) y una prueba rápida: cuántas tareas a la vez. -->
+        <div class="laboratorio">
+          <div class="cerebro siempre-noche" data-tareas="2">
+            <img class="cerebro-foto" src="/img/cerebro-portada.jpg" width="1000" height="1018" alt="" aria-hidden="true" decoding="async" fetchpriority="high" />
+            <canvas class="cerebro-lienzo" aria-hidden="true"></canvas>
+          </div>
+          <p class="cerebro-cuenta siempre-noche"><span class="cifra" data-neuronas>423</span> <span data-t="neuronas">neurons firing</span> <span class="origen" data-t="enSimulacion">in the simulation</span></p>
+
+          <div class="consola" role="group" aria-labelledby="t-wip">
+            <p class="consola-frase" data-t="consolaFrase">Real neurons from a fly. The more tasks she has on her plate, the more her brain lights up.</p>
+            <div class="consola-control">
+              <div class="consola-cabeza">
+                <label id="t-wip" for="wip" data-t="tareasLabel">Tasks in progress at once (WIP)</label>
+                <output class="wip-numero" for="wip" data-wip>2</output>
+                <p class="wip-limite" data-limite>Dentro del límite sostenible (3)</p>
+              </div>
+              <input id="wip" class="wip" type="range" min="1" max="10" step="1" value="2" aria-valuetext="2 tareas a la vez" />
+              <div class="marcas" aria-hidden="true"><span>1</span><span>2</span><span class="limite">3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+            </div>
+            <dl class="consola-datos">
+              <div class="dato"><dt data-t="terminadas">finished in the day</dt><dd data-terminadas>18,0</dd></div>
+              <div class="dato"><dt data-t="estres">stress at the end of the day</dt><dd class="nivel" data-estres>Tranquila</dd></div>
+              <div class="dato"><dt data-t="cigarros">cigarettes</dt><dd data-cigarros>0</dd></div>
+            </dl>
+            <p class="nota consola-nota" data-t="consolaNota">Average of 200 days played. These are numbers from the game, not from people.</p>
+            <p class="solo-lector" aria-live="polite" data-resumen></p>
+          </div>
+        </div>
+      </header>
+
+      <!-- 2. Lo que se lleva tu equipo (portada v4, 2026-10-28; antes "Lo que
+           gana tu equipo"): lo que el kit deja en el equipo, sin prometer
+           resultados (pedido de Felipe: a un equipo no se le puede asegurar
+           ninguno, porque también influye lo de afuera). Un solo tablero con
+           cuatro celdas, cada una con el dibujo de una tarjeta del tablero de la
+           mosca en un color del juego, y la línea de que no prometemos un
+           resultado. Los resultados del juego van solo en "Lo que vas a ver". -->
+      <section class="gana" id="lo-que-se-lleva" aria-labelledby="t-gana">
+        <h2 id="t-gana" data-t="ganaTitulo">What your team takes away</h2>
+        <div class="gana-tablero">
+          <div class="gana-item" data-color="tranquila">
+            <span class="gana-icono"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="4" width="22" height="32" rx="3" fill="currentColor" fill-opacity="0.14" /><rect x="13.5" y="9.5" width="13" height="6" rx="1.5" fill="currentColor" fill-opacity="0.45" /><rect x="13.5" y="17.5" width="13" height="6" rx="1.5" fill="currentColor" fill-opacity="0.45" /><rect x="13.5" y="25.5" width="13" height="6" rx="1.5" stroke-opacity="0.5" /></svg></span>
+            <div class="gana-item-texto">
+              <h3 data-t="gana1Titulo">Your capacity, in plain sight</h3>
+              <p data-t="gana1">How many things you can carry at once without everything getting stuck.</p>
+            </div>
+          </div>
+          <div class="gana-item" data-color="colapsada">
+            <span class="gana-icono"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="7" width="24" height="26" rx="3" fill="currentColor" fill-opacity="0.14" /><path d="M13 13h9" /><rect x="15" y="20" width="10" height="8" rx="1.5" /><path d="M17 20v-3a3 3 0 0 1 6 0v3" /></svg></span>
+            <div class="gana-item-texto">
+              <h3 data-t="gana2Titulo">Where the work waits</h3>
+              <p data-t="gana2">What gets stuck and who you’re waiting on.</p>
+            </div>
+          </div>
+          <div class="gana-item" data-color="ocupada">
+            <span class="gana-icono"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="4" width="22" height="32" rx="3" fill="currentColor" fill-opacity="0.14" /><path d="M14 11h12M14 16.5h12M14 22h7" /><path d="M19 29l2.6 2.6L27.5 25.8" /></svg></span>
+            <div class="gana-item-texto">
+              <h3 data-t="gana3Titulo">A team agreement</h3>
+              <p data-t="gana3">A written limit, and what to do when something waits.</p>
+            </div>
+          </div>
+          <div class="gana-item" data-color="vision">
+            <span class="gana-icono"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 33h28" /><rect x="11" y="10" width="7" height="23" rx="1.5" fill="currentColor" fill-opacity="0.3" /><rect x="23" y="21" width="7" height="12" rx="1.5" /></svg></span>
+            <div class="gana-item-texto">
+              <h3 data-t="gana4Titulo">Your own data</h3>
+              <p data-t="gana4">In two weeks your own numbers tell you whether your limit works.</p>
+            </div>
+          </div>
+        </div>
+        <p class="nota gana-nota" data-t="ganaNota">We don’t promise a result: it depends on each team and on what goes on around it. Your number is yours to measure. How to choose the limit and what to do when something is waiting is in the <a href="/en/wip-limit/">WIP limit guide</a>.</p>
+      </section>
+
+      <!-- 3. Lo que vas a ver: el clip del juego y los dos días, 2 contra 9 -->
+      <section class="juego" id="juego" aria-labelledby="t-juego" data-fase="pocas">
+        <div class="juego-texto">
+          <h2 id="t-juego" data-t="juegoTitulo">What you’ll see</h2>
+          <p data-t="juegoTexto">The same fly, the same day at the office, twice. In the game, with 2 tasks at once she finishes 18. With 9 she finishes half as many, even though she’s busy all day.</p>
+        </div>
+
+        <figure class="pantalla">
+          <div class="pantalla-marco siempre-noche">
+            <video muted loop playsinline preload="none" data-poster="/video/clip-inicio.jpg" data-cambio="5.8"
+              data-src="/video/clip-celular.mp4?v=2" data-src-grande="/video/clip-computador.mp4"
+              data-src-en="/video/clip-celular-en.mp4" data-src-grande-en="/video/clip-computador-en.mp4" data-poster-en="/video/clip-inicio-en.jpg"
+              data-t-aria="video" aria-label="The fly in her office: first with 2 tasks at once, calm; then with 9, stressed and smoking."></video>
+            <span class="pantalla-estado" aria-hidden="true">
+              <span class="estado-pocas" data-t="pocas">Few tasks at once</span>
+              <span class="estado-muchas" data-t="muchas">Many tasks at once</span>
+            </span>
+          </div>
+          <figcaption data-t="figcaption">First with 2 tasks at once. Then with 9.</figcaption>
+        </figure>
+
+        <div class="hecho" role="img" data-t-aria="hecho" aria-label="In the game, with 2 tasks at once she finishes 18. With 9 tasks at once she finishes 9, half as many.">
+          <div class="columna pocas">
+            <p class="columna-titulo" data-t="dosALaVez">2 at once</p>
+            <div class="tarjetas" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <p class="columna-total" data-t="total18"><span class="cifra">18</span> finished</p>
+          </div>
+          <div class="columna muchas">
+            <p class="columna-titulo" data-t="nueveALaVez">9 at once</p>
+            <div class="tarjetas" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="falta"></i><i class="falta"></i><i class="falta"></i><i class="falta"></i><i class="falta"></i><i class="falta"></i><i class="falta"></i><i class="falta"></i><i class="falta"></i></div>
+            <p class="columna-total" data-t="total9"><span class="cifra">9</span> finished (half)</p>
+          </div>
+        </div>
+        <p class="nota hecho-nota" data-t="hechoNota">Average of 200 days in the game.</p>
+        <p class="ver-frase" data-t="verFrase">Being busy all the time isn’t the same as making progress.</p>
+      </section>
+
+      <!-- 4. Cómo se juega: tres pasos con una foto del juego cada uno. Las de
+           los pasos 1 y 3 tienen su versión en inglés (data-src-en). -->
+      <section class="pasos" id="como-se-juega" aria-labelledby="t-pasos">
+        <h2 id="t-pasos" data-t="pasosTitulo">How to play</h2>
+        <ol class="pasos-lista">
+          <li class="paso">
+            <figure class="paso-foto"><img src="/img/step-1-choose-tasks-at-once.jpg" data-src-en="/img/step-1-choose-tasks-at-once.jpg" width="1080" height="675" alt="The game’s control: tasks in progress at once, from 1 to 10, within the sustainable limit." data-t-alt="paso1Alt" loading="lazy" decoding="async" /></figure>
+            <p><span class="paso-numero" aria-hidden="true">1</span><span data-t="paso1">You choose how many tasks she can have started at once, from 1 to 10. That’s called a work-in-progress limit (WIP).</span></p>
+          </li>
+          <li class="paso">
+            <figure class="paso-foto"><img src="/img/paso-2-mosca-en-su-oficina.jpg" width="1200" height="750" alt="The fly in front of her board for the day, with 2 tasks in progress, at 10:10." data-t-alt="paso2Alt" loading="lazy" decoding="async" /></figure>
+            <p><span class="paso-numero" aria-hidden="true">2</span><span data-t="paso2">You watch her day at the office, from 9 to 6, in one minute.</span></p>
+          </li>
+          <li class="paso">
+            <figure class="paso-foto"><img src="/img/step-3-days-played-table.jpg" data-src-en="/img/step-3-days-played-table.jpg" width="1080" height="675" alt="The Days played table, with one day at 2 tasks at once and another at 9." data-t-alt="paso3Alt" loading="lazy" decoding="async" /></figure>
+            <p><span class="paso-numero" aria-hidden="true">3</span><span data-t="paso3">You compare how much she finished, how long each task took and how many times she went out for a smoke.</span></p>
+          </li>
+        </ol>
+      </section>
+
+      <!-- 5. El kit para tu equipo: el juego, el informe y el taller, cada uno
+           con su imagen (una foto del juego, la tapa del informe y la de la guía
+           rápida). Lo que se lleva el equipo está arriba, en su propia sección.
+           INTERRUPTOR del taller (una sola cosa que cambiar):
+             data-taller="con-descargas"  muestra los tres archivos del taller
+             data-taller="muy-pronto"     esconde las descargas y muestra "Muy pronto" -->
+      <section class="kit" id="kit" aria-labelledby="t-kit" data-taller="con-descargas">
+        <h2 id="t-kit" data-t="kitTitulo">The kit for your team</h2>
+        <p class="kit-bajada" data-t="kitBajada">Three pieces, from 1 minute to 60. Free.</p>
+        <ul class="piezas">
+          <li class="pieza">
+            <figure class="pieza-imagen pieza-imagen-juego">
+              <img src="/img/tapa-juego.jpg" width="1200" height="750" alt="The fly from the game at her office, in front of her kanban board." data-t-alt="tapaJuegoAlt" loading="lazy" decoding="async" />
+            </figure>
+            <div class="pieza-cuerpo">
+              <p class="pieza-tiempo" data-t="kitJuegoTiempo">1 minute</p>
+              <h3 data-t="kitJuego">The game</h3>
+              <p class="pieza-texto" data-t="kitJuegoTexto">To see it.</p>
+              <div class="pieza-accion"><a class="boton principal" href="/jugar/?lang=en" data-jugar data-t="jugar">Play</a></div>
+            </div>
+          </li>
+          <li class="pieza">
+            <!-- La tapa cambia con el idioma (data-src-en), como las fotos de "Cómo se juega" -->
+            <figure class="pieza-imagen pieza-imagen-tapa">
+              <img class="pieza-tapa" src="/img/tapa-report.jpg" data-src-en="/img/tapa-report.jpg" width="720" height="1019" alt="The report’s cover: the fly carrying a tower of folders." data-t-alt="tapaInformeAlt" loading="lazy" decoding="async" />
+            </figure>
+            <div class="pieza-cuerpo">
+              <p class="pieza-tiempo" data-t="kitInformeTiempo">10 minutes</p>
+              <h3 data-t="kitInforme">The report</h3>
+              <p class="pieza-texto" data-t="kitInformeTexto">Where each number comes from and what the studies say.</p>
+              <div class="pieza-accion pieza-acciones">
+                <a class="boton" href="/en/report/" data-informe-web data-t="kitInformeLeer">Read it on the web</a>
+                <a class="pieza-enlace" href="/Mosca-del-WIP-Report.pdf" download="Mosca del WIP - Report.pdf" data-informe data-t="descargarCorto">Download the PDF</a>
+              </div>
+            </div>
+          </li>
+          <li class="pieza pieza-taller">
+            <!-- La tapa de la guía rápida (está solo en español) -->
+            <figure class="pieza-imagen pieza-imagen-tapa">
+              <img class="pieza-tapa" src="/img/tapa-taller.jpg" width="720" height="1019" alt="The cover of the workshop’s quick guide: the fly with 9 tasks in progress." data-t-alt="tapaTallerAlt" loading="lazy" decoding="async" />
+            </figure>
+            <div class="pieza-cuerpo">
+              <p class="pieza-tiempo" data-t="kitTallerTiempo">60 minutes</p>
+              <h3><a class="pieza-titulo-enlace" href="/en/workshop/" data-taller-pagina data-t="kitTaller">The workshop</a></h3>
+              <p class="pieza-texto" data-t="kitTallerTexto">Slides, a quick guide and the team sheet to print, so your team finds its limit and tries it for 2 weeks.</p>
+              <div class="pieza-accion pieza-acciones"><a class="boton" href="/en/workshop/" data-taller-pagina data-t="kitTallerVer">See the workshop (60 minutes)</a></div>
+              <!-- Solo en inglés: que por ahora el taller está en español (en español queda vacío y no se ve) -->
+              <p class="pieza-idioma" data-t="kitTallerIdioma">For now, the workshop is in Spanish.</p>
+              <ul class="descargas">
+                <li><a href="/taller/Mosca-del-WIP-Taller-Guia-rapida.pdf" download="Mosca del WIP - Taller - Guía rápida del facilitador.pdf" data-taller-archivo data-t="kitGuia">Quick guide (PDF, in Spanish)</a></li>
+                <li><a href="/taller/Mosca-del-WIP-Taller-Presentacion.pptx" download="Mosca del WIP - Taller - Presentación.pptx" data-taller-archivo data-t="kitPptx">Slides (PowerPoint, in Spanish)</a></li>
+                <li><a href="/taller/Mosca-del-WIP-Taller-Presentacion.pdf" download="Mosca del WIP - Taller - Presentación.pdf" data-taller-archivo data-t="kitPdf">Slides (PDF, in Spanish)</a></li>
+                <li><a href="/taller/Mosca-del-WIP-Taller-Hoja-del-equipo.pdf" download="Mosca del WIP - Taller - Hoja del equipo.pdf" data-taller-archivo data-t="kitHoja">Team sheet (PDF, in Spanish)</a></li>
+              </ul>
+              <p class="muy-pronto" data-t="kitPronto">Coming soon</p>
+            </div>
+          </li>
+        </ul>
+        <p class="kit-cierre" data-t="kitCierre">Use it and adapt it, also in paid workshops, crediting the author.</p>
+      </section>
+
+      <!-- 6. ¿Por qué una mosca?: el texto, el crédito del Male CNS, las dos
+           fotos del cerebro y sus colores -->
+      <section class="credito" id="por-que-una-mosca" aria-labelledby="t-credito">
+        <h2 id="t-credito" data-t="creditoTitulo">Why a fly?</h2>
+        <div class="credito-texto">
+          <!-- Solo en inglés: qué quiere decir "mosca" (en español queda vacío y no se ve) -->
+          <p class="significa" data-t="significa">Mosca means fly in Spanish.</p>
+          <p class="destacado" data-t="creditoDestacado">Because it’s one of the few animals with a complete map of its central nervous system: 166,700 neurons. The more tasks she has on her plate, the more her brain lights up. And no, she doesn’t smoke: the cigarette is a disguise for cleaning her antennae.</p>
+          <p data-t="credito1">The neurons that light up in the game come from <a href="https://male-cns.janelia.org">Male CNS v1.0</a>, the complete map of a fly’s nervous system, neuron by neuron. “This project is a collaboration between FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC Laboratory of Molecular Biology, and Google Research.”</p>
+          <p data-t="credito2">Data licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, adapted for the game: only some of the neurons are shown, and the activity you see is simulated.</p>
+        </div>
+        <div class="credito-lado">
+          <div class="cerebros siempre-noche">
+            <figure>
+              <img src="/img/cerebro-mosca-2-tareas.jpg" width="610" height="804" alt="The brain with 2 tasks at once: few neurons firing." data-t-alt="cerebro2Alt" loading="lazy" decoding="async" />
+              <figcaption data-t="cerebro2Pie">2 tasks at once: <span class="cifra">423</span> neurons firing in the simulation</figcaption>
+            </figure>
+            <figure>
+              <img src="/img/cerebro-mosca-9-tareas.jpg" width="610" height="804" alt="The brain with 9 tasks at once: many more neurons firing." data-t-alt="cerebro9Alt" loading="lazy" decoding="async" />
+              <figcaption data-t="cerebro9Pie">9 at once: <span class="cifra">1,328</span> neurons firing in the simulation</figcaption>
+            </figure>
+          </div>
+          <div class="zonas siempre-noche">
+            <p class="zonas-titulo" data-t="zonasTitulo">Brain colors</p>
+            <ul>
+              <li style="--zona: #2fe3ff" data-t="zonaVision">Vision</li>
+              <li style="--zona: #8b5cff" data-t="zonaCentral">Central brain</li>
+              <li style="--zona: #ffd84d" data-t="zonaMemoria">Memory</li>
+              <li style="--zona: #ff4fd8" data-t="zonaMando">Command</li>
+              <li style="--zona: #ff7f66" data-t="zonaMovimiento">Movement</li>
+              <li class="reposo" style="--zona: #5d6680" data-t="zonaReposo">At rest</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. Qué es y qué no es, con el informe -->
+      <section class="informe" id="que-es" aria-labelledby="t-informe">
+        <a class="tapa" href="/Mosca-del-WIP-Report.pdf" download="Mosca del WIP - Report.pdf" data-informe tabindex="-1" aria-hidden="true">
+          <img src="/img/tapa-report.jpg" width="720" height="1019" alt="" data-tapa loading="lazy" decoding="async" />
+        </a>
+        <div class="informe-texto">
+          <h2 id="t-informe" data-t="informeTitulo">What it is and what it isn’t</h2>
+          <p class="destacado" data-t="informeDestacado">It’s a game and an experiment on a computer, with rules based on studies. It doesn’t measure people or teams: your number is yours to measure.</p>
+          <p data-t="informeTexto">The report explains where each number comes from and gives four steps to try a limit with your team. It takes 10 minutes to read.</p>
+          <div class="acciones">
+            <a class="boton principal" href="/en/report/" data-informe-web data-t="leerInforme">Read the report on the web</a>
+            <a class="boton" href="/Mosca-del-WIP-Report.pdf" download="Mosca del WIP - Report.pdf" data-informe data-t="descargar">Download the report (PDF)</a>
+          </div>
+          <p class="nota" data-t="informeNota">17 pages, 4 MB.</p>
+        </div>
+      </section>
+
+      <!-- 8. Por qué lo hice -->
+      <section class="motivo" id="por-que-lo-hice" aria-labelledby="t-motivo">
+        <div class="motivo-texto">
+          <h2 id="t-motivo" data-t="motivoTitulo">Why I made it</h2>
+          <p data-t="motivoTexto">I work with teams and I see the same thing over and over: many things started and few finished. I wanted to show it in one minute, by playing, before arguing about it.</p>
+          <p class="nota"><a href="https://www.linkedin.com/in/felipefernandezandrade/" target="_blank" rel="noopener">Felipe Fernández</a></p>
+        </div>
+      </section>
+
+      <!-- 9. FAQ (antes "Preguntas frecuentes"): las nueve de la 5.2f y tres
+           nuevas sobre el kit (portada v2) -->
+      <section class="preguntas" id="faq" aria-labelledby="t-preguntas">
+        <h2 id="t-preguntas" data-t="preguntasTitulo">FAQ</h2>
+        <div class="preguntas-lista">
+          <details class="pregunta">
+            <summary><span class="pregunta-texto" data-t="pregunta1">What is Mosca del WIP?</span><span class="signo" aria-hidden="true"></span></summary>
+            <p class="respuesta" data-t="respuesta1">It’s a short game you play in the browser. A fly spends a day at the office, from 09:00 to 18:00, and you choose how many tasks she has open at once, from 1 to 10. Each day lasts about a minute, and when it ends you can compare it with the days you’ve already played.</p>
+          </details>
+          <details class="pregunta">
+            <summary><span class="pregunta-texto" data-t="pregunta2">What does WIP mean?</span><span class="signo" aria-hidden="true"></span></summary>
+            <p class="respuesta" data-t="respuesta2">It’s short for work in progress. It’s everything you’ve started and haven’t finished yet. In the game, it’s the tasks the fly has open at the same time.</p>
+          </details>
+          <details class="pregunta">
+            <summary><span class="pregunta-texto" data-t="pregunta3">How many tasks at once is best?</span><span class="signo" aria-hidden="true"></span></summary>
+            <p class="respuesta" data-t="respuesta3">There’s no number for everyone. In the game, the fly’s sustainable limit is 3, because up to 3 she stays Calm and doesn’t go out for a smoke. But the fly works alone, and the game doesn’t tell you your team’s number. It depends on how much your work waits, and you find it by trying a limit. How to do it is in the guide <a href="/en/wip-limit/">WIP limit: what it is and how to find your team’s</a>.</p>
+          </details>
+          <details class="pregunta">
+            <summary><span class="pregunta-texto" data-t="pregunta10">What does my team take away?</span><span class="signo" aria-hidden="true"></span></summary>
+            <p class="respuesta" data-t="respuesta10">Your capacity in plain sight: how many things you can carry at once without everything getting stuck. You also see where the work waits, what gets stuck and who you’re waiting on. You leave with a team agreement, which is a written limit and what to do when something waits, and in two weeks your own numbers tell you whether that limit works. We don’t promise a result, because it depends on each team and on what goes on around it.</p>
+          </details>
+          <details class="pregunta">
+            <summary><span class="pregunta-texto" data-t="pregunta4">Is the brain from a real fly?</span><span class="signo" aria-hidden="true"></span></summary>
+            <p class="respuesta" data-t="respuesta4">The neurons and their connections are. They come from Male CNS v1.0, the map of a male fly’s central nervous system, neuron by neuron, licensed under CC BY 4.0. The activity you see is simulated. We translate the tasks into something a fly can feel, like dust on her antenna, and simulate how her brain responds. Only some of her neurons are shown.</p>
+          </details>
+          <details class="pregunta">
+            <summary><span class="pregunta-texto" data-t="pregunta5">Are the numbers about people?</span><span class="signo" aria-hidden="true"></span></summary>
+            <p class="respuesta" data-t="respuesta5">No. They come from the game, an experiment on a computer with a single fly, and each one is the average of 200 days played. That each task takes longer and fewer get finished is backed by evidence; that stress goes up is our own assumption. The report says where each number comes from.</p>
+          </details>
+          <details class="pregunta">
+            <summary><span class="pregunta-texto" data-t="pregunta6">Why does the fly smoke?</span><span class="signo" aria-hidden="true"></span></summary>
+            <p class="respuesta" data-t="respuesta6">Flies don’t smoke. The cigarette is a disguise for something they really do, cleaning their antennae. The tasks reach her as dust on her antenna, which lights up the cleaning circuit in her brain, and the game draws that as going out for a smoke. The game decides how many cigarettes she smokes. When she’s Calm she never smokes, and each break is 8 minutes without working.</p>
+          </details>
+          <details class="pregunta">
+            <summary><span class="pregunta-texto" data-t="pregunta7">Can I play on my phone?</span><span class="signo" aria-hidden="true"></span></summary>
+            <p class="respuesta" data-t="respuesta7">Yes. It plays on a computer, phone or tablet. On a phone the office is at the top and the controls at the bottom, with tabs for the brain and the days played. You can also play with the phone turned sideways.</p>
+          </details>
+          <details class="pregunta">
+            <summary><span class="pregunta-texto" data-t="pregunta8">Does it cost anything? Do you keep my data?</span><span class="signo" aria-hidden="true"></span></summary>
+            <p class="respuesta" data-t="respuesta8">It’s free and needs no sign-up. We don’t use cookies and only count visits, without identifying anyone. Your days played and what you choose, like the language, are saved only in your browser.</p>
+          </details>
+          <details class="pregunta">
+            <summary><span class="pregunta-texto" data-t="pregunta9">How do I use it with my team?</span><span class="signo" aria-hidden="true"></span></summary>
+            <p class="respuesta" data-t="respuesta9">Play one day with 2 tasks at once and another with 9, and compare the Days played table. On a computer, the Exhibition view shows the game large, for a TV or a projector. The kit on this page has the <a href="/en/report/">report</a>, with four steps to try a limit, and a <a href="/en/workshop/">60-minute workshop</a> with its guide to facilitate it.</p>
+          </details>
+          <details class="pregunta">
+            <summary><span class="pregunta-texto" data-t="pregunta11">Can I use the workshop with my team, or in paid workshops?</span><span class="signo" aria-hidden="true"></span></summary>
+            <p class="respuesta" data-t="respuesta11">Yes. The workshop (the quick guide, the slides and the team sheet) is licensed CC BY 4.0: you can use it and adapt it, also in paid workshops, crediting Felipe Fernández (mosca.deliverycraft.ai). For now it’s in Spanish. The report can be shared as it is, crediting the author, and the game is played on this page.</p>
+          </details>
+          <details class="pregunta">
+            <summary><span class="pregunta-texto" data-t="pregunta12">Do I need to know about WIP to facilitate it?</span><span class="signo" aria-hidden="true"></span></summary>
+            <p class="respuesta" data-t="respuesta12">No. For each part, the quick guide has the minutes, one or two tips and the question for the room, plus the answers to what you’ll be asked. Read it once and, before the session, play the two days you’ll show: one with 9 tasks at once and one with 2.</p>
+          </details>
+        </div>
+      </section>
+
+      <section class="cierre" data-t-aria="cierre" aria-label="Closing">
+        <p class="cierre-frase" data-t="cierreFrase">A sustainable limit, not one thing at a time.</p>
+        <div class="acciones">
+          <a class="boton principal" href="/jugar/?lang=en" data-jugar data-t="jugarMinuto">Play (1 minute)</a>
+          <a class="boton solo-computador" href="/Mosca-del-WIP-Report.pdf" download="Mosca del WIP - Report.pdf" data-informe data-t="descargar">Download the report (PDF)</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="pie">
+      <p data-t="hechoPor">Made by <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a> · <a href="https://deliverycraft.ai">deliverycraft.ai</a></p>
+      <p data-t="sinCookies">No cookies. We only count visits, without identifying anyone.</p>
+      <ul class="pie-mapa" aria-label="Pages on this site" data-t-aria="pieMapa">
+        <li><a href="/jugar/?lang=en" data-jugar data-t="pieJuego">The game</a></li>
+        <li><a href="/en/wip-limit/" data-t="pieGuia">WIP limit guide</a></li>
+        <li><a href="/en/report/" data-t="pieInforme">The report</a></li>
+        <li><a href="/en/workshop/" data-t="pieTaller">The workshop</a></li>
+        <li><a href="/creditos/?lang=en" data-t="pieCreditos">Credits and licenses</a></li>
+      </ul>
+      <p class="pie-derechos" data-t="derechos">© 2026 Felipe Fernández. All rights reserved. The brain data come from Male CNS v1.0, licensed CC BY 4.0. <a href="/creditos/?lang=en">Credits and licenses</a></p>
+    </footer>
+  </body>
+</html>
