@@ -1,7 +1,8 @@
-// Íconos del sitio (2026-10-25: el ícono 2 de la ronda 2, "la mosca del
-// juego", que eligió Felipe). A partir de public/favicon.svg (la mosca café
-// vista desde arriba, con alas claras, ojos rojos y un halo blanco que la
-// separa de las pestañas oscuras; sin fondo) dibuja:
+// Íconos del sitio. Desde el 2026-10-28, el logo «La asomada» que eligió
+// Felipe (antes, del 25 al 28 de octubre, "la mosca del juego" vista desde
+// arriba). A partir de public/favicon.svg (la mosca café de ojos rojos que se
+// asoma por detrás de un post-it amarillo, agarrada del borde, con la trompa
+// colgando; sin fondo) dibuja:
 //  - public/favicon.ico: 16, 32 y 48 px, para Safari y todo lo que no lee SVG;
 //  - public/apple-touch-icon.png: 180 px, para la pantalla de inicio del
 //    iPhone y el iPad. Fondo blanco lleno (el iPhone pinta de negro lo

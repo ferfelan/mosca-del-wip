@@ -161,9 +161,9 @@ export function pagina({ idioma, clave, titulo, descripcion, imagen, imagenAlt, 
         }
       })();
     </script>
-    <link rel="icon" href="/favicon.ico?v=4" sizes="32x32" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=4" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4" />
+    <link rel="icon" href="/favicon.ico?v=5" sizes="32x32" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=5" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=5" />
     <link rel="manifest" href="/manifest.webmanifest" />
 ${sinIndexar ? '' : `    <link rel="canonical" href="${SITIO}${ruta}" />
     <link rel="alternate" hreflang="es" href="${SITIO}${rutas.es}" />

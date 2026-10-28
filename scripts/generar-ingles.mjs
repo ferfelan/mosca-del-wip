@@ -37,7 +37,7 @@ const DESCRIPCION_COMPARTIR =
   'Play for a minute and watch what happens to a fly with a real brain when she has too many things started at once. With the kit for your team.';
 const ALT_VISTA_PREVIA = `The fly from the game at her desk, with many tasks at once, next to the question: ${INGLES.titulo} A 1-minute game, mosca.deliverycraft.ai.`;
 // Si existe la vista previa en inglés (scripts/vistas-previas.mjs), se usa esa
-const VISTA_PREVIA = existsSync(join(RAIZ, 'public', 'img', 'vista-previa-en.jpg')) ? '/img/vista-previa-en.jpg' : '/img/vista-previa.jpg?v=4';
+const VISTA_PREVIA = existsSync(join(RAIZ, 'public', 'img', 'vista-previa-en.jpg')) ? '/img/vista-previa-en.jpg' : '/img/vista-previa.jpg?v=5';
 
 // Los enlaces internos en inglés (los de a[data-idioma] no cambian)
 const RUTAS = {
@@ -135,7 +135,7 @@ unaVez(/<meta property="og:description" content="[^"]*" \/>/.exec(html)[0], `<me
 unaVez(/<meta name="twitter:description" content="[^"]*" \/>/.exec(html)[0], `<meta name="twitter:description" content="${escaparAtributo(DESCRIPCION_COMPARTIR)}" />`);
 unaVez(/<meta property="og:image:alt" content="[^"]*" \/>/.exec(html)[0], `<meta property="og:image:alt" content="${escaparAtributo(ALT_VISTA_PREVIA)}" />`);
 for (const propiedad of ['property="og:image"', 'name="twitter:image"']) {
-  unaVez(`<meta ${propiedad} content="${SITIO}/img/vista-previa.jpg?v=4" />`, `<meta ${propiedad} content="${SITIO}${VISTA_PREVIA}" />`);
+  unaVez(`<meta ${propiedad} content="${SITIO}/img/vista-previa.jpg?v=5" />`, `<meta ${propiedad} content="${SITIO}${VISTA_PREVIA}" />`);
 }
 
 // Los datos estructurados: la página en inglés, el juego y el autor
