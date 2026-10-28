@@ -68,9 +68,9 @@ const IMG = join(CARPETA, IDIOMA === 'en' ? 'img-en' : 'img');
 const SALIDA = process.env.SALIDA ?? join(homedir(), 'Desktop', 'Mosca del WIP');
 const FECHA = process.env.FECHA ?? new Date().toLocaleDateString('sv-SE'); // 2026-10-20
 const DOCUMENTOS = [
-  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v14' },
-  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v21', paginas: [16, 17] },
-  { id: 'compartir-en', html: 'compartir-en.html', nombre: 'Para compartir en inglés', version: 'v21', paginas: [16, 17] },
+  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v15' },
+  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v22', paginas: [16, 17] },
+  { id: 'compartir-en', html: 'compartir-en.html', nombre: 'Para compartir en inglés', version: 'v22', paginas: [16, 17] },
   { id: 'norte', html: 'norte.html', nombre: 'Norte del proyecto', version: 'v1', paginas: [1, 2], aparte: true },
   { id: 'etapa4-1', html: 'etapa4-1.html', nombre: 'Etapa 4.1 La paradoja', version: 'v1', paginas: [1, 3], aparte: true },
   { id: 'etapa4-2', html: 'etapa4-2.html', nombre: 'Etapa 4.2 Robustez', version: 'v1', paginas: [1, 3], aparte: true },
@@ -82,6 +82,8 @@ const DOCUMENTOS = [
   { id: 'taller-v2', html: 'taller-v2.html', nombre: 'Taller - Manual del facilitador', version: 'v2', paginas: [11, 12], aparte: true },
   { id: 'taller-v3', html: 'taller-v3.html', nombre: 'Taller - Guía rápida del facilitador', version: 'v3', paginas: [8, 8], aparte: true },
   { id: 'taller-v4', html: 'taller-v4.html', nombre: 'Taller - Guía rápida del facilitador', version: 'v4', paginas: [5, 5], aparte: true },
+  // Etapa 7 (2026-10-28): la hoja del equipo sola, 1 hoja, para descargar aparte (DOC=hoja-equipo)
+  { id: 'hoja-equipo', html: 'taller-hoja-equipo.html', nombre: 'Taller - Hoja del equipo', version: 'v4', paginas: [1, 1], aparte: true },
 ];
 const SITIO = 'http://localhost:5173'; // raíz del sitio (portada, docs)
 const JUEGO = `${SITIO}/jugar/`; // el juego vive en /jugar/ desde la Etapa 5.1

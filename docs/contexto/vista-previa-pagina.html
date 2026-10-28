@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Vista previa de una página (1200 × 630)</title>
+<!-- Etapa 7 (2026-10-28): la imagen que muestran LinkedIn, WhatsApp y los
+     buscadores al pegar el enlace de una página del sitio. Misma noche y misma
+     letra que la portada; a la izquierda el rótulo, el título y la dirección, a
+     la derecha una foto en un marco. Qué página es lo dice la dirección:
+     ?pagina=guia|informe|taller|juego|creditos|portada-en (y ...-en para el inglés).
+     Se guarda con node scripts/vistas-previas.mjs (con npm run dev). -->
+<style>
+  @font-face {
+    font-family: 'Mona Sans';
+    src: url('/fonts/mona-sans-latin-wdth.woff2') format('woff2');
+    font-weight: 200 900;
+    font-stretch: 75% 125%;
+  }
+  html, body { margin: 0; }
+  body {
+    width: 1200px; height: 630px; overflow: hidden; position: relative;
+    background: #060a16; color: #eef1f8;
+    font-family: 'Mona Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .texto { position: absolute; left: 84px; top: 0; bottom: 0; width: 600px; display: flex; flex-direction: column; justify-content: center; }
+  .cabeza { display: flex; align-items: center; gap: 14px; margin-bottom: 30px; }
+  .marca { width: 48px; height: 48px; }
+  .cabeza span { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+  .rotulo { font-size: 21px; font-weight: 600; color: #2fe3ff; margin: 0 0 14px; }
+  h1 { font-size: 50px; font-weight: 800; font-stretch: 103%; line-height: 1.06; letter-spacing: -0.03em; margin: 0 0 26px; text-wrap: balance; }
+  h1.larga { font-size: 44px; }
+  .pie { font-size: 22px; line-height: 1.4; color: #a9b1c4; margin: 0; }
+  .pie b { font-weight: 650; color: #eef1f8; }
+  .marco {
+    position: absolute; left: 740px; top: 92px; width: 640px; height: 446px;
+    border-radius: 22px; overflow: hidden;
+    border: 1px solid rgba(170, 190, 255, 0.26);
+    background: #0c1120;
+    box-shadow: 0 40px 90px rgba(0, 0, 0, 0.55), 0 0 0 6px rgba(255, 255, 255, 0.025);
+  }
+  .marco img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 0% 0%; }
+  .marco.foto img { object-position: 38% 50%; }
+  .marco.tapa { background: #fff; }
+  .marco.tapa img { object-fit: cover; object-position: 50% 0%; }
+  .marco.ilustracion { background: #060a16; border-color: transparent; box-shadow: none; left: 700px; top: 40px; width: 560px; height: 560px; }
+  .marco.ilustracion img { object-fit: contain; object-position: 50% 50%; }
+  .estado {
+    position: absolute; top: 16px; left: 18px;
+    display: inline-flex; align-items: center; gap: 9px;
+    padding: 8px 16px 8px 14px; border-radius: 999px;
+    background: rgba(10, 14, 28, 0.84); border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 16px; font-weight: 600; color: #f0675c; white-space: nowrap;
+  }
+  .estado::before { content: ''; width: 9px; height: 9px; border-radius: 50%; background: currentColor; box-shadow: 0 0 10px currentColor; }
+  .estado.verde { color: #5cc483; }
+</style>
+</head>
+<body>
+  <div class="marco" id="marco"><img id="foto" src="" alt="" /><span class="estado" id="estado"></span></div>
+  <div class="texto">
+    <div class="cabeza"><img class="marca" src="/favicon.svg" alt="" /><span>Mosca del WIP</span></div>
+    <p class="rotulo" id="rotulo"></p>
+    <h1 id="titulo"></h1>
+    <p class="pie" id="pie"></p>
+  </div>
+  <script>
+    const PAGINAS = {
+      guia: { rotulo: 'Guía para equipos', titulo: 'Límite WIP: qué es y cómo encontrar el de tu equipo', pie: '<b>Lectura de 12 minutos</b> · mosca.deliverycraft.ai/limite-wip/', foto: '/docs/contexto/img/escena-wip9.jpg', clase: 'foto', estado: 'Muchas tareas a la vez' },
+      'guia-en': { rotulo: 'A guide for teams', titulo: 'WIP limit: what it is and how to find your team’s', pie: '<b>12-minute read</b> · mosca.deliverycraft.ai/en/wip-limit/', foto: '/docs/contexto/img-en/escena-wip9.jpg', clase: 'foto', estado: 'Many tasks at once' },
+      informe: { rotulo: 'El informe, para leer en la web', titulo: 'Estar siempre ocupado no es lo mismo que avanzar', pie: '<b>Con una mosca real</b> · mosca.deliverycraft.ai/informe/', foto: '/img/portada-torre.svg', clase: 'ilustracion' },
+      'informe-en': { rotulo: 'The report, to read on the web', titulo: 'Being busy all the time is not the same as making progress', pie: '<b>With a real fly brain</b> · mosca.deliverycraft.ai/en/report/', foto: '/img/portada-torre.svg', clase: 'ilustracion', larga: true },
+      taller: { rotulo: 'Taller de 60 minutos', titulo: 'Deja de empezar, empieza a terminar', pie: '<b>Kit gratis: presentación, guía y hoja del equipo</b> · mosca.deliverycraft.ai/taller/', foto: '/img/tapa-taller.jpg', clase: 'tapa' },
+      'taller-en': { rotulo: '60-minute workshop', titulo: 'Stop starting, start finishing', pie: '<b>Free kit, in Spanish for now</b> · mosca.deliverycraft.ai/en/workshop/', foto: '/img/tapa-taller.jpg', clase: 'tapa' },
+      juego: { rotulo: 'Un juego de 1 minuto', titulo: 'Un día de oficina con 1 a 10 tareas a la vez', pie: '<b>Gratis, en el navegador</b> · mosca.deliverycraft.ai/jugar/', foto: '/docs/contexto/img/escena-wip2.jpg', clase: 'foto', estado: 'Pocas tareas a la vez', verde: true },
+      creditos: { rotulo: 'Créditos y licencias', titulo: 'Quién hizo esto y con qué permisos', pie: '<b>Neuronas del Male CNS v1.0, CC BY 4.0</b> · mosca.deliverycraft.ai/creditos/', foto: '/docs/contexto/img/cerebro-wip9.jpg', clase: 'foto' },
+      'portada-en': { rotulo: 'A 1-minute game', titulo: 'Busy all day. And what did you finish?', pie: '<b>Mosca means fly in Spanish</b> · mosca.deliverycraft.ai/en/', foto: '/docs/contexto/img-en/escena-wip9.jpg', clase: 'foto', estado: 'Many tasks at once' },
+    };
+    const clave = new URLSearchParams(location.search).get('pagina') || 'guia';
+    const p = PAGINAS[clave];
+    document.documentElement.lang = clave.endsWith('-en') ? 'en' : 'es';
+    document.getElementById('rotulo').textContent = p.rotulo;
+    const h1 = document.getElementById('titulo');
+    h1.textContent = p.titulo;
+    if (p.larga) h1.classList.add('larga');
+    document.getElementById('pie').innerHTML = p.pie;
+    const marco = document.getElementById('marco');
+    marco.classList.add(p.clase);
+    const foto = document.getElementById('foto');
+    foto.src = p.foto;
+    const estado = document.getElementById('estado');
+    if (p.estado) { estado.textContent = p.estado; if (p.verde) estado.classList.add('verde'); } else estado.remove();
+    (async () => {
+      await document.fonts.ready;
+      if (!foto.complete) await new Promise((r) => (foto.onload = r));
+      requestAnimationFrame(() => requestAnimationFrame(() => (document.body.dataset.listo = '1')));
+    })();
+  </script>
+</body>
+</html>

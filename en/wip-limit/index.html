@@ -1,0 +1,422 @@
+<!doctype html>
+<!-- GENERADO por scripts/paginas.mjs (Etapa 7). NO EDITAR A MANO: los cambios van en la fuente que dice ese script. -->
+<html lang="en" data-idioma-pagina="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WIP limit: what it is and how to find your team’s · Mosca del WIP</title>
+    <meta name="description" content="What work in progress is, why to limit it and how to choose your team’s WIP limit: a starting point, the two-week test and what to do when something waits." />
+    <meta name="theme-color" content="#060a16" />
+    <meta name="color-scheme" content="dark" />
+    <!-- Antes de dibujar: el fondo que la persona eligió (como en la portada).
+         El idioma lo decide la dirección; un enlace viejo con ?lang= va a la otra versión. -->
+    <script>
+      (function () {
+        var raiz = document.documentElement;
+        var lang = new URLSearchParams(location.search).get('lang');
+        if ((lang === 'en' || lang === 'es') && lang !== raiz.getAttribute('data-idioma-pagina')) {
+          location.replace("/limite-wip/" + location.hash);
+        }
+        var fondo;
+        try {
+          fondo = localStorage.getItem('mosca-fondo');
+        } catch (e) {}
+        if (fondo === 'claro') {
+          raiz.setAttribute('data-tema', 'claro');
+          document.querySelector('meta[name="theme-color"]').content = '#ffffff';
+          document.querySelector('meta[name="color-scheme"]').content = 'light';
+        }
+      })();
+    </script>
+    <link rel="icon" href="/favicon.ico?v=4" sizes="32x32" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=4" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="canonical" href="https://mosca.deliverycraft.ai/en/wip-limit/" />
+    <link rel="alternate" hreflang="es" href="https://mosca.deliverycraft.ai/limite-wip/" />
+    <link rel="alternate" hreflang="en" href="https://mosca.deliverycraft.ai/en/wip-limit/" />
+    <link rel="alternate" hreflang="x-default" href="https://mosca.deliverycraft.ai/limite-wip/" />
+
+    <!-- Vista previa al compartir el enlace -->
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Mosca del WIP" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="es_CL" />
+    <meta property="og:url" content="https://mosca.deliverycraft.ai/en/wip-limit/" />
+    <meta property="og:title" content="WIP limit: what it is and how to find your team’s · Mosca del WIP" />
+    <meta property="og:description" content="What work in progress is, why to limit it and how to choose your team’s WIP limit: a starting point, the two-week test and what to do when something waits." />
+    <meta property="og:image" content="https://mosca.deliverycraft.ai/img/vista-previa-wip-limit.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="The fly from the game in front of her kanban board, next to the title: WIP limit, what it is and how to find your team’s." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="WIP limit: what it is and how to find your team’s · Mosca del WIP" />
+    <meta name="twitter:description" content="What work in progress is, why to limit it and how to choose your team’s WIP limit: a starting point, the two-week test and what to do when something waits." />
+    <meta name="twitter:image" content="https://mosca.deliverycraft.ai/img/vista-previa-wip-limit.jpg" />
+
+    <!-- La tipografía vive en el mismo sitio (no se pide a otro servidor) -->
+    <link rel="preload" href="/fonts/mona-sans-latin-wdth.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/src/portada.css" />
+    <link rel="stylesheet" href="/src/paginas.css" />
+    <script type="module" src="/src/pagina.js"></script>
+    <script type="module" src="/src/visitas.js"></script>
+    <!-- Datos estructurados (schema.org), solo tipos estándar -->
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://mosca.deliverycraft.ai/en/wip-limit/#articulo",
+      "headline": "WIP limit: what it is and how to find your team’s",
+      "description": "What work in progress is, why to limit it and how to choose your team’s WIP limit: a starting point, the two-week test and what to do when something waits.",
+      "inLanguage": "en",
+      "url": "https://mosca.deliverycraft.ai/en/wip-limit/",
+      "mainEntityOfPage": "https://mosca.deliverycraft.ai/en/wip-limit/",
+      "image": "https://mosca.deliverycraft.ai/img/vista-previa-wip-limit.jpg",
+      "datePublished": "2026-10-28",
+      "dateModified": "2026-10-28",
+      "isAccessibleForFree": true,
+      "author": {
+        "@type": "Person",
+        "@id": "https://mosca.deliverycraft.ai/#felipe",
+        "name": "Felipe Fernández",
+        "url": "https://www.linkedin.com/in/felipefernandezandrade/",
+        "sameAs": [
+          "https://www.linkedin.com/in/felipefernandezandrade/"
+        ]
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://mosca.deliverycraft.ai/#deliverycraft",
+        "name": "Deliverycraft",
+        "url": "https://deliverycraft.ai/"
+      },
+      "isPartOf": {
+        "@type": "WebSite",
+        "@id": "https://mosca.deliverycraft.ai/#sitio",
+        "name": "Mosca del WIP",
+        "url": "https://mosca.deliverycraft.ai/"
+      },
+      "keywords": "WIP limit, work in progress, kanban, flow efficiency, Little's Law, multitasking, WIP limit game, WIP limit workshop, fruit fly connectome"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Mosca del WIP",
+          "item": "https://mosca.deliverycraft.ai/en/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "WIP limit guide",
+          "item": "https://mosca.deliverycraft.ai/en/wip-limit/"
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@id": "https://mosca.deliverycraft.ai/en/wip-limit/#datos",
+      "name": "Mosca del WIP: an office day with 1 to 10 tasks at once (average of 200 days in the game)",
+      "description": "For each number of tasks in progress at once, from 1 to 10: how many the fly finishes in the day, how long each task takes, how many minutes of every hour are productive, idle time, cigarettes, coffees and stress. Average of 200 simulated days per number (seed 2024), in the game Mosca del WIP. It is a simulation of a single fly; it does not measure people or teams.",
+      "url": "https://mosca.deliverycraft.ai/en/wip-limit/#datos",
+      "sameAs": "https://mosca.deliverycraft.ai/limite-wip/#datos",
+      "inLanguage": "en",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "isAccessibleForFree": true,
+      "creator": {
+        "@type": "Person",
+        "@id": "https://mosca.deliverycraft.ai/#felipe",
+        "name": "Felipe Fernández",
+        "url": "https://www.linkedin.com/in/felipefernandezandrade/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://mosca.deliverycraft.ai/#deliverycraft",
+        "name": "Deliverycraft",
+        "url": "https://deliverycraft.ai/"
+      },
+      "datePublished": "2026-10-28",
+      "dateModified": "2026-10-28",
+      "keywords": [
+        "WIP limit",
+        "work in progress",
+        "kanban",
+        "flow efficiency",
+        "Little's Law",
+        "multitasking",
+        "simulation"
+      ],
+      "variableMeasured": [
+        {
+          "@type": "PropertyValue",
+          "name": "tasks at once"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "finished per day"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "minutes per task"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "productive minutes per hour"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "idle minutes per day"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "cigarettes"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "coffees"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "average stress"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "maximum stress"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "stress level at close"
+        }
+      ],
+      "distribution": [
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "text/csv",
+          "contentUrl": "https://mosca.deliverycraft.ai/datos/mosca-del-wip-1-a-10-tareas.csv",
+          "inLanguage": "es"
+        },
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "text/csv",
+          "contentUrl": "https://mosca.deliverycraft.ai/datos/mosca-del-wip-1-to-10-tasks.csv",
+          "inLanguage": "en"
+        }
+      ]
+    }
+  ]
+}
+    </script>
+  </head>
+  <body class="portada lectura-pagina guia">
+    <a class="saltar solo-lector" href="#contenido">Skip to content</a>
+    <header class="barra desplazada con-nombre con-jugar" data-barra>
+      <div class="barra-dentro">
+        <a class="logo" href="/en/" data-inicio aria-label="Mosca del WIP: go to the top">
+          <svg class="marca" viewBox="0 0 32 32" width="34" height="34" aria-hidden="true" focusable="false">
+            <g fill="#fff" stroke="#fff" stroke-width="3" stroke-linejoin="round"><ellipse cx="8.9" cy="20.5" rx="3.3" ry="8.6" transform="rotate(32 8.9 20.5)"/><ellipse cx="23.1" cy="20.5" rx="3.3" ry="8.6" transform="rotate(-32 23.1 20.5)"/><ellipse cx="16" cy="7.8" rx="3.6" ry="3.2"/><circle cx="16" cy="13.4" r="4.4"/><ellipse cx="16" cy="21.9" rx="3.8" ry="6.3"/><ellipse cx="12.3" cy="6.7" rx="3.1" ry="3.8"/><ellipse cx="19.7" cy="6.7" rx="3.1" ry="3.8"/></g>
+            <g fill="#e3eef8" stroke="#5a4c40" stroke-width="1.3"><ellipse cx="8.9" cy="20.5" rx="3.3" ry="8.6" transform="rotate(32 8.9 20.5)"/><ellipse cx="23.1" cy="20.5" rx="3.3" ry="8.6" transform="rotate(-32 23.1 20.5)"/></g>
+            <g fill="#6f6052"><ellipse cx="16" cy="7.8" rx="3.6" ry="3.2"/><circle cx="16" cy="13.4" r="4.4"/><ellipse cx="16" cy="21.9" rx="3.8" ry="6.3"/></g>
+            <g fill="#e8402c"><ellipse cx="12.3" cy="6.7" rx="3.1" ry="3.8"/><ellipse cx="19.7" cy="6.7" rx="3.1" ry="3.8"/></g>
+          </svg>
+          <span class="logo-nombre">Mosca del WIP</span>
+        </a>
+        <ul class="menu-enlaces barra-paginas" aria-label="Pages on this site">
+          <li><a href="/en/wip-limit/" aria-current="page">Guide</a></li>
+          <li><a href="/en/report/">Report</a></li>
+          <li><a href="/en/workshop/">Workshop</a></li>
+        </ul>
+        <div class="pagina-ajustes">
+          <div class="selector" role="group" aria-label="Language">
+            <a href="/limite-wip/" data-idioma="es" lang="es" aria-label="ES: español" title="Español" hreflang="es">ES</a>
+            <a href="/en/wip-limit/" data-idioma="en" lang="en" aria-label="EN: English" title="English" hreflang="en" aria-current="page">EN</a>
+          </div>
+          <div class="selector" role="group" aria-label="Background">
+            <button type="button" data-fondo="oscuro" aria-pressed="true" aria-label="Dark background" title="Dark background">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>
+            </button>
+            <button type="button" data-fondo="claro" aria-pressed="false" aria-label="Light background" title="Light background">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M12 2.5v2.3M12 19.2v2.3M2.5 12h2.3M19.2 12h2.3M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+        <a class="boton principal barra-jugar" href="/jugar/?lang=en" data-jugar>Play</a>
+      </div>
+    </header>
+
+<main class="lectura" id="contenido" tabindex="-1">
+  <nav class="migas" aria-label="Where you are"><ol><li><a href="/en/">Mosca del WIP</a></li><li aria-current="page">WIP limit guide</li></ol></nav>
+  <h1>WIP limit: what it is and how to find your team’s</h1>
+  <p class="pagina-bajada">A short guide for teams that want to finish more without working longer hours: what work in progress is, why it pays to limit it and how to choose a number to start with. With data from the game Mosca del WIP and the studies behind it.</p>
+  <p class="pagina-meta"><span>By <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a></span><span>Updated on <time datetime="2026-10-28">October 28, 2026</time></span><span>About a 12-minute read</span></p>
+
+  <nav class="indice" aria-label="On this page">
+    <h2>On this page</h2>
+    <ol>
+      <li><a href="#que-es">What WIP is and what a WIP limit is</a></li>
+      <li><a href="#ocupado-no-es-avanzar">Why being busy is not the same as making progress</a></li>
+      <li><a href="#como-elegir">How to choose your team’s WIP limit</a></li>
+      <li><a href="#cuando-algo-espera">What to do when something is left waiting</a></li>
+      <li><a href="#ley-de-little">Little’s Law, in plain words</a></li>
+      <li><a href="#errores-comunes">Common mistakes when setting a limit</a></li>
+      <li><a href="#estudios">What the studies with people say</a></li>
+      <li><a href="#datos">The game’s data, from 1 to 10 tasks</a></li>
+      <li><a href="#kit">The game, the report and the workshop</a></li>
+    </ol>
+  </nav>
+
+  <section id="que-es">
+    <h2>What WIP is and what a WIP limit is</h2>
+    <p class="respuesta">WIP stands for work in progress: everything a team has already started and not yet finished. A WIP limit is a maximum number of things in progress at once, written on the board, that the team agrees to respect.</p>
+    <p>Work in progress is what you would put on a card on your board: a task, a request, a case or a project, depending on the team. Not every email or every subtask. If two people share one thing, it counts once.</p>
+    <p>The idea comes from kanban. On a kanban board with three columns, To do, In progress and Done, the limit is written above the In progress column. When the column is full, nobody starts anything new: you finish or unblock what is already in there. That is why a WIP limit doesn’t say how much work the team receives. It says how much the team has open at once, and the rest waits in To do, where everyone can see it.</p>
+    <p>In the game <a href="/jugar/?lang=en" data-jugar>Mosca del WIP</a> (mosca means fly in Spanish) you pick that number before the day starts, from 1 to 10. The fly is a single person, so what you see is what happens to someone with many things open. What happens to a team is for you to measure, and this guide is for that.</p>
+  </section>
+
+  <section id="ocupado-no-es-avanzar">
+    <h2>Why being busy is not the same as making progress</h2>
+    <p class="respuesta">Because there are two ways to be efficient: keeping everyone busy, called resource efficiency, or having each thing move without waiting, called flow efficiency. With many things open, people are busy all day and each thing spends most of its time waiting for its turn.</p>
+    <p>In the game, the same fly worked the same office day twice, and each day was repeated 200 times to get the average. With 2 tasks at once she finished 18 and each task took her 1 hour. With 9 tasks at once she finished 9, half as many, even though she was busy almost all day, and each task took 8 hours and 54 minutes from start to finish.</p>
+    <div class="tabla-marco"><table class="tabla-dias">
+      <caption>In the game, average of 200 days. The detail from 1 to 10 tasks is <a href="#datos">further down</a>.</caption>
+      <thead><tr><th>What happened in the day</th><th class="numero">2 tasks at once</th><th class="numero">9 tasks at once</th></tr></thead>
+      <tbody>
+        <tr><td>Tasks finished</td><td class="numero"><b>18</b></td><td class="numero"><b>9</b></td></tr>
+        <tr><td>Time per task, from start to finish</td><td class="numero">1 h</td><td class="numero">8 h 54 min</td></tr>
+        <tr><td>Minutes of every hour that really get work done</td><td class="numero">50</td><td class="numero">25</td></tr>
+        <tr><td>Share of the time each task is moving</td><td class="numero">47%</td><td class="numero">9%</td></tr>
+      </tbody>
+    </table></div>
+    <p>That last row is flow efficiency: of all the time a thing is open, how much of it someone is actually working on it. With 9 tasks, in the game, each task moves 9% of the time it is open and waits the other 91%. The fly is never idle, and still each task takes almost nine times longer.</p>
+    <p>Multitasking is part of this. Nobody does two things in their head at the same time: you switch from one to the other, and each switch costs a few seconds of finding your place again. According to lab studies, that cost is a few tenths of a second per switch, and more if the task is hard or unfamiliar (<a href="https://doi.org/10.1037/0096-1523.27.4.763">Rubinstein, Meyer and Evans, 2001</a>). It seems like nothing, but on a day full of switches it adds up. In the game that cost is a rule of ours, a softened version of a rule of thumb from Weinberg, and it is part of why fewer tasks get finished with more of them open.</p>
+    <div class="recuadro"><p>Being busy all the time is not the same as making progress. What a team delivers leaves through the Done column, and that column doesn’t fill up by opening more things.</p></div>
+    <p>If you want to see it before reading on, <a href="/jugar/?lang=en" data-jugar>play one day with 2 tasks and another with 9</a>. Each one lasts a minute and the game compares the two at the end.</p>
+  </section>
+
+  <section id="como-elegir">
+    <h2>How to choose your team’s WIP limit</h2>
+    <p class="respuesta">Start with a little less than what you have open today. Count the things in progress on the board, agree on a somewhat lower number, uncomfortable but possible, and try it for two weeks. There is no right number for every team: it depends mostly on how much your work waits on other people.</p>
+
+    <h3>The starting point</h3>
+    <p>How to define the WIP limit the first time is less science than it seems. Count today, on the board, how many things the team has in progress. That is the starting number, and it usually surprises people. Then pick a limit a bit lower. If you argue between two, try the lowest one everyone accepts. The number gets corrected in the review, not in the argument.</p>
+    <p>The game doesn’t give a number for teams. In the simulation, for a fly working alone, the best limit landed between 2 and 4 in 16 of the 17 cases with waits that we tested, and at 1 when nothing gets stuck. It is a result of the simulation, not a scientific number, and the fly can’t ask for help or unblock what is waiting. A team can, and that is why its limit is its own.</p>
+
+    <h3>Why it depends on waits</h3>
+    <p>Two forces pull the limit in opposite directions. Waits push toward more things open: if one gets stuck waiting for an answer, it helps to have another at hand. In the game, with a single task, the fly spends more than 2 hours a day with nothing to do when her only task gets stuck, which is why with 1 she finishes less than with 2. The cost of switching tasks pushes toward fewer: every jump costs, and the more it costs, the less it pays to open another.</p>
+    <p>The limit sits between those two forces. A team that waits a lot on others needs a somewhat higher limit, and one that waits little can lower it. That gives the rule that helps the most:</p>
+    <div class="recuadro"><p>Reducing waits lets you lower the limit. Raising the limit doesn’t reduce the waits.</p></div>
+    <p>If the team wants a lower limit, the way there is to go after what makes it wait: an approval that takes days, one person everything goes through, an answer nobody gives. Raising the number only hides those waits behind more open things.</p>
+
+    <h3>The two-week test</h3>
+    <p>The limit is tested, not debated. Write it on the In progress column of the board you already use. On each card, note the day it started and the day it finished. After two weeks, compare how many got finished and how long each one took with the two previous weeks, and decide whether to keep, lower or raise the limit.</p>
+    <p>Don’t expect the change on day one, because what’s started takes time to clear. In the game, when the fly drops from 10 tasks to 2 at noon, she only gets back to two open at 2:35 pm: the other eight had to finish first. In a team the same happens with weeks.</p>
+    <p>If you would rather do it as a group activity, the <a href="/en/workshop/">60-minute workshop</a> takes the team through these steps with the game live and a sheet to write down its limit, what it does when something waits and the review date. The material is in Spanish for now.</p>
+  </section>
+
+  <section id="cuando-algo-espera">
+    <h2>What to do when something is left waiting</h2>
+    <p class="respuesta">Go after the wait instead of opening something else: help unblock what is stuck, get the missing answer or finish something already started. If the team opens something new every time something waits, the limit stops existing.</p>
+    <p>This is the hardest part of the limit and what makes it work. When someone reaches the limit and their thing is waiting, the natural move is to “make good use of the time” with a new task. DORA, Google’s research program on software teams, puts it in one line: don’t relax the limit when people are idle, use that time to unblock what’s waiting (<a href="https://dora.dev/capabilities/wip-limits/">DORA, Work in process limits</a>).</p>
+    <p>It helps to agree on it before it happens, as a short list of things you do instead of starting another: help whoever has something stuck, review or test a colleague’s work, chase the missing answer, finish something left half done. In the workshop the team writes it on its sheet.</p>
+    <p>Urgent work still comes in. If it arrives when the team is at the limit, something gets paused and the team says so at its next check-in. If it comes in every day, that is what to look at in the review, because then it is no longer urgent work but part of the work. <span class="origen">suggestion</span></p>
+  </section>
+
+  <section id="ley-de-little">
+    <h2>Little’s Law, in plain words</h2>
+    <p class="respuesta">Little’s Law says that the time a thing spends in the system equals how many things are inside divided by how many leave per unit of time. If the team finishes the same amount per week and has twice as much open, each thing takes twice as long.</p>
+    <p>An example. A team finishes 5 things a week and has 10 open: each one takes, on average, 2 weeks from start to finish. If it opens 20 and keeps finishing 5 a week, each one takes 4 weeks. How much the team works didn’t change, only how much it has open.</p>
+    <p>It is not an opinion or a study’s finding: it is a theorem, published by John Little in 1961, and it holds for any stable system, from a line at a bank to a kanban board (<a href="https://pubsonline.informs.org/doi/10.1287/opre.1110.0940">Little, 2011, on its 50th anniversary</a>). In the game it holds on its own: with 2 tasks, 1 hour per task; with 9, almost 9 hours.</p>
+    <p>What’s useful about the law is that it gives the only way for things to come out sooner without working more: having less open. That fewer things also get finished with many open, as in the game, is no longer Little’s Law but the cost of switching tasks and the stress.</p>
+  </section>
+
+  <section id="errores-comunes">
+    <h2>Common mistakes when setting a limit</h2>
+    <p class="respuesta">The most frequent are raising the limit as soon as someone is left waiting, setting a number and never looking at it again, and counting as work in progress things that don’t belong on the board.</p>
+    <ul>
+      <li><strong>Raising the limit when someone is waiting.</strong> It is the easy way out and it erases the limit. The wait is still there, with more open things on top.</li>
+      <li><strong>Setting a number and not looking at it.</strong> A limit without a review date is forgotten in two weeks. Put the review in a meeting you already have.</li>
+      <li><strong>Counting every email or every subtask.</strong> The limit is about cards on the board. If you count everything, the number means nothing.</li>
+      <li><strong>Looking for the right number before trying.</strong> It doesn’t exist. A number a bit lower than today’s, tried for two weeks, teaches more than an hour of debate.</li>
+      <li><strong>Expecting results on day one.</strong> What’s started takes time to clear. In the first weeks you see the old things finishing, and only afterwards the new pace shows.</li>
+      <li><strong>Leaving urgent work off the board.</strong> If it comes in on the side, the limit doesn’t see it and neither does the team. Everything goes through the board, even if it jumps the line.</li>
+      <li><strong>Using the limit to measure people.</strong> It is a team tool for finishing sooner, not an indicator of who performs. If it is used for that, people hide work.</li>
+    </ul>
+  </section>
+
+  <section id="estudios">
+    <h2>What the studies with people say</h2>
+    <p class="respuesta">No study with people gives a number of things at once. The ones we found point in the same direction: past a certain point, with more things open each one takes longer, and sometimes fewer get finished.</p>
+    <ul>
+      <li><strong>Judges in Italy.</strong> In the labor courts of Milan a lottery assigned the cases. The judges who by chance carried more open trials at once took longer to close them, and the quality of their rulings didn’t change. It is the study closest to an experiment, because the lottery decided who got more. <a href="https://doi.org/10.1257/aer.104.2.609">Coviello, Ichino and Persico, 2014, American Economic Review</a> and <a href="https://doi.org/10.1111/jeea.12129">2015, Journal of the European Economic Association</a>.</li>
+      <li><strong>Recruiters.</strong> A little parallel work helped finish more, but past a point they finished less. <a href="https://ide.mit.edu/wp-content/uploads/2016/04/2011.09_Aral_Brynjolfsson_Van-Alstyne_Information-Technology-and-Information-Worker-Productivity_277.pdf">Aral, Brynjolfsson and Van Alstyne, 2012, Information Systems Research</a>.</li>
+      <li><strong>Research teams.</strong> Teams whose members were on very few or on too many teams at once performed worse than those at a middle point. It measures how many teams each person is on, not open tasks. <a href="https://doi.org/10.1016/j.respol.2015.01.019">Bertolotti and others, 2015, Research Policy</a>.</li>
+      <li><strong>Large surveys of software teams.</strong> Limiting work in progress is one of the habits of high-performing teams, and it helps most together with a visible board and feedback from what happens in production. On its own, the limit predicts little. <a href="https://dora.dev/capabilities/wip-limits/">DORA, Work in process limits</a>, and Forsgren, Humble and Kim, <em>Accelerate</em> (2018).</li>
+      <li><strong>A real team with a board and limits.</strong> A Norwegian software company moved to working with a board and work-in-progress limits, and the time to fix a bug dropped from 12 to 5 days. It is a single case. <a href="https://www.mn.uio.no/ifi/personer/vit/dagsj/sjoberg.johnsen.solberg.ieee.sw.pdf">Sjøberg, Johnsen and Solberg, 2012, IEEE Software</a>.</li>
+      <li><strong>Long hours that yield less.</strong> In British munitions factories of the First World War, past a certain point each extra hour yielded less: those working 70 hours a week produced almost the same as those working 56. <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/ecoj.12166">Pencavel, 2015, The Economic Journal</a>.</li>
+    </ul>
+    <p>None of these studies is a lab experiment. The one with the judges comes close, because a lottery decided who got more cases. The others show that things go together, but don’t prove the cause. The <a href="/en/report/">report</a> tells each one in more detail and says which part of each number in the game is ours.</p>
+  </section>
+
+  <section id="datos">
+    <h2>The game’s data, from 1 to 10 tasks</h2>
+    <p class="respuesta">In the game there is no number where everything breaks: each extra task costs a bit more. With 2 tasks at once the fly finishes more than with any other number, and up to 3 she ends the day calm. From 4 on, the stress and the cigarettes begin, and what gets finished only drops by half at 9.</p>
+    <div class="tabla-marco ancho"><table class="tabla-dias">
+  <caption>In the game: average of 200 days per number of tasks (simulation, seed 2024). Time per task in office hours, from start to finish. Shaded, 2 (green, finishes the most) and 9 (red, overload).</caption>
+  <thead><tr><th>Tasks at once</th><th class="numero">Finished in the day</th><th class="numero">Time per task</th><th class="numero">Productive, of every hour</th><th class="numero">Idle, per day</th><th class="numero">Cigarettes</th><th class="numero">Coffees</th><th>Stress at close</th></tr></thead>
+  <tbody>
+<tr><td>1</td><td class="numero"><b>15.9</b></td><td class="numero">34 min</td><td class="numero">44 min</td><td class="numero">134 min</td><td class="numero">0</td><td class="numero">6</td><td class="nivel-tranquila">Calm</td></tr>
+<tr class="mejor"><td>2 · finishes the most</td><td class="numero"><b>18.0</b></td><td class="numero">1 h 00 min</td><td class="numero">50 min</td><td class="numero">20 min</td><td class="numero">0</td><td class="numero">5</td><td class="nivel-tranquila">Calm</td></tr>
+<tr><td>3</td><td class="numero"><b>16.9</b></td><td class="numero">1 h 36 min</td><td class="numero">47 min</td><td class="numero">2 min</td><td class="numero">0</td><td class="numero">4</td><td class="nivel-tranquila">Calm</td></tr>
+<tr><td>4</td><td class="numero"><b>15.4</b></td><td class="numero">2 h 20 min</td><td class="numero">43 min</td><td class="numero">0 min</td><td class="numero">1</td><td class="numero">3</td><td class="nivel-ocupada">Busy</td></tr>
+<tr><td>5</td><td class="numero"><b>14.0</b></td><td class="numero">3 h 14 min</td><td class="numero">39 min</td><td class="numero">0 min</td><td class="numero">3</td><td class="numero">1</td><td class="nivel-ocupada">Busy</td></tr>
+<tr><td>6</td><td class="numero"><b>12.3</b></td><td class="numero">4 h 24 min</td><td class="numero">34 min</td><td class="numero">0 min</td><td class="numero">6</td><td class="numero">0</td><td class="nivel-estresada">Stressed</td></tr>
+<tr><td>7</td><td class="numero"><b>11.2</b></td><td class="numero">5 h 40 min</td><td class="numero">31 min</td><td class="numero">0 min</td><td class="numero">8</td><td class="numero">0</td><td class="nivel-estresada">Stressed</td></tr>
+<tr><td>8</td><td class="numero"><b>10.0</b></td><td class="numero">7 h 11 min</td><td class="numero">28 min</td><td class="numero">0 min</td><td class="numero">11</td><td class="numero">0</td><td class="nivel-colapsada">Overwhelmed</td></tr>
+<tr class="sobre"><td>9 · overload</td><td class="numero"><b>9.1</b></td><td class="numero">8 h 54 min</td><td class="numero">25 min</td><td class="numero">0 min</td><td class="numero">13</td><td class="numero">0</td><td class="nivel-colapsada">Overwhelmed</td></tr>
+<tr><td>10</td><td class="numero"><b>8.2</b></td><td class="numero">10 h 34 min</td><td class="numero">23 min</td><td class="numero">0 min</td><td class="numero">15</td><td class="numero">0</td><td class="nivel-colapsada">Overwhelmed</td></tr>
+  </tbody>
+</table></div>
+    <p>Each row is the average of 200 simulated days with that number of tasks open at once. The sign in the game’s office says “up to 3” because it measures stress, and up to there the fly lasts the whole day. The table measures what gets finished, and there 2 wins by one task a day. That difference comes from the cost of switching tasks, which is an assumption of ours, so the game says “up to 3” and not a single number.</p>
+    <p>The data are free to use under a <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> license, crediting Felipe Fernández and mosca.deliverycraft.ai. They are a simulation of a single fly: they don’t measure people or teams.</p>
+    <ul class="descargas-pagina">
+      <li><a href="/datos/mosca-del-wip-1-to-10-tasks.csv" download="mosca-del-wip-1-to-10-tasks.csv"><b>Download the data (CSV, in English)</b><span>Ten rows, one per number of tasks, with the table’s columns plus average and maximum stress.</span></a></li>
+      <li><a href="/datos/mosca-del-wip-1-a-10-tareas.csv" download="mosca-del-wip-1-a-10-tareas.csv"><b>Descargar los datos (CSV, en español)</b><span>The same ten rows, with the column names in Spanish.</span></a></li>
+    </ul>
+    <p class="nota">Where each rule of the game comes from and which part of each number is ours is in appendix B of the <a href="/en/report/#numeros">report</a>.</p>
+  </section>
+
+  <section id="kit">
+    <h2>The game, the report and the workshop</h2>
+    <p>Everything in this guide can be seen in a minute, read at leisure or tried with your team.</p>
+    <ul class="enlaces-kit"><li><a href="/jugar/?lang=en" data-jugar><b>The game</b><span>An office day in one minute, with 1 to 10 tasks at once.</span></a></li><li><a href="/en/report/"><b>The report</b><span>Where each number comes from and what the studies say.</span></a></li><li><a href="/en/workshop/"><b>The workshop</b><span>A 60-minute session for your team to pick its limit.</span></a></li></ul>
+  </section>
+
+  <aside class="autor" data-revisar="felipe" aria-label="About the author">
+  <!-- REVISAR (Felipe): este texto lo escribí yo con lo que había en el proyecto. Sin nombres de empresas donde trabaja. -->
+  <div class="inicial" aria-hidden="true">F</div>
+  <div>
+    <h2>Who writes this</h2>
+    <p><a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a>, a team coach with more than six years of experience and cofounder of <a href="https://deliverycraft.ai">Deliverycraft</a>. He made the game, the simulation and this site.</p>
+  </div>
+</aside>
+</main>
+
+
+    <footer class="pie">
+      <p>Made by <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a> · <a href="https://deliverycraft.ai">deliverycraft.ai</a></p>
+      <p>No cookies. We only count visits, without identifying anyone.</p>
+      <ul class="pie-mapa" aria-label="Pages on this site">
+        <li><a href="/jugar/?lang=en" data-jugar>The game</a></li>
+        <li><a href="/en/wip-limit/">WIP limit guide</a></li>
+        <li><a href="/en/report/">The report</a></li>
+        <li><a href="/en/workshop/">The workshop</a></li>
+        <li><a href="/creditos/?lang=en">Credits and licenses</a></li>
+        <li><a href="/en/" data-inicio>Home</a></li>
+      </ul>
+      <p class="pie-derechos">© 2026 Felipe Fernández. All rights reserved. The brain data come from Male CNS v1.0, licensed CC BY 4.0.</p>
+    </footer>
+  </body>
+</html>

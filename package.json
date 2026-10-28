@@ -7,13 +7,14 @@
     "node": "24.x"
   },
   "scripts": {
-    "predev": "node scripts/generar-ingles.mjs",
+    "predev": "node scripts/generar-ingles.mjs && node scripts/informe-web.mjs && node scripts/paginas.mjs",
     "dev": "vite",
-    "prebuild": "node scripts/generar-ingles.mjs",
+    "prebuild": "node scripts/generar-ingles.mjs && node scripts/informe-web.mjs && node scripts/paginas.mjs",
     "build": "vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
+    "pdf-lib": "^1.17.1",
     "playwright": "^1.64.0",
     "vite": "^8.3.0"
   },

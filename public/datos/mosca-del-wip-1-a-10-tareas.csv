@@ -1,0 +1,15 @@
+# Mosca del WIP: un día de oficina con 1 a 10 tareas a la vez. Promedio de 200 días por cada número, en el juego (simulación, semilla 2024).
+# Cada fila: cuántas tareas tiene la mosca en curso a la vez; cuántas termina en el día; minutos de oficina que tarda cada tarea de que empieza a que termina;
+# minutos de cada hora que rinden de verdad; minutos del día sin nada que hacer; cigarros; cafés; estrés promedio y máximo (0 a 100); nivel de estrés al cerrar.
+# Autor: Felipe Fernández. Licencia CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Fuente: https://mosca.deliverycraft.ai/limite-wip/#datos
+tareas_a_la_vez,terminadas_por_dia,minutos_por_tarea,minutos_que_rinden_por_hora,minutos_esperando_por_dia,cigarros,cafes,estres_promedio,estres_maximo,nivel_al_cerrar
+1,15.885,34.128,43.872,134.038,0,6,5.494,10,Tranquila
+2,17.99,60.07,49.777,19.781,0,5,10,10,Tranquila
+3,16.895,96.002,46.692,2.452,0,4,17.409,18,Tranquila
+4,15.405,140.387,42.616,0.065,1,3,30.373,37,Ocupada
+5,13.96,193.7,38.574,0,3,1,41.486,49,Ocupada
+6,12.315,264.201,34.152,0,6,0,53.503,62,Estresada
+7,11.15,340.471,30.774,0,8,0,63.712,73,Estresada
+8,9.96,431.039,27.623,0,11,0,78.529,89,Colapsada
+9,9.14,533.637,25.173,0,13,0,85.937,97,Colapsada
+10,8.165,633.805,23.249,0,15,0,92.789,100,Colapsada

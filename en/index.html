@@ -50,14 +50,14 @@
     <meta property="og:url" content="https://mosca.deliverycraft.ai/en/" />
     <meta property="og:title" content="Mosca del WIP: the WIP limit game with a real fly brain" />
     <meta property="og:description" content="Play for a minute and watch what happens to a fly with a real brain when she has too many things started at once. With the kit for your team." />
-    <meta property="og:image" content="https://mosca.deliverycraft.ai/img/vista-previa.jpg?v=4" />
+    <meta property="og:image" content="https://mosca.deliverycraft.ai/img/vista-previa-en.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="The fly from the game at her desk, with many tasks at once, next to the question: Busy all day. So what did you finish? A 1-minute game, mosca.deliverycraft.ai." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Mosca del WIP: the WIP limit game with a real fly brain" />
     <meta name="twitter:description" content="Play for a minute and watch what happens to a fly with a real brain when she has too many things started at once. With the kit for your team." />
-    <meta name="twitter:image" content="https://mosca.deliverycraft.ai/img/vista-previa.jpg?v=4" />
+    <meta name="twitter:image" content="https://mosca.deliverycraft.ai/img/vista-previa-en.jpg" />
 
     <!-- La tipografía vive en el mismo sitio (no se pide a otro servidor) -->
     <link rel="preload" href="/fonts/mona-sans-latin-wdth.woff2" as="font" type="font/woff2" crossorigin />
@@ -211,7 +211,11 @@
              simulada) y una prueba rápida: cuántas tareas a la vez. -->
         <div class="laboratorio">
           <div class="cerebro siempre-noche" data-tareas="2">
-            <img class="cerebro-foto" src="/img/cerebro-portada.jpg" width="1000" height="1018" alt="" aria-hidden="true" decoding="async" fetchpriority="high" />
+            <!-- La foto del cerebro mientras carga el 3D: WebP (pesa un tercio) y, en celular, la versión de 800 px; el JPEG queda para navegadores viejos -->
+            <picture>
+              <source type="image/webp" srcset="/img/cerebro-portada-800.webp 800w, /img/cerebro-portada.webp 1000w" sizes="(max-width: 899px) 100vw, 50vw" />
+              <img class="cerebro-foto" src="/img/cerebro-portada.jpg" width="1000" height="1018" alt="" aria-hidden="true" decoding="async" fetchpriority="high" />
+            </picture>
             <canvas class="cerebro-lienzo" aria-hidden="true"></canvas>
           </div>
           <p class="cerebro-cuenta siempre-noche"><span class="cifra" data-neuronas>423</span> <span data-t="neuronas">neurons firing</span> <span class="origen" data-t="enSimulacion">in the simulation</span></p>

@@ -139,7 +139,8 @@ function textosParaRevisar() {
   const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   for (let n = w.nextNode(); n; n = w.nextNode()) {
     const pa = n.parentElement;
-    if (!pa || ['SCRIPT', 'STYLE'].includes(pa.tagName) || pa.closest('[data-idioma]')) continue;
+    // NOSCRIPT: el texto para buscadores sin JavaScript (Etapa 7); con JavaScript no se ve
+    if (!pa || ['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(pa.tagName) || pa.closest('[data-idioma]')) continue;
     if (n.nodeValue.trim()) out.push(n.nodeValue.trim());
   }
   for (const el of document.body.querySelectorAll('*')) {

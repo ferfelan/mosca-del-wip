@@ -1,0 +1,423 @@
+<!doctype html>
+<!-- GENERADO por scripts/paginas.mjs (Etapa 7). NO EDITAR A MANO: los cambios van en la fuente que dice ese script. -->
+<html lang="es" data-idioma-pagina="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Límite WIP: qué es y cómo encontrar el de tu equipo · Mosca del WIP</title>
+    <meta name="description" content="Qué es el trabajo en curso, por qué limitarlo y cómo elegir el límite WIP de tu equipo: un punto de partida, la prueba de dos semanas y qué hacer cuando algo espera." />
+    <meta name="theme-color" content="#060a16" />
+    <meta name="color-scheme" content="dark" />
+    <!-- Antes de dibujar: el fondo que la persona eligió (como en la portada).
+         El idioma lo decide la dirección; un enlace viejo con ?lang= va a la otra versión. -->
+    <script>
+      (function () {
+        var raiz = document.documentElement;
+        var lang = new URLSearchParams(location.search).get('lang');
+        if ((lang === 'en' || lang === 'es') && lang !== raiz.getAttribute('data-idioma-pagina')) {
+          location.replace("/en/wip-limit/" + location.hash);
+        }
+        var fondo;
+        try {
+          fondo = localStorage.getItem('mosca-fondo');
+        } catch (e) {}
+        if (fondo === 'claro') {
+          raiz.setAttribute('data-tema', 'claro');
+          document.querySelector('meta[name="theme-color"]').content = '#ffffff';
+          document.querySelector('meta[name="color-scheme"]').content = 'light';
+        }
+      })();
+    </script>
+    <link rel="icon" href="/favicon.ico?v=4" sizes="32x32" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=4" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="canonical" href="https://mosca.deliverycraft.ai/limite-wip/" />
+    <link rel="alternate" hreflang="es" href="https://mosca.deliverycraft.ai/limite-wip/" />
+    <link rel="alternate" hreflang="en" href="https://mosca.deliverycraft.ai/en/wip-limit/" />
+    <link rel="alternate" hreflang="x-default" href="https://mosca.deliverycraft.ai/limite-wip/" />
+
+    <!-- Vista previa al compartir el enlace -->
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Mosca del WIP" />
+    <meta property="og:locale" content="es_CL" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:url" content="https://mosca.deliverycraft.ai/limite-wip/" />
+    <meta property="og:title" content="Límite WIP: qué es y cómo encontrar el de tu equipo · Mosca del WIP" />
+    <meta property="og:description" content="Qué es el trabajo en curso, por qué limitarlo y cómo elegir el límite WIP de tu equipo: un punto de partida, la prueba de dos semanas y qué hacer cuando algo espera." />
+    <meta property="og:image" content="https://mosca.deliverycraft.ai/img/vista-previa-guia.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="La mosca del juego frente a su tablero kanban, junto al título: Límite WIP, qué es y cómo encontrar el de tu equipo." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Límite WIP: qué es y cómo encontrar el de tu equipo · Mosca del WIP" />
+    <meta name="twitter:description" content="Qué es el trabajo en curso, por qué limitarlo y cómo elegir el límite WIP de tu equipo: un punto de partida, la prueba de dos semanas y qué hacer cuando algo espera." />
+    <meta name="twitter:image" content="https://mosca.deliverycraft.ai/img/vista-previa-guia.jpg" />
+
+    <!-- La tipografía vive en el mismo sitio (no se pide a otro servidor) -->
+    <link rel="preload" href="/fonts/mona-sans-latin-wdth.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/src/portada.css" />
+    <link rel="stylesheet" href="/src/paginas.css" />
+    <script type="module" src="/src/pagina.js"></script>
+    <script type="module" src="/src/visitas.js"></script>
+    <!-- Datos estructurados (schema.org), solo tipos estándar -->
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://mosca.deliverycraft.ai/limite-wip/#articulo",
+      "headline": "Límite WIP: qué es y cómo encontrar el de tu equipo",
+      "description": "Qué es el trabajo en curso, por qué limitarlo y cómo elegir el límite WIP de tu equipo: un punto de partida, la prueba de dos semanas y qué hacer cuando algo espera.",
+      "inLanguage": "es",
+      "url": "https://mosca.deliverycraft.ai/limite-wip/",
+      "mainEntityOfPage": "https://mosca.deliverycraft.ai/limite-wip/",
+      "image": "https://mosca.deliverycraft.ai/img/vista-previa-guia.jpg",
+      "datePublished": "2026-10-28",
+      "dateModified": "2026-10-28",
+      "isAccessibleForFree": true,
+      "author": {
+        "@type": "Person",
+        "@id": "https://mosca.deliverycraft.ai/#felipe",
+        "name": "Felipe Fernández",
+        "url": "https://www.linkedin.com/in/felipefernandezandrade/",
+        "sameAs": [
+          "https://www.linkedin.com/in/felipefernandezandrade/"
+        ]
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://mosca.deliverycraft.ai/#deliverycraft",
+        "name": "Deliverycraft",
+        "url": "https://deliverycraft.ai/"
+      },
+      "isPartOf": {
+        "@type": "WebSite",
+        "@id": "https://mosca.deliverycraft.ai/#sitio",
+        "name": "Mosca del WIP",
+        "url": "https://mosca.deliverycraft.ai/"
+      },
+      "keywords": "límite WIP, límites WIP, trabajo en curso, trabajo en progreso, work in progress, kanban, tablero kanban, eficiencia de flujo, ley de Little, multitarea, cómo definir el límite WIP"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Mosca del WIP",
+          "item": "https://mosca.deliverycraft.ai/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Guía del límite WIP",
+          "item": "https://mosca.deliverycraft.ai/limite-wip/"
+        }
+      ]
+    },
+    {
+      "@type": "Dataset",
+      "@id": "https://mosca.deliverycraft.ai/limite-wip/#datos",
+      "name": "Mosca del WIP: un día de oficina con 1 a 10 tareas a la vez (promedio de 200 días en el juego)",
+      "description": "Para cada número de tareas en curso a la vez, de 1 a 10: cuántas termina la mosca en el día, cuánto tarda cada tarea, cuántos minutos de cada hora rinden, cuánto espera, cigarros, cafés y estrés. Promedio de 200 días simulados por cada número (semilla 2024), en el juego Mosca del WIP. Es una simulación de una mosca sola, no mide personas ni equipos.",
+      "url": "https://mosca.deliverycraft.ai/limite-wip/#datos",
+      "sameAs": "https://mosca.deliverycraft.ai/en/wip-limit/#datos",
+      "inLanguage": "es",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "isAccessibleForFree": true,
+      "creator": {
+        "@type": "Person",
+        "@id": "https://mosca.deliverycraft.ai/#felipe",
+        "name": "Felipe Fernández",
+        "url": "https://www.linkedin.com/in/felipefernandezandrade/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": "https://mosca.deliverycraft.ai/#deliverycraft",
+        "name": "Deliverycraft",
+        "url": "https://deliverycraft.ai/"
+      },
+      "datePublished": "2026-10-28",
+      "dateModified": "2026-10-28",
+      "keywords": [
+        "límite WIP",
+        "trabajo en curso",
+        "work in progress",
+        "kanban",
+        "eficiencia de flujo",
+        "ley de Little",
+        "multitarea",
+        "simulación"
+      ],
+      "variableMeasured": [
+        {
+          "@type": "PropertyValue",
+          "name": "tareas a la vez"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "terminadas por día"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "minutos por tarea"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "minutos que rinden por hora"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "minutos esperando por día"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "cigarros"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "cafés"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "estrés promedio"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "estrés máximo"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "nivel de estrés al cerrar"
+        }
+      ],
+      "distribution": [
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "text/csv",
+          "contentUrl": "https://mosca.deliverycraft.ai/datos/mosca-del-wip-1-a-10-tareas.csv",
+          "inLanguage": "es"
+        },
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "text/csv",
+          "contentUrl": "https://mosca.deliverycraft.ai/datos/mosca-del-wip-1-to-10-tasks.csv",
+          "inLanguage": "en"
+        }
+      ]
+    }
+  ]
+}
+    </script>
+  </head>
+  <body class="portada lectura-pagina guia">
+    <a class="saltar solo-lector" href="#contenido">Saltar al contenido</a>
+    <header class="barra desplazada con-nombre con-jugar" data-barra>
+      <div class="barra-dentro">
+        <a class="logo" href="/" data-inicio aria-label="Mosca del WIP: ir al inicio">
+          <svg class="marca" viewBox="0 0 32 32" width="34" height="34" aria-hidden="true" focusable="false">
+            <g fill="#fff" stroke="#fff" stroke-width="3" stroke-linejoin="round"><ellipse cx="8.9" cy="20.5" rx="3.3" ry="8.6" transform="rotate(32 8.9 20.5)"/><ellipse cx="23.1" cy="20.5" rx="3.3" ry="8.6" transform="rotate(-32 23.1 20.5)"/><ellipse cx="16" cy="7.8" rx="3.6" ry="3.2"/><circle cx="16" cy="13.4" r="4.4"/><ellipse cx="16" cy="21.9" rx="3.8" ry="6.3"/><ellipse cx="12.3" cy="6.7" rx="3.1" ry="3.8"/><ellipse cx="19.7" cy="6.7" rx="3.1" ry="3.8"/></g>
+            <g fill="#e3eef8" stroke="#5a4c40" stroke-width="1.3"><ellipse cx="8.9" cy="20.5" rx="3.3" ry="8.6" transform="rotate(32 8.9 20.5)"/><ellipse cx="23.1" cy="20.5" rx="3.3" ry="8.6" transform="rotate(-32 23.1 20.5)"/></g>
+            <g fill="#6f6052"><ellipse cx="16" cy="7.8" rx="3.6" ry="3.2"/><circle cx="16" cy="13.4" r="4.4"/><ellipse cx="16" cy="21.9" rx="3.8" ry="6.3"/></g>
+            <g fill="#e8402c"><ellipse cx="12.3" cy="6.7" rx="3.1" ry="3.8"/><ellipse cx="19.7" cy="6.7" rx="3.1" ry="3.8"/></g>
+          </svg>
+          <span class="logo-nombre">Mosca del WIP</span>
+        </a>
+        <ul class="menu-enlaces barra-paginas" aria-label="Páginas del sitio">
+          <li><a href="/limite-wip/" aria-current="page">Guía</a></li>
+          <li><a href="/informe/">Informe</a></li>
+          <li><a href="/taller/">Taller</a></li>
+        </ul>
+        <div class="pagina-ajustes">
+          <div class="selector" role="group" aria-label="Idioma">
+            <a href="/limite-wip/" data-idioma="es" lang="es" aria-label="ES: español" title="Español" hreflang="es" aria-current="page">ES</a>
+            <a href="/en/wip-limit/" data-idioma="en" lang="en" aria-label="EN: English" title="English" hreflang="en">EN</a>
+          </div>
+          <div class="selector" role="group" aria-label="Fondo">
+            <button type="button" data-fondo="oscuro" aria-pressed="true" aria-label="Fondo negro" title="Fondo negro">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>
+            </button>
+            <button type="button" data-fondo="claro" aria-pressed="false" aria-label="Fondo blanco" title="Fondo blanco">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M12 2.5v2.3M12 19.2v2.3M2.5 12h2.3M19.2 12h2.3M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+        <a class="boton principal barra-jugar" href="/jugar/" data-jugar>Jugar</a>
+      </div>
+    </header>
+
+<main class="lectura" id="contenido" tabindex="-1">
+  <nav class="migas" aria-label="Dónde estás"><ol><li><a href="/">Mosca del WIP</a></li><li aria-current="page">Guía del límite WIP</li></ol></nav>
+  <h1>Límite WIP: qué es y cómo encontrar el de tu equipo</h1>
+  <p class="pagina-bajada">Una guía corta para equipos que quieren terminar más sin trabajar más horas: qué es el trabajo en curso, por qué conviene limitarlo y cómo elegir un número para empezar. Con los datos del juego Mosca del WIP y los estudios que lo respaldan.</p>
+  <p class="pagina-meta"><span>Por <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a></span><span>Actualizada el <time datetime="2026-10-28">28 de octubre de 2026</time></span><span>Lectura de unos 12 minutos</span></p>
+
+  <nav class="indice" aria-label="En esta página">
+    <h2>En esta página</h2>
+    <ol>
+      <li><a href="#que-es">Qué es el WIP y qué es un límite WIP</a></li>
+      <li><a href="#ocupado-no-es-avanzar">Por qué estar ocupado no es lo mismo que avanzar</a></li>
+      <li><a href="#como-elegir">Cómo elegir el límite WIP de tu equipo</a></li>
+      <li><a href="#cuando-algo-espera">Qué hacer cuando algo queda esperando</a></li>
+      <li><a href="#ley-de-little">La ley de Little, en simple</a></li>
+      <li><a href="#errores-comunes">Errores comunes al poner un límite</a></li>
+      <li><a href="#estudios">Qué dicen los estudios con personas</a></li>
+      <li><a href="#datos">Los datos del juego, de 1 a 10 tareas</a></li>
+      <li><a href="#kit">El juego, el informe y el taller</a></li>
+    </ol>
+  </nav>
+
+  <section id="que-es">
+    <h2>Qué es el WIP y qué es un límite WIP</h2>
+    <p class="respuesta">WIP es la sigla de <em lang="en">work in progress</em>: el trabajo en curso, o trabajo en progreso, todo lo que un equipo ya empezó y todavía no terminó. Un límite WIP es un número máximo de cosas en curso a la vez, escrito en el tablero, que el equipo acuerda respetar.</p>
+    <p>Cuenta como trabajo en curso lo que pondrían como una tarjeta en su tablero: una tarea, un requerimiento, un caso o un proyecto, según el equipo. No cada correo ni cada subtarea. Si dos personas comparten una cosa, cuenta una vez.</p>
+    <p>La idea viene de kanban. En un tablero kanban con tres columnas, Por hacer, En curso y Hecho, el límite se escribe arriba de la columna En curso. Cuando la columna está llena, nadie empieza algo nuevo: se termina o se destraba lo que ya está adentro. Por eso un límite WIP no dice cuánto trabajo recibe el equipo. Dice cuánto tiene abierto a la vez, y lo demás espera en Por hacer, a la vista de todos.</p>
+    <p>En el juego <a href="/jugar/" data-jugar>Mosca del WIP</a> ese número se elige antes de que empiece el día, de 1 a 10. La mosca es una persona sola, así que lo que ves es lo que le pasa a alguien con muchas cosas abiertas. Lo que le pasa a un equipo lo miden ustedes, y esta guía es para eso.</p>
+  </section>
+
+  <section id="ocupado-no-es-avanzar">
+    <h2>Por qué estar ocupado no es lo mismo que avanzar</h2>
+    <p class="respuesta">Porque hay dos formas de ser eficiente: tener a todos ocupados, que se llama eficiencia de recursos, o que cada cosa avance sin esperar, que se llama eficiencia de flujo. Con muchas cosas abiertas, la gente está ocupada todo el día y cada cosa pasa la mayor parte del tiempo esperando su turno.</p>
+    <p>En el juego, la misma mosca trabajó el mismo día de oficina dos veces, y cada día se repitió 200 veces para sacar el promedio. Con 2 tareas a la vez terminó 18 y cada tarea le tomó 1 hora. Con 9 tareas a la vez terminó 9, la mitad, aunque estuvo ocupada casi todo el día, y cada tarea tardó 8 horas y 54 minutos de que empezó a que terminó.</p>
+    <div class="tabla-marco"><table class="tabla-dias">
+      <caption>En el juego, promedio de 200 días. El detalle de 1 a 10 tareas está <a href="#datos">más abajo</a>.</caption>
+      <thead><tr><th>Lo que pasó en el día</th><th class="numero">2 tareas a la vez</th><th class="numero">9 tareas a la vez</th></tr></thead>
+      <tbody>
+        <tr><td>Tareas terminadas</td><td class="numero"><b>18</b></td><td class="numero"><b>9</b></td></tr>
+        <tr><td>Tiempo por tarea, de que empieza a que termina</td><td class="numero">1 h</td><td class="numero">8 h 54 min</td></tr>
+        <tr><td>Minutos de cada hora que rinden de verdad</td><td class="numero">50</td><td class="numero">25</td></tr>
+        <tr><td>Parte del tiempo en que cada tarea avanza</td><td class="numero">47 %</td><td class="numero">9 %</td></tr>
+      </tbody>
+    </table></div>
+    <p>Esa última fila es la eficiencia de flujo: de todo el tiempo que una cosa está abierta, qué parte alguien la está trabajando de verdad. Con 9 tareas, en el juego, cada tarea avanza el 9 % del tiempo que está abierta y espera el otro 91 %. La mosca nunca está sin hacer nada, y aun así cada tarea tarda casi nueve veces más.</p>
+    <p>La multitarea tiene que ver con esto. Nadie hace dos cosas de cabeza a la vez: se cambia de una a otra, y cada cambio cuesta unos segundos de volver a ubicarse. Según estudios de laboratorio, ese costo es de décimas de segundo por cambio, y mayor si la tarea es difícil o poco conocida (<a href="https://doi.org/10.1037/0096-1523.27.4.763">Rubinstein, Meyer y Evans, 2001</a>). Parece nada, pero en un día lleno de cambios se va sumando. En el juego ese costo es una regla nuestra, suavizada a partir de una regla práctica de Weinberg, y es parte de por qué con más tareas abiertas se termina menos.</p>
+    <div class="recuadro"><p>Estar siempre ocupado no es lo mismo que avanzar. Lo que un equipo entrega sale por la columna Hecho, y esa columna no se llena abriendo más cosas.</p></div>
+    <p>Si quieres verlo antes de leer más, <a href="/jugar/" data-jugar>juega un día con 2 tareas y otro con 9</a>. Dura un minuto cada uno y el juego compara los dos al final.</p>
+  </section>
+
+  <section id="como-elegir">
+    <h2>Cómo elegir el límite WIP de tu equipo</h2>
+    <p class="respuesta">Partan con un poco menos de lo que tienen abierto hoy. Cuenten las cosas en curso en el tablero, acuerden un número algo menor, incómodo pero posible, y pruébenlo dos semanas. No hay un número correcto para todos los equipos: depende sobre todo de cuánto espera su trabajo a otras personas.</p>
+
+    <h3>El punto de partida</h3>
+    <p>Cómo definir el límite WIP la primera vez tiene menos ciencia de la que parece. Cuenten hoy, en el tablero, cuántas cosas tiene en curso el equipo. Ese es el número de partida y suele sorprender. Después elijan un límite un poco más bajo. Si discuten entre dos, prueben el más bajo que todos acepten. El número se corrige en la revisión, no en la discusión.</p>
+    <p>El juego no da un número para equipos. En la simulación, para una mosca que trabaja sola, el mejor límite quedó entre 2 y 4 en 16 de los 17 casos con esperas que probamos, y en 1 cuando nada se traba. Es un resultado de la simulación, no un número científico, y la mosca no puede pedir ayuda ni destrabar lo que espera. Un equipo sí puede, y por eso su límite es suyo.</p>
+
+    <h3>Por qué depende de las esperas</h3>
+    <p>Dos fuerzas tiran del límite en direcciones contrarias. Las esperas empujan hacia más cosas abiertas: si una se traba esperando una respuesta, conviene tener otra a mano. En el juego, con una sola tarea, la mosca pasa más de 2 horas al día sin nada que hacer cuando su única tarea se traba, y por eso con 1 termina menos que con 2. El costo de cambiar de tarea empuja hacia menos: cada salto cuesta, y mientras más cuesta, menos conviene abrir.</p>
+    <p>El límite queda entre esas dos fuerzas. Un equipo que espera mucho a otros necesita un límite algo más alto, y uno que espera poco puede bajarlo. De ahí sale la regla que más sirve:</p>
+    <div class="recuadro"><p>Reducir las esperas permite bajar el límite. Subir el límite no reduce las esperas.</p></div>
+    <p>Si el equipo quiere un límite más bajo, el camino es atacar lo que lo hace esperar: una aprobación que tarda, una persona por la que todo pasa, una respuesta que nadie da. Subir el número solo esconde esas esperas detrás de más cosas abiertas.</p>
+
+    <h3>La prueba de dos semanas</h3>
+    <p>El límite se prueba, no se discute. Escríbanlo en la columna En curso del tablero de siempre. En cada tarjeta anoten el día que empezó y el día que terminó. A las dos semanas comparen cuántas terminaron y cuánto tardó cada una con las dos semanas anteriores, y decidan si mantienen, bajan o suben el límite.</p>
+    <p>No esperen el cambio el primer día, porque lo empezado tarda en salir. En el juego, cuando la mosca baja de 10 tareas a 2 a mediodía, recién a las 14:35 vuelve a tener solo dos abiertas: las otras ocho tenían que terminar primero. En un equipo pasa lo mismo con las semanas.</p>
+    <p>Si prefieren hacerlo con una dinámica, el <a href="/taller/">taller de 60 minutos</a> lleva al equipo por estos pasos con el juego en vivo y una hoja para escribir su límite, qué hace cuando algo espera y la fecha de revisión.</p>
+  </section>
+
+  <section id="cuando-algo-espera">
+    <h2>Qué hacer cuando algo queda esperando</h2>
+    <p class="respuesta">Ataquen la espera en vez de abrir otra cosa: ayuden a destrabar lo que está detenido, consigan la respuesta que falta o terminen algo ya empezado. Si el equipo abre algo nuevo cada vez que algo espera, el límite deja de existir.</p>
+    <p>Esto es lo más difícil del límite y lo que lo hace servir. Cuando alguien llega al límite y lo suyo está esperando, lo natural es "aprovechar el tiempo" con una tarea nueva. DORA, el programa de investigación de Google sobre equipos de software, lo dice en una línea: no relajen el límite cuando hay gente sin tarea, usen ese tiempo para destrabar lo que espera (<a href="https://dora.dev/capabilities/wip-limits/">DORA, Work in process limits</a>).</p>
+    <p>Conviene acordarlo antes de que pase, como una lista corta de cosas que se hacen en vez de empezar otra: ayudar a quien tiene algo trabado, revisar o probar lo de un colega, pedir la respuesta que falta, terminar algo que quedó a medias. En el taller el equipo lo deja escrito en su hoja.</p>
+    <p>Las urgencias entran igual. Si llegan cuando el equipo está en el límite, algo se pausa y se dice en la reunión diaria. Si entran todos los días, eso es lo que hay que mirar en la revisión, porque ya no son urgencias sino parte del trabajo. <span class="origen">sugerencia</span></p>
+  </section>
+
+  <section id="ley-de-little">
+    <h2>La ley de Little, en simple</h2>
+    <p class="respuesta">La ley de Little dice que el tiempo que una cosa pasa en el sistema es igual a cuántas cosas hay adentro dividido por cuántas salen por unidad de tiempo. Si el equipo termina lo mismo por semana y tiene el doble abierto, cada cosa tarda el doble.</p>
+    <p>Un ejemplo. Un equipo termina 5 cosas a la semana y tiene 10 abiertas: cada una tarda, en promedio, 2 semanas de que empieza a que termina. Si abre 20 y sigue terminando 5 a la semana, cada una tarda 4 semanas. No cambió cuánto trabaja el equipo, solo cuánto tiene abierto.</p>
+    <p>No es una opinión ni un hallazgo de un estudio: es un teorema, publicado por John Little en 1961, y vale para cualquier sistema estable, desde una fila en un banco hasta un tablero kanban (<a href="https://pubsonline.informs.org/doi/10.1287/opre.1110.0940">Little, 2011, sobre sus 50 años</a>). En el juego se cumple sola: con 2 tareas, 1 hora por tarea; con 9, casi 9 horas.</p>
+    <p>Lo útil de la ley es que da el único camino para que las cosas salgan antes sin trabajar más: tener menos abierto. Que además se termine menos con muchas cosas abiertas, como en el juego, ya no es la ley de Little sino el costo de cambiar de tarea y el estrés.</p>
+  </section>
+
+  <section id="errores-comunes">
+    <h2>Errores comunes al poner un límite</h2>
+    <p class="respuesta">Los más frecuentes son subir el límite apenas alguien queda esperando, poner un número y no volver a mirarlo, y contar como trabajo en curso cosas que no van en el tablero.</p>
+    <ul>
+      <li><strong>Subir el límite cuando alguien queda esperando.</strong> Es la salida fácil y borra el límite. La espera sigue ahí, con más cosas abiertas encima.</li>
+      <li><strong>Poner un número y no mirarlo.</strong> Un límite sin fecha de revisión se olvida en dos semanas. Pongan la revisión en una reunión que ya tengan.</li>
+      <li><strong>Contar cada correo o cada subtarea.</strong> El límite es sobre tarjetas del tablero. Si cuentan todo, el número no significa nada.</li>
+      <li><strong>Buscar el número correcto antes de probar.</strong> No existe. Un número algo menor que el de hoy, probado dos semanas, enseña más que una hora de discusión.</li>
+      <li><strong>Esperar resultados el primer día.</strong> Lo empezado tarda en salir. Las primeras semanas se ven las cosas viejas terminando, y recién después se nota el ritmo nuevo.</li>
+      <li><strong>Dejar las urgencias fuera del tablero.</strong> Si entran por fuera, el límite no las ve y el equipo tampoco. Todo pasa por el tablero, aunque entre saltándose la fila.</li>
+      <li><strong>Usar el límite para medir personas.</strong> Es una herramienta del equipo para terminar antes, no un indicador de quién rinde. Si se usa para eso, la gente esconde trabajo.</li>
+    </ul>
+  </section>
+
+  <section id="estudios">
+    <h2>Qué dicen los estudios con personas</h2>
+    <p class="respuesta">Ningún estudio con personas da un número de cosas a la vez. Los que encontramos apuntan en la misma dirección: pasado cierto punto, con más cosas abiertas cada una tarda más, y a veces se termina menos.</p>
+    <ul>
+      <li><strong>Jueces en Italia.</strong> En los tribunales laborales de Milán un sorteo repartía las causas. Los jueces que por azar llevaban más juicios abiertos a la vez tardaron más en cerrarlos, y la calidad de sus fallos no cambió. Es el estudio más cercano a un experimento, porque el sorteo decidía quién recibía más. <a href="https://doi.org/10.1257/aer.104.2.609">Coviello, Ichino y Persico, 2014, American Economic Review</a> y <a href="https://doi.org/10.1111/jeea.12129">2015, Journal of the European Economic Association</a>.</li>
+      <li><strong>Reclutadores.</strong> Un poco de trabajo en paralelo ayudó a terminar más, pero pasado un punto terminaron menos. <a href="https://ide.mit.edu/wp-content/uploads/2016/04/2011.09_Aral_Brynjolfsson_Van-Alstyne_Information-Technology-and-Information-Worker-Productivity_277.pdf">Aral, Brynjolfsson y Van Alstyne, 2012, Information Systems Research</a>.</li>
+      <li><strong>Equipos de investigación.</strong> Los equipos cuyos miembros estaban en muy pocos o en demasiados equipos a la vez rindieron menos que los de un punto intermedio. Mide en cuántos equipos está cada persona, no tareas abiertas. <a href="https://doi.org/10.1016/j.respol.2015.01.019">Bertolotti y otros, 2015, Research Policy</a>.</li>
+      <li><strong>Encuestas grandes a equipos de software.</strong> Limitar el trabajo en curso es uno de los hábitos de los equipos de alto desempeño, y ayuda sobre todo junto a un tablero visible y retroalimentación de lo que pasa en producción. Por sí solo, el límite predice poco. <a href="https://dora.dev/capabilities/wip-limits/">DORA, Work in process limits</a>, y Forsgren, Humble y Kim, <em>Accelerate</em> (2018).</li>
+      <li><strong>Un equipo real con tablero y límites.</strong> Una empresa de software noruega pasó a trabajar con un tablero y límites de trabajo en curso, y el tiempo para resolver un error bajó de 12 a 5 días. Es un solo caso. <a href="https://www.mn.uio.no/ifi/personer/vit/dagsj/sjoberg.johnsen.solberg.ieee.sw.pdf">Sjøberg, Johnsen y Solberg, 2012, IEEE Software</a>.</li>
+      <li><strong>Horas largas que rinden menos.</strong> En fábricas de municiones británicas de la Primera Guerra Mundial, pasado cierto punto cada hora extra rendía menos: quienes trabajaban 70 horas a la semana producían casi lo mismo que quienes trabajaban 56. <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/ecoj.12166">Pencavel, 2015, The Economic Journal</a>.</li>
+    </ul>
+    <p>Ninguno de estos estudios es un experimento de laboratorio. El de los jueces se acerca, porque un sorteo decidía quién recibía más causas. Los demás muestran que las cosas van juntas, pero no prueban la causa. El <a href="/informe/">informe</a> cuenta cada uno con más detalle y dice qué parte de cada número del juego es nuestra.</p>
+  </section>
+
+  <section id="datos">
+    <h2>Los datos del juego, de 1 a 10 tareas</h2>
+    <p class="respuesta">En el juego no hay un número donde todo se rompe: cada tarea extra cuesta un poco más. Con 2 tareas a la vez la mosca termina más que con cualquier otro número, y hasta 3 cierra el día tranquila. Desde 4 empiezan el estrés y los cigarros, y lo terminado cae a la mitad recién con 9.</p>
+    <div class="tabla-marco ancho"><table class="tabla-dias">
+  <caption>En el juego: promedio de 200 días por cada número de tareas (simulación, semilla 2024). Tiempo por tarea en horas de oficina, de que empieza a que termina. Con fondo, el 2 (verde, la que más termina) y el 9 (rojo, la sobrecarga).</caption>
+  <thead><tr><th>Tareas a la vez</th><th class="numero">Terminadas en el día</th><th class="numero">Tiempo por tarea</th><th class="numero">Rinden, de cada hora</th><th class="numero">Esperando, por día</th><th class="numero">Cigarros</th><th class="numero">Cafés</th><th>Estrés al cerrar</th></tr></thead>
+  <tbody>
+<tr><td>1</td><td class="numero"><b>15,9</b></td><td class="numero">34 min</td><td class="numero">44 min</td><td class="numero">134 min</td><td class="numero">0</td><td class="numero">6</td><td class="nivel-tranquila">Tranquila</td></tr>
+<tr class="mejor"><td>2 · la que más termina</td><td class="numero"><b>18,0</b></td><td class="numero">1 h 00 min</td><td class="numero">50 min</td><td class="numero">20 min</td><td class="numero">0</td><td class="numero">5</td><td class="nivel-tranquila">Tranquila</td></tr>
+<tr><td>3</td><td class="numero"><b>16,9</b></td><td class="numero">1 h 36 min</td><td class="numero">47 min</td><td class="numero">2 min</td><td class="numero">0</td><td class="numero">4</td><td class="nivel-tranquila">Tranquila</td></tr>
+<tr><td>4</td><td class="numero"><b>15,4</b></td><td class="numero">2 h 20 min</td><td class="numero">43 min</td><td class="numero">0 min</td><td class="numero">1</td><td class="numero">3</td><td class="nivel-ocupada">Ocupada</td></tr>
+<tr><td>5</td><td class="numero"><b>14,0</b></td><td class="numero">3 h 14 min</td><td class="numero">39 min</td><td class="numero">0 min</td><td class="numero">3</td><td class="numero">1</td><td class="nivel-ocupada">Ocupada</td></tr>
+<tr><td>6</td><td class="numero"><b>12,3</b></td><td class="numero">4 h 24 min</td><td class="numero">34 min</td><td class="numero">0 min</td><td class="numero">6</td><td class="numero">0</td><td class="nivel-estresada">Estresada</td></tr>
+<tr><td>7</td><td class="numero"><b>11,2</b></td><td class="numero">5 h 40 min</td><td class="numero">31 min</td><td class="numero">0 min</td><td class="numero">8</td><td class="numero">0</td><td class="nivel-estresada">Estresada</td></tr>
+<tr><td>8</td><td class="numero"><b>10,0</b></td><td class="numero">7 h 11 min</td><td class="numero">28 min</td><td class="numero">0 min</td><td class="numero">11</td><td class="numero">0</td><td class="nivel-colapsada">Colapsada</td></tr>
+<tr class="sobre"><td>9 · sobrecarga</td><td class="numero"><b>9,1</b></td><td class="numero">8 h 54 min</td><td class="numero">25 min</td><td class="numero">0 min</td><td class="numero">13</td><td class="numero">0</td><td class="nivel-colapsada">Colapsada</td></tr>
+<tr><td>10</td><td class="numero"><b>8,2</b></td><td class="numero">10 h 34 min</td><td class="numero">23 min</td><td class="numero">0 min</td><td class="numero">15</td><td class="numero">0</td><td class="nivel-colapsada">Colapsada</td></tr>
+  </tbody>
+</table></div>
+    <p>Cada fila es el promedio de 200 días simulados con ese número de tareas abiertas a la vez. El letrero de la oficina del juego dice "hasta 3" porque mide el estrés, y hasta ahí la mosca aguanta el día entero. La tabla mide lo terminado, y ahí gana el 2 por una tarea al día. Esa diferencia viene del costo de cambiar de tarea, que es un supuesto nuestro, así que el juego habla de "hasta 3" y no de un solo número.</p>
+    <p>Los datos están libres para usar, con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>, citando a Felipe Fernández y mosca.deliverycraft.ai. Son una simulación de una mosca sola: no miden personas ni equipos.</p>
+    <ul class="descargas-pagina">
+      <li><a href="/datos/mosca-del-wip-1-a-10-tareas.csv" download="mosca-del-wip-1-a-10-tareas.csv"><b>Descargar los datos (CSV, en español)</b><span>Diez filas, una por número de tareas, con las columnas de la tabla y el estrés promedio y máximo.</span></a></li>
+      <li><a href="/datos/mosca-del-wip-1-to-10-tasks.csv" download="mosca-del-wip-1-to-10-tasks.csv"><b>Download the data (CSV, in English)</b><span>The same ten rows, with the column names in English.</span></a></li>
+    </ul>
+    <p class="nota">De dónde sale cada regla del juego y qué parte de cada número es nuestra está en el anexo B del <a href="/informe/#numeros">informe</a>.</p>
+  </section>
+
+  <section id="kit">
+    <h2>El juego, el informe y el taller</h2>
+    <p>Todo lo de esta guía se puede ver en un minuto, leer con calma o probar con tu equipo.</p>
+    <ul class="enlaces-kit"><li><a href="/jugar/" data-jugar><b>El juego</b><span>Un día de oficina en un minuto, con 1 a 10 tareas a la vez.</span></a></li><li><a href="/informe/"><b>El informe</b><span>De dónde sale cada número y qué dicen los estudios.</span></a></li><li><a href="/taller/"><b>El taller</b><span>Una dinámica de 60 minutos para que tu equipo elija su límite.</span></a></li></ul>
+  </section>
+
+  <aside class="autor" data-revisar="felipe" aria-label="Sobre el autor">
+  <!-- REVISAR (Felipe): este texto lo escribí yo con lo que había en el proyecto. Sin nombres de empresas donde trabaja. -->
+  <div class="inicial" aria-hidden="true">F</div>
+  <div>
+    <h2>Quién escribe</h2>
+    <p><a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a>, coach de equipos con más de seis años de experiencia y cofundador de <a href="https://deliverycraft.ai">Deliverycraft</a>. Hizo el juego, la simulación y este sitio.</p>
+  </div>
+</aside>
+</main>
+
+
+    <footer class="pie">
+      <p>Hecho por <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a> · <a href="https://deliverycraft.ai">deliverycraft.ai</a></p>
+      <p>Sin cookies. Solo contamos visitas, sin identificar a nadie.</p>
+      <ul class="pie-mapa" aria-label="Páginas del sitio">
+        <li><a href="/jugar/" data-jugar>El juego</a></li>
+        <li><a href="/limite-wip/">Guía del límite WIP</a></li>
+        <li><a href="/informe/">El informe</a></li>
+        <li><a href="/taller/">El taller</a></li>
+        <li><a href="/creditos/">Créditos y licencias</a></li>
+        <li><a href="/" data-inicio>Inicio</a></li>
+      </ul>
+      <p class="pie-derechos">© 2026 Felipe Fernández. Todos los derechos reservados. Los datos del cerebro son del Male CNS v1.0, con licencia CC BY 4.0.</p>
+    </footer>
+  </body>
+</html>

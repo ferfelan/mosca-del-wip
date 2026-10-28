@@ -25,6 +25,8 @@ function ponerIdioma(nuevo) {
   document.title = TITULO_PESTANA[idioma];
   for (const enlace of document.querySelectorAll('[data-jugar]')) enlace.href = rutaEnIdioma('/jugar/', idioma);
   for (const enlace of document.querySelectorAll('[data-inicio]')) enlace.href = rutaEnIdioma('/', idioma);
+  // las páginas con dirección propia en inglés (la guía, el informe, el taller)
+  for (const enlace of document.querySelectorAll('[data-ruta]')) enlace.href = rutaEnIdioma(enlace.dataset.ruta, idioma);
   for (const boton of botonesIdioma) boton.setAttribute('aria-pressed', String(boton.dataset.idioma === idioma));
   marcarIdioma(idioma);
   document.documentElement.classList.remove('traduciendo');

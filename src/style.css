@@ -2288,6 +2288,9 @@ tr.mejor-dia td:last-child {
   color: var(--tinta-tenue);
   text-align: center;
 }
+/* El enlace a la guía del límite WIP (Etapa 7): en la misma nota, sin tapar nada */
+.nota-ilustrativa a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.nota-ilustrativa a:hover { color: var(--tinta); }
 
 .atajos kbd {
   display: inline-block;

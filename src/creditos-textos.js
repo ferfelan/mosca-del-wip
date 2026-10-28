@@ -17,6 +17,12 @@ export const INGLES = {
   hechoPor: PORTADA.hechoPor,
   sinCookies: PORTADA.sinCookies,
   derechos: '© 2026 Felipe Fernández. All rights reserved. The brain data come from Male CNS v1.0, licensed CC BY 4.0.',
+  pieMapa: PORTADA.pieMapa,
+  pieJuego: PORTADA.pieJuego,
+  pieGuia: PORTADA.pieGuia,
+  pieInforme: PORTADA.pieInforme,
+  pieTaller: PORTADA.pieTaller,
+  pieInicio: 'Home',
 
   // La página
   tituloPagina: 'Credits and licenses · Mosca del WIP',

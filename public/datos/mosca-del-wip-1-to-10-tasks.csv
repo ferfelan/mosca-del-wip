@@ -1,0 +1,15 @@
+# Mosca del WIP: an office day with 1 to 10 tasks at once. Average of 200 days per number, in the game (simulation, seed 2024).
+# Each row: how many tasks the fly has in progress at once; how many she finishes in the day; office minutes each task takes from start to finish;
+# minutes of every hour that really get work done; idle minutes per day; cigarettes; coffees; average and maximum stress (0 to 100); stress level at the end of the day.
+# Author: Felipe Fernández. License CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Source: https://mosca.deliverycraft.ai/en/wip-limit/#datos
+tasks_at_once,finished_per_day,minutes_per_task,productive_minutes_per_hour,idle_minutes_per_day,cigarettes,coffees,average_stress,max_stress,stress_level_at_close
+1,15.885,34.128,43.872,134.038,0,6,5.494,10,Calm
+2,17.99,60.07,49.777,19.781,0,5,10,10,Calm
+3,16.895,96.002,46.692,2.452,0,4,17.409,18,Calm
+4,15.405,140.387,42.616,0.065,1,3,30.373,37,Busy
+5,13.96,193.7,38.574,0,3,1,41.486,49,Busy
+6,12.315,264.201,34.152,0,6,0,53.503,62,Stressed
+7,11.15,340.471,30.774,0,8,0,63.712,73,Stressed
+8,9.96,431.039,27.623,0,11,0,78.529,89,Overwhelmed
+9,9.14,533.637,25.173,0,13,0,85.937,97,Overwhelmed
+10,8.165,633.805,23.249,0,15,0,92.789,100,Overwhelmed

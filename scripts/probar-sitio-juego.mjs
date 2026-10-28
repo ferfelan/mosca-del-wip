@@ -83,7 +83,7 @@ for (const idioma of ['es', 'en']) {
   await p.click('.volver-inicio-barra');
   await p.waitForSelector('#salir-juego[open]');
   await p.click('#btn-salir-juego');
-  await p.waitForURL((u) => u.pathname === '/', { timeout: 10000 });
+  await p.waitForURL((u) => u.pathname === esperado.ruta, { timeout: 10000 });
   await p.waitForLoadState('networkidle');
   let u = new URL(p.url());
   let lang = await p.evaluate(() => document.documentElement.lang);
@@ -93,7 +93,7 @@ for (const idioma of ['es', 'en']) {
   await p.click('#volver-inicio');
   await p.waitForSelector('#salir-juego[open]');
   await p.click('#btn-salir-juego');
-  await p.waitForURL((u) => u.pathname === '/', { timeout: 10000 });
+  await p.waitForURL((u) => u.pathname === esperado.ruta, { timeout: 10000 });
   await p.waitForLoadState('networkidle');
   u = new URL(p.url());
   lang = await p.evaluate(() => document.documentElement.lang);

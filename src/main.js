@@ -1203,6 +1203,8 @@ for (const boton of botonesIdioma) boton.addEventListener('click', () => cambiar
 // idioma del juego (5.2i): en inglés, /?lang=en
 function ponerEnlacesInicio() {
   for (const a of document.querySelectorAll('.volver-inicio, #cel-volver, #btn-salir-juego')) a.setAttribute('href', rutaEnIdioma('/', idioma));
+  // el enlace a la guía del límite WIP, en el panel (Etapa 7): /limite-wip/ o /en/wip-limit/
+  for (const a of document.querySelectorAll('[data-guia]')) a.setAttribute('href', rutaEnIdioma('/limite-wip/', idioma));
 }
 
 // Antes de ir a la portada, el juego pregunta (2026-10-28, pedido de Felipe:

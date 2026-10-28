@@ -355,17 +355,41 @@ function cuadro(t) {
   else ultimo = 0;
 }
 
+// Si la persona se va de la portada mientras el cerebro todavía baja (tocó un
+// enlace que cambia de página), la descarga se corta ahí mismo: así no quedan
+// cargas a medias, que Safari anota como errores en la consola (Etapa 7).
+// Los enlaces que no cambian de página (anclas, descargas, otra pestaña, o
+// los que el propio JavaScript frena) no cortan nada.
+let corte = new AbortController();
+document.addEventListener('click', (e) => {
+  const enlace = e.target.closest?.('a[href]');
+  if (!enlace || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  if (enlace.target === '_blank' || enlace.hasAttribute('download') || enlace.getAttribute('href').startsWith('#')) return;
+  corte.abort();
+});
+addEventListener('pagehide', () => corte.abort());
+// Si vuelve con "atrás" y el navegador trae la página guardada tal cual, la
+// carga que se había cortado parte de nuevo
+addEventListener('pageshow', (e) => {
+  if (!e.persisted || !corte.signal.aborted || cerebro) return;
+  corte = new AbortController();
+  despues(encenderCerebro, { timeout: 1200 });
+});
+
 async function encenderCerebro() {
+  const senal = corte.signal;
+  if (senal.aborted) return;
   if (!hayWebGL()) {
     subidaSola();
     return;
   }
   try {
     const { cargarDatosCerebro, cargarActividadReal, crearCerebro } = await import('./cerebro.js');
-    const datos = await cargarDatosCerebro();
-    const real = await cargarActividadReal(datos);
+    const datos = await cargarDatosCerebro({ signal: senal });
+    const real = await cargarActividadReal(datos, { signal: senal });
     cerebro = crearCerebro(lienzo, datos, real);
   } catch (error) {
+    if (senal.aborted) return; // la página se está yendo: no hay nada que mostrar
     console.warn('El cerebro no cargó; queda la foto fija.', error);
     subidaSola();
     return;

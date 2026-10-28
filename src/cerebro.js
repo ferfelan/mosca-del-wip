@@ -47,11 +47,12 @@ const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
 const amortiguar = (actual, objetivo, rapidez, dt) => lerp(actual, objetivo, 1 - Math.exp(-rapidez * dt));
 
 // Los 25.000 puntos de siempre (también los usa la portada holograma del PDF)
-export async function cargarDatosCerebro() {
+// `signal` (opcional) corta la descarga si la página se va antes de terminar (la portada lo usa)
+export async function cargarDatosCerebro({ signal } = {}) {
   const base = import.meta.env.BASE_URL;
   const [info, binario] = await Promise.all([
-    fetch(`${base}cerebro/malecns-info.json`).then((r) => r.json()),
-    fetch(`${base}cerebro/malecns-puntos.bin`).then((r) => r.arrayBuffer()),
+    fetch(`${base}cerebro/malecns-info.json`, { signal }).then((r) => r.json()),
+    fetch(`${base}cerebro/malecns-puntos.bin`, { signal }).then((r) => r.arrayBuffer()),
   ]);
   const n = info.puntos;
   const enteros = new Int16Array(binario, 0, n * 3);
@@ -65,12 +66,12 @@ export async function cargarDatosCerebro() {
 // La actividad simulada: suma los puntos extra (el circuito y todas las
 // neuronas que se encienden en alguna situación), el brillo y los Hz de cada
 // punto en cada situación, las fichas y el recorrido real de la señal.
-export async function cargarActividadReal(datos) {
+export async function cargarActividadReal(datos, { signal } = {}) {
   const base = import.meta.env.BASE_URL;
   const [meta, extra, act] = await Promise.all([
-    fetch(`${base}cerebro/actividad-real.json`).then((r) => r.json()),
-    fetch(`${base}cerebro/puntos-extra.bin`).then((r) => r.arrayBuffer()),
-    fetch(`${base}cerebro/actividad-real.bin`).then((r) => r.arrayBuffer()),
+    fetch(`${base}cerebro/actividad-real.json`, { signal }).then((r) => r.json()),
+    fetch(`${base}cerebro/puntos-extra.bin`, { signal }).then((r) => r.arrayBuffer()),
+    fetch(`${base}cerebro/actividad-real.bin`, { signal }).then((r) => r.arrayBuffer()),
   ]);
   const nBase = datos.info.puntos;
   const nExtra = meta.puntos_extra;

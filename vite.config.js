@@ -5,9 +5,12 @@
 //   /jugar/      jugar/index.html      el juego (un solo idioma por dirección:
 //                                      ?lang=en lo pone en inglés)
 //   /creditos/   creditos/index.html   créditos y licencias (?lang=en)
-//   /limite-wip/ y /en/wip-limit/      la guía del límite WIP (Etapa 7)
-//   /informe/ y /en/report/            el informe para leer en la web (Etapa 7)
-//   /taller/ y /en/workshop/           el taller (Etapa 7)
+//   /limite-wip/ y /en/wip-limit/      la guía del límite WIP (Etapa 7; GENERADA
+//                                      por scripts/paginas.mjs desde docs/paginas/)
+//   /informe/ y /en/report/            el informe para leer en la web (Etapa 7;
+//                                      GENERADO por scripts/informe-web.mjs desde
+//                                      docs/contexto/compartir(-en).html)
+//   /taller/ y /en/workshop/           el taller (Etapa 7; GENERADO por paginas.mjs)
 //   404.html                           la página "no encontrada" (Vercel la
 //                                      sirve sola para direcciones que no existen)
 // El juego no cambia: solo vive en otra dirección. Los archivos de public/
@@ -25,11 +28,15 @@ export default defineConfig({
         portadaEn: pagina('en/index.html'),
         jugar: pagina('jugar/index.html'),
         creditos: pagina('creditos/index.html'),
-        // PENDIENTE (Etapa 7, parte 2): cuando existan, agregar aquí
-        //   guia: pagina('limite-wip/index.html'), guiaEn: pagina('en/wip-limit/index.html'),
-        //   informe: pagina('informe/index.html'), informeEn: pagina('en/report/index.html'),
-        //   taller: pagina('taller/index.html'), tallerEn: pagina('en/workshop/index.html'),
-        //   noEncontrada: pagina('404.html')
+        // Etapa 7 (2026-10-28): páginas GENERADAS por scripts/paginas.mjs e
+        // informe-web.mjs (corren solos antes de dev y build): no editarlas a mano
+        guia: pagina('limite-wip/index.html'),
+        guiaEn: pagina('en/wip-limit/index.html'),
+        informe: pagina('informe/index.html'),
+        informeEn: pagina('en/report/index.html'),
+        taller: pagina('taller/index.html'),
+        tallerEn: pagina('en/workshop/index.html'),
+        noEncontrada: pagina('404.html'),
       },
     },
     // three.js pesa más de 500 kB a propósito: el aviso no aporta

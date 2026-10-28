@@ -112,10 +112,10 @@ for (const [w, h] of TAMANOS) for (const idioma of ['es', 'en']) {
   await p.click('.volver-inicio-barra');
   await p.waitForSelector('#salir-juego[open]');
   await p.click('#btn-salir-juego');
-  await p.waitForURL((u) => u.pathname === '/', { timeout: 10000 });
+  await p.waitForURL((u) => u.pathname === (idioma === 'en' ? '/en/' : '/'), { timeout: 10000 }); // la portada en inglés vive en /en/ (Etapa 7)
   await p.waitForTimeout(500);
   const url1 = new URL(p.url());
-  ok(url1.search === (idioma === 'en' ? '?lang=en' : ''), `${tag} exhibición: llegó a ${url1.pathname}${url1.search}`);
+  ok(url1.pathname === (idioma === 'en' ? '/en/' : '/') && url1.search === '', `${tag} exhibición: llegó a ${url1.pathname}${url1.search}`);
   ok((await p.evaluate(() => document.documentElement.lang)) === idioma, `${tag}: la portada no está en ${idioma}`);
   await p.goto(JUEGO + (idioma === 'en' ? '?lang=en' : ''), { waitUntil: 'networkidle' });
   await p.waitForFunction(() => window.__mosca && window.__mosca.cerebro());
@@ -126,9 +126,9 @@ for (const [w, h] of TAMANOS) for (const idioma of ['es', 'en']) {
   await p.click('#volver-inicio');
   await p.waitForSelector('#salir-juego[open]');
   await p.click('#btn-salir-juego');
-  await p.waitForURL((u) => u.pathname === '/', { timeout: 10000 });
+  await p.waitForURL((u) => u.pathname === (idioma === 'en' ? '/en/' : '/'), { timeout: 10000 }); // la portada en inglés vive en /en/ (Etapa 7)
   const url2 = new URL(p.url());
-  ok(url2.search === (idioma === 'en' ? '?lang=en' : ''), `${tag} control: llegó a ${url2.pathname}${url2.search}`);
+  ok(url2.pathname === (idioma === 'en' ? '/en/' : '/') && url2.search === '', `${tag} control: llegó a ${url2.pathname}${url2.search}`);
   await ctx.close();
   console.log(`${tag}: listo`);
 }

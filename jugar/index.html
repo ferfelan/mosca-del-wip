@@ -38,28 +38,71 @@
     <!-- Android y los demás celulares: nombre e íconos para la pantalla de inicio -->
     <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mosca del WIP</title>
-    <meta name="description" content="Un juego con el cerebro de una mosca real para ver qué pasa cuando tienes demasiadas cosas abiertas a la vez. Estar siempre ocupado no es lo mismo que avanzar." />
+    <title>Juego del límite WIP: la mosca con cerebro real · Mosca del WIP</title>
+    <meta name="description" content="Elige cuántas tareas tiene la mosca a la vez, de 1 a 10, y mira cuántas termina y cuánto se estresa. Juego gratis de 1 minuto con el cerebro de una mosca real." />
     <link rel="canonical" href="https://mosca.deliverycraft.ai/jugar/" />
-    <!-- Vista previa si alguien comparte el enlace del juego (la misma de la portada) -->
+    <!-- Vista previa si alguien comparte el enlace del juego (propia desde la Etapa 7: scripts/vistas-previas.mjs) -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Mosca del WIP" />
     <meta property="og:locale" content="es_CL" />
     <meta property="og:url" content="https://mosca.deliverycraft.ai/jugar/" />
-    <meta property="og:title" content="Mosca del WIP" />
-    <meta property="og:description" content="Un juego con el cerebro de una mosca real para ver qué pasa cuando tienes demasiadas cosas abiertas a la vez. Estar siempre ocupado no es lo mismo que avanzar." />
-    <meta property="og:image" content="https://mosca.deliverycraft.ai/img/vista-previa.jpg?v=3" />
+    <meta property="og:title" content="Mosca del WIP: un día de oficina con 1 a 10 tareas a la vez" />
+    <meta property="og:description" content="Elige cuántas tareas tiene la mosca a la vez, de 1 a 10, y mira cuántas termina y cuánto se estresa. Juego gratis de 1 minuto con el cerebro de una mosca real." />
+    <meta property="og:image" content="https://mosca.deliverycraft.ai/img/vista-previa-juego.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Las neuronas de una mosca real, encendidas en colores sobre fondo de noche, junto al título Mosca del WIP: estar siempre ocupado no es lo mismo que avanzar." />
+    <meta property="og:image:alt" content="La mosca del juego en su oficina, con su tablero kanban y las neuronas encendidas, junto al título: Mosca del WIP, un día de oficina con 1 a 10 tareas a la vez." />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Mosca del WIP" />
-    <meta name="twitter:description" content="Un juego con el cerebro de una mosca real para ver qué pasa cuando tienes demasiadas cosas abiertas a la vez." />
-    <meta name="twitter:image" content="https://mosca.deliverycraft.ai/img/vista-previa.jpg?v=3" />
+    <meta name="twitter:title" content="Mosca del WIP: un día de oficina con 1 a 10 tareas a la vez" />
+    <meta name="twitter:description" content="Elige cuántas tareas tiene la mosca a la vez, de 1 a 10, y mira cuántas termina y cuánto se estresa. Juego gratis de 1 minuto con el cerebro de una mosca real." />
+    <meta name="twitter:image" content="https://mosca.deliverycraft.ai/img/vista-previa-juego.jpg" />
     <!-- Conteo de visitas sin cookies (Vercel Web Analytics); no toca el juego. -->
     <script type="module" src="/src/visitas.js"></script>
+    <!-- Datos estructurados (schema.org): el juego y dónde está en el sitio -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "VideoGame",
+          "@id": "https://mosca.deliverycraft.ai/jugar/#juego",
+          "name": "Mosca del WIP",
+          "url": "https://mosca.deliverycraft.ai/jugar/",
+          "description": "Una mosca oficinista con cerebro real pasa un día en la oficina. Eliges cuántas tareas tiene en curso a la vez, de 1 a 10, y ves cuántas termina, cuánto tarda cada una y cuánto se estresa. Un juego de un minuto para enseñar el límite WIP.",
+          "genre": "Educational",
+          "applicationCategory": "Game",
+          "gamePlatform": "Web browser",
+          "operatingSystem": "Any",
+          "playMode": "SinglePlayer",
+          "inLanguage": ["es", "en"],
+          "isAccessibleForFree": true,
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
+          "image": "https://mosca.deliverycraft.ai/img/vista-previa-juego.jpg",
+          "author": { "@type": "Person", "@id": "https://mosca.deliverycraft.ai/#felipe", "name": "Felipe Fernández", "url": "https://www.linkedin.com/in/felipefernandezandrade/", "sameAs": ["https://www.linkedin.com/in/felipefernandezandrade/"] },
+          "publisher": { "@type": "Organization", "@id": "https://mosca.deliverycraft.ai/#deliverycraft", "name": "Deliverycraft", "url": "https://deliverycraft.ai/" },
+          "datePublished": "2026-10-24",
+          "dateModified": "2026-10-28"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Mosca del WIP", "item": "https://mosca.deliverycraft.ai/" },
+            { "@type": "ListItem", "position": 2, "name": "El juego", "item": "https://mosca.deliverycraft.ai/jugar/" }
+          ]
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
+    <!-- Lo que ven quienes llegan sin JavaScript (y los buscadores que no lo
+         corren): qué es el juego y a dónde ir mientras tanto. Nada de esto
+         se ve con el juego andando. -->
+    <noscript>
+      <p style="margin: 24px; max-width: 60ch; font-size: 17px; line-height: 1.6">
+        Mosca del WIP es un juego gratis en el navegador: una mosca oficinista con cerebro real pasa un día en la oficina y tú eliges cuántas tareas tiene en curso a la vez, de 1 a 10. Con pocas termina más y tranquila; con muchas, cada tarea tarda más y la mosca colapsa. Para jugar hace falta JavaScript; mientras tanto puedes leer la <a href="/limite-wip/">guía del límite WIP</a> o el <a href="/informe/">informe</a> de dónde sale cada número.
+      </p>
+    </noscript>
     <header id="barra-exhibicion" class="solo-exhibicion">
       <!-- "← Inicio" vuelve a la portada (5.2i). El enlace sí se lee con lector
            de pantalla; el título y los atajos siguen fuera de él, como antes -->
@@ -230,7 +273,7 @@
         <p class="atajos" aria-label="Atajos de teclado">
           <kbd>Espacio</kbd>&nbsp;pausa · <kbd>R</kbd>&nbsp;reinicia · <kbd>1–9</kbd>&nbsp;WIP · <kbd>E</kbd>&nbsp;exhibición · <kbd>B</kbd>&nbsp;cerebro · <kbd>C</kbd>&nbsp;controles
         </p>
-        <p class="nota-ilustrativa">Números del juego. Que cada tarea tarde más tiene respaldo; el estrés es un supuesto nuestro.</p>
+        <p class="nota-ilustrativa">Números del juego. Que cada tarea tarde más tiene respaldo; el estrés es un supuesto nuestro. <a href="/limite-wip/" data-guia>Cómo elegir el límite de tu equipo</a></p>
       </section>
     </aside>
 

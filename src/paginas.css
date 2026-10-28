@@ -263,3 +263,97 @@
 @media (prefers-reduced-motion: no-preference) {
   html { scroll-behavior: smooth; }
 }
+
+/* ---------- La barra en las páginas de lectura (Etapa 7) ----------
+   Como en los créditos: siempre con fondo, y con las tres páginas (Guía,
+   Informe y Taller) a la vista en pantallas anchas */
+body.lectura-pagina .barra { position: sticky; }
+.pagina-ajustes { display: flex; gap: 8px; margin-left: auto; }
+.barra-paginas { display: none; }
+@media (min-width: 1100px) {
+  .barra-paginas { display: flex; margin-left: 12px; }
+  .barra-paginas a[aria-current='page'] { color: var(--tinta); }
+  .barra-paginas a[aria-current='page']::after { opacity: 1; transform: none; }
+}
+@media (max-width: 599px) {
+  body.lectura-pagina .logo-nombre { display: none; }
+}
+/* En celular, el texto de "Jugar" de la barra es más corto de ancho */
+@media (max-width: 420px) {
+  body.lectura-pagina .barra .boton.barra-jugar { padding: 0 14px; }
+}
+
+/* ---------- El taller: la línea de tiempo y las cuatro partes ---------- */
+.linea-tiempo { display: flex; gap: 4px; margin: 4px 0 20px; }
+.linea-tiempo span {
+  flex: var(--min) 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--borde);
+  background: var(--vidrio);
+  font-size: 15px;
+  font-weight: 650;
+  color: var(--tinta);
+}
+.linea-tiempo span b { font-size: 12.5px; color: var(--tenue); }
+.linea-tiempo span small { font-size: 13px; font-weight: 500; color: var(--suave); }
+/* La práctica es la parte más larga y la del equipo: va marcada */
+.linea-tiempo span:nth-child(3) { background: rgba(47, 227, 255, 0.08); border-color: rgba(47, 227, 255, 0.35); }
+.partes-taller { list-style: none; padding: 0; margin: 0 0 20px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.partes-taller li { margin: 0; padding: 18px 20px; border: 1px solid var(--borde); border-radius: 14px; background: var(--vidrio); }
+.partes-taller h3 { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin: 0 0 10px; max-width: none; }
+.partes-taller h3 span {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--tinta);
+  color: var(--noche);
+  font-size: 13.5px;
+  font-weight: 700;
+  align-self: center;
+}
+.partes-taller h3 small { margin-left: auto; font-size: 13.5px; font-weight: 500; color: var(--tenue); }
+.partes-taller p { font-size: 15.5px; margin: 0 0 10px; max-width: none; }
+.partes-taller p:last-child { margin-bottom: 0; }
+.pregunta-sala { padding: 10px 14px; border-left: 3px solid var(--memoria); border-radius: 0 8px 8px 0; background: rgba(255, 216, 77, 0.07); }
+.pregunta-sala b { color: var(--tinta); font-weight: 650; }
+.hoja-equipo-web { counter-reset: campo; list-style: none; padding: 0; margin: 0 0 20px; display: grid; gap: 10px; }
+.hoja-equipo-web li { position: relative; margin: 0; padding: 14px 16px 14px 54px; border: 1px dashed var(--borde-fuerte); border-radius: 12px; }
+.hoja-equipo-web li::before {
+  counter-increment: campo;
+  content: counter(campo);
+  position: absolute;
+  left: 16px;
+  top: 14px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--tinta);
+  color: var(--noche);
+  font-size: 13px;
+  font-weight: 700;
+}
+.hoja-equipo-web b { display: block; margin-bottom: 4px; color: var(--tinta); font-weight: 650; }
+.preguntas-taller { margin: 0 0 20px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 28px; }
+.preguntas-taller > div { min-width: 0; }
+.preguntas-taller dt { margin: 0 0 4px; font-size: 16.5px; font-weight: 650; color: var(--tinta); }
+.preguntas-taller dd { margin: 0; font-size: 15.5px; line-height: 1.55; }
+@media (max-width: 699px) {
+  .partes-taller,
+  .preguntas-taller { grid-template-columns: 1fr; }
+  .linea-tiempo { flex-direction: column; }
+  .linea-tiempo span { flex: none; flex-direction: row; align-items: baseline; gap: 10px; padding: 10px 14px; }
+  .linea-tiempo span small { margin-left: auto; }
+}
+/* El índice del informe trae sus números en el texto (1. …, Anexo A. …) */
+.indice ul.sin-numeros { list-style: none; padding: 0; margin: 0; columns: 2; column-gap: 32px; font-size: 15.5px; line-height: 1.45; }
+@media (max-width: 899px) { .indice ul.sin-numeros { columns: 1; } }
+.indice ul.sin-numeros li { break-inside: avoid; }

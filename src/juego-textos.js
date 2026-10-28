@@ -16,6 +16,11 @@
 // venían y los repone iguales. Las mismas palabras de la portada; glosario en
 // docs/glosario-ingles.md.
 
+// El título de la pestaña: el <title> de jugar/index.html queda en español (la
+// dirección es una sola y su idioma oficial es el español); en inglés se cambia
+// desde aquí, como en los créditos (Etapa 7).
+export const TITULO_PESTANA_EN = 'WIP limit game: the fly with a real brain · Mosca del WIP';
+
 // ---------- 1. Textos fijos de la página (español tal cual → inglés) ----------
 export const PAGINA = {
   // Barra de la exhibición y rótulos sobre la escena
@@ -107,6 +112,7 @@ export const PAGINA = {
   '¿Es real?': 'Is it real?',
   'Datos: Male CNS v1.0 · CC BY 4.0': 'Data: Male CNS v1.0 · CC BY 4.0',
   'Créditos y licencias': 'Credits and licenses',
+  'Cómo elegir el límite de tu equipo': 'How to choose your team’s limit', // el enlace a la guía (Etapa 7)
   // "¿Es real?"
   Cerrar: 'Close',
   'Las neuronas y sus conexiones son de una mosca real.': 'The neurons and their connections come from a real fly.',
@@ -412,7 +418,7 @@ const ATRIBUTOS = ['title', 'aria-label', 'alt', 'placeholder', 'aria-valuetext'
 let fijos = null;
 
 export function prepararPagina(raiz = document.body) {
-  fijos = { bloques: [], textos: [], atributos: [] };
+  fijos = { bloques: [], textos: [], atributos: [], titulo: { es: document.title, en: TITULO_PESTANA_EN } };
   for (const [donde, en] of Object.entries(BLOQUES))
     for (const el of raiz.querySelectorAll(donde)) fijos.bloques.push({ el, es: el.innerHTML, en });
   const enBloque = (nodo) => fijos.bloques.some((b) => b.el.contains(nodo));
@@ -437,6 +443,7 @@ export function prepararPagina(raiz = document.body) {
 export function traducirPagina(nuevo) {
   if (!fijos) return;
   const ingles = nuevo === 'en';
+  document.title = ingles ? fijos.titulo.en : fijos.titulo.es;
   for (const b of fijos.bloques) b.el.innerHTML = ingles ? b.en : b.es;
   // un texto que el juego ya reemplazó no se toca (lo escribe el juego)
   for (const t of fijos.textos) if (t.nodo.isConnected) t.nodo.nodeValue = ingles ? t.en : t.es;
