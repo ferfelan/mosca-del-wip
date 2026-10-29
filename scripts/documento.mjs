@@ -86,6 +86,8 @@ const DOCUMENTOS = [
   { id: 'taller-v4', html: 'taller-v4.html', nombre: 'Taller - Guía rápida del facilitador', version: 'v4', paginas: [5, 5], aparte: true },
   // Etapa 7 (2026-10-28): la hoja del equipo sola, 1 hoja, para descargar aparte (DOC=hoja-equipo)
   { id: 'hoja-equipo', html: 'taller-hoja-equipo.html', nombre: 'Taller - Hoja del equipo', version: 'v4', paginas: [1, 1], aparte: true },
+  // Etapa 7 (2026-10-28): los borradores de difusión de docs/etapa7-difusion.md, para leerlos en PDF (DOC=borradores)
+  { id: 'borradores', html: 'borradores.html', nombre: 'Borradores de difusión', version: 'v1', paginas: [9, 10], aparte: true },
 ];
 const SITIO = 'http://localhost:5173'; // raíz del sitio (portada, docs)
 const JUEGO = `${SITIO}/jugar/`; // el juego vive en /jugar/ desde la Etapa 5.1
