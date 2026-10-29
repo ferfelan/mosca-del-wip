@@ -40,7 +40,8 @@
 // "Qué es", y completo v14, con el botón "← Inicio", la línea "Creado por" y las columnas 18/9 de la portada;
 // 28 oct.: compartir v22 (ES y EN), la pág. 11 con el paso 4 igual a la prueba del taller y la línea del kit, y
 // completo v15, las Etapas 6 y 7 en la sección 28; completo v16, la Etapa 7 publicada, con el menú único y el logo nuevo; completo v17, Google Search Console listo; completo v18, Bing Webmaster Tools listo);
-// 29 oct.: compartir en inglés v23, solo dos frases más naturales ("Tasks finished per day" y "It’s a computer experiment."); el español sigue en v22.
+// 29 oct.: compartir en inglés v23, solo dos frases más naturales ("Tasks finished per day" y "It’s a computer experiment."); el español sigue en v22;
+// y completo v19, los seis detalles después de publicar en una página nueva de la sección 28.
 //
 // Uso: node scripts/documento.mjs                → los dos informes (y el de
 //                                                  compartir en inglés)
@@ -71,7 +72,7 @@ const IMG = join(CARPETA, IDIOMA === 'en' ? 'img-en' : 'img');
 const SALIDA = process.env.SALIDA ?? join(homedir(), 'Desktop', 'Mosca del WIP');
 const FECHA = process.env.FECHA ?? new Date().toLocaleDateString('sv-SE'); // 2026-10-20
 const DOCUMENTOS = [
-  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v18' },
+  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v19' },
   { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v22', paginas: [16, 17] },
   { id: 'compartir-en', html: 'compartir-en.html', nombre: 'Para compartir en inglés', version: 'v23', paginas: [16, 17] },
   { id: 'norte', html: 'norte.html', nombre: 'Norte del proyecto', version: 'v1', paginas: [1, 2], aparte: true },
