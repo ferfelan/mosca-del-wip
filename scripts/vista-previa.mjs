@@ -1,12 +1,14 @@
-// Guarda la vista previa para compartir (public/img/vista-previa.jpg,
-// 1200×630) desde docs/contexto/vista-previa.html. Necesita el servidor de
-// prueba encendido (npm run dev).
+// Guarda la vista previa para compartir de la portada en español
+// (public/img/vista-previa-<fecha>.jpg, 1200×630; la fecha es la de
+// scripts/sello.mjs) desde docs/contexto/vista-previa.html. Necesita el
+// servidor de prueba encendido (npm run dev).
 // Uso: node scripts/vista-previa.mjs [dirección] [archivo] [opciones de la página]
 //   ej.: node scripts/vista-previa.mjs http://localhost:5173 /tmp/prueba.jpg "t=8&cuenta=0"
 import { chromium } from 'playwright';
+import { vistaPrevia } from './sello.mjs';
 
 const base = process.argv[2] || 'http://localhost:5173';
-const archivo = process.argv[3] || 'public/img/vista-previa.jpg';
+const archivo = process.argv[3] || `public${vistaPrevia()}`;
 const opciones = process.argv[4] || '';
 
 const browser = await chromium.launch();

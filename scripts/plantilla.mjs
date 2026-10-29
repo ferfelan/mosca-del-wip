@@ -8,6 +8,7 @@
 // cambien en un solo lugar.
 import { INGLES } from '../src/portada-textos.js';
 import { barraConSangria } from '../src/barra.js';
+import { ICONOS } from './sello.mjs';
 
 export const SITIO = 'https://mosca.deliverycraft.ai';
 export const AUTOR = { nombre: 'Felipe Fernández', linkedin: 'https://www.linkedin.com/in/felipefernandezandrade/' };
@@ -161,9 +162,9 @@ export function pagina({ idioma, clave, titulo, descripcion, imagen, imagenAlt, 
         }
       })();
     </script>
-    <link rel="icon" href="/favicon.ico?v=5" sizes="32x32" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=5" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=5" />
+    <link rel="icon" href="${ICONOS.ico}" sizes="32x32" />
+    <link rel="icon" type="image/svg+xml" href="${ICONOS.svg}" />
+    <link rel="apple-touch-icon" href="${ICONOS.iphone}" />
     <link rel="manifest" href="/manifest.webmanifest" />
 ${sinIndexar ? '' : `    <link rel="canonical" href="${SITIO}${ruta}" />
     <link rel="alternate" hreflang="es" href="${SITIO}${rutas.es}" />

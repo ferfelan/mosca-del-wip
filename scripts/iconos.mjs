@@ -2,22 +2,32 @@
 // Felipe (antes, del 25 al 28 de octubre, "la mosca del juego" vista desde
 // arriba). A partir de public/favicon.svg (la mosca café de ojos rojos que se
 // asoma por detrás de un post-it amarillo, agarrada del borde, con la trompa
-// colgando; sin fondo) dibuja:
-//  - public/favicon.ico: 16, 32 y 48 px, para Safari y todo lo que no lee SVG;
-//  - public/apple-touch-icon.png: 180 px, para la pantalla de inicio del
-//    iPhone y el iPad. Fondo blanco lleno (el iPhone pinta de negro lo
+// colgando; sin fondo) dibuja los íconos con la fecha de scripts/sello.mjs en
+// el nombre (desde el 2026-10-29, porque WhatsApp y los demás guardan las
+// imágenes por su nombre):
+//  - public/favicon-<fecha>.ico: 16, 32 y 48 px, para Safari y todo lo que no
+//    lee SVG, y public/favicon-<fecha>.svg, copia de public/favicon.svg;
+//  - public/apple-touch-icon-<fecha>.png: 180 px, para la pantalla de inicio
+//    del iPhone y el iPad. Fondo blanco lleno (el iPhone pinta de negro lo
 //    transparente y le redondea las esquinas solo) y la mosca al 80 %, como la
 //    vio Felipe en la página de propuestas;
-//  - public/icono-192.png y public/icono-512.png: para Android y los demás
-//    celulares (manifest.webmanifest, "any"). Lo mismo que el del iPhone, con
-//    las esquinas ya redondeadas, para que se vea igual en todos lados;
-//  - public/icono-mascara.png: 512 px para Android ("maskable"). Cada marca
-//    de Android le pone su forma (círculo, gota, cuadrado redondeado), así que
-//    el blanco llega hasta el borde y la mosca queda dentro del círculo seguro
-//    (el 80 % del centro), con aire: no se le corta nada con ninguna forma.
-// Uso: node scripts/iconos.mjs (después de cambiar public/favicon.svg)
+//  - public/icono-192-<fecha>.png y public/icono-512-<fecha>.png: para Android
+//    y los demás celulares (manifest.webmanifest, "any"). Lo mismo que el del
+//    iPhone, con las esquinas ya redondeadas, para que se vea igual en todos
+//    lados;
+//  - public/icono-mascara-<fecha>.png: 512 px para Android ("maskable"). Cada
+//    marca de Android le pone su forma (círculo, gota, cuadrado redondeado),
+//    así que el blanco llega hasta el borde y la mosca queda dentro del círculo
+//    seguro (el 80 % del centro), con aire: no se le corta nada con ninguna
+//    forma.
+// También deja public/favicon.ico y public/apple-touch-icon.png, los nombres de
+// siempre, con el mismo dibujo: algunos navegadores y apps los piden así, sin
+// leer la página. public/favicon.svg es la fuente y no se toca.
+// Uso: node scripts/iconos.mjs (después de cambiar public/favicon.svg y la
+// fecha de scripts/sello.mjs)
 import { chromium } from 'playwright';
 import { readFileSync, writeFileSync } from 'node:fs';
+import { ICONOS } from './sello.mjs';
 
 const svg = readFileSync('public/favicon.svg', 'utf8');
 const url = 'data:image/svg+xml;base64,' + Buffer.from(svg).toString('base64');
@@ -67,13 +77,16 @@ for (const lado of tamanos) pngs.push(await dibujar(lado));
 // La mosca al 80 % sobre blanco, centrada por lo que se ve
 const sobreBlanco = (lado, radio = 0) =>
   dibujar(lado, { mosca: lado * 0.8, fondo: '#ffffff', radio, dx: medida.dx * lado * 0.8, dy: medida.dy * lado * 0.8 });
-writeFileSync('public/apple-touch-icon.png', await sobreBlanco(180));
-writeFileSync('public/icono-192.png', await sobreBlanco(192, 192 * 0.225));
-writeFileSync('public/icono-512.png', await sobreBlanco(512, 512 * 0.225));
+const publico = (ruta) => `public${ruta}`;
+const iphone = await sobreBlanco(180);
+writeFileSync(publico(ICONOS.iphone), iphone);
+writeFileSync('public/apple-touch-icon.png', iphone);
+writeFileSync(publico(ICONOS.android), await sobreBlanco(192, 192 * 0.225));
+writeFileSync(publico(ICONOS.androidGrande), await sobreBlanco(512, 512 * 0.225));
 // Máscara: el punto más lejano de la mosca queda al 36 % del lado desde el
 // centro (el círculo seguro de Android llega al 40 %)
 const moscaMascara = (0.36 / medida.radio) * 512;
-writeFileSync('public/icono-mascara.png', await dibujar(512, { mosca: moscaMascara, fondo: '#ffffff', dx: medida.dx * moscaMascara, dy: medida.dy * moscaMascara }));
+writeFileSync(publico(ICONOS.mascara), await dibujar(512, { mosca: moscaMascara, fondo: '#ffffff', dx: medida.dx * moscaMascara, dy: medida.dy * moscaMascara }));
 await browser.close();
 
 // El .ico guarda los PNG tal cual (lo leen todos los navegadores de hoy)
@@ -91,8 +104,11 @@ pngs.forEach((png, i) => {
   indice.writeUInt32LE(lugar, e + 12);
   lugar += png.length;
 });
-writeFileSync('public/favicon.ico', Buffer.concat([indice, ...pngs]));
+const ico = Buffer.concat([indice, ...pngs]);
+writeFileSync(publico(ICONOS.ico), ico);
+writeFileSync('public/favicon.ico', ico);
+writeFileSync(publico(ICONOS.svg), svg);
 console.log(
-  `íconos listos: favicon.ico (16, 32 y 48 px), apple-touch-icon.png (180), icono-192.png, icono-512.png e icono-mascara.png (512; mosca de ${Math.round(moscaMascara)} px)`,
+  `íconos listos: ${ICONOS.ico} (16, 32 y 48 px), ${ICONOS.svg}, ${ICONOS.iphone} (180), ${ICONOS.android}, ${ICONOS.androidGrande} y ${ICONOS.mascara} (512; mosca de ${Math.round(moscaMascara)} px), más /favicon.ico y /apple-touch-icon.png con el mismo dibujo`,
 );
 console.log(`la mosca: centro corrido ${(medida.dx * 100).toFixed(1)} % y ${(medida.dy * 100).toFixed(1)} %; punto más lejano al ${(medida.radio * 100).toFixed(1)} % del centro`);

@@ -7,7 +7,8 @@
 //   docs/paginas/404.html        → 404.html                (no encontrada)
 // Cada fuente empieza con un comentario <!--meta { ... } --> (título,
 // descripción, vista previa, migas, datos estructurados) y sigue con el
-// cuerpo. En el cuerpo valen estos reemplazos:
+// cuerpo. La vista previa va por su nombre corto ("vistaPrevia": "guia"):
+// el archivo, con su fecha, sale de scripts/sello.mjs. En el cuerpo valen estos reemplazos:
 //   {{migas}}            las migas (Inicio › página)
 //   {{autor}}            el bloque "Quién escribe" (marcado para que Felipe lo revise)
 //   {{kit}}              las tarjetas con las otras piezas del kit
@@ -21,6 +22,7 @@ import { readFileSync, writeFileSync, mkdirSync, statSync, existsSync } from 'no
 import { fileURLToPath } from 'node:url';
 import { join, dirname } from 'node:path';
 import { pagina, migas, autor, enlacesKit, textos, SITIO, AUTOR, RUTAS, FECHAS } from './plantilla.mjs';
+import { vistaPrevia } from './sello.mjs';
 
 const RAIZ = fileURLToPath(new URL('..', import.meta.url));
 const FUENTES = [
@@ -124,6 +126,8 @@ for (const fuente of FUENTES) {
   const meta = JSON.parse(m[1]);
   let cuerpo = crudo.slice(m[0].length);
   const { idioma, clave } = meta;
+  if (!meta.vistaPrevia) throw new Error(`${fuente.archivo}: falta "vistaPrevia" en el comentario <!--meta {...} -->`);
+  const imagen = vistaPrevia(meta.vistaPrevia);
   const t = textos(idioma);
   const jsonLd = [];
   const mg = meta.miga ? migas(idioma, [{ nombre: meta.miga, ruta: RUTAS[clave][idioma] }]) : null;
@@ -136,7 +140,7 @@ for (const fuente of FUENTES) {
       inLanguage: idioma,
       url: `${SITIO}${RUTAS[clave][idioma]}`,
       mainEntityOfPage: `${SITIO}${RUTAS[clave][idioma]}`,
-      image: `${SITIO}${meta.imagen}`,
+      image: `${SITIO}${imagen}`,
       datePublished: FECHAS.publicado,
       dateModified: FECHAS.modificado,
       isAccessibleForFree: true,
@@ -158,7 +162,7 @@ for (const fuente of FUENTES) {
     .replaceAll('{{fecha}}', () => t.fechaLarga(FECHAS.modificado))
     .replaceAll('{{fecha-iso}}', () => FECHAS.modificado);
   if (/\{\{[a-z-]+\}\}/.test(cuerpo)) throw new Error(`${fuente.archivo}: quedó un marcador sin reemplazar: ${cuerpo.match(/\{\{[a-z-]+\}\}/)[0]}`);
-  const html = pagina({ ...meta, jsonLd, cuerpo, cssExtra: meta.cssExtra ?? [] });
+  const html = pagina({ ...meta, imagen, jsonLd, cuerpo, cssExtra: meta.cssExtra ?? [] });
   mkdirSync(dirname(join(RAIZ, fuente.salida)), { recursive: true });
   writeFileSync(join(RAIZ, fuente.salida), html);
   console.log(`${fuente.salida} (${(html.length / 1024).toFixed(0)} KB)`);

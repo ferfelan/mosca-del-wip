@@ -14,6 +14,7 @@ import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 import vm from 'node:vm';
 import { pagina, migas, autor, enlacesKit, SITIO, AUTOR, RUTAS } from './plantilla.mjs';
+import { vistaPrevia } from './sello.mjs';
 
 const RAIZ = fileURLToPath(new URL('..', import.meta.url));
 // Esta página es igual al PDF "Para compartir v22" (en inglés, v23 desde el
@@ -31,7 +32,7 @@ const IDIOMAS = {
     tapa: '/img/tapa-informe.jpg',
     titulo: 'Informe del límite WIP con una mosca real · Mosca del WIP',
     descripcion: 'Qué pasa en el juego con 1 a 10 tareas a la vez, qué dicen los estudios con personas y cuatro pasos para probar un límite WIP con tu equipo. En la web o en PDF.',
-    imagen: '/img/vista-previa-informe.jpg',
+    imagen: vistaPrevia('informe'),
     imagenAlt: 'La tapa del informe: la mosca cargando una torre de carpetas, junto al título Estar siempre ocupado no es lo mismo que avanzar.',
     encabezado: 'Estar siempre ocupado no es lo mismo que avanzar',
     bajada: 'Un informe con una mosca real sobre por qué conviene limitar el trabajo en curso (WIP). Es el mismo informe del PDF, para leer en la web, con una sección por página.',
@@ -70,7 +71,7 @@ const IDIOMAS = {
     tapa: '/img/tapa-report.jpg',
     titulo: 'WIP limit report with a real fly brain · Mosca del WIP',
     descripcion: 'What happens in the game with 1 to 10 tasks at once, what studies with people say and four steps to try a WIP limit with your team. On the web or as a PDF.',
-    imagen: '/img/vista-previa-report.jpg',
+    imagen: vistaPrevia('report'),
     imagenAlt: 'The report’s cover: the fly carrying a tower of folders, next to the title Being busy all the time is not the same as making progress.',
     encabezado: 'Being busy all the time is not the same as making progress',
     bajada: 'A report with a real fly about why it pays to limit work in progress (WIP). It’s the same report as the PDF, to read on the web, one section per page.',
