@@ -16,9 +16,10 @@
 //     enlace abre el archivo en la misma pestaña en vez de "descargarlo" (ver
 //     src/portada.js, "El informe en PDF");
 //   - ningún enlace queda tapado por otra cosa;
-//   - el interruptor del taller (data-taller en la sección .kit): con
-//     "con-descargas" se ven los tres archivos; con "muy-pronto", ninguno y se
-//     lee "Muy pronto".
+//   - en el kit se ven todos los archivos del taller, y el aviso "Muy pronto"
+//     / "Coming soon" no está en la página, ni siquiera escondido (el
+//     interruptor que lo mostraba salió el 2026-10-29: el taller ya está
+//     publicado y el texto escondido lo leían los buscadores).
 // Necesita WebKit para Playwright la primera vez: npx playwright install webkit
 // Uso (con npm run dev, o con la dirección publicada):
 //   node scripts/probar-descargas.mjs [dirección]
@@ -84,13 +85,11 @@ for (const [motor, nombre, opciones, abre] of CASOS) for (const idioma of ['es',
   const informe = INFORMES[idioma];
   const tapa = await pagina.locator('[data-tapa]').getAttribute('src');
   if (tapa !== informe.tapa) mal(`la tapa es ${tapa} y no ${informe.tapa}`);
-  // El interruptor del taller
-  const interruptor = await pagina.locator('.kit').getAttribute('data-taller');
+  // Los archivos del taller, todos a la vista, y nada del antiguo "Muy pronto"
   const tallerVisibles = await pagina.locator('[data-taller-archivo]:visible').count();
-  const prontoVisible = await pagina.locator('.muy-pronto:visible').count();
-  if (interruptor === 'con-descargas' && (tallerVisibles !== TALLER.length || prontoVisible)) mal(`con data-taller="con-descargas" se ven ${tallerVisibles} archivos del taller y ${prontoVisible} "Muy pronto"`);
-  if (interruptor === 'muy-pronto' && (tallerVisibles || prontoVisible !== 1)) mal(`con data-taller="muy-pronto" se ven ${tallerVisibles} archivos del taller y ${prontoVisible} "Muy pronto"`);
-  if (!['con-descargas', 'muy-pronto'].includes(interruptor)) mal(`la sección .kit tiene data-taller="${interruptor}": debía ser con-descargas o muy-pronto`);
+  if (tallerVisibles !== TALLER.length) mal(`en el kit se ven ${tallerVisibles} archivos del taller y debían ser ${TALLER.length}`);
+  const pronto = await pagina.evaluate(() => /muy pronto|coming soon/i.test(document.querySelector('.kit').textContent) || !!document.querySelector('.muy-pronto, .kit[data-taller]'));
+  if (pronto) mal('el kit todavía trae el aviso "Muy pronto" / "Coming soon" o su interruptor');
 
   const enlaces = pagina.locator('a[href$=".pdf"], a[href$=".pptx"]');
   const total = await enlaces.count();
@@ -151,7 +150,7 @@ for (const [motor, nombre, opciones, abre] of CASOS) for (const idioma of ['es',
     }
   }
   if (!probados) mal('no hay ningún enlace de descarga a la vista');
-  if (interruptor === 'con-descargas' && probadosTaller.size !== TALLER.length) mal(`se probaron ${probadosTaller.size} archivos del taller y no ${TALLER.length}`);
+  if (probadosTaller.size !== TALLER.length) mal(`se probaron ${probadosTaller.size} archivos del taller y no ${TALLER.length}`);
   // En español, ES | EN lleva a la portada en inglés (/en/), donde todos los
   // enlaces y la tapa son del informe en inglés, y ES devuelve a la de
   // español (desde la Etapa 7 cada idioma tiene su dirección); los del taller no cambian

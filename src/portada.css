@@ -655,17 +655,6 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   text-decoration-color: var(--subrayado);
 }
 .descargas a:hover { text-decoration-color: currentColor; }
-/* "Muy pronto": solo cuando el interruptor del taller (data-taller) lo dice */
-.muy-pronto {
-  display: none;
-  margin-top: auto;
-  padding-top: 14px;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--tenue);
-}
-.kit[data-taller='muy-pronto'] .descargas { display: none; }
-.kit[data-taller='muy-pronto'] .muy-pronto { display: block; }
 .kit-cierre { margin-top: 28px; color: var(--suave); font-size: 17px; max-width: 60ch; text-wrap: pretty; }
 
 /* Lo que se lleva tu equipo (portada v4, 2026-10-28; antes "Lo que gana tu

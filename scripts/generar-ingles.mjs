@@ -13,6 +13,9 @@
 //    canonical (/en/), las vistas previas y los datos estructurados;
 //  - cada [data-t] lleva su inglés; data-t-aria, data-t-title y data-t-alt
 //    cambian ese atributo; las fotos con data-src-en usan esa foto;
+//  - la consola del inicio (lo que portada.js reescribe al moverla: el
+//    límite, el estrés, los números y lo que lee un lector de pantalla) ya
+//    viene en inglés en el HTML, con los mismos textos de portada.js;
 //  - el informe en PDF es el de inglés (Report), con su tapa;
 //  - los enlaces van a las páginas en inglés (/en/wip-limit/, /en/report/,
 //    /en/workshop/), al juego y a los créditos con ?lang=en;
@@ -21,7 +24,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
-import { INGLES } from '../src/portada-textos.js';
+import { INGLES, DINAMICOS } from '../src/portada-textos.js';
 import { conBarra } from './poner-barra.mjs';
 
 const RAIZ = fileURLToPath(new URL('..', import.meta.url));
@@ -185,6 +188,44 @@ enEtiquetas(/^<a\b[^>]*\shref="([^"]*)"/, (etiqueta, m) => {
   return m[1] in RUTAS ? ponerAtributo(etiqueta, 'href', RUTAS[m[1]]) : etiqueta;
 });
 
+// ---------- La consola del inicio ----------
+// portada.js escribe estos textos al mover la consola, pero el HTML tiene que
+// llegar ya en inglés: lo leen los buscadores, los lectores de pantalla y
+// quien todavía no tiene el JavaScript (2026-10-29: /en/ decía "Dentro del
+// límite sostenible (3)" y "Tranquila" hasta que corría el script). Se
+// traduce el estado de partida del español con los mismos textos de
+// portada.js (DINAMICOS) y los números con el formato inglés (18.0, 1,328).
+const ES = DINAMICOS.es;
+const EN = DINAMICOS.en;
+const NIVELES = ['Tranquila', 'Ocupada', 'Estresada', 'Colapsada'];
+const numeroEspanol = (texto) => Number(texto.trim().replace(/\./g, '').replace(',', '.'));
+const enIngles = (decimales) => (texto) => {
+  const n = numeroEspanol(texto);
+  if (!Number.isFinite(n)) return null;
+  return new Intl.NumberFormat('en-US', { minimumFractionDigits: decimales, maximumFractionDigits: decimales }).format(n);
+};
+// Cambia el texto de la etiqueta que lleva el atributo (una sola en la página)
+function textoDeConsola(atributo, traducir) {
+  const re = new RegExp(`(<[a-zA-Z][\\w-]*\\b[^>]*\\s${atributo}(?=[\\s>=])[^>]*>)([^<]*)(</)`, 'g');
+  const encontrados = [...html.matchAll(re)];
+  if (encontrados.length !== 1) throw new Error(`[${atributo}] aparece ${encontrados.length} veces en index.html y debía aparecer 1`);
+  const [, abre, texto] = encontrados[0];
+  const nuevo = traducir(texto);
+  if (nuevo == null) throw new Error(`el texto de partida de [${atributo}], "${texto}", no es uno de los que escribe portada.js`);
+  html = html.replace(re, () => `${abre}${nuevo}</`);
+}
+textoDeConsola('data-limite', (t) => (t === ES.limite(true) ? EN.limite(true) : t === ES.limite(false) ? EN.limite(false) : null));
+textoDeConsola('data-estres', (t) => (NIVELES.includes(t) ? EN.nivel(t) : null));
+textoDeConsola('data-terminadas', enIngles(1));
+textoDeConsola('data-neuronas', enIngles(0));
+// El control: lo que dice un lector de pantalla ("2 tasks at once")
+enEtiquetas(/^<input\b[^>]*\sid="wip"/, (etiqueta) => {
+  const valor = Number(etiqueta.match(/\svalue="(\d+)"/)?.[1]);
+  const actual = etiqueta.match(/\saria-valuetext="([^"]*)"/)?.[1];
+  if (actual !== ES.tareas(valor)) throw new Error(`el control de la consola dice "${actual}" y portada.js escribiría "${ES.tareas(valor)}"`);
+  return ponerAtributo(etiqueta, 'aria-valuetext', EN.tareas(valor));
+});
+
 // La barra de arriba: el componente común, en inglés (reemplaza la del español)
 html = conBarra(html, { idioma: 'en', pagina: 'portada' }, 'en/index.html');
 
@@ -192,6 +233,10 @@ html = conBarra(html, { idioma: 'en', pagina: 'portada' }, 'en/index.html');
 const sobras = [...html.matchAll(/\sdata-t="([^"]*)"/g)].map((m) => m[1]).filter((k) => !(k in INGLES));
 if (sobras.length) throw new Error(`quedaron textos sin inglés: ${sobras.join(', ')}`);
 if (/lang="es"/.test(html.slice(0, 80))) throw new Error('la página sigue diciendo lang="es"');
+// Nada de la consola en español (ni en lo que lee un lector de pantalla)
+for (const resto of [ES.limite(true), ES.limite(false), ...NIVELES.map((n) => `>${n}<`), ...Array.from({ length: 10 }, (_, i) => `"${ES.tareas(i + 1)}"`)]) {
+  if (html.includes(resto)) throw new Error(`en/index.html todavía dice ${resto} (la consola en español)`);
+}
 
 html = html.replace(
   '<!doctype html>\n',

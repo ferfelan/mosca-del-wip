@@ -30,7 +30,7 @@ const VERSIONES = {
     nivel: (n) => NIVEL_EN[n] ?? n,
     notas: [
       '# Mosca del WIP: an office day with 1 to 10 tasks at once. Average of 200 days per number, in the game (simulation, seed 2024).',
-      '# Each row: how many tasks the fly has in progress at once; how many she finishes in the day; office minutes each task takes from start to finish;',
+      '# Each row: how many tasks the fly has in progress at once; how many she finishes per day; office minutes each task takes from start to finish;',
       '# minutes of every hour that really get work done; idle minutes per day; cigarettes; coffees; average and maximum stress (0 to 100); stress level at the end of the day.',
       '# Author: Felipe Fernández. License CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Source: https://mosca.deliverycraft.ai/en/wip-limit/#datos',
     ],

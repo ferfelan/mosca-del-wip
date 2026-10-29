@@ -119,7 +119,7 @@ for (const pagina of PAGINAS) {
   for (const r of referidos) if (!definidos.has(r)) problemas.push(`referencia "${r}" a un nodo que no está definido en esta página`);
   const noindex = /name="robots" content="[^"]*noindex/.test(html);
   if (noindex && bloques.length) problemas.push('página con noindex no debería llevar datos estructurados');
-  if (!noindex && !bloques.length && !/creditos/.test(pagina)) problemas.push('sin datos estructurados');
+  if (!noindex && !bloques.length) problemas.push('sin datos estructurados'); // los créditos también, desde el 2026-10-29
   if (problemas.length) { errores += problemas.length; console.log(`✖ ${pagina}`); for (const p of problemas) console.log(`   ${p}`); }
   else console.log(`ok  ${pagina} (${bloques.length} bloque${bloques.length === 1 ? '' : 's'})`);
 }

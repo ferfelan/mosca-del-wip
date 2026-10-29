@@ -35,6 +35,13 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=5" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="canonical" href="https://mosca.deliverycraft.ai/creditos/" />
+    <!-- Idioma (2026-10-29): esta página tiene una sola dirección para los dos
+         idiomas (el botón ES | EN lo cambia ahí mismo, con ?lang=en) y su HTML
+         llega en español; por eso dice que esta es la versión en español y la
+         que se muestra por defecto. La portada, la guía, el informe y el
+         taller sí tienen su dirección en inglés (/en/…). -->
+    <link rel="alternate" hreflang="es" href="https://mosca.deliverycraft.ai/creditos/" />
+    <link rel="alternate" hreflang="x-default" href="https://mosca.deliverycraft.ai/creditos/" />
 
     <!-- Vista previa al compartir el enlace -->
     <meta property="og:type" content="website" />
@@ -47,6 +54,36 @@
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Datos estructurados (schema.org, 2026-10-29): esta página y su lugar
+         en el sitio, como en las demás páginas -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebPage",
+          "@id": "https://mosca.deliverycraft.ai/creditos/#pagina",
+          "url": "https://mosca.deliverycraft.ai/creditos/",
+          "name": "Créditos y licencias · Mosca del WIP",
+          "description": "Quién hizo Mosca del WIP, de dónde salen los datos del cerebro de la mosca (Male CNS v1.0, CC BY 4.0), qué programas y letras de otros usa el sitio y la privacidad: sin cookies.",
+          "inLanguage": "es",
+          "isPartOf": { "@type": "WebSite", "@id": "https://mosca.deliverycraft.ai/#sitio", "name": "Mosca del WIP", "url": "https://mosca.deliverycraft.ai/" },
+          "primaryImageOfPage": "https://mosca.deliverycraft.ai/img/vista-previa-creditos.jpg",
+          "author": { "@type": "Person", "@id": "https://mosca.deliverycraft.ai/#felipe", "name": "Felipe Fernández", "url": "https://www.linkedin.com/in/felipefernandezandrade/", "sameAs": ["https://www.linkedin.com/in/felipefernandezandrade/"] },
+          "datePublished": "2026-10-25",
+          "dateModified": "2026-10-28"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Mosca del WIP", "item": "https://mosca.deliverycraft.ai/" },
+            { "@type": "ListItem", "position": 2, "name": "Créditos y licencias", "item": "https://mosca.deliverycraft.ai/creditos/" }
+          ]
+        }
+      ]
+    }
+    </script>
 
     <!-- La tipografía vive en el mismo sitio (no se pide a otro servidor) -->
     <link rel="preload" href="/fonts/mona-sans-latin-wdth.woff2" as="font" type="font/woff2" crossorigin />

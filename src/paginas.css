@@ -156,6 +156,22 @@
   vertical-align: 2px;
   white-space: nowrap;
 }
+/* Al final de un párrafo (la guía y el taller: "sugerencia"), en mayúsculas y
+   con fondo, para que se lea como etiqueta y no como una palabra suelta
+   (2026-10-29: Felipe leyó "sugerencia" como un resto en la guía). En las
+   tablas del informe sigue como arriba: así caben en el celular. */
+p > .origen,
+dd > .origen {
+  margin-left: 2px;
+  padding: 1px 9px 0;
+  background: var(--vidrio-hover);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.6;
+  color: var(--suave);
+  vertical-align: 1px;
+}
 
 /* ---------- Tablas ---------- */
 .tabla-marco { overflow-x: auto; margin: 0 0 20px; -webkit-overflow-scrolling: touch; }

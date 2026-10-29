@@ -16,13 +16,16 @@ import vm from 'node:vm';
 import { pagina, migas, autor, enlacesKit, SITIO, AUTOR, RUTAS } from './plantilla.mjs';
 
 const RAIZ = fileURLToPath(new URL('..', import.meta.url));
-// Esta página es igual al PDF "Para compartir v22". Ese número es interno y
-// no se muestra (pedido de Felipe, 2026-10-28): la página dice solo la fecha.
+// Esta página es igual al PDF "Para compartir v22" (en inglés, v23 desde el
+// 2026-10-29: dos frases más naturales). Ese número es interno y no se
+// muestra (pedido de Felipe, 2026-10-28): la página dice solo la fecha, la
+// del último cambio de cada idioma (actualizado en IDIOMAS).
 
 const IDIOMAS = {
   es: {
     fuente: 'docs/contexto/compartir.html',
     salida: 'informe/index.html',
+    actualizadoEl: '2026-10-28',
     img: '/img/informe/',
     pdf: { ruta: '/Mosca-del-WIP-Informe.pdf', nombre: 'Mosca del WIP - Informe.pdf', peso: '4 MB', paginas: '17 páginas' },
     tapa: '/img/tapa-informe.jpg',
@@ -61,6 +64,7 @@ const IDIOMAS = {
   en: {
     fuente: 'docs/contexto/compartir-en.html',
     salida: 'en/report/index.html',
+    actualizadoEl: '2026-10-29',
     img: '/img/informe/en/',
     pdf: { ruta: '/Mosca-del-WIP-Report.pdf', nombre: 'Mosca del WIP - Report.pdf', peso: '4 MB', paginas: '17 pages' },
     tapa: '/img/tapa-report.jpg',
@@ -233,7 +237,7 @@ function armar(idioma) {
     <div>
       <h1>${lema}</h1>
       <p class="pagina-bajada">${C.bajada}</p>
-      <p class="pagina-meta"><span>${C.porAutor} <a href="${AUTOR.linkedin}">${AUTOR.nombre}</a></span><span>${C.publicado} <time datetime="2026-10-24">${fechaLarga('2026-10-24')}</time></span><span>${C.actualizado} <time datetime="2026-10-28">${fechaLarga('2026-10-28')}</time></span></p>
+      <p class="pagina-meta"><span>${C.porAutor} <a href="${AUTOR.linkedin}">${AUTOR.nombre}</a></span><span>${C.publicado} <time datetime="2026-10-24">${fechaLarga('2026-10-24')}</time></span><span>${C.actualizado} <time datetime="${C.actualizadoEl}">${fechaLarga(C.actualizadoEl)}</time></span></p>
       <div class="acciones-pagina">
         <a class="boton principal" href="${C.pdf.ruta}" download="${C.pdf.nombre}">${C.bajarPdf}</a>
       </div>
@@ -283,7 +287,7 @@ ${autor(idioma)}
       mainEntityOfPage: `${SITIO}${RUTAS.informe[idioma]}`,
       image: `${SITIO}${C.tapa}`,
       datePublished: '2026-10-24',
-      dateModified: '2026-10-28',
+      dateModified: C.actualizadoEl,
       isAccessibleForFree: true,
       author: { '@type': 'Person', '@id': `${SITIO}/#felipe`, name: AUTOR.nombre, url: AUTOR.linkedin, sameAs: [AUTOR.linkedin] },
       publisher: { '@type': 'Organization', '@id': `${SITIO}/#deliverycraft`, name: 'Deliverycraft', url: 'https://deliverycraft.ai/' },

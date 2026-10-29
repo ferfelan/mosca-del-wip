@@ -11,7 +11,7 @@ import { barraConSangria } from '../src/barra.js';
 
 export const SITIO = 'https://mosca.deliverycraft.ai';
 export const AUTOR = { nombre: 'Felipe Fernández', linkedin: 'https://www.linkedin.com/in/felipefernandezandrade/' };
-export const FECHAS = { publicado: '2026-10-28', modificado: '2026-10-28' };
+export const FECHAS = { publicado: '2026-10-28', modificado: '2026-10-29' }; // 2026-10-29: la guía (textos) y el taller (pesos en KB)
 
 // Las direcciones de cada página en cada idioma (las mismas de src/idioma.js)
 export const RUTAS = {

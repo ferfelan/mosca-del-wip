@@ -14,6 +14,7 @@
 //   {{tabla-datos}}      la tabla de 1 a 10 tareas, desde docs/corrida-oficial.json
 //   {{descargas-taller}} los archivos del taller con su peso, desde public/taller/
 //   {{fecha}}            la fecha de actualización, larga
+//   {{fecha-iso}}        la misma fecha como 2026-10-29 (para <time datetime>)
 // NO EDITAR las salidas a mano. Se corre solo antes de npm run dev y npm run
 // build (package.json), o con: node scripts/paginas.mjs
 import { readFileSync, writeFileSync, mkdirSync, statSync, existsSync } from 'node:fs';
@@ -43,7 +44,7 @@ function tablaDatos(idioma) {
   };
   const cab = es
     ? ['Tareas a la vez', 'Terminadas en el día', 'Tiempo por tarea', 'Rinden, de cada hora', 'Esperando, por día', 'Cigarros', 'Cafés', 'Estrés al cerrar']
-    : ['Tasks at once', 'Finished in the day', 'Time per task', 'Productive, of every hour', 'Idle, per day', 'Cigarettes', 'Coffees', 'Stress at close'];
+    : ['Tasks at once', 'Finished per day', 'Time per task', 'Productive, of every hour', 'Idle, per day', 'Cigarettes', 'Coffees', 'Stress at close'];
   const filas = corrida.filas
     .map((f) => {
       const clase = f.wip === 2 ? ' class="mejor"' : f.wip === 9 ? ' class="sobre"' : '';
@@ -61,6 +62,13 @@ ${filas}
 </table></div>`;
 }
 
+// El peso de un archivo como se lee: en KB bajo 1 MB (la hoja del equipo pesa
+// 31 KB y en MB se veía "0,0 MB"), y en MB con un decimal desde ahí
+function pesoLegible(bytes, es) {
+  if (bytes < 1048576) return `${Math.max(1, Math.round(bytes / 1024))} KB`;
+  return `${(bytes / 1048576).toFixed(1).replace('.', es ? ',' : '.')} MB`;
+}
+
 // Los archivos del taller, con su peso real
 function descargasTaller(idioma) {
   const es = idioma === 'es';
@@ -73,7 +81,7 @@ function descargasTaller(idioma) {
   return `<ul class="descargas-pagina">${archivos
     .map((a) => {
       const ruta = join(RAIZ, 'public', a.ruta);
-      const peso = existsSync(ruta) ? `${(statSync(ruta).size / 1048576).toFixed(1).replace('.', es ? ',' : '.')} MB` : es ? 'pendiente' : 'pending';
+      const peso = existsSync(ruta) ? pesoLegible(statSync(ruta).size, es) : es ? 'pendiente' : 'pending';
       return `<li><a href="${a.ruta}" download="${a.nombre}"><b>${a.titulo}</b><span>${a.texto}</span><small>${peso}</small></a></li>`;
     })
     .join('')}</ul>`;
@@ -87,7 +95,7 @@ function datasetJsonLd(idioma) {
     name: es ? 'Mosca del WIP: un día de oficina con 1 a 10 tareas a la vez (promedio de 200 días en el juego)' : 'Mosca del WIP: an office day with 1 to 10 tasks at once (average of 200 days in the game)',
     description: es
       ? 'Para cada número de tareas en curso a la vez, de 1 a 10: cuántas termina la mosca en el día, cuánto tarda cada tarea, cuántos minutos de cada hora rinden, cuánto espera, cigarros, cafés y estrés. Promedio de 200 días simulados por cada número (semilla 2024), en el juego Mosca del WIP. Es una simulación de una mosca sola, no mide personas ni equipos.'
-      : 'For each number of tasks in progress at once, from 1 to 10: how many the fly finishes in the day, how long each task takes, how many minutes of every hour are productive, idle time, cigarettes, coffees and stress. Average of 200 simulated days per number (seed 2024), in the game Mosca del WIP. It is a simulation of a single fly; it does not measure people or teams.',
+      : 'For each number of tasks in progress at once, from 1 to 10: how many the fly finishes per day, how long each task takes, how many minutes of every hour are productive, idle time, cigarettes, coffees and stress. Average of 200 simulated days per number (seed 2024), in the game Mosca del WIP. It is a simulation of a single fly; it does not measure people or teams.',
     url: `${SITIO}${RUTAS.guia[idioma]}#datos`,
     sameAs: `${SITIO}${RUTAS.guia[idioma === 'es' ? 'en' : 'es']}#datos`,
     inLanguage: idioma,
@@ -147,7 +155,8 @@ for (const fuente of FUENTES) {
     .replace('{{kit}}', () => enlacesKit(idioma, clave))
     .replace('{{tabla-datos}}', () => tablaDatos(idioma))
     .replace('{{descargas-taller}}', () => descargasTaller(idioma))
-    .replaceAll('{{fecha}}', () => t.fechaLarga(FECHAS.modificado));
+    .replaceAll('{{fecha}}', () => t.fechaLarga(FECHAS.modificado))
+    .replaceAll('{{fecha-iso}}', () => FECHAS.modificado);
   if (/\{\{[a-z-]+\}\}/.test(cuerpo)) throw new Error(`${fuente.archivo}: quedó un marcador sin reemplazar: ${cuerpo.match(/\{\{[a-z-]+\}\}/)[0]}`);
   const html = pagina({ ...meta, jsonLd, cuerpo, cssExtra: meta.cssExtra ?? [] });
   mkdirSync(dirname(join(RAIZ, fuente.salida)), { recursive: true });

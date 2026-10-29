@@ -41,7 +41,7 @@ el juego digan lo mismo. Si quieres cambiar una palabra:
 | Tareas en curso a la vez (WIP) | Tasks in progress at once (WIP) |
 | límite sostenible (3) | sustainable limit (3) |
 | Dentro del / Sobre el límite sostenible (3) | Within / Over the sustainable limit (3) |
-| terminadas (en el día) | finished (in the day) |
+| terminadas (en el día) | finished per day (desde el 2026-10-29; antes "finished in the day") |
 | estrés al cerrar | stress at the end of the day |
 | Tranquila / Ocupada / Estresada / Colapsada | Calm / Busy / Stressed / Overwhelmed |
 | cigarros | cigarettes |

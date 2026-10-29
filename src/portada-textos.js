@@ -25,7 +25,7 @@ export const INGLES = {
   enSimulacion: 'in the simulation',
   consolaFrase: 'Real neurons from a fly. The more tasks she has on her plate, the more her brain lights up.',
   tareasLabel: 'Tasks in progress at once (WIP)',
-  terminadas: 'finished in the day',
+  terminadas: 'finished per day',
   estres: 'stress at the end of the day',
   cigarros: 'cigarettes',
   consolaNota: 'Average of 200 days played. These are numbers from the game, not from people.',
@@ -92,7 +92,6 @@ export const INGLES = {
   tapaJuegoAlt: 'The fly from the game at her office, in front of her kanban board.',
   tapaInformeAlt: 'The report’s cover: the fly carrying a tower of folders.',
   tapaTallerAlt: 'The cover of the workshop’s quick guide: the fly with 9 tasks in progress.',
-  kitPronto: 'Coming soon',
   kitCierre: 'Use it and adapt it, also in paid workshops, crediting the author.',
 
   // ¿Por qué una mosca?
@@ -132,14 +131,14 @@ export const INGLES = {
     'The neurons and their connections are. They come from Male CNS v1.0, the map of a male fly’s central nervous system, neuron by neuron, licensed under CC BY 4.0. The activity you see is simulated. We translate the tasks into something a fly can feel, like dust on her antenna, and simulate how her brain responds. Only some of her neurons are shown.',
   pregunta5: 'Are the numbers about people?',
   respuesta5:
-    'No. They come from the game, an experiment on a computer with a single fly, and each one is the average of 200 days played. That each task takes longer and fewer get finished is backed by evidence; that stress goes up is our own assumption. The report says where each number comes from.',
+    'No. They come from the game, a computer experiment with a single fly, and each one is the average of 200 days played. That each task takes longer and fewer get finished is backed by evidence; that stress goes up is our own assumption. The report says where each number comes from.',
   pregunta6: 'Why does the fly smoke?',
   respuesta6:
     'Flies don’t smoke. The cigarette is a disguise for something they really do, cleaning their antennae. The tasks reach her as dust on her antenna, which lights up the cleaning circuit in her brain, and the game draws that as going out for a smoke. The game decides how many cigarettes she smokes. When she’s Calm she never smokes, and each break is 8 minutes without working.',
   pregunta7: 'Can I play on my phone?',
   respuesta7:
     'Yes. It plays on a computer, phone or tablet. On a phone the office is at the top and the controls at the bottom, with tabs for the brain and the days played. You can also play with the phone turned sideways.',
-  pregunta8: 'Does it cost anything? Do you keep my data?',
+  pregunta8: 'Does it cost anything? Do you store my data?',
   respuesta8:
     'It’s free and needs no sign-up. We don’t use cookies and only count visits, without identifying anyone. Your days played and what you choose, like the language, are saved only in your browser.',
   pregunta9: 'How do I use it with my team?',
@@ -158,7 +157,7 @@ export const INGLES = {
   // Qué es y qué no es, por qué lo hice, el cierre y el pie
   informeTitulo: 'What it is and what it isn’t',
   informeDestacado:
-    'It’s a game and an experiment on a computer, with rules based on studies. It doesn’t measure people or teams: your number is yours to measure.',
+    'It’s a game and a computer experiment, with rules based on studies. It doesn’t measure people or teams: your number is yours to measure.',
   informeTexto:
     'The report explains where each number comes from and gives four steps to try a limit with your team. It takes 10 minutes to read.',
   informeNota: '17 pages, 4 MB.',
@@ -195,6 +194,6 @@ export const DINAMICOS = {
     tareas: (n) => `${n} ${n === 1 ? 'task' : 'tasks'} at once`,
     nivel: (nivel) => ({ Tranquila: 'Calm', Ocupada: 'Busy', Estresada: 'Stressed', Colapsada: 'Overwhelmed' })[nivel],
     resumen: (n, terminadas, nivel, cigarros) =>
-      `With ${n} at once: ${terminadas} finished in the day, ${nivel.toLowerCase()} at the end of the day and ${cigarros} ${cigarros === 1 ? 'cigarette' : 'cigarettes'}.`,
+      `With ${n} at once: ${terminadas} finished per day, ${nivel.toLowerCase()} at the end of the day and ${cigarros} ${cigarros === 1 ? 'cigarette' : 'cigarettes'}.`,
   },
 };

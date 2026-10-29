@@ -18,8 +18,8 @@
 <main class="lectura" id="contenido" tabindex="-1">
   {{migas}}
   <h1>WIP limit: what it is and how to find your team’s</h1>
-  <p class="pagina-bajada">A short guide for teams that want to finish more without working longer hours: what work in progress is, why it pays to limit it and how to choose a number to start with. With data from the game Mosca del WIP and the studies behind it.</p>
-  <p class="pagina-meta"><span>By <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a></span><span>Updated on <time datetime="2026-10-28">{{fecha}}</time></span><span>About a 12-minute read</span></p>
+  <p class="pagina-bajada">A short guide for teams that work all day and feel they get little done: what work in progress is, why it pays to limit it and how to choose a number to start with. With data from the game Mosca del WIP and the studies behind it.</p>
+  <p class="pagina-meta"><span>By <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a></span><span>Updated on <time datetime="{{fecha-iso}}">{{fecha}}</time></span><span>About a 12-minute read</span></p>
 
   <nav class="indice" aria-label="On this page">
     <h2>On this page</h2>
@@ -74,7 +74,7 @@
 
     <h3>Why it depends on waits</h3>
     <p>Two forces pull the limit in opposite directions. Waits push toward more things open: if one gets stuck waiting for an answer, it helps to have another at hand. In the game, with a single task, the fly spends more than 2 hours a day with nothing to do when her only task gets stuck, which is why with 1 she finishes less than with 2. The cost of switching tasks pushes toward fewer: every jump costs, and the more it costs, the less it pays to open another.</p>
-    <p>The limit sits between those two forces. A team that waits a lot on others needs a somewhat higher limit, and one that waits little can lower it. That gives the rule that helps the most:</p>
+    <p>The limit sits between those two forces. In the simulation, when the fly waits a lot on others, the best limit goes up, and when she waits little, it goes down. In a team, the first step is to go after the waits, not to raise the limit. That gives the rule that helps the most:</p>
     <div class="recuadro"><p>Reducing waits lets you lower the limit. Raising the limit doesn’t reduce the waits.</p></div>
     <p>If the team wants a lower limit, the way there is to go after what makes it wait: an approval that takes days, one person everything goes through, an answer nobody gives. Raising the number only hides those waits behind more open things.</p>
 
@@ -136,7 +136,7 @@
     <p>The data are free to use under a <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> license, crediting Felipe Fernández and mosca.deliverycraft.ai. They are a simulation of a single fly: they don’t measure people or teams.</p>
     <ul class="descargas-pagina">
       <li><a href="/datos/mosca-del-wip-1-to-10-tasks.csv" download="mosca-del-wip-1-to-10-tasks.csv"><b>Download the data (CSV, in English)</b><span>Ten rows, one per number of tasks, with the table’s columns plus average and maximum stress.</span></a></li>
-      <li><a href="/datos/mosca-del-wip-1-a-10-tareas.csv" download="mosca-del-wip-1-a-10-tareas.csv"><b>Descargar los datos (CSV, en español)</b><span>The same ten rows, with the column names in Spanish.</span></a></li>
+      <li><a href="/datos/mosca-del-wip-1-a-10-tareas.csv" download="mosca-del-wip-1-a-10-tareas.csv"><b>Download the data (CSV, in Spanish)</b><span>The same ten rows, with the column names in Spanish.</span></a></li>
     </ul>
     <p class="nota">Where each rule of the game comes from and which part of each number is ours is in appendix B of the <a href="/en/report/#numeros">report</a>.</p>
   </section>

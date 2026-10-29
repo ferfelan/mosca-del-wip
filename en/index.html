@@ -91,7 +91,7 @@
           "isPartOf": { "@id": "https://mosca.deliverycraft.ai/#sitio" },
           "primaryImageOfPage": "https://mosca.deliverycraft.ai/img/vista-previa.jpg",
           "datePublished": "2026-10-24",
-          "dateModified": "2026-10-28"
+          "dateModified": "2026-10-29"
         },
         {
           "@type": "VideoGame",
@@ -246,14 +246,14 @@
               <div class="consola-cabeza">
                 <label id="t-wip" for="wip" data-t="tareasLabel">Tasks in progress at once (WIP)</label>
                 <output class="wip-numero" for="wip" data-wip>2</output>
-                <p class="wip-limite" data-limite>Dentro del límite sostenible (3)</p>
+                <p class="wip-limite" data-limite>Within the sustainable limit (3)</p>
               </div>
-              <input id="wip" class="wip" type="range" min="1" max="10" step="1" value="2" aria-valuetext="2 tareas a la vez" />
+              <input id="wip" class="wip" type="range" min="1" max="10" step="1" value="2" aria-valuetext="2 tasks at once" />
               <div class="marcas" aria-hidden="true"><span>1</span><span>2</span><span class="limite">3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
             </div>
             <dl class="consola-datos">
-              <div class="dato"><dt data-t="terminadas">finished in the day</dt><dd data-terminadas>18,0</dd></div>
-              <div class="dato"><dt data-t="estres">stress at the end of the day</dt><dd class="nivel" data-estres>Tranquila</dd></div>
+              <div class="dato"><dt data-t="terminadas">finished per day</dt><dd data-terminadas>18.0</dd></div>
+              <div class="dato"><dt data-t="estres">stress at the end of the day</dt><dd class="nivel" data-estres>Calm</dd></div>
               <div class="dato"><dt data-t="cigarros">cigarettes</dt><dd data-cigarros>0</dd></div>
             </dl>
             <p class="nota consola-nota" data-t="consolaNota">Average of 200 days played. These are numbers from the game, not from people.</p>
@@ -364,10 +364,10 @@
       <!-- 5. El kit para tu equipo: el juego, el informe y el taller, cada uno
            con su imagen (una foto del juego, la tapa del informe y la de la guía
            rápida). Lo que se lleva el equipo está arriba, en su propia sección.
-           INTERRUPTOR del taller (una sola cosa que cambiar):
-             data-taller="con-descargas"  muestra los tres archivos del taller
-             data-taller="muy-pronto"     esconde las descargas y muestra "Muy pronto" -->
-      <section class="kit" id="kit" aria-labelledby="t-kit" data-taller="con-descargas">
+           (El interruptor del taller, que escondía las descargas y mostraba un
+           aviso, salió el 2026-10-29: el taller ya está publicado y el aviso
+           escondido lo leían igual los buscadores.) -->
+      <section class="kit" id="kit" aria-labelledby="t-kit">
         <h2 id="t-kit" data-t="kitTitulo">The kit for your team</h2>
         <p class="kit-bajada" data-t="kitBajada">Three pieces, from 1 minute to 60. Free.</p>
         <ul class="piezas">
@@ -415,7 +415,6 @@
                 <li><a href="/taller/Mosca-del-WIP-Taller-Presentacion.pdf" download="Mosca del WIP - Taller - Presentación.pdf" data-taller-archivo data-t="kitPdf">Slides (PDF, in Spanish)</a></li>
                 <li><a href="/taller/Mosca-del-WIP-Taller-Hoja-del-equipo.pdf" download="Mosca del WIP - Taller - Hoja del equipo.pdf" data-taller-archivo data-t="kitHoja">Team sheet (PDF, in Spanish)</a></li>
               </ul>
-              <p class="muy-pronto" data-t="kitPronto">Coming soon</p>
             </div>
           </li>
         </ul>
@@ -465,7 +464,7 @@
         </a>
         <div class="informe-texto">
           <h2 id="t-informe" data-t="informeTitulo">What it is and what it isn’t</h2>
-          <p class="destacado" data-t="informeDestacado">It’s a game and an experiment on a computer, with rules based on studies. It doesn’t measure people or teams: your number is yours to measure.</p>
+          <p class="destacado" data-t="informeDestacado">It’s a game and a computer experiment, with rules based on studies. It doesn’t measure people or teams: your number is yours to measure.</p>
           <p data-t="informeTexto">The report explains where each number comes from and gives four steps to try a limit with your team. It takes 10 minutes to read.</p>
           <div class="acciones">
             <a class="boton principal" href="/en/report/" data-informe-web data-t="leerInforme">Read the report on the web</a>
@@ -511,7 +510,7 @@
           </details>
           <details class="pregunta">
             <summary><span class="pregunta-texto" data-t="pregunta5">Are the numbers about people?</span><span class="signo" aria-hidden="true"></span></summary>
-            <p class="respuesta" data-t="respuesta5">No. They come from the game, an experiment on a computer with a single fly, and each one is the average of 200 days played. That each task takes longer and fewer get finished is backed by evidence; that stress goes up is our own assumption. The report says where each number comes from.</p>
+            <p class="respuesta" data-t="respuesta5">No. They come from the game, a computer experiment with a single fly, and each one is the average of 200 days played. That each task takes longer and fewer get finished is backed by evidence; that stress goes up is our own assumption. The report says where each number comes from.</p>
           </details>
           <details class="pregunta">
             <summary><span class="pregunta-texto" data-t="pregunta6">Why does the fly smoke?</span><span class="signo" aria-hidden="true"></span></summary>
@@ -522,7 +521,7 @@
             <p class="respuesta" data-t="respuesta7">Yes. It plays on a computer, phone or tablet. On a phone the office is at the top and the controls at the bottom, with tabs for the brain and the days played. You can also play with the phone turned sideways.</p>
           </details>
           <details class="pregunta">
-            <summary><span class="pregunta-texto" data-t="pregunta8">Does it cost anything? Do you keep my data?</span><span class="signo" aria-hidden="true"></span></summary>
+            <summary><span class="pregunta-texto" data-t="pregunta8">Does it cost anything? Do you store my data?</span><span class="signo" aria-hidden="true"></span></summary>
             <p class="respuesta" data-t="respuesta8">It’s free and needs no sign-up. We don’t use cookies and only count visits, without identifying anyone. Your days played and what you choose, like the language, are saved only in your browser.</p>
           </details>
           <details class="pregunta">

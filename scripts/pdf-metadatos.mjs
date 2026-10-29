@@ -3,6 +3,8 @@
 // y lo que muestra el visor de PDF en "Propiedades". Usa pdf-lib (una
 // biblioteca para leer y escribir PDF desde Node). Se corre después de copiar
 // un PDF nuevo a public/: node scripts/pdf-metadatos.mjs
+// Con rutas, solo esos PDF (los demás no cambian, ni su fecha):
+//   node scripts/pdf-metadatos.mjs public/Mosca-del-WIP-Report.pdf
 // Comprobar con: pdfinfo public/Mosca-del-WIP-Informe.pdf
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -49,7 +51,10 @@ const PDFS = [
   },
 ];
 
-for (const p of PDFS) {
+const SOLO = process.argv.slice(2).map((r) => r.replace(/^\.\//, ''));
+const fuera = SOLO.filter((r) => !PDFS.some((p) => p.ruta === r));
+if (fuera.length) throw new Error(`no conozco ${fuera.join(', ')}: los PDF del sitio son ${PDFS.map((p) => p.ruta).join(', ')}`);
+for (const p of PDFS.filter((x) => !SOLO.length || SOLO.includes(x.ruta))) {
   const ruta = join(RAIZ, p.ruta);
   const doc = await PDFDocument.load(readFileSync(ruta), { updateMetadata: false });
   doc.setTitle(p.titulo, { showInWindowTitleBar: true });

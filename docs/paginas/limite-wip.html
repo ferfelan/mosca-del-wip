@@ -18,8 +18,8 @@
 <main class="lectura" id="contenido" tabindex="-1">
   {{migas}}
   <h1>Límite WIP: qué es y cómo encontrar el de tu equipo</h1>
-  <p class="pagina-bajada">Una guía corta para equipos que quieren terminar más sin trabajar más horas: qué es el trabajo en curso, por qué conviene limitarlo y cómo elegir un número para empezar. Con los datos del juego Mosca del WIP y los estudios que lo respaldan.</p>
-  <p class="pagina-meta"><span>Por <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a></span><span>Actualizada el <time datetime="2026-10-28">{{fecha}}</time></span><span>Lectura de unos 12 minutos</span></p>
+  <p class="pagina-bajada">Una guía corta para equipos que trabajan todo el día y sienten que terminan poco: qué es el trabajo en curso, por qué conviene limitarlo y cómo elegir un número para empezar. Con los datos del juego Mosca del WIP y los estudios que lo respaldan.</p>
+  <p class="pagina-meta"><span>Por <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a></span><span>Actualizada el <time datetime="{{fecha-iso}}">{{fecha}}</time></span><span>Lectura de unos 12 minutos</span></p>
 
   <nav class="indice" aria-label="En esta página">
     <h2>En esta página</h2>
@@ -74,7 +74,7 @@
 
     <h3>Por qué depende de las esperas</h3>
     <p>Dos fuerzas tiran del límite en direcciones contrarias. Las esperas empujan hacia más cosas abiertas: si una se traba esperando una respuesta, conviene tener otra a mano. En el juego, con una sola tarea, la mosca pasa más de 2 horas al día sin nada que hacer cuando su única tarea se traba, y por eso con 1 termina menos que con 2. El costo de cambiar de tarea empuja hacia menos: cada salto cuesta, y mientras más cuesta, menos conviene abrir.</p>
-    <p>El límite queda entre esas dos fuerzas. Un equipo que espera mucho a otros necesita un límite algo más alto, y uno que espera poco puede bajarlo. De ahí sale la regla que más sirve:</p>
+    <p>El límite queda entre esas dos fuerzas. En la simulación, cuando la mosca espera mucho a otros, el mejor límite sube, y cuando espera poco, baja. En un equipo, lo primero es atacar las esperas, no subir el límite. De ahí sale la regla que más sirve:</p>
     <div class="recuadro"><p>Reducir las esperas permite bajar el límite. Subir el límite no reduce las esperas.</p></div>
     <p>Si el equipo quiere un límite más bajo, el camino es atacar lo que lo hace esperar: una aprobación que tarda, una persona por la que todo pasa, una respuesta que nadie da. Subir el número solo esconde esas esperas detrás de más cosas abiertas.</p>
 
@@ -136,7 +136,7 @@
     <p>Los datos están libres para usar, con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>, citando a Felipe Fernández y mosca.deliverycraft.ai. Son una simulación de una mosca sola: no miden personas ni equipos.</p>
     <ul class="descargas-pagina">
       <li><a href="/datos/mosca-del-wip-1-a-10-tareas.csv" download="mosca-del-wip-1-a-10-tareas.csv"><b>Descargar los datos (CSV, en español)</b><span>Diez filas, una por número de tareas, con las columnas de la tabla y el estrés promedio y máximo.</span></a></li>
-      <li><a href="/datos/mosca-del-wip-1-to-10-tasks.csv" download="mosca-del-wip-1-to-10-tasks.csv"><b>Download the data (CSV, in English)</b><span>The same ten rows, with the column names in English.</span></a></li>
+      <li><a href="/datos/mosca-del-wip-1-to-10-tasks.csv" download="mosca-del-wip-1-to-10-tasks.csv"><b>Descargar los datos (CSV, en inglés)</b><span>Las mismas diez filas, con los nombres de las columnas en inglés.</span></a></li>
     </ul>
     <p class="nota">De dónde sale cada regla del juego y qué parte de cada número es nuestra está en el anexo B del <a href="/informe/#numeros">informe</a>.</p>
   </section>
