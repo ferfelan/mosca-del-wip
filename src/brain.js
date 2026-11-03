@@ -83,12 +83,23 @@ const FACTOR_RECUPERA_CAFE = 1.75;
 // con el mismo WIP (así se cumple la Ley de Little también en un solo día).
 const DIAS_PREVIOS = 3;
 const PASO_DIAS_PREVIOS = 0.25; // minutos simulados por paso (rápido y parejo)
+// Urgencias (Etapa 8.2, 2026-11-03): tareas que llegan sin aviso, en un momento
+// al azar del día, y pasan por encima del límite, una a la vez: la mosca suelta
+// lo que hacía y trabaja sólo en ella hasta terminarla ("vía rápida" de la
+// práctica kanban, Anderson 2010, citado por fuente secundaria). Lo que soltó
+// queda abierto y resta su residuo; el estrés sube porque hay una tarea abierta
+// más. Nada extra. APAGADAS POR DEFECTO (0 al día): el juego de siempre da
+// exactamente los mismos números. Cuántas llegan por día y las variantes
+// ('termina-tarea' = B, 'cola' = C, duración corta = D) son supuestos nuestros,
+// sólo para la simulación: regla, decisiones y criterios en
+// docs/etapa8-2-criterios.md.
+export const ENTRADAS_URGENCIA = ['interrumpe', 'termina-tarea', 'cola'];
 
 const porWip = (tabla, n) => tabla[Math.min(Math.max(Math.round(n), 1), tabla.length) - 1];
 
 let siguienteId = 1;
-function tareaAleatoria() {
-  const minutos = DURACION_TAREA_MIN + Math.random() * (DURACION_TAREA_MAX - DURACION_TAREA_MIN);
+function tareaAleatoria(duracionMin = DURACION_TAREA_MIN, duracionMax = DURACION_TAREA_MAX) {
+  const minutos = duracionMin + Math.random() * (duracionMax - duracionMin);
   return {
     id: siguienteId++,
     minutosRestantes: minutos,
@@ -107,15 +118,32 @@ function tareaAleatoria() {
 }
 
 export class DayBrain {
-  constructor(wip, { tareasDeAyer = true } = {}) {
+  constructor(wip, { tareasDeAyer = true, urgenciasPorDia = 0, urgencias = {} } = {}) {
     this.wip = wip;
     // Si mueven el slider a mitad del día, la tabla muestra el rango usado
     this.wipMin = wip;
     this.wipMax = wip;
     this.minutoActual = MINUTOS_DIA_INICIO;
+    // Urgencias (Etapa 8.2): cuántas llegan al día y cómo entran ('interrumpe'
+    // es la regla principal; 'termina-tarea' y 'cola' son las variantes B y C;
+    // `duracion` [min, max] en minutos, por defecto la de una tarea). Con 0 al
+    // día (lo normal del juego) nada de esto hace nada.
+    this.urgencias = {
+      porDia: urgenciasPorDia,
+      entrada: urgencias.entrada ?? 'interrumpe',
+      duracion: urgencias.duracion ?? [DURACION_TAREA_MIN, DURACION_TAREA_MAX],
+      porLlegar: [], // las de hoy que todavía no llegaron, por hora de llegada
+      enEspera: [], // llegaron y esperan al tope de "Por hacer" (principal y B)
+      llegadas: 0,
+      terminadas: 0,
+    };
+    this.minutosUrgencias = 0; // minutos del día en que trabajó una urgencia
     this.porHacer = [];
     for (let i = 1; i <= TOTAL_TAREAS_BACKLOG; i++) this.porHacer.push(tareaAleatoria());
-    this.enCurso = tareasDeAyer ? DayBrain.tareasQueVienenDeAyer(wip) : [];
+    const ayer = tareasDeAyer ? DayBrain.tareasQueVienenDeAyer(wip, this.urgencias) : { enCurso: [], urgenciasEnEspera: [] };
+    this.enCurso = ayer.enCurso;
+    this._recibirUrgenciasDeAyer(ayer.urgenciasEnEspera);
+    this._sortearUrgencias(); // después de las tareas normales: con 0 el azar queda idéntico
     this.hechas = [];
     this.punteroRoundRobin = 0;
     // Para "Tiempo por tarea" y la Ley de Little
@@ -147,17 +175,24 @@ export class DayBrain {
   }
 
   // Lo que quedó "En curso" al final de unos días previos jugados en silencio
-  // con el mismo WIP (con sus mismas reglas). Su "inicio" queda en negativo:
-  // minutos de trabajo antes de las 09:00 de hoy.
-  static tareasQueVienenDeAyer(wip) {
+  // con el mismo WIP (con sus mismas reglas, también las urgencias: la mosca
+  // vive en ese mundo). Su "inicio" (y la "llegada" de una urgencia) queda en
+  // negativo: minutos de trabajo antes de las 09:00 de hoy. También devuelve
+  // las urgencias que llegaron ayer y no alcanzaron a entrar.
+  static tareasQueVienenDeAyer(wip, urgencias = null) {
+    const opciones = urgencias ? { urgenciasPorDia: urgencias.porDia, urgencias: { entrada: urgencias.entrada, duracion: urgencias.duracion } } : {};
+    const deAyer = (t) => ({ ...t, inicio: t.inicio === null ? null : t.inicio - MINUTOS_DIA, ...(t.urgente ? { llegada: t.llegada - MINUTOS_DIA } : {}) });
     let quedaron = [];
+    let esperaban = [];
     for (let d = 0; d < DIAS_PREVIOS; d++) {
-      const dia = new DayBrain(wip, { tareasDeAyer: false });
+      const dia = new DayBrain(wip, { tareasDeAyer: false, ...opciones });
       dia.enCurso = quedaron;
+      dia._recibirUrgenciasDeAyer(esperaban);
       while (!dia.terminado) dia.tick(PASO_DIAS_PREVIOS);
-      quedaron = dia.enCurso.map((t) => ({ ...t, inicio: t.inicio - MINUTOS_DIA }));
+      quedaron = dia.enCurso.map(deAyer);
+      esperaban = [...dia.urgencias.enEspera, ...dia.porHacer.filter((t) => t.urgente)].map(deAyer);
     }
-    return quedaron;
+    return { enCurso: quedaron, urgenciasEnEspera: esperaban };
   }
 
   setWip(wip) {
@@ -202,18 +237,97 @@ export class DayBrain {
   }
 
   _rellenarEnCurso() {
-    while (this.enCurso.length < this.wip && this.porHacer.length > 0) {
+    // Una urgencia con prioridad va por encima del límite: no ocupa lugar
+    let dentroDelLimite = 0;
+    for (const t of this.enCurso) if (!t.prioridad) dentroDelLimite++;
+    while (dentroDelLimite < this.wip && this.porHacer.length > 0) {
       const tarea = this.porHacer.shift();
       tarea.inicio = this.minutosDeDia;
       this.enCurso.push(tarea);
+      dentroDelLimite++;
     }
     if (this.punteroRoundRobin >= this.enCurso.length) this.punteroRoundRobin = 0;
+  }
+
+  // ---- Urgencias (Etapa 8.2; la regla y las decisiones, en docs/etapa8-2-criterios.md) ----
+
+  // Sortea las urgencias de hoy: cuándo llega cada una (al azar, parejo entre
+  // las 09:00 y las 18:00) y su tamaño. Van después de las tareas normales,
+  // así con 0 urgencias el azar es idéntico al de siempre y, con la misma
+  // semilla, las variantes reciben las mismas llegadas.
+  _sortearUrgencias() {
+    const u = this.urgencias;
+    for (let i = 0; i < u.porDia; i++) {
+      const llegada = Math.random() * MINUTOS_DIA; // minuto del día (0 = 09:00)
+      const t = tareaAleatoria(u.duracion[0], u.duracion[1]);
+      t.urgente = true;
+      t.llegada = llegada;
+      t.prioridad = u.entrada !== 'cola'; // en la variante C es una tarea normal más
+      t.espero = false;
+      u.porLlegar.push(t);
+    }
+    u.porLlegar.sort((a, b) => a.llegada - b.llegada);
+  }
+
+  // Urgencias que ayer llegaron y no alcanzaron a entrar: hoy esperan primero
+  // (y quedan anotadas como que tuvieron que esperar)
+  _recibirUrgenciasDeAyer(lista) {
+    if (!lista.length) return;
+    for (const t of lista) t.espero = true;
+    if (this.urgencias.entrada === 'cola') this.porHacer.unshift(...lista);
+    else this.urgencias.enEspera.push(...lista);
+  }
+
+  // Las que llegan en este paso. Principal y B: esperan al tope de "Por hacer"
+  // y la primera entra si puede. C: al tope de "Por hacer", detrás de otras
+  // urgencias, y entra cuando se libera un lugar, como cualquier tarea.
+  // Devuelve las recién llegadas (para anotar si tuvieron que esperar).
+  _llegarUrgencias(esperaba) {
+    const u = this.urgencias;
+    const llegan = [];
+    while (u.porLlegar.length && u.porLlegar[0].llegada <= this.minutosDeDia) {
+      const t = u.porLlegar.shift();
+      u.llegadas += 1;
+      llegan.push(t);
+      if (u.entrada === 'cola') {
+        let i = 0;
+        while (i < this.porHacer.length && this.porHacer[i].urgente) i++;
+        this.porHacer.splice(i, 0, t);
+      } else {
+        u.enEspera.push(t);
+      }
+    }
+    if (u.enEspera.length) this._dejarEntrarUrgencia({ entreTareas: !this._aMitadDeTarea(esperaba) });
+    return llegan;
+  }
+
+  // Variante B: ¿está a mitad de una tarea? Sí, si en el paso anterior estaba
+  // trabajando (ni fumando, ni café, ni esperando por bloqueos) y tiene alguna
+  // tarea normal que puede avanzar. "En la mano" = las que está rotando; está
+  // "entre tareas" cuando termina una de ellas.
+  _aMitadDeTarea(esperaba) {
+    if (this.fumando || this.tomandoCafe || esperaba) return false;
+    return this.enCurso.some((t) => !t.prioridad && t.minutosBloqueada <= 0);
+  }
+
+  // ¿Puede entrar la primera urgencia que espera? Sólo si no hay otra con
+  // prioridad en curso (máximo una a la vez). En B, además, sólo "entre
+  // tareas": al terminar una, o si no está a mitad de ninguna.
+  _dejarEntrarUrgencia({ entreTareas }) {
+    const u = this.urgencias;
+    if (u.entrada === 'cola' || !u.enEspera.length) return;
+    if (this.enCurso.some((t) => t.prioridad)) return;
+    if (u.entrada === 'termina-tarea' && !entreTareas) return;
+    const t = u.enEspera.shift();
+    t.inicio = this.minutosDeDia;
+    this.enCurso.push(t); // por encima del límite: _rellenarEnCurso no la cuenta
   }
 
   // Avanza la simulación `dtMin` minutos simulados (puede ser fraccionario).
   tick(dtMin) {
     if (this.terminado || dtMin <= 0) return;
 
+    const esperaba = this.esperando; // (variante B: ¿estaba a mitad de una tarea al llegar una urgencia?)
     this.eventoEsteTick = this.fumando ? 'fumando' : this.tomandoCafe ? 'cafe' : 'trabajando';
     this.esperando = false;
 
@@ -225,12 +339,15 @@ export class DayBrain {
     }
     this.minutoActual += dt;
 
+    const recienLlegadas = this._llegarUrgencias(esperaba);
     this._rellenarEnCurso();
 
     // Los bloqueos corren solos (la otra persona responde a su ritmo),
     // haga lo que haga la mosca
     for (const t of this.enCurso) if (t.minutosBloqueada > 0) t.minutosBloqueada = Math.max(0, t.minutosBloqueada - dt);
     const trabajables = this.enCurso.filter((t) => t.minutosBloqueada <= 0);
+    // Una urgencia con prioridad que se puede trabajar: la mosca se dedica sólo a ella
+    const urgente = trabajables.find((t) => t.prioridad);
 
     if (this.fumando) {
       this.minutosFumadaRestantes -= dt;
@@ -257,13 +374,23 @@ export class DayBrain {
       // terminar las más antiguas. Toda tarea abierta que no está trabajando
       // (por sobre el límite o bloqueada) igual le resta un poco: lo que queda
       // a medias sigue ocupando la cabeza (residuo, Leroy 2009).
-      const enfoque = Math.min(trabajables.length, this.wip);
+      // Con una urgencia (Etapa 8.2): prioridad total, no alterna (rinde como
+      // con una sola tarea) y todo lo demás queda esperando, restando su residuo.
+      let enfoque;
+      let tarea;
+      if (urgente) {
+        enfoque = 1;
+        tarea = urgente;
+      } else {
+        enfoque = Math.min(trabajables.length, this.wip);
+        tarea = trabajables[this.punteroRoundRobin % enfoque];
+      }
       const esperando = this.enCurso.length - enfoque;
-      const tarea = trabajables[this.punteroRoundRobin % enfoque];
       const rinde = porWip(RENDIMIENTO_POR_WIP, enfoque) * (1 - RESIDUO_POR_TAREA_ESPERANDO) ** esperando;
       tarea.minutosRestantes -= dt * rinde;
       // (si la terminó a mitad del paso, lo que sobra no cuenta)
       this.minutosRinden += dt * rinde + Math.min(0, tarea.minutosRestantes);
+      if (tarea.urgente) this.minutosUrgencias += dt;
 
       // A veces, a mitad de camino, queda esperando a otra persona
       if (tarea.bloqueo && tarea.minutosRestantes > 0 && tarea.minutosRestantes <= tarea.bloqueo.cuandoQuedan) {
@@ -274,11 +401,15 @@ export class DayBrain {
       if (tarea.minutosRestantes <= 0) {
         const idx = this.enCurso.indexOf(tarea);
         this.enCurso.splice(idx, 1);
+        tarea.fin = this.minutosDeDia;
         this.hechas.push(tarea);
         this.sumaTiempoPorTarea += this.minutosDeDia - tarea.inicio;
         this.tareasMedidas += 1;
+        if (tarea.urgente) this.urgencias.terminadas += 1;
+        this._dejarEntrarUrgencia({ entreTareas: true }); // la urgencia que esperaba (si hay) entra ahora
         this._rellenarEnCurso();
-      } else {
+      } else if (!urgente) {
+        // (trabajando una urgencia no se mueve la rotación: después retoma donde iba)
         this.punteroRoundRobin = (this.punteroRoundRobin + 1) % Math.max(enfoque, 1);
       }
     }
@@ -341,6 +472,9 @@ export class DayBrain {
       }
     }
 
+    // Si una urgencia recién llegada no entró dentro de este mismo paso, tuvo que esperar
+    for (const t of recienLlegadas) t.espero = t.inicio === null;
+
     if (this.minutoActual >= MINUTOS_DIA_FIN) this.terminado = true;
   }
 
@@ -369,6 +503,16 @@ export class DayBrain {
       eficiencia: this.eficiencia,
       terminado: this.terminado,
       evento: this.eventoEsteTick,
+      // Urgencias (Etapa 8.2; con 0 al día todo queda en 0)
+      hechasNormales: this.hechas.length - this.urgencias.terminadas,
+      urgencias: {
+        porDia: this.urgencias.porDia,
+        enCurso: this.enCurso.reduce((n, t) => n + (t.urgente ? 1 : 0), 0),
+        esperando: this.urgencias.enEspera.length + this.porHacer.reduce((n, t) => n + (t.urgente ? 1 : 0), 0),
+        llegadas: this.urgencias.llegadas,
+        terminadas: this.urgencias.terminadas,
+      },
+      enCursoUrgentes: this.enCurso.map((t) => !!t.urgente),
     };
   }
 
@@ -381,6 +525,8 @@ export class DayBrain {
       tiempoPorTarea: this.tiempoPorTarea === null ? null : Math.round(this.tiempoPorTarea),
       eficiencia: this.eficiencia === null ? null : Math.round(this.eficiencia * 60), // minutos de cada hora
       estresMax: Math.round(this.estresMax), // siempre en % (0 a 100)
+      hechasNormales: this.hechas.length - this.urgencias.terminadas, // (Etapa 8.2) sin contar urgencias
+      urgencias: this.urgencias.terminadas,
     };
   }
 
@@ -398,6 +544,22 @@ export class DayBrain {
       cafes: this.cafes,
       minutosEsperando: this.minutosEsperando,
       minutosRinden: this.minutosRinden,
+      // Urgencias (Etapa 8.2)
+      hechasNormales: this.hechas.length - this.urgencias.terminadas,
+      hechasUrgentes: this.urgencias.terminadas,
+      urgenciasLlegadas: this.urgencias.llegadas,
+      urgenciasSinTerminar: this.enCurso.filter((t) => t.urgente).length + this.urgencias.enEspera.length + this.porHacer.filter((t) => t.urgente).length,
+      minutosUrgencias: this.minutosUrgencias,
+      estresFinal: this.estres,
+      // Cada tarea terminada hoy: minutos en "En curso" (lo de ayer cuenta, la
+      // noche no) y, si es urgencia, desde que llegó y cuánto esperó para entrar
+      tareas: this.hechas.map((t) => ({
+        urgente: !!t.urgente,
+        enCurso: t.fin - t.inicio,
+        desdeLlegada: t.urgente ? t.fin - t.llegada : null,
+        espera: t.urgente ? t.inicio - t.llegada : null,
+        espero: !!t.espero,
+      })),
     };
   }
 }

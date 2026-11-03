@@ -27,6 +27,11 @@
 //                                                 mostrada, para ver que la forma no
 //                                                 depende de la semilla)
 //      SEMILLA=7 DIAS=500 node scripts/simular-dias.mjs
+//      URGENCIAS=1 node scripts/simular-dias.mjs    (Etapa 8.2: la misma tabla con 1
+//                                                 urgencia al día, regla principal;
+//                                                 sólo para mirar: no revisa la forma
+//                                                 ni escribe la corrida oficial; el
+//                                                 estudio completo es scripts/urgencias.mjs)
 // No necesita el navegador ni el servidor.
 import { writeFileSync } from 'node:fs';
 import { randomInt } from 'node:crypto';
@@ -40,16 +45,17 @@ const PASO = Number(process.env.PASO ?? 0.15); // minutos simulados por cuadro: 
 // y antes de la prueba de bajar el WIP (como bajarDe10a2 de la 4.2), así esta
 // corrida da exactamente los mismos días que esas dos.
 const SEMILLA = process.env.SEMILLA === 'azar' ? randomInt(1, 2 ** 31) : Number(process.env.SEMILLA ?? 2024);
-const OFICIAL = SEMILLA === 2024 && DIAS === 200 && PASO === 0.15;
+const URGENCIAS = Number(process.env.URGENCIAS ?? 0); // Etapa 8.2: urgencias al día (0 = el juego de siempre)
+const OFICIAL = SEMILLA === 2024 && DIAS === 200 && PASO === 0.15 && URGENCIAS === 0;
 
 const filas = [];
 for (let wip = 1; wip <= 10; wip++) {
   sembrar(SEMILLA);
-  const t = { hechas: 0, medidas: 0, sumaTiempo: 0, minutos: 0, areaWip: 0, colillas: 0, cafes: 0, estres: 0, estresMax: 0, espera: 0, rinden: 0, avance: 0, llega: 0 };
+  const t = { hechas: 0, medidas: 0, sumaTiempo: 0, minutos: 0, areaWip: 0, colillas: 0, cafes: 0, estres: 0, estresMax: 0, espera: 0, rinden: 0, avance: 0, llega: 0, normales: 0, urgentes: 0, minUrg: 0 };
   // Trabajo que les falta a todas las tareas (en curso y por hacer)
   const pendiente = (dia) => [...dia.enCurso, ...dia.porHacer].reduce((s, x) => s + Math.max(0, x.minutosRestantes), 0);
   for (let d = 0; d < DIAS; d++) {
-    const dia = new DayBrain(wip);
+    const dia = new DayBrain(wip, { urgenciasPorDia: URGENCIAS });
     const alEmpezar = pendiente(dia);
     // Primer minuto en que el estrés entra a cada nivel (para "Llega a su nivel")
     const primeraVez = { [nivelDeEstres(dia.estres).nombre]: dia.minutoActual };
@@ -72,6 +78,9 @@ for (let wip = 1; wip <= 10; wip++) {
     t.estres += m.estresPromedio;
     t.estresMax += dia.estresMax;
     t.espera += m.minutosEsperando;
+    t.normales += m.hechasNormales;
+    t.urgentes += m.hechasUrgentes;
+    t.minUrg += m.minutosUrgencias;
   }
   const tiempoPorTarea = t.sumaTiempo / t.medidas;
   const porMinuto = t.hechas / t.minutos;
@@ -90,13 +99,16 @@ for (let wip = 1; wip <= 10; wip++) {
     wipPromedio,
     little: porMinuto * tiempoPorTarea,
     llega: t.llega / DIAS, // minuto promedio en que llega al nivel más alto del día (540 = 09:00)
+    normales: t.normales / DIAS, // terminadas sin contar urgencias (= hechas con URGENCIAS 0)
+    urgentes: t.urgentes / DIAS,
+    minutosUrgencias: t.minUrg / DIAS,
   });
 }
 
 const f1 = (n) => n.toFixed(1).replace('.', ',');
 const pad = (s, n) => String(s).padStart(n);
 const hora = (m) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(Math.round(m % 60)).padStart(2, '0')}`;
-console.log(`\n${DIAS} días por cada WIP (promedio por día) · semilla ${SEMILLA}${OFICIAL ? ' (la corrida oficial)' : ''}\n`);
+console.log(`\n${DIAS} días por cada WIP (promedio por día) · semilla ${SEMILLA}${OFICIAL ? ' (la corrida oficial)' : ''}${URGENCIAS ? ` · ${URGENCIAS} urgencia${URGENCIAS > 1 ? 's' : ''} al día (Etapa 8.2, regla principal)` : ''}\n`);
 console.log(' WIP  Terminadas  Tiempo/tarea  Eficiencia**  Espera*  Colillas  Cafés  Estrés prom.  Nivel       │ Little: WIP prom.  terminadas/min × tiempo  diferencia');
 for (const r of filas) {
   const dif = ((r.little - r.wipPromedio) / r.wipPromedio) * 100;
@@ -105,6 +117,11 @@ for (const r of filas) {
   );
 }
 
+if (URGENCIAS) {
+  console.log(` Con urgencias, "Terminadas" las cuenta. Sin contarlas: ${filas.map((r) => `WIP ${r.wip} ${f1(r.normales)}`).join(' · ')}`);
+  console.log(` Urgencias terminadas al día: ${filas.map((r) => `WIP ${r.wip} ${f1(r.urgentes)}`).join(' · ')}`);
+  console.log(` Minutos del día ocupados por urgencias: ${filas.map((r) => `WIP ${r.wip} ${Math.round(r.minutosUrgencias)}`).join(' · ')}`);
+}
 console.log(` Llega a su nivel (hora promedio en que el estrés alcanza por primera vez el nivel más alto del día): ${filas.map((r) => `WIP ${r.wip} ${r.llega <= 540.5 ? 'desde las 09:00' : hora(r.llega)}`).join(' · ')}`);
 console.log(' * Espera: minutos al día sin poder trabajar porque todas sus tareas en curso estaban bloqueadas.');
 console.log(' ** Eficiencia: de cada hora, cuántos minutos rinden de verdad (descuenta cambios de tarea, fumar, café y esperas).');
@@ -161,7 +178,7 @@ const curva = MARCAS_CURVA.map(() => ({ abiertas: 0, estres: 0 }));
 const t = { drena: 0, saleColapsada: 0, tranqui: 0, cafeAntesTranqui: 0, subeAlto: false };
 sembrar(SEMILLA);
 for (let d = 0; d < DIAS; d++) {
-  const dia = new DayBrain(10);
+  const dia = new DayBrain(10, { urgenciasPorDia: URGENCIAS });
   let k = 0;
   let kc = 0;
   let drena = null;
@@ -226,7 +243,10 @@ if (mTranqui - 720 < 120 || mTranqui - 720 > 210) problemas.push(`llega a Tranqu
 if (suma[MARCAS.length - 1].abiertas / DIAS > 2.05) problemas.push('a las 18:00 todavía no vuelve al límite de 2');
 
 console.log('');
-if (problemas.length) {
+if (URGENCIAS) {
+  console.log(`Con ${URGENCIAS} urgencia${URGENCIAS > 1 ? 's' : ''} al día no se revisa la forma (es otra pregunta: docs/etapa8-2-criterios.md y scripts/urgencias.mjs).`);
+  if (problemas.length) console.log(` (La revisión de siempre marcaría: ${problemas.join('; ')}.)`);
+} else if (problemas.length) {
   console.log('PROBLEMAS:');
   problemas.forEach((p) => console.log(' - ' + p));
   process.exitCode = 1;
