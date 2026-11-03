@@ -1045,7 +1045,8 @@ html.celular .banner-texto {
   display: none;
 }
 
-/* Antes de empezar: la tarjeta de Empezar sobre la oficina */
+/* Antes del primer día: la tarjeta de inicio sobre la oficina, justo encima
+   de la hoja (Etapa 8.1, 2026-11-03) */
 html.celular #aviso-empezar {
   grid-area: vista;
   align-self: end;
@@ -1055,12 +1056,40 @@ html.celular #aviso-empezar {
   left: auto;
   z-index: 4;
   width: auto;
-  max-width: min(340px, calc(100% - 2 * var(--cel-margen)));
+  max-width: min(400px, calc(100% - 2 * var(--cel-margen)));
   margin: 0 0 calc(var(--cel-solape) + 12px);
-  padding: 14px 16px;
+  padding: 14px 16px 8px;
   border-radius: 16px;
   transform: none;
-  gap: 8px;
+  gap: 7px;
+}
+
+html.celular #aviso-empezar strong {
+  font-size: 18px;
+}
+
+html.celular .aviso-texto {
+  gap: 5px;
+}
+
+html.celular .aviso-texto p {
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+html.celular .aviso-texto .aviso-prueba {
+  font-size: 14px;
+}
+
+html.celular #btn-empezar {
+  margin-top: 3px;
+}
+
+/* la zona de toque de "¿Qué es esto?" empieza justo donde termina el botón
+   (se come el aire de 7 px de la tarjeta, no el botón) y termina en el borde
+   de la tarjeta */
+html.celular #aviso-que-es {
+  margin: -7px 0 -8px;
 }
 
 html.celular:not([data-cel-vista='oficina']) #aviso-empezar {
@@ -1073,12 +1102,27 @@ html.celular.por-empezar #ex-mosca {
   visibility: hidden;
 }
 
-/* Si la tarjeta no cabe entera entre los botones de arriba y la hoja, primero
-   pierde el título y después el texto (src/main.js, ajustarAvisoEmpezar) */
-html.celular #aviso-empezar.sin-titulo strong,
-html.celular #aviso-empezar.solo-boton strong,
-html.celular #aviso-empezar.solo-boton p {
+/* ...y la hoja lleva solo las tareas a la vez (los números están en cero,
+   como en el Cerebro y en Días en pantallas bajas): así la tarjeta de inicio,
+   más larga que la de Empezar de antes, cabe entera sin subir sobre la mosca
+   más que aquella. Al empezar el día aparecen los números. */
+html.celular.por-empezar .bloque-numeros {
   display: none;
+}
+
+/* Si aun así no cabe entera entre los botones de arriba y la hoja (pantallas
+   con zoom o con la letra agrandada), va perdiendo de a poco: primero la línea
+   del final y "¿Qué es esto?", después el título y al final el texto: queda el
+   botón (src/main.js, ajustarAvisoEmpezar) */
+html.celular #aviso-empezar.sin-detalle .aviso-detalle,
+html.celular #aviso-empezar.sin-detalle #aviso-que-es,
+html.celular #aviso-empezar.sin-titulo strong,
+html.celular #aviso-empezar.solo-boton .aviso-texto {
+  display: none;
+}
+
+html.celular #aviso-empezar.sin-detalle {
+  padding-bottom: 14px;
 }
 
 html.celular #aviso-empezar.solo-boton {

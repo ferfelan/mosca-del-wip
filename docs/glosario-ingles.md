@@ -91,9 +91,13 @@ el juego digan lo mismo. Si quieres cambiar una palabra:
 | Día de oficina · 09:00 a 18:00 | Office day · 09:00 to 18:00 |
 | Hora | Time |
 | Pausa / Reanudar | Pause / Resume |
-| Empezar (el día parte detenido hasta apretarlo; 2026-10-25) | Start |
-| Un día de oficina en un minuto (la tarjeta de Empezar) | An office day in one minute |
-| Elige cuántas tareas tiene la mosca a la vez y aprieta Empezar. | Choose how many tasks the fly has at once, then press Start. |
+| Empezar (el botón de la pausa del panel antes del primer día; el día parte detenido hasta apretarlo; 2026-10-25) | Start |
+| Empezar el día (el botón de la tarjeta de inicio; desde la 8.1, 2026-11-03; antes la tarjeta decía "Empezar" / "Start") | Start the day |
+| Tú eres el jefe de la mosca. (título de la tarjeta de inicio, 8.1) | You’re the fly’s boss. |
+| Decide cuántas tareas puede tener empezadas a la vez, de 1 a 10, y mira su día de oficina en un minuto. | Choose how many tasks she can have started at once, from 1 to 10, and watch her office day in one minute. |
+| Al final verás cuánto terminó, cuánto tardó cada tarea y cómo quedó de estrés. | At the end you’ll see how much she finished, how long each task took and how stressed she ended up. |
+| Prueba un día con 9 y otro con 2. | Try one day with 9 and another with 2. |
+| ¿Qué es esto? (enlace chico bajo el botón, a la portada en el mismo idioma) | What is this? |
 | Por empezar (aviso de arriba en la Exhibición) | Not started |
 | Lista para empezar (estado de la mosca antes de Empezar) | Ready to start |
 | Velocidad | Speed |

@@ -544,10 +544,11 @@ tr.vacia td {
   display: none;
 }
 
-/* ---------- Antes de empezar: Empezar (mismo estilo que el fin de día) ---------- */
+/* ---------- La tarjeta de inicio (Etapa 8.1, 2026-11-03): el jefe de la mosca y su misión ---------- */
 
 /* Al centro del espacio libre entre el cerebro (16 + 360 px, a la izquierda)
-   y el panel (280 + 16 px, a la derecha), sin taparlos */
+   y el panel (280 + 16 px, a la derecha), sin taparlos. El mismo estilo que la
+   pregunta de salir y el fin del día: la tinta del juego y la letra de siempre */
 #aviso-empezar {
   --libre-izq: 376px;
   --libre-der: 296px;
@@ -559,9 +560,9 @@ tr.vacia td {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  width: clamp(260px, calc(100vw - var(--libre-izq) - var(--libre-der) - 32px), 340px);
-  padding: 20px 22px;
+  gap: 9px;
+  width: clamp(260px, calc(100vw - var(--libre-izq) - var(--libre-der) - 32px), 400px);
+  padding: 20px 24px 14px;
   border-radius: 14px;
   background: var(--tinta);
   color: #fbf8f2;
@@ -573,20 +574,43 @@ tr.vacia td {
   display: none;
 }
 
-#aviso-empezar strong {
-  font-size: 17px;
+/* Recibe el foco al abrir el juego, para que el lector de pantalla la lea
+   primero (src/main.js). Sin anillo: no es algo que se apriete */
+#aviso-empezar:focus {
+  outline: none;
 }
 
-#aviso-empezar p {
+#aviso-empezar strong {
+  font-size: 19px;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+.aviso-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.aviso-texto p {
   margin: 0;
   font-size: 13.5px;
   line-height: 1.45;
   opacity: 0.86;
+  text-wrap: pretty;
+}
+
+/* La línea destacada ("Prueba un día con 9 y otro con 2."): la misma letra,
+   en negrita y sin atenuar */
+.aviso-texto .aviso-prueba {
+  font-size: 14.5px;
+  font-weight: 700;
+  opacity: 1;
 }
 
 #btn-empezar {
   min-height: 44px;
-  margin-top: 4px;
+  margin-top: 5px;
   padding: 0 34px;
   border: none;
   border-radius: 999px;
@@ -609,6 +633,37 @@ tr.vacia td {
   outline-offset: 3px;
 }
 
+/* "¿Qué es esto?": chico, bajo el botón; lleva a la portada en el mismo idioma
+   (src/main.js, ponerEnlacesInicio). Zona de toque de 44 px sin ocupar ese
+   alto a la vista (los márgenes negativos se comen el aire de alrededor) */
+#aviso-que-es {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin: -9px 0 -12px;
+  padding: 0 10px;
+  border-radius: 999px;
+  color: #fbf8f2;
+  opacity: 0.78;
+  font-size: 12.5px;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  text-decoration-color: rgba(251, 248, 242, 0.45);
+  transition: opacity 0.15s ease;
+}
+
+#aviso-que-es:hover {
+  opacity: 1;
+  text-decoration-color: currentColor;
+}
+
+#aviso-que-es:focus-visible {
+  outline: 2px solid #fbf8f2;
+  outline-offset: -3px;
+  opacity: 1;
+}
+
 body.cerebro-oculto #aviso-empezar {
   --libre-izq: 0px;
 }
@@ -617,10 +672,10 @@ body.controles-oculto #aviso-empezar {
   --libre-der: 0px;
 }
 
-/* En Exhibición la oficina ocupa el 60 % de la izquierda */
+/* En Exhibición no va: ahí explica quien facilita (8.1). El reloj igual
+   espera a Espacio, a R o al modo demo */
 body.exhibicion #aviso-empezar {
-  left: 30vw;
-  width: min(340px, calc(60vw - 32px));
+  display: none;
 }
 
 /* ---------- Salir del juego: la pregunta antes de ir a la portada (2026-10-28) ----------

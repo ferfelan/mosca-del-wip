@@ -222,6 +222,22 @@ async function probarEmpezar(p, etiqueta, nombre) {
   revisar(!choques.length, etiqueta(`la tarjeta de Empezar no choca con nada${choques.length ? ` (choca con ${choques.join(', ')})` : ''}`));
   const z = await p.evaluate(ZONA_TOQUE, '#btn-empezar');
   revisar(z && !z.tapado && z.ancho >= 44 && z.alto >= 44, etiqueta(`zona de toque de #btn-empezar: ${z ? `${z.ancho}×${z.alto}` : 'no está'}${z?.tapado ? ' (tapado)' : ''}`));
+  // Desde la 8.1 la tarjeta presenta el juego: en un teléfono normal se ve
+  // completa (título, tres líneas, botón y "¿Qué es esto?"); solo con el zoom
+  // de pantalla o la letra agrandada puede perder partes. La hoja lleva solo
+  // las tareas a la vez hasta empezar (los números aparecen al empezar).
+  const partes = await p.evaluate(() => {
+    const t = document.getElementById('aviso-empezar');
+    const seVe = (s) => { const el = t.querySelector(s); return !!el && getComputedStyle(el).display !== 'none'; };
+    return { clases: t.className, titulo: seVe('strong'), lineas: [...t.querySelectorAll('.aviso-texto p')].filter((e) => getComputedStyle(e).display !== 'none').length, boton: seVe('#btn-empezar'), enlace: seVe('#aviso-que-es'), numeros: !!document.querySelector('.bloque-numeros') && getComputedStyle(document.querySelector('.bloque-numeros')).display !== 'none' };
+  });
+  if (!/zoom|letra/.test(nombre)) revisar(partes.titulo && partes.lineas === 3 && partes.boton && partes.enlace, etiqueta(`la tarjeta de inicio se ve completa (${JSON.stringify(partes)})`));
+  else console.log(`   ${nombre}: tarjeta ${partes.clases ? `recortada (${partes.clases})` : 'completa'}`);
+  revisar(!partes.numeros, etiqueta('antes de empezar la hoja no muestra los números'));
+  if (partes.enlace) {
+    const ze = await p.evaluate(ZONA_TOQUE, '#aviso-que-es');
+    revisar(ze && !ze.tapado && ze.alto >= 44, etiqueta(`zona de toque de "¿Qué es esto?": ${ze ? `${ze.ancho}×${ze.alto}` : 'no está'}${ze?.tapado ? ' (tapado)' : ''}`));
+  }
   await p.screenshot({ path: `${CAPTURAS}/${nombre}-0-empezar.png` });
   await tocar(p, '#btn-empezar');
   await p.waitForTimeout(1200);
@@ -231,6 +247,8 @@ async function probarEmpezar(p, etiqueta, nombre) {
     tarjeta: document.getElementById('aviso-empezar').hidden,
   }));
   revisar(despues.corre && despues.tarjeta && despues.hora !== '09:00', etiqueta(`Empezar hace correr el reloj y saca la tarjeta (${despues.hora})`));
+  const numeros = await p.evaluate(() => getComputedStyle(document.querySelector('.bloque-numeros')).display !== 'none');
+  revisar(numeros, etiqueta('al empezar aparecen los números de la hoja'));
 }
 
 // ---------- Un teléfono vertical ----------

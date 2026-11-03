@@ -388,11 +388,12 @@ for (const [w, h] of TAMANOS) {
     `abre en inglés: <html lang="${carga.lang}">, ${carga.url}, escondida mientras se traduce (${carga.escondida}) y al mostrarse ya decía "${carga.alMostrar}"`
   );
   revisar(marcaSolo(carga.marcados, 'en'), `el botón marca EN (${carga.marcados})`);
-  // La tarjeta de Empezar (el juego parte detenido) ya está en inglés
+  // La tarjeta de inicio (el juego parte detenido; 8.1) ya está en inglés
   const tarjeta = await en.evaluate(() => document.getElementById('aviso-empezar').innerText.replace(/\s+/g, ' ').trim());
   revisar(
-    tarjeta === 'An office day in one minute Choose how many tasks the fly has at once, then press Start. Start',
-    `la tarjeta de Empezar en inglés («${tarjeta}»)`
+    tarjeta ===
+      'You’re the fly’s boss. Choose how many tasks she can have started at once, from 1 to 10, and watch her office day in one minute. At the end you’ll see how much she finished, how long each task took and how stressed she ended up. Try one day with 9 and another with 2. Start the day What is this?',
+    `la tarjeta de inicio en inglés («${tarjeta}»)`
   );
   const cargaEs = await es.evaluate(() => ({ lang: document.documentElement.lang, escondida: window.__escondida === true }));
   revisar(cargaEs.lang === 'es' && !cargaEs.escondida, `sin ?lang abre en español y no se esconde (lang="${cargaEs.lang}")`);

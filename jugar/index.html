@@ -113,6 +113,26 @@
         Mosca del WIP es un juego gratis en el navegador: una mosca oficinista con cerebro real pasa un día en la oficina y tú eliges cuántas tareas tiene en curso a la vez, de 1 a 10. Con pocas termina más y tranquila; con muchas, cada tarea tarda más y la mosca colapsa. Para jugar hace falta JavaScript; mientras tanto puedes leer la <a href="/limite-wip/">guía del límite WIP</a> o el <a href="/informe/">informe</a> de dónde sale cada número.
       </p>
     </noscript>
+    <!-- La tarjeta de inicio (Etapa 8.1, 2026-11-03; reemplaza a la tarjeta
+         Empezar de la 5.2g): antes del primer día le dice a quien llega que es
+         el jefe de la mosca y cuál es la misión. Se ve en Control y en el
+         celular; en Exhibición no (ahí explica quien facilita). El reloj no
+         corre hasta "Empezar el día" (también Enter, Espacio, la pausa,
+         Reiniciar día o el modo demo: src/main.js, alternarPausa); mientras se
+         puede mover el control de tareas sin que se cierre; en los días
+         siguientes (R, Reiniciar día) no vuelve a salir. Va primero en la
+         página y recibe el foco al abrir el juego (src/main.js), para que el
+         lector de pantalla la lea antes que nada. -->
+    <section id="aviso-empezar" role="dialog" tabindex="-1" aria-labelledby="aviso-empezar-titulo" aria-describedby="aviso-empezar-texto">
+      <strong id="aviso-empezar-titulo">Tú eres el jefe de la mosca.</strong>
+      <div id="aviso-empezar-texto" class="aviso-texto">
+        <p>Decide cuántas tareas puede tener empezadas a la vez, de 1 a 10, y mira su día de oficina en un minuto.</p>
+        <p class="aviso-detalle">Al final verás cuánto terminó, cuánto tardó cada tarea y cómo quedó de estrés.</p>
+        <p class="aviso-prueba">Prueba un día con 9 y otro con 2.</p>
+      </div>
+      <button id="btn-empezar" type="button">Empezar el día</button>
+      <a id="aviso-que-es" href="/">¿Qué es esto?</a>
+    </section>
     <header id="barra-exhibicion" class="solo-exhibicion">
       <!-- "← Inicio" vuelve a la portada (5.2i). El enlace sí se lee con lector
            de pantalla; el título y los atajos siguen fuera de él, como antes -->
@@ -453,15 +473,6 @@
         <button id="cel-reiniciar" type="button">Reiniciar día</button>
       </div>
     </div>
-
-    <!-- Antes de empezar (pedido de Felipe, 2026-10-25): el reloj no corre
-         hasta apretar Empezar; mientras, se puede elegir el WIP. También parte
-         con Espacio, la pausa o Reiniciar día (src/main.js, alternarPausa) -->
-    <section id="aviso-empezar" aria-labelledby="aviso-empezar-titulo">
-      <strong id="aviso-empezar-titulo">Un día de oficina en un minuto</strong>
-      <p>Elige cuántas tareas tiene la mosca a la vez y aprieta Empezar.</p>
-      <button id="btn-empezar" type="button">Empezar</button>
-    </section>
 
     <!-- Salir del juego (2026-10-28, pedido de Felipe): "← Inicio" (Control y
          Exhibición) y la flecha del celular preguntan antes de ir a la portada.

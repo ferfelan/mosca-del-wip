@@ -242,8 +242,9 @@ function ponerWip(valor) {
 elWip.addEventListener('input', () => ponerWip(Number(elWip.value)));
 pintarWip();
 
-// Lo primero que hace correr el reloj (Empezar, la pausa, Espacio, Reiniciar
-// día o el modo demo) empieza el día y saca la tarjeta de Empezar
+// Lo primero que hace correr el reloj ("Empezar el día", Enter, la pausa,
+// Espacio, Reiniciar día o el modo demo) empieza el día y saca la tarjeta de
+// inicio, que no vuelve a salir en los días siguientes (8.1)
 function alternarPausa() {
   pausado = !pausado;
   if (!pausado && !empezado) {
@@ -264,13 +265,15 @@ document.getElementById('btn-empezar').addEventListener('click', () => {
   if (pausado) alternarPausa();
 });
 
-// En el celular la tarjeta de Empezar va sobre la oficina, entre los botones
+// En el celular la tarjeta de inicio va sobre la oficina, entre los botones
 // de arriba y la hoja (el estado de la mosca se esconde hasta empezar: todavía
-// no tiene nada que contar). Si no cabe entera (pantallas con zoom o con la
-// letra agrandada), primero pierde el título y después el texto: queda el botón.
+// no tiene nada que contar, y la hoja lleva solo las tareas a la vez). Si no
+// cabe entera (pantallas con zoom o con la letra agrandada), va perdiendo de
+// a poco: la línea del final y "¿Qué es esto?", después el título y al final
+// el texto: queda el botón (reglas en src/celular.css).
 const TAPAN_AVISO = ['cel-volver', 'cel-controles', 'cel-pestanas', 'panel'].map((id) => document.getElementById(id));
 function ajustarAvisoEmpezar() {
-  const niveles = ['sin-titulo', 'solo-boton'];
+  const niveles = ['sin-detalle', 'sin-titulo', 'solo-boton'];
   elAvisoEmpezar.classList.remove(...niveles);
   if (!esCelular() || elAvisoEmpezar.hidden) return;
   const choca = () => {
@@ -894,6 +897,13 @@ window.addEventListener('keydown', (e) => {
     e.preventDefault();
     alternarPausa();
   }
+  // Antes del primer día, Enter también lo empieza (lo mismo que "Empezar el
+  // día" en la tarjeta de inicio, 8.1); con el foco en un botón o un enlace,
+  // Enter hace lo suyo
+  if (e.key === 'Enter' && !empezado && !(e.target instanceof HTMLButtonElement) && !(e.target instanceof HTMLAnchorElement)) {
+    e.preventDefault();
+    alternarPausa();
+  }
   if (e.key === 'r' || e.key === 'R') reiniciarDia();
   if (/^[0-9]$/.test(e.key)) ponerWip(e.key === '0' ? 10 : Number(e.key));
   if (e.key === 'd' || e.key === 'D') alternarDemo();
@@ -1199,10 +1209,10 @@ pintarBotonesIdioma();
 for (const boton of botonesIdioma) boton.addEventListener('click', () => cambiarIdioma(boton.dataset.idioma));
 
 // Los enlaces a la portada ("← Inicio" en Control y en la barra de Exhibición,
-// la flecha del celular y "Salir del juego" de la pregunta) llevan al mismo
-// idioma del juego (5.2i): en inglés, /?lang=en
+// la flecha del celular, "Salir del juego" de la pregunta y "¿Qué es esto?" de
+// la tarjeta de inicio) llevan al mismo idioma del juego (5.2i): en inglés, /en/
 function ponerEnlacesInicio() {
-  for (const a of document.querySelectorAll('.volver-inicio, #cel-volver, #btn-salir-juego')) a.setAttribute('href', rutaEnIdioma('/', idioma));
+  for (const a of document.querySelectorAll('.volver-inicio, #cel-volver, #btn-salir-juego, #aviso-que-es')) a.setAttribute('href', rutaEnIdioma('/', idioma));
   // el enlace a la guía del límite WIP, en el panel (Etapa 7): /limite-wip/ o /en/wip-limit/
   for (const a of document.querySelectorAll('[data-guia]')) a.setAttribute('href', rutaEnIdioma('/limite-wip/', idioma));
 }
@@ -1366,6 +1376,10 @@ animar();
 // El script del <head> esconde la página mientras se ponen los textos en
 // inglés; ya están (el primer cuadro se dibujó en su idioma)
 document.documentElement.classList.remove('traduciendo');
+// La tarjeta de inicio recibe el foco al abrir el juego (8.1): el lector de
+// pantalla la lee primero (es un diálogo con su título y su texto) y Enter o
+// Espacio empiezan el día. En Exhibición no se ve y el foco no entra.
+elAvisoEmpezar.focus({ preventScroll: true });
 
 if (import.meta.env.DEV) {
   window.__mosca = {

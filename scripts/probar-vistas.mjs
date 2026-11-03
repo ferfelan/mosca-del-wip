@@ -46,7 +46,8 @@ await p.keyboard.press('e');
 await esperar(1000);
 let x0 = await leer();
 t0 = await tarjeta();
-revisar(x0.vista === 'exhibición' && x0.hora === '09:00' && t0.visible && t0.derecha <= 1512 * 0.6, `exhibición: espera a Empezar con la tarjeta sobre la oficina (${x0.hora})`);
+// (desde la 8.1 la tarjeta de inicio no va en Exhibición: ahí explica quien facilita; el reloj igual espera)
+revisar(x0.vista === 'exhibición' && x0.hora === '09:00' && !t0.visible && x0.aviso.startsWith('Por empezar'), `exhibición: espera a Empezar sin la tarjeta (${x0.hora}, «${x0.aviso}»)`);
 await p.keyboard.press('Escape');
 await esperar(800);
 await p.keyboard.press('7');

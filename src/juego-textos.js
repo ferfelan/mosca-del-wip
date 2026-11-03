@@ -131,11 +131,16 @@ export const PAGINA = {
   Controles: 'Controls',
   'Mostrar los controles (tecla C)': 'Show the controls (key C)',
   'Fin del día.': 'End of the day.',
-  // Antes de empezar el día (tarjeta sobre la oficina)
-  'Un día de oficina en un minuto': 'An office day in one minute',
-  'Elige cuántas tareas tiene la mosca a la vez y aprieta Empezar.':
-    'Choose how many tasks the fly has at once, then press Start.',
-  Empezar: 'Start',
+  // La tarjeta de inicio (Etapa 8.1, 2026-11-03): quién es quien juega y cuál
+  // es la misión, antes del primer día
+  'Tú eres el jefe de la mosca.': 'You’re the fly’s boss.',
+  'Decide cuántas tareas puede tener empezadas a la vez, de 1 a 10, y mira su día de oficina en un minuto.':
+    'Choose how many tasks she can have started at once, from 1 to 10, and watch her office day in one minute.',
+  'Al final verás cuánto terminó, cuánto tardó cada tarea y cómo quedó de estrés.':
+    'At the end you’ll see how much she finished, how long each task took and how stressed she ended up.',
+  'Prueba un día con 9 y otro con 2.': 'Try one day with 9 and another with 2.',
+  'Empezar el día': 'Start the day',
+  '¿Qué es esto?': 'What is this?',
   'Mira la tabla o reinicia para probar otro WIP.': 'Check the table, or restart to try another WIP.',
   // Celular (Parte 5.2e): volver, la píldora del reloj, la hoja de abajo, las
   // pestañas y el fin del día ("Cerebro", "Idioma" y "Reiniciar día" ya están)
