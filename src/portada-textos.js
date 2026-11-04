@@ -10,7 +10,7 @@ export const INGLES = {
 
   // El inicio (portada v2) y la consola
   rotulo: 'For teams and leaders · a 1-minute game',
-  titulo: 'Busy all day. So what did you finish?', // el mismo título que la pág. 1 del informe en inglés
+  titulo: 'Busy all day. So what did you finish?', // el mismo título que la pág. 2 del informe en inglés (la 1 desde la 8.4 es "If you only read one page")
   bajada:
     'Play for a minute and watch what happens to an office fly with a real brain when she has too many things started at once.',
   jugar: 'Play',

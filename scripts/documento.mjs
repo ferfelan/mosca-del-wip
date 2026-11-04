@@ -75,7 +75,7 @@ const FECHA = process.env.FECHA ?? new Date().toLocaleDateString('sv-SE'); // 20
 const DOCUMENTOS = [
   // 4 nov. 2026, 8.4: compartir v23 (ES) y v24 (EN), las urgencias y el recorte del 28 %; completo v21, la Etapa 8 en la sección 29.
   // 4 nov. 2026, arreglos chicos de Felipe (8.4, sección 9): compartir v24 (ES) y v25 (EN), solo texto (Perlow, DORA, "empeora", fecha)
-  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v21' },
+  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v22' },
   { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v24', paginas: [16, 17] },
   { id: 'compartir-en', html: 'compartir-en.html', nombre: 'Para compartir en inglés', version: 'v25', paginas: [16, 17] },
   { id: 'norte', html: 'norte.html', nombre: 'Norte del proyecto', version: 'v1', paginas: [1, 2], aparte: true },
@@ -93,6 +93,8 @@ const DOCUMENTOS = [
   { id: 'taller-v4', html: 'taller-v4.html', nombre: 'Taller - Guía rápida del facilitador', version: 'v4', paginas: [5, 5], aparte: true },
   // Etapa 8.5 (2026-11-04): la guía v4 al día con el juego de hoy (fotos, Espacio, urgencias), 5 hojas (DOC=taller-v5)
   { id: 'taller-v5', html: 'taller-v5.html', nombre: 'Taller - Guía rápida del facilitador', version: 'v5', paginas: [5, 5], aparte: true },
+  // Arreglo chico (2026-11-04): "Informe, págs. 8 y 9" en "¿Esto es real?" (DOC=taller-v6)
+  { id: 'taller-v6', html: 'taller-v6.html', nombre: 'Taller - Guía rápida del facilitador', version: 'v6', paginas: [5, 5], aparte: true },
   // Etapa 7 (2026-10-28): la hoja del equipo sola, 1 hoja, para descargar aparte (DOC=hoja-equipo)
   { id: 'hoja-equipo', html: 'taller-hoja-equipo.html', nombre: 'Taller - Hoja del equipo', version: 'v5', paginas: [1, 1], aparte: true },
   // Etapa 7 (2026-10-28): los borradores de difusión de docs/etapa7-difusion.md, para leerlos en PDF (DOC=borradores)
