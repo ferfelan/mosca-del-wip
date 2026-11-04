@@ -69,12 +69,12 @@ export const PAGINA = {
   Eliminar: 'Remove',
   'Borrar historial': 'Clear history',
   'Atajos de teclado': 'Keyboard shortcuts',
-  'Números del juego. Que cada tarea tarde más tiene respaldo; el estrés es un supuesto nuestro.':
-    'Game numbers. That each task takes longer is backed by evidence; the stress is our assumption.',
+  'Números del juego. Que cada tarea tarde más tiene respaldo. El estrés es un supuesto nuestro.':
+    'Game numbers. That each task takes longer is backed by evidence. The stress is our assumption.',
   // Panel del cerebro
   'Cerebro de la mosca en vivo': 'The fly’s brain, live',
   'Cerebro en vivo': 'Live brain',
-  'Arriba el cerebro; abajo, el cordón nervioso': 'The brain on top; the nerve cord below',
+  'Arriba, el cerebro. Abajo, el cordón nervioso': 'The brain on top. The nerve cord below',
   Idioma: 'Language',
   Exhibición: 'Exhibition',
   'Vista exhibición: pantalla completa para mostrar (tecla E)': 'Exhibition view: full screen, to show it to others (key E)',
@@ -121,8 +121,8 @@ export const PAGINA = {
   'Las zonas muestran por dónde pasa la señal que le damos. Que una zona esté en 0% (por ejemplo, Memoria) no significa que la mosca no la use: la señal no llega ahí.':
     'The zones show where the signal we give her travels. A zone at 0% (Memory, for example) doesn’t mean the fly doesn’t use it: the signal doesn’t reach it.',
   'Las moscas no fuman: el cigarro es un disfraz.': 'Flies don’t smoke: the cigarette is a disguise.',
-  'Los números de la oficina son del juego. Que cada tarea tarde más y se termine menos tiene respaldo; que suba el estrés es un supuesto nuestro.':
-    'The office numbers come from the game. That each task takes longer and fewer get finished is backed by evidence; that stress goes up is our own assumption.',
+  'Los números de la oficina son del juego. Que cada tarea tarde más y se termine menos tiene respaldo. Que suba el estrés es un supuesto nuestro.':
+    'The office numbers come from the game. That each task takes longer and fewer get finished is backed by evidence. That stress goes up is our own assumption.',
   'Datos: Male CNS v1.0. Una colaboración entre FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC Laboratory of Molecular Biology y Google Research. Licencia CC BY 4.0 · male-cns.janelia.org':
     'Data: Male CNS v1.0. A collaboration between FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC Laboratory of Molecular Biology, and Google Research. License CC BY 4.0 · male-cns.janelia.org',
   // Botones para volver a mostrar los paneles y aviso del fin del día

@@ -147,7 +147,8 @@ function pintarTabla(dias) {
     elTablaBody.innerHTML = `<tr class="vacia"><td colspan="7">${tx('tablaVacia')}</td></tr>`;
     return;
   }
-  // El mejor día (más tareas terminadas) se destaca: ayuda a comparar
+  // El mejor día (más tareas terminadas en total, normales más urgencias:
+  // decisión de Felipe del 2026-11-04, docs/etapa8-4.md sección 9) se destaca
   const mejor = dias.length > 1 ? Math.max(...dias.map((d) => d.hechas)) : null;
   dias.forEach((d, i) => {
     const tr = document.createElement('tr');
