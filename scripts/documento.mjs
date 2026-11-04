@@ -91,8 +91,10 @@ const DOCUMENTOS = [
   { id: 'taller-v2', html: 'taller-v2.html', nombre: 'Taller - Manual del facilitador', version: 'v2', paginas: [11, 12], aparte: true },
   { id: 'taller-v3', html: 'taller-v3.html', nombre: 'Taller - Guía rápida del facilitador', version: 'v3', paginas: [8, 8], aparte: true },
   { id: 'taller-v4', html: 'taller-v4.html', nombre: 'Taller - Guía rápida del facilitador', version: 'v4', paginas: [5, 5], aparte: true },
+  // Etapa 8.5 (2026-11-04): la guía v4 al día con el juego de hoy (fotos, Espacio, urgencias), 5 hojas (DOC=taller-v5)
+  { id: 'taller-v5', html: 'taller-v5.html', nombre: 'Taller - Guía rápida del facilitador', version: 'v5', paginas: [5, 5], aparte: true },
   // Etapa 7 (2026-10-28): la hoja del equipo sola, 1 hoja, para descargar aparte (DOC=hoja-equipo)
-  { id: 'hoja-equipo', html: 'taller-hoja-equipo.html', nombre: 'Taller - Hoja del equipo', version: 'v4', paginas: [1, 1], aparte: true },
+  { id: 'hoja-equipo', html: 'taller-hoja-equipo.html', nombre: 'Taller - Hoja del equipo', version: 'v5', paginas: [1, 1], aparte: true },
   // Etapa 7 (2026-10-28): los borradores de difusión de docs/etapa7-difusion.md, para leerlos en PDF (DOC=borradores)
   { id: 'borradores', html: 'borradores.html', nombre: 'Borradores de difusión', version: 'v1', paginas: [9, 10], aparte: true },
 ];

@@ -45,7 +45,7 @@ const PDFS = [
   {
     ruta: 'public/taller/Mosca-del-WIP-Taller-Hoja-del-equipo.pdf',
     titulo: 'La hoja del equipo: taller Deja de empezar, empieza a terminar (Mosca del WIP)',
-    tema: 'Una hoja para imprimir, una por equipo: cuántas cosas tienen en curso hoy, el límite para partir, qué hacen cuando algo queda esperando y la fecha de la revisión a las dos semanas. Licencia CC BY 4.0.',
+    tema: 'Una hoja para imprimir, una por equipo: cuántas cosas tienen en curso hoy, el límite para partir, qué hacen cuando algo queda esperando, cuántas urgencias llegaron en la semana y la fecha de la revisión a las dos semanas. Licencia CC BY 4.0.',
     claves: ['hoja del equipo', 'límite WIP', 'trabajo en curso', 'kanban', 'taller', 'CC BY 4.0'],
     idioma: 'es-CL',
   },
