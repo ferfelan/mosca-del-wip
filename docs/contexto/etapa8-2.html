@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Mosca del WIP · Etapa 8.2 Urgencias</title>
+<!-- Etapa 8.2 (2026-11-03): PDF corto, 3 páginas, en simple. Los números
+     son los de docs/etapa8-2-resultados.json (scripts/urgencias.mjs, 200 días
+     por límite, nivel y variante, semilla 2024). Criterios fijados antes de
+     correr en docs/etapa8-2-criterios.md. Se arma con:
+     DOC=etapa8-2 node scripts/documento.mjs -->
+<link rel="stylesheet" href="estilo.css" />
+<style>
+  body { font-size: 9.6pt; line-height: 1.52; }
+  h2 { margin-top: 3.6mm; }
+  .veredicto { display: grid; grid-template-columns: 38mm 1fr; gap: 5mm; align-items: center; background: #eaf3ec; border-left: 1.4mm solid var(--tranqui); border-radius: 0 1.6mm 1.6mm 0; padding: 2.6mm 4.4mm; margin: 2.4mm 0 0; }
+  .veredicto .sale { font-family: var(--serif); font-size: 18pt; font-weight: 700; color: var(--tranqui); line-height: 1.05; }
+  .veredicto .sale span { display: block; font-family: var(--sans); font-size: 7pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--suave); margin-bottom: 1mm; }
+  .veredicto ul { list-style: none; padding: 0; margin: 0; font-size: 8.6pt; }
+  .veredicto li { margin: 0 0 0.8mm; }
+  .veredicto li b { color: var(--tranqui); margin-right: 1.2mm; }
+  .veredicto.medias { background: #f8f0df; border-left-color: #b07a1e; }
+  .veredicto.medias .sale, .veredicto.medias li b { color: #b07a1e; }
+  .tabla td, .tabla th { font-variant-numeric: tabular-nums; }
+  .tabla td { padding: 1.45mm 1.8mm; font-size: 8.9pt; }
+  .tabla td.c, .tabla th.c { text-align: center; }
+  .tabla td b { color: var(--tinta); }
+  .tabla tr.hoy td { background: #f3efe7; }
+  .chica td { padding: 1.05mm 1.6mm; font-size: 8.3pt; }
+  .chica th { font-size: 7.6pt; }
+  .chica td.c { white-space: nowrap; }
+  #t-variantes td:first-child { white-space: nowrap; }
+  .dos-cajas { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; margin: 2mm 0 2.6mm; }
+  .dos-cajas div { background: #fff; border: 0.5pt solid var(--linea); border-radius: 1.6mm; padding: 3mm 3.6mm; font-size: 8.9pt; color: var(--suave); line-height: 1.45; }
+  .dos-cajas b { display: block; font-family: var(--serif); font-size: 12pt; color: var(--tinta); margin-bottom: 0.8mm; }
+  .cuidado li { margin-bottom: 1mm; font-size: 8.7pt; }
+  .fuentes-chico { font-size: 8pt; color: var(--suave); margin-top: 2.5mm; line-height: 1.45; }
+</style>
+</head>
+<body>
+
+<!-- =============================== 1 · H5a =============================== -->
+<section class="hoja">
+  <div class="kicker">Etapa 8.2 · Urgencias <span>·</span>3 de noviembre de 2026</div>
+  <h1>Con urgencias, el mejor límite sigue siendo 2: cada urgencia cuesta una tarea normal, y nada más</h1>
+  <p class="bajada">Agregamos al juego urgencias que llegan sin aviso, pasan por encima del límite y se hacen al tiro, de a una. Jugamos 200 días con 0, 1, 2, 3 y 5 urgencias al día, con cada límite de 1 a 10. ¿El límite sigue sirviendo? ¿Cuánto cuesta cada urgencia?</p>
+
+  <figure class="grafico"><div id="g-curvas"></div>
+    <figcaption><b>Tareas normales terminadas por día según cuántas tiene a la vez</b>, con 0, 1, 2, 3 y 5 urgencias al día (regla principal: la urgencia pasa por encima del límite y se hace al tiro). El círculo marca el límite que más termina: siempre el 2. En la simulación.</figcaption>
+  </figure>
+
+  <h2>Con X urgencias al día, el mejor límite es Y</h2>
+  <table class="tabla">
+    <tr><th>Urgencias al día</th><th class="c">Mejor límite</th><th class="c">Tareas normales terminadas</th><th class="c">Contando las urgencias</th><th class="c">Tiempo por tarea normal</th><th class="c">Estrés al cerrar</th><th class="c">Minutos del día en urgencias</th></tr>
+    <tbody id="t-principal"></tbody>
+  </table>
+  <p class="chico">Regla principal, en el mejor límite. Las terminadas normales van con su intervalo del 95 %. Las urgencias cuentan como terminadas en "contando las urgencias"; el total se mantiene en 18. Sin cigarros en ningún nivel.</p>
+
+  <div class="veredicto">
+    <div class="sale"><span>Veredicto H5a · cabe</span>Se cumple</div>
+    <ul>
+      <li><b>✓</b>Con 1 urgencia al día el mejor límite sigue en 2, dentro del rango de 2 a 4 que dio la Etapa 4.</li>
+      <li><b>✓</b>Se pierden 0,9 tareas normales. En los 27 minutos que ocupó la urgencia caben 1,1; más 0,3 de ruido, la vara es 1,3. La pérdida no la pasa.</li>
+      <li><b>✓</b>Nada extra por estrés ni cigarros: lo que se pierde es, casi exacto, el tiempo que ocupa la urgencia. Pasa igual en los 10 límites.</li>
+    </ul>
+  </div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Etapa 8.2 · Felipe Fernández</span><span>1 / 3</span></div>
+</section>
+
+<!-- =============================== 2 · H5b y H5c =============================== -->
+<section class="hoja">
+  <div class="kicker">¿Deja de servir el límite? ¿Y si la urgencia hace fila?</div>
+  <h1>El 2 sigue siendo el mejor con cinco urgencias al día; si la urgencia hace fila, las normales no sufren, pero ella tarda el doble</h1>
+
+  <h2>H5b · ¿Con muchas urgencias el límite deja de servir?</h2>
+  <table class="tabla chica">
+    <tr><th>Urgencias al día</th><th class="c">Mejor</th><th class="c">Terminadas normales (IC 95 %)</th><th class="c">Con el límite 1</th><th class="c">Con el límite 3</th><th class="c">Ventaja del mejor</th></tr>
+    <tbody id="t-h5b"></tbody>
+  </table>
+  <p class="chico">Si el límite dejara de servir, la simulación ya no distinguiría el 2 de sus vecinos: sus intervalos se traslaparían. No pasa en ningún nivel.</p>
+  <div class="veredicto medias">
+    <div class="sale"><span>Veredicto H5b · deja de servir</span>A medias</div>
+    <ul>
+      <li><b>→</b>El dato: el límite 2 se distingue del 1 y del 3 hasta con 5 urgencias al día. El límite <strong>no deja de servir</strong>.</li>
+      <li><b>→</b>Queda "a medias" por la letra del criterio: la ventaja pasó de 1,1 a 1,0 tareas y cualquier baja sin traslape contaba como "se achica". Esa baja es menor que el ruido (±0,3). Un criterio que pida bajar más que el ruido daría "no se cumple" (la ventaja se mantiene); sería una segunda corrida etiquetada, si Felipe la quiere.</li>
+    </ul>
+  </div>
+
+  <h2>H5c · Si la urgencia hace fila como una tarea normal (variante C), ¿quién paga?</h2>
+  <table class="tabla chica">
+    <tr><th>En el límite 2</th><th class="c">3 al día: principal → C</th><th class="c">5 al día: principal → C</th></tr>
+    <tbody id="t-h5c"></tbody>
+  </table>
+  <div class="veredicto">
+    <div class="sale"><span>Veredicto H5c · trabajo normal</span>Se cumple</div>
+    <ul>
+      <li><b>✓</b>Con 3 y con 5 al día, C deja el tiempo por tarea normal y el estrés iguales a los de un día sin urgencias (1 h 00 min y 10 %).</li>
+      <li><b>✓</b>El precio: todas las urgencias esperan (21 a 24 minutos para entrar) y cada una tarda el doble en salir, con el doble sin terminar al cierre.</li>
+      <li><b>✓</b>No es gratis: es elegir a quién hacer esperar. Qué conviene depende de cuánto cuesta que una urgencia espere, y eso el juego no lo sabe.</li>
+    </ul>
+  </div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Etapa 8.2 · Felipe Fernández</span><span>2 / 3</span></div>
+</section>
+
+<!-- =============================== 3 · SUBIR EL LÍMITE, VARIANTES, CUIDADOS =============================== -->
+<section class="hoja">
+  <div class="kicker">Subir el límite, las variantes y los cuidados</div>
+  <h1>Subir el límite no ayuda a la urgencia: tarda más y deja más cosas a medias</h1>
+  <table class="tabla chica">
+    <tr><th>Límite</th><th class="c">Tareas normales terminadas</th><th class="c">Cada urgencia tarda</th><th class="c">Tareas abiertas en promedio</th><th class="c">Estrés al cerrar</th><th class="c">Cigarros</th><th class="c">Tiempo por tarea normal</th></tr>
+    <tbody id="t-subir"></tbody>
+  </table>
+  <p class="chico">Con 5 urgencias al día, regla principal; el 2 es el mejor. La urgencia pasa por encima del límite de todos modos; un límite más alto solo le pone más cosas a medias que le restan concentración.</p>
+
+  <h2>Las otras formas de recibir una urgencia (supuesto nuestro), en el límite 2</h2>
+  <table class="tabla chica">
+    <tr><th>Variante</th><th class="c">Tareas normales terminadas</th><th class="c">Cada urgencia tarda</th><th class="c">Urgencias que esperan</th><th class="c">Estrés al cerrar</th></tr>
+    <tbody id="t-variantes"></tbody>
+  </table>
+  <p class="chico">Cada celda: con 1 · 2 · 3 · 5 urgencias al día. B: terminar lo que tiene en la mano no cuesta nada en terminadas; solo retrasa la urgencia unos 15 minutos. D: si las urgencias duran la mitad, cuestan la mitad. El mejor límite es 2 en las tres variantes y en los cuatro niveles.</p>
+
+  <h2>Lo que hay que decir con cuidado</h2>
+  <ul class="cuidado">
+    <li><strong>Es una mosca sola, sin holgura, en un día.</strong> Vale para una persona saturada con un tablero, no para un equipo: en un equipo las urgencias se reparten.</li>
+    <li><strong>Nadie midió esto con personas.</strong> La regla se apoya en la práctica kanban de la "vía rápida" (Anderson 2010, fuente secundaria), en que lo interrumpido se retoma unos 20 y tantos minutos después (Mark y otros 2005) y en que interrumpir sube el estrés (Mark y otros 2008). Las variantes son supuesto nuestro.</li>
+    <li><strong>El estrés sigue siendo el supuesto del juego</strong>, sin nada extra "por la interrupción"; y las urgencias son del mismo tamaño que las tareas normales.</li>
+    <li><strong>H5c no dice que hacer fila sea mejor:</strong> dice quién paga. Con la regla principal pagan las normales; en C paga la urgencia.</li>
+  </ul>
+  <p class="fuentes-chico">Criterios fijados antes de correr (docs/etapa8-2-criterios.md); números en docs/etapa8-2-resultados.json (170 combinaciones, 200 días cada una). Con 0 urgencias el juego da exactamente la corrida oficial. Hoy no se tocó la pantalla.</p>
+  <div class="pie"><span><b>Mosca del WIP</b> · Etapa 8.2 · Felipe Fernández</span><span>3 / 3</span></div>
+</section>
+
+<script>
+// Números de docs/etapa8-2-resultados.json (200 días por combinación, semilla 2024)
+const CURVAS = {
+  0: [15.88, 17.99, 16.89, 15.40, 13.96, 12.31, 11.15, 9.96, 9.14, 8.16],
+  1: [15.05, 17.09, 15.98, 14.53, 12.97, 11.46, 10.43, 9.26, 8.34, 7.55],
+  2: [14.55, 16.21, 15.04, 13.63, 12.14, 10.74, 9.58, 8.47, 7.47, 6.90],
+  3: [13.65, 15.14, 14.21, 12.76, 11.22, 9.93, 8.71, 7.65, 6.53, 6.79],
+  5: [12.47, 13.47, 12.49, 11.05, 9.79, 8.46, 7.29, 6.19, 5.88, 4.33],
+};
+// [urgencias al día, mejor, normales, ic bajo, ic alto, contando, tiempo normal (min), estrés %, minutos en urgencias]
+const PRINCIPAL = [
+  [0, 2, 18.0, 17.8, 18.2, 18.0, 60, 10, 0],
+  [1, 2, 17.1, 16.9, 17.3, 18.1, 63, 11, 27],
+  [2, 2, 16.2, 16.0, 16.4, 18.2, 67, 11, 53],
+  [3, 2, 15.1, 14.9, 15.3, 18.2, 71, 12, 80],
+  [5, 2, 13.5, 13.3, 13.7, 18.4, 81, 13, 132],
+];
+// [urgencias al día, mejor, normales, ic bajo, ic alto, vecino 1 (ic), vecino 3 (ic), ventaja]
+const H5B = [
+  [0, 2, '18,0 (17,8–18,2)', '15,9 (15,6–16,2)', '16,9 (16,7–17,1)', '1,1'],
+  [1, 2, '17,1 (16,9–17,3)', '15,1 (14,7–15,4)', '16,0 (15,8–16,1)', '1,1'],
+  [2, 2, '16,2 (16,0–16,4)', '14,6 (14,2–14,9)', '15,0 (14,9–15,2)', '1,2'],
+  [3, 2, '15,1 (14,9–15,3)', '13,7 (13,4–13,9)', '14,2 (14,0–14,4)', '0,9'],
+  [5, 2, '13,5 (13,3–13,7)', '12,5 (12,2–12,7)', '12,5 (12,3–12,7)', '1,0'],
+];
+const H5C = [
+  ['Tiempo por tarea normal', '1 h 11 min → <b>1 h 00 min</b>', '1 h 21 min → <b>1 h 01 min</b>'],
+  ['Estrés al cerrar', '12 % → <b>10 %</b>', '13 % → <b>10 %</b>'],
+  ['Tareas normales terminadas', '15,1 → 14,8', '13,5 → 13,1'],
+  ['Cada urgencia, de que llega a que termina', '41 min → <b>1 h 22 min</b>', '41 min → <b>1 h 23 min</b>'],
+  ['Urgencias que esperan · sin terminar a las 18:00', '14 % · 0,2 → 100 % · 0,4', '24 % · 0,4 → 100 % · 0,8'],
+];
+// [límite, normales, tiempo urgencia (min), abiertas, estrés %, cigarros, tiempo normal (min)]
+const SUBIR = [
+  [1, 12.5, 40, 1.3, 7, 0.0, 43],
+  [2, 13.5, 41, 2.3, 13, 0.0, 81],
+  [3, 12.5, 42, 3.3, 23, 0.0, 129],
+  [5, 9.8, 47, 5.4, 49, 4.0, 278],
+  [10, 4.3, 66, 10.5, 100, 15.0, 980],
+];
+const VARIANTES = [
+  ['Principal · suelta lo que hace', '17,1 · 16,2 · 15,1 · 13,5', '34 · 37 · 41 · 41 min', '0 · 6 · 14 · 24 %', '11 · 11 · 12 · 13 %'],
+  ['B · termina lo que tiene en la mano', '17,1 · 16,3 · 15,1 · 13,4', '49 · 51 · 56 · 57 min', '95 · 96 · 95 · 97 %', '11 · 11 · 12 · 13 %'],
+  ['C · hace fila como una tarea normal', '17,1 · 16,0 · 14,8 · 13,1', '1 h 17 · 1 h 18 · 1 h 22 · 1 h 23', '99 · 99 · 100 · 100 %', '10 · 10 · 10 · 10 %'],
+  ['D · duran la mitad (8–18 min)', '17,6 · 17,0 · 16,5 · 15,6', '21 · 23 · 26 · 25 min', '0 · 5 · 10 · 15 %', '10 · 11 · 11 · 12 %'],
+];
+
+const coma = (x, d = 1) => x.toFixed(d).replace('.', ',');
+const horas = (m) => (m < 60 ? `${m} min` : `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, '0')} min`);
+
+// Números de página del pie
+(function () {
+  const hojas = [...document.querySelectorAll('.hoja')];
+  hojas.forEach((h, i) => { const n = h.querySelector('.pie span:last-child'); if (n) n.textContent = `${i + 1} / ${hojas.length}`; });
+})();
+
+document.getElementById('t-principal').innerHTML = PRINCIPAL.map((f, i) =>
+  `<tr class="${i === 0 ? 'hoy' : ''}"><td>${f[0]}${i === 0 ? ' (el juego de hoy)' : ''}</td><td class="c"><b>${f[1]}</b></td><td class="c"><b>${coma(f[2])}</b> (${coma(f[3])}–${coma(f[4])})</td><td class="c">${coma(f[5])}</td><td class="c">${horas(f[6])}</td><td class="c">${f[7]} %</td><td class="c">${f[8]}</td></tr>`).join('');
+document.getElementById('t-h5b').innerHTML = H5B.map((f, i) =>
+  `<tr class="${i === 0 ? 'hoy' : ''}"><td>${f[0]}</td><td class="c"><b>${f[1]}</b></td><td class="c">${f[2]}</td><td class="c">${f[3]}</td><td class="c">${f[4]}</td><td class="c">${f[5]}</td></tr>`).join('');
+document.getElementById('t-h5c').innerHTML = H5C.map((f) =>
+  `<tr><td>${f[0]}</td><td class="c">${f[1]}</td><td class="c">${f[2]}</td></tr>`).join('');
+document.getElementById('t-subir').innerHTML = SUBIR.map((f) =>
+  `<tr class="${f[0] === 2 ? 'hoy' : ''}"><td>${f[0] === 2 ? '<b>2</b>' : f[0]}</td><td class="c">${f[0] === 2 ? `<b>${coma(f[1])}</b>` : coma(f[1])}</td><td class="c">${horas(f[2])}</td><td class="c">${coma(f[3])}</td><td class="c">${f[4]} %</td><td class="c">${coma(f[5])}</td><td class="c">${horas(f[6])}</td></tr>`).join('');
+document.getElementById('t-variantes').innerHTML = VARIANTES.map((f, i) =>
+  `<tr class="${i === 0 ? 'hoy' : ''}"><td>${f[0]}</td><td class="c">${f[1]}</td><td class="c">${f[2]}</td><td class="c">${f[3]}</td><td class="c">${f[4]}</td></tr>`).join('');
+
+// Curvas: terminadas normales según el número de tareas, una línea por nivel de urgencias
+(function () {
+  const W = 640, H = 236, iz = 40, de = 120, ar = 14, ab = 32;
+  const x = (i) => iz + (i / 9) * (W - iz - de);
+  const y = (v) => ar + (1 - (v - 4) / 15) * (H - ar - ab); // eje de 4 a 19
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Tareas normales terminadas por día según tareas a la vez, con 0, 1, 2, 3 y 5 urgencias al día">`;
+  [4, 8, 12, 16].forEach((v) => {
+    s += `<line x1="${iz}" x2="${W - de}" y1="${y(v)}" y2="${y(v)}" stroke="#e2ddd2"/>`;
+    s += `<text x="${iz - 6}" y="${y(v) + 3.5}" font-size="9.5" fill="#8a93a0" text-anchor="end">${v}</text>`;
+  });
+  for (let i = 0; i < 10; i++) s += `<text x="${x(i)}" y="${H - 16}" font-size="9.5" fill="#8a93a0" text-anchor="middle">${i + 1}</text>`;
+  s += `<text x="${(iz + W - de) / 2}" y="${H - 2}" font-size="9.5" fill="#556070" text-anchor="middle">Tareas a la vez (el límite)</text>`;
+  const colores = { 0: '#14306e', 1: '#1d48b5', 2: '#3f78c9', 3: '#7aa3dc', 5: '#2f7579' };
+  const etiqueta = { 0: '0 al día (hoy)', 1: '1 al día', 2: '2 al día', 3: '3 al día', 5: '5 al día' };
+  // Las etiquetas van al final de cada línea, separadas al menos 11 px (se corren hacia abajo si chocan)
+  const niveles = Object.keys(CURVAS);
+  const yEtq = {};
+  let yPrevio = -Infinity;
+  for (const nivel of niveles) { // de la línea más alta a la más baja
+    const deseado = y(CURVAS[nivel][9]);
+    yEtq[nivel] = Math.max(deseado, yPrevio + 11);
+    yPrevio = yEtq[nivel];
+  }
+  const exceso = yPrevio - (H - ab - 2);
+  if (exceso > 0) for (const nivel of niveles) yEtq[nivel] -= exceso;
+  for (const [nivel, datos] of Object.entries(CURVAS)) {
+    const c = colores[nivel];
+    s += `<path d="${datos.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ')}" fill="none" stroke="${c}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>`;
+    datos.forEach((v, i) => { s += `<circle cx="${x(i)}" cy="${y(v)}" r="2.3" fill="${c}"/>`; });
+    const mejor = datos.indexOf(Math.max(...datos));
+    s += `<circle cx="${x(mejor)}" cy="${y(datos[mejor])}" r="6" fill="none" stroke="${c}" stroke-width="1.6"/>`;
+    const ultimo = datos[datos.length - 1];
+    s += `<line x1="${x(9) + 4}" y1="${y(ultimo)}" x2="${x(9) + 16}" y2="${yEtq[nivel]}" stroke="${c}" stroke-width="1"/>`;
+    s += `<text x="${x(9) + 20}" y="${yEtq[nivel] + 3.5}" font-size="9.5" fill="${c}" font-weight="700">${etiqueta[nivel]}</text>`;
+  }
+  s += `<text x="${x(1) + 10}" y="${y(CURVAS[0][1]) - 6}" font-size="8.5" fill="#556070">○ = la que más termina (siempre el 2)</text>`;
+  document.getElementById('g-curvas').innerHTML = s + '</svg>';
+})();
+</script>
+</body>
+</html>

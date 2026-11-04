@@ -136,7 +136,7 @@ const traslapan = (a, b) => Math.abs(a.terminadas_normales - b.terminadas_normal
 
 const f1 = (x) => (x === null || x === undefined ? '—' : x.toFixed(1).replace('.', ','));
 const f0 = (x) => (x === null || x === undefined ? '—' : String(Math.round(x)));
-const minutos = (m) => (m === null || m === undefined ? '—' : m < 60 ? `${Math.round(m)} min` : `${Math.floor(m / 60)} h ${String(Math.round(m % 60)).padStart(2, '0')} min`);
+const minutos = (m) => { if (m === null || m === undefined) return '—'; const r = Math.round(m); return r < 60 ? `${r} min` : `${Math.floor(r / 60)} h ${String(r % 60).padStart(2, '0')} min`; };
 const pad = (s, n) => String(s).padStart(n);
 
 // ---------------------------------------------------------------------------

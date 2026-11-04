@@ -80,6 +80,8 @@ const DOCUMENTOS = [
   { id: 'etapa4-1', html: 'etapa4-1.html', nombre: 'Etapa 4.1 La paradoja', version: 'v1', paginas: [1, 3], aparte: true },
   { id: 'etapa4-2', html: 'etapa4-2.html', nombre: 'Etapa 4.2 Robustez', version: 'v1', paginas: [1, 3], aparte: true },
   { id: 'etapa4-3', html: 'etapa4-3.html', nombre: 'Etapa 4.3 Cruce con los estudios', version: 'v1', paginas: [1, 3], aparte: true },
+  // Etapa 8.2 (2026-11-03): las urgencias (H5a, H5b, H5c), 3 hojas (DOC=etapa8-2)
+  { id: 'etapa8-2', html: 'etapa8-2.html', nombre: 'Etapa 8.2 Urgencias', version: 'v1', paginas: [2, 3], aparte: true },
   { id: 'maqueta', html: 'maqueta-v7.html', nombre: 'Maqueta compartir', version: 'v7', paginas: [3, 3], aparte: true },
   // Etapa 6.0 (2026-10-26): la guía del taller, 16 hojas (se arma con DOC=taller)
   { id: 'taller', html: 'taller.html', nombre: 'Taller - Guía', version: 'v1', paginas: [14, 16], aparte: true },
