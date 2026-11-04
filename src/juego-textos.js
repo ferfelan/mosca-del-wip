@@ -352,11 +352,15 @@ export const TEXTOS = {
   urgenciaLlego: { es: 'Llegó una urgencia', en: 'An urgent task arrived' },
   urgente: { es: 'Urgente', en: 'Urgent' }, // el rótulo de la tarjeta en el tablero
   // Las terminadas en dos cifras ("15 normales + 3 urgencias") y cuánto tardó
-  // cada urgencia desde que llegó (en singular si fue una)
+  // cada urgencia desde que llegó (en singular si fue una). Si a las 18:00
+  // alguna quedó sin terminar, se dice entre paréntesis (8.4)
   hechasConUrgencias: {
-    es: (normales, urgentes) => `${normales} normales + ${urgentes} ${urgentes === 1 ? 'urgencia' : 'urgencias'}`,
-    en: (normales, urgentes) => `${normales} regular + ${urgentes} urgent`,
+    es: (normales, urgentes, aMedias = 0) =>
+      `${normales} normales + ${urgentes} ${urgentes === 1 ? 'urgencia' : 'urgencias'}${aMedias ? ` (${aMedias} ${aMedias === 1 ? 'quedó' : 'quedaron'} a medias)` : ''}`,
+    en: (normales, urgentes, aMedias = 0) => `${normales} regular + ${urgentes} urgent${aMedias ? ` (${aMedias} left unfinished)` : ''}`,
   },
+  // La celda de las tablas, corta: "10 + 2 (1 a medias)"
+  aMediasCorto: { es: (n) => ` (${n} a medias)`, en: (n) => ` (${n} unfinished)` },
   urgenciasTardaron: {
     es: (min, cuantas) => `${cuantas === 1 ? 'La urgencia tardó' : 'Cada urgencia tardó'} ${min} min desde que llegó`,
     en: (min, cuantas) => `${cuantas === 1 ? 'The urgent task took' : 'Each urgent task took'} ${min} min from arrival`,

@@ -27,6 +27,7 @@
       <li><a href="#que-es">What WIP is and what a WIP limit is</a></li>
       <li><a href="#ocupado-no-es-avanzar">Why being busy is not the same as making progress</a></li>
       <li><a href="#como-elegir">How to choose your team’s WIP limit</a></li>
+      <li><a href="#urgencias">What about urgent tasks?</a></li>
       <li><a href="#cuando-algo-espera">What to do when something is left waiting</a></li>
       <li><a href="#ley-de-little">Little’s Law, in plain words</a></li>
       <li><a href="#errores-comunes">Common mistakes when setting a limit</a></li>
@@ -92,11 +93,18 @@
     <p>Urgent work still comes in. If it arrives when the team is at the limit, something gets paused and the team says so at its next check-in. If it comes in every day, that is what to look at in the review, because then it is no longer urgent work but part of the work. <span class="origen">suggestion</span></p>
   </section>
 
+  <section id="urgencias">
+    <h2>What about urgent tasks?</h2>
+    <p class="respuesta">In the game, the “Send an urgent task” button sends one to the fly while the day runs. The urgent task jumps over the limit and she does it first, dropping what she had. One at a time, and at most 5 a day.</p>
+    <p>In the simulation, with limit 2, each urgent task a day cost one regular task and nothing more: 18.0 finished with no urgent tasks, 17.1 with one a day and 13.5 with five. Raising the limit doesn’t help the urgent task. With 5 a day it took 41 minutes with limit 2 and 1 h 06 min with limit 10, because with more things half-done it waits too. And if it waits in line like a regular task, the regular ones don’t suffer, but the urgent task takes twice as long. It is a single fly with no slack, and nobody has measured it with people.</p>
+    <p>For a team, one idea: urgent tasks come in one at a time and over the limit, with their own card on the board. Count how many arrive a week and discuss it with data. The full numbers are on the urgent tasks page of the <a href="/en/report/#urgencias">report</a> and in the second table of the <a href="#datos">data</a>.</p>
+  </section>
+
   <section id="ley-de-little">
     <h2>Little’s Law, in plain words</h2>
     <p class="respuesta">Little’s Law says that the time a thing spends in the system equals how many things are inside divided by how many leave per unit of time. If the team finishes the same amount per week and has twice as much open, each thing takes twice as long.</p>
     <p>An example. A team finishes 5 things a week and has 10 open: each one takes, on average, 2 weeks from start to finish. If it opens 20 and keeps finishing 5 a week, each one takes 4 weeks. How much the team works didn’t change, only how much it has open.</p>
-    <p>It is not an opinion or a study’s finding: it is a theorem, published by John Little in 1961, and it holds for any stable system, from a line at a bank to a kanban board (<a href="https://pubsonline.informs.org/doi/10.1287/opre.1110.0940">Little, 2011, on its 50th anniversary</a>). In the game it holds on its own: with 2 tasks, 1 hour per task; with 9, almost 9 hours.</p>
+    <p>It is not an opinion or a study’s finding: it is a theorem, published by John Little in 1961, and it holds for any stable system, from a line at a bank to a kanban board (<a href="https://pubsonline.informs.org/doi/10.1287/opre.1110.0940">Little, 2011, on its 50th anniversary</a>). In the game it holds on its own: with 2 tasks, 1 hour per task, and with 9, almost 9 hours.</p>
     <p>What’s useful about the law is that it gives the only way for things to come out sooner without working more: having less open. That fewer things also get finished with many open, as in the game, is no longer Little’s Law but the cost of switching tasks and the stress.</p>
   </section>
 
@@ -137,6 +145,8 @@
     <ul class="descargas-pagina">
       <li><a href="/datos/mosca-del-wip-1-to-10-tasks.csv" download="mosca-del-wip-1-to-10-tasks.csv"><b>Download the data (CSV, in English)</b><span>Ten rows, one per number of tasks, with the table’s columns plus average and maximum stress.</span></a></li>
       <li><a href="/datos/mosca-del-wip-1-a-10-tareas.csv" download="mosca-del-wip-1-a-10-tareas.csv"><b>Download the data (CSV, in Spanish)</b><span>The same ten rows, with the column names in Spanish.</span></a></li>
+      <li><a href="/datos/mosca-del-wip-urgent-tasks.csv" download="mosca-del-wip-urgent-tasks.csv"><b>Download the urgent tasks data (CSV, in English)</b><span>Fifty rows, one per combination of urgent tasks a day (0, 1, 2, 3 and 5) and limit (1 to 10): regular tasks finished, finished counting the urgent ones, time per regular task, time per urgent task from arrival and stress at close. Average of 200 simulated days per combination.</span></a></li>
+      <li><a href="/datos/mosca-del-wip-urgencias.csv" download="mosca-del-wip-urgencias.csv"><b>Download the urgent tasks data (CSV, in Spanish)</b><span>The same fifty rows, with the column names in Spanish.</span></a></li>
     </ul>
     <p class="nota">Where each rule of the game comes from and which part of each number is ours is in appendix B of the <a href="/en/report/#numeros">report</a>.</p>
   </section>

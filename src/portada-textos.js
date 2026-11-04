@@ -131,7 +131,7 @@ export const INGLES = {
     'The neurons and their connections are. They come from Male CNS v1.0, the map of a male fly’s central nervous system, neuron by neuron, licensed under CC BY 4.0. The activity you see is simulated. We translate the tasks into something a fly can feel, like dust on her antenna, and simulate how her brain responds. Only some of her neurons are shown.',
   pregunta5: 'Are the numbers about people?',
   respuesta5:
-    'No. They come from the game, a computer experiment with a single fly, and each one is the average of 200 days played. That each task takes longer and fewer get finished is backed by evidence; that stress goes up is our own assumption. The report says where each number comes from.',
+    'No. They come from the game, a computer experiment with a single fly, and each one is the average of 200 days played. That each task takes longer and fewer get finished is backed by evidence. That stress goes up is our own assumption. The report says where each number comes from.',
   pregunta6: 'Why does the fly smoke?',
   respuesta6:
     'Flies don’t smoke. The cigarette is a disguise for something they really do, cleaning their antennae. The tasks reach her as dust on her antenna, which lights up the cleaning circuit in her brain, and the game draws that as going out for a smoke. The game decides how many cigarettes she smokes. When she’s Calm she never smokes, and each break is 8 minutes without working.',
@@ -153,6 +153,9 @@ export const INGLES = {
   pregunta12: 'Do I need to know about WIP to facilitate it?',
   respuesta12:
     'No. For each part, the quick guide has the minutes, one or two tips and the question for the room, plus the answers to what you’ll be asked. Read it once and, before the session, play the two days you’ll show: one with 9 tasks at once and one with 2.',
+  pregunta13: 'What about urgent tasks?',
+  respuesta13:
+    'With the Send an urgent task button, which appears once the day is running, you send one to the fly. The urgent task jumps over the limit and she does it first, dropping what she had. One at a time, and at most 5 a day. In the simulation, with limit 2, each urgent task cost one regular task and nothing more, and with high limits the urgent task itself took longer. The numbers are in the <a href="/en/report/#urgencias">report</a>.',
 
   // Qué es y qué no es, por qué lo hice, el cierre y el pie
   informeTitulo: 'What it is and what it isn’t',

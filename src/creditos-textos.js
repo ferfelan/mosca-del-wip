@@ -57,7 +57,7 @@ export const INGLES = {
 
   juegoTitulo: 'It’s a game',
   juego1:
-    'Mosca del WIP is a game and a simulation. Its numbers come from the game, not from real people or teams, and it is not professional advice of any kind. It’s there to get your team talking about which limit to try; what you decide is up to you.',
+    'Mosca del WIP is a game and a simulation. Its numbers come from the game, not from real people or teams, and it is not professional advice of any kind. It’s there to get your team talking about which limit to try. What you decide is up to you.',
 
   volver: 'Back to the home page',
 };

@@ -28,8 +28,11 @@ import { fileURLToPath } from 'node:url';
 
 const CARPETA = join(dirname(fileURLToPath(import.meta.url)), '..', 'docs', 'contexto');
 const doc = process.argv[2] ?? 'compartir';
+// 8.4 (2026-11-04): el informe para compartir se mide con la regla nueva de
+// Felipe: máximo 140 palabras de texto por página, sin contar tablas,
+// gráficos ni referencias (ni la línea "Dato freak", que se informa aparte)
 const REGLAS = doc.startsWith('compartir') // también compartir-en, el mismo informe en inglés (2026-10-25)
-  ? { llenado: [80, 95], palabras: 200, visuales: 1, lineasTitulo: 2, frase: 99, v7: true, voz: true }
+  ? { llenado: [80, 95], palabras: 140, visuales: 1, lineasTitulo: 2, frase: 99, v7: true, voz: true }
   : { llenado: [80, 95], palabras: 190, visuales: 2, lineasTitulo: 99, frase: 99, v7: false };
 const b = await chromium.launch();
 const p = await b.newPage();
@@ -59,7 +62,8 @@ const filas = await p.evaluate((R) => [...document.querySelectorAll('.hoja')].ma
   let palabras;
   if (R.v7) {
     const c2 = clon.cloneNode(true);
-    c2.querySelectorAll('.kicker, h1, .visual').forEach((el) => el.remove());
+    // 8.4: fuera también los rótulos (.etiqueta), las tablas, las referencias (.cita, .de, .de-donde, el anexo C y los créditos) y el Dato freak
+    c2.querySelectorAll('.kicker, h1, .etiqueta, .visual, table, .cita, .de, .de-donde, .fuentes-simples, .creditos, .sobremesa').forEach((el) => el.remove());
     palabras = cuenta(c2.innerText);
   } else {
     palabras = [...clon.querySelectorAll('p, li, h3')].filter((el) => !el.closest('figure, table, .chico, .no, .escala, .creditos, .fuentes-simples') && !el.classList.contains('chico') && !el.querySelector('p, li')).reduce((n, el) => n + cuenta(el.innerText), 0);

@@ -73,9 +73,10 @@ const IMG = join(CARPETA, IDIOMA === 'en' ? 'img-en' : 'img');
 const SALIDA = process.env.SALIDA ?? join(homedir(), 'Desktop', 'Mosca del WIP');
 const FECHA = process.env.FECHA ?? new Date().toLocaleDateString('sv-SE'); // 2026-10-20
 const DOCUMENTOS = [
-  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v20' },
-  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v22', paginas: [16, 17] },
-  { id: 'compartir-en', html: 'compartir-en.html', nombre: 'Para compartir en inglés', version: 'v23', paginas: [16, 17] },
+  // 4 nov. 2026, 8.4: compartir v23 (ES) y v24 (EN), las urgencias y el recorte del 28 %; completo v21, la Etapa 8 en la sección 29
+  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v21' },
+  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v23', paginas: [16, 17] },
+  { id: 'compartir-en', html: 'compartir-en.html', nombre: 'Para compartir en inglés', version: 'v24', paginas: [16, 17] },
   { id: 'norte', html: 'norte.html', nombre: 'Norte del proyecto', version: 'v1', paginas: [1, 2], aparte: true },
   { id: 'etapa4-1', html: 'etapa4-1.html', nombre: 'Etapa 4.1 La paradoja', version: 'v1', paginas: [1, 3], aparte: true },
   { id: 'etapa4-2', html: 'etapa4-2.html', nombre: 'Etapa 4.2 Robustez', version: 'v1', paginas: [1, 3], aparte: true },

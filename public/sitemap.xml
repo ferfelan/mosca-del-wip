@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://mosca.deliverycraft.ai/</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-11-04</lastmod>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="es" href="https://mosca.deliverycraft.ai/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://mosca.deliverycraft.ai/en/" />
@@ -10,7 +10,7 @@
   </url>
   <url>
     <loc>https://mosca.deliverycraft.ai/en/</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-11-04</lastmod>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="es" href="https://mosca.deliverycraft.ai/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://mosca.deliverycraft.ai/en/" />
@@ -18,7 +18,7 @@
   </url>
   <url>
     <loc>https://mosca.deliverycraft.ai/limite-wip/</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-11-04</lastmod>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="es" href="https://mosca.deliverycraft.ai/limite-wip/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://mosca.deliverycraft.ai/en/wip-limit/" />
@@ -26,7 +26,7 @@
   </url>
   <url>
     <loc>https://mosca.deliverycraft.ai/en/wip-limit/</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-11-04</lastmod>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="es" href="https://mosca.deliverycraft.ai/limite-wip/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://mosca.deliverycraft.ai/en/wip-limit/" />
@@ -34,7 +34,7 @@
   </url>
   <url>
     <loc>https://mosca.deliverycraft.ai/informe/</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-11-04</lastmod>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="es" href="https://mosca.deliverycraft.ai/informe/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://mosca.deliverycraft.ai/en/report/" />
@@ -42,7 +42,7 @@
   </url>
   <url>
     <loc>https://mosca.deliverycraft.ai/en/report/</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-11-04</lastmod>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="es" href="https://mosca.deliverycraft.ai/informe/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://mosca.deliverycraft.ai/en/report/" />
@@ -50,7 +50,7 @@
   </url>
   <url>
     <loc>https://mosca.deliverycraft.ai/taller/</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-11-04</lastmod>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="es" href="https://mosca.deliverycraft.ai/taller/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://mosca.deliverycraft.ai/en/workshop/" />
@@ -58,7 +58,7 @@
   </url>
   <url>
     <loc>https://mosca.deliverycraft.ai/en/workshop/</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-11-04</lastmod>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="es" href="https://mosca.deliverycraft.ai/taller/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://mosca.deliverycraft.ai/en/workshop/" />
@@ -71,17 +71,17 @@
   </url>
   <url>
     <loc>https://mosca.deliverycraft.ai/creditos/</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-11-04</lastmod>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://mosca.deliverycraft.ai/Mosca-del-WIP-Informe.pdf</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-11-04</lastmod>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://mosca.deliverycraft.ai/Mosca-del-WIP-Report.pdf</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-11-04</lastmod>
     <priority>0.5</priority>
   </url>
   <url>
@@ -112,6 +112,16 @@
   <url>
     <loc>https://mosca.deliverycraft.ai/datos/mosca-del-wip-1-to-10-tasks.csv</loc>
     <lastmod>2026-10-29</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://mosca.deliverycraft.ai/datos/mosca-del-wip-urgencias.csv</loc>
+    <lastmod>2026-11-04</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://mosca.deliverycraft.ai/datos/mosca-del-wip-urgent-tasks.csv</loc>
+    <lastmod>2026-11-04</lastmod>
     <priority>0.5</priority>
   </url>
 </urlset>

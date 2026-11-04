@@ -150,23 +150,26 @@ html.celular .boton-vista-inicial {
 /* "Mándale una urgencia" (8.3): abajo a la derecha de la oficina, justo sobre
    la hoja: lejos del tablero (que está arriba) y de la mosca (que está al
    centro; al centro de abajo le rozaba el abdomen). 44 px de alto, para el
-   dedo; en pantallas muy angostas se recorta con puntos suspensivos antes que
-   salirse. ("Vista inicial" está arriba a la derecha: aquí no lo mueve) */
+   dedo. 8.4: angosto (136 px) y en dos líneas, para que no toque la base de
+   la silla, que llega hasta el centro de la pantalla. ("Vista inicial" está
+   arriba a la derecha: aquí no lo mueve) */
 html.celular .boton-urgencia,
 html.celular #btn-vista-inicial:not([hidden]) ~ .boton-urgencia {
   top: auto;
   right: var(--cel-margen);
-  bottom: calc(var(--cel-solape) + 12px);
+  bottom: calc(var(--cel-solape) + 10px);
   left: auto;
-  max-width: calc(100% - 2 * var(--cel-margen));
+  width: 136px;
+  max-width: calc(50% - var(--cel-margen));
   min-height: 44px;
-  padding: 0 14px;
-  gap: 6px;
-  overflow: hidden;
+  padding: 5px 10px;
+  gap: 5px;
   background: var(--cel-noche);
   box-shadow: var(--cel-sombra-oscura);
-  font-size: 13px;
-  text-overflow: ellipsis;
+  font-size: 11.5px;
+  line-height: 1.2;
+  text-align: left;
+  white-space: normal;
   transform: none;
 }
 

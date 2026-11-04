@@ -32,6 +32,8 @@ const ARCHIVOS = [
   { ruta: '/taller/Mosca-del-WIP-Taller-Hoja-del-equipo.pdf', fuentes: ['public/taller/Mosca-del-WIP-Taller-Hoja-del-equipo.pdf'] },
   { ruta: '/datos/mosca-del-wip-1-a-10-tareas.csv', fuentes: ['public/datos/mosca-del-wip-1-a-10-tareas.csv'] },
   { ruta: '/datos/mosca-del-wip-1-to-10-tasks.csv', fuentes: ['public/datos/mosca-del-wip-1-to-10-tasks.csv'] },
+  { ruta: '/datos/mosca-del-wip-urgencias.csv', fuentes: ['public/datos/mosca-del-wip-urgencias.csv'] },
+  { ruta: '/datos/mosca-del-wip-urgent-tasks.csv', fuentes: ['public/datos/mosca-del-wip-urgent-tasks.csv'] },
 ];
 
 function git(comando) {

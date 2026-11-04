@@ -119,6 +119,37 @@ function datasetJsonLd(idioma) {
   };
 }
 
+// 8.4 (2026-11-04): la segunda tabla de la guía, las urgencias de la Etapa 8.2
+function datasetUrgenciasJsonLd(idioma) {
+  const es = idioma === 'es';
+  return {
+    '@type': 'Dataset',
+    '@id': `${SITIO}${RUTAS.guia[idioma]}#datos-urgencias`,
+    name: es ? 'Mosca del WIP: un día de oficina con 0 a 5 urgencias al día y un límite de 1 a 10 tareas (promedio de 200 días en la simulación)' : 'Mosca del WIP: an office day with 0 to 5 urgent tasks a day and a limit of 1 to 10 tasks (average of 200 days in the simulation)',
+    description: es
+      ? 'Para cada combinación de urgencias al día (0, 1, 2, 3 y 5) y límite de tareas a la vez (1 a 10): tareas normales terminadas en el día, terminadas contando las urgencias, minutos por tarea normal, minutos por urgencia desde que llega y estrés al cerrar. Una urgencia llega sin aviso, pasa por encima del límite y la mosca la hace primero, de a una. Promedio de 200 días simulados por combinación (semilla 2024), en el juego Mosca del WIP. Es una simulación de una mosca sola, no mide personas ni equipos.'
+      : 'For each combination of urgent tasks per day (0, 1, 2, 3 and 5) and limit of tasks at once (1 to 10): regular tasks finished per day, finished counting the urgent ones, minutes per regular task, minutes per urgent task from arrival and stress at close. An urgent task arrives unannounced, jumps over the limit and the fly does it first, one at a time. Average of 200 simulated days per combination (seed 2024), in the game Mosca del WIP. It is a simulation of a single fly; it does not measure people or teams.',
+    url: `${SITIO}${RUTAS.guia[idioma]}#datos`,
+    sameAs: `${SITIO}${RUTAS.guia[idioma === 'es' ? 'en' : 'es']}#datos`,
+    inLanguage: idioma,
+    license: 'https://creativecommons.org/licenses/by/4.0/',
+    isAccessibleForFree: true,
+    creator: { '@type': 'Person', '@id': `${SITIO}/#felipe`, name: AUTOR.nombre, url: AUTOR.linkedin },
+    publisher: { '@type': 'Organization', '@id': `${SITIO}/#deliverycraft`, name: 'Deliverycraft', url: 'https://deliverycraft.ai/' },
+    datePublished: '2026-11-04',
+    dateModified: '2026-11-04',
+    keywords: es ? ['límite WIP', 'trabajo en curso', 'urgencias', 'interrupciones', 'kanban', 'vía rápida', 'multitarea', 'simulación'] : ['WIP limit', 'work in progress', 'urgent tasks', 'interruptions', 'kanban', 'expedite lane', 'multitasking', 'simulation'],
+    variableMeasured: (es
+      ? ['urgencias al día', 'límite', 'tareas normales terminadas por día', 'terminadas contando urgencias', 'minutos por tarea normal', 'minutos por urgencia', 'estrés al cerrar']
+      : ['urgent tasks per day', 'limit', 'regular tasks finished per day', 'finished counting urgent tasks', 'minutes per regular task', 'minutes per urgent task', 'stress at close']
+    ).map((v) => ({ '@type': 'PropertyValue', name: v })),
+    distribution: [
+      { '@type': 'DataDownload', encodingFormat: 'text/csv', contentUrl: `${SITIO}/datos/mosca-del-wip-urgencias.csv`, inLanguage: 'es' },
+      { '@type': 'DataDownload', encodingFormat: 'text/csv', contentUrl: `${SITIO}/datos/mosca-del-wip-urgent-tasks.csv`, inLanguage: 'en' },
+    ],
+  };
+}
+
 for (const fuente of FUENTES) {
   const crudo = readFileSync(join(RAIZ, fuente.archivo), 'utf8');
   const m = crudo.match(/^<!--meta\s*([\s\S]*?)-->\s*/);
@@ -152,7 +183,7 @@ for (const fuente of FUENTES) {
     });
   }
   if (mg) jsonLd.push(mg.jsonLd);
-  if (meta.dataset) jsonLd.push(datasetJsonLd(idioma));
+  if (meta.dataset) jsonLd.push(datasetJsonLd(idioma), datasetUrgenciasJsonLd(idioma));
   cuerpo = cuerpo
     .replace('{{migas}}', () => (mg ? mg.html : ''))
     .replace('{{autor}}', () => autor(idioma))

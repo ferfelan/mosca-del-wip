@@ -7,7 +7,9 @@
 // tiempo de las urgencias. Lo mismo en Exhibición, en el celular (iPhone 14)
 // y en inglés. Además: sin apretar el botón el resumen es el de siempre; con
 // 5 el botón dice "Hoy ya llegaron 5"; cambiar el límite antes de las 09:15
-// rearma el día sin urgencias. Capturas en docs/etapa8-3-capturas/.
+// rearma el día sin urgencias. Y (8.4) una urgencia a las 17:50 que no alcanza
+// a terminar: el resumen, el aviso y las tablas dicen "(1 quedó a medias)".
+// Capturas en docs/etapa8-3-capturas/.
 // Requiere npm run dev. Uso: node scripts/probar-urgencia.mjs → "urgencia: todo bien"
 import { chromium, devices } from 'playwright';
 import { mkdirSync } from 'node:fs';
@@ -28,11 +30,15 @@ const T = {
     boton: 'Mándale una urgencia', enCurso: 'Hay una urgencia en curso', tope: 'Hoy ya llegaron 5', llego: 'Llegó una urgencia', urgente: 'Urgente', normales: ' (normales)',
     hechas: (n, u) => `${n} normales + ${u} ${u === 1 ? 'urgencia' : 'urgencias'}`,
     tardo: (m, u) => `${u === 1 ? 'La urgencia tardó' : 'Cada urgencia tardó'} ${m} min desde que llegó`,
+    aMedias: (n) => ` (${n} ${n === 1 ? 'quedó' : 'quedaron'} a medias)`,
+    aMediasCorto: (n) => ` (${n} a medias)`,
   },
   en: {
     boton: 'Send an urgent task', enCurso: 'An urgent task is in progress', tope: '5 already arrived today', llego: 'An urgent task arrived', urgente: 'Urgent', normales: ' (regular)',
     hechas: (n, u) => `${n} regular + ${u} urgent`,
     tardo: (m, u) => `${u === 1 ? 'The urgent task took' : 'Each urgent task took'} ${m} min from arrival`,
+    aMedias: (n) => ` (${n} left unfinished)`,
+    aMediasCorto: (n) => ` (${n} unfinished)`,
   },
 };
 
@@ -80,7 +86,8 @@ const leer = (p) =>
       cfUrg: el('cf-urgencias').hidden ? null : texto('cf-urgencias'),
       cfTiempoNota: el('cf-tiempo-nota').textContent,
       // las dos líneas del aviso de fin del día (van una bajo la otra)
-      banner: el('banner-urgencias').hidden ? null : `${texto('banner-urgencias-hechas')} ${texto('banner-urgencias-tardo')}`,
+      banner: el('banner-urgencias').hidden ? null : `${texto('banner-urgencias-hechas')} ${texto('banner-urgencias-tardo')}`.trim(),
+      bannerTardoOculto: el('banner-urgencias-tardo').hidden,
       bannerVisible: !el('banner-fin-dia').classList.contains('oculto'),
       tabla: [...document.querySelectorAll('#tabla-dias-body tr:not(.vacia) td:nth-child(2)')].map((td) => [td.textContent, td.getAttribute('title')]),
       exFin: [...document.querySelectorAll('#ex-fin-filas tr td:first-of-type')].map((td) => [td.textContent, td.getAttribute('title')]),
@@ -255,6 +262,33 @@ async function probarComputador(idioma) {
   v = await leer(p);
   revisar(v.wip === 3 && v.urg.llegadas === 0 && v.urg.enCurso === 0 && !v.apagado && v.texto === t.boton && !v.textosKanban.includes(t.urgente), eti('cambiar el límite antes de las 09:15 rearma el día sin urgencias'));
 
+  // Día 5 (8.4): una urgencia a las 17:50 que no alcanza a terminar. El resumen,
+  // el aviso y las dos tablas lo dicen, y no hay línea de cuánto tardó
+  await p.keyboard.press('r');
+  await p.waitForTimeout(300);
+  await p.evaluate(() => {
+    window.__mosca.setWip(2);
+    window.__mosca.adelantar(530);
+  });
+  await p.click('#btn-urgencia');
+  await p.waitForTimeout(200);
+  v = await leer(p);
+  revisar(v.hora === '17:50' && v.urg.llegadas === 1 && v.urg.enCurso === 1, eti(`día 5: una urgencia a las ${v.hora}`));
+  await p.evaluate(() => window.__mosca.completarDia());
+  await p.waitForTimeout(600);
+  v = await leer(p);
+  const aMedias = t.hechas(v.hechasNormales, 0) + t.aMedias(1);
+  revisar(v.terminado && v.urg.terminadas === 0 && v.urg.llegadas === 1, eti('día 5: la urgencia quedó sin terminar al cierre'));
+  revisar(v.cfHechas === aMedias && v.cfUrg === null, eti(`día 5 · Resumen del día: «${v.cfHechas}», sin línea de cuánto tardó`));
+  revisar(v.mHechas === `${v.hechasNormales} + 0` && v.mHechasTitulo === aMedias, eti(`día 5 · Terminadas del panel: «${v.mHechas}» (${v.mHechasTitulo})`));
+  revisar(v.banner === `${aMedias}.` && v.bannerTardoOculto, eti(`día 5 · aviso: «${v.banner}»`));
+  const ultima = v.tabla[v.tabla.length - 1];
+  revisar(ultima?.[0] === `${v.hechasNormales} + 0${t.aMediasCorto(1)}` && ultima?.[1] === aMedias, eti(`día 5 · Días jugados: «${ultima?.[0]}»`));
+  const ultimaEx = v.exFin[v.exFin.length - 1];
+  revisar(ultimaEx?.[0] === `${v.hechasNormales} + 0${t.aMediasCorto(1)}`, eti(`día 5 · la tabla del fin del día: «${ultimaEx?.[0]}»`));
+  revisar(v.mTiempoNota === '' && v.cfTiempoNota === '', eti('día 5 · sin urgencias terminadas, el tiempo por tarea no lleva el rótulo "(normales)"'));
+  if (idioma === 'es') await p.screenshot({ path: `${DIR}/control-resumen-a-medias.png` });
+
   revisar(!errores.length, eti(`sin errores en la consola${errores.length ? `: ${errores.slice(0, 3).join(' | ')}` : ''}`));
   await contexto.close();
 }
@@ -284,6 +318,7 @@ async function probarCelular(idioma) {
   const hoja = await caja(p, '#panel');
   revisar(v.caja.top >= escena.top && v.caja.bottom <= escena.bottom && v.caja.bottom <= hoja.top, eti('está dentro de la oficina y sobre la hoja'));
   revisar(v.caja.top >= escena.top + escena.height * 0.6, eti('va abajo, lejos del tablero (que está arriba)'));
+  revisar(v.caja.left >= 236 && v.caja.width <= 150, eti(`queda en el lado derecho, sin tocar la base de la silla (empieza en x=${Math.round(v.caja.left)}, ${Math.round(v.caja.width)} px de ancho)`));
   for (const s of ['#ex-mosca', '#cel-controles', '#cel-volver', '#panel', '#cel-pestanas']) revisar(!chocan(v.caja, await caja(p, s)), eti(`no choca con ${s}`));
 
   await p.tap('#btn-urgencia');

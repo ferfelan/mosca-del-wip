@@ -183,17 +183,23 @@ function guardarDia(resumen) {
 // Un día con urgencias terminadas (8.3): en las tablas, "15 + 3" (y al pasar
 // el mouse, "15 normales + 3 urgencias"); su tiempo por tarea es el de las
 // normales. Sin urgencias, lo mismo de siempre.
+// (8.4) Si alguna urgencia quedó sin terminar a las 18:00, la celda lo dice:
+// "10 + 2 (1 a medias)" (los días guardados antes de la 8.4 no traen el dato)
+const aMediasDe = (d) => d.urgenciasSinTerminar ?? 0;
 const celdaHechas = (d) =>
-  d.urgencias > 0 ? `<td title="${tx('hechasConUrgencias', d.hechasNormales, d.urgencias)}">${d.hechasNormales} + ${d.urgencias}</td>` : `<td>${d.hechas}</td>`;
+  d.urgencias > 0 || aMediasDe(d) > 0
+    ? `<td title="${tx('hechasConUrgencias', d.hechasNormales, d.urgencias, aMediasDe(d))}">${d.hechasNormales} + ${d.urgencias}${aMediasDe(d) ? tx('aMediasCorto', aMediasDe(d)) : ''}</td>`
+    : `<td>${d.hechas}</td>`;
 const tiempoDelDia = (d) => (d.urgencias > 0 ? d.tiempoPorTareaNormales : d.tiempoPorTarea);
 
 // "Terminadas" en el panel: un número; con urgencias terminadas, "15 + 3" y
 // al pasar el mouse "15 normales + 3 urgencias" (8.3)
 function pintarHechas(el, estado) {
   const urgentes = estado.urgencias.terminadas;
-  const texto = urgentes ? `${estado.hechasNormales} + ${urgentes}` : String(estado.hechas);
+  const aMedias = urgenciasAMedias(estado);
+  const texto = urgentes || aMedias ? `${estado.hechasNormales} + ${urgentes}` : String(estado.hechas);
   if (el.textContent !== texto) el.textContent = texto;
-  const titulo = urgentes ? tx('hechasConUrgencias', estado.hechasNormales, urgentes) : null;
+  const titulo = urgentes || aMedias ? tx('hechasConUrgencias', estado.hechasNormales, urgentes, aMedias) : null;
   if (titulo === null) {
     if (el.hasAttribute('title')) el.removeAttribute('title');
   } else if (el.getAttribute('title') !== titulo) el.setAttribute('title', titulo);
@@ -495,7 +501,8 @@ function refrescarUI(estado, cigarroEnMano) {
   // muestra el resumen
   if (estado.terminado && !diaYaRegistrado) {
     diaYaRegistrado = true;
-    guardarDia(juego.resumenFinal());
+    // (8.4) con cuántas urgencias quedaron sin terminar al cierre
+    guardarDia({ ...juego.resumenFinal(), urgenciasSinTerminar: urgenciasAMedias(estado) });
     llenarResumenDelDia();
   }
   document.body.classList.toggle('dia-terminado', estado.terminado);
@@ -527,9 +534,15 @@ const cifras = {
 const elEficienciaBarra = document.getElementById('cf-eficiencia-barra');
 const segmentosCarga = [...document.querySelectorAll('#carga-segmentos i')];
 const conUnidades = (el, texto) => {
-  const html = texto.replace(/ ?([a-z]+)/g, '<small> $1</small>');
+  // (8.4) una nota entre paréntesis, como "(1 quedó a medias)", va entera en chico
+  const [principal, nota] = texto.split(/ (?=\()/);
+  let html = principal.replace(/ ?([a-záéíóúñ]+)/g, '<small> $1</small>');
+  if (nota) html += `<small> ${nota}</small>`;
   if (el.innerHTML !== html) el.innerHTML = html;
 };
+// (8.4) Urgencias que quedaron a medias: las que llegaron y no terminaron,
+// contadas solo cuando el día ya cerró (durante el día están en curso)
+const urgenciasAMedias = (estado) => (estado.terminado ? estado.urgencias.llegadas - estado.urgencias.terminadas : 0);
 const escribir = (el, texto) => {
   if (el.textContent !== texto) el.textContent = texto;
 };
@@ -541,7 +554,8 @@ function pintarCifras(estado) {
   // Con urgencias terminadas (8.3), las terminadas en dos cifras ("15 normales
   // + 3 urgencias") y, al terminar el día, cuánto tardó cada una desde que llegó
   const urgentes = estado.urgencias.terminadas;
-  if (urgentes) conUnidades(cifras.hechas, tx('hechasConUrgencias', estado.hechasNormales, urgentes));
+  const aMedias = urgenciasAMedias(estado);
+  if (urgentes || aMedias) conUnidades(cifras.hechas, tx('hechasConUrgencias', estado.hechasNormales, urgentes, aMedias));
   else escribir(cifras.hechas, String(estado.hechas));
   const tardaron = urgentes && estado.terminado ? tx('urgenciasTardaron', Math.round(estado.urgencias.tardaron), urgentes) : '';
   escribir(cifras.urgencias, tardaron);
@@ -579,10 +593,13 @@ function pintarResumen() {
   });
   // El aviso de fin del día (Control y celular): con urgencias terminadas
   // (8.3), las dos cifras y cuánto tardó cada una; si no, el de siempre
-  const hubo = actual.urgencias > 0;
+  const aMedias = aMediasDe(actual);
+  const hubo = actual.urgencias > 0 || aMedias > 0;
   if (hubo) {
-    elBannerUrgenciasHechas.textContent = `${tx('hechasConUrgencias', actual.hechasNormales, actual.urgencias)}.`;
-    elBannerUrgenciasTardo.textContent = `${tx('urgenciasTardaron', actual.urgenciasTardaron, actual.urgencias)}.`;
+    elBannerUrgenciasHechas.textContent = `${tx('hechasConUrgencias', actual.hechasNormales, actual.urgencias, aMedias)}.`;
+    // cuánto tardó cada una, solo si alguna terminó (8.4)
+    elBannerUrgenciasTardo.textContent = actual.urgencias > 0 ? `${tx('urgenciasTardaron', actual.urgenciasTardaron, actual.urgencias)}.` : '';
+    elBannerUrgenciasTardo.hidden = !(actual.urgencias > 0);
   }
   elBannerUrgencias.hidden = !hubo;
 }

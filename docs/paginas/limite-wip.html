@@ -28,6 +28,7 @@
       <li><a href="#ocupado-no-es-avanzar">Por qué estar ocupado no es lo mismo que avanzar</a></li>
       <li><a href="#como-elegir">Cómo elegir el límite WIP de tu equipo</a></li>
       <li><a href="#cuando-algo-espera">Qué hacer cuando algo queda esperando</a></li>
+      <li><a href="#urgencias">¿Y las urgencias?</a></li>
       <li><a href="#ley-de-little">La ley de Little, en simple</a></li>
       <li><a href="#errores-comunes">Errores comunes al poner un límite</a></li>
       <li><a href="#estudios">Qué dicen los estudios con personas</a></li>
@@ -92,11 +93,18 @@
     <p>Las urgencias entran igual. Si llegan cuando el equipo está en el límite, algo se pausa y se dice en la reunión diaria. Si entran todos los días, eso es lo que hay que mirar en la revisión, porque ya no son urgencias sino parte del trabajo. <span class="origen">sugerencia</span></p>
   </section>
 
+  <section id="urgencias">
+    <h2>¿Y las urgencias?</h2>
+    <p class="respuesta">En el juego, el botón "Mándale una urgencia" le manda una a la mosca mientras corre el día. La urgencia pasa por encima del límite y ella la hace primero, soltando lo que tenía. Entra una a la vez, y a lo más 5 al día.</p>
+    <p>En la simulación, con límite 2, cada urgencia al día costó una tarea normal y nada más: 18,0 terminadas sin urgencias, 17,1 con una al día y 13,5 con cinco. Subir el límite no ayuda a la urgencia. Con 5 al día tardó 41 minutos con límite 2 y 1 h 06 min con límite 10, porque con más cosas a medias ella también espera. Y si hace fila como una normal, las normales no sufren, pero la urgencia tarda el doble. Es una mosca sola, sin holgura, y nadie lo midió con personas.</p>
+    <p>Para un equipo, una sola idea: las urgencias entran de a una y por encima del límite, con su tarjeta en el tablero. Anoten cuántas llegan a la semana y convérsenlo con datos. Los números completos están en la página de urgencias del <a href="/informe/#urgencias">informe</a> y en la segunda tabla de los <a href="#datos">datos</a>.</p>
+  </section>
+
   <section id="ley-de-little">
     <h2>La ley de Little, en simple</h2>
     <p class="respuesta">La ley de Little dice que el tiempo que una cosa pasa en el sistema es igual a cuántas cosas hay adentro dividido por cuántas salen por unidad de tiempo. Si el equipo termina lo mismo por semana y tiene el doble abierto, cada cosa tarda el doble.</p>
     <p>Un ejemplo. Un equipo termina 5 cosas a la semana y tiene 10 abiertas: cada una tarda, en promedio, 2 semanas de que empieza a que termina. Si abre 20 y sigue terminando 5 a la semana, cada una tarda 4 semanas. No cambió cuánto trabaja el equipo, solo cuánto tiene abierto.</p>
-    <p>No es una opinión ni un hallazgo de un estudio: es un teorema, publicado por John Little en 1961, y vale para cualquier sistema estable, desde una fila en un banco hasta un tablero kanban (<a href="https://pubsonline.informs.org/doi/10.1287/opre.1110.0940">Little, 2011, sobre sus 50 años</a>). En el juego se cumple sola: con 2 tareas, 1 hora por tarea; con 9, casi 9 horas.</p>
+    <p>No es una opinión ni un hallazgo de un estudio: es un teorema, publicado por John Little en 1961, y vale para cualquier sistema estable, desde una fila en un banco hasta un tablero kanban (<a href="https://pubsonline.informs.org/doi/10.1287/opre.1110.0940">Little, 2011, sobre sus 50 años</a>). En el juego se cumple sola: con 2 tareas, 1 hora por tarea, y con 9, casi 9 horas.</p>
     <p>Lo útil de la ley es que da el único camino para que las cosas salgan antes sin trabajar más: tener menos abierto. Que además se termine menos con muchas cosas abiertas, como en el juego, ya no es la ley de Little sino el costo de cambiar de tarea y el estrés.</p>
   </section>
 
@@ -137,6 +145,8 @@
     <ul class="descargas-pagina">
       <li><a href="/datos/mosca-del-wip-1-a-10-tareas.csv" download="mosca-del-wip-1-a-10-tareas.csv"><b>Descargar los datos (CSV, en español)</b><span>Diez filas, una por número de tareas, con las columnas de la tabla y el estrés promedio y máximo.</span></a></li>
       <li><a href="/datos/mosca-del-wip-1-to-10-tasks.csv" download="mosca-del-wip-1-to-10-tasks.csv"><b>Descargar los datos (CSV, en inglés)</b><span>Las mismas diez filas, con los nombres de las columnas en inglés.</span></a></li>
+      <li><a href="/datos/mosca-del-wip-urgencias.csv" download="mosca-del-wip-urgencias.csv"><b>Descargar los datos de las urgencias (CSV, en español)</b><span>Cincuenta filas, una por cada combinación de urgencias al día (0, 1, 2, 3 y 5) y límite (1 a 10): tareas normales terminadas, terminadas contando las urgencias, tiempo por tarea normal, tiempo de cada urgencia desde que llega y estrés al cerrar. Promedio de 200 días simulados por combinación.</span></a></li>
+      <li><a href="/datos/mosca-del-wip-urgent-tasks.csv" download="mosca-del-wip-urgent-tasks.csv"><b>Descargar los datos de las urgencias (CSV, en inglés)</b><span>Las mismas cincuenta filas, con los nombres de las columnas en inglés.</span></a></li>
     </ul>
     <p class="nota">De dónde sale cada regla del juego y qué parte de cada número es nuestra está en el anexo B del <a href="/informe/#numeros">informe</a>.</p>
   </section>

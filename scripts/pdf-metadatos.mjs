@@ -17,15 +17,15 @@ const PDFS = [
   {
     ruta: 'public/Mosca-del-WIP-Informe.pdf',
     titulo: 'Mosca del WIP: estar siempre ocupado no es lo mismo que avanzar. Un informe con una mosca real sobre por qué limitar el trabajo en curso',
-    tema: 'Por qué conviene limitar el trabajo en curso (WIP): lo que muestra un juego con el cerebro de una mosca real, la ley de Little, la eficiencia de flujo y los estudios con personas. Cuatro pasos para probar un límite con tu equipo.',
-    claves: ['límite WIP', 'trabajo en curso', 'work in progress', 'kanban', 'eficiencia de flujo', 'ley de Little', 'multitarea', 'simulación', 'cerebro de mosca', 'Male CNS'],
+    tema: 'Por qué conviene limitar el trabajo en curso (WIP): lo que muestra un juego con el cerebro de una mosca real, la ley de Little, la eficiencia de flujo, los estudios con personas y qué pasa con las urgencias. Cuatro pasos para probar un límite con tu equipo.',
+    claves: ['límite WIP', 'trabajo en curso', 'work in progress', 'kanban', 'eficiencia de flujo', 'ley de Little', 'multitarea', 'urgencias', 'interrupciones', 'simulación', 'cerebro de mosca', 'Male CNS'],
     idioma: 'es-CL',
   },
   {
     ruta: 'public/Mosca-del-WIP-Report.pdf',
     titulo: 'Mosca del WIP: being busy all the time is not the same as making progress. A report with a real fly brain on why to limit work in progress',
-    tema: 'Why it pays to limit work in progress (WIP): what a game with a real fruit fly brain shows, Little’s Law, flow efficiency and the studies with people. Four steps to try a limit with your team.',
-    claves: ['WIP limit', 'work in progress', 'kanban', 'flow efficiency', "Little's Law", 'multitasking', 'simulation', 'fruit fly connectome', 'Male CNS'],
+    tema: 'Why it pays to limit work in progress (WIP): what a game with a real fruit fly brain shows, Little’s Law, flow efficiency, the studies with people and what happens with urgent tasks. Four steps to try a limit with your team.',
+    claves: ['WIP limit', 'work in progress', 'kanban', 'flow efficiency', "Little's Law", 'multitasking', 'urgent tasks', 'interruptions', 'simulation', 'fruit fly connectome', 'Male CNS'],
     idioma: 'en-US',
   },
   {

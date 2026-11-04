@@ -2508,6 +2508,11 @@ tr.mejor-dia td:last-child {
   margin-top: 5px;
 }
 
+/* la segunda línea (cuánto tardó cada una) en su renglón; se esconde sola si ninguna terminó (8.4) */
+#banner-fin-dia .banner-urgencias-tardo:not([hidden]) {
+  display: block;
+}
+
 /* "Tiempo por tarea" del panel con urgencias (8.3): "(normales)" va en un
    renglón chico bajo el rótulo, y el valor no se parte */
 #m-tiempo-nota:not([hidden]) {
