@@ -200,6 +200,8 @@
         <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M3 8a5 5 0 1 0 1.6-3.7M3 2.5v3h3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Vista inicial
       </button>
+      <!-- "Mándale una urgencia" (Etapa 8.3): se ve solo mientras corre el día; lo escribe src/main.js en el idioma de ahora -->
+      <button id="btn-urgencia" class="boton-urgencia" type="button" hidden>Mándale una urgencia</button>
       <div id="ex-mosca" class="estado-mosca solo-exhibicion" aria-label="Estado de la mosca">
         <span class="estado-mosca-titulo">Estado de la mosca</span>
         <div class="estado-mosca-fila">
@@ -272,7 +274,7 @@
           </div>
         </div>
         <div class="bloque-fila tiempo-tarea" title="Tiempo promedio (del juego) desde que una tarea entra a «En curso» hasta que se termina. Con más tareas a la vez, cada una tarda más (Ley de Little).">
-          <span class="etiqueta">Tiempo por tarea</span>
+          <span class="etiqueta">Tiempo por tarea<span id="m-tiempo-nota" hidden></span></span>
           <span class="tiempo-tarea-valor" id="m-tiempo">–</span>
         </div>
         <div class="bloque-fila eficiencia" title="De cada hora, cuántos minutos rinden de verdad: descuenta los cambios de tarea, el tiempo fumando o tomando café y las esperas por bloqueos (promedio desde las 09:00).">
@@ -354,9 +356,10 @@
           <div class="cifra cifra-hechas">
             <span class="cifra-label">Terminadas</span>
             <span class="cifra-valor" id="cf-hechas">0</span>
+            <span class="cifra-sub cifra-sub-urgencias" id="cf-urgencias" hidden></span>
           </div>
           <div class="cifra cifra-tiempo" title="Tiempo promedio desde que una tarea entra a «En curso» hasta que se termina">
-            <span class="cifra-label">Tiempo por tarea</span>
+            <span class="cifra-label">Tiempo por tarea<span id="cf-tiempo-nota" hidden></span></span>
             <span class="cifra-valor" id="cf-tiempo">–</span>
           </div>
           <div class="cifra cifra-eficiencia" title="De cada hora, cuántos minutos rinden de verdad: descuenta los cambios de tarea, el tiempo fumando o tomando café y las esperas por bloqueos">
@@ -468,6 +471,7 @@
 
     <div id="banner-fin-dia" class="oculto">
       <p><strong>Fin del día.</strong> <span class="banner-texto">Mira la tabla o reinicia para probar otro WIP.</span></p>
+      <p class="banner-urgencias" id="banner-urgencias" hidden><span id="banner-urgencias-hechas"></span><br /><span id="banner-urgencias-tardo"></span></p>
       <div class="cel-banner-botones solo-celular">
         <button id="cel-ver-dias" type="button">Ver los días</button>
         <button id="cel-reiniciar" type="button">Reiniciar día</button>

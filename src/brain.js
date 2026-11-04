@@ -223,6 +223,25 @@ export class DayBrain {
     return this.tareasMedidas ? this.sumaTiempoPorTarea / this.tareasMedidas : null;
   }
 
+  // (Etapa 8.3) El tiempo por tarea de las tareas normales, sin las urgencias:
+  // es el que muestra la pantalla. Sin urgencias terminadas es el mismo de
+  // siempre, número por número.
+  get tiempoPorTareaNormales() {
+    const urgentes = this.hechas.filter((t) => t.urgente);
+    if (!urgentes.length) return this.tiempoPorTarea;
+    const normales = this.tareasMedidas - urgentes.length;
+    if (normales <= 0) return null;
+    return (this.sumaTiempoPorTarea - urgentes.reduce((s, t) => s + (t.fin - t.inicio), 0)) / normales;
+  }
+
+  // (Etapa 8.3) Cuánto tardó cada urgencia terminada desde que llegó hasta que
+  // se terminó (promedio, en minutos del juego; null si no terminó ninguna)
+  get urgenciasTardaron() {
+    const urgentes = this.hechas.filter((t) => t.urgente);
+    if (!urgentes.length) return null;
+    return urgentes.reduce((s, t) => s + (t.fin - t.llegada), 0) / urgentes.length;
+  }
+
   // Eficiencia: de cada hora, qué parte rinde de verdad (0 a 1; × 60 = minutos
   // de cada hora). Promedio desde las 09:00.
   get eficiencia() {
@@ -321,6 +340,34 @@ export class DayBrain {
     const t = u.enEspera.shift();
     t.inicio = this.minutosDeDia;
     this.enCurso.push(t); // por encima del límite: _rellenarEnCurso no la cuenta
+  }
+
+  // ---- La urgencia desde la pantalla (Etapa 8.3, 2026-11-03) ----
+  // El botón "Mándale una urgencia" (src/main.js). Es la misma regla principal
+  // de la 8.2 con la llegada ahora mismo: la tarea nace urgente, entra por
+  // encima del límite con prioridad y la mosca la toma de inmediato (si otra
+  // urgencia está en curso, espera igual que en la 8.2). Sólo gasta azar al
+  // apretar el botón: sin apretarlo, el día es idéntico al de siempre y la
+  // corrida oficial no cambia. Devuelve la tarea (o null si el día ya acabó).
+  mandarUrgencia() {
+    if (this.terminado) return null;
+    const u = this.urgencias;
+    const t = tareaAleatoria(u.duracion[0], u.duracion[1]);
+    t.urgente = true;
+    t.llegada = this.minutosDeDia;
+    t.prioridad = u.entrada !== 'cola';
+    t.espero = false;
+    u.llegadas += 1;
+    if (u.entrada === 'cola') {
+      let i = 0;
+      while (i < this.porHacer.length && this.porHacer[i].urgente) i++;
+      this.porHacer.splice(i, 0, t);
+    } else {
+      u.enEspera.push(t);
+      this._dejarEntrarUrgencia({ entreTareas: !this._aMitadDeTarea(this.esperando) });
+      t.espero = t.inicio === null;
+    }
+    return t;
   }
 
   // Avanza la simulación `dtMin` minutos simulados (puede ser fraccionario).
@@ -500,6 +547,7 @@ export class DayBrain {
       cafes: this.cafes,
       tomandoCafe: this.tomandoCafe,
       tiempoPorTarea: this.tiempoPorTarea,
+      tiempoPorTareaNormales: this.tiempoPorTareaNormales, // (8.3) sin las urgencias
       eficiencia: this.eficiencia,
       terminado: this.terminado,
       evento: this.eventoEsteTick,
@@ -511,6 +559,7 @@ export class DayBrain {
         esperando: this.urgencias.enEspera.length + this.porHacer.reduce((n, t) => n + (t.urgente ? 1 : 0), 0),
         llegadas: this.urgencias.llegadas,
         terminadas: this.urgencias.terminadas,
+        tardaron: this.urgenciasTardaron, // (8.3) minutos desde que llegó hasta terminar, promedio
       },
       enCursoUrgentes: this.enCurso.map((t) => !!t.urgente),
     };
@@ -527,6 +576,10 @@ export class DayBrain {
       estresMax: Math.round(this.estresMax), // siempre en % (0 a 100)
       hechasNormales: this.hechas.length - this.urgencias.terminadas, // (Etapa 8.2) sin contar urgencias
       urgencias: this.urgencias.terminadas,
+      // (Etapa 8.3) lo que muestra el resumen: el tiempo por tarea de las
+      // normales y cuánto tardó cada urgencia desde que llegó
+      tiempoPorTareaNormales: this.tiempoPorTareaNormales === null ? null : Math.round(this.tiempoPorTareaNormales),
+      urgenciasTardaron: this.urgenciasTardaron === null ? null : Math.round(this.urgenciasTardaron),
     };
   }
 

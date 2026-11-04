@@ -19,6 +19,7 @@
   --ok: #4f9d6a;
   --medio: #a87c0c;
   --alerta: #cc4a43;
+  --urgencia: #d9732e; /* la urgencia (8.3): el naranjo de "Estresada", el mismo del tablero */
   --anillo: rgba(184, 88, 42, 0.28);
 }
 
@@ -2438,6 +2439,94 @@ tr.mejor-dia td:last-child {
 
 .boton-vista-inicial[hidden] {
   display: none;
+}
+
+/* "Mándale una urgencia" (Etapa 8.3, 2026-11-03): sobre la escena, arriba al
+   centro y cerca del tablero, con el mismo estilo que "Vista inicial". Se ve
+   solo mientras corre el día (src/main.js); apagado mientras hay una urgencia
+   en curso o cuando ya llegaron 5. Si "Vista inicial" está a la vista (giraron
+   la oficina), baja un renglón para no taparlo. */
+.boton-urgencia {
+  position: absolute;
+  top: 68px;
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 6px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(10, 14, 28, 0.82);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+  color: var(--oscuro-tinta);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transform: translateX(-50%);
+}
+
+/* el punto de la urgencia: el mismo naranjo de su tarjeta en el tablero */
+.boton-urgencia::before {
+  content: '';
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--urgencia);
+}
+
+.boton-urgencia:hover:not(:disabled) {
+  background: rgba(32, 42, 84, 0.92);
+}
+
+.boton-urgencia:focus {
+  outline: none;
+}
+
+.boton-urgencia:focus-visible {
+  box-shadow: 0 0 0 3px rgba(143, 176, 255, 0.55);
+}
+
+.boton-urgencia:disabled {
+  opacity: 0.62;
+  cursor: default;
+}
+
+.boton-urgencia[hidden] {
+  display: none;
+}
+
+#btn-vista-inicial:not([hidden]) ~ .boton-urgencia {
+  top: 112px;
+}
+
+/* El aviso de fin del día con urgencias (8.3): las dos cifras y cuánto tardaron */
+#banner-fin-dia .banner-urgencias {
+  margin-top: 5px;
+}
+
+/* "Tiempo por tarea" del panel con urgencias (8.3): "(normales)" va en un
+   renglón chico bajo el rótulo, y el valor no se parte */
+#m-tiempo-nota:not([hidden]) {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--tinta-tenue);
+}
+
+.tiempo-tarea .tiempo-tarea-valor {
+  white-space: nowrap;
+}
+
+/* En Exhibición, bajo "Terminadas": cuánto tardó cada urgencia (ocupa su
+   propio renglón también cuando los números van en filas) */
+body.exhibicion .cifra-sub-urgencias {
+  flex-basis: 100%;
 }
 
 .comparacion {

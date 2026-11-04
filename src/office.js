@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
-import { crearTexturaKanban, dibujarKanban } from './kanban.js';
+import { crearTexturaKanban, dibujarKanban, tarjetasKanban } from './kanban.js';
 import { tx } from './juego-textos.js';
 import {
   texturaCielo,
@@ -1051,6 +1051,9 @@ export function crearOficina(scene, { anisotropia = 4 } = {}) {
       texturaDelPoster.userData.redibujar();
       texturasPostit.forEach((t, i) => t.userData.escribir(tx('postits')[i]));
     },
+    // Las tarjetas del tablero tal como se dibujaron, de arriba a abajo (para
+    // las pruebas de la urgencia, 8.3)
+    tarjetasKanban: () => tarjetasKanban(),
     // Lo que dice cada texto de la escena (para las pruebas)
     textosEscena: () => ({
       kanban: textosKanban,

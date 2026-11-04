@@ -117,6 +117,14 @@ el juego digan lo mismo. Si quieres cambiar una palabra:
 | Muchas / Pocas tareas a la vez | Many / Few tasks at once |
 | Terminando lo empezado · nuevo límite 2 | Finishing what's started · new limit 2 |
 | Vista inicial | Reset view |
+| Mándale una urgencia (el botón, Etapa 8.3, 2026-11-04) | Send an urgent task |
+| Hay una urgencia en curso (el botón apagado mientras dura) | An urgent task is in progress |
+| Hoy ya llegaron 5 (el botón apagado después de la quinta) | 5 already arrived today |
+| Llegó una urgencia (el aviso en el tablero) | An urgent task arrived |
+| Urgente (el rótulo de la tarjeta naranja) | Urgent |
+| 15 normales + 3 urgencias · 15 normales + 1 urgencia (las terminadas, en dos cifras) | 15 regular + 3 urgent · 15 regular + 1 urgent |
+| Cada urgencia tardó 41 min desde que llegó · La urgencia tardó 41 min desde que llegó | Each urgent task took 41 min from arrival · The urgent task took 41 min from arrival |
+| Tiempo por tarea (normales) (con urgencias, el tiempo es el de las normales) | Time per task (regular) |
 | Exhibición (la vista para mostrar en grande) | Exhibition |
 | La misma partida, en grande | The same game, on the big screen |
 | Estado de la mosca | How the fly is doing |

@@ -345,6 +345,24 @@ export const TEXTOS = {
   sobreLimite: { es: (n) => `SOBRE EL LÍMITE (${n})`, en: (n) => `OVER THE LIMIT (${n})` },
   wipAlto: { es: '¡WIP ALTO!', en: 'HIGH WIP!' },
   masTarjetas: { es: (n) => `+${n} más`, en: (n) => `+${n} more` },
+  // Urgencias (Etapa 8.3, 2026-11-03): el botón, el tablero y el resumen del día
+  urgenciaBoton: { es: 'Mándale una urgencia', en: 'Send an urgent task' },
+  urgenciaEnCurso: { es: 'Hay una urgencia en curso', en: 'An urgent task is in progress' },
+  urgenciaTope: { es: (n) => `Hoy ya llegaron ${n}`, en: (n) => `${n} already arrived today` },
+  urgenciaLlego: { es: 'Llegó una urgencia', en: 'An urgent task arrived' },
+  urgente: { es: 'Urgente', en: 'Urgent' }, // el rótulo de la tarjeta en el tablero
+  // Las terminadas en dos cifras ("15 normales + 3 urgencias") y cuánto tardó
+  // cada urgencia desde que llegó (en singular si fue una)
+  hechasConUrgencias: {
+    es: (normales, urgentes) => `${normales} normales + ${urgentes} ${urgentes === 1 ? 'urgencia' : 'urgencias'}`,
+    en: (normales, urgentes) => `${normales} regular + ${urgentes} urgent`,
+  },
+  urgenciasTardaron: {
+    es: (min, cuantas) => `${cuantas === 1 ? 'La urgencia tardó' : 'Cada urgencia tardó'} ${min} min desde que llegó`,
+    en: (min, cuantas) => `${cuantas === 1 ? 'The urgent task took' : 'Each urgent task took'} ${min} min from arrival`,
+  },
+  // Con urgencias, el tiempo por tarea sigue siendo el de las normales: se dice en el rótulo
+  soloNormales: { es: ' (normales)', en: ' (regular)' },
   // Póster de la pared (las dos líneas bajo "WIP ≤ 3")
   poster: { es: ['menos cosas a la vez', '= más cosas listas'], en: ['fewer things at once', '= more things done'] },
   // Post-its del monitor, en el orden en que aparecen (dos líneas cada uno)

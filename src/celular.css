@@ -147,6 +147,35 @@ html.celular .boton-vista-inicial {
   font-size: 13px;
 }
 
+/* "Mándale una urgencia" (8.3): abajo a la derecha de la oficina, justo sobre
+   la hoja: lejos del tablero (que está arriba) y de la mosca (que está al
+   centro; al centro de abajo le rozaba el abdomen). 44 px de alto, para el
+   dedo; en pantallas muy angostas se recorta con puntos suspensivos antes que
+   salirse. ("Vista inicial" está arriba a la derecha: aquí no lo mueve) */
+html.celular .boton-urgencia,
+html.celular #btn-vista-inicial:not([hidden]) ~ .boton-urgencia {
+  top: auto;
+  right: var(--cel-margen);
+  bottom: calc(var(--cel-solape) + 12px);
+  left: auto;
+  max-width: calc(100% - 2 * var(--cel-margen));
+  min-height: 44px;
+  padding: 0 14px;
+  gap: 6px;
+  overflow: hidden;
+  background: var(--cel-noche);
+  box-shadow: var(--cel-sombra-oscura);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  transform: none;
+}
+
+/* el rótulo "(normales)" del tiempo por tarea, en la hoja: en su renglón */
+html.celular #m-tiempo-nota:not([hidden]) {
+  display: block;
+  font-size: 12px;
+}
+
 /* ---------- Arriba: volver a la portada y la píldora del reloj ---------- */
 html.celular #cel-volver {
   display: grid !important;

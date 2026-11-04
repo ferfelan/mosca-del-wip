@@ -47,11 +47,15 @@ const elHechas = document.getElementById('m-hechas');
 const elColillas = document.getElementById('m-colillas');
 const elCafes = document.getElementById('m-cafes');
 const elTiempo = document.getElementById('m-tiempo');
+const elTiempoNota = document.getElementById('m-tiempo-nota'); // " (normales)" con urgencias (8.3)
 const elEficiencia = document.getElementById('m-eficiencia');
 const elEstres = document.getElementById('m-estres');
 const elBarraEstres = document.getElementById('barra-estres-relleno');
 const elTablaBody = document.getElementById('tabla-dias-body');
 const elBanner = document.getElementById('banner-fin-dia');
+const elBannerUrgencias = document.getElementById('banner-urgencias');
+const elBannerUrgenciasHechas = document.getElementById('banner-urgencias-hechas');
+const elBannerUrgenciasTardo = document.getElementById('banner-urgencias-tardo');
 const elWipNota = document.getElementById('wip-nota');
 const elAvisoEmpezar = document.getElementById('aviso-empezar');
 
@@ -151,7 +155,7 @@ function pintarTabla(dias) {
       tr.className = 'mejor-dia';
       tr.title = tx('mejorDia');
     }
-    tr.innerHTML = `<td>${d.wip}</td><td>${d.hechas}</td><td>${formatoTiempo(d.tiempoPorTarea, true)}</td><td>${d.colillas}</td><td>${d.cafes ?? '–'}</td><td>${d.estresMax}%</td>`;
+    tr.innerHTML = `<td>${d.wip}</td>${celdaHechas(d)}<td>${formatoTiempo(tiempoDelDia(d), true)}</td><td>${d.colillas}</td><td>${d.cafes ?? '–'}</td><td>${d.estresMax}%</td>`;
     const celda = document.createElement('td');
     const quitar = document.createElement('button');
     quitar.type = 'button';
@@ -174,6 +178,32 @@ function guardarDia(resumen) {
   const dias = cargarDias();
   dias.push(resumen);
   escribirDias(dias);
+}
+
+// Un día con urgencias terminadas (8.3): en las tablas, "15 + 3" (y al pasar
+// el mouse, "15 normales + 3 urgencias"); su tiempo por tarea es el de las
+// normales. Sin urgencias, lo mismo de siempre.
+const celdaHechas = (d) =>
+  d.urgencias > 0 ? `<td title="${tx('hechasConUrgencias', d.hechasNormales, d.urgencias)}">${d.hechasNormales} + ${d.urgencias}</td>` : `<td>${d.hechas}</td>`;
+const tiempoDelDia = (d) => (d.urgencias > 0 ? d.tiempoPorTareaNormales : d.tiempoPorTarea);
+
+// "Terminadas" en el panel: un número; con urgencias terminadas, "15 + 3" y
+// al pasar el mouse "15 normales + 3 urgencias" (8.3)
+function pintarHechas(el, estado) {
+  const urgentes = estado.urgencias.terminadas;
+  const texto = urgentes ? `${estado.hechasNormales} + ${urgentes}` : String(estado.hechas);
+  if (el.textContent !== texto) el.textContent = texto;
+  const titulo = urgentes ? tx('hechasConUrgencias', estado.hechasNormales, urgentes) : null;
+  if (titulo === null) {
+    if (el.hasAttribute('title')) el.removeAttribute('title');
+  } else if (el.getAttribute('title') !== titulo) el.setAttribute('title', titulo);
+}
+
+// El rótulo "Tiempo por tarea" dice " (normales)" cuando hubo urgencias (8.3)
+function pintarNotaNormales(el, hubo) {
+  const texto = hubo ? tx('soloNormales') : '';
+  if (el.textContent !== texto) el.textContent = texto;
+  if (el.hidden !== !hubo) el.hidden = !hubo;
 }
 
 // Borrar todo pide confirmar con un segundo toque (sin ventanas emergentes)
@@ -313,6 +343,7 @@ function armarDia({ reanudar = true } = {}) {
   diaYaRegistrado = false;
   esperaDemo = 0;
   colillasPintadas = 0;
+  avisoUrgenciaHasta = 0; // (8.3) el día nuevo parte sin urgencias
   elBanner.classList.add('oculto');
   elExFin.classList.add('oculto');
   oficina.limpiarColillas();
@@ -320,6 +351,44 @@ function armarDia({ reanudar = true } = {}) {
 }
 const reiniciarDia = () => armarDia();
 elBtnReiniciar.addEventListener('click', reiniciarDia);
+
+// ---------- La urgencia desde la pantalla (Etapa 8.3, 2026-11-03) ----------
+// El botón "Mándale una urgencia" manda una tarea urgente con la regla
+// principal de la 8.2 (src/brain.js, mandarUrgencia): entra por encima del
+// límite, la mosca suelta lo que hacía y trabaja sólo en ella hasta terminarla.
+// Se ve sólo mientras corre el día (de 09:00 a 18:00, también en pausa); una a
+// la vez (apagado mientras dura) y a lo más 5 al día, que es lo que se simuló.
+// Al rearmar el día (el WIP antes de las 09:15, R) parte sin urgencias.
+const URGENCIAS_POR_DIA_MAX = 5;
+const AVISO_URGENCIA_MS = 4000; // cuánto dura "Llegó una urgencia" en el tablero
+const elBtnUrgencia = document.getElementById('btn-urgencia');
+let avisoUrgenciaHasta = 0;
+let urgenciaPintada = '';
+function puedeMandarUrgencia(estado) {
+  const u = estado.urgencias;
+  return empezado && !estado.terminado && u.enCurso === 0 && u.esperando === 0 && u.llegadas < URGENCIAS_POR_DIA_MAX;
+}
+function mandarUrgencia() {
+  if (!puedeMandarUrgencia(juego.estado())) return false;
+  juego.mandarUrgencia();
+  avisoUrgenciaHasta = performance.now() + AVISO_URGENCIA_MS;
+  refrescarUI(juego.estado(), mosca.cigarroEnMano());
+  return true;
+}
+elBtnUrgencia.addEventListener('click', mandarUrgencia);
+function pintarBotonUrgencia(estado) {
+  const u = estado.urgencias;
+  const visible = empezado && !estado.terminado;
+  const enCurso = u.enCurso > 0 || u.esperando > 0;
+  const tope = u.llegadas >= URGENCIAS_POR_DIA_MAX;
+  const texto = enCurso ? tx('urgenciaEnCurso') : tope ? tx('urgenciaTope', URGENCIAS_POR_DIA_MAX) : tx('urgenciaBoton');
+  const clave = `${visible} ${texto}`;
+  if (clave === urgenciaPintada) return;
+  urgenciaPintada = clave;
+  elBtnUrgencia.hidden = !visible;
+  elBtnUrgencia.disabled = enCurso || tope;
+  elBtnUrgencia.textContent = texto;
+}
 
 // Lo que la animación de la mosca necesita saber del juego
 // En pausa o al terminar el día la mosca termina lo que estaba haciendo
@@ -339,18 +408,24 @@ function estadoMosca(estado) {
 function refrescarUI(estado, cigarroEnMano) {
   elReloj.textContent = estado.hora;
   elBarraDia.style.width = `${Math.round(estado.fraccionDelDia * 100)}%`;
-  elHechas.textContent = estado.hechas;
+  pintarHechas(elHechas, estado);
   elColillas.textContent = estado.colillas;
   elCafes.textContent = estado.cafes;
-  // Tiempo por tarea: "–" hasta que termine la primera tarea del día
-  elTiempo.textContent = formatoTiempo(estado.tiempoPorTarea);
+  // Tiempo por tarea: "–" hasta que termine la primera tarea del día (con
+  // urgencias, el de las normales; el rótulo lo dice)
+  elTiempo.textContent = formatoTiempo(estado.tiempoPorTareaNormales);
+  pintarNotaNormales(elTiempoNota, estado.urgencias.terminadas > 0);
   elEficiencia.textContent = formatoEficiencia(estado.eficiencia);
   elEstres.textContent = nombreNivel(estado.nivel.nombre);
   elEstres.style.color = estado.nivel.color;
   elBarraEstres.style.width = `${Math.round(estado.estres)}%`;
   elBarraEstres.style.background = estado.nivel.color;
 
-  oficina.actualizarKanban(estado);
+  // (el tablero muestra "Llegó una urgencia" unos segundos después del botón,
+  // mientras la urgencia siga en curso y el día no haya cerrado)
+  const avisoUrgencia = performance.now() < avisoUrgenciaHasta && estado.urgencias.enCurso > 0 && !estado.terminado;
+  oficina.actualizarKanban(avisoUrgencia ? { ...estado, avisoUrgencia: true } : estado);
+  pintarBotonUrgencia(estado);
   // Carga de trabajo: tareas en curso. La pila de papeles y los post-its
   // crecen y bajan juntos con ella.
   // (al terminar el día, el trabajo que quedó pendiente sigue en la mesa,
@@ -402,15 +477,17 @@ function refrescarUI(estado, cigarroEnMano) {
   // Aviso de arriba: en vivo o en pausa, y si son pocas o muchas tareas a la
   // vez (el número está en la Carga)
   elExInicioTipo.textContent = tx(modoDemo ? 'modoDemo' : !empezado ? 'porEmpezar' : pausado ? 'enPausa' : 'enVivo');
-  const drenando = estado.enCurso > estado.wip && !estado.terminado;
-  pintarNotaWip(estado.wip, estado.terminado ? 0 : estado.enCurso);
+  // (una urgencia va por encima del límite: no cuenta como "sobre el límite", 8.3)
+  const normalesEnCurso = estado.enCurso - estado.urgencias.enCurso;
+  const drenando = normalesEnCurso > estado.wip && !estado.terminado;
+  pintarNotaWip(estado.wip, estado.terminado ? 0 : normalesEnCurso);
   const textoAviso = drenando
     ? tx('avisoTerminando', estado.wip)
     : estado.wip > LIMITE_SANO
       ? tx('muchasTareas')
       : tx('pocasTareas');
   if (elExInicioTexto.textContent !== textoAviso) elExInicioTexto.textContent = textoAviso;
-  elExInicio.dataset.carga = nivelCarga(drenando ? estado.enCurso : estado.wip);
+  elExInicio.dataset.carga = nivelCarga(drenando ? normalesEnCurso : estado.wip);
   elExInicio.classList.toggle('oculto', estado.terminado);
   pintarCifras(estado);
 
@@ -440,7 +517,9 @@ const elCifraCarga = document.getElementById('cifra-carga');
 const cifras = {
   carga: document.getElementById('cf-carga'),
   hechas: document.getElementById('cf-hechas'),
+  urgencias: document.getElementById('cf-urgencias'), // (8.3) cuánto tardó cada urgencia
   tiempo: document.getElementById('cf-tiempo'),
+  tiempoNota: document.getElementById('cf-tiempo-nota'), // (8.3) " (normales)"
   eficiencia: document.getElementById('cf-eficiencia'),
   colillas: document.getElementById('cf-colillas'),
   cafes: document.getElementById('cf-cafes'),
@@ -459,9 +538,17 @@ function pintarCifras(estado) {
   escribir(cifras.carga, String(estado.enCurso));
   elCifraCarga.dataset.carga = nivelCarga(estado.enCurso);
   segmentosCarga.forEach((s, i) => s.classList.toggle('lleno', i < estado.enCurso));
-  escribir(cifras.hechas, String(estado.hechas));
+  // Con urgencias terminadas (8.3), las terminadas en dos cifras ("15 normales
+  // + 3 urgencias") y, al terminar el día, cuánto tardó cada una desde que llegó
+  const urgentes = estado.urgencias.terminadas;
+  if (urgentes) conUnidades(cifras.hechas, tx('hechasConUrgencias', estado.hechasNormales, urgentes));
+  else escribir(cifras.hechas, String(estado.hechas));
+  const tardaron = urgentes && estado.terminado ? tx('urgenciasTardaron', Math.round(estado.urgencias.tardaron), urgentes) : '';
+  escribir(cifras.urgencias, tardaron);
+  if (cifras.urgencias.hidden !== !tardaron) cifras.urgencias.hidden = !tardaron;
   // En grande, las unidades van más chicas que los números ("7 h 46 min")
-  conUnidades(cifras.tiempo, estado.tiempoPorTarea === null ? '–' : formatoTiempo(estado.tiempoPorTarea));
+  conUnidades(cifras.tiempo, estado.tiempoPorTareaNormales === null ? '–' : formatoTiempo(estado.tiempoPorTareaNormales));
+  pintarNotaNormales(cifras.tiempoNota, urgentes > 0);
   conUnidades(cifras.eficiencia, formatoEficiencia(estado.eficiencia));
   elEficienciaBarra.style.width = `${Math.round((estado.eficiencia ?? 0) * 100)}%`;
   escribir(cifras.colillas, String(estado.colillas));
@@ -487,9 +574,17 @@ function pintarResumen() {
     // La fila de hoy se marca para distinguirla de los días anteriores
     const hoy = i === lista.length - 1;
     if (hoy) tr.className = 'actual';
-    tr.innerHTML = `<th>WIP ${d.wip}${hoy ? ` <span class="fila-hoy">${tx('hoy')}</span>` : ''}</th><td>${d.hechas}</td><td>${formatoTiempo(d.tiempoPorTarea, true)}</td><td>${d.colillas}</td><td>${d.cafes ?? '–'}</td><td>${d.estresMax}%</td>`;
+    tr.innerHTML = `<th>WIP ${d.wip}${hoy ? ` <span class="fila-hoy">${tx('hoy')}</span>` : ''}</th>${celdaHechas(d)}<td>${formatoTiempo(tiempoDelDia(d), true)}</td><td>${d.colillas}</td><td>${d.cafes ?? '–'}</td><td>${d.estresMax}%</td>`;
     elExFinFilas.appendChild(tr);
   });
+  // El aviso de fin del día (Control y celular): con urgencias terminadas
+  // (8.3), las dos cifras y cuánto tardó cada una; si no, el de siempre
+  const hubo = actual.urgencias > 0;
+  if (hubo) {
+    elBannerUrgenciasHechas.textContent = `${tx('hechasConUrgencias', actual.hechasNormales, actual.urgencias)}.`;
+    elBannerUrgenciasTardo.textContent = `${tx('urgenciasTardaron', actual.urgenciasTardaron, actual.urgencias)}.`;
+  }
+  elBannerUrgencias.hidden = !hubo;
 }
 
 function siguienteWipDemo() {
@@ -1488,6 +1583,12 @@ if (import.meta.env.DEV) {
     celular: () => ({ activo: esCelular(), vista: vistaCelular(), ratio: renderer.getPixelRatio() }),
     cerebro: () => cerebro?.lectura(),
     cerebroVista: () => cerebro?.vista(),
+    // Urgencias (8.3): como apretar el botón; las tarjetas del tablero tal
+    // como se dibujaron (urgentes arriba); las tareas en curso; las medidas del día
+    mandarUrgencia: () => mandarUrgencia(),
+    kanban: () => oficina.tarjetasKanban(),
+    tareas: () => juego.enCurso.map((t) => ({ id: t.id, urgente: !!t.urgente, restante: t.minutosRestantes, bloqueada: t.minutosBloqueada > 0 })),
+    medidas: () => juego.medidas(),
     reencuadrar() {
       camera.position.copy(CAMARA_INICIAL.posicion);
       controls.target.copy(CAMARA_INICIAL.objetivo);
