@@ -1,0 +1,112 @@
+# Frases retiradas de la Mosca del WIP
+#
+# Cada línea sin # es un pedazo de un texto que se reemplazó y que ya no puede
+# aparecer en nada público (páginas, JSON-LD, manifest, CSV, PDF, PPTX, textos
+# del juego en español e inglés, borradores de difusión). Lo revisa
+# scripts/revisar-coherencia.mjs, que no distingue mayúsculas, comillas curvas
+# o rectas ni espacios de más. Se busca un pedazo característico y no el texto
+# entero, para que también salten las copias con un cambio chico.
+#
+# Al cambiar un texto que se copió en varios lugares: el texto viejo va aquí,
+# con su fecha y de dónde salió (en el comentario va el texto completo).
+#
+# Lo que NO va aquí: "Ocupado todo el día. ¿Y qué terminaste?" sigue siendo el
+# gancho del informe (pág. 2) y de la vista previa del informe. Salió de la
+# portada, pero no del sitio.
+
+# ─── Etapa 8.6, 2026-11-06: el mensaje nuevo de la portada ───────────────────
+
+# Bajada vieja de la portada, og:description, twitter:description:
+#   "Juega un minuto y mira qué le pasa a una mosca oficinista, con cerebro real,
+#   cuando tiene demasiadas cosas empezadas a la vez."
+# Meta description y JSON-LD viejos:
+#   "Juega un minuto y mira qué le pasa a una mosca con cerebro real cuando tiene
+#   demasiadas tareas a la vez. Guía, informe y taller gratis para elegir el
+#   límite WIP de tu equipo."
+Juega un minuto y mira qué le pasa a una mosca
+Play for a minute and watch
+
+# Rótulo viejo de la portada: "Para equipos y líderes · un juego de 1 minuto"
+Para equipos y líderes · un juego de 1 minuto
+For teams and leaders · a 1-minute game
+
+# Título viejo de la pestaña y og:title viejo:
+#   "Límite WIP: el juego con una mosca real · Mosca del WIP"
+#   "Mosca del WIP: el juego del límite WIP con una mosca real"
+Límite WIP: el juego con una mosca real
+el juego del límite WIP con una mosca real
+WIP limit: the game with a real fly brain
+the WIP limit game with a real fly brain
+
+# Texto viejo de la imagen para compartir:
+#   "La mosca del juego en su escritorio, con muchas tareas a la vez, junto a la
+#   pregunta: Ocupado todo el día. ¿Y qué terminaste? Un juego de 1 minuto..."
+con muchas tareas a la vez, junto a la pregunta
+with many tasks at once, next to the question
+
+# "Lo que se lleva tu equipo", las cuatro celdas viejas (portada v4):
+#   "Su capacidad, a la vista. Cuántas cosas pueden llevar a la vez sin que todo
+#   se trabe." / "Dónde espera el trabajo. Qué se traba y a quién esperan." /
+#   "Un acuerdo del equipo. Un límite escrito y qué hacer cuando algo espera." /
+#   "Datos propios. En dos semanas saben, con sus números, si su límite
+#   funciona."
+Su capacidad, a la vista
+Su capacidad a la vista
+sin que todo se trabe
+Qué se traba y a quién esperan
+En dos semanas saben, con sus números, si su límite funciona
+Your capacity, in plain sight
+Your capacity in plain sight
+without everything getting stuck
+What gets stuck and who you’re waiting on
+In two weeks your own numbers tell you whether
+
+# La nota vieja del final de esa sección:
+#   "No prometemos un resultado: depende de cada equipo y de lo que pasa
+#   alrededor. Su número lo miden ustedes. Cómo elegir el límite y qué hacer
+#   cuando algo espera está en la guía del límite WIP."
+No prometemos un resultado
+Su número lo miden ustedes
+We don’t promise a result
+# (en inglés solo con lo que seguía: "your number is yours to measure" sigue en
+# "Qué es y qué no es", igual que "tu número lo tienes que medir tú")
+Your number is yours to measure. How to choose the limit
+
+# ¿Por qué una mosca?, el destacado viejo:
+#   "Porque es uno de los pocos animales con el mapa completo de su sistema
+#   nervioso central: 166.700 neuronas. Mientras más tareas tiene encima, más se
+#   enciende. Y no, no fuma: el cigarro es un disfraz de limpiarse las antenas."
+uno de los pocos animales con el mapa completo
+one of the few animals with a complete map
+
+# FAQ, "¿Qué es la Mosca del WIP?", respuesta vieja:
+#   "Es un juego corto que se juega en el navegador. Una mosca pasa un día en la
+#   oficina, de 09:00 a 18:00, y tú eliges cuántas tareas tiene abiertas a la
+#   vez, de 1 a 10. Cada día dura más o menos un minuto, y al terminar lo puedes
+#   comparar con los días que ya jugaste."
+Es un juego corto que se juega en el navegador
+It’s a short game you play in the browser
+
+# FAQ, "¿Cuántas tareas a la vez es lo mejor?", respuesta vieja (fumar):
+#   "... el límite sostenible de la mosca es 3, porque hasta ahí sigue Tranquila
+#   y no sale a fumar ..."
+y no sale a fumar
+doesn’t go out for a smoke
+
+# FAQ, "¿Qué se lleva mi equipo?", respuesta vieja:
+#   "Su capacidad a la vista: cuántas cosas pueden llevar a la vez sin que todo
+#   se trabe. ... Salen con un acuerdo del equipo, que es un límite escrito y qué
+#   hacer cuando algo espera, y en dos semanas saben, con sus números, si ese
+#   límite funciona. No prometemos un resultado, porque depende de cada equipo y
+#   de lo que pasa alrededor."
+Salen con un acuerdo del equipo, que es un límite escrito
+You leave with a team agreement, which is a written limit
+
+# FAQ, "¿Y las urgencias?", respuesta vieja (la larga):
+#   "Con el botón Mándale una urgencia, que aparece cuando el día ya corre, le
+#   mandas una a la mosca. La urgencia pasa por encima del límite y ella la hace
+#   primero, soltando lo que tenía. Entra una a la vez, y a lo más 5 al día. En la
+#   simulación, con límite 2, cada urgencia costó una tarea normal y nada más, y
+#   con límites altos la urgencia misma tardó más."
+que aparece cuando el día ya corre, le mandas una
+which appears once the day is running, you send one

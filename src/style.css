@@ -38,6 +38,19 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* La página del juego no se acerca con los dedos (8.6): se puede deslizar con
+   el dedo (la lista de días sigue funcionando), pero ni el pellizco ni el
+   doble toque agrandan la página. Va en cada elemento porque Safari vuelve a
+   dejar acercar dentro de lo que se desplaza. Lo que ya tiene su propio
+   touch-action lo mantiene (la oficina y el cerebro, que se giran con el
+   dedo, y el deslizador). Este archivo es solo del juego: la portada, la
+   guía, el informe y el taller se siguen pudiendo acercar */
+html,
+body,
+body * {
+  touch-action: pan-x pan-y;
+}
+
 #escena {
   position: fixed;
   inset: 0;

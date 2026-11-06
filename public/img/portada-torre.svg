@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Arte de portada del informe para compartir (v9, 2026-10-22): la mosca con su torre.
-     Se genera con docs/contexto/portada-torre.html (opción 1) y scripts/portada-svg.mjs. No editar a mano. -->
-<!-- Versión para la web (portada del sitio): la genera scripts/portada-svg-web.mjs
-     a partir de la del informe, sin la viñeta de fondo y con el piso desvanecido en los costados. -->
 <svg width="840" height="1188" viewBox="0 0 840 1188" xmlns="http://www.w3.org/2000/svg"><defs>
 <radialGradient id="aabdG" cx=".38" cy=".28" r=".82"><stop offset="0" stop-color="#a39282"></stop><stop offset=".5" stop-color="#6f6052"></stop><stop offset="1" stop-color="#352b23"></stop></radialGradient>
 <radialGradient id="atorG" cx=".42" cy=".2" r=".88"><stop offset="0" stop-color="#a89786"></stop><stop offset=".5" stop-color="#6f6052"></stop><stop offset="1" stop-color="#352b23"></stop></radialGradient>

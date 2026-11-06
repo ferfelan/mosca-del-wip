@@ -12,7 +12,7 @@ import { ICONOS } from './sello.mjs';
 
 export const SITIO = 'https://mosca.deliverycraft.ai';
 export const AUTOR = { nombre: 'Felipe Fernández', linkedin: 'https://www.linkedin.com/in/felipefernandezandrade/' };
-export const FECHAS = { publicado: '2026-10-28', modificado: '2026-11-04' }; // 2026-11-04 (8.4): la guía con las urgencias y la segunda tabla de datos; antes 2026-10-29
+export const FECHAS = { publicado: '2026-10-28', modificado: '2026-11-06' }; // 2026-11-06 (8.6): la guía a la mitad y el taller con el mensaje nuevo; antes 2026-11-04 (8.4) y 2026-10-29
 
 // Las direcciones de cada página en cada idioma (las mismas de src/idioma.js)
 export const RUTAS = {

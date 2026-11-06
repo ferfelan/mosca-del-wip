@@ -31,9 +31,8 @@ const desvanecido =
   '<rect width="840" height="1188" fill="url(#afadeX)"></rect></mask></defs>';
 svg = svg.replace('</defs>', desvanecido);
 
-svg = svg.replace(
-  'No editar a mano. -->',
-  'No editar a mano. -->\n<!-- Versión para la web (portada del sitio): la genera scripts/portada-svg-web.mjs\n     a partir de la del informe, sin la viñeta de fondo y con el piso desvanecido en los costados. -->'
-);
+// Lo que se publica no lleva comentarios con rutas internas del proyecto (Etapa 8.6,
+// 2026-11-06): se sacan los comentarios de la cabecera y queda solo el dibujo.
+svg = svg.replace(/<!--[\s\S]*?-->\n?/g, '');
 writeFileSync(destino, svg);
 console.log(`listo: public/img/portada-torre.svg (${svg.length} caracteres)`);

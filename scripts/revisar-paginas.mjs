@@ -31,8 +31,10 @@ const doc = process.argv[2] ?? 'compartir';
 // 8.4 (2026-11-04): el informe para compartir se mide con la regla nueva de
 // Felipe: máximo 140 palabras de texto por página, sin contar tablas,
 // gráficos ni referencias (ni la línea "Dato freak", que se informa aparte)
-const REGLAS = doc.startsWith('compartir') // también compartir-en, el mismo informe en inglés (2026-10-25)
-  ? { llenado: [80, 95], palabras: 140, visuales: 1, lineasTitulo: 2, frase: 99, v7: true, voz: true }
+// 8.6 (2026-11-06): el resumen de 4 páginas (resumen y resumen-en) se mide igual que el informe para compartir
+// (sin la línea "Dato freak", que el resumen no lleva)
+const REGLAS = doc.startsWith('compartir') || doc.startsWith('resumen') // también compartir-en, el mismo informe en inglés (2026-10-25)
+  ? { llenado: [80, 95], palabras: 140, visuales: 1, lineasTitulo: 2, frase: 99, v7: true, voz: true, sobremesa: !doc.startsWith('resumen') }
   : { llenado: [80, 95], palabras: 190, visuales: 2, lineasTitulo: 99, frase: 99, v7: false };
 const b = await chromium.launch();
 const p = await b.newPage();
@@ -122,7 +124,7 @@ for (const f of filas) {
   if (mide && f.lineasTitulo > REGLAS.lineasTitulo) avisos.push('título de 3 líneas');
   if (mide && f.largas.length) avisos.push(`${f.largas.length} frase(s) de más de ${REGLAS.frase} palabras`);
   if (mide && REGLAS.v7 && f.exclamaciones) avisos.push(`${f.exclamaciones} signo(s) de exclamación`);
-  if (mide && REGLAS.v7 && !f.deSobremesa) avisos.push('sin línea de sobremesa');
+  if (mide && REGLAS.v7 && REGLAS.sobremesa !== false && !f.deSobremesa) avisos.push('sin línea de sobremesa');
   if (REGLAS.voz && f.tipo !== 'portada' && f.tipo !== 'separador' && f.tipo !== 'cierre') {
     if (f.puntoComa > 1) avisos.push(`${f.puntoComa} punto y coma`);
     if (f.rayas) avisos.push(`${f.rayas} raya(s)`);

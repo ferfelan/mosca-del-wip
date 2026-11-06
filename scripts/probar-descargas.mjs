@@ -15,6 +15,9 @@
 //   - en iPhone y en iPad (que se presenta como Mac con pantalla táctil), cada
 //     enlace abre el archivo en la misma pestaña en vez de "descargarlo" (ver
 //     src/portada.js, "El informe en PDF");
+//   - desde la Etapa 8.6 (2026-11-06), el resumen de 4 páginas del kit
+//     ("Mosca del WIP - Resumen.pdf", y en inglés "- Summary.pdf"), con las
+//     mismas exigencias que el informe;
 //   - ningún enlace queda tapado por otra cosa;
 //   - en el kit se ven todos los archivos del taller, y el aviso "Muy pronto"
 //     / "Coming soon" no está en la página, ni siquiera escondido (el
@@ -35,6 +38,12 @@ const INFORMES = {
   es: { pdf: '/Mosca-del-WIP-Informe.pdf', nombre: 'Mosca del WIP - Informe.pdf', tapa: '/img/tapa-informe.jpg' },
   en: { pdf: '/Mosca-del-WIP-Report.pdf', nombre: 'Mosca del WIP - Report.pdf', tapa: '/img/tapa-report.jpg' },
 };
+// El resumen de 4 páginas de cada idioma (8.6; data-resumen-pdf en index.html
+// y RESUMEN_EN en scripts/generar-ingles.mjs)
+const RESUMENES = {
+  es: { pdf: '/Mosca-del-WIP-Resumen.pdf', nombre: 'Mosca del WIP - Resumen.pdf' },
+  en: { pdf: '/Mosca-del-WIP-Summary.pdf', nombre: 'Mosca del WIP - Summary.pdf' },
+};
 // Los archivos del taller (los mismos en los dos idiomas), como en index.html
 const TALLER = [
   { ruta: '/taller/Mosca-del-WIP-Taller-Guia-rapida.pdf', nombre: 'Mosca del WIP - Taller - Guía rápida del facilitador.pdf' },
@@ -44,6 +53,7 @@ const TALLER = [
 ];
 const enPublic = (ruta) => new URL(`../public${ruta}`, import.meta.url);
 for (const informe of Object.values(INFORMES)) informe.tamano = statSync(enPublic(informe.pdf)).size;
+for (const resumen of Object.values(RESUMENES)) resumen.tamano = statSync(enPublic(resumen.pdf)).size;
 for (const archivo of TALLER) archivo.tamano = existsSync(enPublic(archivo.ruta)) ? statSync(enPublic(archivo.ruta)).size : 0;
 const CARPETA = mkdtempSync(join(tmpdir(), 'probar-descargas-'));
 
@@ -83,6 +93,8 @@ for (const [motor, nombre, opciones, abre] of CASOS) for (const idioma of ['es',
   await pagina.waitForTimeout(1200);
   const antes = problemas;
   const informe = INFORMES[idioma];
+  const resumen = RESUMENES[idioma];
+  let probadoResumen = false;
   const tapa = await pagina.locator('[data-tapa]').getAttribute('src');
   if (tapa !== informe.tapa) mal(`la tapa es ${tapa} y no ${informe.tapa}`);
   // Los archivos del taller, todos a la vista, y nada del antiguo "Muy pronto"
@@ -106,11 +118,15 @@ for (const [motor, nombre, opciones, abre] of CASOS) for (const idioma of ['es',
     if ((await enlace.getAttribute('data-informe')) !== null) {
       esperado = { ruta: informe.pdf, nombre: informe.nombre, tamano: informe.tamano };
       if (ruta !== informe.pdf) mal(`${cual} lleva a ${ruta} y no al informe en ${idioma === 'en' ? 'inglés' : 'español'}`);
+    } else if ((await enlace.getAttribute('data-resumen-pdf')) !== null) {
+      esperado = { ruta: resumen.pdf, nombre: resumen.nombre, tamano: resumen.tamano };
+      probadoResumen = true;
+      if (ruta !== resumen.pdf) mal(`${cual} lleva a ${ruta} y no al resumen en ${idioma === 'en' ? 'inglés' : 'español'}`);
     } else if ((await enlace.getAttribute('data-taller-archivo')) !== null) {
       esperado = TALLER.find((a) => a.ruta === ruta);
       if (!esperado) mal(`${cual} lleva a ${ruta}, que no es ninguno de los tres archivos del taller`);
       else probadosTaller.add(ruta);
-    } else mal(`${cual} lleva a ${ruta} y no se sabe qué archivo es (sin data-informe ni data-taller-archivo)`);
+    } else mal(`${cual} lleva a ${ruta} y no se sabe qué archivo es (sin data-informe, data-resumen-pdf ni data-taller-archivo)`);
     if (!esperado) continue;
     await enlace.scrollIntoViewIfNeeded();
     await pagina.waitForTimeout(250);
@@ -151,6 +167,7 @@ for (const [motor, nombre, opciones, abre] of CASOS) for (const idioma of ['es',
   }
   if (!probados) mal('no hay ningún enlace de descarga a la vista');
   if (probadosTaller.size !== TALLER.length) mal(`se probaron ${probadosTaller.size} archivos del taller y no ${TALLER.length}`);
+  if (!probadoResumen) mal('no se probó el resumen de 4 páginas (no hay un enlace data-resumen-pdf a la vista)');
   // En español, ES | EN lleva a la portada en inglés (/en/), donde todos los
   // enlaces y la tapa son del informe en inglés, y ES devuelve a la de
   // español (desde la Etapa 7 cada idioma tiene su dirección); los del taller no cambian
@@ -168,11 +185,15 @@ for (const [motor, nombre, opciones, abre] of CASOS) for (const idioma of ['es',
         nombres: [...document.querySelectorAll('[data-informe]')].map((a) => a.getAttribute('download')),
         tapa: document.querySelector('[data-tapa]').getAttribute('src'),
         taller: [...document.querySelectorAll('[data-taller-archivo]')].map((a) => new URL(a.href).pathname),
+        resumen: [...document.querySelectorAll('[data-resumen-pdf]')].map((a) => [new URL(a.href).pathname, a.getAttribute('download')]),
       }));
       const esperado = INFORMES[otro];
       if (ahora.rutas.some((r) => r !== esperado.pdf) || ahora.tapa !== esperado.tapa) mal(`al pasar a ${otro} con el botón, los enlaces son ${[...new Set(ahora.rutas)].join(', ')} y la tapa ${ahora.tapa}`);
       if (ahora.nombres.some((n) => (abre ? n !== null : n !== esperado.nombre))) mal(`al pasar a ${otro} con el botón, el nombre para guardar es ${[...new Set(ahora.nombres)].join(', ')}`);
       if (ahora.taller.join() !== TALLER.map((a) => a.ruta).join()) mal(`al pasar a ${otro} con el botón, los archivos del taller son ${ahora.taller.join(', ')}`);
+      const resumenOtro = RESUMENES[otro];
+      if (!ahora.resumen.length || ahora.resumen.some(([r, n]) => r !== resumenOtro.pdf || n !== (abre ? null : resumenOtro.nombre)))
+        mal(`al pasar a ${otro} con el botón, el resumen es ${JSON.stringify(ahora.resumen)}`);
     }
   }
   for (const e of errores) mal(`error: ${e}`);

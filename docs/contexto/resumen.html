@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Mosca del WIP · Resumen</title>
+<!-- Resumen v1 (2026-11-06, Etapa 8.6, pedido de Felipe). Cuatro páginas con el mismo
+     estilo del informe para compartir (estilo.css y las reglas de compartir.html) y el
+     mensaje nuevo de la portada, "Termina más empezando menos". Ningún número nuevo:
+     todos salen del informe para compartir v25 y de docs/corrida-oficial.json.
+     1 · portada: el título, el mensaje nuevo y el juego en dos líneas.
+     2 · de 1 a 10: los dos gráficos de barras del informe (terminadas y tiempo por
+         tarea, en la simulación) y las cuatro ideas.
+     3 · por qué pasa, lo que busca un límite (lo mismo de la portada del sitio), los
+         estudios en una línea y los cuidados.
+     4 · los cuatro pasos, "Un límite sostenible, no una cosa a la vez." y el enlace
+         al juego.
+     Máximo 140 palabras por página sin contar gráficos, listas marcadas como visual
+     ni citas (node scripts/revisar-paginas.mjs resumen). Se arma con
+     DOC=resumen node scripts/documento.mjs. El inglés es resumen-en.html. -->
+<link rel="stylesheet" href="estilo.css" />
+<style>
+  body { font-size: 10.6pt; line-height: 1.58; }
+  .hoja { background: #fff; }
+  /* Las hojas de contenido en columna: lo último de cada una (los cuidados, el cierre) queda abajo, sobre el pie */
+  .hoja:not(.portada) { display: flex; flex-direction: column; }
+  .hoja .al-pie { margin-top: auto; margin-bottom: 9mm; }
+  h1 { font-size: 22pt; line-height: 1.15; margin: 0 0 4.5mm; }
+  h3 { font-size: 10.6pt; margin: 6mm 0 2mm; }
+  .bajada { font-size: 12pt; line-height: 1.5; color: var(--suave); margin-bottom: 6mm; max-width: 152mm; }
+  p { margin: 0 0 3.4mm; max-width: 146mm; }
+  figure { margin: 0 0 5mm; }
+  figcaption { font-size: 8.4pt; color: var(--suave); margin-top: 2.2mm; line-height: 1.45; }
+  .chico { font-size: 8.4pt; color: var(--suave); }
+  .cita { color: var(--tenue); font-size: 8.4pt; }
+  a.sitio { color: var(--teal); text-decoration: underline; text-decoration-thickness: 0.6pt; text-underline-offset: 0.6mm; }
+
+  /* Portada: la misma del informe (clara, con la mosca y su torre), con el mensaje nuevo como lema */
+  .portada.clara { background: var(--papel); color: var(--tinta); }
+  .portada.clara .cabecera { position: absolute; left: 20mm; right: 20mm; top: 24mm; }
+  .portada.clara .kicker { margin-bottom: 4mm; }
+  .portada.clara h1 { font-size: 50pt; line-height: 1.1; color: var(--tinta); margin: 0 0 5mm; letter-spacing: -0.015em; }
+  .portada.clara .lema { font-family: var(--serif); font-size: 24pt; line-height: 1.22; color: var(--teal); font-weight: 700; max-width: 150mm; margin: 0 0 4.5mm; }
+  .portada.clara .subtitulo { font-family: var(--sans); font-size: 11pt; line-height: 1.5; color: var(--suave); max-width: 156mm; margin: 0; }
+  .portada.clara .datos { position: absolute; left: 20mm; right: 20mm; bottom: 20mm; border-top-color: var(--linea); color: var(--suave); font-size: 8pt; }
+  .portada.clara .datos b { color: var(--tinta); }
+
+  /* Página 2: los dos gráficos de barras chicos, lado a lado, y las cuatro ideas (iguales que la pág. 1 del informe) */
+  .resumen-graficos { display: grid; grid-template-columns: 1fr 1fr; gap: 7mm; margin-top: 1mm; }
+  .resumen-graficos svg { display: block; width: 100%; height: auto; }
+  .ideas { list-style: none; padding: 0; margin: 1.5mm 0 0; border-top: 0.5pt solid var(--linea); max-width: 166mm; }
+  .ideas li { display: grid; grid-template-columns: 9mm 1fr; gap: 0 2.5mm; align-items: baseline; padding: 4.4mm 0; border-bottom: 0.5pt solid var(--linea); margin: 0; }
+  .ideas .n { font-family: var(--serif); font-size: 19pt; line-height: 1; color: var(--teal); font-weight: 700; }
+  .ideas div { line-height: 1.5; }
+  .ideas h3 { display: inline; font-family: var(--serif); font-size: 12.6pt; font-weight: 700; margin: 0; color: var(--tinta); }
+  .ideas p { display: inline; margin: 0; max-width: none; font-size: 10.8pt; }
+
+  /* Página 3: lo que busca un límite, en tres columnas con filetes (como en la portada del sitio) */
+  .titulo-busca { font-family: var(--serif); font-size: 15pt; font-weight: 700; margin: 8mm 0 3mm; }
+  .busca { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 7mm; margin: 0 0 3mm; border-top: 0.5pt solid var(--linea); border-bottom: 0.5pt solid var(--linea); }
+  .busca > div { padding: 7.5mm 0 7.5mm; display: flex; flex-direction: column; }
+  .busca h3 { margin: 0 0 2.4mm; font-family: var(--serif); font-size: 15pt; line-height: 1.2; font-weight: 700; color: var(--tinta); }
+  .busca p { margin: 0 0 3.5mm; font-size: 11pt; line-height: 1.5; max-width: none; }
+  .busca .respaldo { display: block; margin-top: auto; font-size: 9pt; line-height: 1.45; color: var(--suave); border-top: 0.5pt solid var(--linea); padding-top: 2.4mm; }
+  .sin-garantia { font-size: 10.4pt; color: var(--suave); margin-bottom: 9mm; }
+  .con-personas { font-size: 11pt; }
+  .con-personas .etiqueta, .recuadro .etiqueta { display: block; font-size: 7pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin-bottom: 1.6mm; }
+  .recuadro { border-left: 1.2mm solid var(--teal); background: #edf3f2; border-radius: 0 1.6mm 1.6mm 0; padding: 3.6mm 5mm; margin: 5mm 0 0; max-width: 156mm; break-inside: avoid; }
+  .recuadro { margin-top: 9mm; padding: 5mm 6mm; }
+  .recuadro p { font-size: 11pt; line-height: 1.55; color: var(--texto); margin: 0; max-width: none; }
+
+  /* Página 4: los cuatro pasos (los del informe) y el cierre */
+  .pasos4 { list-style: none; padding: 0; margin: 1mm 0 0; border-top: 0.5pt solid var(--linea); }
+  .pasos4 li { display: grid; grid-template-columns: 12mm 1fr; gap: 0 3mm; padding: 5.2mm 0; border-bottom: 0.5pt solid var(--linea); margin: 0; }
+  .pasos4 .n { font-family: var(--serif); font-size: 26pt; line-height: 1; color: var(--teal); font-weight: 700; }
+  .pasos4 h3 { margin: 0 0 1.4mm; font-family: var(--serif); font-size: 14pt; line-height: 1.25; }
+  .pasos4 p { margin: 0; font-size: 11pt; line-height: 1.55; max-width: 146mm; }
+  .cierre-pagina { font-family: var(--serif); font-size: 19pt; line-height: 1.3; color: var(--tinta); margin: 9mm 0 3mm; max-width: 160mm; }
+  .cierre-pagina strong { font-weight: 700; color: var(--teal); }
+  .juega { font-family: var(--serif); font-size: 15pt; line-height: 1.3; color: var(--tinta); font-weight: 700; margin: 0 0 3mm; }
+</style>
+</head>
+<body>
+
+<!-- =============================== PORTADA =============================== -->
+<section class="hoja portada clara">
+  <img src="img/portada-torre.svg" alt="Ilustración: la mosca del juego, con corbata y una gota de sudor, carga sobre el lomo una torre de carpetas que se inclina y suelta hojas, con una taza de café en la punta. En el suelo, una sola carpeta terminada con un visto verde" />
+  <div class="cabecera">
+    <div class="kicker">Resumen en cuatro páginas</div>
+    <h1>Mosca del WIP</h1>
+    <p class="lema">Termina más empezando menos</p>
+    <p class="subtitulo">Un juego de un minuto. Una mosca oficinista con cerebro real pasa un día en la oficina, y tú eliges cuántas tareas tiene a la vez, de 1 a 10.</p>
+  </div>
+  <div class="datos">
+    <div><b>Felipe Fernández</b> · noviembre 2026</div>
+    <div style="text-align:right">Por dentro, un cerebro de mosca real<br />Male CNS v1.0 · CC BY 4.0</div>
+  </div>
+</section>
+
+<!-- =============================== 1 · DE 1 A 10 =============================== -->
+<section class="hoja" data-k="uno-a-diez">
+  <div class="kicker">De 1 a 10 tareas a la vez</div>
+  <h1>Lo que pasó en la simulación</h1>
+  <p class="bajada">La misma mosca, con las mismas reglas, 200 días por cada número de tareas a la vez.</p>
+  <figure class="grafico"><div id="g-resumen" class="resumen-graficos"></div>
+    <figcaption>En la simulación, promedio de 200 días. Verde, el 2. Rojo, el 9.</figcaption>
+  </figure>
+  <p>La simulación, en cuatro ideas.</p>
+  <ol class="ideas">
+    <li><span class="n">1</span><div><h3>Estar siempre ocupado no es avanzar.</h3> <p>Con 9 tareas terminó la mitad que con 2.</p></div></li>
+    <li><span class="n">2</span><div><h3>Un límite bajo, pero no 1.</h3> <p>Con 2 terminó más que con cualquier otro.</p></div></li>
+    <li><span class="n">3</span><div><h3>Lo empezado no desaparece.</h3> <p>Al bajar de 10 a 2 tardó más de dos horas en volver a 2.</p></div></li>
+    <li><span class="n">4</span><div><h3>Las urgencias, de a una.</h3> <p>Cada una costó una tarea normal, y el 2 siguió ganando.</p></div></li>
+  </ol>
+  <div class="pie"><span><b>Mosca del WIP</b> · Resumen</span><span></span></div>
+</section>
+
+<!-- =============================== 2 · POR QUÉ Y LO QUE BUSCA UN LÍMITE =============================== -->
+<section class="hoja" data-k="por-que">
+  <div class="kicker">Por qué pasa</div>
+  <h1>Con todo empezado, cada cosa espera su turno y tarda más en salir</h1>
+  <p class="bajada">Hay dos formas de ser eficiente, estar siempre ocupado o que el trabajo avance sin esperar. Optimizar la primera empeora la segunda <span class="cita">(Modig y Åhlström, 2012)</span>.</p>
+  <h2 class="titulo-busca">Lo que busca un límite</h2>
+  <div class="busca visual">
+    <div><h3>Cada cosa sale antes</h3><p>Con el mismo ritmo, menos cosas abiertas es menos tiempo para cada una.</p><span class="respaldo">Matemática, la ley de Little.</span></div>
+    <div><h3>El trabajo espera menos</h3><p>Sube la eficiencia de flujo, la parte del tiempo en que algo avanza de verdad.</p><span class="respaldo">En el juego, 47&nbsp;% con 2 a la vez y 9&nbsp;% con 9.</span></div>
+    <div><h3>Un ritmo que se aguanta</h3><p>Llegan al final del día sin colapsar.</p><span class="respaldo">En el juego, con 2 cerró el día Tranquila y con 9, Colapsada.</span></div>
+  </div>
+  <p class="sin-garantia">Es lo que busca un límite, no una garantía. Cuánto, en su caso, lo dice su prueba.</p>
+  <p class="con-personas"><span class="etiqueta">Con personas reales</span>Los estudios de jueces, reclutadores y equipos de investigación, y las encuestas de DORA, apuntan para el mismo lado. Ninguno da un número.</p>
+  <div class="recuadro"><span class="etiqueta">Los cuidados</span><p>Es una mosca sola en un solo día, y no mide personas ni equipos. El cerebro es real pero no decide nada, porque las reglas son nuestras. Cada número dice si sale del juego, de la simulación o de estudios.</p></div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Resumen</span><span></span></div>
+</section>
+
+<!-- =============================== 3 · QUÉ HACER CON ESTO =============================== -->
+<section class="hoja" data-k="hacer">
+  <div class="kicker">Qué hacer con esto</div>
+  <h1>Cuatro pasos para probar un límite con tu equipo</h1>
+  <p class="bajada">El juego no dice cuál es tu número, porque la mosca trabaja sola y tu equipo se pasa trabajo y se ayuda.</p>
+  <ol class="pasos4 visual">
+    <li><span class="n">1</span><div><h3>Pongan el trabajo a la vista</h3><p>Tres columnas bastan, por hacer, en curso y hecho. Lo que no se ve no se puede limitar.</p></div></li>
+    <li><span class="n">2</span><div><h3>Cuenten lo abierto y pónganle un límite</h3><p>Cuenten cuántas cosas tiene abiertas cada persona hoy. Acuerden un límite bajo, escríbanlo en el tablero y respétenlo. Con esperas inevitables, no una.</p></div></li>
+    <li><span class="n">3</span><div><h3>Cuando alguien queda esperando, ataquen la espera</h3><p>No abran otra cosa para "aprovechar el tiempo", ayuden a destrabar lo que espera. Con menos esperas, el límite puede bajar.</p></div></li>
+    <li><span class="n">4</span><div><h3>Prueben dos semanas y midan</h3><p>En cada tarjeta anoten el día que empezó y el día que terminó. A las dos semanas comparen cuántas terminaron y cuánto tardó cada una.</p></div></li>
+  </ol>
+  <div class="al-pie">
+    <p class="cierre-pagina"><strong>Un límite sostenible, no una cosa a la vez.</strong></p>
+    <p class="juega">Juega en <a class="sitio" href="https://mosca.deliverycraft.ai/">mosca.deliverycraft.ai</a></p>
+    <p class="chico">Ahí están también, gratis, la guía del límite WIP, el informe para compartir y el kit del taller. Puedes compartir este resumen tal cual, citando al autor.</p>
+  </div>
+  <div class="pie"><span><b>Mosca del WIP</b> · Resumen</span><span></span></div>
+</section>
+
+<script>
+// Los mismos datos del informe para compartir (docs/corrida-oficial.json, 200 días por cada número, semilla 2024)
+const TERMINADAS = [15.9, 18.0, 16.9, 15.4, 14.0, 12.3, 11.2, 10.0, 9.1, 8.2];
+const TIEMPO = [34, 60, 96, 140, 194, 264, 340, 431, 534, 634]; // minutos por tarea (horas de oficina)
+const coma = (x, d = 1) => x.toFixed(d).replace('.', ',');
+const horas = (m) => (m < 60 ? `${m} min` : `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, '0')} min`);
+const LINEA = '#e2ddd2', TENUE = '#8a93a0', SUAVE = '#556070', TEXTO = '#2c3442';
+
+// Página 1: dos gráficos de barras chicos, terminadas y tiempo por tarea de 1 a 10. Verde el 2, rojo el 9, el resto gris
+(function () {
+  const barras = (datos, fmt, titulo, rotulo) => {
+    const W = 300, H = 300, iz = 6, de = 6, ar = 30, ab = 30;
+    const max = Math.max(...datos);
+    const bw = (W - iz - de) / 10;
+    const y = (v) => ar + (1 - v / max) * (H - ar - ab);
+    let s = `<svg viewBox="0 0 ${W} ${H}" overflow="visible" role="img" aria-label="${rotulo}">`;
+    s += `<text x="${iz}" y="12" font-size="11" fill="${TEXTO}" font-weight="600">${titulo}</text>`;
+    datos.forEach((v, i) => {
+      const color = i === 1 ? '#4f9d6a' : i === 8 ? '#cc4a43' : '#d6d1c6';
+      const x = iz + i * bw + 3, w = bw - 6;
+      s += `<rect x="${x.toFixed(1)}" y="${y(v).toFixed(1)}" width="${w.toFixed(1)}" height="${(H - ab - y(v)).toFixed(1)}" rx="2" fill="${color}"/>`;
+      s += `<text x="${(x + w / 2).toFixed(1)}" y="${H - ab + 13}" font-size="9.5" fill="${SUAVE}" text-anchor="middle">${i + 1}</text>`;
+      if (i === 1 || i === 8) s += `<text x="${(x + w / 2).toFixed(1)}" y="${(y(v) - 5).toFixed(1)}" font-size="9.5" font-weight="700" fill="${color}" text-anchor="${i === 8 ? 'end' : 'middle'}" dx="${i === 8 ? 12 : 0}">${fmt(v)}</text>`;
+    });
+    s += `<line x1="${iz}" x2="${W - de}" y1="${H - ab}" y2="${H - ab}" stroke="${LINEA}"/>`;
+    s += `<text x="${(iz + W - de) / 2}" y="${H - 4}" font-size="9" fill="${TENUE}" text-anchor="middle">Tareas a la vez</text>`;
+    return s + '</svg>';
+  };
+  document.getElementById('g-resumen').innerHTML =
+    `<div>${barras(TERMINADAS, (v) => coma(v), 'Tareas terminadas al día', 'Tareas terminadas al día según cuántas tiene a la vez, de 1 a 10')}</div>` +
+    `<div>${barras(TIEMPO, (m) => (m % 60 ? horas(m) : `${m / 60} h`), 'Tiempo por tarea', 'Tiempo por tarea según cuántas tiene a la vez, de 1 a 10')}</div>`;
+})();
+
+// Números de página: el pie numera solo el contenido (no la portada)
+(function () {
+  const contenido = [...document.querySelectorAll('.hoja')].filter((h) => !h.classList.contains('portada'));
+  contenido.forEach((h, i) => { const n = h.querySelector('.pie span:last-child'); if (n) n.textContent = `${i + 1} / ${contenido.length}`; });
+})();
+</script>
+</body>
+</html>

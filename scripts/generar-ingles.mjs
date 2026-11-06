@@ -33,13 +33,17 @@ const ORIGEN = join(RAIZ, 'index.html');
 const DESTINO = join(RAIZ, 'en', 'index.html');
 const SITIO = 'https://mosca.deliverycraft.ai';
 
-const TITULO = 'WIP limit: the game with a real fly brain · Mosca del WIP';
+// Desde la 8.6 (2026-11-06), el mensaje nuevo de la portada: "Finish more by
+// starting less" (en español, "Termina más empezando menos")
+const TITULO = 'WIP limit: finish more by starting less · Mosca del WIP';
 const DESCRIPCION =
-  'Play for a minute and watch a fly with a real brain handle too many tasks at once. A free guide, report and workshop to choose your team’s WIP limit.';
-const TITULO_COMPARTIR = 'Mosca del WIP: the WIP limit game with a real fly brain';
+  'Finish more by starting less. A fly with a real brain shows you why in a one-minute game, with a free guide, report and workshop for your team’s WIP limit.';
+const TITULO_COMPARTIR = 'Finish more by starting less · Mosca del WIP';
 const DESCRIPCION_COMPARTIR =
-  'Play for a minute and watch what happens to a fly with a real brain when she has too many things started at once. With the kit for your team.';
-const ALT_VISTA_PREVIA = `The fly from the game at her desk, with many tasks at once, next to the question: ${INGLES.titulo} A 1-minute game, mosca.deliverycraft.ai.`;
+  'When you have everything started, each thing waits its turn and takes longer to get done. An office fly with a real brain shows you why in one minute.';
+const ALT_VISTA_PREVIA = `The fly from the game at her desk, with many tasks at once, next to the title ${INGLES.titulo}. A 1-minute game, mosca.deliverycraft.ai.`;
+const DESCRIPCION_SITIO =
+  'Finish more by starting less. A game with the brain of a real fly that shows why limiting work in progress (WIP) pays off, with a free guide, report and workshop for teams.';
 // Si existe la vista previa en inglés (scripts/vistas-previas.mjs), se usa esa
 // (los nombres, con su fecha, salen de scripts/sello.mjs)
 const VISTA_PREVIA = existsSync(join(RAIZ, 'public', vistaPrevia('en'))) ? vistaPrevia('en') : vistaPrevia();
@@ -53,6 +57,7 @@ const RUTAS = {
   '/creditos/': '/creditos/?lang=en',
 };
 const INFORME_EN = { pdf: '/Mosca-del-WIP-Report.pdf', nombre: 'Mosca del WIP - Report.pdf', tapa: '/img/tapa-report.jpg' };
+const RESUMEN_EN = { pdf: '/Mosca-del-WIP-Summary.pdf', nombre: 'Mosca del WIP - Summary.pdf' }; // 8.6: el resumen de 4 páginas
 
 let html = readFileSync(ORIGEN, 'utf8');
 
@@ -156,7 +161,7 @@ html = html.replace(/\{\s*"@type": "WebPage"[\s\S]*?\n        \}/, (bloque) =>
 html = html.replace(/\{\s*"@type": "WebSite"[\s\S]*?\n        \}/, (bloque) =>
   bloque.replace(
     /"description": "[^"]*"/,
-    `"description": ${JSON.stringify('A game with the brain of a real fly that shows why limiting work in progress (WIP) pays off, with a free guide, report and workshop for teams.')}`,
+    `"description": ${JSON.stringify(DESCRIPCION_SITIO)}`,
   ),
 );
 html = html.replace(/\{\s*"@type": "VideoGame"[\s\S]*?\n        \}/, (bloque) =>
@@ -181,6 +186,8 @@ enEtiquetas(/\sdata-informe(?=[\s/>])/, (etiqueta) => {
   return e;
 });
 enEtiquetas(/\sdata-tapa(?=[\s/>])/, (etiqueta) => ponerAtributo(etiqueta, 'src', INFORME_EN.tapa));
+// El resumen de 4 páginas en inglés (8.6)
+enEtiquetas(/\sdata-resumen-pdf(?=[\s/>])/, (etiqueta) => ponerAtributo(ponerAtributo(etiqueta, 'href', RESUMEN_EN.pdf), 'download', RESUMEN_EN.nombre));
 // ES | EN: marca EN
 enEtiquetas(/\sdata-idioma="es"/, (etiqueta) => quitarAtributo(etiqueta, 'aria-current'));
 enEtiquetas(/\sdata-idioma="en"/, (etiqueta) => ponerAtributo(etiqueta, 'aria-current', 'page'));

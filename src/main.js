@@ -630,14 +630,20 @@ function ratioEscena() {
   return vista === 'exhibicion' ? 2 : Math.min(Math.max(dpr, 1), 2);
 }
 let dprAplicado = 0;
+let tamanoAplicado = ''; // el último tamaño de la oficina que se le dio al lienzo
+const tamanoEscena = () => `${Math.max(1, elEscena.clientWidth)}×${Math.max(1, elEscena.clientHeight)}`;
 function ajustarEscena() {
   const w = Math.max(1, elEscena.clientWidth);
   const h = Math.max(1, elEscena.clientHeight);
+  tamanoAplicado = `${w}×${h}`;
   dprAplicado = window.devicePixelRatio;
   renderer.setPixelRatio(ratioEscena());
   renderer.setSize(w, h); // también fija el tamaño visible del lienzo
   camera.aspect = w / h;
   aplicarEspacioPanel();
+  // (solo en desarrollo, si scripts/probar-salto.mjs lo pidió: cada vez que
+  // el lienzo se rehace)
+  if (import.meta.env.DEV && window.__cuadrosMosca) window.__cuadrosMosca.push({ tipo: 'ajuste', t: Math.round(performance.now()), lienzo: [w, h] });
 }
 
 // ---------- Panel del cerebro: mostrar / ocultar ----------
@@ -793,11 +799,23 @@ document.getElementById('btn-ocultar-cerebro').addEventListener('click', () => a
 document.getElementById('btn-mostrar-cerebro').addEventListener('click', () => alternarCerebro(false));
 pintarCerebroOculto();
 // (en el celular, la oficina también se encuadra sola en su recuadro)
+// El primer aviso llega siempre, aunque el tamaño no haya cambiado: si es el
+// mismo que ya tiene el lienzo, no se toca nada (rehacer el lienzo lo deja en
+// blanco un cuadro y volver a encuadrar movía la cámara justo después del
+// primer cuadro: el "salto" de la Etapa 8.6)
 new ResizeObserver(() => {
+  if (tamanoEscena() === tamanoAplicado) return;
   ajustarEscena();
   if (esCelular()) encuadrarSinPerderGiro();
   else if (vista === 'exhibicion') encuadrarExhibicion();
 }).observe(elEscena);
+// La mosca toma su postura (sentada, las patas en su lugar y la cabeza
+// mirando el monitor) antes del primer encuadre y del primer cuadro: el
+// encuadre del celular y el espacio de los paneles se calculan con puntos de
+// su cuerpo, y así el primer cuadro ya es el definitivo (8.6). Es un segundo
+// de su animación, en pasos de 0,05 s (antes giraba la cabeza al abrir)
+const posturaInicial = estadoMosca(juego.estado());
+for (let i = 0; i < 20; i++) mosca.update(0.05, posturaInicial);
 ajustarEscena();
 
 // En exhibición la cámara mira desde el mismo ángulo oficial, pero se
@@ -807,7 +825,10 @@ const _caja = new THREE.Box3();
 const _p = new THREE.Vector3();
 function puntosVisibles(objeto, porPieza = 24) {
   const puntos = [];
-  objeto.updateMatrixWorld(true);
+  // (también los de más arriba: antes del primer cuadro la silla todavía no
+  // había puesto a la mosca en su lugar, y el primer encuadre del celular
+  // miraba a una mosca fantasma en el centro de la oficina, 8.6)
+  objeto.updateWorldMatrix(true, true);
   objeto.traverse((o) => {
     if (!o.isMesh || !o.geometry?.attributes?.position) return;
     for (let n = o; n; n = n.parent) if (!n.visible) return;
@@ -818,6 +839,10 @@ function puntosVisibles(objeto, porPieza = 24) {
   return puntos;
 }
 
+// El zoom con dos dedos en el celular, contra la distancia de la vista inicial
+// (con la mitad, la mosca llena la pantalla; con el doble, se ve el escritorio
+// entero y la mosca sigue a la vista)
+const ZOOM_CELULAR = { cerca: 0.5, lejos: 2 };
 function encuadrarExhibicion() {
   // Lo que debe verse completo: la mosca (sin la silla), la pantalla con el
   // kanban y el cenicero. Se usan puntos reales de la mosca (no su caja), así
@@ -850,6 +875,12 @@ function encuadrarExhibicion() {
   camera.position.copy(centro).addScaledVector(direccion, d);
   camera.lookAt(centro);
   controls.target.copy(centro);
+  // En el celular, los dos dedos acercan la oficina hasta la mitad de esta
+  // distancia y la alejan hasta el doble: la mosca nunca se pierde (8.6)
+  if (esCelular()) {
+    controls.minDistance = d * ZOOM_CELULAR.cerca;
+    controls.maxDistance = d * ZOOM_CELULAR.lejos;
+  }
   controls.update();
   guardarCasa();
 }
@@ -905,6 +936,21 @@ function moverCamaraACasa(dt) {
   }
   const lejos = camera.position.distanceTo(casa.pos) > 0.05 || controls.target.distanceTo(casa.obj) > 0.05;
   if (elBtnVistaInicial.hidden === lejos) elBtnVistaInicial.hidden = !lejos;
+}
+
+// ---------- La página del juego no se acerca con los dedos (8.6) ----------
+// Dos dedos sobre la oficina la acercan a ella (la escena 3D, con su tope);
+// la página misma nunca se agranda (antes se agrandaba, se corría hacia el
+// lado y la oficina se perdía). Android lo cumple con el viewport de
+// jugar/index.html; el iPhone lo ignora, y ahí lo frenan touch-action
+// (src/style.css) y, por si acaso, esto: los gestos de Safari y cualquier
+// movimiento con dos dedos (la oficina no lo nota: escucha los punteros, no
+// estos avisos). Solo con pantalla táctil: en el computador, el pellizco del
+// trackpad sigue como siempre.
+if (navigator.maxTouchPoints > 0 || matchMedia('(any-pointer: coarse)').matches) {
+  const sinZoom = (e) => e.preventDefault();
+  for (const tipo of ['gesturestart', 'gesturechange', 'gestureend']) document.addEventListener(tipo, sinZoom, { passive: false });
+  document.addEventListener('touchmove', (e) => e.touches.length > 1 && e.preventDefault(), { passive: false });
 }
 
 // ---------- Día nuevo ----------
@@ -1453,18 +1499,55 @@ function animar(ahora = performance.now()) {
   factorDer = acercar(factorDer, enExhibicion || controlesOculto ? 0 : 1);
   aplicarEspacioPanel();
   // En el celular la oficina se dibuja solo si su pestaña está a la vista
-  if (!esCelular() || vistaCelular() === 'oficina') renderer.render(scene, camera);
+  if (!esCelular() || vistaCelular() === 'oficina') {
+    renderer.render(scene, camera);
+    if (import.meta.env.DEV && window.__cuadrosMosca) anotarCuadro(ahora);
+  }
   refrescarCerebro(dtReal, estado, mosca.tomandoCafe(), ahora);
+}
+
+// (solo en desarrollo) scripts/probar-salto.mjs prende window.__cuadrosMosca
+// antes de que cargue el juego: cada cuadro dibujado de la oficina anota el
+// tamaño del lienzo, la cámara y la caja de la mosca en la pantalla (píxeles
+// CSS), para comprobar que el primer cuadro ya es el definitivo
+const _enPantalla = new THREE.Vector3();
+function anotarCuadro(ahora) {
+  const ancho = canvas.clientWidth;
+  const alto = canvas.clientHeight;
+  const caja = [Infinity, Infinity, -Infinity, -Infinity];
+  for (const p of puntosVisibles(mosca.figura, 6)) {
+    _enPantalla.copy(p).project(camera);
+    const x = ((_enPantalla.x + 1) / 2) * ancho;
+    const y = ((1 - _enPantalla.y) / 2) * alto;
+    caja[0] = Math.min(caja[0], x);
+    caja[1] = Math.min(caja[1], y);
+    caja[2] = Math.max(caja[2], x);
+    caja[3] = Math.max(caja[3], y);
+  }
+  window.__cuadrosMosca.push({
+    tipo: 'cuadro',
+    t: Math.round(ahora),
+    lienzo: [ancho, alto, canvas.width, canvas.height],
+    camara: [...camera.position.toArray(), ...controls.target.toArray(), camera.zoom].map((v) => +v.toFixed(4)),
+    mosca: caja.map((v) => +v.toFixed(1)),
+  });
 }
 
 // ---------- Celular: la misma partida, acomodada a la pantalla chica ----------
 // (src/celular.js) Al encenderse, la oficina se encuadra sola en su recuadro
-// (como en Exhibición) y se puede alejar hasta 12; al apagarse (un iPad que
-// agranda su ventana), todo vuelve a como estaba.
+// (como en Exhibición) y los dos dedos solo la acercan o la alejan, con tope
+// (ZOOM_CELULAR; antes también la corrían hacia el lado y la mosca se perdía,
+// 8.6); al apagarse (un iPad que agranda su ventana), todo vuelve a como estaba.
 iniciarCelular({
   alCambiar(activo) {
     if (activo && vista === 'exhibicion') aplicarVista('control');
-    controls.maxDistance = activo ? 12 : 7;
+    controls.enablePan = !activo;
+    // (los topes del computador, los de src/scene.js; los del celular los pone
+    // encuadrarExhibicion)
+    if (!activo) {
+      controls.minDistance = 1.6;
+      controls.maxDistance = 7;
+    }
     if (activo) document.body.classList.remove('cerebro-oculto', 'controles-oculto');
     else {
       pintarCerebroOculto();
@@ -1597,7 +1680,14 @@ if (import.meta.env.DEV) {
       }
     },
     casiFin: () => (juego.minutoActual = 18 * 60 - 2),
-    camaraInfo: () => ({ pos: camera.position.toArray(), obj: controls.target.toArray(), aspect: camera.aspect }),
+    // (con los topes del zoom y si los dos dedos pueden correr la oficina, 8.6)
+    camaraInfo: () => ({
+      pos: camera.position.toArray(),
+      obj: controls.target.toArray(),
+      aspect: camera.aspect,
+      zoom: [controls.minDistance, controls.maxDistance],
+      correr: controls.enablePan,
+    }),
     celular: () => ({ activo: esCelular(), vista: vistaCelular(), ratio: renderer.getPixelRatio() }),
     cerebro: () => cerebro?.lectura(),
     cerebroVista: () => cerebro?.vista(),

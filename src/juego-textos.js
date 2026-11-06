@@ -80,8 +80,8 @@ export const PAGINA = {
   'Vista exhibición: pantalla completa para mostrar (tecla E)': 'Exhibition view: full screen, to show it to others (key E)',
   'Ocultar el cerebro (tecla B)': 'Hide the brain (key B)',
   'Ocultar el panel del cerebro': 'Hide the brain panel',
-  'Cerebro de la mosca: gira solo; un clic lo detiene y otro lo hace girar; detenido, arrastra para girarlo; rueda o pellizco para acercar':
-    'The fly’s brain: it turns on its own; one click stops it and another starts it again; when stopped, drag to turn it; scroll or pinch to zoom',
+  'Cerebro de la mosca: gira solo. Un clic lo detiene y otro lo hace girar. Detenido, arrastra para girarlo. Rueda o pellizco para acercar':
+    'The fly’s brain: it turns on its own. One click stops it and another starts it again. When stopped, drag to turn it. Scroll or pinch to zoom',
   Detener: 'Stop',
   'Detener el giro del cerebro (también con un clic en el cerebro)': 'Stop the brain from turning (or click on the brain)',
   Centrar: 'Center',
@@ -327,9 +327,9 @@ export const TEXTOS = {
   graficoEmpieza: { es: 'el día empieza a las 09:00', en: 'the day starts at 09:00' },
   graficoResumen: {
     es: (ahora, cigarros, cafes) =>
-      `Estrés de la mosca durante el día: ${ahora}; ${cigarros} ${cigarros === 1 ? 'cigarro' : 'cigarros'} y ${cafes} ${cafes === 1 ? 'café' : 'cafés'}.`,
+      `Estrés de la mosca durante el día: ${ahora}. Lleva ${cigarros} ${cigarros === 1 ? 'cigarro' : 'cigarros'} y ${cafes} ${cafes === 1 ? 'café' : 'cafés'}.`,
     en: (ahora, cigarros, cafes) =>
-      `The fly’s stress during the day: ${ahora}; ${cigarros} ${cigarros === 1 ? 'cigarette' : 'cigarettes'} and ${cafes} ${cafes === 1 ? 'coffee' : 'coffees'}.`,
+      `The fly’s stress during the day: ${ahora}. So far, ${cigarros} ${cigarros === 1 ? 'cigarette' : 'cigarettes'} and ${cafes} ${cafes === 1 ? 'coffee' : 'coffees'}.`,
   },
   graficoCartel: {
     es: (hora, nivel, pct, enCurso, evento) => `<strong>${hora}</strong> · ${nivel} (${pct}%) · ${enCurso} a la vez${evento}`,

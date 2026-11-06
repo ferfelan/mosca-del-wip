@@ -26,6 +26,8 @@ const PAGINAS = [
 const ARCHIVOS = [
   { ruta: '/Mosca-del-WIP-Informe.pdf', fuentes: ['public/Mosca-del-WIP-Informe.pdf'] },
   { ruta: '/Mosca-del-WIP-Report.pdf', fuentes: ['public/Mosca-del-WIP-Report.pdf'] },
+  { ruta: '/Mosca-del-WIP-Resumen.pdf', fuentes: ['public/Mosca-del-WIP-Resumen.pdf'] }, // 8.6
+  { ruta: '/Mosca-del-WIP-Summary.pdf', fuentes: ['public/Mosca-del-WIP-Summary.pdf'] }, // 8.6
   { ruta: '/taller/Mosca-del-WIP-Taller-Guia-rapida.pdf', fuentes: ['public/taller/Mosca-del-WIP-Taller-Guia-rapida.pdf'] },
   { ruta: '/taller/Mosca-del-WIP-Taller-Presentacion.pdf', fuentes: ['public/taller/Mosca-del-WIP-Taller-Presentacion.pdf'] },
   { ruta: '/taller/Mosca-del-WIP-Taller-Presentacion.pptx', fuentes: ['public/taller/Mosca-del-WIP-Taller-Presentacion.pptx'] },

@@ -147,6 +147,20 @@ html.celular .boton-vista-inicial {
   font-size: 13px;
 }
 
+/* 8.6: con "Vista inicial" a la vista, el estado de la mosca le deja su
+   lugar. Con su texto más largo ("Espera: sus tareas están bloqueadas") la
+   tarjeta llegaba a 250 px y, en un teléfono de 390 px o menos, pasaba por
+   debajo del botón; ahora ese texto baja a una segunda línea. 126 px = el
+   botón (118 px en español, menos en inglés) y 8 px de aire. (Con menos de
+   300 px y de lado, el botón es solo un ícono y la regla de más abajo le
+   deja 52 px.) */
+@media (min-width: 300px) and (orientation: portrait) {
+  html.celular #btn-vista-inicial:not([hidden]) ~ #ex-mosca {
+    min-width: min(164px, calc(100% - 2 * var(--cel-margen) - 126px));
+    max-width: min(250px, calc(100% - 2 * var(--cel-margen) - 126px));
+  }
+}
+
 /* "Mándale una urgencia" (8.3): abajo a la derecha de la oficina, justo sobre
    la hoja: lejos del tablero (que está arriba) y de la mosca (que está al
    centro; al centro de abajo le rozaba el abdomen). 44 px de alto, para el

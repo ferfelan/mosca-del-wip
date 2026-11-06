@@ -23,8 +23,8 @@ const VERSIONES = {
     nivel: (n) => n,
     notas: [
       '# Mosca del WIP: un día de oficina con 1 a 10 tareas a la vez. Promedio de 200 días por cada número, en el juego (simulación, semilla 2024).',
-      '# Cada fila: cuántas tareas tiene la mosca en curso a la vez; cuántas termina en el día; minutos de oficina que tarda cada tarea de que empieza a que termina;',
-      '# minutos de cada hora que rinden de verdad; minutos del día sin nada que hacer; cigarros; cafés; estrés promedio y máximo (0 a 100); nivel de estrés al cerrar.',
+      '# Cada fila: cuántas tareas tiene la mosca en curso a la vez · cuántas termina en el día · minutos de oficina que tarda cada tarea de que empieza a que termina ·',
+      '# minutos de cada hora que rinden de verdad · minutos del día sin nada que hacer · cigarros · cafés · estrés promedio y máximo (0 a 100) · nivel de estrés al cerrar.',
       '# Autor: Felipe Fernández. Licencia CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Fuente: https://mosca.deliverycraft.ai/limite-wip/#datos',
     ],
   },
@@ -34,8 +34,8 @@ const VERSIONES = {
     nivel: (n) => NIVEL_EN[n] ?? n,
     notas: [
       '# Mosca del WIP: an office day with 1 to 10 tasks at once. Average of 200 days per number, in the game (simulation, seed 2024).',
-      '# Each row: how many tasks the fly has in progress at once; how many she finishes per day; office minutes each task takes from start to finish;',
-      '# minutes of every hour that really get work done; idle minutes per day; cigarettes; coffees; average and maximum stress (0 to 100); stress level at the end of the day.',
+      '# Each row: how many tasks the fly has in progress at once · how many she finishes per day · office minutes each task takes from start to finish ·',
+      '# minutes of every hour that really get work done · idle minutes per day · cigarettes · coffees · average and maximum stress (0 to 100) · stress level at the end of the day.',
       '# Author: Felipe Fernández. License CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Source: https://mosca.deliverycraft.ai/en/wip-limit/#datos',
     ],
   },
@@ -64,8 +64,8 @@ const URGENCIAS = {
     cabecera: ['urgencias_al_dia', 'limite', 'normales_terminadas_por_dia', 'terminadas_contando_urgencias', 'minutos_por_tarea_normal', 'minutos_por_urgencia', 'estres_al_cerrar'],
     notas: [
       `# Mosca del WIP: un día de oficina con 0, 1, 2, 3 o 5 urgencias al día y un límite de 1 a 10 tareas a la vez. Promedio de ${urgencias.dias} días por combinación, en la simulación (semilla ${urgencias.semilla}).`,
-      '# Una urgencia llega sin aviso, pasa por encima del límite y la mosca la hace primero, de a una. Cada fila: urgencias al día; el límite (tareas normales a la vez); tareas normales terminadas en el día;',
-      '# terminadas contando las urgencias; minutos de oficina por tarea normal, de que empieza a que termina; minutos por urgencia, de que llega a que termina (vacío sin urgencias); estrés al cerrar (0 a 100).',
+      '# Una urgencia llega sin aviso, pasa por encima del límite y la mosca la hace primero, de a una. Cada fila: urgencias al día · el límite (tareas normales a la vez) · tareas normales terminadas en el día ·',
+      '# terminadas contando las urgencias · minutos de oficina por tarea normal, de que empieza a que termina · minutos por urgencia, de que llega a que termina (vacío sin urgencias) · estrés al cerrar (0 a 100).',
       '# Autor: Felipe Fernández. Licencia CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Fuente: https://mosca.deliverycraft.ai/limite-wip/#datos',
     ],
   },
@@ -74,8 +74,8 @@ const URGENCIAS = {
     cabecera: ['urgent_tasks_per_day', 'limit', 'regular_tasks_finished_per_day', 'finished_counting_urgent_tasks', 'minutes_per_regular_task', 'minutes_per_urgent_task', 'stress_at_close'],
     notas: [
       `# Mosca del WIP: an office day with 0, 1, 2, 3 or 5 urgent tasks a day and a limit of 1 to 10 tasks at once. Average of ${urgencias.dias} days per combination, in the simulation (seed ${urgencias.semilla}).`,
-      '# An urgent task arrives unannounced, jumps over the limit and the fly does it first, one at a time. Each row: urgent tasks per day; the limit (regular tasks at once); regular tasks finished per day;',
-      '# finished counting the urgent ones; office minutes per regular task, from start to finish; minutes per urgent task, from arrival to finish (empty with no urgent tasks); stress at the end of the day (0 to 100).',
+      '# An urgent task arrives unannounced, jumps over the limit and the fly does it first, one at a time. Each row: urgent tasks per day · the limit (regular tasks at once) · regular tasks finished per day ·',
+      '# finished counting the urgent ones · office minutes per regular task, from start to finish · minutes per urgent task, from arrival to finish (empty with no urgent tasks) · stress at the end of the day (0 to 100).',
       '# Author: Felipe Fernández. License CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Source: https://mosca.deliverycraft.ai/en/wip-limit/#datos',
     ],
   },

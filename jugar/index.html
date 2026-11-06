@@ -40,7 +40,12 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon-2026-10-29.png" />
     <!-- Android y los demás celulares: nombre e íconos para la pantalla de inicio -->
     <link rel="manifest" href="/manifest.webmanifest" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- La página del juego no se acerca con los dedos (8.6): dos dedos sobre la
+         oficina la acercan a ella, no a la página. Android respeta
+         user-scalable=no; el iPhone lo ignora desde iOS 10, y ahí lo frenan
+         touch-action (src/style.css) y los gestos de Safari (src/main.js). La
+         portada, la guía, el informe y el taller se siguen pudiendo acercar. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Juego del límite WIP: la mosca con cerebro real · Mosca del WIP</title>
     <meta name="description" content="Elige cuántas tareas tiene la mosca a la vez, de 1 a 10, y mira cuántas termina y cuánto se estresa. Juego gratis de 1 minuto con el cerebro de una mosca real." />
     <link rel="canonical" href="https://mosca.deliverycraft.ai/jugar/" />
@@ -331,7 +336,7 @@
       </header>
       <div class="cerebro-cuerpo">
         <div class="cerebro-lienzo">
-          <canvas id="lienzo-cerebro" aria-label="Cerebro de la mosca: gira solo; un clic lo detiene y otro lo hace girar; detenido, arrastra para girarlo; rueda o pellizco para acercar"></canvas>
+          <canvas id="lienzo-cerebro" aria-label="Cerebro de la mosca: gira solo. Un clic lo detiene y otro lo hace girar. Detenido, arrastra para girarlo. Rueda o pellizco para acercar"></canvas>
           <div class="cerebro-botones">
             <button id="btn-girar-cerebro" class="boton-centrar" type="button" aria-pressed="false" title="Detener el giro del cerebro (también con un clic en el cerebro)">
               <svg class="icono-detener" viewBox="0 0 16 16" width="10" height="10" aria-hidden="true"><path d="M5 3.5v9M11 3.5v9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>

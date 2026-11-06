@@ -3,7 +3,7 @@
   "idioma": "en",
   "clave": "guia",
   "titulo": "WIP limit: what it is and how to find your team’s · Mosca del WIP",
-  "descripcion": "What work in progress is, why to limit it and how to choose your team’s WIP limit: a starting point, the two-week test and what to do when something waits.",
+  "descripcion": "Finish more by starting less. What work in progress is, why to limit it and how to choose your team’s WIP limit with a two-week test.",
   "vistaPrevia": "wip-limit",
   "imagenAlt": "The fly from the game in front of her kanban board, next to the title: WIP limit, what it is and how to find your team’s.",
   "miga": "WIP limit guide",
@@ -18,8 +18,8 @@
 <main class="lectura" id="contenido" tabindex="-1">
   {{migas}}
   <h1>WIP limit: what it is and how to find your team’s</h1>
-  <p class="pagina-bajada">A short guide for teams that work all day and feel they get little done: what work in progress is, why it pays to limit it and how to choose a number to start with. With data from the game Mosca del WIP and the studies behind it.</p>
-  <p class="pagina-meta"><span>By <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a></span><span>Updated on <time datetime="{{fecha-iso}}">{{fecha}}</time></span><span>About a 12-minute read</span></p>
+  <p class="pagina-bajada">A short guide for teams that work all day and feel they get little done: what work in progress is, why it pays to limit it to finish more by starting less, and how to choose your team’s number, with data from the game Mosca del WIP.</p>
+  <p class="pagina-meta"><span>By <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a></span><span>Updated on <time datetime="{{fecha-iso}}">{{fecha}}</time></span><span>About a 7-minute read</span></p>
 
   <nav class="indice" aria-label="On this page">
     <h2>On this page</h2>
@@ -27,8 +27,8 @@
       <li><a href="#que-es">What WIP is and what a WIP limit is</a></li>
       <li><a href="#ocupado-no-es-avanzar">Why being busy is not the same as making progress</a></li>
       <li><a href="#como-elegir">How to choose your team’s WIP limit</a></li>
-      <li><a href="#urgencias">What about urgent tasks?</a></li>
       <li><a href="#cuando-algo-espera">What to do when something is left waiting</a></li>
+      <li><a href="#urgencias">What about urgent tasks?</a></li>
       <li><a href="#ley-de-little">Little’s Law, in plain words</a></li>
       <li><a href="#errores-comunes">Common mistakes when setting a limit</a></li>
       <li><a href="#estudios">What the studies with people say</a></li>
@@ -39,16 +39,15 @@
 
   <section id="que-es">
     <h2>What WIP is and what a WIP limit is</h2>
-    <p class="respuesta">WIP stands for work in progress: everything a team has already started and not yet finished. A WIP limit is a maximum number of things in progress at once, written on the board, that the team agrees to respect.</p>
-    <p>Work in progress is what you would put on a card on your board: a task, a request, a case or a project, depending on the team. Not every email or every subtask. If two people share one thing, it counts once.</p>
-    <p>The idea comes from kanban. On a kanban board with three columns, To do, In progress and Done, the limit is written above the In progress column. When the column is full, nobody starts anything new: you finish or unblock what is already in there. That is why a WIP limit doesn’t say how much work the team receives. It says how much the team has open at once, and the rest waits in To do, where everyone can see it.</p>
-    <p>In the game <a href="/jugar/?lang=en" data-jugar>Mosca del WIP</a> (mosca means fly in Spanish) you pick that number before the day starts, from 1 to 10. The fly is a single person, so what you see is what happens to someone with many things open. What happens to a team is for you to measure, and this guide is for that.</p>
+    <p class="respuesta">WIP stands for work in progress: what a team has already started and not yet finished. A WIP limit is the maximum number of things in progress at once that the team agrees to respect, written on its board.</p>
+    <p>The idea comes from kanban. The limit goes above the In progress column, and when that column is full nobody starts anything new until what is already in there is finished or unblocked. Every card on the board counts, not every email or every small to-do.</p>
+    <p>In the game <a href="/jugar/?lang=en" data-jugar>Mosca del WIP</a> (mosca means fly in Spanish) you pick that number before the day starts, from 1 to 10. The fly works alone, and what happens to a team is for you to measure.</p>
   </section>
 
   <section id="ocupado-no-es-avanzar">
     <h2>Why being busy is not the same as making progress</h2>
-    <p class="respuesta">Because there are two ways to be efficient: keeping everyone busy, called resource efficiency, or having each thing move without waiting, called flow efficiency. With many things open, people are busy all day and each thing spends most of its time waiting for its turn.</p>
-    <p>In the game, the same fly worked the same office day twice, and each day was repeated 200 times to get the average. With 2 tasks at once she finished 18 and each task took her 1 hour. With 9 tasks at once she finished 9, half as many, even though she was busy almost all day, and each task took 8 hours and 54 minutes from start to finish.</p>
+    <p class="respuesta">Because there are two ways to be efficient: keeping everyone busy, resource efficiency, or having each thing move without waiting, flow efficiency. With many things open, people are busy all day and each thing spends almost all its time waiting for its turn.</p>
+    <p>In the game, with 9 tasks at once the fly was busy almost all day and finished half as many as with 2.</p>
     <div class="tabla-marco"><table class="tabla-dias">
       <caption>In the game, average of 200 days. The detail from 1 to 10 tasks is <a href="#datos">further down</a>.</caption>
       <thead><tr><th>What happened in the day</th><th class="numero">2 tasks at once</th><th class="numero">9 tasks at once</th></tr></thead>
@@ -59,101 +58,82 @@
         <tr><td>Share of the time each task is moving</td><td class="numero">47%</td><td class="numero">9%</td></tr>
       </tbody>
     </table></div>
-    <p>That last row is flow efficiency: of all the time a thing is open, how much of it someone is actually working on it. With 9 tasks, in the game, each task moves 9% of the time it is open and waits the other 91%. The fly is never idle, and still each task takes almost nine times longer.</p>
-    <p>Multitasking is part of this. Nobody does two things in their head at the same time: you switch from one to the other, and each switch costs a few seconds of finding your place again. According to lab studies, that cost is a few tenths of a second per switch, and more if the task is hard or unfamiliar (<a href="https://doi.org/10.1037/0096-1523.27.4.763">Rubinstein, Meyer and Evans, 2001</a>). It seems like nothing, but on a day full of switches it adds up. In the game that cost is a rule of ours, a softened version of a rule of thumb from Weinberg, and it is part of why fewer tasks get finished with more of them open.</p>
-    <div class="recuadro"><p>Being busy all the time is not the same as making progress. What a team delivers leaves through the Done column, and that column doesn’t fill up by opening more things.</p></div>
-    <p>If you want to see it before reading on, <a href="/jugar/?lang=en" data-jugar>play one day with 2 tasks and another with 9</a>. Each one lasts a minute and the game compares the two at the end.</p>
+    <p>That last row is flow efficiency, the share of the time an open thing actually moves forward. In the game, with 2 the fly ended the day Calm and with 9, Overwhelmed. Getting each thing done sooner, with less waiting and at a pace you can keep, is what a limit aims for, not a guarantee. How much it achieves in your team, your test will tell.</p>
   </section>
 
   <section id="como-elegir">
     <h2>How to choose your team’s WIP limit</h2>
-    <p class="respuesta">Start with a little less than what you have open today. Count the things in progress on the board, agree on a somewhat lower number, uncomfortable but possible, and try it for two weeks. There is no right number for every team: it depends mostly on how much your work waits on other people.</p>
-
-    <h3>The starting point</h3>
-    <p>How to define the WIP limit the first time is less science than it seems. Count today, on the board, how many things the team has in progress. That is the starting number, and it usually surprises people. Then pick a limit a bit lower. If you argue between two, try the lowest one everyone accepts. The number gets corrected in the review, not in the argument.</p>
-    <p>The game doesn’t give a number for teams. In the simulation, for a fly working alone, the best limit landed between 2 and 4 in 16 of the 17 cases with waits that we tested, and at 1 when nothing gets stuck. It is a result of the simulation, not a scientific number, and the fly can’t ask for help or unblock what is waiting. A team can, and that is why its limit is its own.</p>
+    <p class="respuesta">Start with a little less than what you have open today. Count the things in progress on the board, agree on a somewhat lower number, uncomfortable but possible, and try it for two weeks. There is no right number for every team, because it depends mostly on how much your work waits on other people.</p>
+    <p>The game doesn’t give a number for teams. In the simulation, for a fly working alone, the best limit landed between 2 and 4 in 16 of the 17 cases with waits that we tested, and at 1 when nothing gets stuck. A team, unlike the fly, can unblock what is waiting, and that is why its limit is its own.</p>
 
     <h3>Why it depends on waits</h3>
-    <p>Two forces pull the limit in opposite directions. Waits push toward more things open: if one gets stuck waiting for an answer, it helps to have another at hand. In the game, with a single task, the fly spends more than 2 hours a day with nothing to do when her only task gets stuck, which is why with 1 she finishes less than with 2. The cost of switching tasks pushes toward fewer: every jump costs, and the more it costs, the less it pays to open another.</p>
-    <p>The limit sits between those two forces. In the simulation, when the fly waits a lot on others, the best limit goes up, and when she waits little, it goes down. In a team, the first step is to go after the waits, not to raise the limit. That gives the rule that helps the most:</p>
+    <p>Waits push the limit up, because if something gets stuck it helps to have another thing at hand, and the cost of switching from one thing to another pushes it down. In the simulation, when the fly waits a lot on others, the best limit goes up, and when she waits little, it goes down. In a team, the first step is to go after the waits, not to raise the limit.</p>
     <div class="recuadro"><p>Reducing waits lets you lower the limit. Raising the limit doesn’t reduce the waits.</p></div>
-    <p>If the team wants a lower limit, the way there is to go after what makes it wait: an approval that takes days, one person everything goes through, an answer nobody gives. Raising the number only hides those waits behind more open things.</p>
 
     <h3>The two-week test</h3>
-    <p>The limit is tested, not debated. Write it on the In progress column of the board you already use. On each card, note the day it started and the day it finished. After two weeks, compare how many got finished and how long each one took with the two previous weeks, and decide whether to keep, lower or raise the limit.</p>
-    <p>Don’t expect the change on day one, because what’s started takes time to clear. In the game, when the fly drops from 10 tasks to 2 at noon, she only gets back to two open at 2:35 pm: the other eight had to finish first. In a team the same happens with weeks.</p>
-    <p>If you would rather do it as a group activity, the <a href="/en/workshop/">60-minute workshop</a> takes the team through these steps with the game live and a sheet to write down its limit, what it does when something waits and the review date. The material is in Spanish for now.</p>
+    <p>Write the limit on the In progress column and note on each card the day it started and the day it finished. After two weeks, compare how many things got finished and how long each one took with the two previous weeks, and decide whether to keep, lower or raise the limit. What’s started takes time to clear: in the game, when the fly drops from 10 tasks to 2 at noon, she only gets back to two open at 2:35 pm. The <a href="/en/workshop/">60-minute workshop</a> takes the team through these steps with the game live. Its material is in Spanish for now.</p>
   </section>
 
   <section id="cuando-algo-espera">
     <h2>What to do when something is left waiting</h2>
     <p class="respuesta">Go after the wait instead of opening something else: help unblock what is stuck, get the missing answer or finish something already started. If the team opens something new every time something waits, the limit stops existing.</p>
-    <p>This is the hardest part of the limit and what makes it work. When someone reaches the limit and their thing is waiting, the natural move is to “make good use of the time” with a new task. DORA, Google’s research program on software teams, puts it in one line: don’t relax the limit when people are idle, use that time to unblock what’s waiting (<a href="https://dora.dev/capabilities/wip-limits/">DORA, Work in process limits</a>).</p>
-    <p>It helps to agree on it before it happens, as a short list of things you do instead of starting another: help whoever has something stuck, review or test a colleague’s work, chase the missing answer, finish something left half done. In the workshop the team writes it on its sheet.</p>
-    <p>Urgent work still comes in. If it arrives when the team is at the limit, something gets paused and the team says so at its next check-in. If it comes in every day, that is what to look at in the review, because then it is no longer urgent work but part of the work. <span class="origen">suggestion</span></p>
+    <p>DORA, Google’s research program on software teams, puts it this way: don’t relax the limit when people have nothing to do, use that time to unblock what’s waiting (<a href="https://dora.dev/capabilities/wip-limits/">DORA, Work in process limits</a>). It helps to agree on it before it happens, and in the workshop the team writes it on its sheet.</p>
   </section>
 
   <section id="urgencias">
     <h2>What about urgent tasks?</h2>
-    <p class="respuesta">In the game, the “Send an urgent task” button sends one to the fly while the day runs. The urgent task jumps over the limit and she does it first, dropping what she had. One at a time, and at most 5 a day.</p>
-    <p>In the simulation, with limit 2, each urgent task a day cost one regular task and nothing more: 18.0 finished with no urgent tasks, 17.1 with one a day and 13.5 with five. Raising the limit doesn’t help the urgent task. With 5 a day it took 41 minutes with limit 2 and 1 h 06 min with limit 10, because with more things half-done it waits too. And if it waits in line like a regular task, the regular ones don’t suffer, but the urgent task takes twice as long. It is a single fly with no slack, and nobody has measured it with people.</p>
-    <p>For a team, one idea: urgent tasks come in one at a time and over the limit, with their own card on the board. Count how many arrive a week and discuss it with data. The full numbers are on the urgent tasks page of the <a href="/en/report/#urgencias">report</a> and in the second table of the <a href="#datos">data</a>.</p>
+    <p class="respuesta">In the game, the “Send an urgent task” button sends one to the fly. The urgent task jumps over the limit, one at a time, and she does it first.</p>
+    <p>In the simulation, with limit 2, each urgent task a day cost one regular task: 18.0 finished with no urgent tasks and 17.1 with one a day. Raising the limit doesn’t help the urgent task, because with more things half-done it waits too. The full numbers are in the <a href="/en/report/#urgencias">report</a> and in the second table of the <a href="#datos">data</a>.</p>
+    <p>In a team it also helps to let urgent work in one at a time and over the limit, with its own card on the board. If it arrives every day, that is something to look at in the two-week review. <span class="origen">suggestion</span></p>
   </section>
 
   <section id="ley-de-little">
     <h2>Little’s Law, in plain words</h2>
-    <p class="respuesta">Little’s Law says that the time a thing spends in the system equals how many things are inside divided by how many leave per unit of time. If the team finishes the same amount per week and has twice as much open, each thing takes twice as long.</p>
-    <p>An example. A team finishes 5 things a week and has 10 open: each one takes, on average, 2 weeks from start to finish. If it opens 20 and keeps finishing 5 a week, each one takes 4 weeks. How much the team works didn’t change, only how much it has open.</p>
-    <p>It is not an opinion or a study’s finding: it is a theorem, published by John Little in 1961, and it holds for any stable system, from a line at a bank to a kanban board (<a href="https://pubsonline.informs.org/doi/10.1287/opre.1110.0940">Little, 2011, on its 50th anniversary</a>). In the game it holds on its own: with 2 tasks, 1 hour per task, and with 9, almost 9 hours.</p>
-    <p>What’s useful about the law is that it gives the only way for things to come out sooner without working more: having less open. That fewer things also get finished with many open, as in the game, is no longer Little’s Law but the cost of switching tasks and the stress.</p>
+    <p class="respuesta">Little’s Law says that the time each thing takes equals how many are open divided by how many get finished per unit of time. At the same pace, fewer things open means less time for each one. If a team finishes 5 things a week and has 10 open, each one takes 2 weeks on average, and with 20 open it takes 4.</p>
+    <p>It is a theorem John Little published in 1961, and it holds for any stable system (<a href="https://pubsonline.informs.org/doi/10.1287/opre.1110.0940">Little, 2011</a>). In the game it holds on its own, with 1 hour per task with 2 and almost 9 hours with 9. That fewer things also get finished with many open comes from the cost of switching tasks and from stress, which are assumptions of the game.</p>
   </section>
 
   <section id="errores-comunes">
     <h2>Common mistakes when setting a limit</h2>
-    <p class="respuesta">The most frequent are raising the limit as soon as someone is left waiting, setting a number and never looking at it again, and counting as work in progress things that don’t belong on the board.</p>
+    <p class="respuesta">The most frequent is raising the limit as soon as someone is left waiting. The wait is still there, with more open things on top.</p>
     <ul>
-      <li><strong>Raising the limit when someone is waiting.</strong> It is the easy way out and it erases the limit. The wait is still there, with more open things on top.</li>
-      <li><strong>Setting a number and not looking at it.</strong> A limit without a review date is forgotten in two weeks. Put the review in a meeting you already have.</li>
-      <li><strong>Counting every email or every subtask.</strong> The limit is about cards on the board. If you count everything, the number means nothing.</li>
-      <li><strong>Looking for the right number before trying.</strong> It doesn’t exist. A number a bit lower than today’s, tried for two weeks, teaches more than an hour of debate.</li>
-      <li><strong>Expecting results on day one.</strong> What’s started takes time to clear. In the first weeks you see the old things finishing, and only afterwards the new pace shows.</li>
-      <li><strong>Leaving urgent work off the board.</strong> If it comes in on the side, the limit doesn’t see it and neither does the team. Everything goes through the board, even if it jumps the line.</li>
-      <li><strong>Using the limit to measure people.</strong> It is a team tool for finishing sooner, not an indicator of who performs. If it is used for that, people hide work.</li>
+      <li><strong>Setting a number and never looking at it again.</strong> Put the review in a meeting you already have.</li>
+      <li><strong>Counting every email or every small to-do.</strong> The limit is about the cards on the board.</li>
+      <li><strong>Looking for the right number before trying.</strong> One a bit lower than today’s, tried for two weeks, teaches more.</li>
+      <li><strong>Expecting results on day one.</strong> The old things come out first, and only afterwards the new pace shows.</li>
+      <li><strong>Using the limit to measure people.</strong> If it is used for that, people hide work.</li>
     </ul>
   </section>
 
   <section id="estudios">
     <h2>What the studies with people say</h2>
-    <p class="respuesta">No study with people gives a number of things at once. The ones we found point in the same direction: past a certain point, with more things open each one takes longer, and sometimes fewer get finished.</p>
+    <p class="respuesta">No study with people gives a number of things at once. The ones we found point to the same thing: past a certain point, with more things open each one takes longer, and sometimes fewer get finished.</p>
     <ul>
-      <li><strong>Judges in Italy.</strong> In the labor courts of Milan a lottery assigned the cases. The judges who by chance carried more open trials at once took longer to close them, and the quality of their rulings didn’t change. It is the study closest to an experiment, because the lottery decided who got more. <a href="https://doi.org/10.1257/aer.104.2.609">Coviello, Ichino and Persico, 2014, American Economic Review</a> and <a href="https://doi.org/10.1111/jeea.12129">2015, Journal of the European Economic Association</a>.</li>
-      <li><strong>Recruiters.</strong> A little parallel work helped finish more, but past a point they finished less. <a href="https://ide.mit.edu/wp-content/uploads/2016/04/2011.09_Aral_Brynjolfsson_Van-Alstyne_Information-Technology-and-Information-Worker-Productivity_277.pdf">Aral, Brynjolfsson and Van Alstyne, 2012, Information Systems Research</a>.</li>
-      <li><strong>Research teams.</strong> Teams whose members were on very few or on too many teams at once performed worse than those at a middle point. It measures how many teams each person is on, not open tasks. <a href="https://doi.org/10.1016/j.respol.2015.01.019">Bertolotti and others, 2015, Research Policy</a>.</li>
-      <li><strong>Large surveys of software teams.</strong> Limiting work in progress is one of the habits of high-performing teams, and it helps most together with a visible board and feedback from what happens in production. On its own, the limit predicts little. <a href="https://dora.dev/capabilities/wip-limits/">DORA, Work in process limits</a>, and Forsgren, Humble and Kim, <em>Accelerate</em> (2018).</li>
-      <li><strong>A real team with a board and limits.</strong> A Norwegian software company moved to working with a board and work-in-progress limits, and the time to fix a bug dropped from 12 to 5 days. It is a single case. <a href="https://www.mn.uio.no/ifi/personer/vit/dagsj/sjoberg.johnsen.solberg.ieee.sw.pdf">Sjøberg, Johnsen and Solberg, 2012, IEEE Software</a>.</li>
-      <li><strong>Long hours that yield less.</strong> In British munitions factories of the First World War, past a certain point each extra hour yielded less: those working 70 hours a week produced almost the same as those working 56. <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/ecoj.12166">Pencavel, 2015, The Economic Journal</a>.</li>
+      <li><strong>Judges in Italy.</strong> Those who by lottery carried more open trials at once took longer to close them, with the same quality (<a href="https://doi.org/10.1257/aer.104.2.609">Coviello, Ichino and Persico, 2014</a> and <a href="https://doi.org/10.1111/jeea.12129">2015</a>).</li>
+      <li><strong>Recruiters.</strong> A little parallel work helped, but past a point they finished less (<a href="https://ide.mit.edu/wp-content/uploads/2016/04/2011.09_Aral_Brynjolfsson_Van-Alstyne_Information-Technology-and-Information-Worker-Productivity_277.pdf">Aral, Brynjolfsson and Van Alstyne, 2012</a>).</li>
+      <li><strong>Software teams.</strong> Limiting work in progress is one of the habits of high-performing teams, especially together with a visible board, and on its own it predicts little (<a href="https://dora.dev/capabilities/wip-limits/">DORA</a> and Forsgren, Humble and Kim, 2018).</li>
+      <li><strong>A team with a board and limits.</strong> At a Norwegian software company, the time to fix a bug dropped from 12 to 5 days. It is a single case (<a href="https://www.mn.uio.no/ifi/personer/vit/dagsj/sjoberg.johnsen.solberg.ieee.sw.pdf">Sjøberg, Johnsen and Solberg, 2012</a>).</li>
     </ul>
-    <p>None of these studies is a lab experiment. The one with the judges comes close, because a lottery decided who got more cases. The others show that things go together, but don’t prove the cause. The <a href="/en/report/">report</a> tells each one in more detail and says which part of each number in the game is ours.</p>
+    <p>Only the one with the judges comes close to an experiment. The others show that things go together, without proving the cause, and the <a href="/en/report/">report</a> tells each one in more detail.</p>
   </section>
 
   <section id="datos">
     <h2>The game’s data, from 1 to 10 tasks</h2>
-    <p class="respuesta">In the game there is no number where everything breaks: each extra task costs a bit more. With 2 tasks at once the fly finishes more than with any other number, and up to 3 she ends the day calm. From 4 on, the stress and the cigarettes begin, and what gets finished only drops by half at 9.</p>
+    <p class="respuesta">In the game, with 2 tasks at once the fly finishes more than with any other number, and up to 3 she ends the day Calm. From 4 on her stress goes up, and with 9 she finishes half as many as with 2.</p>
     {{tabla-datos}}
-    <p>Each row is the average of 200 simulated days with that number of tasks open at once. The sign in the game’s office says “up to 3” because it measures stress, and up to there the fly lasts the whole day. The table measures what gets finished, and there 2 wins by one task a day. That difference comes from the cost of switching tasks, which is an assumption of ours, so the game says “up to 3” and not a single number.</p>
-    <p>The data are free to use under a <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> license, crediting Felipe Fernández and mosca.deliverycraft.ai. They are a simulation of a single fly: they don’t measure people or teams.</p>
+    <p>The sign in the game’s office says “up to 3” because it measures stress. The table measures what gets finished, and there 2 wins by one task a day, which comes from the cost of switching tasks, an assumption of ours.</p>
+    <p>The data are free to use under a <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> license, crediting Felipe Fernández and mosca.deliverycraft.ai. They come from a single fly and don’t measure people or teams.</p>
     <ul class="descargas-pagina">
-      <li><a href="/datos/mosca-del-wip-1-to-10-tasks.csv" download="mosca-del-wip-1-to-10-tasks.csv"><b>Download the data (CSV, in English)</b><span>Ten rows, one per number of tasks, with the table’s columns plus average and maximum stress.</span></a></li>
-      <li><a href="/datos/mosca-del-wip-1-a-10-tareas.csv" download="mosca-del-wip-1-a-10-tareas.csv"><b>Download the data (CSV, in Spanish)</b><span>The same ten rows, with the column names in Spanish.</span></a></li>
-      <li><a href="/datos/mosca-del-wip-urgent-tasks.csv" download="mosca-del-wip-urgent-tasks.csv"><b>Download the urgent tasks data (CSV, in English)</b><span>Fifty rows, one per combination of urgent tasks a day (0, 1, 2, 3 and 5) and limit (1 to 10): regular tasks finished, finished counting the urgent ones, time per regular task, time per urgent task from arrival and stress at close. Average of 200 simulated days per combination.</span></a></li>
-      <li><a href="/datos/mosca-del-wip-urgencias.csv" download="mosca-del-wip-urgencias.csv"><b>Download the urgent tasks data (CSV, in Spanish)</b><span>The same fifty rows, with the column names in Spanish.</span></a></li>
+      <li><a href="/datos/mosca-del-wip-1-to-10-tasks.csv" download="mosca-del-wip-1-to-10-tasks.csv"><b>Download the data (CSV, in English)</b><span>Ten rows, one per number of tasks.</span></a></li>
+      <li><a href="/datos/mosca-del-wip-1-a-10-tareas.csv" download="mosca-del-wip-1-a-10-tareas.csv"><b>Download the data (CSV, in Spanish)</b><span>The same rows.</span></a></li>
+      <li><a href="/datos/mosca-del-wip-urgent-tasks.csv" download="mosca-del-wip-urgent-tasks.csv"><b>Download the urgent tasks data (CSV, in English)</b><span>Fifty rows, by urgent tasks a day and limit.</span></a></li>
+      <li><a href="/datos/mosca-del-wip-urgencias.csv" download="mosca-del-wip-urgencias.csv"><b>Download the urgent tasks data (CSV, in Spanish)</b><span>The same rows.</span></a></li>
     </ul>
-    <p class="nota">Where each rule of the game comes from and which part of each number is ours is in appendix B of the <a href="/en/report/#numeros">report</a>.</p>
+    <p class="nota">Where each rule of the game comes from is in appendix B of the <a href="/en/report/#numeros">report</a>.</p>
   </section>
 
   <section id="kit">
     <h2>The game, the report and the workshop</h2>
-    <p>Everything in this guide can be seen in a minute, read at leisure or tried with your team.</p>
     {{kit}}
   </section>
 

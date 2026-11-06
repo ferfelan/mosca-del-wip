@@ -1,6 +1,6 @@
 # Mosca del WIP: an office day with 0, 1, 2, 3 or 5 urgent tasks a day and a limit of 1 to 10 tasks at once. Average of 200 days per combination, in the simulation (seed 2024).
-# An urgent task arrives unannounced, jumps over the limit and the fly does it first, one at a time. Each row: urgent tasks per day; the limit (regular tasks at once); regular tasks finished per day;
-# finished counting the urgent ones; office minutes per regular task, from start to finish; minutes per urgent task, from arrival to finish (empty with no urgent tasks); stress at the end of the day (0 to 100).
+# An urgent task arrives unannounced, jumps over the limit and the fly does it first, one at a time. Each row: urgent tasks per day · the limit (regular tasks at once) · regular tasks finished per day ·
+# finished counting the urgent ones · office minutes per regular task, from start to finish · minutes per urgent task, from arrival to finish (empty with no urgent tasks) · stress at the end of the day (0 to 100).
 # Author: Felipe Fernández. License CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Source: https://mosca.deliverycraft.ai/en/wip-limit/#datos
 urgent_tasks_per_day,limit,regular_tasks_finished_per_day,finished_counting_urgent_tasks,minutes_per_regular_task,minutes_per_urgent_task,stress_at_close
 0,1,15.885,15.885,34.128,,5

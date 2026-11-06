@@ -17,3 +17,6 @@ datos-crudos/
 __pycache__/
 .vercel
 .env*
+
+# Carpeta de trabajo de Claude Code (copias temporales del repo para ayudantes): nunca a git
+.claude/

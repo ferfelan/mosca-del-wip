@@ -335,7 +335,7 @@ async function encenderCerebro() {
     cerebro = crearCerebro(lienzo, datos, real);
   } catch (error) {
     if (senal.aborted) return; // la página se está yendo: no hay nada que mostrar
-    console.warn('El cerebro no cargó; queda la foto fija.', error);
+    console.warn('El cerebro no cargó. Queda la foto fija.', error);
     subidaSola();
     return;
   }

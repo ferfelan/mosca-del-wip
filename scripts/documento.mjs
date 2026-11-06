@@ -61,10 +61,11 @@
 //      SALIDA=/otra/carpeta, FECHA=2026-10-19,   → otra carpeta, fecha o versión
 //      VERSION=v2
 import { chromium, devices } from 'playwright';
-import { mkdirSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { PDFDocument } from 'pdf-lib';
 
 const CARPETA = resolve('docs/contexto');
 // El idioma del juego en las fotos: español (img/) o inglés (img-en/)
@@ -75,9 +76,13 @@ const FECHA = process.env.FECHA ?? new Date().toLocaleDateString('sv-SE'); // 20
 const DOCUMENTOS = [
   // 4 nov. 2026, 8.4: compartir v23 (ES) y v24 (EN), las urgencias y el recorte del 28 %; completo v21, la Etapa 8 en la sección 29.
   // 4 nov. 2026, arreglos chicos de Felipe (8.4, sección 9): compartir v24 (ES) y v25 (EN), solo texto (Perlow, DORA, "empeora", fecha)
-  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v22' },
-  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v24', paginas: [16, 17] },
-  { id: 'compartir-en', html: 'compartir-en.html', nombre: 'Para compartir en inglés', version: 'v25', paginas: [16, 17] },
+  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v23' },
+  // 6 nov. 2026, 8.6: compartir v25 (ES) y v26 (EN), el mensaje nuevo en la portada, la pág. 1 y la pág. 11.
+  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v25', paginas: [16, 17] },
+  { id: 'compartir-en', html: 'compartir-en.html', nombre: 'Para compartir en inglés', version: 'v26', paginas: [16, 17] },
+  // Etapa 8.6 (2026-11-06): el resumen de 4 páginas con el mensaje nuevo, en español e inglés (DOC=resumen y DOC=resumen-en)
+  { id: 'resumen', html: 'resumen.html', nombre: 'Resumen', version: 'v1', paginas: [4, 4], aparte: true },
+  { id: 'resumen-en', html: 'resumen-en.html', nombre: 'Summary', version: 'v1', paginas: [4, 4], aparte: true },
   { id: 'norte', html: 'norte.html', nombre: 'Norte del proyecto', version: 'v1', paginas: [1, 2], aparte: true },
   { id: 'etapa4-1', html: 'etapa4-1.html', nombre: 'Etapa 4.1 La paradoja', version: 'v1', paginas: [1, 3], aparte: true },
   { id: 'etapa4-2', html: 'etapa4-2.html', nombre: 'Etapa 4.2 Robustez', version: 'v1', paginas: [1, 3], aparte: true },
@@ -98,7 +103,7 @@ const DOCUMENTOS = [
   // Etapa 7 (2026-10-28): la hoja del equipo sola, 1 hoja, para descargar aparte (DOC=hoja-equipo)
   { id: 'hoja-equipo', html: 'taller-hoja-equipo.html', nombre: 'Taller - Hoja del equipo', version: 'v5', paginas: [1, 1], aparte: true },
   // Etapa 7 (2026-10-28): los borradores de difusión de docs/etapa7-difusion.md, para leerlos en PDF (DOC=borradores)
-  { id: 'borradores', html: 'borradores.html', nombre: 'Borradores de difusión', version: 'v1', paginas: [9, 10], aparte: true },
+  { id: 'borradores', html: 'borradores.html', nombre: 'Borradores de difusión', version: 'v2', paginas: [9, 10], aparte: true },
 ];
 const SITIO = 'http://localhost:5173'; // raíz del sitio (portada, docs)
 const JUEGO = `${SITIO}/jugar/`; // el juego vive en /jugar/ desde la Etapa 5.1
@@ -421,6 +426,13 @@ for (const doc of DOCUMENTOS.filter((d) => (pedido ? d.id === pedido : !d.aparte
   }
   const salida = join(SALIDA, `${FECHA} ${doc.nombre} ${process.env.VERSION ?? doc.version}.pdf`);
   await p.pdf({ path: salida, preferCSSPageSize: true, printBackground: true, margin: { top: 0, bottom: 0, left: 0, right: 0 } });
+  // Etapa 8.6 (punto 9): todo PDF nuevo lleva en sus propiedades el autor,
+  // Felipe Fernández (Chromium no pone autor; el título es el <title> de la
+  // hoja). Los del sitio reciben además tema y palabras clave con
+  // scripts/pdf-metadatos.mjs al copiarlos a public/.
+  const conAutor = await PDFDocument.load(readFileSync(salida), { updateMetadata: false });
+  conAutor.setAuthor('Felipe Fernández');
+  writeFileSync(salida, await conAutor.save());
   console.log('PDF listo:', salida, `(${revision.hojas} páginas)`);
   await p.close();
 }

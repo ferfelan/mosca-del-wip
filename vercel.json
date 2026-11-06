@@ -56,6 +56,22 @@
       ]
     },
     {
+      "source": "/Mosca-del-WIP-Resumen.pdf",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" },
+        { "key": "Content-Disposition", "value": "inline; filename=\"Mosca del WIP - Resumen.pdf\"" },
+        { "key": "Link", "value": "<https://mosca.deliverycraft.ai/informe/>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/Mosca-del-WIP-Summary.pdf",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" },
+        { "key": "Content-Disposition", "value": "inline; filename=\"Mosca del WIP - Summary.pdf\"" },
+        { "key": "Link", "value": "<https://mosca.deliverycraft.ai/en/report/>; rel=\"canonical\"" }
+      ]
+    },
+    {
       "source": "/taller/Mosca-del-WIP-Taller-Guia-rapida.pdf",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" },

@@ -3,7 +3,7 @@
   "idioma": "es",
   "clave": "guia",
   "titulo": "Límite WIP: qué es y cómo encontrar el de tu equipo · Mosca del WIP",
-  "descripcion": "Qué es el trabajo en curso, por qué limitarlo y cómo elegir el límite WIP de tu equipo: un punto de partida, la prueba de dos semanas y qué hacer cuando algo espera.",
+  "descripcion": "Termina más empezando menos. Qué es el trabajo en curso, por qué limitarlo y cómo elegir el límite WIP de tu equipo con una prueba de dos semanas.",
   "vistaPrevia": "guia",
   "imagenAlt": "La mosca del juego frente a su tablero kanban, junto al título: Límite WIP, qué es y cómo encontrar el de tu equipo.",
   "miga": "Guía del límite WIP",
@@ -18,8 +18,8 @@
 <main class="lectura" id="contenido" tabindex="-1">
   {{migas}}
   <h1>Límite WIP: qué es y cómo encontrar el de tu equipo</h1>
-  <p class="pagina-bajada">Una guía corta para equipos que trabajan todo el día y sienten que terminan poco: qué es el trabajo en curso, por qué conviene limitarlo y cómo elegir un número para empezar. Con los datos del juego Mosca del WIP y los estudios que lo respaldan.</p>
-  <p class="pagina-meta"><span>Por <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a></span><span>Actualizada el <time datetime="{{fecha-iso}}">{{fecha}}</time></span><span>Lectura de unos 12 minutos</span></p>
+  <p class="pagina-bajada">Una guía corta para equipos que trabajan todo el día y sienten que terminan poco: qué es el trabajo en curso, por qué conviene limitarlo para terminar más empezando menos y cómo elegir el número de tu equipo, con los datos del juego Mosca del WIP.</p>
+  <p class="pagina-meta"><span>Por <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a></span><span>Actualizada el <time datetime="{{fecha-iso}}">{{fecha}}</time></span><span>Lectura de unos 7 minutos</span></p>
 
   <nav class="indice" aria-label="En esta página">
     <h2>En esta página</h2>
@@ -39,16 +39,15 @@
 
   <section id="que-es">
     <h2>Qué es el WIP y qué es un límite WIP</h2>
-    <p class="respuesta">WIP es la sigla de <em lang="en">work in progress</em>: el trabajo en curso, o trabajo en progreso, todo lo que un equipo ya empezó y todavía no terminó. Un límite WIP es un número máximo de cosas en curso a la vez, escrito en el tablero, que el equipo acuerda respetar.</p>
-    <p>Cuenta como trabajo en curso lo que pondrían como una tarjeta en su tablero: una tarea, un requerimiento, un caso o un proyecto, según el equipo. No cada correo ni cada subtarea. Si dos personas comparten una cosa, cuenta una vez.</p>
-    <p>La idea viene de kanban. En un tablero kanban con tres columnas, Por hacer, En curso y Hecho, el límite se escribe arriba de la columna En curso. Cuando la columna está llena, nadie empieza algo nuevo: se termina o se destraba lo que ya está adentro. Por eso un límite WIP no dice cuánto trabajo recibe el equipo. Dice cuánto tiene abierto a la vez, y lo demás espera en Por hacer, a la vista de todos.</p>
-    <p>En el juego <a href="/jugar/" data-jugar>Mosca del WIP</a> ese número se elige antes de que empiece el día, de 1 a 10. La mosca es una persona sola, así que lo que ves es lo que le pasa a alguien con muchas cosas abiertas. Lo que le pasa a un equipo lo miden ustedes, y esta guía es para eso.</p>
+    <p class="respuesta">WIP es la sigla de <em lang="en">work in progress</em>, el trabajo en curso: lo que un equipo ya empezó y todavía no terminó. Un límite WIP es el máximo de cosas en curso a la vez que el equipo acuerda respetar, escrito en su tablero.</p>
+    <p>La idea viene de kanban. El límite va arriba de la columna En curso, y cuando esa columna está llena nadie empieza algo nuevo hasta terminar o destrabar lo que ya está adentro. Cuenta cada tarjeta del tablero, no cada correo ni cada pendiente chico.</p>
+    <p>En el juego <a href="/jugar/" data-jugar>Mosca del WIP</a> ese número se elige antes de empezar el día, de 1 a 10. La mosca trabaja sola, y lo que le pasa a un equipo lo miden ustedes.</p>
   </section>
 
   <section id="ocupado-no-es-avanzar">
     <h2>Por qué estar ocupado no es lo mismo que avanzar</h2>
-    <p class="respuesta">Porque hay dos formas de ser eficiente: tener a todos ocupados, que se llama eficiencia de recursos, o que cada cosa avance sin esperar, que se llama eficiencia de flujo. Con muchas cosas abiertas, la gente está ocupada todo el día y cada cosa pasa la mayor parte del tiempo esperando su turno.</p>
-    <p>En el juego, la misma mosca trabajó el mismo día de oficina dos veces, y cada día se repitió 200 veces para sacar el promedio. Con 2 tareas a la vez terminó 18 y cada tarea le tomó 1 hora. Con 9 tareas a la vez terminó 9, la mitad, aunque estuvo ocupada casi todo el día, y cada tarea tardó 8 horas y 54 minutos de que empezó a que terminó.</p>
+    <p class="respuesta">Porque hay dos formas de ser eficiente: tener a todos ocupados, la eficiencia de recursos, o que cada cosa avance sin esperar, la eficiencia de flujo. Con muchas cosas abiertas la gente está ocupada todo el día, y cada cosa pasa casi todo el tiempo esperando su turno.</p>
+    <p>En el juego, con 9 tareas a la vez la mosca estuvo ocupada casi todo el día y terminó la mitad que con 2.</p>
     <div class="tabla-marco"><table class="tabla-dias">
       <caption>En el juego, promedio de 200 días. El detalle de 1 a 10 tareas está <a href="#datos">más abajo</a>.</caption>
       <thead><tr><th>Lo que pasó en el día</th><th class="numero">2 tareas a la vez</th><th class="numero">9 tareas a la vez</th></tr></thead>
@@ -59,101 +58,83 @@
         <tr><td>Parte del tiempo en que cada tarea avanza</td><td class="numero">47 %</td><td class="numero">9 %</td></tr>
       </tbody>
     </table></div>
-    <p>Esa última fila es la eficiencia de flujo: de todo el tiempo que una cosa está abierta, qué parte alguien la está trabajando de verdad. Con 9 tareas, en el juego, cada tarea avanza el 9 % del tiempo que está abierta y espera el otro 91 %. La mosca nunca está sin hacer nada, y aun así cada tarea tarda casi nueve veces más.</p>
-    <p>La multitarea tiene que ver con esto. Nadie hace dos cosas de cabeza a la vez: se cambia de una a otra, y cada cambio cuesta unos segundos de volver a ubicarse. Según estudios de laboratorio, ese costo es de décimas de segundo por cambio, y mayor si la tarea es difícil o poco conocida (<a href="https://doi.org/10.1037/0096-1523.27.4.763">Rubinstein, Meyer y Evans, 2001</a>). Parece nada, pero en un día lleno de cambios se va sumando. En el juego ese costo es una regla nuestra, suavizada a partir de una regla práctica de Weinberg, y es parte de por qué con más tareas abiertas se termina menos.</p>
-    <div class="recuadro"><p>Estar siempre ocupado no es lo mismo que avanzar. Lo que un equipo entrega sale por la columna Hecho, y esa columna no se llena abriendo más cosas.</p></div>
-    <p>Si quieres verlo antes de leer más, <a href="/jugar/" data-jugar>juega un día con 2 tareas y otro con 9</a>. Dura un minuto cada uno y el juego compara los dos al final.</p>
+    <p>La última fila es la eficiencia de flujo, la parte del tiempo en que una cosa abierta avanza de verdad. En el juego, con 2 la mosca cerró el día Tranquila y con 9, Colapsada. Que cada cosa salga antes, que el trabajo espere menos y que el ritmo se aguante es lo que busca un límite, no una garantía. Cuánto logra en tu equipo lo dice su prueba.</p>
   </section>
 
   <section id="como-elegir">
     <h2>Cómo elegir el límite WIP de tu equipo</h2>
-    <p class="respuesta">Partan con un poco menos de lo que tienen abierto hoy. Cuenten las cosas en curso en el tablero, acuerden un número algo menor, incómodo pero posible, y pruébenlo dos semanas. No hay un número correcto para todos los equipos: depende sobre todo de cuánto espera su trabajo a otras personas.</p>
+    <p class="respuesta">Partan con un poco menos de lo que tienen abierto hoy. Cuenten las cosas en curso del tablero, acuerden un número algo menor, incómodo pero posible, y pruébenlo dos semanas. No hay un número correcto para todos, porque depende sobre todo de cuánto espera su trabajo a otras personas.</p>
 
-    <h3>El punto de partida</h3>
-    <p>Cómo definir el límite WIP la primera vez tiene menos ciencia de la que parece. Cuenten hoy, en el tablero, cuántas cosas tiene en curso el equipo. Ese es el número de partida y suele sorprender. Después elijan un límite un poco más bajo. Si discuten entre dos, prueben el más bajo que todos acepten. El número se corrige en la revisión, no en la discusión.</p>
-    <p>El juego no da un número para equipos. En la simulación, para una mosca que trabaja sola, el mejor límite quedó entre 2 y 4 en 16 de los 17 casos con esperas que probamos, y en 1 cuando nada se traba. Es un resultado de la simulación, no un número científico, y la mosca no puede pedir ayuda ni destrabar lo que espera. Un equipo sí puede, y por eso su límite es suyo.</p>
+    <p>El juego no da un número para equipos. En la simulación, para una mosca sola, el mejor límite quedó entre 2 y 4 en 16 de los 17 casos con esperas que probamos, y en 1 cuando nada se traba. Un equipo, a diferencia de la mosca, puede destrabar lo que espera, y por eso su límite es suyo.</p>
 
     <h3>Por qué depende de las esperas</h3>
-    <p>Dos fuerzas tiran del límite en direcciones contrarias. Las esperas empujan hacia más cosas abiertas: si una se traba esperando una respuesta, conviene tener otra a mano. En el juego, con una sola tarea, la mosca pasa más de 2 horas al día sin nada que hacer cuando su única tarea se traba, y por eso con 1 termina menos que con 2. El costo de cambiar de tarea empuja hacia menos: cada salto cuesta, y mientras más cuesta, menos conviene abrir.</p>
-    <p>El límite queda entre esas dos fuerzas. En la simulación, cuando la mosca espera mucho a otros, el mejor límite sube, y cuando espera poco, baja. En un equipo, lo primero es atacar las esperas, no subir el límite. De ahí sale la regla que más sirve:</p>
+    <p>Las esperas empujan el límite hacia arriba, porque si algo se traba conviene tener otra cosa a mano, y el costo de cambiar de una cosa a otra lo empuja hacia abajo. En la simulación, cuando la mosca espera mucho a otros, el mejor límite sube, y cuando espera poco, baja. En un equipo, lo primero es atacar las esperas, no subir el límite.</p>
     <div class="recuadro"><p>Reducir las esperas permite bajar el límite. Subir el límite no reduce las esperas.</p></div>
-    <p>Si el equipo quiere un límite más bajo, el camino es atacar lo que lo hace esperar: una aprobación que tarda, una persona por la que todo pasa, una respuesta que nadie da. Subir el número solo esconde esas esperas detrás de más cosas abiertas.</p>
 
     <h3>La prueba de dos semanas</h3>
-    <p>El límite se prueba, no se discute. Escríbanlo en la columna En curso del tablero de siempre. En cada tarjeta anoten el día que empezó y el día que terminó. A las dos semanas comparen cuántas terminaron y cuánto tardó cada una con las dos semanas anteriores, y decidan si mantienen, bajan o suben el límite.</p>
-    <p>No esperen el cambio el primer día, porque lo empezado tarda en salir. En el juego, cuando la mosca baja de 10 tareas a 2 a mediodía, recién a las 14:35 vuelve a tener solo dos abiertas: las otras ocho tenían que terminar primero. En un equipo pasa lo mismo con las semanas.</p>
-    <p>Si prefieren hacerlo con una dinámica, el <a href="/taller/">taller de 60 minutos</a> lleva al equipo por estos pasos con el juego en vivo y una hoja para escribir su límite, qué hace cuando algo espera y la fecha de revisión.</p>
+    <p>Escriban el límite en la columna En curso y anoten en cada tarjeta el día que empezó y el que terminó. A las dos semanas comparen cuántas cosas terminaron y cuánto tardó cada una con las dos semanas anteriores, y decidan si mantienen, bajan o suben el límite. Lo empezado tarda en salir: en el juego, si la mosca baja de 10 tareas a 2 a mediodía, recién a las 14:35 le quedan dos abiertas. El <a href="/taller/">taller de 60 minutos</a> recorre estos pasos con el equipo y el juego en vivo.</p>
   </section>
 
   <section id="cuando-algo-espera">
     <h2>Qué hacer cuando algo queda esperando</h2>
-    <p class="respuesta">Ataquen la espera en vez de abrir otra cosa: ayuden a destrabar lo que está detenido, consigan la respuesta que falta o terminen algo ya empezado. Si el equipo abre algo nuevo cada vez que algo espera, el límite deja de existir.</p>
-    <p>Esto es lo más difícil del límite y lo que lo hace servir. Cuando alguien llega al límite y lo suyo está esperando, lo natural es "aprovechar el tiempo" con una tarea nueva. DORA, el programa de investigación de Google sobre equipos de software, lo dice en una línea: no relajen el límite cuando hay gente sin tarea, usen ese tiempo para destrabar lo que espera (<a href="https://dora.dev/capabilities/wip-limits/">DORA, Work in process limits</a>).</p>
-    <p>Conviene acordarlo antes de que pase, como una lista corta de cosas que se hacen en vez de empezar otra: ayudar a quien tiene algo trabado, revisar o probar lo de un colega, pedir la respuesta que falta, terminar algo que quedó a medias. En el taller el equipo lo deja escrito en su hoja.</p>
-    <p>Las urgencias entran igual. Si llegan cuando el equipo está en el límite, algo se pausa y se dice en la reunión diaria. Si entran todos los días, eso es lo que hay que mirar en la revisión, porque ya no son urgencias sino parte del trabajo. <span class="origen">sugerencia</span></p>
+    <p class="respuesta">Ataquen la espera en vez de abrir otra cosa: ayuden a destrabar lo detenido, consigan la respuesta que falta o terminen algo ya empezado. Si el equipo abre algo nuevo cada vez que algo espera, el límite deja de existir.</p>
+    <p>DORA, el programa de investigación de Google sobre equipos de software, lo dice así: no relajen el límite cuando hay gente sin nada que hacer, usen ese tiempo para destrabar lo que espera (<a href="https://dora.dev/capabilities/wip-limits/">DORA, Work in process limits</a>). Conviene acordarlo antes de que pase, y en el taller el equipo lo deja escrito en su hoja.</p>
   </section>
 
   <section id="urgencias">
     <h2>¿Y las urgencias?</h2>
-    <p class="respuesta">En el juego, el botón "Mándale una urgencia" le manda una a la mosca mientras corre el día. La urgencia pasa por encima del límite y ella la hace primero, soltando lo que tenía. Entra una a la vez, y a lo más 5 al día.</p>
-    <p>En la simulación, con límite 2, cada urgencia al día costó una tarea normal y nada más: 18,0 terminadas sin urgencias, 17,1 con una al día y 13,5 con cinco. Subir el límite no ayuda a la urgencia. Con 5 al día tardó 41 minutos con límite 2 y 1 h 06 min con límite 10, porque con más cosas a medias ella también espera. Y si hace fila como una normal, las normales no sufren, pero la urgencia tarda el doble. Es una mosca sola, sin holgura, y nadie lo midió con personas.</p>
-    <p>Para un equipo, una sola idea: las urgencias entran de a una y por encima del límite, con su tarjeta en el tablero. Anoten cuántas llegan a la semana y convérsenlo con datos. Los números completos están en la página de urgencias del <a href="/informe/#urgencias">informe</a> y en la segunda tabla de los <a href="#datos">datos</a>.</p>
+    <p class="respuesta">En el juego, el botón "Mándale una urgencia" le manda una a la mosca. La urgencia pasa por encima del límite, de a una, y ella la hace primero.</p>
+    <p>En la simulación, con límite 2, cada urgencia al día costó una tarea normal: 18,0 terminadas sin urgencias y 17,1 con una al día. Subir el límite no la ayuda, porque con más cosas a medias la urgencia también espera. Los números completos están en el <a href="/informe/#urgencias">informe</a> y en la segunda tabla de los <a href="#datos">datos</a>.</p>
+    <p>En un equipo también conviene que las urgencias entren de a una y por encima del límite, con su tarjeta en el tablero. Si llegan todos los días, eso se mira en la revisión de las dos semanas. <span class="origen">sugerencia</span></p>
   </section>
 
   <section id="ley-de-little">
     <h2>La ley de Little, en simple</h2>
-    <p class="respuesta">La ley de Little dice que el tiempo que una cosa pasa en el sistema es igual a cuántas cosas hay adentro dividido por cuántas salen por unidad de tiempo. Si el equipo termina lo mismo por semana y tiene el doble abierto, cada cosa tarda el doble.</p>
-    <p>Un ejemplo. Un equipo termina 5 cosas a la semana y tiene 10 abiertas: cada una tarda, en promedio, 2 semanas de que empieza a que termina. Si abre 20 y sigue terminando 5 a la semana, cada una tarda 4 semanas. No cambió cuánto trabaja el equipo, solo cuánto tiene abierto.</p>
-    <p>No es una opinión ni un hallazgo de un estudio: es un teorema, publicado por John Little en 1961, y vale para cualquier sistema estable, desde una fila en un banco hasta un tablero kanban (<a href="https://pubsonline.informs.org/doi/10.1287/opre.1110.0940">Little, 2011, sobre sus 50 años</a>). En el juego se cumple sola: con 2 tareas, 1 hora por tarea, y con 9, casi 9 horas.</p>
-    <p>Lo útil de la ley es que da el único camino para que las cosas salgan antes sin trabajar más: tener menos abierto. Que además se termine menos con muchas cosas abiertas, como en el juego, ya no es la ley de Little sino el costo de cambiar de tarea y el estrés.</p>
+    <p class="respuesta">La ley de Little dice que el tiempo que tarda cada cosa es igual a cuántas hay abiertas dividido por cuántas se terminan por unidad de tiempo. Con el mismo ritmo, menos cosas abiertas es menos tiempo para cada una. Si un equipo termina 5 cosas a la semana y tiene 10 abiertas, cada una tarda en promedio 2 semanas, y con 20 abiertas tarda 4.</p>
+    <p>Es un teorema que John Little publicó en 1961, y vale para cualquier sistema estable (<a href="https://pubsonline.informs.org/doi/10.1287/opre.1110.0940">Little, 2011</a>). En el juego se cumple sola, con 1 hora por tarea con 2 y casi 9 horas con 9. Que además se termine menos con muchas cosas abiertas viene del costo de cambiar de tarea y del estrés, que son supuestos del juego.</p>
   </section>
 
   <section id="errores-comunes">
     <h2>Errores comunes al poner un límite</h2>
-    <p class="respuesta">Los más frecuentes son subir el límite apenas alguien queda esperando, poner un número y no volver a mirarlo, y contar como trabajo en curso cosas que no van en el tablero.</p>
+    <p class="respuesta">El más frecuente es subir el límite apenas alguien queda esperando. La espera sigue ahí, con más cosas abiertas encima.</p>
     <ul>
-      <li><strong>Subir el límite cuando alguien queda esperando.</strong> Es la salida fácil y borra el límite. La espera sigue ahí, con más cosas abiertas encima.</li>
-      <li><strong>Poner un número y no mirarlo.</strong> Un límite sin fecha de revisión se olvida en dos semanas. Pongan la revisión en una reunión que ya tengan.</li>
-      <li><strong>Contar cada correo o cada subtarea.</strong> El límite es sobre tarjetas del tablero. Si cuentan todo, el número no significa nada.</li>
-      <li><strong>Buscar el número correcto antes de probar.</strong> No existe. Un número algo menor que el de hoy, probado dos semanas, enseña más que una hora de discusión.</li>
-      <li><strong>Esperar resultados el primer día.</strong> Lo empezado tarda en salir. Las primeras semanas se ven las cosas viejas terminando, y recién después se nota el ritmo nuevo.</li>
-      <li><strong>Dejar las urgencias fuera del tablero.</strong> Si entran por fuera, el límite no las ve y el equipo tampoco. Todo pasa por el tablero, aunque entre saltándose la fila.</li>
-      <li><strong>Usar el límite para medir personas.</strong> Es una herramienta del equipo para terminar antes, no un indicador de quién rinde. Si se usa para eso, la gente esconde trabajo.</li>
+      <li><strong>Poner un número y no volver a mirarlo.</strong> Pongan la revisión en una reunión que ya tengan.</li>
+      <li><strong>Contar cada correo o cada pendiente chico.</strong> El límite es sobre las tarjetas del tablero.</li>
+      <li><strong>Buscar el número correcto antes de probar.</strong> Uno algo menor que el de hoy, probado dos semanas, enseña más.</li>
+      <li><strong>Esperar resultados el primer día.</strong> Primero salen las cosas viejas, y recién después se nota el ritmo nuevo.</li>
+      <li><strong>Usar el límite para medir personas.</strong> Si se usa para eso, la gente esconde trabajo.</li>
     </ul>
   </section>
 
   <section id="estudios">
     <h2>Qué dicen los estudios con personas</h2>
-    <p class="respuesta">Ningún estudio con personas da un número de cosas a la vez. Los que encontramos apuntan en la misma dirección: pasado cierto punto, con más cosas abiertas cada una tarda más, y a veces se termina menos.</p>
+    <p class="respuesta">Ningún estudio con personas da un número de cosas a la vez. Los que encontramos apuntan a lo mismo: pasado cierto punto, con más cosas abiertas cada una tarda más, y a veces se termina menos.</p>
     <ul>
-      <li><strong>Jueces en Italia.</strong> En los tribunales laborales de Milán un sorteo repartía las causas. Los jueces que por azar llevaban más juicios abiertos a la vez tardaron más en cerrarlos, y la calidad de sus fallos no cambió. Es el estudio más cercano a un experimento, porque el sorteo decidía quién recibía más. <a href="https://doi.org/10.1257/aer.104.2.609">Coviello, Ichino y Persico, 2014, American Economic Review</a> y <a href="https://doi.org/10.1111/jeea.12129">2015, Journal of the European Economic Association</a>.</li>
-      <li><strong>Reclutadores.</strong> Un poco de trabajo en paralelo ayudó a terminar más, pero pasado un punto terminaron menos. <a href="https://ide.mit.edu/wp-content/uploads/2016/04/2011.09_Aral_Brynjolfsson_Van-Alstyne_Information-Technology-and-Information-Worker-Productivity_277.pdf">Aral, Brynjolfsson y Van Alstyne, 2012, Information Systems Research</a>.</li>
-      <li><strong>Equipos de investigación.</strong> Los equipos cuyos miembros estaban en muy pocos o en demasiados equipos a la vez rindieron menos que los de un punto intermedio. Mide en cuántos equipos está cada persona, no tareas abiertas. <a href="https://doi.org/10.1016/j.respol.2015.01.019">Bertolotti y otros, 2015, Research Policy</a>.</li>
-      <li><strong>Encuestas grandes a equipos de software.</strong> Limitar el trabajo en curso es uno de los hábitos de los equipos de alto desempeño, y ayuda sobre todo junto a un tablero visible y retroalimentación de lo que pasa en producción. Por sí solo, el límite predice poco. <a href="https://dora.dev/capabilities/wip-limits/">DORA, Work in process limits</a>, y Forsgren, Humble y Kim, <em>Accelerate</em> (2018).</li>
-      <li><strong>Un equipo real con tablero y límites.</strong> Una empresa de software noruega pasó a trabajar con un tablero y límites de trabajo en curso, y el tiempo para resolver un error bajó de 12 a 5 días. Es un solo caso. <a href="https://www.mn.uio.no/ifi/personer/vit/dagsj/sjoberg.johnsen.solberg.ieee.sw.pdf">Sjøberg, Johnsen y Solberg, 2012, IEEE Software</a>.</li>
-      <li><strong>Horas largas que rinden menos.</strong> En fábricas de municiones británicas de la Primera Guerra Mundial, pasado cierto punto cada hora extra rendía menos: quienes trabajaban 70 horas a la semana producían casi lo mismo que quienes trabajaban 56. <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/ecoj.12166">Pencavel, 2015, The Economic Journal</a>.</li>
+      <li><strong>Jueces en Italia.</strong> Los que por sorteo llevaban más juicios abiertos a la vez tardaron más en cerrarlos, con la misma calidad (<a href="https://doi.org/10.1257/aer.104.2.609">Coviello, Ichino y Persico, 2014</a> y <a href="https://doi.org/10.1111/jeea.12129">2015</a>).</li>
+      <li><strong>Reclutadores.</strong> Un poco de trabajo en paralelo ayudó, pero pasado un punto terminaron menos (<a href="https://ide.mit.edu/wp-content/uploads/2016/04/2011.09_Aral_Brynjolfsson_Van-Alstyne_Information-Technology-and-Information-Worker-Productivity_277.pdf">Aral, Brynjolfsson y Van Alstyne, 2012</a>).</li>
+      <li><strong>Equipos de software.</strong> Limitar el trabajo en curso es uno de los hábitos de los equipos de alto desempeño, sobre todo junto a un tablero visible, y por sí solo predice poco (<a href="https://dora.dev/capabilities/wip-limits/">DORA</a> y Forsgren, Humble y Kim, 2018).</li>
+      <li><strong>Un equipo con tablero y límites.</strong> En una empresa de software noruega, el tiempo para resolver un error bajó de 12 a 5 días. Es un solo caso (<a href="https://www.mn.uio.no/ifi/personer/vit/dagsj/sjoberg.johnsen.solberg.ieee.sw.pdf">Sjøberg, Johnsen y Solberg, 2012</a>).</li>
     </ul>
-    <p>Ninguno de estos estudios es un experimento de laboratorio. El de los jueces se acerca, porque un sorteo decidía quién recibía más causas. Los demás muestran que las cosas van juntas, pero no prueban la causa. El <a href="/informe/">informe</a> cuenta cada uno con más detalle y dice qué parte de cada número del juego es nuestra.</p>
+    <p>Solo el de los jueces se acerca a un experimento. Los demás muestran que las cosas van juntas, sin probar la causa, y el <a href="/informe/">informe</a> los cuenta con más detalle.</p>
   </section>
 
   <section id="datos">
     <h2>Los datos del juego, de 1 a 10 tareas</h2>
-    <p class="respuesta">En el juego no hay un número donde todo se rompe: cada tarea extra cuesta un poco más. Con 2 tareas a la vez la mosca termina más que con cualquier otro número, y hasta 3 cierra el día tranquila. Desde 4 empiezan el estrés y los cigarros, y lo terminado cae a la mitad recién con 9.</p>
+    <p class="respuesta">En el juego, con 2 tareas a la vez la mosca termina más que con cualquier otro número, y hasta 3 cierra el día Tranquila. Desde 4 sube el estrés, y con 9 termina la mitad que con 2.</p>
     {{tabla-datos}}
-    <p>Cada fila es el promedio de 200 días simulados con ese número de tareas abiertas a la vez. El letrero de la oficina del juego dice "hasta 3" porque mide el estrés, y hasta ahí la mosca aguanta el día entero. La tabla mide lo terminado, y ahí gana el 2 por una tarea al día. Esa diferencia viene del costo de cambiar de tarea, que es un supuesto nuestro, así que el juego habla de "hasta 3" y no de un solo número.</p>
-    <p>Los datos están libres para usar, con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>, citando a Felipe Fernández y mosca.deliverycraft.ai. Son una simulación de una mosca sola: no miden personas ni equipos.</p>
+    <p>El letrero de la oficina dice "hasta 3" porque mide el estrés. La tabla mide lo terminado, y ahí el 2 gana por una tarea al día, que sale del costo de cambiar de tarea, un supuesto nuestro.</p>
+    <p>Los datos son libres, con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>, citando a Felipe Fernández y mosca.deliverycraft.ai. Son de una mosca sola y no miden personas ni equipos.</p>
     <ul class="descargas-pagina">
-      <li><a href="/datos/mosca-del-wip-1-a-10-tareas.csv" download="mosca-del-wip-1-a-10-tareas.csv"><b>Descargar los datos (CSV, en español)</b><span>Diez filas, una por número de tareas, con las columnas de la tabla y el estrés promedio y máximo.</span></a></li>
-      <li><a href="/datos/mosca-del-wip-1-to-10-tasks.csv" download="mosca-del-wip-1-to-10-tasks.csv"><b>Descargar los datos (CSV, en inglés)</b><span>Las mismas diez filas, con los nombres de las columnas en inglés.</span></a></li>
-      <li><a href="/datos/mosca-del-wip-urgencias.csv" download="mosca-del-wip-urgencias.csv"><b>Descargar los datos de las urgencias (CSV, en español)</b><span>Cincuenta filas, una por cada combinación de urgencias al día (0, 1, 2, 3 y 5) y límite (1 a 10): tareas normales terminadas, terminadas contando las urgencias, tiempo por tarea normal, tiempo de cada urgencia desde que llega y estrés al cerrar. Promedio de 200 días simulados por combinación.</span></a></li>
-      <li><a href="/datos/mosca-del-wip-urgent-tasks.csv" download="mosca-del-wip-urgent-tasks.csv"><b>Descargar los datos de las urgencias (CSV, en inglés)</b><span>Las mismas cincuenta filas, con los nombres de las columnas en inglés.</span></a></li>
+      <li><a href="/datos/mosca-del-wip-1-a-10-tareas.csv" download="mosca-del-wip-1-a-10-tareas.csv"><b>Descargar los datos (CSV, en español)</b><span>Diez filas, una por número de tareas.</span></a></li>
+      <li><a href="/datos/mosca-del-wip-1-to-10-tasks.csv" download="mosca-del-wip-1-to-10-tasks.csv"><b>Descargar los datos (CSV, en inglés)</b><span>Las mismas filas.</span></a></li>
+      <li><a href="/datos/mosca-del-wip-urgencias.csv" download="mosca-del-wip-urgencias.csv"><b>Descargar los datos de las urgencias (CSV, en español)</b><span>Cincuenta filas, por urgencias al día y límite.</span></a></li>
+      <li><a href="/datos/mosca-del-wip-urgent-tasks.csv" download="mosca-del-wip-urgent-tasks.csv"><b>Descargar los datos de las urgencias (CSV, en inglés)</b><span>Las mismas filas.</span></a></li>
     </ul>
-    <p class="nota">De dónde sale cada regla del juego y qué parte de cada número es nuestra está en el anexo B del <a href="/informe/#numeros">informe</a>.</p>
+    <p class="nota">De dónde sale cada regla del juego está en el anexo B del <a href="/informe/#numeros">informe</a>.</p>
   </section>
 
   <section id="kit">
     <h2>El juego, el informe y el taller</h2>
-    <p>Todo lo de esta guía se puede ver en un minuto, leer con calma o probar con tu equipo.</p>
     {{kit}}
   </section>
 

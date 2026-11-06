@@ -26,21 +26,23 @@ const IDIOMAS = {
   es: {
     fuente: 'docs/contexto/compartir.html',
     salida: 'informe/index.html',
-    actualizadoEl: '2026-11-04',
+    actualizadoEl: '2026-11-06',
     img: '/img/informe/',
     pdf: { ruta: '/Mosca-del-WIP-Informe.pdf', nombre: 'Mosca del WIP - Informe.pdf', peso: '4 MB', paginas: '17 páginas' },
+    resumen: { ruta: '/Mosca-del-WIP-Resumen.pdf', nombre: 'Mosca del WIP - Resumen.pdf' }, // 8.6: el resumen de 4 páginas
     tapa: '/img/tapa-informe.jpg',
     titulo: 'Informe del límite WIP con una mosca real · Mosca del WIP',
     descripcion: 'Qué pasa en el juego con 1 a 10 tareas a la vez, qué dicen los estudios con personas y cuatro pasos para probar un límite WIP con tu equipo. En la web o en PDF.',
     imagen: vistaPrevia('informe'),
     imagenAlt: 'La tapa del informe: la mosca cargando una torre de carpetas, junto al título Estar siempre ocupado no es lo mismo que avanzar.',
     encabezado: 'Estar siempre ocupado no es lo mismo que avanzar',
-    bajada: 'Un informe con una mosca real sobre por qué conviene limitar el trabajo en curso (WIP). Es el mismo informe del PDF, para leer en la web, con una sección por página.',
+    bajada: 'Termina más empezando menos. Un informe con una mosca real sobre por qué conviene limitar el trabajo en curso (WIP). Es el mismo informe del PDF, para leer en la web, con una sección por página.',
     miga: 'El informe',
     porAutor: 'Por',
     publicado: 'Publicado el',
     actualizado: 'Actualizado el',
     bajarPdf: 'Descargar el informe (PDF)',
+    bajarResumen: 'Descargar el resumen (PDF, 4 páginas)',
     pdfNota: (p) => `El PDF tiene ${p.paginas} y pesa ${p.peso}. Puedes compartirlo tal cual, citando al autor.`,
     enEstaPagina: 'En esta página',
     anexo: 'Anexo',
@@ -64,21 +66,23 @@ const IDIOMAS = {
   en: {
     fuente: 'docs/contexto/compartir-en.html',
     salida: 'en/report/index.html',
-    actualizadoEl: '2026-11-04',
+    actualizadoEl: '2026-11-06',
     img: '/img/informe/en/',
     pdf: { ruta: '/Mosca-del-WIP-Report.pdf', nombre: 'Mosca del WIP - Report.pdf', peso: '4 MB', paginas: '17 pages' },
+    resumen: { ruta: '/Mosca-del-WIP-Summary.pdf', nombre: 'Mosca del WIP - Summary.pdf' }, // 8.6: the four-page summary
     tapa: '/img/tapa-report.jpg',
     titulo: 'WIP limit report with a real fly brain · Mosca del WIP',
     descripcion: 'What happens in the game with 1 to 10 tasks at once, what studies with people say and four steps to try a WIP limit with your team. On the web or as a PDF.',
     imagen: vistaPrevia('report'),
     imagenAlt: 'The report’s cover: the fly carrying a tower of folders, next to the title Being busy all the time is not the same as making progress.',
     encabezado: 'Being busy all the time is not the same as making progress',
-    bajada: 'A report with a real fly about why it pays to limit work in progress (WIP). It’s the same report as the PDF, to read on the web, one section per page.',
+    bajada: 'Finish more by starting less. A report with a real fly about why it pays to limit work in progress (WIP). It’s the same report as the PDF, to read on the web, one section per page.',
     miga: 'The report',
     porAutor: 'By',
     publicado: 'Published on',
     actualizado: 'Updated on',
     bajarPdf: 'Download the report (PDF)',
+    bajarResumen: 'Download the summary (PDF, 4 pages)',
     pdfNota: (p) => `The PDF has ${p.paginas} and weighs ${p.peso}. You can share it as is, crediting the author.`,
     enEstaPagina: 'On this page',
     anexo: 'Appendix',
@@ -238,6 +242,7 @@ function armar(idioma) {
       <p class="pagina-meta"><span>${C.porAutor} <a href="${AUTOR.linkedin}">${AUTOR.nombre}</a></span><span>${C.publicado} <time datetime="2026-10-24">${fechaLarga('2026-10-24')}</time></span><span>${C.actualizado} <time datetime="${C.actualizadoEl}">${fechaLarga(C.actualizadoEl)}</time></span></p>
       <div class="acciones-pagina">
         <a class="boton principal" href="${C.pdf.ruta}" download="${C.pdf.nombre}">${C.bajarPdf}</a>
+        <a class="boton" href="${C.resumen.ruta}" download="${C.resumen.nombre}">${C.bajarResumen}</a>
       </div>
       <p class="nota">${C.pdfNota(C.pdf)}</p>
     </div>
@@ -291,7 +296,10 @@ ${autor(idioma)}
       publisher: { '@type': 'Organization', '@id': `${SITIO}/#deliverycraft`, name: 'Deliverycraft', url: 'https://deliverycraft.ai/' },
       isPartOf: { '@type': 'WebSite', '@id': `${SITIO}/#sitio`, name: 'Mosca del WIP', url: `${SITIO}/` },
       about: { '@type': 'VideoGame', '@id': `${SITIO}/jugar/#juego`, name: 'Mosca del WIP', url: `${SITIO}/jugar/`, inLanguage: ['es', 'en'] },
-      encoding: { '@type': 'MediaObject', contentUrl: `${SITIO}${C.pdf.ruta}`, encodingFormat: 'application/pdf', name: C.pdf.nombre },
+      encoding: [
+        { '@type': 'MediaObject', contentUrl: `${SITIO}${C.pdf.ruta}`, encodingFormat: 'application/pdf', name: C.pdf.nombre },
+        { '@type': 'MediaObject', contentUrl: `${SITIO}${C.resumen.ruta}`, encodingFormat: 'application/pdf', name: C.resumen.nombre },
+      ],
       keywords: idioma === 'es' ? 'límite WIP, trabajo en curso, work in progress, kanban, eficiencia de flujo, ley de Little, multitarea' : 'WIP limit, work in progress, kanban, flow efficiency, Little’s Law, multitasking, fruit fly connectome',
     },
     m.jsonLd,

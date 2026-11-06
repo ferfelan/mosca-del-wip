@@ -218,6 +218,19 @@ h1 {
   text-wrap: balance;
 }
 .bajada { color: var(--suave); max-width: 46ch; margin-bottom: 34px; text-wrap: pretty; }
+/* 8.6 (2026-11-06): el dato del juego, en chico, entre el párrafo y los
+   botones, con un filete a la izquierda para que se lea como la prueba */
+.bajada:has(+ .dato-inicio) { margin-bottom: 16px; }
+.dato-inicio {
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--tenue);
+  max-width: 50ch;
+  margin: 0 0 30px;
+  padding-left: 12px;
+  border-left: 2px solid var(--borde-fuerte);
+  text-wrap: pretty;
+}
 /* Solo en inglés (5.2h): "Mosca means fly in Spanish.", ahora al empezar
    "¿Por qué una mosca?"; en español el párrafo queda vacío y no ocupa lugar */
 .significa { font-size: 15.5px; line-height: 1.3; color: var(--tenue); margin: 0 0 10px; }
@@ -668,7 +681,7 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
    una bajo otra con el dibujo a la izquierda. */
 .gana-tablero {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1px;
   background: var(--borde-fuerte);
   border: 1px solid var(--borde-fuerte);
@@ -700,7 +713,36 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .gana-item h3 { margin: 0 0 6px; font-size: 19.5px; text-wrap: balance; }
 /* (balance: las líneas quedan parejas y no queda "y a" colgando al final) */
 .gana-item p { margin: 0; color: var(--suave); font-size: 16.5px; line-height: 1.5; text-wrap: balance; }
-.gana-nota { margin-top: 18px; }
+.gana-nota { margin-top: 18px; max-width: 72ch; text-wrap: pretty; }
+/* 8.6 (2026-11-06): la sección parte por lo que busca un límite (tres celdas
+   en verde, cada una con su respaldo abajo, separado con un filete), sigue la
+   línea de DORA y, más chico, lo que el equipo se lleva del taller (las tres
+   cosas de antes que siguen sumando, con su dibujo de siempre en chico) */
+.gana-bajada { margin: -8px 0 20px; color: var(--suave); font-size: 18px; line-height: 1.45; }
+.gana-item .gana-respaldo {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--borde);
+  font-size: 14.5px;
+  line-height: 1.45;
+  color: var(--tenue);
+}
+.gana-dora { margin-top: 16px; font-size: 15.5px; line-height: 1.5; color: var(--suave); }
+.gana-ademas-titulo { margin: 30px 0 12px; font-size: 16.5px; font-weight: 620; line-height: 1.3; color: var(--suave); }
+.gana-ademas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px 28px;
+}
+.gana-ademas li { display: flex; align-items: center; gap: 12px; margin: 0; color: var(--suave); font-size: 16px; line-height: 1.4; }
+.gana-ademas li[data-color='colapsada'] { --acento: var(--colapsada); }
+.gana-ademas li[data-color='ocupada'] { --acento: var(--ocupada); }
+.gana-ademas li[data-color='vision'] { --acento: var(--vision); }
+.gana-ademas .gana-icono { flex: 0 0 38px; width: 38px; height: 38px; border-radius: 11px; }
+.gana-ademas .gana-icono svg { width: 22px; height: 22px; }
 
 /* ¿Por qué una mosca?: el texto a la izquierda y, al lado, las dos fotos del
    cerebro (2 y 9 tareas a la vez), el crédito de MaleCNS y los colores */
@@ -872,7 +914,7 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .pie-mapa li { margin: 0; }
 
 @media (min-width: 600px) and (max-width: 1099px) {
-  .gana-tablero { grid-template-columns: 1fr 1fr; }
+  .gana-ademas { grid-template-columns: 1fr; }
 }
 
 /* ---------- Pantallas angostas y celular ---------- */
@@ -885,6 +927,7 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
      al ancho (35 px en un iPhone de 390) y la familia va un poco más angosta */
   h1 { font-size: clamp(28px, 8.9vw, 40px); font-stretch: 100%; letter-spacing: -0.034em; max-width: none; margin-bottom: 18px; }
   .bajada { margin-bottom: 24px; }
+  .dato-inicio { margin-bottom: 24px; font-size: 14.5px; }
   /* En celular, justo después de la presentación, uno bajo el otro: Jugar (el
      juego tiene su versión de celular) y el informe. */
   .hero .acciones { display: grid; gap: 12px; }
@@ -939,14 +982,18 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .pieza-cuerpo { padding: 18px 20px 22px; }
   .pieza .boton { width: 100%; max-width: 440px; }
 
-  /* Lo que se lleva tu equipo: las cuatro en una columna, cada una con el
-     dibujo a la izquierda del texto */
+  /* Lo que se lleva tu equipo: las tres celdas en una columna, cada una con
+     el dibujo a la izquierda del texto; lo del taller, una bajo otra */
   .gana-tablero { grid-template-columns: 1fr; border-radius: 20px; }
   .gana-item { flex-direction: row; align-items: flex-start; gap: 16px; padding: 18px 20px; }
   .gana-icono { flex: 0 0 46px; width: 46px; height: 46px; border-radius: 13px; }
   .gana-icono svg { width: 27px; height: 27px; }
   .gana-item h3 { font-size: 18px; margin-bottom: 4px; }
   .gana-item p { font-size: 16px; }
+  .gana-bajada { font-size: 17px; margin-bottom: 16px; }
+  .gana-ademas { grid-template-columns: 1fr; gap: 12px; }
+  .gana-ademas .gana-icono { flex-basis: 38px; width: 38px; height: 38px; border-radius: 11px; }
+  .gana-ademas .gana-icono svg { width: 22px; height: 22px; }
   .motivo-texto p { font-size: 17px; }
 
   .credito { grid-template-columns: 1fr; }
@@ -1008,6 +1055,7 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .rotulo { margin-bottom: 14px; }
   h1 { font-size: clamp(38px, 3.2vw, 46px); margin-bottom: 18px; }
   .bajada { margin-bottom: 28px; }
+  .dato-inicio { margin-bottom: 26px; }
   .laboratorio { padding: 20px 0 28px; }
   .cerebro { bottom: 120px; }
   .consola { padding: 14px 20px 12px; }

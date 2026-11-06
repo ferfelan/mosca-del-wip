@@ -25,7 +25,13 @@ export const ICONOS = {
 // en español (también la de la 404); vistaPrevia('en'), la de la portada en
 // inglés, y así.
 export const VISTAS_PREVIAS = ['portada', 'en', 'juego', 'creditos', 'guia', 'wip-limit', 'informe', 'report', 'taller', 'workshop'];
+// Las vistas previas que cambiaron de dibujo después tienen su propia fecha:
+// desde la 8.6 (2026-11-06), las dos de la portada (español e inglés) dicen el
+// mensaje nuevo ("Termina más empezando menos" / "Finish more by starting
+// less") en vez de la pregunta "Ocupado todo el día. ¿Y qué terminaste?".
+// Si cambia otra, se agrega aquí con la fecha del cambio.
+export const SELLO_VISTA = { portada: '2026-11-06', en: '2026-11-06' };
 export function vistaPrevia(pagina = 'portada') {
   if (!VISTAS_PREVIAS.includes(pagina)) throw new Error(`no hay vista previa "${pagina}" (son: ${VISTAS_PREVIAS.join(', ')})`);
-  return `/img/vista-previa${pagina === 'portada' ? '' : `-${pagina}`}-${SELLO}.jpg`;
+  return `/img/vista-previa${pagina === 'portada' ? '' : `-${pagina}`}-${SELLO_VISTA[pagina] ?? SELLO}.jpg`;
 }

@@ -8,16 +8,22 @@ export const INGLES = {
   // (es un solo componente para todo el sitio, 2026-10-28)
   saltar: 'Skip to content',
 
-  // El inicio (portada v2) y la consola
-  rotulo: 'For teams and leaders · a 1-minute game',
-  titulo: 'Busy all day. So what did you finish?', // el mismo título que la pág. 2 del informe en inglés (la 1 desde la 8.4 es "If you only read one page")
+  // El inicio y la consola. Desde la 8.6 (2026-11-06): la frase del problema
+  // arriba, lo que logra quien limita su trabajo en curso en el título y el
+  // párrafo, y el dato del juego en chico (antes: "For teams and leaders · a
+  // 1-minute game", "Busy all day. So what did you finish?" y "Play for a
+  // minute and watch what happens to an office fly…")
+  rotulo: 'Being busy all the time isn’t the same as making progress',
+  titulo: 'Finish more by starting less',
   bajada:
-    'Play for a minute and watch what happens to an office fly with a real brain when she has too many things started at once.',
+    'When you have everything started, each thing waits its turn and takes longer to get done. In one minute, an office fly with a real brain shows you why. Then we explain how to find your team’s limit.',
+  datoInicio: 'In the game, with 9 tasks at once the fly finished half as many as with 2, and each one took almost nine times longer.',
   jugar: 'Play',
   jugarMinuto: 'Play (1 minute)',
   verKit: 'See the kit',
   descargar: 'Download the report (PDF)',
   descargarCorto: 'Download the PDF',
+  descargarResumen: 'Four-page summary (PDF)', // 8.6: el resumen de 4 páginas
   leerInforme: 'Read the report on the web',
   gratis: 'Free, no sign-up. Plays on a computer, phone or tablet.',
   creadoPor: 'Created by <a href="https://www.linkedin.com/in/felipefernandezandrade/" target="_blank" rel="noopener">Felipe Fernández</a>', // 5.2i
@@ -34,7 +40,7 @@ export const INGLES = {
   juegoTitulo: 'What you’ll see',
   juegoTexto:
     'The same fly, the same day at the office, twice. In the game, with 2 tasks at once she finishes 18. With 9 she finishes half as many, even though she’s busy all day.',
-  video: 'The fly in her office: first with 2 tasks at once, calm; then with 9, stressed and smoking.',
+  video: 'The fly in her office: first with 2 tasks at once, calm, and then with 9, stressed and smoking.',
   pocas: 'Few tasks at once',
   muchas: 'Many tasks at once',
   figcaption: 'First with 2 tasks at once. Then with 9.',
@@ -44,7 +50,6 @@ export const INGLES = {
   total18: '<span class="cifra">18</span> finished',
   total9: '<span class="cifra">9</span> finished (half)', // 5.2i: las dos columnas dicen lo mismo
   hechoNota: 'Average of 200 days in the game.',
-  verFrase: 'Being busy all the time isn’t the same as making progress.',
 
   // Cómo se juega
   pasosTitulo: 'How to play',
@@ -55,20 +60,27 @@ export const INGLES = {
   paso2Alt: 'The fly in front of her board for the day, with 2 tasks in progress, at 10:10.',
   paso3Alt: 'The Days played table, with one day at 2 tasks at once and another at 9.',
 
-  // Lo que se lleva tu equipo (portada v4, 2026-10-28; antes "Lo que gana tu
-  // equipo", sin el ×2): las cuatro cosas y la línea de que no prometemos un
-  // resultado. "Capacity" para capacidad (pedido de Felipe)
+  // Lo que se lleva tu equipo. Desde la 8.6 (2026-11-06) parte por lo que
+  // busca un límite, con su respaldo, y después, más cortos, lo que el equipo
+  // se lleva del taller. "Capacity" para capacidad (pedido de Felipe, v4)
   ganaTitulo: 'What your team takes away',
-  gana1Titulo: 'Your capacity, in plain sight',
-  gana1: 'How many things you can carry at once without everything getting stuck.',
-  gana2Titulo: 'Where the work waits',
-  gana2: 'What gets stuck and who you’re waiting on.',
-  gana3Titulo: 'A team agreement',
-  gana3: 'A written limit, and what to do when something waits.',
-  gana4Titulo: 'Your own data',
-  gana4: 'In two weeks your own numbers tell you whether your limit works.',
+  ganaBajada: 'What a limit on work in progress aims for.',
+  busca1Titulo: 'Each thing gets done sooner',
+  busca1: 'At the same pace, fewer things open means less time for each one.',
+  busca1Respaldo: 'Math, Little’s Law.',
+  busca2Titulo: 'Work waits less',
+  busca2: 'Flow efficiency goes up, the share of time something actually moves forward.',
+  busca2Respaldo: 'In the game, 47% with 2 at once and 9% with 9.',
+  busca3Titulo: 'A pace you can keep',
+  busca3: 'You get to the end of the day without being overwhelmed.',
+  busca3Respaldo: 'In the game, with 2 she ended the day Calm and with 9, Overwhelmed.',
+  ganaDora: 'According to DORA, limiting work in progress is a habit of high-performing teams.',
+  ganaAdemasTitulo: 'And from the workshop they take',
+  gana3: 'A written agreement, with their limit and what to do when something waits.',
+  gana2: 'Where their work waits and who they’re waiting on, in plain sight.',
+  gana4: 'Their own numbers, in two weeks.',
   ganaNota:
-    'We don’t promise a result: it depends on each team and on what goes on around it. Your number is yours to measure. How to choose the limit and what to do when something is waiting is in the <a href="/en/wip-limit/">WIP limit guide</a>.',
+    'It’s what a limit aims for, not a guarantee. How much, in your case, your test will tell. How to choose the limit and test it is in the <a href="/en/wip-limit/">WIP limit guide</a>.',
 
   // El kit para tu equipo
   kitTitulo: 'The kit for your team',
@@ -98,13 +110,13 @@ export const INGLES = {
   creditoTitulo: 'Why a fly?',
   significa: 'Mosca means fly in Spanish.', // al empezar la sección; en español no hay línea
   creditoDestacado:
-    'Because it’s one of the few animals with a complete map of its central nervous system: 166,700 neurons. The more tasks she has on her plate, the more her brain lights up. And no, she doesn’t smoke: the cigarette is a disguise for cleaning her antennae.',
+    'Scientists at Janelia, Cambridge and Google, among others, mapped a fly’s central nervous system, 166,700 neurons and their connections. We gave her an office job. Nobody asked her. And no, she doesn’t smoke. The cigarette is a disguise for cleaning her antennae.',
   cerebro2Alt: 'The brain with 2 tasks at once: few neurons firing.',
   cerebro9Alt: 'The brain with 9 tasks at once: many more neurons firing.',
   cerebro2Pie: '2 tasks at once: <span class="cifra">423</span> neurons firing in the simulation',
   cerebro9Pie: '9 at once: <span class="cifra">1,328</span> neurons firing in the simulation',
   credito1:
-    'The neurons that light up in the game come from <a href="https://male-cns.janelia.org">Male CNS v1.0</a>, the complete map of a fly’s nervous system, neuron by neuron. “This project is a collaboration between FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC Laboratory of Molecular Biology, and Google Research.”',
+    'The neurons that light up in the game come from <a href="https://male-cns.janelia.org">Male CNS v1.0</a>. “This project is a collaboration between FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC Laboratory of Molecular Biology, and Google Research.”',
   credito2:
     'Data licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, adapted for the game: only some of the neurons are shown, and the activity you see is simulated.',
   zonasTitulo: 'Brain colors',
@@ -119,13 +131,13 @@ export const INGLES = {
   preguntasTitulo: 'FAQ',
   pregunta1: 'What is Mosca del WIP?',
   respuesta1:
-    'It’s a short game you play in the browser. A fly spends a day at the office, from 09:00 to 18:00, and you choose how many tasks she has open at once, from 1 to 10. Each day lasts about a minute, and when it ends you can compare it with the days you’ve already played.',
+    'It shows you, in one minute, why you finish more by starting less. You choose how many tasks an office fly with a real brain has at once, from 1 to 10, and watch her day at the office. Then the guide, the report and the workshop help you find your team’s limit.',
   pregunta2: 'What does WIP mean?',
   respuesta2:
     'It’s short for work in progress. It’s everything you’ve started and haven’t finished yet. In the game, it’s the tasks the fly has open at the same time.',
   pregunta3: 'How many tasks at once is best?',
   respuesta3:
-    'There’s no number for everyone. In the game, the fly’s sustainable limit is 3, because up to 3 she stays Calm and doesn’t go out for a smoke. But the fly works alone, and the game doesn’t tell you your team’s number. It depends on how much your work waits, and you find it by trying a limit. How to do it is in the guide <a href="/en/wip-limit/">WIP limit: what it is and how to find your team’s</a>.',
+    'There’s no number for everyone. In the game, the fly finishes the most with 2 and her sustainable limit is 3, because up to 3 she stays Calm. With more, her stress goes up, and with 9 she ends the day Overwhelmed. But the fly works alone, and the game doesn’t tell you your team’s number. It depends on how much your work waits, and you find it by trying a limit. How to do it is in the guide <a href="/en/wip-limit/">WIP limit: what it is and how to find your team’s</a>.',
   pregunta4: 'Is the brain from a real fly?',
   respuesta4:
     'The neurons and their connections are. They come from Male CNS v1.0, the map of a male fly’s central nervous system, neuron by neuron, licensed under CC BY 4.0. The activity you see is simulated. We translate the tasks into something a fly can feel, like dust on her antenna, and simulate how her brain responds. Only some of her neurons are shown.',
@@ -146,7 +158,7 @@ export const INGLES = {
     'Play one day with 2 tasks at once and another with 9, and compare the Days played table. On a computer, the Exhibition view shows the game large, for a TV or a projector. The kit on this page has the <a href="/en/report/">report</a>, with four steps to try a limit, and a <a href="/en/workshop/">60-minute workshop</a> with its guide to facilitate it.',
   pregunta10: 'What does my team take away?',
   respuesta10:
-    'Your capacity in plain sight: how many things you can carry at once without everything getting stuck. You also see where the work waits, what gets stuck and who you’re waiting on. You leave with a team agreement, which is a written limit and what to do when something waits, and in two weeks your own numbers tell you whether that limit works. We don’t promise a result, because it depends on each team and on what goes on around it.',
+    'What a limit aims for: each thing getting done sooner, work waiting less and a pace you can keep. From the workshop they also take a written agreement and, in two weeks, their own numbers. How much the limit achieves in your case, your test will tell.',
   pregunta11: 'Can I use the workshop with my team, or in paid workshops?',
   respuesta11:
     'Yes. The workshop (the quick guide, the slides and the team sheet) is licensed CC BY 4.0: you can use it and adapt it, also in paid workshops, crediting Felipe Fernández (mosca.deliverycraft.ai). For now it’s in Spanish. The report can be shared as it is, crediting the author, and the game is played on this page.',
@@ -155,7 +167,7 @@ export const INGLES = {
     'No. For each part, the quick guide has the minutes, one or two tips and the question for the room, plus the answers to what you’ll be asked. Read it once and, before the session, play the two days you’ll show: one with 9 tasks at once and one with 2.',
   pregunta13: 'What about urgent tasks?',
   respuesta13:
-    'With the Send an urgent task button, which appears once the day is running, you send one to the fly. The urgent task jumps over the limit and she does it first, dropping what she had. One at a time, and at most 5 a day. In the simulation, with limit 2, each urgent task cost one regular task and nothing more, and with high limits the urgent task itself took longer. The numbers are in the <a href="/en/report/#urgencias">report</a>.',
+    'The game has a Send an urgent task button. The urgent task jumps over the limit, one at a time. In the simulation, with limit 2, each one cost one regular task. The numbers are in the <a href="/en/report/#urgencias">report</a>.',
 
   // Qué es y qué no es, por qué lo hice, el cierre y el pie
   informeTitulo: 'What it is and what it isn’t',
