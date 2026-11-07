@@ -110,6 +110,22 @@ const leerCamara = (p) =>
     return { ...c, d: Math.hypot(...c.pos.map((v, i) => v - c.obj[i])) };
   });
 const distancia = (a, b) => Math.hypot(...a.map((v, i) => v - b[i]));
+// Después de tocar "Vista inicial", la cámara vuelve con una transición suave
+// que avanza por cuadros: con el computador ocupado (un juego abierto, por
+// ejemplo) WebKit dibuja pocos cuadros por segundo y en 1,5 s no alcanza a
+// llegar (pasó en la 8.7, igual con y sin sus cambios). Se espera hasta que la
+// cámara deje de moverse, con un tope de 10 s; adónde llega se revisa igual.
+async function esperarQueSeDetenga(p) {
+  let antes = await leerCamara(p);
+  const tope = Date.now() + 10000;
+  while (Date.now() < tope) {
+    await p.waitForTimeout(250);
+    const ahora = await leerCamara(p);
+    if (distancia(ahora.pos, antes.pos) < 0.0005 && distancia(ahora.obj, antes.obj) < 0.0005) return ahora;
+    antes = ahora;
+  }
+  return antes;
+}
 
 const leerViewport = (p) => p.evaluate(() => document.querySelector('meta[name="viewport"]')?.getAttribute('content') ?? '');
 const viewportSinZoom = (c) => /user-scalable\s*=\s*no/.test(c) && /maximum-scale\s*=\s*1(\.0)?\b/.test(c);
@@ -263,7 +279,7 @@ async function probarCelular(nombre, contexto, motor) {
   // "Vista inicial" la devuelve
   await p.locator('#btn-vista-inicial').tap();
   await p.waitForTimeout(1500);
-  c = await leerCamara(p);
+  c = await esperarQueSeDetenga(p);
   revisar(
     distancia(c.pos, casa.pos) < 0.01 && distancia(c.obj, casa.obj) < 0.01 && (await p.evaluate(() => document.getElementById('btn-vista-inicial').hidden)),
     et(`"Vista inicial" la devuelve a su encuadre después del pellizco (a ${distancia(c.pos, casa.pos).toFixed(3)}) y se esconde`)
@@ -278,7 +294,7 @@ async function probarCelular(nombre, contexto, motor) {
   const fotoLejos = nombre === 'iphone15promax' ? await p.screenshot({ scale: 'css', type: 'jpeg', quality: 80 }) : null;
   await p.locator('#btn-vista-inicial').tap();
   await p.waitForTimeout(1500);
-  c = await leerCamara(p);
+  c = await esperarQueSeDetenga(p);
   revisar(distancia(c.pos, casa.pos) < 0.01, et(`y "Vista inicial" la vuelve a traer (a ${distancia(c.pos, casa.pos).toFixed(3)})`));
 
   // Intentar correr la página hacia el lado: en Chromium, deslizando el dedo

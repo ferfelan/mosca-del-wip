@@ -65,6 +65,12 @@ let indiceVelocidad = 0;
 // Felipe, 2026-10-25: antes partía solo al entrar)
 let pausado = true;
 let empezado = false;
+// (8.7) En el celular, antes de empezar, la oficina se achica sobre la tarjeta
+// de inicio: ver medirEncajeAviso, más abajo
+let encajeAviso = null; // { zoom, dx, dy } en píxeles de la escena, o null
+let soltandoEncaje = 0; // cuándo empezó a volver (performance.now())
+const SOLTAR_ENCAJE_MS = 450;
+const ALTO_MINIMO_ENCAJE = 90; // menos que esto, la mosca quedaría muy chica
 let congelado = false; // sólo para capturas: deja la animación quieta
 let relojDetenido = false; // sólo para capturas: el reloj del juego no avanza (la mosca sí se anima)
 let diaYaRegistrado = false;
@@ -288,6 +294,7 @@ function alternarPausa() {
     empezado = true;
     elAvisoEmpezar.hidden = true;
     document.documentElement.classList.remove('por-empezar');
+    soltarEncajeAviso();
   }
   pintarBotonPausa();
 }
@@ -312,7 +319,7 @@ const TAPAN_AVISO = ['cel-volver', 'cel-controles', 'cel-pestanas', 'panel'].map
 function ajustarAvisoEmpezar() {
   const niveles = ['sin-detalle', 'sin-titulo', 'solo-boton'];
   elAvisoEmpezar.classList.remove(...niveles);
-  if (!esCelular() || elAvisoEmpezar.hidden) return;
+  if (!esCelular() || elAvisoEmpezar.hidden) return medirEncajeAviso();
   const choca = () => {
     const a = elAvisoEmpezar.getBoundingClientRect();
     return TAPAN_AVISO.some((el) => {
@@ -321,9 +328,10 @@ function ajustarAvisoEmpezar() {
     });
   };
   for (const nivel of niveles) {
-    if (!choca()) return;
+    if (!choca()) break;
     elAvisoEmpezar.classList.add(nivel);
   }
+  medirEncajeAviso();
 }
 // (cuando cambia la oficina o la tarjeta: al girar, al medir la hoja, al
 // volver a la pestaña Oficina o al cambiar de idioma; en el cuadro siguiente,
@@ -706,6 +714,15 @@ function aplicarEspacioPanel() {
     // (en el celular no hay paneles al lado: la oficina tiene su recuadro)
     camera.zoom = 1;
     camera.clearViewOffset();
+    // ...salvo en el celular antes de empezar: la oficina, más chica, sobre la
+    // tarjeta de inicio (8.7)
+    const k = esCelular() ? cuantoEncaje() : 0;
+    if (k > 0) {
+      const w = elEscena.clientWidth;
+      const h = elEscena.clientHeight;
+      camera.zoom = 1 + (encajeAviso.zoom - 1) * k;
+      camera.setViewOffset(w, h, -encajeAviso.dx * k, -encajeAviso.dy * k, w, h);
+    }
     camera.updateProjectionMatrix();
     return;
   }
@@ -843,16 +860,26 @@ function puntosVisibles(objeto, porPieza = 24) {
 // (con la mitad, la mosca llena la pantalla; con el doble, se ve el escritorio
 // entero y la mosca sigue a la vista)
 const ZOOM_CELULAR = { cerca: 0.5, lejos: 2 };
-function encuadrarExhibicion() {
-  // Lo que debe verse completo: la mosca (sin la silla), la pantalla con el
-  // kanban y el cenicero. Se usan puntos reales de la mosca (no su caja), así
-  // la cámara queda lo más cerca posible.
+// Lo que debe verse completo: la mosca (sin la silla), la pantalla con el
+// kanban y el cenicero. Se usan puntos reales de la mosca (no su caja), así
+// la cámara queda lo más cerca posible.
+function puntosEncuadre() {
   const puntos = puntosVisibles(mosca.figura);
   const anchoPantalla = 0.49 * ESCALA_MONITOR;
   for (const sx of [-1, 1])
     for (const sy of [-1, 1])
       puntos.push(CENTRO_PANTALLA.clone().add(new THREE.Vector3(sx * anchoPantalla, sy * 0.33 * ESCALA_MONITOR, 0)));
   for (const sx of [-1, 1]) for (const sz of [-1, 1]) puntos.push(POS_CENICERO.clone().add(new THREE.Vector3(sx * 0.17, 0.06, sz * 0.17)));
+  return puntos;
+}
+function encuadrarExhibicion() {
+  // (se mide con la imagen sin achicar ni correr: el encaje de la tarjeta en
+  // el celular o los paneles del computador no cambian la vista inicial; en el
+  // próximo cuadro aplicarEspacioPanel los vuelve a poner)
+  camera.zoom = 1;
+  camera.clearViewOffset();
+  camera.updateProjectionMatrix();
+  const puntos = puntosEncuadre();
   const caja = new THREE.Box3().setFromPoints(puntos);
   const centro = caja.getCenter(new THREE.Vector3());
   const direccion = CAMARA_INICIAL.posicion.clone().sub(CAMARA_INICIAL.objetivo).normalize();
@@ -883,6 +910,71 @@ function encuadrarExhibicion() {
   }
   controls.update();
   guardarCasa();
+}
+
+// ---------- Celular, antes de empezar: la mosca sobre la tarjeta (8.7) ----------
+// Pedido de Felipe (2026-11-07): la tarjeta de inicio entra completa en un
+// celular de 375 × 667 sin tapar a la mosca. La tarjeta es más alta que el
+// espacio que deja la mosca encuadrada, así que mientras no empieza el día la
+// imagen de la oficina se achica y sube (sin mover la cámara, como con los
+// paneles del computador) hasta que la mosca, la pantalla con el kanban y el
+// cenicero entran entre los botones de arriba y la tarjeta. Si el espacio es
+// muy poco (celular girado, letra muy grande), queda como antes. Al empezar el
+// día vuelve a su encuadre en medio segundo (de golpe con movimiento reducido).
+// (las variables están arriba, junto a "empezado": la escena se ajusta antes
+// de llegar aquí)
+function medirEncajeAviso() {
+  encajeAviso = null;
+  if (!esCelular() || empezado || elAvisoEmpezar.hidden) return;
+  const escena = elEscena.getBoundingClientRect();
+  const aviso = elAvisoEmpezar.getBoundingClientRect();
+  if (!aviso.width || !escena.height) return; // (otra pestaña: no se ve)
+  const arriba = Math.max(...['cel-volver', 'cel-controles'].map((id) => document.getElementById(id).getBoundingClientRect().bottom)) - escena.top + 10;
+  const abajo = aviso.top - escena.top - 10;
+  if (abajo - arriba < ALTO_MINIMO_ENCAJE) return;
+  // Dónde queda todo con el encuadre de siempre
+  const w = escena.width;
+  const h = escena.height;
+  camera.zoom = 1;
+  camera.clearViewOffset();
+  camera.updateProjectionMatrix();
+  camera.updateMatrixWorld();
+  let [x0, y0, x1, y1] = [Infinity, Infinity, -Infinity, -Infinity];
+  for (const p of puntosEncuadre()) {
+    _p.copy(p).project(camera);
+    const x = ((_p.x + 1) / 2) * w;
+    const y = ((1 - _p.y) / 2) * h;
+    x0 = Math.min(x0, x);
+    x1 = Math.max(x1, x);
+    y0 = Math.min(y0, y);
+    y1 = Math.max(y1, y);
+  }
+  if (!Number.isFinite(y1) || y1 <= abajo) return; // la tarjeta no tapa nada
+  const zoom = Math.min(1, (abajo - arriba) / (y1 - y0), (w - 2 * 10) / (x1 - x0));
+  // (con el zoom, cada punto se acerca al centro de la escena; después se
+  // corre: la mosca y su escritorio quedan al centro del espacio libre)
+  encajeAviso = {
+    zoom,
+    dx: w / 2 - (w / 2 + ((x0 + x1) / 2 - w / 2) * zoom),
+    dy: (arriba + abajo) / 2 - (h / 2 + ((y0 + y1) / 2 - h / 2) * zoom),
+  };
+  soltandoEncaje = 0;
+}
+// 1 mientras la tarjeta está; baja a 0 en medio segundo al empezar el día
+function cuantoEncaje() {
+  if (!encajeAviso) return 0;
+  if (!soltandoEncaje) return 1;
+  const t = Math.min(1, (performance.now() - soltandoEncaje) / SOLTAR_ENCAJE_MS);
+  if (t >= 1) {
+    encajeAviso = null;
+    return 0;
+  }
+  return (1 - t) ** 3; // (sale rápido y llega suave)
+}
+function soltarEncajeAviso() {
+  if (!encajeAviso) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) encajeAviso = null;
+  else soltandoEncaje = performance.now();
 }
 
 // ---------- Volver la oficina a su vista inicial ----------
@@ -1559,6 +1651,7 @@ iniciarCelular({
     }
     ajustarEscena();
     if (activo) encuadrarExhibicion();
+    medirEncajeAviso();
   },
   // Al salir del cerebro se cierran su explicación y la tarjetita de una neurona
   alCambiarVista(nueva) {

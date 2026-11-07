@@ -31,11 +31,18 @@ const doc = process.argv[2] ?? 'compartir';
 // 8.4 (2026-11-04): el informe para compartir se mide con la regla nueva de
 // Felipe: máximo 140 palabras de texto por página, sin contar tablas,
 // gráficos ni referencias (ni la línea "Dato freak", que se informa aparte)
-// 8.6 (2026-11-06): el resumen de 4 páginas (resumen y resumen-en) se mide igual que el informe para compartir
-// (sin la línea "Dato freak", que el resumen no lleva)
-const REGLAS = doc.startsWith('compartir') || doc.startsWith('resumen') // también compartir-en, el mismo informe en inglés (2026-10-25)
-  ? { llenado: [80, 95], palabras: 140, visuales: 1, lineasTitulo: 2, frase: 99, v7: true, voz: true, sobremesa: !doc.startsWith('resumen') }
-  : { llenado: [80, 95], palabras: 190, visuales: 2, lineasTitulo: 99, frase: 99, v7: false };
+// 8.6 (2026-11-06): el resumen de 4 páginas (resumen y resumen-en) se medía igual que el informe para compartir.
+// 8.7 (2026-11-07): el resumen es ahora una columna para leer de corrido (pedido de Felipe), con sus
+// propias reglas: entre 250 y 350 palabras por hoja (todo el texto menos el pie y los textos de adentro
+// del gráfico), un solo gráfico en todo el documento, numeración pareja (1/4 a 4/4), ningún número
+// suelto al final de una línea, y nada de rótulos en mayúsculas, cajas de color, números gigantes,
+// íconos ni "en cuatro ideas"
+const RESUMEN = doc.startsWith('resumen');
+const REGLAS = RESUMEN
+  ? { llenado: [70, 97], palabras: 350, minimo: 250, visuales: 1, lineasTitulo: 2, frase: 99, v7: true, voz: true, sobremesa: false, resumen: true }
+  : doc.startsWith('compartir') // también compartir-en, el mismo informe en inglés (2026-10-25)
+    ? { llenado: [80, 95], palabras: 140, visuales: 1, lineasTitulo: 2, frase: 99, v7: true, voz: true }
+    : { llenado: [80, 95], palabras: 190, visuales: 2, lineasTitulo: 99, frase: 99, v7: false };
 const b = await chromium.launch();
 const p = await b.newPage();
 await p.goto(pathToFileURL(join(CARPETA, `${doc}.html`)).href, { waitUntil: 'networkidle' });
@@ -62,7 +69,9 @@ const filas = await p.evaluate((R) => [...document.querySelectorAll('.hoja')].ma
   const todas = cuenta(clon.innerText);
   // 4.6: sin rótulo, título ni visuales. 4.4: texto corrido (párrafos y listas fuera de figuras, tablas y notas chicas)
   let palabras;
-  if (R.v7) {
+  if (R.resumen) {
+    palabras = todas;
+  } else if (R.v7) {
     const c2 = clon.cloneNode(true);
     // 8.4: fuera también los rótulos (.etiqueta), las tablas, las referencias (.cita, .de, .de-donde, el anexo C y los créditos) y el Dato freak
     c2.querySelectorAll('.kicker, h1, .etiqueta, .visual, table, .cita, .de, .de-donde, .fuentes-simples, .creditos, .sobremesa').forEach((el) => el.remove());
@@ -92,6 +101,53 @@ const filas = await p.evaluate((R) => [...document.querySelectorAll('.hoja')].ma
   const preguntas = (texto.match(/¿/g) ?? []).length;
   const negritas = [...clon.querySelectorAll('p strong, p b')].filter((el) => !el.closest('.visual, .limites, .fuentes-simples, .creditos, .cierre-pagina, .recuadro, .chico, .sobremesa, figure')).length;
   const graficos = h.querySelectorAll('.grafico svg, figure img, img.banda').length;
+  // 8.7: lo que el resumen no lleva y los números sueltos al final de una línea
+  const resumen = [];
+  if (R.resumen) {
+    const numeroSolo = /^[(¿]?\d[\d.,:]*%?[).,:?]*$/;
+    const numeroSigue = /^[(¿]?\d[\d.,:]*%?$/;
+    for (const el of h.querySelectorAll('*')) {
+      if (el.closest('.pie, svg, script, style')) continue;
+      const cs = getComputedStyle(el);
+      const conTexto = [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim());
+      if (conTexto && (cs.textTransform === 'uppercase' || parseFloat(cs.letterSpacing) > 0.06 * parseFloat(cs.fontSize))) resumen.push(`rótulo en mayúsculas o espaciado («${el.textContent.trim().slice(0, 30)}»)`);
+      const fondo = cs.backgroundColor;
+      if (!/rgba\(0, 0, 0, 0\)|transparent|rgb\(255, 255, 255\)/.test(fondo)) resumen.push(`caja con fondo de color (${el.tagName.toLowerCase()}.${el.className})`);
+      if (['Left', 'Right', 'Top', 'Bottom'].some((l) => parseFloat(cs[`border${l}Width`]) > 1.5)) resumen.push(`caja con borde grueso (${el.tagName.toLowerCase()}.${el.className})`);
+      if (conTexto && el.tagName !== 'H1' && /\d/.test(el.textContent) && parseFloat(cs.fontSize) > 24 * 1.333) resumen.push(`número gigante («${el.textContent.trim().slice(0, 20)}»)`);
+      if (el.tagName === 'IMG' && !el.closest('.torre')) resumen.push(`imagen o ícono (${el.getAttribute('src')})`);
+      if (el.tagName === 'svg' && !el.closest('.grafico')) resumen.push('ícono');
+      if (parseFloat(cs.columnCount) > 1 || (cs.display === 'grid' && cs.gridTemplateColumns.split(' ').length > 1)) resumen.push(`columnas (${el.tagName.toLowerCase()}.${el.className})`);
+    }
+    if (/en cuatro ideas|in four ideas/i.test(h.innerText)) resumen.push('"en cuatro ideas"');
+    // número suelto: la última palabra de una línea es un número, o una línea es solo un número
+    for (const el of h.querySelectorAll('p, li, figcaption, h1, h2')) {
+      if (el.closest('.pie')) continue;
+      const lineas = [];
+      const andar = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+      while (andar.nextNode()) {
+        const nodo = andar.currentNode;
+        for (const m of nodo.textContent.matchAll(/[^\s\u00a0]+/g)) {
+          const r = document.createRange();
+          r.setStart(nodo, m.index);
+          r.setEnd(nodo, m.index + m[0].length);
+          const q = r.getClientRects()[0];
+          if (!q) continue;
+          const ultima = lineas[lineas.length - 1];
+          if (ultima && Math.abs(ultima.top - q.top) < 3) ultima.palabras.push(m[0]);
+          else lineas.push({ top: q.top, palabras: [m[0]] });
+        }
+      }
+      lineas.forEach((l, k) => {
+        const fin = l.palabras[l.palabras.length - 1];
+        // (un año o un número que cierra la frase, como «2014).», puede quedar al final: lo que no puede es un número que sigue en la línea de abajo)
+        if ((k < lineas.length - 1 && numeroSigue.test(fin)) || (l.palabras.length === 1 && numeroSolo.test(fin))) resumen.push(`número suelto al final de una línea («${l.palabras.slice(-3).join(' ')}»)`);
+      });
+    }
+    const n = h.querySelector('.pie span:last-child')?.textContent.trim();
+    const total = document.querySelectorAll('.hoja').length;
+    if (n !== `${i + 1} / ${total}`) resumen.push(`numeración «${n}» (debía ser ${i + 1} / ${total})`);
+  }
   const tipo = h.classList.contains('portada') ? 'portada' : h.classList.contains('parte') ? 'separador' : h.classList.contains('cierre') ? 'cierre' : /anexo|appendix/i.test(h.querySelector('.kicker')?.textContent ?? '') ? 'anexo' : 'contenido';
   return {
     pagina: i + 1,
@@ -111,8 +167,14 @@ const filas = await p.evaluate((R) => [...document.querySelectorAll('.hoja')].ma
     dosPuntos,
     preguntas,
     negritas,
+    resumen,
+    charts: h.querySelectorAll('.grafico svg').length,
   };
 }), REGLAS);
+if (REGLAS.resumen) {
+  const charts = filas.reduce((n, f) => n + f.charts, 0);
+  if (charts !== 1) console.log(`  ← el resumen lleva ${charts} gráficos (debe ser uno solo)`);
+}
 for (const f of filas) {
   const avisos = [];
   const mide = REGLAS.v7 ? f.tipo === 'contenido' : true;
@@ -120,6 +182,8 @@ for (const f of filas) {
   if (mide && f.llenado < REGLAS.llenado[0]) avisos.push('poco llena');
   if (mide && f.llenado > REGLAS.llenado[1]) avisos.push('muy llena');
   if (mide && f.palabras > REGLAS.palabras) avisos.push(`más de ${REGLAS.palabras} palabras`);
+  if (mide && REGLAS.minimo && f.palabras < REGLAS.minimo) avisos.push(`menos de ${REGLAS.minimo} palabras`);
+  if (REGLAS.resumen) avisos.push(...new Set(f.resumen));
   if (mide && f.graficos > REGLAS.visuales && !/dos veces|dos fotos/i.test(f.titulo + ' ' + (f.kicker ?? '')) && f.graficos > 2) avisos.push('más de un visual');
   if (mide && f.lineasTitulo > REGLAS.lineasTitulo) avisos.push('título de 3 líneas');
   if (mide && f.largas.length) avisos.push(`${f.largas.length} frase(s) de más de ${REGLAS.frase} palabras`);

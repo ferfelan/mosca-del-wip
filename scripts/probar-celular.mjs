@@ -223,7 +223,7 @@ async function probarEmpezar(p, etiqueta, nombre) {
   const z = await p.evaluate(ZONA_TOQUE, '#btn-empezar');
   revisar(z && !z.tapado && z.ancho >= 44 && z.alto >= 44, etiqueta(`zona de toque de #btn-empezar: ${z ? `${z.ancho}×${z.alto}` : 'no está'}${z?.tapado ? ' (tapado)' : ''}`));
   // Desde la 8.1 la tarjeta presenta el juego: en un teléfono normal se ve
-  // completa (título, tres líneas, botón y "¿Qué es esto?"); solo con el zoom
+  // completa (título, cuatro líneas desde la 8.7, botón y "¿Qué es esto?"); solo con el zoom
   // de pantalla o la letra agrandada puede perder partes. La hoja lleva solo
   // las tareas a la vez hasta empezar (los números aparecen al empezar).
   const partes = await p.evaluate(() => {
@@ -231,7 +231,7 @@ async function probarEmpezar(p, etiqueta, nombre) {
     const seVe = (s) => { const el = t.querySelector(s); return !!el && getComputedStyle(el).display !== 'none'; };
     return { clases: t.className, titulo: seVe('strong'), lineas: [...t.querySelectorAll('.aviso-texto p')].filter((e) => getComputedStyle(e).display !== 'none').length, boton: seVe('#btn-empezar'), enlace: seVe('#aviso-que-es'), numeros: !!document.querySelector('.bloque-numeros') && getComputedStyle(document.querySelector('.bloque-numeros')).display !== 'none' };
   });
-  if (!/zoom|letra/.test(nombre)) revisar(partes.titulo && partes.lineas === 3 && partes.boton && partes.enlace, etiqueta(`la tarjeta de inicio se ve completa (${JSON.stringify(partes)})`));
+  if (!/zoom|letra/.test(nombre)) revisar(partes.titulo && partes.lineas === 4 && partes.boton && partes.enlace, etiqueta(`la tarjeta de inicio se ve completa (${JSON.stringify(partes)})`));
   else console.log(`   ${nombre}: tarjeta ${partes.clases ? `recortada (${partes.clases})` : 'completa'}`);
   revisar(!partes.numeros, etiqueta('antes de empezar la hoja no muestra los números'));
   if (partes.enlace) {

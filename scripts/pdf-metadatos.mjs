@@ -28,18 +28,18 @@ const PDFS = [
     claves: ['WIP limit', 'work in progress', 'kanban', 'flow efficiency', "Little's Law", 'multitasking', 'urgent tasks', 'interruptions', 'simulation', 'fruit fly connectome', 'Male CNS'],
     idioma: 'en-US',
   },
-  // Etapa 8.6 (2026-11-06): el resumen de 4 páginas, en español e inglés
+  // Etapa 8.6 (2026-11-06): el resumen de 4 páginas, en español e inglés. Desde la 8.7 (2026-11-07), en prosa y con el título nuevo
   {
     ruta: 'public/Mosca-del-WIP-Resumen.pdf',
-    titulo: 'Mosca del WIP: termina más empezando menos. Resumen en cuatro páginas',
-    tema: 'Un juego de un minuto con una mosca de cerebro real: lo que mostró la simulación de 1 a 10 tareas a la vez, por qué pasa, lo que busca un límite al trabajo en curso y cuatro pasos para probarlo con tu equipo.',
+    titulo: 'Mosca del WIP: ocupado todo el día. ¿Y qué terminaste? Resumen en cuatro páginas',
+    tema: 'Un juego de un minuto con una mosca de cerebro real, contado en cuatro páginas: qué pasó en la simulación de 1 a 10 tareas a la vez, por qué pasa, qué dicen los estudios con personas, para qué sirve un límite al trabajo en curso y cuatro pasos para probarlo con tu equipo.',
     claves: ['límite WIP', 'trabajo en curso', 'work in progress', 'kanban', 'eficiencia de flujo', 'ley de Little', 'resumen', 'simulación', 'cerebro de mosca', 'Male CNS'],
     idioma: 'es-CL',
   },
   {
     ruta: 'public/Mosca-del-WIP-Summary.pdf',
-    titulo: 'Mosca del WIP: finish more by starting less. A four-page summary',
-    tema: 'A one-minute game with a real fly brain: what the simulation showed from 1 to 10 tasks at once, why it happens, what a limit on work in progress aims for and four steps to try it with your team.',
+    titulo: 'Mosca del WIP: busy all day. So what did you finish? A four-page summary',
+    tema: 'A one-minute game with a real fly brain, told in four pages: what happened in the simulation from 1 to 10 tasks at once, why it happens, what studies with people say, what a limit on work in progress is for and four steps to try it with your team.',
     claves: ['WIP limit', 'work in progress', 'kanban', 'flow efficiency', "Little's Law", 'summary', 'simulation', 'fruit fly connectome', 'Male CNS'],
     idioma: 'en-US',
   },

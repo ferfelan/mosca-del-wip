@@ -127,13 +127,16 @@
          puede mover el control de tareas sin que se cierre; en los días
          siguientes (R, Reiniciar día) no vuelve a salir. Va primero en la
          página y recibe el foco al abrir el juego (src/main.js), para que el
-         lector de pantalla la lea antes que nada. -->
+         lector de pantalla la lea antes que nada. Desde la 8.7 (2026-11-07)
+         dice también qué pasa con el estrés (el cigarro y el café, con las
+         reglas del juego) y termina con una pregunta. -->
     <section id="aviso-empezar" role="dialog" tabindex="-1" aria-labelledby="aviso-empezar-titulo" aria-describedby="aviso-empezar-texto">
       <strong id="aviso-empezar-titulo">Tú eres el jefe de la mosca.</strong>
       <div id="aviso-empezar-texto" class="aviso-texto">
         <p>Decide cuántas tareas puede tener empezadas a la vez, de 1 a 10, y mira su día de oficina en un minuto.</p>
         <p class="aviso-detalle">Al final verás cuánto terminó, cuánto tardó cada tarea y cómo quedó de estrés.</p>
-        <p class="aviso-prueba">Prueba un día con 9 y otro con 2.</p>
+        <p class="aviso-detalle aviso-reglas">Si se estresa, sale a fumar y pierde tiempo. Si no está tan estresada, se toma un café.</p>
+        <p class="aviso-prueba">Prueba un día con 9 y otro con 2. ¿Con&nbsp;cuál crees que termina más?</p>
       </div>
       <button id="btn-empezar" type="button">Empezar el día</button>
       <a id="aviso-que-es" href="/">¿Qué es esto?</a>
@@ -222,6 +225,8 @@
           <thead><tr><th></th><th>Terminadas</th><th title="Tiempo por tarea, en horas y minutos del juego">Tiempo<br />por tarea</th><th>Colillas</th><th>Cafés</th><th>Estrés<br />máx.</th></tr></thead>
           <tbody id="ex-fin-filas"></tbody>
         </table>
+        <!-- 8.7: la pregunta para la sala, al final de lo que se lee -->
+        <p class="aviso-fin-pregunta">¿Y tú, cuántas cosas tienes empezadas hoy?</p>
         <span class="aviso-fin-sigue" id="ex-fin-texto"></span>
       </div>
     </div>
@@ -477,6 +482,9 @@
     <div id="banner-fin-dia" class="oculto">
       <p><strong>Fin del día.</strong> <span class="banner-texto">Mira la tabla o reinicia para probar otro WIP.</span></p>
       <p class="banner-urgencias" id="banner-urgencias" hidden><span id="banner-urgencias-hechas"></span> <span class="banner-urgencias-tardo" id="banner-urgencias-tardo"></span></p>
+      <!-- 8.7: la pregunta al final de lo que se lee (en el celular, sobre
+           los dos botones) -->
+      <p class="banner-pregunta">¿Y tú, cuántas cosas tienes empezadas hoy?</p>
       <div class="cel-banner-botones solo-celular">
         <button id="cel-ver-dias" type="button">Ver los días</button>
         <button id="cel-reiniciar" type="button">Reiniciar día</button>

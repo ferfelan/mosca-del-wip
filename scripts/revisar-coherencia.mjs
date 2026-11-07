@@ -202,8 +202,10 @@ if (args.includes('--mapa')) {
   // (en minúsculas o mayúsculas da igual). Si una pieza cambia de texto, se
   // cambian aquí sus frases, o el mapa dirá "(en ningún lado)".
   const CLAVES = [
-    { pieza: 'Mensaje de la portada', es: 'Termina más empezando menos', en: 'Finish more by starting less',
-      buscar: ['Termina más empezando menos', 'Finish more by starting less'] },
+    // (8.7, 2026-11-07) la portada vuelve a la pregunta; hasta la 8.6 era "Termina más empezando menos"
+    { pieza: 'Mensaje de la portada', es: 'Ocupado todo el día. ¿Y qué terminaste?', en: 'Busy all day. So what did you finish?',
+      // ("busy all day" solo no sirve: la guía y el taller en inglés dicen "she is busy all day")
+      buscar: ['Ocupado todo el día', 'what did you finish'] },
     { pieza: 'Frase norte del problema', es: 'Estar siempre ocupado no es lo mismo que avanzar', en: 'Being busy all the time isn’t the same as making progress',
       buscar: ['Estar siempre ocupado no es lo mismo que avanzar', 'Being busy all the time isn’t the same as making progress'] },
     { pieza: 'Frase norte de la respuesta', es: 'Un límite sostenible, no una cosa a la vez', en: 'A sustainable limit, not one thing at a time',
@@ -217,9 +219,16 @@ if (args.includes('--mapa')) {
     { pieza: 'Las cuatro ideas', es: '1. Estar siempre ocupado no es avanzar. 2. Un límite bajo, pero no 1. 3. Lo empezado no desaparece. 4. Las urgencias, de a una.',
       en: '1. Being busy all the time isn’t making progress. 2. A low limit, but not 1. 3. What’s started doesn’t disappear. 4. Urgent tasks, one at a time.',
       buscar: ['Un límite bajo, pero no 1', 'A low limit, but not 1', 'Lo empezado no desaparece', 'What’s started doesn’t disappear'] },
-    { pieza: 'Lo que busca un límite', es: 'Cada cosa sale antes. El trabajo espera menos. Un ritmo que se aguanta. Es lo que busca un límite, no una garantía.',
-      en: 'Each thing gets done sooner. Work waits less. A pace you can keep. It’s what a limit aims for, not a guarantee.',
-      buscar: ['Lo que busca un límite', 'What a limit aims for', 'Cada cosa sale antes', 'Each thing gets done sooner'] },
+    // (8.7) reemplaza a "Lo que busca un límite" de la 8.6
+    { pieza: 'Para qué sirve un límite', es: 'Terminan más, y cada cosa sale antes. El trabajo avanza en vez de esperar. Menos sobrecarga. Cuánto gana tu equipo, lo dice su prueba.',
+      en: 'You finish more, and each thing gets done sooner. Work moves forward instead of waiting. Less overload. How much your team gains, its own test will show.',
+      buscar: ['Para qué sirve un límite', 'What a limit is for', 'en vez de esperar', 'instead of waiting', 'Cuánto gana', 'How much your team gains', 'How much the team gains'] },
+    { pieza: 'Lo que se lleva tu equipo', es: 'Su carga a la vista. Dónde se queda esperando el trabajo. Un límite acordado, escrito en el tablero. Sus propios datos después de dos semanas.',
+      en: 'Their load in plain sight. Where the work sits waiting. An agreed limit, written on the board. Their own data after two weeks.',
+      buscar: ['carga a la vista', 'load in plain sight', 'límite acordado', 'agreed limit'] },
+    { pieza: 'Las preguntas del juego (8.7)', es: 'En la tarjeta: ¿Con cuál crees que termina más? Al fin del día: ¿Y tú, cuántas cosas tienes empezadas hoy?',
+      en: 'On the card: Which one do you think she’ll finish more with? At the end of the day: And you, how many things do you have started today?',
+      buscar: ['¿Con cuál crees que termina más?', 'Which one do you think she’ll finish more with?', 'cuántas cosas tienes empezadas hoy', 'how many things do you have started today'] },
     { pieza: 'Los cuatro pasos', es: '1. Pongan el trabajo a la vista. 2. Cuenten lo abierto y pónganle un límite. 3. Cuando alguien queda esperando, ataquen la espera. 4. Prueben dos semanas y midan.',
       en: '1. Make the work visible. 2. Count what’s open and set a limit. 3. When someone is left waiting, go after the wait. 4. Try it for two weeks and measure.',
       buscar: ['Pongan el trabajo a la vista', 'Make the work visible', 'Prueben dos semanas y midan', 'Try it for two weeks and measure'] },
@@ -227,9 +236,9 @@ if (args.includes('--mapa')) {
       buscar: ['Mándale una urgencia', 'Send an urgent task'] },
     { pieza: 'Urgencias: el resultado', es: 'En la simulación, con límite 2, cada urgencia costó una tarea normal', en: 'In the simulation, with limit 2, each urgent task cost one (a) regular task',
       buscar: ['costó una tarea normal', 'cuesta una tarea normal', 'cost a regular task', 'cost one regular task', 'costs a regular task', 'costs one regular task'] },
-    { pieza: 'FAQ de la portada (las 4 respuestas nuevas de la 8.6)', es: '¿Qué es la Mosca del WIP? ¿Cuántas tareas a la vez es lo mejor? ¿Qué se lleva mi equipo? ¿Y las urgencias?',
+    { pieza: 'FAQ de la portada (las respuestas nuevas de la 8.6 y la 8.7)', es: '¿Qué es la Mosca del WIP? ¿Cuántas tareas a la vez es lo mejor? ¿Qué se lleva mi equipo? ¿Y las urgencias?',
       en: 'What is Mosca del WIP? How many tasks at once is best? What does my team take away? What about urgent tasks?',
-      buscar: ['Sirve para ver, en un minuto', 'It shows you, in one minute', 'No hay un número para todos', 'There’s no number for everyone', '¿Qué se lleva mi equipo?', 'What does my team take away?', 'pasa por encima del límite, de a una', 'jumps over the limit, one at a time'] },
+      buscar: ['Es un juego de un minuto que también es un experimento', 'It’s a one-minute game that is also a computer experiment', 'No hay un número para todos', 'There’s no number for everyone', '¿Qué se lleva mi equipo?', 'What does my team take away?', 'pasa por encima del límite, de a una', 'jumps over the limit, one at a time'] },
   ];
   // Dónde se edita cada cosa (lo demás sale de aquí al construir o al rehacer los PDF)
   const FUENTES = {
@@ -248,7 +257,7 @@ if (args.includes('--mapa')) {
     'scripts/informe-web.mjs': 'title y meta del informe web',
     'docs/contexto/resumen.html': 'el resumen (PDF)',
     'docs/contexto/resumen-en.html': 'el resumen en inglés (PDF)',
-    'docs/contexto/taller-v6.html': 'la guía rápida del taller (PDF)',
+    'docs/contexto/taller-v7.html': 'la guía rápida del taller (PDF)',
     'docs/contexto/taller-hoja-equipo.html': 'la hoja del equipo (PDF)',
     'docs/contexto/taller-presentacion/armar-v6.cjs': 'la presentación del taller (PPTX y PDF)',
     'scripts/datos-csv.mjs': 'los CSV de /datos/',
@@ -261,8 +270,9 @@ if (args.includes('--mapa')) {
     const t = readFileSync(join(R, ruta), 'utf8');
     if (ruta.endsWith('.md')) return t.slice(t.indexOf('## 3. Borradores'), t.indexOf('## 4. Subir'));
     // en HTML, sin comentarios, salvo el de arriba de docs/paginas/ (el JSON con title y meta)
-    if (ruta.endsWith('.html')) return decodificar(t.replace(/<!--([\s\S]*?)-->/g, (m, c) => (/^(meta)?\s*\{/.test(c) ? c : ' ')).replace(/<[^>]+>/g, ' '));
-    if (/\.(m|c)?js$/.test(ruta)) return t.replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/(^|[^:'"`\\])\/\/[^\n]*/g, '$1');
+    if (ruta.endsWith('.html')) return decodificar(t.replace(/<!--([\s\S]*?)-->/g, (m, c) => (/^(meta)?\s*\{/.test(c) ? c : ' ')).replace(/<[^>]+>/g, ' ')).replace(/\\u([0-9a-f]{4})/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)));
+    // (los textos de JS con &nbsp; o \u00a0 se leen con espacios, como en la página)
+    if (/\.(m|c)?js$/.test(ruta)) return decodificar(t.replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/(^|[^:'"`\\])\/\/[^\n]*/g, '$1')).replace(/\\u([0-9a-f]{4})/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)));
     return t;
   };
   const fuentes = Object.keys(FUENTES).filter((r) => existsSync(join(R, r))).map((r) => ({ r, n: normal(textoFuente(r)) }));

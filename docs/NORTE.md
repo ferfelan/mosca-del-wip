@@ -45,11 +45,16 @@ sostenible**.
     vez".
   En el informe para compartir, cada una aparece máximo 3 veces (confirmado
   por Felipe).
-- **El mensaje de la portada** (Felipe, Etapa 8.6, 2026-11-06): **"Termina más
-  empezando menos"**. Primero lo que logra un equipo o un líder que limita el
-  trabajo en curso, y después la mosca como prueba. Va en el título de la
-  portada y en lo que se ve al compartirla (og, twitter, JSON-LD). La frase
-  del problema queda visible como rótulo sobre ese título.
+- **El mensaje de la portada** (Felipe, Etapa 8.7, 2026-11-07): **"Ocupado
+  todo el día. ¿Y qué terminaste?"**, con la bajada "Mide cuántas cosas tiene
+  empezadas tu equipo y encuentra el límite con el que termina más. Parte
+  jugando un minuto con una mosca oficinista de cerebro real." Va en el título
+  de la portada y en lo que se ve al compartirla (og, twitter, JSON-LD); la
+  pestaña sigue partiendo con "Límite WIP". La frase del problema ya no va
+  arriba del título (lo repetía): cierra "Lo que vas a ver". En la 8.6
+  (2026-11-06) el mensaje fue "Termina más empezando menos"; a Felipe le pareció
+  que se enredaba y no explicaba nada. El propósito y las hipótesis no
+  cambiaron.
 - **Límite sostenible** = el que se mantiene todo el día sin colapsar (el
   juego mide un solo día). En la parte 4.4 (2026-10-20) reemplazó a "límite
   sano" en el panel de Carga del juego y en el informe para compartir (v2 y v3) y en el

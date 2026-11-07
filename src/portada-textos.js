@@ -8,15 +8,15 @@ export const INGLES = {
   // (es un solo componente para todo el sitio, 2026-10-28)
   saltar: 'Skip to content',
 
-  // El inicio y la consola. Desde la 8.6 (2026-11-06): la frase del problema
-  // arriba, lo que logra quien limita su trabajo en curso en el título y el
-  // párrafo, y el dato del juego en chico (antes: "For teams and leaders · a
-  // 1-minute game", "Busy all day. So what did you finish?" y "Play for a
-  // minute and watch what happens to an office fly…")
-  rotulo: 'Being busy all the time isn’t the same as making progress',
-  titulo: 'Finish more by starting less',
+  // El inicio y la consola. Desde la 8.7 (2026-11-07): la pregunta de
+  // siempre como título y una bajada que dice qué hacer, partiendo por el
+  // juego; sin rótulo arriba (la frase del problema cierra "What you’ll see")
+  // (el mismo título que la pág. 2 del informe en inglés; en computador corta
+  // después de "day.", como el español, y no después de "So"; "you finish?"
+  // va junto para que "finish?" no quede sola en la tercera línea)
+  titulo: 'Busy all day.<br class="corte" /> So what did you&nbsp;finish?',
   bajada:
-    'When you have everything started, each thing waits its turn and takes longer to get done. In one minute, an office fly with a real brain shows you why. Then we explain how to find your team’s limit.',
+    'Measure how many things your team has started and find the limit that lets it finish the most. Start by playing for a minute with an office fly that has a real brain.',
   datoInicio: 'In the game, with 9 tasks at once the fly finished half as many as with 2, and each one took almost nine times longer.',
   jugar: 'Play',
   jugarMinuto: 'Play (1 minute)',
@@ -50,6 +50,7 @@ export const INGLES = {
   total18: '<span class="cifra">18</span> finished',
   total9: '<span class="cifra">9</span> finished (half)', // 5.2i: las dos columnas dicen lo mismo
   hechoNota: 'Average of 200 days in the game.',
+  verFrase: 'Being busy all the time isn’t the same as making progress.', // 8.7: vuelve a cerrar esta sección
 
   // Cómo se juega
   pasosTitulo: 'How to play',
@@ -60,27 +61,22 @@ export const INGLES = {
   paso2Alt: 'The fly in front of her board for the day, with 2 tasks in progress, at 10:10.',
   paso3Alt: 'The Days played table, with one day at 2 tasks at once and another at 9.',
 
-  // Lo que se lleva tu equipo. Desde la 8.6 (2026-11-06) parte por lo que
-  // busca un límite, con su respaldo, y después, más cortos, lo que el equipo
-  // se lleva del taller. "Capacity" para capacidad (pedido de Felipe, v4)
+  // Para qué sirve un límite y Lo que se lleva tu equipo (8.7, 2026-11-07):
+  // tres líneas en grande con su respaldo del juego, y cuatro frases cortas
+  sirveTitulo: 'What a limit is for',
+  sirve1: 'You finish more, and each thing gets done sooner.',
+  sirve1Respaldo: 'In the game, 18&nbsp;tasks a day with 2&nbsp;at once, and&nbsp;9&nbsp;with&nbsp;9.',
+  sirve2: 'Work moves forward instead of waiting.',
+  sirve2Respaldo: 'In the game, each task moves forward 47%&nbsp;of the time with&nbsp;2, and 9%&nbsp;with&nbsp;9.',
+  sirve3: 'Less overload.',
+  sirve3Respaldo: 'In the game, with&nbsp;2 she ends the day Calm, and with&nbsp;9, Overwhelmed.',
+  sirveCierre: 'According to DORA, limiting work in progress is a habit of high-performing teams. How much your team gains, its own test will show.',
   ganaTitulo: 'What your team takes away',
-  ganaBajada: 'What a limit on work in progress aims for.',
-  busca1Titulo: 'Each thing gets done sooner',
-  busca1: 'At the same pace, fewer things open means less time for each one.',
-  busca1Respaldo: 'Math, Little’s Law.',
-  busca2Titulo: 'Work waits less',
-  busca2: 'Flow efficiency goes up, the share of time something actually moves forward.',
-  busca2Respaldo: 'In the game, 47% with 2 at once and 9% with 9.',
-  busca3Titulo: 'A pace you can keep',
-  busca3: 'You get to the end of the day without being overwhelmed.',
-  busca3Respaldo: 'In the game, with 2 she ended the day Calm and with 9, Overwhelmed.',
-  ganaDora: 'According to DORA, limiting work in progress is a habit of high-performing teams.',
-  ganaAdemasTitulo: 'And from the workshop they take',
-  gana3: 'A written agreement, with their limit and what to do when something waits.',
-  gana2: 'Where their work waits and who they’re waiting on, in plain sight.',
-  gana4: 'Their own numbers, in two weeks.',
-  ganaNota:
-    'It’s what a limit aims for, not a guarantee. How much, in your case, your test will tell. How to choose the limit and test it is in the <a href="/en/wip-limit/">WIP limit guide</a>.',
+  lleva1: 'Their load in plain sight: how many things each person has started.',
+  lleva2: 'Where the work sits waiting.',
+  lleva3: 'An agreed limit, written on the board.',
+  lleva4: 'Their own data after two weeks.',
+  ganaNota: 'How to choose the limit and test it is in the <a href="/en/wip-limit/">WIP limit guide</a>.',
 
   // El kit para tu equipo
   kitTitulo: 'The kit for your team',
@@ -131,7 +127,7 @@ export const INGLES = {
   preguntasTitulo: 'FAQ',
   pregunta1: 'What is Mosca del WIP?',
   respuesta1:
-    'It shows you, in one minute, why you finish more by starting less. You choose how many tasks an office fly with a real brain has at once, from 1 to 10, and watch her day at the office. Then the guide, the report and the workshop help you find your team’s limit.',
+    'It’s a one-minute game that is also a computer experiment. You’re the boss of an office fly. You decide how many tasks she has started at once and watch how many she finishes, how long each one takes and how stressed she is at the end of the day. The rules come from studies with people, and inside it runs the real map of a fly’s brain. It shows you, simply, what it costs to have everything started.',
   pregunta2: 'What does WIP mean?',
   respuesta2:
     'It’s short for work in progress. It’s everything you’ve started and haven’t finished yet. In the game, it’s the tasks the fly has open at the same time.',
@@ -158,7 +154,7 @@ export const INGLES = {
     'Play one day with 2 tasks at once and another with 9, and compare the Days played table. On a computer, the Exhibition view shows the game large, for a TV or a projector. The kit on this page has the <a href="/en/report/">report</a>, with four steps to try a limit, and a <a href="/en/workshop/">60-minute workshop</a> with its guide to facilitate it.',
   pregunta10: 'What does my team take away?',
   respuesta10:
-    'What a limit aims for: each thing getting done sooner, work waiting less and a pace you can keep. From the workshop they also take a written agreement and, in two weeks, their own numbers. How much the limit achieves in your case, your test will tell.',
+    'A limit helps you finish more, keeps work moving instead of waiting, and means less overload. Your team takes away their load in plain sight, where the work sits waiting, an agreed limit and their own data after two weeks. How much it gains, its own test will show.',
   pregunta11: 'Can I use the workshop with my team, or in paid workshops?',
   respuesta11:
     'Yes. The workshop (the quick guide, the slides and the team sheet) is licensed CC BY 4.0: you can use it and adapt it, also in paid workshops, crediting Felipe Fernández (mosca.deliverycraft.ai). For now it’s in Spanish. The report can be shared as it is, crediting the author, and the game is played on this page.',

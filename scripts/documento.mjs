@@ -76,13 +76,16 @@ const FECHA = process.env.FECHA ?? new Date().toLocaleDateString('sv-SE'); // 20
 const DOCUMENTOS = [
   // 4 nov. 2026, 8.4: compartir v23 (ES) y v24 (EN), las urgencias y el recorte del 28 %; completo v21, la Etapa 8 en la sección 29.
   // 4 nov. 2026, arreglos chicos de Felipe (8.4, sección 9): compartir v24 (ES) y v25 (EN), solo texto (Perlow, DORA, "empeora", fecha)
-  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v23' },
+  // 7 nov. 2026, 8.7: completo v24, la sección 31 (la portada que pregunta, los dos bloques, el juego que pregunta y el resumen en prosa).
+  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v24' },
   // 6 nov. 2026, 8.6: compartir v25 (ES) y v26 (EN), el mensaje nuevo en la portada, la pág. 1 y la pág. 11.
-  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v25', paginas: [16, 17] },
-  { id: 'compartir-en', html: 'compartir-en.html', nombre: 'Para compartir en inglés', version: 'v26', paginas: [16, 17] },
+  // 7 nov. 2026, 8.7: compartir v26 (ES) y v27 (EN), sin "Termina más empezando menos" y la pág. 11 con para qué sirve un límite.
+  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v26', paginas: [16, 17] },
+  { id: 'compartir-en', html: 'compartir-en.html', nombre: 'Para compartir en inglés', version: 'v27', paginas: [16, 17] },
   // Etapa 8.6 (2026-11-06): el resumen de 4 páginas con el mensaje nuevo, en español e inglés (DOC=resumen y DOC=resumen-en)
-  { id: 'resumen', html: 'resumen.html', nombre: 'Resumen', version: 'v1', paginas: [4, 4], aparte: true },
-  { id: 'resumen-en', html: 'resumen-en.html', nombre: 'Summary', version: 'v1', paginas: [4, 4], aparte: true },
+  // Etapa 8.7 (2026-11-07): el v2, de nuevo desde cero, en prosa: una columna de 4 páginas en primera persona
+  { id: 'resumen', html: 'resumen.html', nombre: 'Resumen', version: 'v2', paginas: [4, 4], aparte: true },
+  { id: 'resumen-en', html: 'resumen-en.html', nombre: 'Summary', version: 'v2', paginas: [4, 4], aparte: true },
   { id: 'norte', html: 'norte.html', nombre: 'Norte del proyecto', version: 'v1', paginas: [1, 2], aparte: true },
   { id: 'etapa4-1', html: 'etapa4-1.html', nombre: 'Etapa 4.1 La paradoja', version: 'v1', paginas: [1, 3], aparte: true },
   { id: 'etapa4-2', html: 'etapa4-2.html', nombre: 'Etapa 4.2 Robustez', version: 'v1', paginas: [1, 3], aparte: true },
@@ -100,10 +103,13 @@ const DOCUMENTOS = [
   { id: 'taller-v5', html: 'taller-v5.html', nombre: 'Taller - Guía rápida del facilitador', version: 'v5', paginas: [5, 5], aparte: true },
   // Arreglo chico (2026-11-04): "Informe, págs. 8 y 9" en "¿Esto es real?" (DOC=taller-v6)
   { id: 'taller-v6', html: 'taller-v6.html', nombre: 'Taller - Guía rápida del facilitador', version: 'v6', paginas: [5, 5], aparte: true },
+  // 7 nov. 2026, 8.7: guía v7, solo la foto 3 (la tabla del fin del día con la pregunta nueva)
+  { id: 'taller-v7', html: 'taller-v7.html', nombre: 'Taller - Guía rápida del facilitador', version: 'v7', paginas: [5, 5], aparte: true },
   // Etapa 7 (2026-10-28): la hoja del equipo sola, 1 hoja, para descargar aparte (DOC=hoja-equipo)
   { id: 'hoja-equipo', html: 'taller-hoja-equipo.html', nombre: 'Taller - Hoja del equipo', version: 'v5', paginas: [1, 1], aparte: true },
   // Etapa 7 (2026-10-28): los borradores de difusión de docs/etapa7-difusion.md, para leerlos en PDF (DOC=borradores)
-  { id: 'borradores', html: 'borradores.html', nombre: 'Borradores de difusión', version: 'v2', paginas: [9, 10], aparte: true },
+  // 7 nov. 2026, 8.7: borradores v3, sin "termina más empezando menos" (los borradores 1 y 6 vuelven a su texto de antes de la 8.6)
+  { id: 'borradores', html: 'borradores.html', nombre: 'Borradores de difusión', version: 'v3', paginas: [9, 10], aparte: true },
 ];
 const SITIO = 'http://localhost:5173'; // raíz del sitio (portada, docs)
 const JUEGO = `${SITIO}/jugar/`; // el juego vive en /jugar/ desde la Etapa 5.1

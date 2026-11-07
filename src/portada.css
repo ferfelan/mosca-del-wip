@@ -196,15 +196,6 @@ html { scroll-padding-top: var(--alto-barra); }
   min-height: clamp(640px, calc(100svh - var(--alto-barra)), 940px);
 }
 .hero-texto { align-self: center; padding: 64px 0 72px; }
-/* El rótulo ("Para equipos y líderes · un juego de 1 minuto") en letra normal,
-   con el gris de las notas */
-.rotulo {
-  font-size: 16.5px;
-  font-weight: 620;
-  line-height: 1.3;
-  color: var(--suave);
-  margin: 0 0 18px;
-}
 /* La pregunta: dos frases cortas. Más chica que el nombre de antes (116 px)
    porque son 38 letras y no 13; cabe en dos líneas desde 1100 px. */
 h1 {
@@ -449,6 +440,7 @@ h1 {
 .consola-nota { margin-top: 12px; font-size: 13.5px; }
 
 /* ---------- Secciones ---------- */
+.sirve,
 .gana,
 .juego,
 .pasos,
@@ -670,15 +662,11 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .descargas a:hover { text-decoration-color: currentColor; }
 .kit-cierre { margin-top: 28px; color: var(--suave); font-size: 17px; max-width: 60ch; text-wrap: pretty; }
 
-/* Lo que se lleva tu equipo (portada v4, 2026-10-28; antes "Lo que gana tu
-   equipo", con el ×2, que salió porque se leía como promesa): un solo
-   tablero, no cuatro tarjetas sueltas: las celdas se separan con líneas finas.
-   Cuatro cosas que el equipo se lleva, cada una con el dibujo de una tarjeta
-   del tablero de la mosca en un color del juego: su capacidad (la columna con
-   un lugar libre) en verde, dónde espera el trabajo (la tarjeta con candado)
-   en rojo, el acuerdo escrito en ámbar y sus datos en el cian de la visión.
-   En computador van las cuatro en una fila; en tablet, de a dos; en celular,
-   una bajo otra con el dibujo a la izquierda. */
+/* El tablero (portada v4, 2026-10-28): un solo tablero, no tarjetas sueltas:
+   las celdas se separan con líneas finas. Desde la 8.7 (2026-11-07) lo usa
+   "Para qué sirve un límite": tres celdas, cada una con su línea en grande y
+   el respaldo del juego en chico. En computador van en una fila; en celular,
+   una bajo otra. */
 .gana-tablero {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -695,10 +683,10 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   padding: clamp(22px, 2.6vw, 32px);
   background: var(--noche-2);
 }
-.gana-item[data-color='tranquila'] { --acento: var(--tranquila); }
-.gana-item[data-color='colapsada'] { --acento: var(--colapsada); }
-.gana-item[data-color='ocupada'] { --acento: var(--ocupada); }
-.gana-item[data-color='vision'] { --acento: var(--vision); }
+[data-color='tranquila'] { --acento: var(--tranquila); }
+[data-color='colapsada'] { --acento: var(--colapsada); }
+[data-color='ocupada'] { --acento: var(--ocupada); }
+[data-color='vision'] { --acento: var(--vision); }
 .gana-icono {
   width: 54px;
   height: 54px;
@@ -713,36 +701,44 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .gana-item h3 { margin: 0 0 6px; font-size: 19.5px; text-wrap: balance; }
 /* (balance: las líneas quedan parejas y no queda "y a" colgando al final) */
 .gana-item p { margin: 0; color: var(--suave); font-size: 16.5px; line-height: 1.5; text-wrap: balance; }
-.gana-nota { margin-top: 18px; max-width: 72ch; text-wrap: pretty; }
-/* 8.6 (2026-11-06): la sección parte por lo que busca un límite (tres celdas
-   en verde, cada una con su respaldo abajo, separado con un filete), sigue la
-   línea de DORA y, más chico, lo que el equipo se lleva del taller (las tres
-   cosas de antes que siguen sumando, con su dibujo de siempre en chico) */
-.gana-bajada { margin: -8px 0 20px; color: var(--suave); font-size: 18px; line-height: 1.45; }
-.gana-item .gana-respaldo {
-  margin-top: 12px;
-  padding-top: 10px;
+.gana-nota { margin-top: 22px; max-width: 72ch; text-wrap: pretty; }
+/* 8.7 (2026-11-07, segunda vuelta de Felipe: la sección de la 8.6 "era un
+   trabalenguas"). "Para qué sirve un límite": en cada celda la línea en
+   grande arriba y el respaldo del juego abajo, bajo un filete, a la misma
+   altura en las tres; cierra una frase con DORA, en el gris de los textos.
+   "Lo que se lleva tu equipo": cuatro frases cortas, de a dos, cada una con
+   el dibujo de una tarjeta del tablero de la mosca (los de la portada v4). */
+.sirve-tablero .gana-item { justify-content: space-between; gap: 18px; }
+.sirve-tablero .gana-item h3 {
+  margin: 0;
+  font-size: clamp(22px, 2vw, 27px);
+  font-weight: 760;
+  line-height: 1.18;
+  letter-spacing: -0.018em;
+  text-wrap: balance;
+}
+.sirve-tablero .gana-respaldo {
+  margin: 0;
+  padding-top: 12px;
   border-top: 1px solid var(--borde);
-  font-size: 14.5px;
+  font-size: 15px;
   line-height: 1.45;
   color: var(--tenue);
+  text-wrap: balance;
 }
-.gana-dora { margin-top: 16px; font-size: 15.5px; line-height: 1.5; color: var(--suave); }
-.gana-ademas-titulo { margin: 30px 0 12px; font-size: 16.5px; font-weight: 620; line-height: 1.3; color: var(--suave); }
-.gana-ademas {
+.sirve-cierre { margin: 20px 0 0; max-width: 62ch; font-size: 17px; line-height: 1.5; color: var(--suave); text-wrap: pretty; }
+.gana-lista {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px 28px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 48px;
+  max-width: 1000px;
 }
-.gana-ademas li { display: flex; align-items: center; gap: 12px; margin: 0; color: var(--suave); font-size: 16px; line-height: 1.4; }
-.gana-ademas li[data-color='colapsada'] { --acento: var(--colapsada); }
-.gana-ademas li[data-color='ocupada'] { --acento: var(--ocupada); }
-.gana-ademas li[data-color='vision'] { --acento: var(--vision); }
-.gana-ademas .gana-icono { flex: 0 0 38px; width: 38px; height: 38px; border-radius: 11px; }
-.gana-ademas .gana-icono svg { width: 22px; height: 22px; }
+.gana-lista li { display: flex; align-items: center; gap: 16px; margin: 0; font-size: 18px; line-height: 1.4; text-wrap: pretty; }
+.gana-lista .gana-icono { flex: 0 0 50px; width: 50px; height: 50px; border-radius: 14px; }
+.gana-lista .gana-icono svg { width: 29px; height: 29px; }
 
 /* ¿Por qué una mosca?: el texto a la izquierda y, al lado, las dos fotos del
    cerebro (2 y 9 tareas a la vez), el crédito de MaleCNS y los colores */
@@ -913,19 +909,17 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .pie-mapa { flex-basis: 100%; display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0; padding: 0; list-style: none; }
 .pie-mapa li { margin: 0; }
 
-@media (min-width: 600px) and (max-width: 1099px) {
-  .gana-ademas { grid-template-columns: 1fr; }
-}
-
 /* ---------- Pantallas angostas y celular ---------- */
 @media (max-width: 899px) {
   body.portada { font-size: 17px; }
   .hero { grid-template-columns: 1fr; min-height: 0; }
   .hero-texto { padding: 16px 0 0; }
-  .rotulo { margin-bottom: 14px; }
   /* En el celular, cada frase de la pregunta en su línea: la letra se ajusta
      al ancho (35 px en un iPhone de 390) y la familia va un poco más angosta */
   h1 { font-size: clamp(28px, 8.9vw, 40px); font-stretch: 100%; letter-spacing: -0.034em; max-width: none; margin-bottom: 18px; }
+  /* (el corte del título en inglés es solo para computador: en celular la
+     segunda frase no cabe en una línea) */
+  h1 br.corte { display: none; }
   .bajada { margin-bottom: 24px; }
   .dato-inicio { margin-bottom: 24px; font-size: 14.5px; }
   /* En celular, justo después de la presentación, uno bajo el otro: Jugar (el
@@ -949,6 +943,7 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .dato dt { font-size: 14.5px; }
   .dato dd { font-size: 22px; }
 
+  .sirve,
   .gana,
   .juego,
   .pasos,
@@ -982,18 +977,18 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .pieza-cuerpo { padding: 18px 20px 22px; }
   .pieza .boton { width: 100%; max-width: 440px; }
 
-  /* Lo que se lleva tu equipo: las tres celdas en una columna, cada una con
-     el dibujo a la izquierda del texto; lo del taller, una bajo otra */
+  /* Para qué sirve un límite: las tres celdas una bajo otra, la línea y su
+     respaldo; lo que se lleva tu equipo, una frase bajo otra */
   .gana-tablero { grid-template-columns: 1fr; border-radius: 20px; }
-  .gana-item { flex-direction: row; align-items: flex-start; gap: 16px; padding: 18px 20px; }
-  .gana-icono { flex: 0 0 46px; width: 46px; height: 46px; border-radius: 13px; }
-  .gana-icono svg { width: 27px; height: 27px; }
-  .gana-item h3 { font-size: 18px; margin-bottom: 4px; }
-  .gana-item p { font-size: 16px; }
-  .gana-bajada { font-size: 17px; margin-bottom: 16px; }
-  .gana-ademas { grid-template-columns: 1fr; gap: 12px; }
-  .gana-ademas .gana-icono { flex-basis: 38px; width: 38px; height: 38px; border-radius: 11px; }
-  .gana-ademas .gana-icono svg { width: 22px; height: 22px; }
+  .gana-item { padding: 20px 20px 18px; }
+  .sirve-tablero .gana-item { gap: 14px; }
+  .sirve-tablero .gana-item h3 { font-size: 21px; }
+  .sirve-tablero .gana-respaldo { padding-top: 10px; font-size: 14.5px; }
+  .sirve-cierre { font-size: 16px; margin-top: 16px; }
+  .gana-lista { grid-template-columns: 1fr; gap: 14px; }
+  .gana-lista li { font-size: 17px; gap: 14px; }
+  .gana-lista .gana-icono { flex-basis: 44px; width: 44px; height: 44px; border-radius: 12px; }
+  .gana-lista .gana-icono svg { width: 26px; height: 26px; }
   .motivo-texto p { font-size: 17px; }
 
   .credito { grid-template-columns: 1fr; }
@@ -1052,7 +1047,6 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 @media (min-width: 900px) and (max-height: 820px) {
   .hero { min-height: max(calc(100svh - var(--alto-barra)), 620px); }
   .hero-texto { padding: 40px 0 48px; }
-  .rotulo { margin-bottom: 14px; }
   h1 { font-size: clamp(38px, 3.2vw, 46px); margin-bottom: 18px; }
   .bajada { margin-bottom: 28px; }
   .dato-inicio { margin-bottom: 26px; }

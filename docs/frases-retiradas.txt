@@ -10,9 +10,10 @@
 # Al cambiar un texto que se copió en varios lugares: el texto viejo va aquí,
 # con su fecha y de dónde salió (en el comentario va el texto completo).
 #
-# Lo que NO va aquí: "Ocupado todo el día. ¿Y qué terminaste?" sigue siendo el
-# gancho del informe (pág. 2) y de la vista previa del informe. Salió de la
-# portada, pero no del sitio.
+# Lo que NO va aquí: "Ocupado todo el día. ¿Y qué terminaste?" salió de la
+# portada en la 8.6 y volvió en la 8.7 (es también el gancho de la pág. 2 del
+# informe). "Prueba un día con 9 y otro con 2." (la línea vieja de la tarjeta
+# del juego) tampoco: la línea nueva parte con esas mismas palabras.
 
 # ─── Etapa 8.6, 2026-11-06: el mensaje nuevo de la portada ───────────────────
 
@@ -110,3 +111,110 @@ You leave with a team agreement, which is a written limit
 #   con límites altos la urgencia misma tardó más."
 que aparece cuando el día ya corre, le mandas una
 which appears once the day is running, you send one
+
+# ─── Etapa 8.7, 2026-11-07: la portada vuelve a la pregunta ─────────────────
+
+# Título viejo de la portada (8.6), con la pestaña, og, twitter y JSON-LD:
+#   "Termina más empezando menos" / "Límite WIP: termina más empezando menos ·
+#   Mosca del WIP". Salió también del subtítulo y la pág. 1 del informe, de la
+#   bajada del informe web y de la descripción y la bajada de la guía ("por qué
+#   conviene limitarlo para terminar más empezando menos"), y de dos borradores
+#   ("la idea es que termines más empezando menos").
+Termina más empezando menos
+terminar más empezando menos
+termines más empezando menos
+Finish more by starting less
+
+# Bajada vieja de la portada (8.6), og:description y twitter:description:
+#   "Cuando tienes todo empezado, cada cosa espera su turno y tarda más en salir.
+#   En un minuto, una mosca oficinista con cerebro real te muestra por qué.
+#   Después te contamos cómo encontrar el límite de tu equipo."
+# Meta description vieja: "Termina más empezando menos. Una mosca con cerebro
+#   real te muestra por qué en un juego de un minuto, con guía, informe y taller
+#   gratis para el límite WIP de tu equipo."
+cada cosa espera su turno y tarda más en salir
+con cerebro real te muestra por qué
+Después te contamos cómo encontrar el límite
+each thing waits its turn and takes longer
+with a real brain shows you why
+Then we explain how to find your team’s limit
+
+# "Lo que se lleva tu equipo" de la 8.6, el bloque "Lo que busca un límite":
+#   "Lo que busca un límite al trabajo en curso." / "Cada cosa sale antes. Con el
+#   mismo ritmo, menos cosas abiertas es menos tiempo para cada una. Matemática,
+#   la ley de Little." / "El trabajo espera menos. Sube la eficiencia de flujo,
+#   la parte del tiempo en que algo avanza de verdad. En el juego, 47 % con 2 a
+#   la vez y 9 % con 9." / "Un ritmo que se aguanta. Llegan al final del día sin
+#   colapsar. En el juego, con 2 cerró el día Tranquila y con 9, Colapsada." /
+#   "Y del taller se llevan: Un acuerdo escrito, con su límite y qué hacer cuando
+#   algo espera. A la vista, dónde espera su trabajo y a quién esperan. En dos
+#   semanas, sus propios números." / "Es lo que busca un límite, no una
+#   garantía. Cuánto, en su caso, lo dice su prueba."
+# ("Cada cosa sale antes" no entra: sigue en "Terminan más, y cada cosa sale
+# antes". La frase de DORA tampoco: sigue igual en "Para qué sirve un límite".
+# Ni "Con el mismo ritmo, menos cosas abiertas es menos tiempo para cada una",
+# que es de la guía, en "La ley de Little, en simple", y la portada la había
+# copiado. Ni "Cuánto, en su caso, lo dice su prueba", que sigue en la respuesta
+# del taller sobre si los estudios valen para un equipo.)
+Lo que busca un límite
+Matemática, la ley de Little
+Sube la eficiencia de flujo, la parte del tiempo
+47 % con 2 a la vez y 9 % con 9
+Un ritmo que se aguanta
+Llegan al final del día sin colapsar
+Y del taller se llevan
+dónde espera su trabajo y a quién esperan
+Un acuerdo escrito, con su límite y qué hacer
+En dos semanas, sus propios números
+no una garantía
+What a limit on work in progress aims for
+What a limit aims for
+Math, Little’s Law
+Flow efficiency goes up, the share of time
+47% with 2 at once and 9% with 9
+A pace you can keep
+You get to the end of the day without being overwhelmed
+And from the workshop they take
+Where their work waits and who they’re waiting on
+A written agreement, with their limit and what to do
+Their own numbers, in two weeks
+not a guarantee
+How much, in your case, your test will tell
+How much, in their case, their test will tell
+
+# Sus copias en otros lados (8.6): la guía ("Que cada cosa salga antes, que el
+# trabajo espere menos y que el ritmo se aguante es lo que busca un límite, no
+# una garantía. Cuánto logra en tu equipo lo dice su prueba." / "Getting each
+# thing done sooner, with less waiting and at a pace you can keep, is what a
+# limit aims for, not a guarantee. How much it achieves in your team, your test
+# will tell."), el taller ("Lo que sí sale de la sala es un acuerdo escrito,
+# dónde espera su trabajo a la vista y la fecha para mirar sus propios números")
+# y la pág. 11 del informe ("Un límite busca que cada cosa salga antes, que el
+# trabajo espere menos y un ritmo que se aguante. No es una garantía." / "A
+# limit aims for each thing getting done sooner, work waiting less and a pace
+# you can keep. It isn’t a guarantee.").
+que el trabajo espere menos
+Un límite busca que cada cosa salga antes
+Getting each thing done sooner, with less waiting
+How much it achieves in your team
+Lo que sí sale de la sala es un acuerdo escrito
+What does leave the room is a written agreement
+A limit aims for each thing getting done sooner
+It isn’t a guarantee
+
+# FAQ, "¿Qué es la Mosca del WIP?", respuesta de la 8.6:
+#   "Sirve para ver, en un minuto, por qué se termina más empezando menos.
+#   Eliges cuántas tareas tiene a la vez una mosca oficinista con cerebro real,
+#   de 1 a 10, y miras su día de oficina. Después, la guía, el informe y el
+#   taller te ayudan a encontrar el límite de tu equipo."
+Sirve para ver, en un minuto
+It shows you, in one minute
+# FAQ, "¿Qué se lleva mi equipo?", respuesta de la 8.6:
+#   "Lo que busca un límite: que cada cosa salga antes, que el trabajo espere
+#   menos y un ritmo que se aguante. Del taller se llevan además un acuerdo
+#   escrito y, en dos semanas, sus propios números. Cuánto logra el límite en su
+#   caso, lo dice su prueba."
+Del taller se llevan además un acuerdo escrito
+Cuánto logra el límite en su caso
+From the workshop they also take a written agreement
+How much the limit achieves in your case

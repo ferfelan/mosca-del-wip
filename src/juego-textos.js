@@ -138,10 +138,20 @@ export const PAGINA = {
     'Choose how many tasks she can have started at once, from 1 to 10, and watch her office day in one minute.',
   'Al final verás cuánto terminó, cuánto tardó cada tarea y cómo quedó de estrés.':
     'At the end you’ll see how much she finished, how long each task took and how stressed she ended up.',
-  'Prueba un día con 9 y otro con 2.': 'Try one day with 9 and another with 2.',
+  // (8.7, 2026-11-07) el cigarro y el café con las reglas del juego (fuma
+  // solo sobre Tranquila y pierde 8 minutos, el café solo con estrés bajo) y
+  // la pregunta al final
+  'Si se estresa, sale a fumar y pierde tiempo. Si no está tan estresada, se toma un café.':
+    'If she gets stressed, she goes out for a smoke and loses time. If she isn’t too stressed, she has a coffee.',
+  // (el espacio entre ¿Con y cuál no se parte: en el computador la línea se
+  // cortaba en "¿Con / cuál")
+  'Prueba un día con 9 y otro con 2. ¿Con\u00a0cuál crees que termina más?':
+    'Try one day with 9 and another with 2. Which one do you think she’ll finish more with?',
   'Empezar el día': 'Start the day',
   '¿Qué es esto?': 'What is this?',
   'Mira la tabla o reinicia para probar otro WIP.': 'Check the table, or restart to try another WIP.',
+  // (8.7) al fin del día, en Control, Exhibición y el celular
+  '¿Y tú, cuántas cosas tienes empezadas hoy?': 'And you, how many things do you have started today?',
   // Celular (Parte 5.2e): volver, la píldora del reloj, la hoja de abajo, las
   // pestañas y el fin del día ("Cerebro", "Idioma" y "Reiniciar día" ya están)
   'Volver a la portada': 'Back to the home page',

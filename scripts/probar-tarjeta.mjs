@@ -19,6 +19,13 @@
 //     la pantalla, sin chocar con los botones de arriba ni con la hoja, que
 //     hasta empezar lleva solo las tareas a la vez; tocar el botón empieza y
 //     aparecen los números.
+//  8. (8.7, 2026-11-07, pedido de Felipe) la tarjeta dice también lo del
+//     cigarro y el café y termina con una pregunta, y en 375 × 667 (y en el
+//     iPhone 14 y el Android angosto) entra completa SIN TAPAR A LA MOSCA: la
+//     oficina se achica arriba de ella hasta empezar el día, y al empezar la
+//     mosca vuelve a su tamaño. En el iPhone SE con las barras de Safari
+//     (375 × 548) no hay lugar para las dos: ahí la tarjeta va entera sobre la
+//     oficina, como antes.
 // Deja capturas (español e inglés, computador y celular) en
 // docs/etapa8-1-capturas/ (o CAPTURAS=<carpeta>). Requiere npm run dev
 // (JUEGO=<dirección> para otra; contra el sitio publicado también sirve).
@@ -36,8 +43,8 @@ const mal = [];
 const ok = (cond, msg) => { if (!cond) mal.push(msg); };
 
 const TEXTOS = {
-  es: ['Tú eres el jefe de la mosca.', 'Decide cuántas tareas puede tener empezadas a la vez, de 1 a 10, y mira su día de oficina en un minuto.', 'Al final verás cuánto terminó, cuánto tardó cada tarea y cómo quedó de estrés.', 'Prueba un día con 9 y otro con 2.', 'Empezar el día', '¿Qué es esto?'],
-  en: ['You’re the fly’s boss.', 'Choose how many tasks she can have started at once, from 1 to 10, and watch her office day in one minute.', 'At the end you’ll see how much she finished, how long each task took and how stressed she ended up.', 'Try one day with 9 and another with 2.', 'Start the day', 'What is this?'],
+  es: ['Tú eres el jefe de la mosca.', 'Decide cuántas tareas puede tener empezadas a la vez, de 1 a 10, y mira su día de oficina en un minuto.', 'Al final verás cuánto terminó, cuánto tardó cada tarea y cómo quedó de estrés.', 'Si se estresa, sale a fumar y pierde tiempo. Si no está tan estresada, se toma un café.', 'Prueba un día con 9 y otro con 2. ¿Con cuál crees que termina más?', 'Empezar el día', '¿Qué es esto?'],
+  en: ['You’re the fly’s boss.', 'Choose how many tasks she can have started at once, from 1 to 10, and watch her office day in one minute.', 'At the end you’ll see how much she finished, how long each task took and how stressed she ended up.', 'If she gets stressed, she goes out for a smoke and loses time. If she isn’t too stressed, she has a coffee.', 'Try one day with 9 and another with 2. Which one do you think she’ll finish more with?', 'Start the day', 'What is this?'],
 };
 const PORTADA = { es: '/', en: '/en/' };
 
@@ -45,8 +52,10 @@ const PORTADA = { es: '/', en: '/en/' };
 const leer = (p) => p.evaluate(() => {
   const t = document.getElementById('aviso-empezar');
   const caja = (el) => { const r = el.getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width, h: r.height, d: r.right, b: r.bottom }; };
-  const visible = (el) => !!el && !el.hidden && getComputedStyle(el).display !== 'none' && getComputedStyle(el).visibility !== 'hidden' && el.getBoundingClientRect().width > 0;
-  const partes = ['strong', '.aviso-texto p:nth-child(1)', '.aviso-texto p:nth-child(2)', '.aviso-texto p:nth-child(3)', '#btn-empezar', '#aviso-que-es'].map((s) => t.querySelector(s));
+  // (8.7: sin mirar el atributo hidden, sino si de verdad se dibuja: una regla
+  // del celular le ganaba a [hidden] y la tarjeta seguía a la vista)
+  const visible = (el) => !!el && getComputedStyle(el).display !== 'none' && getComputedStyle(el).visibility !== 'hidden' && el.getBoundingClientRect().width > 0;
+  const partes = ['strong', '.aviso-texto p:nth-child(1)', '.aviso-texto p:nth-child(2)', '.aviso-texto p:nth-child(3)', '.aviso-texto p:nth-child(4)', '#btn-empezar', '#aviso-que-es'].map((s) => t.querySelector(s));
   const r = caja(t);
   const cruza = (s) => { const el = document.querySelector(s); if (!visible(el)) return false; const q = caja(el); return r.x < q.d && q.x < r.d && r.y < q.b && q.y < r.b; };
   return {
@@ -65,10 +74,16 @@ const leer = (p) => p.evaluate(() => {
     exhibicion: document.body.classList.contains('exhibicion'),
     numeros: getComputedStyle(document.querySelector('.bloque-numeros')).display !== 'none',
     clases: t.className,
+    // (8.7) la caja de la mosca en el último cuadro dibujado (el juego la anota
+    // en desarrollo si la prueba prendió window.__cuadrosMosca)
+    mosca: (window.__cuadrosMosca || []).filter((c) => c.tipo === 'cuadro').at(-1)?.mosca ?? null,
   };
 });
+// ¿La tarjeta tapa a la mosca? (con 4 px de holgura)
+const tapaMosca = (e) => !!e.mosca && e.caja.x < e.mosca[2] - 4 && e.mosca[0] + 4 < e.caja.x + e.caja.w && e.caja.y < e.mosca[3] - 4 && e.mosca[1] + 4 < e.caja.y + e.caja.h;
 const abrir = async (ctx, idioma, tag) => {
   const p = await ctx.newPage();
+  await p.addInitScript(() => { window.__cuadrosMosca = []; });
   p.on('pageerror', (e) => mal.push(`error ${tag}: ${e.message}`));
   p.on('console', (m) => { if (m.type() === 'error') mal.push(`consola ${tag}: ${m.text()}`); });
   p.on('dialog', (d) => { mal.push(`${tag}: apareció un diálogo del navegador: ${d.message()}`); d.dismiss(); });
@@ -154,20 +169,25 @@ for (const idioma of ['es', 'en']) {
 const tel = (w, h, dpr, ua) => ({ viewport: { width: w, height: h }, deviceScaleFactor: dpr, isMobile: true, hasTouch: true, userAgent: ua, locale: 'es-CL' });
 const TELEFONOS = {
   iphone14: tel(390, 664, 3, devices['iPhone 14'].userAgent),
+  'iphone-se-667': tel(375, 667, 2, devices['iPhone 14'].userAgent), // (8.7) el tamaño del pedido
   'iphone-se': tel(375, 548, 2, devices['iPhone 14'].userAgent),
   'android-angosto': tel(320, 658, 4.5, devices['Pixel 7'].userAgent),
 };
-for (const [nombre, d] of Object.entries(TELEFONOS)) for (const idioma of nombre === 'iphone14' ? ['es', 'en'] : ['es']) {
+// dónde la tarjeta no debe tapar a la mosca (en el iPhone SE con las barras de Safari no cabe)
+const SIN_TAPAR = ['iphone14', 'iphone-se-667', 'android-angosto'];
+for (const [nombre, d] of Object.entries(TELEFONOS)) for (const idioma of ['iphone14', 'iphone-se-667'].includes(nombre) ? ['es', 'en'] : ['es']) {
   const tag = `${nombre} ${idioma}`;
   const ctx = await b.newContext(d);
   const p = await abrir(ctx, idioma, tag);
   await p.waitForFunction(() => document.documentElement.classList.contains('celular'));
   let e = await leer(p);
+  const altoConTarjeta = e.mosca ? e.mosca[3] - e.mosca[1] : 0;
   ok(e.visible && e.dentro && !e.choca.length, `${tag}: la tarjeta debe verse entera y sin chocar (${JSON.stringify(e.caja)}, choca con ${e.choca.join(', ') || 'nada'})`);
   ok(JSON.stringify(e.textos) === JSON.stringify(TEXTOS[idioma]) && !e.clases, `${tag}: la tarjeta debe estar completa (${JSON.stringify(e.textos)}, clases «${e.clases}»)`);
   ok(!e.numeros, `${tag}: hasta empezar la hoja lleva solo las tareas a la vez`);
   ok(e.hora === '09:00' && e.href === PORTADA[idioma], `${tag}: reloj ${e.hora}, enlace ${e.href}`);
-  console.log(`${tag}: tarjeta de ${e.caja.w}×${e.caja.h} en (${e.caja.x}, ${e.caja.y}) de ${d.viewport.width}×${d.viewport.height}`);
+  if (SIN_TAPAR.includes(nombre)) ok(e.mosca && !tapaMosca(e), `${tag}: la tarjeta no debe tapar a la mosca (tarjeta ${JSON.stringify(e.caja)}, mosca ${JSON.stringify(e.mosca)})`);
+  console.log(`${tag}: tarjeta de ${e.caja.w}×${e.caja.h} en (${e.caja.x}, ${e.caja.y}) de ${d.viewport.width}×${d.viewport.height}; mosca en ${JSON.stringify(e.mosca?.map(Math.round))}`);
   await p.screenshot({ path: `${DIR}/celular-${nombre}-${idioma}.png` });
   // mover el deslizador con el dedo no la cierra
   const r = await p.$eval('#wip', (el) => el.getBoundingClientRect());
@@ -178,6 +198,13 @@ for (const [nombre, d] of Object.entries(TELEFONOS)) for (const idioma of nombre
   ok(await esperarQueCorra(p), `${tag}: tocar "Empezar el día" debe empezar`);
   e = await leer(p);
   ok(!e.visible && e.numeros, `${tag}: al empezar se va la tarjeta y aparecen los números (visible ${e.visible}, números ${e.numeros})`);
+  // (8.7) y la mosca vuelve a su tamaño: más alta que con la tarjeta
+  if (SIN_TAPAR.includes(nombre)) {
+    await p.waitForTimeout(700);
+    const despues = await leer(p);
+    const alto = despues.mosca ? despues.mosca[3] - despues.mosca[1] : 0;
+    ok(alto > 1.8 * altoConTarjeta, `${tag}: al empezar la mosca debe volver a su tamaño (de ${Math.round(altoConTarjeta)} a ${Math.round(alto)} px de alto)`);
+  }
   if (nombre === 'iphone14' && idioma === 'es') await p.screenshot({ path: `${DIR}/celular-iphone14-empezado.png` });
   await ctx.close();
 }

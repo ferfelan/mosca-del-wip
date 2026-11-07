@@ -26,7 +26,7 @@ const IDIOMAS = {
   es: {
     fuente: 'docs/contexto/compartir.html',
     salida: 'informe/index.html',
-    actualizadoEl: '2026-11-06',
+    actualizadoEl: '2026-11-07',
     img: '/img/informe/',
     pdf: { ruta: '/Mosca-del-WIP-Informe.pdf', nombre: 'Mosca del WIP - Informe.pdf', peso: '4 MB', paginas: '17 páginas' },
     resumen: { ruta: '/Mosca-del-WIP-Resumen.pdf', nombre: 'Mosca del WIP - Resumen.pdf' }, // 8.6: el resumen de 4 páginas
@@ -36,7 +36,7 @@ const IDIOMAS = {
     imagen: vistaPrevia('informe'),
     imagenAlt: 'La tapa del informe: la mosca cargando una torre de carpetas, junto al título Estar siempre ocupado no es lo mismo que avanzar.',
     encabezado: 'Estar siempre ocupado no es lo mismo que avanzar',
-    bajada: 'Termina más empezando menos. Un informe con una mosca real sobre por qué conviene limitar el trabajo en curso (WIP). Es el mismo informe del PDF, para leer en la web, con una sección por página.',
+    bajada: 'Un informe con una mosca real sobre por qué conviene limitar el trabajo en curso (WIP). Es el mismo informe del PDF, para leer en la web, con una sección por página.',
     miga: 'El informe',
     porAutor: 'Por',
     publicado: 'Publicado el',
@@ -66,7 +66,7 @@ const IDIOMAS = {
   en: {
     fuente: 'docs/contexto/compartir-en.html',
     salida: 'en/report/index.html',
-    actualizadoEl: '2026-11-06',
+    actualizadoEl: '2026-11-07',
     img: '/img/informe/en/',
     pdf: { ruta: '/Mosca-del-WIP-Report.pdf', nombre: 'Mosca del WIP - Report.pdf', peso: '4 MB', paginas: '17 pages' },
     resumen: { ruta: '/Mosca-del-WIP-Summary.pdf', nombre: 'Mosca del WIP - Summary.pdf' }, // 8.6: the four-page summary
@@ -76,7 +76,7 @@ const IDIOMAS = {
     imagen: vistaPrevia('report'),
     imagenAlt: 'The report’s cover: the fly carrying a tower of folders, next to the title Being busy all the time is not the same as making progress.',
     encabezado: 'Being busy all the time is not the same as making progress',
-    bajada: 'Finish more by starting less. A report with a real fly about why it pays to limit work in progress (WIP). It’s the same report as the PDF, to read on the web, one section per page.',
+    bajada: 'A report with a real fly about why it pays to limit work in progress (WIP). It’s the same report as the PDF, to read on the web, one section per page.',
     miga: 'The report',
     porAutor: 'By',
     publicado: 'Published on',

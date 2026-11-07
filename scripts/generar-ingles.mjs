@@ -33,17 +33,19 @@ const ORIGEN = join(RAIZ, 'index.html');
 const DESTINO = join(RAIZ, 'en', 'index.html');
 const SITIO = 'https://mosca.deliverycraft.ai';
 
-// Desde la 8.6 (2026-11-06), el mensaje nuevo de la portada: "Finish more by
-// starting less" (en español, "Termina más empezando menos")
-const TITULO = 'WIP limit: finish more by starting less · Mosca del WIP';
+// Desde la 8.7 (2026-11-07), el mensaje de la portada: la pregunta "Busy all
+// day. So what did you finish?" y una bajada que dice qué hacer (en español,
+// "Ocupado todo el día. ¿Y qué terminaste?" y "Mide cuántas cosas tiene
+// empezadas tu equipo…"). El título de la pestaña sigue partiendo por "WIP
+// limit", que es lo que la gente busca.
+const TITULO = 'WIP limit: busy all day. So what did you finish? · Mosca del WIP';
 const DESCRIPCION =
-  'Finish more by starting less. A fly with a real brain shows you why in a one-minute game, with a free guide, report and workshop for your team’s WIP limit.';
-const TITULO_COMPARTIR = 'Finish more by starting less · Mosca del WIP';
-const DESCRIPCION_COMPARTIR =
-  'When you have everything started, each thing waits its turn and takes longer to get done. An office fly with a real brain shows you why in one minute.';
-const ALT_VISTA_PREVIA = `The fly from the game at her desk, with many tasks at once, next to the title ${INGLES.titulo}. A 1-minute game, mosca.deliverycraft.ai.`;
+  'Measure how many things your team has started and find the WIP limit that lets it finish the most. Start with a one-minute game. Free guide, report and workshop.';
+const TITULO_COMPARTIR = 'Busy all day. So what did you finish? · Mosca del WIP';
+const DESCRIPCION_COMPARTIR = INGLES.bajada;
+const ALT_VISTA_PREVIA = `The fly from the game at her desk, with many tasks at once, next to the title ${INGLES.titulo.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')} A 1-minute game, mosca.deliverycraft.ai.`;
 const DESCRIPCION_SITIO =
-  'Finish more by starting less. A game with the brain of a real fly that shows why limiting work in progress (WIP) pays off, with a free guide, report and workshop for teams.';
+  'Busy all day. So what did you finish? A one-minute game with the real map of a fly’s brain to measure work in progress (WIP) and find the limit that lets your team finish the most, with a free guide, report and workshop.';
 // Si existe la vista previa en inglés (scripts/vistas-previas.mjs), se usa esa
 // (los nombres, con su fecha, salen de scripts/sello.mjs)
 const VISTA_PREVIA = existsSync(join(RAIZ, 'public', vistaPrevia('en'))) ? vistaPrevia('en') : vistaPrevia();
