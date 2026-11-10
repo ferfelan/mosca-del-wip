@@ -1585,7 +1585,8 @@ elSalir.addEventListener('close', () => {
 // ---------- El recorrido: dónde está cada cosa y para qué (8.8, 2026-11-09) ----------
 // Pedido de Felipe: "en el juego hace falta como ese mini tutorial flash".
 // Lo abren "¿Dónde está cada cosa?" de la tarjeta de inicio y el botón Ayuda
-// (arriba a la izquierda en el computador; el "?" de arriba en el celular).
+// (arriba a la izquierda en el computador; el "?" de arriba en el celular), y
+// la primera vez en cada navegador sale solo (8.9; al final de este archivo).
 // Muestra, una por una, las cosas de la pantalla con su título y una línea
 // (src/recorrido.js). Mientras está abierto el día queda en pausa, y al cerrar
 // sigue si corría. En Exhibición no hay recorrido: ahí explica quien facilita.
@@ -1643,6 +1644,28 @@ function rectDiasJugados() {
   const x1 = Math.max(titulo.right, tabla.right);
   return new DOMRect(x0, titulo.top - 4, x1 - x0, tabla.bottom - titulo.top + 4);
 }
+// La primera vez, el recorrido sale solo (8.9, 2026-11-10, pedido de Felipe:
+// "que al menos la primera vez sea como obligatorio, te lo puedas saltar
+// claro, y que siempre esté ahí disponible en Ayuda igual"). El navegador
+// recuerda que ya se vio, lo haya abierto el juego o la persona
+// (abrirRecorrido, más abajo), y desde entonces solo sale con sus botones.
+// Sin almacenamiento no se puede recordar: ahí sale en cada visita, y se
+// salta con un clic.
+const CLAVE_RECORRIDO_VISTO = 'mosca-del-wip-recorrido-visto';
+function recorridoVisto() {
+  try {
+    return localStorage.getItem(CLAVE_RECORRIDO_VISTO) === '1';
+  } catch {
+    return false;
+  }
+}
+function anotarRecorridoVisto() {
+  try {
+    localStorage.setItem(CLAVE_RECORRIDO_VISTO, '1');
+  } catch {
+    // sin almacenamiento disponible: la próxima visita lo verá de nuevo
+  }
+}
 let corriaAlAbrirRecorrido = false;
 const recorrido = crearRecorrido({
   pasos: pasosRecorrido,
@@ -1665,10 +1688,16 @@ const recorrido = crearRecorrido({
     corriaAlAbrirRecorrido = false;
   },
 });
+// Abre el recorrido y, si de verdad se mostró (si no hay nada que mostrar, no
+// se abre), el navegador anota que ya se vio
+function abrirRecorrido() {
+  recorrido.abrir();
+  if (recorrido.abierto()) anotarRecorridoVisto();
+}
 for (const id of ['btn-recorrido', 'btn-ayuda', 'cel-ayuda'])
   document.getElementById(id).addEventListener('click', () => {
     if (vista === 'exhibicion') return;
-    recorrido.abrir();
+    abrirRecorrido();
   });
 
 function cambiarIdioma(nuevo) {
@@ -1849,6 +1878,15 @@ document.documentElement.classList.remove('traduciendo');
 // pantalla la lee primero (es un diálogo con su título y su texto) y Enter o
 // Espacio empiezan el día. En Exhibición no se ve y el foco no entra.
 elAvisoEmpezar.focus({ preventScroll: true });
+// (8.9) La primera vez en este navegador, lo primero que se ve es el
+// recorrido: sale antes de pintar la pantalla, para que nadie alcance a leer
+// la tarjeta de inicio y se la quiten de las manos. Al cerrarlo ("Saltar",
+// Esc o "Listo") vuelve la tarjeta, con el foco del teclado, y el día sigue
+// en las 09:00. Un navegador manejado por un programa (navigator.webdriver:
+// las pruebas y las fotos de scripts/) no lo ve solo, porque todas esperan la
+// tarjeta de inicio; scripts/probar-recorrido.mjs se hace pasar por una
+// persona para probar la primera vez.
+if (!recorridoVisto() && !navigator.webdriver) abrirRecorrido();
 
 if (import.meta.env.DEV) {
   window.__mosca = {

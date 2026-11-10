@@ -65,11 +65,17 @@ export const INGLES = {
   // Para qué sirve un límite y Lo que se lleva tu equipo (8.7, 2026-11-07;
   // rediseñadas en la 8.8, 2026-11-09): tres líneas en grande, cada una con
   // la prueba de la mosca dibujada (un día con 2 a la vez y otro con 9), y
-  // cuatro frases cortas, cada una con un dibujo del tablero del equipo
+  // cuatro frases cortas, cada una con un dibujo del tablero del equipo.
+  // Desde la 8.9 (2026-11-10) una bajada dice de quién son los números antes
+  // de mostrarlos (de la mosca, en el juego), y la primera línea habla de ella
+  // ("She finishes more, and each task is done sooner": con "is done" queda
+  // en dos líneas en el computador, como la de antes, "You finish more, and
+  // each thing gets done sooner"; con "gets done" se iba a tres)
   sirveTitulo: 'What a limit is for',
+  sirveBajada: 'In the game, by limiting how many tasks she has at once, the fly gains this. <span class="sirve-aviso">These are her numbers, not your team’s.</span>',
   carril2: 'with 2 tasks at once',
   carril9: 'with 9 tasks at once',
-  sirve1: 'You finish more, and each thing gets done sooner.',
+  sirve1: 'She finishes more, and each task is done sooner.',
   sirve1Dato2: '<b>18</b> finished per day, 1&nbsp;h each',
   sirve1Dato9: '<b>9</b> finished per day, almost 9&nbsp;h each',
   sirve2: 'Work moves forward instead of waiting.',
@@ -80,7 +86,7 @@ export const INGLES = {
   sirve3: 'Less overload.',
   sirve3Dato2: 'she ends the day <b>Calm</b>, without smoking',
   sirve3Dato9: 'she ends the day <b>Overwhelmed</b>, with 13&nbsp;cigarettes',
-  sirveOrigen: 'Average of 200 days played. These are numbers from the game, not from people.',
+  sirveOrigen: 'Average of 200 days played.',
   sirveCierre: 'According to DORA, limiting work in progress is a habit of high-performing teams. How much your team gains, its own test will show.',
   ganaTitulo: 'What your team takes away',
   lleva1: 'Their load in plain sight: how many things each person has started.',

@@ -120,8 +120,11 @@ function medir({ tactil, celularVertical, idioma, raiz }) {
   if (tactil) {
     for (const el of base.querySelectorAll('.boton, input[type=range], .selector button, .menu-boton, .menu-enlaces a, .logo, .pregunta summary')) {
       if (!seVe(el)) continue;
-      const alto = el.getBoundingClientRect().height;
-      if (alto < 44) problemas.push(`difícil de tocar (${Math.round(alto)} px de alto): «${corto(el.textContent || el.id)}»`);
+      // (a la décima de píxel: mientras el menú baja, el motor de Safari mide
+      // un enlace de 44 px en 43,99998, y eso no es un botón chico. Avisaba
+      // "difícil de tocar (44 px de alto)" al azar, también en el sitio real)
+      const alto = Math.round(el.getBoundingClientRect().height * 10) / 10;
+      if (alto < 44) problemas.push(`difícil de tocar (${alto} px de alto): «${corto(el.textContent || el.id)}»`);
     }
   }
   if (celularVertical && !raiz) {

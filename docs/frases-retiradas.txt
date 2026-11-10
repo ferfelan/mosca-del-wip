@@ -264,3 +264,20 @@ from 1 to 10, and watch her office day in one minute
 # La línea del recorrido que no llegó a subir ("decides" también es una
 # palabra en inglés y confundía a la revisión de inglés): quedó "eliges"
 Con este control decides
+
+# ─── Etapa 8.9, 2026-11-10: los números son de la mosca ──────────────────────
+#
+# Lo que NO va aquí, de la 8.9: "Promedio de 200 días jugados. Son números del
+# juego, no de personas." (salió del pie de "Para qué sirve un límite", donde
+# ahora lo dice la bajada, pero sigue tal cual en la consola del inicio); "El
+# trabajo avanza en vez de esperar." y "Menos sobrecarga." (no cambiaron); y
+# "Cada cosa sale antes", que sola es muy corta para buscarla.
+
+# La primera línea de "Para qué sirve un límite" (8.7) hablaba del equipo y,
+# justo debajo, venían los números de la mosca ("con 2 tareas a la vez, 18
+# terminadas al día"): se podía leer como una promesa para el equipo. Ahora la
+# línea habla de la mosca, con "tarea", que es su palabra:
+#   "Terminan más, y cada cosa sale antes."
+#   "You finish more, and each thing gets done sooner."
+Terminan más, y cada cosa sale antes
+You finish more, and each thing gets done sooner

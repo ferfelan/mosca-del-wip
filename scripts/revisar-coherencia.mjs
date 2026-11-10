@@ -222,9 +222,11 @@ if (args.includes('--mapa')) {
     { pieza: 'Las cuatro ideas', es: '1. Estar siempre ocupado no es avanzar. 2. Un límite bajo, pero no 1. 3. Lo empezado no desaparece. 4. Las urgencias, de a una.',
       en: '1. Being busy all the time isn’t making progress. 2. A low limit, but not 1. 3. What’s started doesn’t disappear. 4. Urgent tasks, one at a time.',
       buscar: ['Un límite bajo, pero no 1', 'A low limit, but not 1', 'Lo empezado no desaparece', 'What’s started doesn’t disappear'] },
-    // (8.7) reemplaza a "Lo que busca un límite" de la 8.6
-    { pieza: 'Para qué sirve un límite', es: 'Terminan más, y cada cosa sale antes. El trabajo avanza en vez de esperar. Menos sobrecarga. Cuánto gana tu equipo, lo dice su prueba.',
-      en: 'You finish more, and each thing gets done sooner. Work moves forward instead of waiting. Less overload. How much your team gains, its own test will show.',
+    // (8.7) reemplaza a "Lo que busca un límite" de la 8.6. (8.9) En la portada
+    // los números son de la mosca y se dice antes de mostrarlos; la primera
+    // línea habla de ella ("Termina más, y cada tarea sale antes")
+    { pieza: 'Para qué sirve un límite', es: 'En el juego, al limitar sus tareas a la vez, la mosca gana esto. Son sus números, no los de tu equipo. Termina más, y cada tarea sale antes. El trabajo avanza en vez de esperar. Menos sobrecarga. Cuánto gana tu equipo, lo dice su prueba.',
+      en: 'In the game, by limiting how many tasks she has at once, the fly gains this. These are her numbers, not your team’s. She finishes more, and each task is done sooner. Work moves forward instead of waiting. Less overload. How much your team gains, its own test will show.',
       buscar: ['Para qué sirve un límite', 'What a limit is for', 'en vez de esperar', 'instead of waiting', 'Cuánto gana', 'How much your team gains', 'How much the team gains'] },
     { pieza: 'Lo que se lleva tu equipo', es: 'Su carga a la vista. Dónde se queda esperando el trabajo. Un límite acordado, escrito en el tablero. Sus propios datos después de dos semanas.',
       en: 'Their load in plain sight. Where the work sits waiting. An agreed limit, written on the board. Their own data after two weeks.',

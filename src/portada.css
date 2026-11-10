@@ -694,6 +694,19 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 [data-color='vision'] { --acento: var(--vision); }
 .gana-nota { margin-top: 22px; max-width: 72ch; text-wrap: pretty; }
 
+/* 8.9 (2026-11-10): antes del tablero, de quién son los números (de la mosca,
+   en el juego). En computador cada frase va en su línea y el párrafo deja
+   libre la esquina de la derecha, donde se asoma la mosca */
+.sirve-bajada {
+  max-width: min(40em, calc(100% - 232px));
+  margin: 0 0 30px;
+  color: var(--suave);
+  font-size: 19px;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+.sirve-aviso { display: block; }
+
 /* 8.8 (2026-11-09, pedido de Felipe: la sección "está muy plana" y sus
    respaldos "son medios trabalenguas"). "Para qué sirve un límite": en cada
    celda, la línea en grande y, abajo, la prueba de la mosca dibujada en un
@@ -849,12 +862,38 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .candado { width: 17px; height: 17px; align-self: center; margin-bottom: 1px; }
 /* El límite acordado: escrito arriba de la columna, que está llena; lo demás
    espera afuera */
-.dibujo-limite { display: flex; align-items: stretch; gap: 12px; }
+.dibujo-limite { display: flex; align-items: stretch; gap: 10px; }
 .dibujo-limite .columna-mini.limite { flex: 1 1 auto; min-width: 0; gap: 5px; padding: 8px 9px; }
-.columna-mini-cabeza { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 0 0 2px; font-size: 12.5px; font-weight: 650; line-height: 1.2; color: var(--suave); white-space: nowrap; }
-.columna-mini-cabeza b { padding: 2px 8px; border-radius: 999px; background: var(--acento); color: var(--noche); font-size: 12px; font-weight: 720; }
+/* La cabeza de la columna: su nombre a la izquierda y el límite a la derecha.
+   8.9 (2026-11-10): en inglés el nombre es más largo ("In progress") y
+   empujaba el límite fuera de la columna. Ahora la columna es más ancha (lo
+   que espera afuera ocupa menos) y el nombre va solo si cabe entero: la
+   cabeza mide una línea (el alto de la píldora del límite, 12 px × 1,2 + 4) y
+   el límite es lo primero que se acomoda, desde la derecha. Si el nombre no
+   cabe a su lado, baja a una segunda línea, que no se ve, y el límite queda a
+   la izquierda, como en el dibujo chico del celular. El límite nunca se sale
+   (y la cabeza no se achica cuando la columna queda justa: "flex: none") */
+.columna-mini-cabeza {
+  flex: none;
+  display: flex;
+  flex-flow: row-reverse wrap;
+  align-items: center;
+  align-content: flex-start;
+  justify-content: flex-end;
+  gap: 8px 6px;
+  height: 18.4px;
+  overflow: hidden;
+  margin: 0 0 2px;
+  font-size: 12.5px;
+  font-weight: 650;
+  line-height: 1.2;
+  color: var(--suave);
+  white-space: nowrap;
+}
+.columna-mini-cabeza span { flex: none; margin-right: auto; }
+.columna-mini-cabeza b { flex: none; order: -1; padding: 2px 8px; border-radius: 999px; background: var(--acento); color: var(--noche); font-size: 12px; font-weight: 720; }
 .dibujo-limite .columna-mini.limite i { height: 14px; }
-.en-fila { flex: 0 0 26%; display: flex; flex-direction: column; justify-content: flex-end; gap: 5px; padding-bottom: 8px; }
+.en-fila { flex: 0 0 20%; display: flex; flex-direction: column; justify-content: flex-end; gap: 5px; padding-bottom: 8px; }
 .en-fila i { height: 14px; border-radius: 3px; border: 1.5px dashed color-mix(in srgb, var(--tinta) 38%, transparent); }
 /* Sus propios datos: dos semanas, un día por barra. Las barras no suben ni
    bajan de una semana a la otra: no se promete un resultado */
@@ -1111,7 +1150,10 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .gana-tablero,
   .lleva-tablero { grid-template-columns: 1fr; border-radius: 20px; }
   .gana-item { gap: 16px; padding: 20px 18px 18px; }
-  .sirve h2 { margin-bottom: 46px; }
+  /* (8.9) la franja de la mosca asomada queda entre la bajada y el tablero */
+  .sirve h2 { margin-bottom: 14px; }
+  .sirve-bajada { max-width: none; margin-bottom: 48px; font-size: 17px; }
+  .sirve-aviso { display: inline; }
   .sirve-tablero .gana-item h3 { font-size: 21px; }
   .asomada { right: 22px; width: 88px; }
   .asomada-ventana { height: 46.1px; }

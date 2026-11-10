@@ -23,6 +23,16 @@
 //     abre; antes de empezar son cinco pasos (la hoja todavía no lleva los
 //     números) y con el día empezado, seis; desde la pestaña Cerebro vuelve a
 //     Oficina; la tarjeta queda entera y no tapa lo que muestra.
+//  5. La primera vez (8.9, 2026-11-10, pedido de Felipe: "que al menos la
+//     primera vez sea como obligatorio, te lo puedas saltar claro, y que
+//     siempre esté ahí disponible en Ayuda igual"): a una persona que abre el
+//     juego por primera vez el recorrido le sale solo, en el primer paso, con
+//     la tarjeta de inicio escondida y el día detenido en las 09:00; "Saltar"
+//     lo cierra, vuelve la tarjeta de inicio con el foco del teclado y el día
+//     se puede empezar; el navegador recuerda que ya se vio y al recargar no
+//     sale solo, pero Ayuda (o el "?" del celular) lo sigue abriendo. A un
+//     navegador manejado por un programa (como el de todas las pruebas) no le
+//     sale solo, y si lo abre con su botón también queda anotado como visto.
 // Requiere npm run dev (usa window.__mosca).
 // Uso: node scripts/probar-recorrido.mjs   → debe decir "recorrido: todo bien"
 //   CAPTURAS=<carpeta> deja ahí una foto de cada paso
@@ -104,6 +114,87 @@ const abrir = async (ctx, idioma, tag) => {
   return p;
 };
 const ESPERA = 950; // el foco llega deslizándose y sigue a su cosa un rato
+const tel = (w, h) => ({ viewport: { width: w, height: h }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, userAgent: devices['iPhone 14'].userAgent, locale: 'es-CL' });
+
+// ---------- La primera vez: sale solo (8.9) ----------
+// Las pruebas manejan el navegador (navigator.webdriver), y a un navegador
+// manejado el recorrido no le sale solo: todas las demás pruebas y las fotos
+// esperan la tarjeta de inicio. Aquí la prueba se hace pasar por una persona.
+const comoPersona = () => Object.defineProperty(Navigator.prototype, 'webdriver', { get: () => false, configurable: true });
+const CLAVE_VISTO = 'mosca-del-wip-recorrido-visto';
+const anotado = (p) => p.evaluate((clave) => localStorage.getItem(clave), CLAVE_VISTO);
+const PRIMERA_VEZ = [
+  ['computador', { viewport: { width: 1440, height: 900 } }, 'es'],
+  ['computador', { viewport: { width: 1440, height: 900 } }, 'en'],
+  ['iphone-se-667', tel(375, 667), 'es'],
+  ['iphone-14', tel(390, 844), 'en'],
+];
+for (const [nombre, opciones, idioma] of PRIMERA_VEZ) {
+  const tag = `primera vez, ${nombre} ${idioma}`;
+  const enCelular = nombre !== 'computador';
+  const pasos = enCelular ? PASOS.filter((c) => c !== 'numeros') : PASOS;
+  const ctx = await b.newContext(opciones);
+  await ctx.addInitScript(comoPersona);
+  const p = await ctx.newPage();
+  p.on('pageerror', (e) => mal.push(`error ${tag}: ${e.message}`));
+  p.on('console', (m) => { if (m.type() === 'error') mal.push(`consola ${tag}: ${m.text()}`); });
+  const cargar = async () => {
+    await p.goto(JUEGO + (idioma === 'en' ? '?lang=en' : ''), { waitUntil: 'networkidle' });
+    await p.waitForFunction(() => !!window.__mosca);
+    await p.waitForTimeout(1200);
+  };
+  await cargar();
+  if (enCelular) await p.waitForFunction(() => document.documentElement.classList.contains('celular'));
+  // sale solo, en el primer paso, con la tarjeta de inicio escondida y el día sin empezar
+  let e = await leer(p, DONDE[enCelular ? 'celular' : 'computador'].tareas);
+  ok(e.abierto && e.interno?.indice === 0 && e.interno?.total === pasos.length, `${tag}: el recorrido debía salir solo, en el paso 1 de ${pasos.length} (abierto ${e.abierto}, paso ${e.interno?.indice}, de ${e.interno?.total})`);
+  if (e.abierto) revisarPaso(e, tag, idioma, 'tareas', 1, pasos.length);
+  ok(e.hora === '09:00', `${tag}: con el recorrido de la primera vez el día no debe empezar (${e.hora})`);
+  ok((await anotado(p)) === '1', `${tag}: el navegador debía recordar que el recorrido ya se vio`);
+  if (DIR) await p.screenshot({ path: `${DIR}/primera-vez-${nombre}-${idioma}.png` });
+  // se puede saltar: vuelve la tarjeta de inicio, con el foco del teclado
+  // (si no salió solo, ya quedó anotado arriba y no hay nada que saltar)
+  if (e.abierto) {
+    if (enCelular) await p.tap('#recorrido-saltar'); else await p.click('#recorrido-saltar');
+    await p.waitForTimeout(500);
+    e = await leer(p);
+    ok(!e.abierto && e.avisoSeVe && e.activo === 'aviso-empezar' && e.hora === '09:00', `${tag}: "Saltar" debía cerrarlo y dejar la tarjeta de inicio a la vista, con el foco y el día en las 09:00 (abierto ${e.abierto}, tarjeta ${e.avisoSeVe}, foco en ${e.activo}, ${e.hora})`);
+  }
+  // la segunda vez ya no sale solo, y sigue en Ayuda
+  await cargar();
+  e = await leer(p);
+  ok(!e.abierto && e.avisoSeVe, `${tag}: al volver a abrir el juego el recorrido no debe salir solo (abierto ${e.abierto}, tarjeta ${e.avisoSeVe})`);
+  if (enCelular) await p.tap('#cel-ayuda'); else await p.click('#btn-ayuda');
+  await p.waitForTimeout(ESPERA);
+  e = await leer(p);
+  ok(e.abierto && e.interno?.indice === 0, `${tag}: ${enCelular ? 'el "?"' : 'Ayuda'} debe seguir abriendo el recorrido`);
+  // con el último paso ("Listo") se cierra y el día se puede empezar
+  for (let i = 1; i <= pasos.length; i++) {
+    if (enCelular) await p.tap('#recorrido-sigue'); else await p.click('#recorrido-sigue');
+    await p.waitForTimeout(350);
+  }
+  if (enCelular) await p.tap('#btn-empezar'); else await p.click('#btn-empezar');
+  await p.waitForTimeout(1500);
+  e = await leer(p);
+  ok(!e.abierto && e.hora !== '09:00', `${tag}: después del recorrido el día debe poder empezar (abierto ${e.abierto}, ${e.hora})`);
+  await ctx.close();
+  console.log(`${tag}: listo`);
+}
+// Un navegador manejado por un programa: no le sale solo y nada queda anotado;
+// si lo abre con el botón de la tarjeta, queda anotado como visto
+{
+  const tag = 'navegador manejado';
+  const ctx = await b.newContext({ viewport: { width: 1440, height: 900 } });
+  const p = await abrir(ctx, 'es', tag);
+  let e = await leer(p);
+  ok(!e.abierto && e.avisoSeVe && (await anotado(p)) === null, `${tag}: a un navegador manejado el recorrido no le debe salir solo (abierto ${e.abierto}, tarjeta ${e.avisoSeVe}, anotado ${await anotado(p)})`);
+  await p.click('#btn-recorrido');
+  await p.waitForTimeout(ESPERA);
+  e = await leer(p);
+  ok(e.abierto && (await anotado(p)) === '1', `${tag}: al abrirlo con su botón debía quedar anotado como visto (abierto ${e.abierto}, anotado ${await anotado(p)})`);
+  await ctx.close();
+  console.log(`${tag}: listo`);
+}
 
 // ---------- Computador ----------
 for (const idioma of ['es', 'en']) {
@@ -186,7 +277,6 @@ for (const idioma of ['es', 'en']) {
 }
 
 // ---------- Celular ----------
-const tel = (w, h) => ({ viewport: { width: w, height: h }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, userAgent: devices['iPhone 14'].userAgent, locale: 'es-CL' });
 for (const [nombre, w, h] of [['iphone-se-667', 375, 667], ['iphone-14', 390, 844]]) for (const idioma of nombre === 'iphone-14' ? ['es', 'en'] : ['es']) {
   const tag = `${nombre} ${idioma}`;
   const ctx = await b.newContext(tel(w, h));

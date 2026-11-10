@@ -5,8 +5,9 @@
 // sea "Volver a la oficina", que ya no esté "← Inicio" y que el botón vuelva a la vista
 // normal (desde la 8.8, docs/etapa8-8.md); que "← Inicio" lleve a la portada en el mismo
 // idioma después de "Salir del juego" (la pregunta existe desde el 2026-10-28); que la
-// portada diga "Creado por Felipe Fernández" y "9 terminadas (la mitad)"; y que en el
-// celular no se vea la píldora (ahí sigue la flecha). Nació en la 5.2i (docs/etapa5-2i.md).
+// portada diga "Creado por Felipe Fernández" y "9 terminadas (la mitad)"; que en el
+// celular no se vea la píldora (ahí sigue la flecha); y, desde la 8.9, que a quien llega
+// por primera vez el recorrido le salga solo. Nació en la 5.2i (docs/etapa5-2i.md).
 //   node scripts/probar-sitio-juego.mjs            → contra https://mosca.deliverycraft.ai
 //   SITIO=http://localhost:4173 node scripts/...   → contra otra dirección (sin / al final)
 //   CAPTURAS=<carpeta>                             → dónde dejar las capturas (capturas/sitio-juego)
@@ -130,6 +131,56 @@ for (const idioma of ['es', 'en']) {
   await p.screenshot({ path: `${C}/celular-${idioma}.png` });
   await ctx.close();
 }
+
+// La primera vez (8.9, 2026-11-10, docs/etapa8-9.md): a una persona que abre el juego por
+// primera vez el recorrido "¿Dónde está cada cosa?" le sale solo. A un navegador manejado
+// por un programa (navigator.webdriver, como los de arriba) no, y por eso aquí la prueba se
+// hace pasar por una persona. Revisa que salga en el primer paso con la tarjeta de inicio
+// escondida y el día en las 09:00, que "Saltar" lo cierre y vuelva la tarjeta, que al
+// recargar ya no salga solo y que Ayuda (el "?" en el celular) lo siga abriendo.
+const comoPersona = () => Object.defineProperty(Navigator.prototype, 'webdriver', { get: () => false, configurable: true });
+const verRecorrido = (p) => p.evaluate(() => {
+  const aviso = document.getElementById('aviso-empezar');
+  return {
+    abierto: !document.getElementById('recorrido').hidden,
+    paso: document.getElementById('recorrido-paso').textContent.trim(),
+    tarjeta: !aviso.hidden && getComputedStyle(aviso).visibility === 'visible' && getComputedStyle(aviso).display !== 'none',
+    hora: document.getElementById('reloj-texto').textContent.trim(),
+  };
+});
+const PRIMERA_VEZ = [
+  ['computador', { viewport: { width: 1440, height: 900 }, locale: 'es-CL' }, 6, '#btn-ayuda'],
+  ['celular', { viewport: { width: 390, height: 664 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true, userAgent: devices['iPhone 14'].userAgent, locale: 'es-CL' }, 5, '#cel-ayuda'],
+];
+for (const [nombre, opciones, pasos, ayuda] of PRIMERA_VEZ) for (const idioma of ['es', 'en']) {
+  const tag = `primera vez, ${nombre} ${idioma}`;
+  const ctx = await b.newContext(opciones);
+  await ctx.addInitScript(comoPersona);
+  const p = await ctx.newPage();
+  p.on('pageerror', (e) => mal(`error de página (${tag}): ${e.message}`));
+  const cargar = async () => { await p.goto(idioma === 'es' ? `${U}/jugar/` : `${U}/jugar/?lang=en`, { waitUntil: 'networkidle' }); await esperar(1200); };
+  const tocar = (sel) => (nombre === 'celular' ? p.tap(sel) : p.click(sel));
+  await cargar();
+  let r = await verRecorrido(p);
+  const esperado = idioma === 'es' ? `1 de ${pasos}` : `1 of ${pasos}`;
+  if (!r.abierto) mal(`${tag}: el recorrido no salió solo`);
+  else {
+    if (r.paso !== esperado) mal(`${tag}: el recorrido dice "${r.paso}" y no "${esperado}"`);
+    if (r.tarjeta) mal(`${tag}: con el recorrido abierto se ve la tarjeta de inicio`);
+    if (r.hora !== '09:00') mal(`${tag}: con el recorrido abierto el día no debe empezar (${r.hora})`);
+    await p.screenshot({ path: `${C}/primera-vez-${nombre}-${idioma}.png` });
+    await tocar('#recorrido-saltar'); await esperar(500);
+    r = await verRecorrido(p);
+    if (r.abierto || !r.tarjeta) mal(`${tag}: "Saltar" debía cerrar el recorrido y dejar la tarjeta de inicio a la vista (abierto ${r.abierto}, tarjeta ${r.tarjeta})`);
+  }
+  await cargar();
+  r = await verRecorrido(p);
+  if (r.abierto || !r.tarjeta) mal(`${tag}: al volver a abrir el juego el recorrido no debe salir solo (abierto ${r.abierto}, tarjeta ${r.tarjeta})`);
+  await tocar(ayuda); await esperar(900);
+  r = await verRecorrido(p);
+  if (!r.abierto || r.paso !== esperado) mal(`${tag}: ${nombre === 'celular' ? 'el "?"' : 'Ayuda'} debe seguir abriendo el recorrido (abierto ${r.abierto}, "${r.paso}")`);
+  await ctx.close();
+}
 await b.close();
 if (problemas.length) { console.log('PROBLEMAS:\n- ' + problemas.join('\n- ')); process.exit(1); }
-console.log(`sitio juego: todo bien (Control con paneles abiertos y cerrados, Exhibición, vuelta a la portada en es y en, celular; capturas en ${C}/)`);
+console.log(`sitio juego: todo bien (Control con paneles abiertos y cerrados, Exhibición, vuelta a la portada en es y en, celular, el recorrido de la primera vez; capturas en ${C}/)`);

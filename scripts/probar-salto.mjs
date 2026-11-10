@@ -29,6 +29,8 @@
 //   TELEFONOS=iphone15promax,pixel7       solo esos
 //   CAPTURAS=docs/etapa8-6-capturas       dónde dejar las hojas (por defecto capturas/salto)
 //   NOMBRE=antes | despues                la palabra del nombre (salto-<NOMBRE>-<teléfono>.jpg)
+//   PERSONA=1                             como una persona que llega por primera vez: el
+//                                         recorrido sale solo (8.9) y tampoco debe haber salto
 import { chromium, webkit, devices } from 'playwright';
 import { mkdirSync } from 'node:fs';
 
@@ -124,6 +126,9 @@ async function probar(nombre) {
 
   const contexto = await navegador.newContext(opciones);
   await contexto.addInitScript(vigilarJuego);
+  // (8.9) A un navegador manejado por un programa el recorrido de la primera
+  // vez no le sale solo. Con PERSONA=1 la prueba se hace pasar por una persona
+  if (process.env.PERSONA) await contexto.addInitScript(() => Object.defineProperty(Navigator.prototype, 'webdriver', { get: () => false, configurable: true }));
   const p = await contexto.newPage();
   const errores = [];
   p.on('pageerror', (e) => errores.push(e.message));
@@ -163,8 +168,10 @@ async function probar(nombre) {
     cuadros: window.__cuadrosMosca,
     ventana: window.__ventanaSalto,
     hora: window.__mosca.estado().hora,
+    recorrido: !document.getElementById('recorrido').hidden,
   }));
   await contexto.close();
+  if (process.env.PERSONA) revisar(datos.recorrido, `${nombre}: como persona que llega por primera vez, el recorrido salió solo`);
 
   // ---------- Lo que pasó cuadro a cuadro ----------
   const dibujados = datos.cuadros.filter((c) => c.tipo === 'cuadro');
