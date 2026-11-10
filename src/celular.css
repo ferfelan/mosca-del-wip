@@ -349,7 +349,7 @@ html.celular #panel {
   width: auto;
   max-height: none;
   overflow: visible;
-  padding: 2px 16px 12px;
+  padding: 2px 16px 11px;
   border: 0;
   border-radius: 22px 22px 0 0;
   background: var(--cel-hoja-fondo);
@@ -382,7 +382,7 @@ html.celular #cel-mas {
   display: block !important;
   position: relative;
   width: 100%;
-  height: 22px;
+  height: 20px;
   padding: 0;
   border: 0;
   border-radius: 8px;
@@ -411,7 +411,7 @@ html.celular #cel-mas::after {
   position: absolute;
   top: -2px;
   right: 0;
-  bottom: -20px;
+  bottom: -22px; /* (8.8: la manilla mide 20 px y no 22: la zona sigue en 44) */
   left: 0;
 }
 
@@ -481,9 +481,13 @@ html.celular .escala span:nth-child(3) {
   left: calc(100% - 15px);
 }
 
-/* una sola línea, así la hoja no cambia de alto */
+/* una sola línea, así la hoja no cambia de alto. (8.8, pedido de Felipe: el
+   panel de los controles "muy apretado, y se ve en los textos") Antes iba
+   pegada a los números de la escala: ahora respira 5 px más. Para que la
+   mosca no pierda lugar, la hoja recupera casi todo en la manilla y en su
+   borde de abajo: crece 2 px en total */
 html.celular #wip-nota {
-  margin: -1px 0 0;
+  margin: 4px 0 0;
   font-size: 13px;
   white-space: nowrap;
   overflow: hidden;
@@ -1485,6 +1489,13 @@ html.celular .cel-banner-botones button:focus-visible {
 @media (orientation: landscape) {
   html.celular {
     --cel-solape: 0px;
+  }
+
+  /* (8.8) "?" (el recorrido) va arriba a la derecha de la oficina: al lado de
+     la flecha de volver están las pestañas, que lo taparían */
+  html.celular #cel-ayuda {
+    justify-self: end;
+    margin: var(--cel-margen) var(--cel-margen) 0 0;
   }
 
   html.celular body {

@@ -326,7 +326,7 @@ document.getElementById('btn-empezar').addEventListener('click', () => {
 //    completa hasta, con el zoom de pantalla o la letra muy agrandada, solo el
 //    botón.
 const TAPAN_AVISO = ['cel-volver', 'cel-controles', 'cel-pestanas', 'panel'].map((id) => document.getElementById(id));
-const ALTO_COMODO_MOSCA = 110; // el lugar que se busca dejarle a la mosca sobre la tarjeta
+const ALTO_COMODO_MOSCA = 100; // el lugar que se busca dejarle a la mosca sobre la tarjeta (con 110, en inglés y en 390 × 664 quedaba a 2 px de soltar una línea más)
 const NIVELES_AVISO = [[], ['sin-final'], ['sin-final', 'sin-reglas'], ['sin-detalle'], ['sin-detalle', 'sin-titulo'], ['sin-detalle', 'sin-titulo', 'solo-boton']];
 function ajustarAvisoEmpezar() {
   const poner = (nivel) => {
@@ -1827,7 +1827,11 @@ iniciarCelular({
     }
     ajustarEscena();
     if (activo) encuadrarExhibicion();
-    medirEncajeAviso();
+    // (8.8) la tarjeta de inicio se acomoda ANTES del primer cuadro: si recién
+    // después soltara sus líneas para dejarle lugar a la mosca, la mosca se
+    // dibujaría grande un instante y se achicaría de golpe (lo revisa
+    // scripts/probar-salto.mjs en 375 × 667)
+    ajustarAvisoEmpezar();
   },
   // Al salir del cerebro se cierran su explicación y la tarjetita de una neurona
   alCambiarVista(nueva) {

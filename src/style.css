@@ -801,6 +801,11 @@ body.en-recorrido #aviso-empezar {
     gap: 9px;
     padding: 14px 20px 10px;
   }
+  /* (el margen de abajo de "¿Qué es esto?" no pasa del borde de la tarjeta:
+     si no, la tarjeta se podía deslizar 2 px por dentro) */
+  #aviso-que-es {
+    margin-bottom: -10px;
+  }
   .aviso-mosca {
     width: 36px;
   }
