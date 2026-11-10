@@ -5,7 +5,11 @@
 // cerebro ni con el botón Cerebro, sea lo primero con la tecla Tab, lleve a la
 // portada en el mismo idioma (desde el 2026-10-28, después de la pregunta "¿Seguro
 // que quieres salir del juego?", que se prueba entera en probar-salir) y que los
-// días jugados sigan iguales al volver. Requiere npm run dev.
+// días jugados sigan iguales al volver. Desde la 8.8 (2026-11-09, pedido de
+// Felipe: en Exhibición "cuesta encontrar" Volver a la oficina, "uno se va al
+// botón de inicio") "← Inicio" ya no va en la barra de Exhibición: lo primero,
+// arriba a la izquierda, es "Volver a la oficina", y a la portada se sale
+// desde la oficina. Requiere npm run dev.
 // Uso: node scripts/probar-inicio.mjs   → debe decir "inicio: todo bien"
 //   CAPTURAS=<carpeta> (docs/etapa5-2i-capturas por defecto), JUEGO=<dirección>,
 //   TAMANOS=1440x900,1906x830
@@ -96,26 +100,34 @@ for (const [w, h] of TAMANOS) for (const idioma of ['es', 'en']) {
   await p.waitForTimeout(1800);
   const ctrlOculto = await medir('#volver-inicio');
   ok(!ctrlOculto || !ctrlOculto.vis, `${tag} exhibición: la píldora de Control sigue visible`);
-  const ex = await revisarEnlace('.volver-inicio-barra', 'exhibición');
+  // (8.8) en la barra ya no hay "← Inicio": lo primero es "Volver a la oficina"
+  ok(!(await p.$('.volver-inicio-barra')), `${tag} exhibición: "← Inicio" no debe ir en la barra`);
+  const ex = await medir('#btn-volver-oficina');
+  ok(ex && ex.vis && ex.x <= 32 && ex.y <= 24, `${tag} exhibición: "Volver a la oficina" debe ir arriba a la izquierda (${JSON.stringify(ex)})`);
+  ok(ex && ex.texto.startsWith(idioma === 'en' ? 'Back to the office' : 'Volver a la oficina'), `${tag} exhibición: el botón dice "${ex?.texto}"`);
   const marca = await medir('.marca');
-  ok(ex && marca && marca.x >= ex.x + ex.w + 8, `${tag} exhibición: la marca (x=${marca?.x}) se monta sobre el enlace`);
+  ok(ex && marca && marca.x >= ex.x + ex.w + 8, `${tag} exhibición: la marca (x=${marca?.x}) se monta sobre el botón`);
   await foto('exhibicion');
   await foto('exhibicion-zoom', { x: 0, y: 0, width: 520, height: 80 });
   const primero = await p.evaluate(() => {
     const visible = (el) => el.getClientRects().length > 0 && getComputedStyle(el).visibility === 'visible';
     return [...document.querySelectorAll('a[href], button, input, [tabindex]')].find((el) => visible(el) && el.tabIndex >= 0)?.className;
   });
-  ok(String(primero).includes('volver-inicio-barra'), `${tag} exhibición: lo primero con Tab es "${primero}"`);
-  // --- Clic: pregunta y, con "Salir del juego", lleva a la portada en el mismo idioma; los días siguen ---
+  ok(String(primero).includes('volver-oficina'), `${tag} exhibición: lo primero con Tab es "${primero}"`);
+  // --- Vuelve a la oficina y, desde ahí, "← Inicio" pregunta y, con "Salir del juego", lleva a la portada en el mismo idioma; los días siguen ---
   const tablaAntes = await p.evaluate(() => document.getElementById('tabla-dias-body').textContent.replace(/\s+/g, ''));
   ok(tablaAntes.trim().length > 0, `${tag}: la tabla de días está vacía antes del clic`);
-  await p.click('.volver-inicio-barra');
+  await p.click('#btn-volver-oficina');
+  await p.waitForFunction(() => !document.body.classList.contains('exhibicion'), null, { timeout: 5000 }).catch(() => {});
+  await p.waitForTimeout(900);
+  ok(!(await p.evaluate(() => document.body.classList.contains('exhibicion'))), `${tag}: "Volver a la oficina" no volvió a la vista normal`);
+  await p.click('#volver-inicio');
   await p.waitForSelector('#salir-juego[open]');
   await p.click('#btn-salir-juego');
   await p.waitForURL((u) => u.pathname === (idioma === 'en' ? '/en/' : '/'), { timeout: 10000 }); // la portada en inglés vive en /en/ (Etapa 7)
   await p.waitForTimeout(500);
   const url1 = new URL(p.url());
-  ok(url1.pathname === (idioma === 'en' ? '/en/' : '/') && url1.search === '', `${tag} exhibición: llegó a ${url1.pathname}${url1.search}`);
+  ok(url1.pathname === (idioma === 'en' ? '/en/' : '/') && url1.search === '', `${tag} de vuelta de Exhibición: llegó a ${url1.pathname}${url1.search}`);
   ok((await p.evaluate(() => document.documentElement.lang)) === idioma, `${tag}: la portada no está en ${idioma}`);
   await p.goto(JUEGO + (idioma === 'en' ? '?lang=en' : ''), { waitUntil: 'networkidle' });
   await p.waitForFunction(() => window.__mosca && window.__mosca.cerebro());

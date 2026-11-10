@@ -71,23 +71,25 @@ for (const idioma of ['es', 'en']) {
   await p.keyboard.press('b'); await p.keyboard.press('c'); await esperar(300);
   // Exhibición (E)
   await p.keyboard.press('e'); await esperar(1200);
-  const barra = await caja(p, '.volver-inicio-barra');
-  if (!barra) mal(`${idioma}: en Exhibición no se ve el enlace de la barra`);
-  else {
-    if (barra.texto !== esperado.texto) mal(`${idioma}: la barra dice "${barra.texto}"`);
-    if (barra.href !== esperado.href) mal(`${idioma}: href de la barra "${barra.href}"`);
-  }
+  // (8.8) en Exhibición ya no hay "← Inicio": lo primero de la barra es
+  // "Volver a la oficina", arriba a la izquierda
+  if (await p.$('.volver-inicio-barra')) mal(`${idioma}: en Exhibición sigue "← Inicio" en la barra`);
+  const volver = await caja(p, '#btn-volver-oficina');
+  if (!volver) mal(`${idioma}: en Exhibición no se ve "Volver a la oficina"`);
+  else if (volver.x > 32 || volver.y > 24) mal(`${idioma}: "Volver a la oficina" no está arriba a la izquierda (${volver.x}, ${volver.y})`);
   if (await caja(p, '#volver-inicio')) mal(`${idioma}: en Exhibición sigue visible la píldora de Control`);
   await p.screenshot({ path: `${C}/exhibicion-${idioma}.png` });
-  // Clic desde Exhibición → portada en el mismo idioma
-  await p.click('.volver-inicio-barra');
+  // De vuelta en la oficina, clic en "← Inicio" → portada en el mismo idioma
+  await p.click('#btn-volver-oficina'); await esperar(1500);
+  if (await p.evaluate(() => document.body.classList.contains('exhibicion'))) mal(`${idioma}: "Volver a la oficina" no volvió a la vista normal`);
+  await p.click('#volver-inicio');
   await p.waitForSelector('#salir-juego[open]');
   await p.click('#btn-salir-juego');
   await p.waitForURL((u) => u.pathname === esperado.ruta, { timeout: 10000 });
   await p.waitForLoadState('networkidle');
   let u = new URL(p.url());
   let lang = await p.evaluate(() => document.documentElement.lang);
-  if (u.pathname !== esperado.ruta || lang !== esperado.lang) mal(`${idioma}: desde Exhibición llegó a ${u.pathname}${u.search} (lang=${lang})`);
+  if (u.pathname !== esperado.ruta || lang !== esperado.lang) mal(`${idioma}: de vuelta de Exhibición llegó a ${u.pathname}${u.search} (lang=${lang})`);
   // Clic desde Control → portada en el mismo idioma
   await abrir();
   await p.click('#volver-inicio');

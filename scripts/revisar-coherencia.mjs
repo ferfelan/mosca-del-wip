@@ -211,11 +211,14 @@ if (args.includes('--mapa')) {
     { pieza: 'Frase norte de la respuesta', es: 'Un límite sostenible, no una cosa a la vez', en: 'A sustainable limit, not one thing at a time',
       buscar: ['Un límite sostenible, no una cosa a la vez', 'A sustainable limit, not one thing at a time'] },
     { pieza: 'Corrida oficial: cuántas terminó', es: 'En el juego, con 2 a la vez termina 18 (17,99) y con 9, la mitad (9,14). Promedio de 200 días', en: 'In the game, with 2 at once she finishes 18 (17.99) and with 9, half as many (9.14). Average of 200 days',
-      buscar: ['17,99', '17.99', '9,14', '9.14', '18 terminadas', 'termina 18', 'terminó la mitad', 'termina la mitad', '18 tasks', 'finishes 18', 'finished half as many', 'finishes half as many'] },
+      // (8.8) el dato del inicio dice "termina el doble" y la prueba dibujada, "18 terminadas al día"
+      buscar: ['17,99', '17.99', '9,14', '9.14', '18 terminadas', 'termina 18', 'terminó la mitad', 'termina la mitad', 'termina el doble', '18 tasks', 'finishes 18', '18 finished', 'finished half as many', 'finishes half as many', 'finishes twice as many'] },
     { pieza: 'Corrida oficial: cuánto tardó cada tarea', es: 'Con 2 a la vez, 1 hora. Con 9, 8 h 54 (casi nueve veces más)', en: 'With 2 at once, 1 hour. With 9, 8 h 54 (almost nine times longer)',
-      buscar: ['8 h 54', '534', 'nueve veces', 'nine times'] },
+      // (8.8) en la portada, "1 h cada una" y "casi 9 h cada una"
+      buscar: ['8 h 54', '534', 'nueve veces', 'nine times', 'casi 9 h cada una', 'almost 9 h each'] },
     { pieza: 'Corrida oficial: eficiencia de flujo', es: 'En el juego, 47 % con 2 a la vez y 9 % con 9', en: 'In the game, 47% with 2 at once and 9% with 9',
-      buscar: ['47 %', '47%'] },
+      // (8.8) en la portada también en palabras: "espera 9 de cada 10 minutos"
+      buscar: ['47 %', '47%', '9 de cada 10 minutos', '9 out of every 10 minutes'] },
     { pieza: 'Las cuatro ideas', es: '1. Estar siempre ocupado no es avanzar. 2. Un límite bajo, pero no 1. 3. Lo empezado no desaparece. 4. Las urgencias, de a una.',
       en: '1. Being busy all the time isn’t making progress. 2. A low limit, but not 1. 3. What’s started doesn’t disappear. 4. Urgent tasks, one at a time.',
       buscar: ['Un límite bajo, pero no 1', 'A low limit, but not 1', 'Lo empezado no desaparece', 'What’s started doesn’t disappear'] },
@@ -229,6 +232,13 @@ if (args.includes('--mapa')) {
     { pieza: 'Las preguntas del juego (8.7)', es: 'En la tarjeta: ¿Con cuál crees que termina más? Al fin del día: ¿Y tú, cuántas cosas tienes empezadas hoy?',
       en: 'On the card: Which one do you think she’ll finish more with? At the end of the day: And you, how many things do you have started today?',
       buscar: ['¿Con cuál crees que termina más?', 'Which one do you think she’ll finish more with?', 'cuántas cosas tienes empezadas hoy', 'how many things do you have started today'] },
+    // (8.8, 2026-11-09)
+    { pieza: 'El recorrido del juego (8.8)', es: '¿Dónde está cada cosa? Aquí mandas tú. El día. Su tablero. Cómo le va. Su cerebro, en vivo. Tus días jugados.',
+      en: 'Where is everything? You’re in charge here. The day. Her board. How she’s doing. Her brain, live. Your days played.',
+      buscar: ['¿Dónde está cada cosa?', 'Where is everything?', 'Aquí mandas tú', 'You’re in charge here'] },
+    { pieza: 'El aviso de la mosca del mapa (8.8)', es: 'Ninguna mosca salió herida ni fue obligada a trabajar de verdad. Salvo la del mapa: a esa le sacaron el sistema nervioso y lo cortaron en 66 láminas.',
+      en: 'No fly was harmed or made to do any real work. Except the one in the map: its nervous system was taken out and cut into 66 slices.',
+      buscar: ['Ninguna mosca salió herida', 'No fly was harmed', '66 láminas', '66 slices'] },
     { pieza: 'Los cuatro pasos', es: '1. Pongan el trabajo a la vista. 2. Cuenten lo abierto y pónganle un límite. 3. Cuando alguien queda esperando, ataquen la espera. 4. Prueben dos semanas y midan.',
       en: '1. Make the work visible. 2. Count what’s open and set a limit. 3. When someone is left waiting, go after the wait. 4. Try it for two weeks and measure.',
       buscar: ['Pongan el trabajo a la vista', 'Make the work visible', 'Prueben dos semanas y midan', 'Try it for two weeks and measure'] },

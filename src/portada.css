@@ -196,6 +196,16 @@ html { scroll-padding-top: var(--alto-barra); }
   min-height: clamp(640px, calc(100svh - var(--alto-barra)), 940px);
 }
 .hero-texto { align-self: center; padding: 64px 0 72px; }
+/* El rótulo sobre el título: la frase del problema ("Estar siempre ocupado no
+   es lo mismo que avanzar"), en letra normal y con el gris de las notas. Fue
+   así en la 8.6, salió en la 8.7 y Felipe la pidió de vuelta en la 8.8 */
+.rotulo {
+  font-size: 16.5px;
+  font-weight: 620;
+  line-height: 1.3;
+  color: var(--suave);
+  margin: 0 0 18px;
+}
 /* La pregunta: dos frases cortas. Más chica que el nombre de antes (116 px)
    porque son 38 letras y no 13; cabe en dos líneas desde 1100 px. */
 h1 {
@@ -475,16 +485,15 @@ h2 {
 }
 h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px; }
 
-/* Lo que vas a ver: el video y, al lado, la columna "Hecho" de cada día; al
-   final, la frase del proyecto */
+/* Lo que vas a ver: el video y, al lado, la columna "Hecho" de cada día (la
+   frase del proyecto volvió arriba del título del inicio en la 8.8) */
 .juego {
   display: grid;
   grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
   grid-template-areas:
     'texto texto'
     'pantalla hecho'
-    'pie nota'
-    'frase frase';
+    'pie nota';
   column-gap: clamp(20px, 3vw, 40px);
 }
 .juego-texto { grid-area: texto; max-width: 40em; margin-bottom: 40px; }
@@ -556,16 +565,6 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .columna-total { font-size: 14.5px; color: var(--suave); line-height: 1.3; }
 .columna-total .cifra { display: block; font-size: 38px; font-weight: 760; letter-spacing: -0.02em; line-height: 1.05; color: var(--col); }
 .hecho-nota { grid-area: nota; margin-top: 14px; }
-.ver-frase {
-  grid-area: frase;
-  margin-top: 44px;
-  font-size: clamp(24px, 2.4vw, 32px);
-  font-weight: 560;
-  line-height: 1.22;
-  letter-spacing: -0.012em;
-  max-width: 24ch;
-  text-wrap: balance;
-}
 
 /* Cómo se juega: tres pasos, cada uno con su foto del juego */
 .pasos-lista {
@@ -663,14 +662,18 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .kit-cierre { margin-top: 28px; color: var(--suave); font-size: 17px; max-width: 60ch; text-wrap: pretty; }
 
 /* El tablero (portada v4, 2026-10-28): un solo tablero, no tarjetas sueltas:
-   las celdas se separan con líneas finas. Desde la 8.7 (2026-11-07) lo usa
-   "Para qué sirve un límite": tres celdas, cada una con su línea en grande y
-   el respaldo del juego en chico. En computador van en una fila; en celular,
-   una bajo otra. */
+   las celdas se separan con líneas finas. Lo usan "Para qué sirve un límite"
+   (tres celdas) y "Lo que se lleva tu equipo" (cuatro). En computador van en
+   una fila; en celular, una bajo otra. */
 .gana-tablero {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
   background: var(--borde-fuerte);
   border: 1px solid var(--borde-fuerte);
   border-radius: 24px;
@@ -679,36 +682,24 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .gana-item {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: clamp(22px, 2.6vw, 32px);
+  justify-content: space-between;
+  gap: 20px;
+  margin: 0;
+  padding: clamp(20px, 2.2vw, 28px);
   background: var(--noche-2);
 }
 [data-color='tranquila'] { --acento: var(--tranquila); }
 [data-color='colapsada'] { --acento: var(--colapsada); }
 [data-color='ocupada'] { --acento: var(--ocupada); }
 [data-color='vision'] { --acento: var(--vision); }
-.gana-icono {
-  width: 54px;
-  height: 54px;
-  border-radius: 16px;
-  display: grid;
-  place-items: center;
-  color: var(--acento);
-  background: var(--noche-3);
-  background: color-mix(in srgb, var(--acento) 16%, transparent);
-}
-.gana-icono svg { width: 32px; height: 32px; }
-.gana-item h3 { margin: 0 0 6px; font-size: 19.5px; text-wrap: balance; }
-/* (balance: las líneas quedan parejas y no queda "y a" colgando al final) */
-.gana-item p { margin: 0; color: var(--suave); font-size: 16.5px; line-height: 1.5; text-wrap: balance; }
 .gana-nota { margin-top: 22px; max-width: 72ch; text-wrap: pretty; }
-/* 8.7 (2026-11-07, segunda vuelta de Felipe: la sección de la 8.6 "era un
-   trabalenguas"). "Para qué sirve un límite": en cada celda la línea en
-   grande arriba y el respaldo del juego abajo, bajo un filete, a la misma
-   altura en las tres; cierra una frase con DORA, en el gris de los textos.
-   "Lo que se lleva tu equipo": cuatro frases cortas, de a dos, cada una con
-   el dibujo de una tarjeta del tablero de la mosca (los de la portada v4). */
-.sirve-tablero .gana-item { justify-content: space-between; gap: 18px; }
+
+/* 8.8 (2026-11-09, pedido de Felipe: la sección "está muy plana" y sus
+   respaldos "son medios trabalenguas"). "Para qué sirve un límite": en cada
+   celda, la línea en grande y, abajo, la prueba de la mosca dibujada en un
+   recuadro de noche: un día con 2 tareas a la vez (el verde de Tranquila) y
+   otro con 9 (el rojo de Colapsada). Los números van escritos al lado de cada
+   dibujo: el color nunca es lo único que lo dice. */
 .sirve-tablero .gana-item h3 {
   margin: 0;
   font-size: clamp(22px, 2vw, 27px);
@@ -717,28 +708,161 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   letter-spacing: -0.018em;
   text-wrap: balance;
 }
-.sirve-tablero .gana-respaldo {
+.prueba {
+  padding: 14px 16px 15px;
+  border-radius: 16px;
+  border: 1px solid var(--borde);
+  background: var(--noche);
+}
+.carril { --caso: var(--tranquila); }
+.carril[data-caso='muchas'] { --caso: var(--colapsada); }
+.carril + .carril { margin-top: 13px; padding-top: 13px; border-top: 1px dashed var(--borde-fuerte); }
+.carril-caso {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin: 0;
-  padding-top: 12px;
-  border-top: 1px solid var(--borde);
-  font-size: 15px;
-  line-height: 1.45;
-  color: var(--tenue);
+  font-size: 13.5px;
+  font-weight: 650;
+  line-height: 1.2;
+  color: var(--caso);
+}
+.carril-caso::before { content: ''; flex: none; width: 8px; height: 8px; border-radius: 50%; background: currentColor; box-shadow: 0 0 10px currentColor; }
+.carril-dato { margin: 0; font-size: 14.5px; line-height: 1.4; color: var(--suave); text-wrap: balance; }
+.carril-dato b { color: var(--tinta); font-weight: 720; }
+/* Las fichas terminadas: 18 lugares, uno por tarea. Con 9 a la vez, la mitad
+   queda vacía */
+.fichas { display: grid; grid-template-columns: repeat(18, minmax(0, 1fr)); gap: 3px; margin: 9px 0 8px; }
+.fichas i { display: block; height: 18px; border-radius: 3px; background: var(--caso); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25); }
+.fichas i.falta { background: transparent; box-shadow: none; border: 1px dashed color-mix(in srgb, var(--caso) 55%, transparent); }
+/* Cuánto avanza cada tarea: lo lleno es el tiempo en que avanza y lo rayado,
+   el que espera; a la derecha, el número */
+.avance { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px; margin: 9px 0 8px; }
+.avance-riel {
+  position: relative;
+  height: 18px;
+  border-radius: 9px;
+  overflow: hidden;
+  background: repeating-linear-gradient(-45deg, var(--borde-fuerte) 0 2px, transparent 2px 7px);
+  box-shadow: inset 0 0 0 1px var(--borde);
+}
+.avance-riel::after { content: ''; position: absolute; inset: 0 auto 0 0; width: var(--avanza); border-radius: 9px; background: var(--caso); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25); }
+.avance-cifra { min-width: 2.9em; text-align: right; font-size: 15px; font-weight: 760; line-height: 1; font-variant-numeric: tabular-nums; color: var(--caso); }
+/* Cómo cierra el día: la cara de la mosca (la del logo), con su café o con su
+   cigarro, y al lado el caso y el dato */
+.carril-cara { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; column-gap: 14px; row-gap: 5px; }
+.cara {
+  grid-row: 1 / span 2;
+  width: 86px;
+  height: auto;
+  padding: 5px 4px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--caso) 15%, transparent);
+}
+/* (el humo y el sudor toman el gris y el celeste de cada fondo) */
+.cara-humo { stroke: var(--suave); opacity: 0.8; fill: none; }
+.cara-sudor { fill: #8fd3ff; }
+:root[data-tema='claro'] .cara-sudor { fill: #3f9fd8; }
+.carril-cara .carril-caso { align-self: end; }
+.carril-cara .carril-dato { align-self: start; }
+/* En computador las tres celdas comparten filas: las líneas arriba y las
+   pruebas abajo, todas del mismo alto */
+@supports (grid-template-rows: subgrid) {
+  @media (min-width: 900px) {
+    .sirve-tablero { grid-template-rows: auto 1fr; }
+    .sirve-tablero .gana-item { display: grid; grid-row: span 2; grid-template-rows: subgrid; row-gap: 20px; }
+    .sirve-tablero .prueba { display: flex; flex-direction: column; justify-content: center; }
+  }
+}
+.sirve-origen { margin-top: 16px; }
+.sirve-cierre { margin: 8px 0 0; max-width: 62ch; font-size: 17px; line-height: 1.5; color: var(--suave); text-wrap: pretty; }
+
+/* La mosca del logo, asomada al borde de arriba del tablero: la cabeza detrás
+   (en su ventana, que la corta justo en el borde) y las patas encima */
+.tablero-marco { position: relative; }
+.asomada { position: absolute; right: clamp(22px, 6vw, 84px); width: 108px; pointer-events: none; }
+.asomada-ventana { bottom: calc(100% - 1px); height: 56.6px; overflow: hidden; z-index: 0; }
+.asomada-cabeza { display: block; width: 100%; height: auto; }
+.asomada-patas { top: -6.2px; height: auto; z-index: 2; }
+/* Una sola vez, cuando la sección entra a la pantalla (src/portada.js pone
+   "animar" y después "visto"): la mosca se asoma, las fichas llegan de a una y
+   las barras se llenan. Sin JavaScript o con movimiento reducido, todo está
+   en su lugar desde el principio */
+@media (prefers-reduced-motion: no-preference) {
+  .sirve.animar .asomada-cabeza { transition: transform 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.25) 0.5s; }
+  .sirve.animar .asomada-patas { transition: opacity 0.25s ease 0.85s; }
+  .sirve.animar .fichas i { transition: opacity 0.3s ease calc(var(--i) * 30ms + 0.15s), transform 0.3s ease calc(var(--i) * 30ms + 0.15s); }
+  .sirve.animar .avance-riel::after { transition: width 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) 0.2s; }
+  .sirve.animar .cara { transition: opacity 0.4s ease 0.25s, transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.25) 0.25s; }
+  .sirve.animar:not(.visto) .asomada-cabeza { transform: translateY(102%); }
+  .sirve.animar:not(.visto) .asomada-patas { opacity: 0; }
+  .sirve.animar:not(.visto) .fichas i { opacity: 0; transform: translateY(6px) scale(0.7); }
+  .sirve.animar:not(.visto) .avance-riel::after { width: 0; }
+  .sirve.animar:not(.visto) .cara { opacity: 0; transform: scale(0.82); }
+}
+
+/* "Lo que se lleva tu equipo" (8.8): las cuatro frases en el mismo tablero,
+   cada una con un dibujo de lo que queda en el tablero del equipo, en un
+   recuadro de noche y con un color del juego */
+.lleva-tablero { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.gana-item .lleva-frase {
+  margin: 0;
+  font-size: 18.5px;
+  font-weight: 650;
+  line-height: 1.3;
+  letter-spacing: -0.008em;
+  color: var(--tinta);
   text-wrap: balance;
 }
-.sirve-cierre { margin: 20px 0 0; max-width: 62ch; font-size: 17px; line-height: 1.5; color: var(--suave); text-wrap: pretty; }
-.gana-lista {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 22px 48px;
-  max-width: 1000px;
+.dibujo {
+  height: 124px;
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid var(--borde);
+  background: var(--noche);
+  color: var(--acento);
 }
-.gana-lista li { display: flex; align-items: center; gap: 16px; margin: 0; font-size: 18px; line-height: 1.4; text-wrap: pretty; }
-.gana-lista .gana-icono { flex: 0 0 50px; width: 50px; height: 50px; border-radius: 14px; }
-.gana-lista .gana-icono svg { width: 29px; height: 29px; }
+.dibujo i { display: block; }
+/* Su carga a la vista: cada persona con las cosas que tiene empezadas */
+.dibujo-carga { display: flex; flex-direction: column; justify-content: center; gap: 9px; }
+.persona { display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; align-items: center; gap: 10px; }
+.avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 36%, var(--acento) 0 21%, transparent 22.5%),
+    radial-gradient(ellipse 62% 44% at 50% 100%, var(--acento) 0 98%, transparent 100%),
+    color-mix(in srgb, var(--acento) 20%, transparent);
+}
+.cosas { display: flex; gap: 3px; min-width: 0; }
+.cosas i { flex: 0 1 17px; min-width: 7px; height: 13px; border-radius: 3px; background: var(--acento); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22); }
+.persona b { font-size: 14.5px; font-weight: 720; line-height: 1; font-variant-numeric: tabular-nums; color: var(--tinta); }
+/* Dónde espera el trabajo: tres columnas, y la del medio, con candado, llena */
+.dibujo-espera { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.columna-mini { display: flex; flex-direction: column; gap: 4px; padding: 7px; border-radius: 10px; background: color-mix(in srgb, var(--tinta) 6%, transparent); }
+.columna-mini i { height: 10px; border-radius: 3px; background: color-mix(in srgb, var(--tinta) 28%, transparent); }
+.columna-mini.espera,
+.columna-mini.limite { background: color-mix(in srgb, var(--acento) 13%, transparent); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--acento) 65%, transparent); }
+.columna-mini.espera i,
+.columna-mini.limite i { background: var(--acento); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22); }
+.candado { width: 17px; height: 17px; align-self: center; margin-bottom: 1px; }
+/* El límite acordado: escrito arriba de la columna, que está llena; lo demás
+   espera afuera */
+.dibujo-limite { display: flex; align-items: stretch; gap: 12px; }
+.dibujo-limite .columna-mini.limite { flex: 1 1 auto; min-width: 0; gap: 5px; padding: 8px 9px; }
+.columna-mini-cabeza { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 0 0 2px; font-size: 12.5px; font-weight: 650; line-height: 1.2; color: var(--suave); white-space: nowrap; }
+.columna-mini-cabeza b { padding: 2px 8px; border-radius: 999px; background: var(--acento); color: var(--noche); font-size: 12px; font-weight: 720; }
+.dibujo-limite .columna-mini.limite i { height: 14px; }
+.en-fila { flex: 0 0 26%; display: flex; flex-direction: column; justify-content: flex-end; gap: 5px; padding-bottom: 8px; }
+.en-fila i { height: 14px; border-radius: 3px; border: 1.5px dashed color-mix(in srgb, var(--tinta) 38%, transparent); }
+/* Sus propios datos: dos semanas, un día por barra. Las barras no suben ni
+   bajan de una semana a la otra: no se promete un resultado */
+.dibujo-datos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.semana { display: flex; flex-direction: column; gap: 6px; min-height: 0; }
+.barras { flex: 1 1 auto; display: flex; align-items: flex-end; gap: 4px; min-height: 0; border-bottom: 1.5px solid var(--borde-fuerte); }
+.barras i { flex: 1 1 0; height: var(--h); border-radius: 3px 3px 0 0; background: var(--acento); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22); }
+.semana-nombre { font-size: 12.5px; line-height: 1; text-align: center; color: var(--tenue); }
 
 /* ¿Por qué una mosca?: el texto a la izquierda y, al lado, las dos fotos del
    cerebro (2 y 9 tareas a la vez), el crédito de MaleCNS y los colores */
@@ -751,7 +875,9 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .credito h2 { grid-column: 1 / -1; max-width: 16em; }
 .credito-texto p { color: var(--suave); max-width: 62ch; }
 .credito-texto p + p { margin-top: 14px; }
-.credito-texto .destacado { color: var(--tinta); font-size: 20px; }
+.credito-texto .destacado { color: var(--tinta); font-size: 20px; text-wrap: pretty; }
+/* 8.8: el aviso de las películas ("ninguna mosca salió herida"), en letra chica */
+.credito-texto .aviso-mosca { margin-top: 10px; font-size: 15px; line-height: 1.5; color: var(--tenue); text-wrap: pretty; }
 .credito-lado { display: grid; gap: 16px; align-content: start; }
 .cerebros { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 .cerebros figure { margin: 0; }
@@ -798,6 +924,7 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 /* Por qué lo hice: solo texto, angosto */
 .motivo-texto { max-width: 60ch; }
 .motivo-texto p { color: var(--suave); font-size: 19px; text-wrap: pretty; }
+.motivo-texto p + p { margin-top: 12px; }
 .motivo-texto .nota { margin-top: 16px; }
 .motivo-texto .nota a { color: var(--suave); }
 
@@ -914,6 +1041,7 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   body.portada { font-size: 17px; }
   .hero { grid-template-columns: 1fr; min-height: 0; }
   .hero-texto { padding: 16px 0 0; }
+  .rotulo { margin-bottom: 14px; }
   /* En el celular, cada frase de la pregunta en su línea: la letra se ajusta
      al ancho (35 px en un iPhone de 390) y la familia va un poco más angosta */
   h1 { font-size: clamp(28px, 8.9vw, 40px); font-stretch: 100%; letter-spacing: -0.034em; max-width: none; margin-bottom: 18px; }
@@ -960,14 +1088,13 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .informe,
   .motivo,
   .preguntas { scroll-margin-top: -36px; }
-  .juego { grid-template-columns: 1fr; grid-template-areas: 'texto' 'pantalla' 'pie' 'hecho' 'nota' 'frase'; }
+  .juego { grid-template-columns: 1fr; grid-template-areas: 'texto' 'pantalla' 'pie' 'hecho' 'nota'; }
   .juego-texto { margin-bottom: 24px; }
   .juego-texto p { font-size: 17px; }
   .pantalla-marco { border-radius: 14px; }
   .pantalla-estado { top: 10px; font-size: 12.5px; padding: 5px 12px 5px 10px; }
   .pantalla figcaption { margin: 10px 0 24px; }
   .tarjetas i { flex-basis: 10px; }
-  .ver-frase { margin-top: 36px; max-width: none; }
 
   .pasos-lista { grid-template-columns: 1fr; gap: 28px; }
   .paso { gap: 12px; }
@@ -977,18 +1104,40 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .pieza-cuerpo { padding: 18px 20px 22px; }
   .pieza .boton { width: 100%; max-width: 440px; }
 
-  /* Para qué sirve un límite: las tres celdas una bajo otra, la línea y su
-     respaldo; lo que se lleva tu equipo, una frase bajo otra */
-  .gana-tablero { grid-template-columns: 1fr; border-radius: 20px; }
-  .gana-item { padding: 20px 20px 18px; }
-  .sirve-tablero .gana-item { gap: 14px; }
+  /* Para qué sirve un límite: las tres celdas una bajo otra, cada una con su
+     línea y la prueba de la mosca, y la mosca asomada más chica, en su franja
+     entre el título y el tablero; lo que se lleva tu equipo, lo mismo: cada
+     frase con su dibujo al lado */
+  .gana-tablero,
+  .lleva-tablero { grid-template-columns: 1fr; border-radius: 20px; }
+  .gana-item { gap: 16px; padding: 20px 18px 18px; }
+  .sirve h2 { margin-bottom: 46px; }
   .sirve-tablero .gana-item h3 { font-size: 21px; }
-  .sirve-tablero .gana-respaldo { padding-top: 10px; font-size: 14.5px; }
-  .sirve-cierre { font-size: 16px; margin-top: 16px; }
-  .gana-lista { grid-template-columns: 1fr; gap: 14px; }
-  .gana-lista li { font-size: 17px; gap: 14px; }
-  .gana-lista .gana-icono { flex-basis: 44px; width: 44px; height: 44px; border-radius: 12px; }
-  .gana-lista .gana-icono svg { width: 26px; height: 26px; }
+  .asomada { right: 22px; width: 88px; }
+  .asomada-ventana { height: 46.1px; }
+  .asomada-patas { top: -5px; }
+  .prueba { padding: 13px 14px 14px; border-radius: 14px; }
+  .sirve-cierre { font-size: 16px; }
+  .lleva-tablero .gana-item { flex-direction: row; align-items: center; justify-content: flex-start; gap: 16px; padding: 16px; }
+  .lleva-tablero .dibujo { flex: 0 0 140px; order: -1; height: 104px; padding: 11px; border-radius: 14px; }
+  .gana-item .lleva-frase { font-size: 17px; }
+  .cosas i { flex-basis: 12px; height: 11px; }
+  .persona { grid-template-columns: 20px minmax(0, 1fr) auto; gap: 7px; }
+  .avatar { width: 20px; height: 20px; }
+  .dibujo-espera { gap: 6px; }
+  .columna-mini { padding: 6px 5px; }
+  .columna-mini i { height: 9px; }
+  .dibujo-limite { gap: 8px; }
+  .dibujo-limite .columna-mini.limite { padding: 7px; }
+  .dibujo-limite .columna-mini.limite i,
+  .en-fila i { height: 11px; }
+  .en-fila { flex-basis: 18%; }
+  /* (en el dibujo chico el nombre de la columna no cabe: queda el límite) */
+  .columna-mini-cabeza span { display: none; }
+  .columna-mini-cabeza b { padding: 2px 7px; }
+  .dibujo-datos { gap: 9px; }
+  .barras { gap: 3px; }
+  .semana-nombre { font-size: 12px; white-space: nowrap; }
   .motivo-texto p { font-size: 17px; }
 
   .credito { grid-template-columns: 1fr; }
@@ -1018,6 +1167,13 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   body.portada { font-size: 16px; }
   .bajada { margin-bottom: 20px; }
 }
+/* ...y en los más angostos (menos de 350 px), el dibujo de cada frase va
+   arriba y la frase abajo: al lado no le queda ancho para leerse */
+@media (max-width: 349px) {
+  .lleva-tablero .gana-item { flex-direction: column; align-items: stretch; gap: 12px; }
+  .lleva-tablero .dibujo { flex: 0 0 auto; height: 100px; }
+  .columna-mini-cabeza span { display: inline; }
+}
 @media (max-width: 599px) {
   .cerebros { gap: 10px; }
 }
@@ -1036,6 +1192,7 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .boton { padding-inline: 20px; }
   .boton.principal { padding-inline: 28px; }
   h1 { font-size: clamp(36px, 3.4vw, 44px); }
+  .lleva-tablero { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .piezas { grid-template-columns: 1fr 1fr; }
   .pieza-taller { grid-column: 1 / -1; flex-direction: row; }
   .pieza-taller .pieza-imagen { flex: 0 0 42%; aspect-ratio: auto; border-bottom: 0; border-right: 1px solid var(--borde); }
@@ -1047,6 +1204,7 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 @media (min-width: 900px) and (max-height: 820px) {
   .hero { min-height: max(calc(100svh - var(--alto-barra)), 620px); }
   .hero-texto { padding: 40px 0 48px; }
+  .rotulo { margin-bottom: 14px; }
   h1 { font-size: clamp(38px, 3.2vw, 46px); margin-bottom: 18px; }
   .bajada { margin-bottom: 28px; }
   .dato-inicio { margin-bottom: 26px; }

@@ -244,6 +244,25 @@ addEventListener('resize', () => {
 medirAire();
 marcarSeccion();
 
+// ---------- "Para qué sirve un límite": la prueba de la mosca, al llegar (8.8) ----------
+// Una sola vez, cuando la sección entra a la pantalla: la mosca del logo se
+// asoma al tablero, las fichas terminadas llegan de a una y las barras se
+// llenan (los estilos, en src/portada.css). Sin IntersectionObserver o con
+// "reducir movimiento" no se toca nada: todo está en su lugar desde el HTML.
+const seccionSirve = document.querySelector('.sirve');
+if (seccionSirve && 'IntersectionObserver' in window && !quieto.matches) {
+  seccionSirve.classList.add('animar');
+  const alVer = new IntersectionObserver(
+    (entradas) => {
+      if (!entradas.some((e) => e.isIntersecting)) return;
+      seccionSirve.classList.add('visto');
+      alVer.disconnect();
+    },
+    { threshold: 0.3 },
+  );
+  alVer.observe(seccionSirve.querySelector('.sirve-tablero'));
+}
+
 // Al entrar, una sola vez: sube de 2 a 10 tareas (el tope del juego) para
 // mostrar qué pasa. Con 10 quedan los números del juego para 10 (8,2
 // terminadas, Colapsada, 15 cigarros) y el cerebro de 10 tareas

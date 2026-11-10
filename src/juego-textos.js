@@ -133,29 +133,41 @@ export const PAGINA = {
   'Fin del día.': 'End of the day.',
   // La tarjeta de inicio (Etapa 8.1, 2026-11-03): quién es quien juega y cuál
   // es la misión, antes del primer día
+  // (8.8, 2026-11-09: los mismos textos, ahora cada línea con su dibujo; las
+  // dos frases largas quedaron en dos líneas cada una)
   'Tú eres el jefe de la mosca.': 'You’re the fly’s boss.',
-  'Decide cuántas tareas puede tener empezadas a la vez, de 1 a 10, y mira su día de oficina en un minuto.':
-    'Choose how many tasks she can have started at once, from 1 to 10, and watch her office day in one minute.',
+  'Decide cuántas tareas puede tener empezadas a la vez, de 1 a 10.': 'Choose how many tasks she can have started at once, from 1 to 10.',
+  'Mira su día de oficina en un minuto.': 'Watch her office day in one minute.',
   'Al final verás cuánto terminó, cuánto tardó cada tarea y cómo quedó de estrés.':
     'At the end you’ll see how much she finished, how long each task took and how stressed she ended up.',
   // (8.7, 2026-11-07) el cigarro y el café con las reglas del juego (fuma
   // solo sobre Tranquila y pierde 8 minutos, el café solo con estrés bajo) y
   // la pregunta al final
-  'Si se estresa, sale a fumar y pierde tiempo. Si no está tan estresada, se toma un café.':
-    'If she gets stressed, she goes out for a smoke and loses time. If she isn’t too stressed, she has a coffee.',
+  'Si se estresa, sale a fumar y pierde tiempo.': 'If she gets stressed, she goes out for a smoke and loses time.',
+  'Si no está tan estresada, se toma un café.': 'If she isn’t too stressed, she has a coffee.',
   // (el espacio entre ¿Con y cuál no se parte: en el computador la línea se
   // cortaba en "¿Con / cuál")
   'Prueba un día con 9 y otro con 2. ¿Con\u00a0cuál crees que termina más?':
     'Try one day with 9 and another with 2. Which one do you think she’ll finish more with?',
   'Empezar el día': 'Start the day',
   '¿Qué es esto?': 'What is this?',
+  // El recorrido (8.8, 2026-11-09): el botón de la tarjeta, el de Ayuda y los
+  // tres botones del recorrido ("Siguiente" pasa a "Listo" en el último paso:
+  // lo escribe el juego, más abajo)
+  '¿Dónde está cada cosa?': 'Where is everything?',
+  Ayuda: 'Help',
+  'Recorrido: dónde está cada cosa': 'Tour: where everything is',
+  'Ayuda: dónde está cada cosa': 'Help: where everything is',
+  Saltar: 'Skip',
+  Atrás: 'Back',
+  Siguiente: 'Next',
   'Mira la tabla o reinicia para probar otro WIP.': 'Check the table, or restart to try another WIP.',
   // (8.7) al fin del día, en Control, Exhibición y el celular
   '¿Y tú, cuántas cosas tienes empezadas hoy?': 'And you, how many things do you have started today?',
   // Celular (Parte 5.2e): volver, la píldora del reloj, la hoja de abajo, las
   // pestañas y el fin del día ("Cerebro", "Idioma" y "Reiniciar día" ya están)
   'Volver a la portada': 'Back to the home page',
-  Inicio: 'Home', // "← Inicio" en Control y en la barra de Exhibición (5.2i)
+  Inicio: 'Home', // "← Inicio" en Control (5.2i; desde la 8.8 ya no va en la barra de Exhibición)
   // "Volver a la oficina" en la barra de Exhibición (2026-10-28)
   'Volver a la oficina': 'Back to the office',
   'Volver a la vista normal del juego (tecla E)': 'Back to the normal game view (key E)',
@@ -180,9 +192,9 @@ export const BLOQUES = {
   // (la E pasó al botón "Volver a la oficina", 2026-10-28)
   '#barra-exhibicion .atajo':
     '<kbd>Space</kbd> pause <kbd>R</kbd> new day <kbd>1–9</kbd> WIP <kbd>D</kbd> demo <span class="atajo-extra">· double-click: reset view</span>',
-  // <kbd>Espacio</kbd> pausa · <kbd>R</kbd> reinicia · … <kbd>C</kbd> controles
+  // <span><kbd>Espacio</kbd> pausa</span><span><kbd>R</kbd> reinicia</span>… (8.8: cada tecla con lo que hace, de a dos por fila)
   '#panel .atajos':
-    '<kbd>Space</kbd>&nbsp;pause · <kbd>R</kbd>&nbsp;restart · <kbd>1–9</kbd>&nbsp;WIP · <kbd>E</kbd>&nbsp;exhibition · <kbd>B</kbd>&nbsp;brain · <kbd>C</kbd>&nbsp;controls',
+    '<span><kbd>Space</kbd> pause</span><span><kbd>R</kbd> restart</span><span><kbd>1–9</kbd> WIP</span><span><kbd>E</kbd> exhibition</span><span><kbd>B</kbd> brain</span><span><kbd>C</kbd> controls</span>',
   // Estrés<br />máx. (en inglés el orden se da vuelta)
   '#ex-fin thead th:nth-child(6)': 'Max<br />stress',
 };
@@ -196,6 +208,28 @@ export const TEXTOS = {
   quitarDiaNombre: { es: (n, wip) => `Eliminar el día ${n} (WIP ${wip})`, en: (n, wip) => `Remove day ${n} (WIP ${wip})` },
   borrarHistorial: { es: 'Borrar historial', en: 'Clear history' },
   confirmarBorrado: { es: '¿Seguro? Toca de nuevo', en: 'Sure? Press again' },
+  // El recorrido (8.8, 2026-11-09): cada paso, con su título y una línea
+  recorrido: {
+    es: {
+      tareas: ['Aquí mandas tú', 'Con este control eliges cuántas tareas tiene empezadas a la vez, de 1 a 10.'],
+      reloj: ['El día', 'Va de 9 a 18 y dura un minuto. Aquí lo empiezas, lo pausas, lo aceleras o juegas otro.'],
+      tablero: ['Su tablero', 'Las tareas pasan de Por hacer a En curso, y de ahí a Hecho.'],
+      numeros: ['Cómo le va', 'Lo que lleva terminado, cuánto tarda cada tarea y su estrés. Si se estresa, sale a fumar.'],
+      cerebro: ['Su cerebro, en vivo', 'Neuronas reales de una mosca. Mientras más tareas tiene encima, más se enciende.'],
+      dias: ['Tus días jugados', 'Cada día que termina queda aquí. Juega uno con 9 y otro con 2, y compáralos.'],
+    },
+    en: {
+      tareas: ['You’re in charge here', 'With this control you choose how many tasks she has started at once, from 1 to 10.'],
+      reloj: ['The day', 'It runs from 9 to 6 and lasts one minute. Here you start it, pause it, speed it up or play another one.'],
+      tablero: ['Her board', 'Tasks move from To do to In progress, and from there to Done.'],
+      numeros: ['How she’s doing', 'What she has finished, how long each task takes and her stress. If she gets stressed, she goes out for a smoke.'],
+      cerebro: ['Her brain, live', 'Real neurons from a fly. The more tasks she has on her plate, the more her brain lights up.'],
+      dias: ['Your days played', 'Every day that ends is kept here. Play one with 9 and one with 2, and compare them.'],
+    },
+  },
+  recorridoPaso: { es: (i, n) => `${i} de ${n}`, en: (i, n) => `${i} of ${n}` },
+  recorridoSigue: { es: 'Siguiente', en: 'Next' },
+  recorridoListo: { es: 'Listo', en: 'Done' },
   // Bajo el slider
   notaTerminando: { es: (n) => `Terminando lo empezado: ${n} en curso`, en: (n) => `Finishing what’s started: ${n} in progress` },
   notaDentro: { es: (n) => `Dentro del límite sostenible (${n})`, en: (n) => `Within the sustainable limit (${n})` },

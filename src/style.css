@@ -21,6 +21,14 @@
   --alerta: #cc4a43;
   --urgencia: #d9732e; /* la urgencia (8.3): el naranjo de "Estresada", el mismo del tablero */
   --anillo: rgba(184, 88, 42, 0.28);
+  /* El ancho del panel de controles (8.8, pedido de Felipe: "muy apretado",
+     "sin que la mosca le quite espacio"). 280 px como siempre y, solo cuando
+     a la mosca le sobra lugar entre los dos paneles, hasta 320 px: la mosca
+     encuadrada mide de ancho casi lo mismo que el alto de la ventana, y a los
+     lados van el cerebro (16 + 360 px), el panel (su ancho + 16 px) y el aire
+     (16 + 12 px). En una ventana ancha y baja (1906 × 830) llega a 320; en un
+     notebook de 1440 × 900 se queda en 280 y la mosca no pierde nada. */
+  --ancho-panel: clamp(280px, calc(100vw - 100vh - 430px), 320px);
 }
 
 * {
@@ -69,7 +77,7 @@ body * {
   position: fixed;
   top: 16px;
   right: 16px;
-  width: 280px;
+  width: var(--ancho-panel);
   max-height: calc(100vh - 32px);
   overflow-y: auto;
   transition: transform var(--transicion), opacity 0.35s ease, visibility 0s linear 0s;
@@ -122,7 +130,9 @@ body * {
   gap: 8px;
 }
 
-.volver-inicio {
+/* (8.8) A su lado, "Ayuda": la misma píldora; abre el recorrido */
+.volver-inicio,
+.boton-ayuda {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -133,43 +143,33 @@ body * {
   background: var(--oscuro-panel);
   box-shadow: 0 8px 22px rgba(20, 22, 40, 0.25);
   color: var(--oscuro-tinta);
+  font: inherit;
   font-size: 12.5px;
   font-weight: 600;
   line-height: 1.2;
   text-decoration: none;
   white-space: nowrap;
+  cursor: pointer;
   transition: background 0.15s, color 0.15s;
 }
 
-.volver-inicio:hover {
+.volver-inicio:hover,
+.boton-ayuda:hover {
   background: #141a2e;
 }
 
-.volver-inicio:focus {
+.volver-inicio:focus,
+.boton-ayuda:focus {
   outline: none;
 }
 
-.volver-inicio:focus-visible {
+.volver-inicio:focus-visible,
+.boton-ayuda:focus-visible {
   box-shadow: 0 0 0 3px rgba(47, 227, 255, 0.35);
 }
 
 body.exhibicion #arriba-izq {
   display: none;
-}
-
-.volver-inicio-barra {
-  height: 28px;
-  padding: 0 11px 0 8px;
-  gap: 5px;
-  border-radius: 8px;
-  background: var(--oscuro-superficie);
-  box-shadow: none;
-  color: var(--oscuro-suave);
-}
-
-.volver-inicio-barra:hover {
-  color: var(--oscuro-tinta);
-  background: rgba(255, 255, 255, 0.09);
 }
 
 .bloque {
@@ -540,7 +540,7 @@ tr.vacia td {
 #banner-fin-dia {
   position: fixed;
   bottom: 24px;
-  left: calc((100vw - 312px) / 2);
+  left: calc((100vw - var(--ancho-panel) - 32px) / 2);
   transform: translateX(-50%);
   padding: 12px 20px;
   border-radius: 12px;
@@ -560,31 +560,34 @@ tr.vacia td {
 
 /* ---------- La tarjeta de inicio (Etapa 8.1, 2026-11-03): el jefe de la mosca y su misión ---------- */
 
-/* En el espacio libre entre el cerebro (16 + 360 px, a la izquierda) y el
-   panel (280 + 16 px, a la derecha), sin taparlos. Desde la 8.7 (2026-11-07)
-   va arriba a la derecha de ese espacio, sobre la ventana, y no al centro: con
-   la línea del cigarro y el café quedó más alta y al centro tapaba la cabeza
-   de la mosca (pedido de Felipe: que no la tape). El mismo estilo que la
-   pregunta de salir y el fin del día: la tinta del juego y la letra de siempre */
+/* Al centro del espacio libre entre el cerebro (16 + 360 px, a la izquierda)
+   y el panel (su ancho + 16 px, a la derecha), sin taparlos. Así fue de la
+   8.1 a la 8.6; en la 8.7 pasó arriba a la derecha y en la 8.8 (2026-11-09)
+   Felipe la pidió de vuelta al centro, y que dejara de ser "puro texto duro":
+   ahora cada línea lleva su dibujo y se lee de arriba abajo como una lámina.
+   El mismo color de la pregunta de salir y del fin del día: la tinta del
+   juego, con la letra de siempre */
 #aviso-empezar {
   --libre-izq: 376px;
-  --libre-der: 296px;
+  --libre-der: calc(var(--ancho-panel) + 16px);
+  --aviso-crema: #fbf8f2;
   position: fixed;
-  top: 72px;
-  right: calc(var(--libre-der) + 20px);
+  top: 50%;
+  left: calc(var(--libre-izq) + (100vw - var(--libre-izq) - var(--libre-der)) / 2);
   z-index: 5;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 9px;
-  /* (el 45 % derecho del espacio libre: la mosca ocupa el primer 48 %) */
-  width: clamp(220px, calc((100vw - var(--libre-izq) - var(--libre-der)) * 0.45), 430px);
-  padding: 20px 24px 14px;
-  border-radius: 14px;
+  gap: 12px;
+  width: clamp(280px, calc(100vw - var(--libre-izq) - var(--libre-der) - 32px), 452px);
+  max-height: calc(100vh - 24px);
+  overflow-y: auto;
+  padding: 18px 22px 12px;
+  border-radius: 18px;
   background: var(--tinta);
-  color: #fbf8f2;
-  text-align: center;
-  box-shadow: 0 14px 36px rgba(40, 30, 15, 0.32);
+  color: var(--aviso-crema);
+  box-shadow: 0 18px 44px rgba(40, 30, 15, 0.38), 0 0 0 1px rgba(251, 248, 242, 0.06);
 }
 
 #aviso-empezar[hidden] {
@@ -597,47 +600,132 @@ tr.vacia td {
   outline: none;
 }
 
+/* La mosca del logo y el título, en una fila */
+.aviso-cabeza {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.aviso-mosca {
+  flex: none;
+  width: 42px;
+  height: auto;
+}
+
 #aviso-empezar strong {
-  font-size: 19px;
+  font-size: 20px;
   line-height: 1.25;
+  letter-spacing: -0.01em;
   text-wrap: balance;
 }
 
 .aviso-texto {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
+  width: 100%;
+}
+
+/* Cada línea: su dibujo en un círculo y el texto al lado */
+.aviso-pasos,
+.aviso-reglas {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.aviso-pasos li,
+.aviso-reglas li {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: center;
+  gap: 11px;
+}
+
+.aviso-icono {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(251, 248, 242, 0.11);
+  color: var(--aviso-crema);
+}
+
+/* Lo que pasa con el estrés, en su recuadro: el cigarro y el café, con los
+   mismos dibujos del gráfico del día */
+.aviso-reglas {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(251, 248, 242, 0.07);
+}
+
+.aviso-icono-cigarro {
+  background: rgba(255, 112, 67, 0.2);
+}
+
+.aviso-icono-cafe {
+  background: rgba(200, 145, 94, 0.24);
 }
 
 .aviso-texto p {
   margin: 0;
   font-size: 13.5px;
-  line-height: 1.45;
-  opacity: 0.86;
+  line-height: 1.42;
+  color: rgba(251, 248, 242, 0.9);
   text-wrap: pretty;
 }
 
 /* La línea destacada ("Prueba un día con 9 y otro con 2."): la misma letra,
-   en negrita y sin atenuar */
+   en negrita, sin atenuar y al centro */
 .aviso-texto .aviso-prueba {
+  padding: 0 4px;
   font-size: 14.5px;
   font-weight: 700;
-  opacity: 1;
+  color: var(--aviso-crema);
+  text-align: center;
+  text-wrap: balance;
 }
 
-#btn-empezar {
+/* Los dos botones: "Empezar el día" (el principal, claro) y "¿Dónde está cada
+   cosa?" (el recorrido, con borde) */
+.aviso-botones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 10px;
+  margin-top: 2px;
+}
+
+#btn-empezar,
+#btn-recorrido {
   min-height: 44px;
-  margin-top: 5px;
-  padding: 0 34px;
+  padding: 0 28px;
   border: none;
   border-radius: 999px;
-  background: #fbf8f2;
+  background: var(--aviso-crema);
   color: var(--tinta);
   font: inherit;
   font-size: 15.5px;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+#btn-recorrido {
+  padding: 0 18px;
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px rgba(251, 248, 242, 0.5);
+  color: var(--aviso-crema);
+  font-size: 13.5px;
+  font-weight: 650;
 }
 
 #btn-empezar:hover {
@@ -645,22 +733,28 @@ tr.vacia td {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
 }
 
-#btn-empezar:focus-visible {
-  outline: 2px solid #fbf8f2;
+#btn-recorrido:hover {
+  background: rgba(251, 248, 242, 0.1);
+  box-shadow: inset 0 0 0 1.5px rgba(251, 248, 242, 0.85);
+}
+
+#btn-empezar:focus-visible,
+#btn-recorrido:focus-visible {
+  outline: 2px solid var(--aviso-crema);
   outline-offset: 3px;
 }
 
-/* "¿Qué es esto?": chico, bajo el botón; lleva a la portada en el mismo idioma
-   (src/main.js, ponerEnlacesInicio). Zona de toque de 44 px sin ocupar ese
-   alto a la vista (los márgenes negativos se comen el aire de alrededor) */
+/* "¿Qué es esto?": chico, bajo los botones; lleva a la portada en el mismo
+   idioma (src/main.js, ponerEnlacesInicio). Zona de toque de 44 px sin ocupar
+   ese alto a la vista (los márgenes negativos se comen el aire de alrededor) */
 #aviso-que-es {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  margin: -9px 0 -12px;
+  margin: -12px 0 -12px;
   padding: 0 10px;
   border-radius: 999px;
-  color: #fbf8f2;
+  color: var(--aviso-crema);
   opacity: 0.78;
   font-size: 12.5px;
   text-decoration: underline;
@@ -676,7 +770,7 @@ tr.vacia td {
 }
 
 #aviso-que-es:focus-visible {
-  outline: 2px solid #fbf8f2;
+  outline: 2px solid var(--aviso-crema);
   outline-offset: -3px;
   opacity: 1;
 }
@@ -690,9 +784,182 @@ body.controles-oculto #aviso-empezar {
 }
 
 /* En Exhibición no va: ahí explica quien facilita (8.1). El reloj igual
-   espera a Espacio, a R o al modo demo */
+   espera a Espacio, a R o al modo demo. Mientras corre el recorrido tampoco
+   se ve (8.8): taparía lo que el recorrido muestra */
 body.exhibicion #aviso-empezar {
   display: none;
+}
+
+body.en-recorrido #aviso-empezar {
+  visibility: hidden;
+}
+
+/* Ventanas bajas (un proyector de 1280 × 720): la tarjeta más compacta, para
+   que entre sin deslizarla */
+@media (max-height: 760px) {
+  #aviso-empezar {
+    gap: 9px;
+    padding: 14px 20px 10px;
+  }
+  .aviso-mosca {
+    width: 36px;
+  }
+  .aviso-texto {
+    gap: 8px;
+  }
+  .aviso-pasos,
+  .aviso-reglas {
+    gap: 6px;
+  }
+  .aviso-reglas {
+    padding: 8px 10px;
+  }
+  .aviso-pasos li,
+  .aviso-reglas li {
+    grid-template-columns: 30px minmax(0, 1fr);
+    gap: 10px;
+  }
+  .aviso-icono {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+/* ---------- El recorrido: dónde está cada cosa y para qué (8.8, 2026-11-09) ----------
+   Oscurece todo menos una cosa (el foco, un recuadro con una sombra enorme
+   alrededor) y la explica en una tarjeta chica, a su lado. El foco pasa de una
+   cosa a la otra deslizándose, para que se vea a dónde se fue (de golpe con
+   movimiento reducido). Lo arma src/recorrido.js. */
+#recorrido {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+}
+
+#recorrido[hidden] {
+  display: none;
+}
+
+#recorrido-foco {
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-radius: 16px;
+  box-shadow: 0 0 0 200vmax rgba(22, 16, 9, 0.66), 0 0 0 3px #fbf8f2, 0 0 0 7px rgba(251, 248, 242, 0.28);
+  pointer-events: none;
+}
+
+#recorrido-tarjeta {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: min(320px, calc(100vw - 24px));
+  padding: 16px 18px 14px;
+  border-radius: 16px;
+  background: #fbf8f2;
+  color: var(--tinta);
+  box-shadow: 0 18px 44px rgba(20, 14, 6, 0.45);
+}
+
+#recorrido-tarjeta:focus {
+  outline: none;
+}
+
+#recorrido.con-movimiento #recorrido-foco {
+  transition: transform 0.34s cubic-bezier(0.22, 0.61, 0.36, 1), width 0.34s cubic-bezier(0.22, 0.61, 0.36, 1), height 0.34s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+#recorrido.con-movimiento #recorrido-tarjeta {
+  transition: transform 0.34s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+#recorrido-paso {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 650;
+  color: var(--tinta-suave);
+  font-variant-numeric: tabular-nums;
+}
+
+#recorrido-titulo {
+  font-size: 17.5px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+#recorrido-texto {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #4b3f31;
+  text-wrap: pretty;
+}
+
+.recorrido-botones {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.recorrido-botones button {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--tinta);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.recorrido-botones button:hover {
+  background: var(--superficie);
+}
+
+.recorrido-botones button:focus {
+  outline: none;
+}
+
+.recorrido-botones button:focus-visible {
+  box-shadow: 0 0 0 3px var(--anillo);
+}
+
+/* "Saltar" a la izquierda, sin borde; "Siguiente" a la derecha, el principal */
+#recorrido-saltar {
+  margin-right: auto;
+  padding: 0 6px;
+  border-color: transparent;
+  background: transparent;
+  color: var(--tinta-suave);
+  font-weight: 600;
+}
+
+#recorrido-sigue {
+  padding: 0 18px;
+  border-color: var(--tinta);
+  background: var(--tinta);
+  color: #fbf8f2;
+}
+
+#recorrido-sigue:hover {
+  background: #4a3c2c;
+}
+
+#recorrido-atras[hidden] {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  .recorrido-botones button {
+    min-height: 44px;
+  }
 }
 
 /* ---------- Salir del juego: la pregunta antes de ir a la portada (2026-10-28) ----------
@@ -2349,20 +2616,80 @@ tr.mejor-dia td:last-child {
   border-radius: 0 6px 6px 0;
 }
 
+/* Los atajos (8.8): en una caja que se abre y se cierra. Cerrada es una
+   línea; abierta, los seis en dos columnas, cada tecla con lo que hace */
+.atajos-caja {
+  margin: 12px 0 0;
+  border-top: 1px solid var(--borde);
+}
+
+.atajos-caja summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 0 3px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--tinta-suave);
+  list-style: none;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.atajos-caja summary::-webkit-details-marker {
+  display: none;
+}
+
+.atajos-caja summary::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  margin: 0 3px 1px 2px;
+  border-right: 1.6px solid currentColor;
+  border-bottom: 1.6px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 0.18s ease;
+}
+
+.atajos-caja[open] summary::before {
+  transform: rotate(45deg);
+  margin-bottom: 3px;
+}
+
+.atajos-caja summary:hover {
+  color: var(--tinta);
+}
+
+.atajos-caja summary:focus {
+  outline: none;
+}
+
+.atajos-caja summary:focus-visible {
+  box-shadow: 0 0 0 3px var(--anillo);
+}
+
 .atajos {
-  margin: 10px 0 0;
-  font-size: 10.5px;
-  line-height: 1.7;
-  color: var(--tinta-tenue);
-  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px 12px;
+  margin: 6px 0 2px;
+  font-size: 12px;
+  line-height: 1.3;
+  color: var(--tinta-suave);
+}
+
+.atajos span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
 }
 
 .nota-ilustrativa {
-  margin: 6px 0 0;
-  font-size: 10px;
-  line-height: 1.45;
-  color: var(--tinta-tenue);
-  text-align: center;
+  margin: 10px 0 0;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--tinta-suave);
 }
 /* El enlace a la guía del límite WIP (Etapa 7): en la misma nota, sin tapar nada */
 .nota-ilustrativa a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
@@ -2370,14 +2697,192 @@ tr.mejor-dia td:last-child {
 
 .atajos kbd {
   display: inline-block;
-  padding: 0 4px;
+  flex: none;
+  min-width: 22px;
+  padding: 1px 5px;
   border: 1px solid var(--borde);
-  border-radius: 4px;
+  border-radius: 5px;
   background: #fff;
-  color: var(--tinta-suave);
+  color: var(--tinta);
   font: inherit;
-  font-size: 10px;
+  font-size: 11px;
+  font-weight: 600;
   line-height: 1.5;
+  text-align: center;
+}
+
+/* ---------- El panel con más aire (8.8, 2026-11-09, pedido de Felipe: "muy
+   apretado y se ve en los textos") ----------
+   Solo en el computador (en el celular el panel es la hoja de abajo, con sus
+   propias medidas en src/celular.css). Letras un poco más grandes, más aire
+   entre los bloques, los números con su dibujo y la tabla de los días con la
+   letra de 12 px. Cuando a la mosca le sobra lugar, el panel además se
+   ensancha (--ancho-panel). */
+html:not(.celular) #panel .cabecera {
+  padding: 16px 18px 13px;
+}
+
+html:not(.celular) #panel .cabecera h1 {
+  font-size: 16px;
+}
+
+html:not(.celular) #panel .subtitulo {
+  font-size: 12.5px;
+}
+
+html:not(.celular) #panel .bloque {
+  padding: 15px 18px;
+}
+
+html:not(.celular) #panel .etiqueta {
+  font-size: 11.5px;
+}
+
+html:not(.celular) #panel .wip-numero {
+  font-size: 27px;
+}
+
+html:not(.celular) #panel .nota {
+  margin-top: 7px;
+  font-size: 12.5px;
+}
+
+html:not(.celular) #panel .escala {
+  height: 15px;
+  font-size: 11.5px;
+}
+
+html:not(.celular) #panel .hora {
+  font-size: 19px;
+}
+
+html:not(.celular) #panel .controles {
+  gap: 7px;
+  margin-top: 13px;
+}
+
+html:not(.celular) #panel .controles button {
+  padding: 8px;
+  border-radius: 10px;
+  font-size: 12.5px;
+}
+
+html:not(.celular) #panel .metricas {
+  gap: 7px;
+}
+
+html:not(.celular) #panel .metrica {
+  padding: 9px 10px 8px;
+  border-radius: 11px;
+}
+
+html:not(.celular) #panel .metrica-valor {
+  font-size: 21px;
+}
+
+html:not(.celular) #panel .metrica-label {
+  margin-top: 3px;
+  font-size: 11.5px;
+}
+
+html:not(.celular) #panel .tiempo-tarea {
+  margin-top: 14px;
+}
+
+html:not(.celular) #panel .eficiencia,
+html:not(.celular) #panel .estres {
+  margin-top: 10px;
+}
+
+html:not(.celular) #panel .tiempo-tarea-valor,
+html:not(.celular) #panel .estres-nivel {
+  font-size: 14.5px;
+}
+
+html:not(.celular) #panel .eficiencia-de {
+  font-size: 12px;
+}
+
+html:not(.celular) #panel .nota-tenue {
+  font-size: 11.5px;
+}
+
+/* La tabla de los días: usa también parte del margen del panel, con la letra
+   de 12 px (antes 11) y sus títulos de 10,5 (antes 9,5) */
+html:not(.celular) #tabla-dias {
+  width: calc(100% + 24px);
+  margin: 8px -12px 0;
+  font-size: 12px;
+}
+
+html:not(.celular) #tabla-dias th,
+html:not(.celular) #tabla-dias td {
+  padding: 6px 2px;
+}
+
+html:not(.celular) #tabla-dias th {
+  font-size: 10.5px;
+  vertical-align: bottom;
+}
+
+html:not(.celular) #panel tr.vacia td {
+  padding: 12px 0 4px;
+  font-size: 12.5px;
+}
+
+@media (max-height: 760px) {
+  html:not(.celular) #panel .cabecera {
+    padding: 12px 18px 9px;
+  }
+  html:not(.celular) #panel .bloque {
+    padding: 11px 18px;
+  }
+  html:not(.celular) #panel .controles {
+    margin-top: 10px;
+  }
+  html:not(.celular) #panel .tiempo-tarea {
+    margin-top: 11px;
+  }
+  html:not(.celular) #panel .eficiencia,
+  html:not(.celular) #panel .estres {
+    margin-top: 8px;
+  }
+}
+
+/* Los dibujos del cigarro y del café (los del gráfico del día) junto a
+   "Colillas" y "Cafés", y como título de sus columnas en la tabla */
+.metrica-dibujo {
+  display: none;
+}
+
+html:not(.celular) #panel .metrica {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+html:not(.celular) #panel .metrica-label {
+  grid-column: 1 / -1;
+}
+
+html:not(.celular) #panel .metrica-dibujo {
+  display: flex;
+  align-items: center;
+}
+
+.metrica-dibujo svg rect:first-child {
+  stroke: rgba(92, 74, 52, 0.45);
+  stroke-width: 0.6;
+}
+
+.th-dibujo svg {
+  display: block;
+  margin: 0 auto 1px;
+}
+
+.th-dibujo svg rect:first-child {
+  stroke: rgba(92, 74, 52, 0.45);
+  stroke-width: 0.6;
 }
 
 /* ---------- Exhibición: aviso de inicio y comparación de días ---------- */
@@ -2932,34 +3437,53 @@ body.exhibicion .idioma-flotante button {
   border-radius: 6px;
 }
 
+/* (los atajos a la derecha, dejando libre el lugar de la píldora ES | EN:
+   por eso los 78 px) */
 body.exhibicion .barra-datos {
-  margin-left: auto; /* "← Inicio" y la marca quedan juntos a la izquierda (5.2i) */
+  margin-left: auto;
+  margin-right: 78px;
 }
 
-/* "Volver a la oficina" (2026-10-28): a la derecha de la barra, antes de la
-   píldora ES | EN (por eso los 78 px, que antes tenía la barra de atajos).
-   Claro como el botón Empezar, para que no se confunda con "← Inicio", que es
-   oscuro y está a la izquierda; con su tecla E. En pantallas táctiles (tablet)
-   mide 44 px de alto, para el dedo. */
+/* "Volver a la oficina" (2026-10-28): desde la 8.8 (2026-11-09, pedido de
+   Felipe: "cuesta encontrarlo, intuitivamente uno se va al botón de inicio")
+   es lo primero de la barra, arriba a la izquierda, con la flecha de volver:
+   donde antes estaba "← Inicio", que ya no va en Exhibición. Claro como el
+   botón Empezar y con su tecla E. Al entrar a Exhibición late dos veces, para
+   que se vea por dónde se vuelve (no con movimiento reducido). En pantallas
+   táctiles (tablet) mide 44 px de alto, para el dedo. */
 .volver-oficina {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
   flex-shrink: 0;
-  height: 34px;
-  margin-right: 78px;
-  padding: 0 7px 0 13px;
+  height: 38px;
+  padding: 0 8px 0 13px;
   border: none;
   border-radius: 999px;
   background: #fbf8f2;
   color: var(--tinta);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
   font: inherit;
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 700;
   white-space: nowrap;
   cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .volver-oficina.llamar {
+    animation: llamar-volver 1.1s ease-out 0.5s 2;
+  }
+}
+
+@keyframes llamar-volver {
+  0% {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28), 0 0 0 0 rgba(251, 248, 242, 0.7);
+  }
+  100% {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28), 0 0 0 14px rgba(251, 248, 242, 0);
+  }
 }
 
 .volver-oficina kbd {

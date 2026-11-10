@@ -12,6 +12,7 @@ import { POS_CENICERO, POS_PILA, CENTRO_PANTALLA, ESCALA_MONITOR } from './layou
 import { leerIdioma, marcarIdioma, elegirIdioma, formatoNumero, rutaEnIdioma } from './idioma.js';
 import { tx, ponerIdiomaJuego, nombreNivel, zona, prepararPagina, traducirPagina } from './juego-textos.js';
 import { iniciarCelular, esCelular, vistaCelular } from './celular.js';
+import { crearRecorrido } from './recorrido.js';
 
 // ---------- Idioma: español (siempre al llegar) o inglés ----------
 // Se decide antes de armar la oficina, así el kanban, el póster y los
@@ -311,15 +312,33 @@ document.getElementById('btn-empezar').addEventListener('click', () => {
 
 // En el celular la tarjeta de inicio va sobre la oficina, entre los botones
 // de arriba y la hoja (el estado de la mosca se esconde hasta empezar: todavía
-// no tiene nada que contar, y la hoja lleva solo las tareas a la vez). Si no
-// cabe entera (pantallas con zoom o con la letra agrandada), va perdiendo de
-// a poco: la línea del final y "¿Qué es esto?", después el título y al final
-// el texto: queda el botón (reglas en src/celular.css).
+// no tiene nada que contar, y la hoja lleva solo las tareas a la vez). Desde
+// la 8.8 cada línea lleva su dibujo y la tarjeta completa es más alta, así que
+// se acomoda sola, soltando de a poco lo que menos falta hace (los niveles de
+// más abajo; las reglas, en src/celular.css):
+// 1. Primero busca dejarle a la mosca su lugar arriba de la tarjeta: completa
+//    si cabe; si no, sin "¿Qué es esto?" ni la línea "Al final verás…"
+//    (sin-final); si todavía no, también sin el recuadro del cigarro y el café
+//    (sin-reglas).
+// 2. Si la mosca no cabe de ninguna forma (un iPhone SE con las barras de
+//    Safari, el teléfono girado), la tarjeta va sobre la oficina, como
+//    siempre, con lo más que quepa entre los botones de arriba y la hoja: de
+//    completa hasta, con el zoom de pantalla o la letra muy agrandada, solo el
+//    botón.
 const TAPAN_AVISO = ['cel-volver', 'cel-controles', 'cel-pestanas', 'panel'].map((id) => document.getElementById(id));
+const ALTO_COMODO_MOSCA = 110; // el lugar que se busca dejarle a la mosca sobre la tarjeta
+const NIVELES_AVISO = [[], ['sin-final'], ['sin-final', 'sin-reglas'], ['sin-detalle'], ['sin-detalle', 'sin-titulo'], ['sin-detalle', 'sin-titulo', 'solo-boton']];
 function ajustarAvisoEmpezar() {
-  const niveles = ['sin-detalle', 'sin-titulo', 'solo-boton'];
-  elAvisoEmpezar.classList.remove(...niveles);
+  const poner = (nivel) => {
+    elAvisoEmpezar.classList.remove('sin-final', 'sin-reglas', 'sin-detalle', 'sin-titulo', 'solo-boton');
+    elAvisoEmpezar.classList.add(...nivel);
+  };
+  poner([]);
   if (!esCelular() || elAvisoEmpezar.hidden) return medirEncajeAviso();
+  const lugarMosca = () => {
+    const [arriba, abajo] = lugarSobreAviso();
+    return abajo - arriba;
+  };
   const choca = () => {
     const a = elAvisoEmpezar.getBoundingClientRect();
     return TAPAN_AVISO.some((el) => {
@@ -327,11 +346,26 @@ function ajustarAvisoEmpezar() {
       return b.width > 0 && b.height > 0 && a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
     });
   };
-  for (const nivel of niveles) {
+  // 1. con la mosca arriba: un lugar cómodo y, si no se puede, el mínimo
+  for (const minimo of [ALTO_COMODO_MOSCA, ALTO_MINIMO_ENCAJE])
+    for (const nivel of NIVELES_AVISO.slice(0, 3)) {
+      poner(nivel);
+      if (lugarMosca() >= minimo && !choca()) return medirEncajeAviso();
+    }
+  // 2. sobre la oficina: lo más que quepa sin chocar
+  for (const nivel of NIVELES_AVISO) {
+    poner(nivel);
     if (!choca()) break;
-    elAvisoEmpezar.classList.add(nivel);
   }
   medirEncajeAviso();
+}
+// El lugar libre sobre la tarjeta de inicio, en píxeles de la oficina: desde
+// los botones de arriba hasta la tarjeta, con 10 px de aire en cada borde
+function lugarSobreAviso() {
+  const escena = document.getElementById('escena').getBoundingClientRect();
+  const aviso = elAvisoEmpezar.getBoundingClientRect();
+  const arriba = Math.max(...['cel-volver', 'cel-controles'].map((id) => document.getElementById(id).getBoundingClientRect().bottom)) - escena.top + 10;
+  return [arriba, aviso.top - escena.top - 10];
 }
 // (cuando cambia la oficina o la tarjeta: al girar, al medir la hoja, al
 // volver a la pestaña Oficina o al cambiar de idioma; en el cuadro siguiente,
@@ -679,19 +713,28 @@ let factorIzq = cerebroOculto ? 0 : 1;
 let factorDer = controlesOculto ? 0 : 1;
 const camBase = new THREE.PerspectiveCamera();
 const _v = new THREE.Vector3();
-// Silueta de la mosca: una muestra de puntos reales de su cuerpo (se
-// renueva cada tanto porque la mosca se mueve un poco)
+// Silueta de la mosca: una muestra de puntos reales de su cuerpo. Se vuelve a
+// mirar cada tanto, porque la mosca cambia de postura (fuma, toma café), pero
+// la imagen solo se reacomoda si la silueta cambió de verdad, y entonces lo
+// hace de a poco. (8.8, pedido de Felipe: antes de empezar, la oficina "se iba
+// corriendo y pegaba un salto". Cada 2 segundos se medía de nuevo a la mosca,
+// que respira y se mueve un poco, y en ventanas angostas la imagen se
+// reacomodaba de golpe, hasta 1 píxel. Lo comprueba scripts/probar-quieta.mjs)
 let silueta = [];
+let siluetaAntes = null; // la silueta de la que viene, mientras se funde con la nueva
+let cambioSilueta = 0; // cuándo cambió (performance.now())
 let cuadrosSilueta = 0;
+const FUNDIDO_SILUETA_MS = 600;
 function muestrearSilueta() {
-  silueta = [];
+  const puntos = [];
   mosca.grupo.updateMatrixWorld(true);
   mosca.grupo.traverse((o) => {
     if (!o.isMesh || !o.visible || !o.geometry?.attributes?.position) return;
     const pos = o.geometry.attributes.position;
     const paso = Math.max(1, Math.floor(pos.count / 24));
-    for (let i = 0; i < pos.count; i += paso) silueta.push(new THREE.Vector3().fromBufferAttribute(pos, i).applyMatrix4(o.matrixWorld));
+    for (let i = 0; i < pos.count; i += paso) puntos.push(new THREE.Vector3().fromBufferAttribute(pos, i).applyMatrix4(o.matrixWorld));
   });
+  return puntos;
 }
 
 // Lo que no debe quedar tapado: la mosca, la pantalla con el kanban y la
@@ -735,29 +778,63 @@ function aplicarEspacioPanel() {
   camBase.near = camera.near;
   camBase.far = camera.far;
   camBase.updateProjectionMatrix();
-  if (cuadrosSilueta-- <= 0) {
-    muestrearSilueta();
-    cuadrosSilueta = 120;
-  }
   const arribaIzq = elCerebro.offsetTop - 8;
   const abajoIzq = elCerebro.offsetTop + elCerebro.offsetHeight + 8;
   const arribaDer = elPanelControl.offsetTop - 8;
   const abajoDer = elPanelControl.offsetTop + elPanelControl.offsetHeight + 8;
-  let xMin = Infinity;
-  let xMax = -Infinity;
-  const medir = (p) => {
-    _v.copy(p).applyMatrix4(camera.matrixWorldInverse);
-    // lo que queda detrás de la cámara (al rotarla) no cuenta
-    if (_v.z > -camera.near) return;
-    _v.applyMatrix4(camBase.projectionMatrix);
-    if (Math.abs(_v.x) > 1.6 || Math.abs(_v.y) > 1.6) return;
-    const x = ((_v.x + 1) / 2) * w;
-    const y = ((1 - _v.y) / 2) * h;
-    if (y > arribaIzq && y < abajoIzq) xMin = Math.min(xMin, x);
-    if (y > arribaDer && y < abajoDer) xMax = Math.max(xMax, x);
+  // Hasta dónde llega un grupo de puntos, en píxeles de la pantalla: a la
+  // izquierda (a la altura del cerebro) y a la derecha (a la del panel)
+  const extremos = (puntos) => {
+    let min = Infinity;
+    let max = -Infinity;
+    for (const p of puntos) {
+      _v.copy(p).applyMatrix4(camera.matrixWorldInverse);
+      // lo que queda detrás de la cámara (al rotarla) no cuenta
+      if (_v.z > -camera.near) continue;
+      _v.applyMatrix4(camBase.projectionMatrix);
+      if (Math.abs(_v.x) > 1.6 || Math.abs(_v.y) > 1.6) continue;
+      const x = ((_v.x + 1) / 2) * w;
+      const y = ((1 - _v.y) / 2) * h;
+      if (y > arribaIzq && y < abajoIzq) min = Math.min(min, x);
+      if (y > arribaDer && y < abajoDer) max = Math.max(max, x);
+    }
+    return [min, max];
   };
-  silueta.forEach(medir);
-  puntosFijos.forEach(medir);
+  // Cada 2 segundos se mira de nuevo a la mosca. Si su silueta llega casi a
+  // lo mismo que la que ya se usa (respira, mueve la cabeza), no se toca nada
+  if (cuadrosSilueta-- <= 0) {
+    cuadrosSilueta = 120;
+    const nueva = muestrearSilueta();
+    if (!silueta.length) silueta = nueva;
+    else {
+      const [a0, a1] = extremos(silueta);
+      const [b0, b1] = extremos(nueva);
+      const holgura = Math.max(6, h * 0.008);
+      const cambio = (a, b) => (Number.isFinite(a) || Number.isFinite(b)) && !(Math.abs(a - b) < holgura);
+      if (cambio(a0, b0) || cambio(a1, b1)) {
+        siluetaAntes = silueta;
+        silueta = nueva;
+        cambioSilueta = performance.now();
+      }
+    }
+  }
+  let [xMin, xMax] = extremos(silueta);
+  // ...y si cambió de verdad, la imagen pasa de la silueta de antes a la
+  // nueva en 0,6 segundos (de una vez con movimiento reducido)
+  if (siluetaAntes) {
+    const t = (performance.now() - cambioSilueta) / FUNDIDO_SILUETA_MS;
+    if (t >= 1 || matchMedia('(prefers-reduced-motion: reduce)').matches) siluetaAntes = null;
+    else {
+      const k = t * t * (3 - 2 * t);
+      const [v0, v1] = extremos(siluetaAntes);
+      const mezclar = (antes, ahora) => (Number.isFinite(antes) && Number.isFinite(ahora) ? antes + (ahora - antes) * k : ahora);
+      xMin = mezclar(v0, xMin);
+      xMax = mezclar(v1, xMax);
+    }
+  }
+  const [fijoMin, fijoMax] = extremos(puntosFijos);
+  xMin = Math.min(xMin, fijoMin);
+  xMax = Math.max(xMax, fijoMax);
 
   // Espacio libre entre los paneles (crece de a poco al ocultar uno)
   const L = fi * (elCerebro.offsetLeft + elCerebro.offsetWidth + 16);
@@ -929,8 +1006,7 @@ function medirEncajeAviso() {
   const escena = elEscena.getBoundingClientRect();
   const aviso = elAvisoEmpezar.getBoundingClientRect();
   if (!aviso.width || !escena.height) return; // (otra pestaña: no se ve)
-  const arriba = Math.max(...['cel-volver', 'cel-controles'].map((id) => document.getElementById(id).getBoundingClientRect().bottom)) - escena.top + 10;
-  const abajo = aviso.top - escena.top - 10;
+  const [arriba, abajo] = lugarSobreAviso();
   if (abajo - arriba < ALTO_MINIMO_ENCAJE) return;
   // Dónde queda todo con el encuadre de siempre
   const w = escena.width;
@@ -1082,6 +1158,14 @@ function aplicarVista(nueva) {
   }
   vista = nueva;
   document.body.classList.toggle('exhibicion', nueva === 'exhibicion');
+  // (8.8) Al entrar a Exhibición, "Volver a la oficina" late dos veces: así se
+  // ve por dónde se vuelve (la animación está en src/style.css)
+  const elVolverOficina = document.getElementById('btn-volver-oficina');
+  elVolverOficina.classList.remove('llamar');
+  if (nueva === 'exhibicion') {
+    void elVolverOficina.offsetWidth; // (para que la animación parta de nuevo)
+    elVolverOficina.classList.add('llamar');
+  }
   ajustarEscena();
   if (nueva === 'exhibicion') encuadrarExhibicion();
   controls.update();
@@ -1127,8 +1211,9 @@ document.addEventListener('click', (e) => {
 
 window.addEventListener('keydown', (e) => {
   // Con la pregunta de salir abierta, las teclas del juego no hacen nada (Esc
-  // la cierra sola: es un <dialog>)
-  if (elSalir.open) return;
+  // la cierra sola: es un <dialog>). Tampoco con el recorrido abierto (8.8),
+  // que tiene sus propias teclas (src/recorrido.js)
+  if (elSalir.open || recorrido.abierto()) return;
   if (e.target instanceof HTMLInputElement && e.key !== 'Escape') {
     if (e.target.type !== 'range') return;
   }
@@ -1459,9 +1544,10 @@ function pintarBotonesIdioma() {
 pintarBotonesIdioma();
 for (const boton of botonesIdioma) boton.addEventListener('click', () => cambiarIdioma(boton.dataset.idioma));
 
-// Los enlaces a la portada ("← Inicio" en Control y en la barra de Exhibición,
-// la flecha del celular, "Salir del juego" de la pregunta y "¿Qué es esto?" de
-// la tarjeta de inicio) llevan al mismo idioma del juego (5.2i): en inglés, /en/
+// Los enlaces a la portada ("← Inicio" en Control, la flecha del celular,
+// "Salir del juego" de la pregunta y "¿Qué es esto?" de la tarjeta de inicio)
+// llevan al mismo idioma del juego (5.2i): en inglés, /en/. (Desde la 8.8,
+// "← Inicio" no va en la barra de Exhibición: ahí está "Volver a la oficina")
 function ponerEnlacesInicio() {
   for (const a of document.querySelectorAll('.volver-inicio, #cel-volver, #btn-salir-juego, #aviso-que-es')) a.setAttribute('href', rutaEnIdioma('/', idioma));
   // el enlace a la guía del límite WIP, en el panel (Etapa 7): /limite-wip/ o /en/wip-limit/
@@ -1495,6 +1581,95 @@ elSalir.addEventListener('close', () => {
   if (corriaAlPreguntar && pausado) alternarPausa();
   corriaAlPreguntar = false;
 });
+
+// ---------- El recorrido: dónde está cada cosa y para qué (8.8, 2026-11-09) ----------
+// Pedido de Felipe: "en el juego hace falta como ese mini tutorial flash".
+// Lo abren "¿Dónde está cada cosa?" de la tarjeta de inicio y el botón Ayuda
+// (arriba a la izquierda en el computador; el "?" de arriba en el celular).
+// Muestra, una por una, las cosas de la pantalla con su título y una línea
+// (src/recorrido.js). Mientras está abierto el día queda en pausa, y al cerrar
+// sigue si corría. En Exhibición no hay recorrido: ahí explica quien facilita.
+// El tablero se ubica en la pantalla a partir de las esquinas del monitor (en
+// el mundo 3D) y de la cámara de ahora
+const _esquina = new THREE.Vector3();
+function rectTablero() {
+  if (esCelular() && vistaCelular() !== 'oficina') return null;
+  const escena = elEscena.getBoundingClientRect();
+  if (!escena.width || !escena.height) return null;
+  let [x0, y0, x1, y1] = [Infinity, Infinity, -Infinity, -Infinity];
+  for (const sx of [-1, 1])
+    for (const sy of [-1, 1]) {
+      _esquina.copy(CENTRO_PANTALLA).add(new THREE.Vector3(sx * 0.52 * ESCALA_MONITOR, sy * 0.34 * ESCALA_MONITOR, 0));
+      _esquina.project(camera);
+      if (_esquina.z > 1) return null; // (quedó detrás de la cámara)
+      x0 = Math.min(x0, escena.left + ((_esquina.x + 1) / 2) * escena.width);
+      x1 = Math.max(x1, escena.left + ((_esquina.x + 1) / 2) * escena.width);
+      y0 = Math.min(y0, escena.top + ((1 - _esquina.y) / 2) * escena.height);
+      y1 = Math.max(y1, escena.top + ((1 - _esquina.y) / 2) * escena.height);
+    }
+  // Solo la parte que se ve de la oficina (si la giraron, puede no verse)
+  x0 = Math.max(x0, escena.left);
+  y0 = Math.max(y0, escena.top);
+  x1 = Math.min(x1, escena.right);
+  y1 = Math.min(y1, escena.bottom);
+  return x1 - x0 > 24 && y1 - y0 > 24 ? new DOMRect(x0, y0, x1 - x0, y1 - y0) : null;
+}
+// Dónde está una parte de la página (null si no se ve)
+const rectDe = (selector) => () => {
+  const el = document.querySelector(selector);
+  if (!el) return null;
+  const estilo = getComputedStyle(el);
+  if (estilo.display === 'none' || estilo.visibility === 'hidden') return null;
+  return el.getBoundingClientRect();
+};
+// Los pasos, en el orden en que se usan: decidir, el día, el tablero, cómo le
+// va, el cerebro y los días. En el celular el cerebro y los días son pestañas
+// (se muestra la pestaña) y el día está en la píldora de arriba; antes de
+// empezar, la hoja todavía no lleva los números (ese paso se salta solo)
+const pasosRecorrido = () => [
+  { clave: 'tareas', donde: rectDe('#panel .bloque-wip') },
+  { clave: 'reloj', donde: rectDe(esCelular() ? '#cel-controles' : '#panel .bloque-hora') },
+  { clave: 'tablero', donde: rectTablero },
+  { clave: 'numeros', donde: rectDe('#panel .bloque-numeros') },
+  { clave: 'cerebro', donde: rectDe(esCelular() ? '#cel-pestana-cerebro' : '#cerebro') },
+  { clave: 'dias', donde: esCelular() ? rectDe('#cel-pestana-dias') : rectDiasJugados },
+];
+// "Días jugados" en el panel: el título y la tabla (sin los atajos ni la nota de abajo)
+function rectDiasJugados() {
+  const titulo = rectDe('#panel .bloque.ultimo .bloque-fila')();
+  const tabla = rectDe('#tabla-dias')();
+  if (!titulo || !tabla) return null;
+  const x0 = Math.min(titulo.left, tabla.left);
+  const x1 = Math.max(titulo.right, tabla.right);
+  return new DOMRect(x0, titulo.top - 4, x1 - x0, tabla.bottom - titulo.top + 4);
+}
+let corriaAlAbrirRecorrido = false;
+const recorrido = crearRecorrido({
+  pasos: pasosRecorrido,
+  texto: (clave) => tx('recorrido')[clave],
+  rotulos: () => ({ paso: (i, n) => tx('recorridoPaso', i, n), sigue: tx('recorridoSigue'), listo: tx('recorridoListo') }),
+  alAbrir() {
+    corriaAlAbrirRecorrido = !pausado;
+    if (corriaAlAbrirRecorrido) alternarPausa();
+    // Todo a la vista: en el celular, la pestaña Oficina; en el computador,
+    // los dos paneles (si estaban ocultos, se quedan abiertos)
+    if (esCelular()) {
+      if (vistaCelular() !== 'oficina') document.getElementById('cel-pestana-oficina').click();
+    } else {
+      alternarCerebro(false);
+      alternarControles(false);
+    }
+  },
+  alCerrar() {
+    if (corriaAlAbrirRecorrido && pausado) alternarPausa();
+    corriaAlAbrirRecorrido = false;
+  },
+});
+for (const id of ['btn-recorrido', 'btn-ayuda', 'cel-ayuda'])
+  document.getElementById(id).addEventListener('click', () => {
+    if (vista === 'exhibicion') return;
+    recorrido.abrir();
+  });
 
 function cambiarIdioma(nuevo) {
   if (nuevo === idioma || !['es', 'en'].includes(nuevo)) return;
@@ -1535,6 +1710,7 @@ function repintarTextos() {
   oficina.ponerTextos();
   refrescarUI(juego.estado(), mosca.cigarroEnMano());
   if (!elInfo.hidden) alternarInfo(true);
+  recorrido.repintar();
 }
 
 // ---------- Bucle principal (máximo 60 cuadros por segundo: fluido y sin calentar) ----------
@@ -1781,7 +1957,13 @@ if (import.meta.env.DEV) {
       zoom: [controls.minDistance, controls.maxDistance],
       correr: controls.enablePan,
     }),
+    // Cómo está corrida y achicada la imagen de la oficina entre los paneles
+    // (scripts/probar-quieta.mjs: quieta mientras nadie toca nada, 8.8)
+    imagenOficina: () => ({ zoom: camera.zoom, dx: camera.view?.enabled ? -camera.view.offsetX : 0, dy: camera.view?.enabled ? -camera.view.offsetY : 0 }),
     celular: () => ({ activo: esCelular(), vista: vistaCelular(), ratio: renderer.getPixelRatio() }),
+    // El recorrido (8.8): en qué paso va, o null si está cerrado; y dónde está el tablero en la pantalla
+    recorrido: () => recorrido.paso(),
+    rectTablero: () => { const r = rectTablero(); return r && [r.x, r.y, r.width, r.height].map(Math.round); },
     cerebro: () => cerebro?.lectura(),
     cerebroVista: () => cerebro?.vista(),
     // Urgencias (8.3): como apretar el botón; las tarjetas del tablero tal
