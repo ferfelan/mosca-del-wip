@@ -1,8 +1,11 @@
 // Comprobación del juego PUBLICADO, sin los enganches window.__mosca (solo existen con
 // `npm run dev`, así que probar-inicio y probar-celular no sirven contra el sitio real).
-// Revisa el botón "← Inicio" en Control (con los paneles abiertos y cerrados, teclas B y C) y
-// en Exhibición, en español e inglés; que lleve a la portada en el mismo idioma sin preguntar;
-// que la portada diga "Creado por Felipe Fernández" y "9 terminadas (la mitad)"; y que en el
+// Revisa, en español e inglés, el botón "← Inicio" en Control (con los paneles abiertos y
+// cerrados, teclas B y C); que en Exhibición lo primero de la barra, arriba a la izquierda,
+// sea "Volver a la oficina", que ya no esté "← Inicio" y que el botón vuelva a la vista
+// normal (desde la 8.8, docs/etapa8-8.md); que "← Inicio" lleve a la portada en el mismo
+// idioma después de "Salir del juego" (la pregunta existe desde el 2026-10-28); que la
+// portada diga "Creado por Felipe Fernández" y "9 terminadas (la mitad)"; y que en el
 // celular no se vea la píldora (ahí sigue la flecha). Nació en la 5.2i (docs/etapa5-2i.md).
 //   node scripts/probar-sitio-juego.mjs            → contra https://mosca.deliverycraft.ai
 //   SITIO=http://localhost:4173 node scripts/...   → contra otra dirección (sin / al final)
