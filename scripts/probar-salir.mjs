@@ -53,12 +53,16 @@ for (const idioma of ['es', 'en']) {
   await p.click('#volver-inicio'); await p.waitForTimeout(300);
   await p.mouse.click(30, 450); await p.waitForTimeout(300);
   ok(!(await estado(p)).abierto, `${idioma}: el clic afuera no cerró`);
-  // Exhibición: el enlace de la barra también pregunta
+  // Exhibición (8.8): ahí ya no hay "← Inicio" (lo primero de la barra es
+  // "Volver a la oficina"); se vuelve a la oficina y desde ahí se pregunta
   await p.keyboard.press('e'); await p.waitForTimeout(1200);
-  await p.click('.volver-inicio-barra'); await p.waitForTimeout(400);
-  ok((await estado(p)).abierto, `${idioma}: en Exhibición no preguntó`);
+  ok(!(await p.$('.volver-inicio-barra')), `${idioma}: en Exhibición no debe haber "← Inicio"`);
   await p.mouse.move(700, 500); await p.waitForTimeout(300);
   await p.screenshot({ path: `${C}/salir-exhibicion-${idioma}.png` });
+  await p.click('#btn-volver-oficina'); await p.waitForTimeout(1500);
+  ok(!(await p.evaluate(() => document.body.classList.contains('exhibicion'))), `${idioma}: "Volver a la oficina" no volvió a la vista normal`);
+  await p.click('#volver-inicio'); await p.waitForTimeout(400);
+  ok((await estado(p)).abierto, `${idioma}: de vuelta de Exhibición no preguntó`);
   // Salir del juego → portada en el mismo idioma
   await p.click('#btn-salir-juego');
   await p.waitForURL((u) => u.pathname === '/' || u.pathname === '/en/', { timeout: 10000 });

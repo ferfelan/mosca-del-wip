@@ -218,3 +218,49 @@ Del taller se llevan además un acuerdo escrito
 Cuánto logra el límite en su caso
 From the workshop they also take a written agreement
 How much the limit achieves in your case
+
+# ─── Etapa 8.8, 2026-11-10: la portada y el juego, más vivos ─────────────────
+#
+# Lo que NO va aquí, de la 8.8: "Estar siempre ocupado no es lo mismo que
+# avanzar" (no se retiró: volvió arriba del título y salió del cierre de "Lo
+# que vas a ver"); "Si se estresa, sale a fumar y pierde tiempo. Si no está
+# tan estresada, se toma un café." (las mismas palabras, ahora en dos líneas
+# de la tarjeta); "Para verlo." (es un pedazo muy corto, y "para verlo" puede
+# aparecer en otras frases); y lo viejo de "Por qué lo hice" ("muchas cosas
+# empezadas y pocas terminadas"), que no estaba copiado en ningún otro lado.
+
+# Dato viejo del inicio de la portada (8.6 y 8.7):
+#   "En el juego, con 9 tareas a la vez la mosca terminó la mitad que con 2, y
+#   cada una tardó casi nueve veces más."
+la mosca terminó la mitad que con 2, y cada una tardó
+the fly finished half as many as with 2, and each one took
+
+# "¿Por qué una mosca?" (portada, y el borrador 2 de difusión):
+#   "Nosotros le dimos un trabajo de oficina. Nadie le preguntó. Y no, no fuma.
+#   El cigarro es un disfraz de limpiarse las antenas."
+Nadie le preguntó
+Nobody asked her
+Y no, no fuma
+And no, she doesn’t smoke
+
+# Los tres respaldos de "Para qué sirve un límite" (8.7), que ahora son la
+# prueba de la mosca dibujada:
+#   "En el juego, 18 tareas al día con 2 a la vez, y 9 con 9."
+#   "En el juego, cada tarea avanza el 47 % del tiempo con 2 y el 9 % con 9."
+#   "En el juego, con 2 cierra el día Tranquila y con 9, Colapsada."
+18 tareas al día con 2 a la vez, y 9 con 9
+cada tarea avanza el 47 % del tiempo con 2 y el 9 % con 9
+con 2 cierra el día Tranquila y con 9, Colapsada
+18 tasks a day with 2 at once, and 9 with 9
+each task moves forward 47% of the time with 2, and 9% with 9
+with 2 she ends the day Calm, and with 9, Overwhelmed
+
+# La primera línea de la tarjeta de inicio del juego (8.1), que ahora son dos:
+#   "Decide cuántas tareas puede tener empezadas a la vez, de 1 a 10, y mira su
+#   día de oficina en un minuto."
+de 1 a 10, y mira su día de oficina en un minuto
+from 1 to 10, and watch her office day in one minute
+
+# La línea del recorrido que no llegó a subir ("decides" también es una
+# palabra en inglés y confundía a la revisión de inglés): quedó "eliges"
+Con este control decides

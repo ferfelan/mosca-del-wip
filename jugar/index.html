@@ -96,7 +96,7 @@
           "author": { "@type": "Person", "@id": "https://mosca.deliverycraft.ai/#felipe", "name": "Felipe Fernández", "url": "https://www.linkedin.com/in/felipefernandezandrade/", "sameAs": ["https://www.linkedin.com/in/felipefernandezandrade/"] },
           "publisher": { "@type": "Organization", "@id": "https://mosca.deliverycraft.ai/#deliverycraft", "name": "Deliverycraft", "url": "https://deliverycraft.ai/" },
           "datePublished": "2026-10-24",
-          "dateModified": "2026-10-28"
+          "dateModified": "2026-11-10"
         },
         {
           "@type": "BreadcrumbList",
@@ -129,24 +129,79 @@
          página y recibe el foco al abrir el juego (src/main.js), para que el
          lector de pantalla la lea antes que nada. Desde la 8.7 (2026-11-07)
          dice también qué pasa con el estrés (el cigarro y el café, con las
-         reglas del juego) y termina con una pregunta. -->
+         reglas del juego) y termina con una pregunta. Desde la 8.8
+         (2026-11-09) vuelve al centro, entre el cerebro y el panel. -->
     <section id="aviso-empezar" role="dialog" tabindex="-1" aria-labelledby="aviso-empezar-titulo" aria-describedby="aviso-empezar-texto">
-      <strong id="aviso-empezar-titulo">Tú eres el jefe de la mosca.</strong>
+      <!-- (8.8, 2026-11-09, pedido de Felipe: "puro texto duro"; "más vivo e
+           infográfico y fácil de leer", y al centro) Los mismos textos, ahora
+           cada línea con su dibujo: los tres pasos (decide, mira y al final
+           verás), lo que pasa con el estrés (el cigarro y el café, con los
+           mismos dibujos del gráfico del día) y la pregunta. La mosca del
+           logo acompaña al título. Abajo, el botón de siempre y el nuevo
+           "¿Dónde está cada cosa?", que abre el recorrido. -->
+      <div class="aviso-cabeza">
+        <svg class="aviso-mosca" viewBox="14 14 72 62" aria-hidden="true" focusable="false">
+          <g transform="translate(5 8) scale(0.9)">
+            <g stroke="#1c150d" stroke-width="3.6" stroke-linecap="round" fill="none"><path d="M46.5 22 Q44.5 15.5 40.5 12.5"/><path d="M53.5 22 Q55.5 15.5 59.5 12.5"/></g>
+            <ellipse cx="50" cy="41" rx="24" ry="22" fill="#8a7968"/>
+            <ellipse cx="31" cy="36.5" rx="15" ry="18" transform="rotate(-14 31 36.5)" fill="#e8402c"/>
+            <ellipse cx="69" cy="36.5" rx="15" ry="18" transform="rotate(14 69 36.5)" fill="#e8402c"/>
+            <ellipse cx="26" cy="27.5" rx="4.6" ry="3.2" transform="rotate(-35 26 27.5)" fill="#fff" opacity="0.88"/>
+            <ellipse cx="64" cy="27.5" rx="4.6" ry="3.2" transform="rotate(-35 64 27.5)" fill="#fff" opacity="0.88"/>
+          </g>
+          <path d="M46.3 55.4 H53.7 V60.4 C58.6 61.1 59.4 72.5 50 72.9 C40.6 72.5 41.4 61.1 46.3 60.4 Z" fill="#8a7968" stroke="#1c150d" stroke-width="1.3" stroke-linejoin="round"/>
+        </svg>
+        <strong id="aviso-empezar-titulo">Tú eres el jefe de la mosca.</strong>
+      </div>
       <div id="aviso-empezar-texto" class="aviso-texto">
-        <p>Decide cuántas tareas puede tener empezadas a la vez, de 1 a 10, y mira su día de oficina en un minuto.</p>
-        <p class="aviso-detalle">Al final verás cuánto terminó, cuánto tardó cada tarea y cómo quedó de estrés.</p>
-        <p class="aviso-detalle aviso-reglas">Si se estresa, sale a fumar y pierde tiempo. Si no está tan estresada, se toma un café.</p>
+        <ol class="aviso-pasos">
+          <li>
+            <span class="aviso-icono" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3.5 12h2.2M12.3 12h8.2"/><circle cx="9" cy="12" r="3.3"/></svg></span>
+            <p>Decide cuántas tareas puede tener empezadas a la vez, de 1 a 10.</p>
+          </li>
+          <li>
+            <span class="aviso-icono" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.4"/><path d="M12 7.6V12l3 1.9"/></svg></span>
+            <p>Mira su día de oficina en un minuto.</p>
+          </li>
+          <li class="aviso-detalle">
+            <span class="aviso-icono" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M5.5 19v-7M12 19V5M18.5 19v-5"/></svg></span>
+            <p>Al final verás cuánto terminó, cuánto tardó cada tarea y cómo quedó de estrés.</p>
+          </li>
+        </ol>
+        <ul class="aviso-reglas aviso-detalle">
+          <li>
+            <span class="aviso-icono aviso-icono-cigarro" aria-hidden="true"><svg viewBox="0 0 14 8" width="21" height="12" aria-hidden="true"><rect x="1" y="2.5" width="9" height="3" rx="1" fill="#ece6dc"/><rect x="10" y="2.5" width="3" height="3" rx="1" fill="#ff7043"/></svg></span>
+            <p>Si se estresa, sale a fumar y pierde tiempo.</p>
+          </li>
+          <li>
+            <span class="aviso-icono aviso-icono-cafe" aria-hidden="true"><svg viewBox="0 0 12 10" width="19" height="16" aria-hidden="true"><path d="M1.5 2h6.5v4a2.5 2.5 0 0 1-2.5 2.5h-1.5A2.5 2.5 0 0 1 1.5 6z" fill="#c8915e"/><path d="M8 3.2h1a1.6 1.6 0 0 1 0 3.2H8" fill="none" stroke="#c8915e" stroke-width="1.2"/></svg></span>
+            <p>Si no está tan estresada, se toma un café.</p>
+          </li>
+        </ul>
         <p class="aviso-prueba">Prueba un día con 9 y otro con 2. ¿Con&nbsp;cuál crees que termina más?</p>
       </div>
-      <button id="btn-empezar" type="button">Empezar el día</button>
+      <div class="aviso-botones">
+        <button id="btn-empezar" type="button">Empezar el día</button>
+        <button id="btn-recorrido" type="button">¿Dónde está cada cosa?</button>
+      </div>
       <a id="aviso-que-es" href="/">¿Qué es esto?</a>
     </section>
     <header id="barra-exhibicion" class="solo-exhibicion">
-      <!-- "← Inicio" vuelve a la portada (5.2i). El enlace sí se lee con lector
-           de pantalla; el título y los atajos siguen fuera de él, como antes -->
-      <a class="volver-inicio volver-inicio-barra" href="/" title="Volver a la portada">
-        <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M13 8H3.5M7 4.5 3.5 8 7 11.5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>Inicio
-      </a>
+      <!-- "Volver a la oficina" (2026-10-28, pedido de Felipe): vuelve a la vista
+           normal del juego (Control) sin pausar ni reiniciar el día, igual que
+           la tecla E o Esc. Desde la 8.8 (2026-11-09, pedido de Felipe: "cuesta
+           encontrarlo, intuitivamente uno se va al botón de inicio") va
+           primero, arriba a la izquierda, con la flecha de volver: donde uno
+           busca la salida y donde antes estaba "← Inicio". "← Inicio" ya no
+           va en esta barra: a la portada se sale desde la oficina, y así en
+           Exhibición hay una sola forma de volver. Claro (el estilo del botón
+           Empezar) y con su tecla E. Al entrar a Exhibición late dos veces
+           (src/main.js). -->
+      <button id="btn-volver-oficina" class="volver-oficina" type="button" title="Volver a la vista normal del juego (tecla E)" aria-keyshortcuts="E">
+        <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M13 8H3.5M7 4.5 3.5 8 7 11.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Volver a la oficina</span>
+        <kbd aria-hidden="true">E</kbd>
+      </button>
       <div class="marca" aria-hidden="true">
         <span class="marca-nombre">Mosca del WIP</span>
         <span class="marca-sub">La misma partida, en grande</span>
@@ -154,18 +209,6 @@
       <div class="barra-datos" aria-hidden="true">
         <span class="atajo"><kbd>Espacio</kbd> pausa <kbd>R</kbd> otro día <kbd>1–9</kbd> WIP <kbd>D</kbd> demo <span class="atajo-extra">· doble clic: vista inicial</span></span>
       </div>
-      <!-- "Volver a la oficina" (2026-10-28, pedido de Felipe): vuelve a la vista
-           normal del juego (Control) sin pausar ni reiniciar el día, igual que
-           la tecla E. Antes solo se volvía con E o Esc, y quien no lo sabía
-           apretaba "← Inicio" y terminaba en la portada. Va a la derecha, como la
-           salida de una pantalla completa, lejos de "← Inicio", y es claro (el
-           estilo del botón Empezar) para no confundirse con él, que es oscuro.
-           La E de la barra de atajos pasó a este botón. -->
-      <button id="btn-volver-oficina" class="volver-oficina" type="button" title="Volver a la vista normal del juego (tecla E)" aria-keyshortcuts="E">
-        <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M2.5 6.5h4v-4M6.5 6.5 2 2M13.5 9.5h-4v4M9.5 9.5 14 14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span>Volver a la oficina</span>
-        <kbd aria-hidden="true">E</kbd>
-      </button>
     </header>
 
     <!-- Celular (src/celular.js): volver a la portada y la píldora del reloj,
@@ -173,16 +216,25 @@
     <a id="cel-volver" class="solo-celular" href="/" aria-label="Volver a la portada">
       <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path d="M10 3.5 5.5 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
+    <!-- (8.8) "?" abre el recorrido: dónde está cada cosa y para qué -->
+    <button id="cel-ayuda" class="solo-celular" type="button" aria-label="Ayuda: dónde está cada cosa">
+      <svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true"><path d="M5.7 6.1a2.4 2.4 0 1 1 3.5 2.1c-.7.4-1.2.9-1.2 1.7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="8" cy="12.6" r="1.05" fill="currentColor"/></svg>
+    </button>
     <div id="cel-controles" class="solo-celular" role="group" aria-label="Controles del día"></div>
 
     <!-- Computador (5.2i): "← Inicio" fijo arriba a la izquierda en Control, con
          los paneles abiertos o cerrados (la tarjeta del cerebro empieza debajo);
-         con el cerebro oculto, el botón "Cerebro" va a su lado. En Exhibición el
-         enlace está en la barra de arriba; en el celular es la flecha de más arriba. -->
+         con el cerebro oculto, el botón "Cerebro" va a su lado. En Exhibición no
+         va (8.8: ahí está "Volver a la oficina"); en el celular es la flecha de
+         más arriba. A su lado, "Ayuda" abre el recorrido (8.8): dónde está cada
+         cosa y para qué. -->
     <div id="arriba-izq">
       <a id="volver-inicio" class="volver-inicio" href="/" title="Volver a la portada">
         <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M13 8H3.5M7 4.5 3.5 8 7 11.5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>Inicio
       </a>
+      <button id="btn-ayuda" class="boton-ayuda" type="button" title="Recorrido: dónde está cada cosa">
+        <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M5.7 6.1a2.4 2.4 0 1 1 3.5 2.1c-.7.4-1.2.9-1.2 1.7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="8" cy="12.6" r="1" fill="currentColor"/></svg>Ayuda
+      </button>
       <button id="btn-mostrar-cerebro" type="button" title="Mostrar el cerebro (tecla B)" aria-controls="cerebro">
         <span class="icono-cerebro" aria-hidden="true">
           <span style="--c: #2fe3ff"></span><span style="--c: #8b5cff"></span><span style="--c: #ffd84d"></span><span style="--c: #ff4fd8"></span>
@@ -276,10 +328,12 @@
           </div>
           <div class="metrica">
             <span class="metrica-valor" id="m-colillas">0</span>
+            <span class="metrica-dibujo" aria-hidden="true"><svg viewBox="0 0 14 8" width="22" height="12.5" aria-hidden="true"><rect x="1" y="2.5" width="9" height="3" rx="1" fill="#ece6dc"/><rect x="10" y="2.5" width="3" height="3" rx="1" fill="#ff7043"/></svg></span>
             <span class="metrica-label">Colillas</span>
           </div>
           <div class="metrica">
             <span class="metrica-valor" id="m-cafes">0</span>
+            <span class="metrica-dibujo" aria-hidden="true"><svg viewBox="0 0 12 10" width="18" height="15" aria-hidden="true"><path d="M1.5 2h6.5v4a2.5 2.5 0 0 1-2.5 2.5h-1.5A2.5 2.5 0 0 1 1.5 6z" fill="#c8915e"/><path d="M8 3.2h1a1.6 1.6 0 0 1 0 3.2H8" fill="none" stroke="#c8915e" stroke-width="1.2"/></svg></span>
             <span class="metrica-label">Cafés</span>
           </div>
         </div>
@@ -307,14 +361,21 @@
         </div>
         <table id="tabla-dias">
           <thead>
-            <tr><th>WIP</th><th>Terminadas</th><th title="Tiempo por tarea, en horas y minutos del juego">Tiempo<br />por tarea</th><th>Colillas</th><th>Cafés</th><th title="Estrés máximo del día">Estrés</th><th><span class="solo-lector">Eliminar</span></th></tr>
+            <!-- (8.8) Colillas y Cafés llevan su dibujo en vez de la palabra (los
+                 mismos de arriba y del gráfico del día): así la tabla respira
+                 en el panel. La palabra sigue para el lector de pantalla y al
+                 pasar el cursor -->
+            <tr><th>WIP</th><th>Terminadas</th><th title="Tiempo por tarea, en horas y minutos del juego">Tiempo<br />por tarea</th><th class="th-dibujo" title="Colillas"><span class="solo-lector">Colillas</span><svg viewBox="0 0 14 8" width="19" height="11" aria-hidden="true"><rect x="1" y="2.5" width="9" height="3" rx="1" fill="#ece6dc"/><rect x="10" y="2.5" width="3" height="3" rx="1" fill="#ff7043"/></svg></th><th class="th-dibujo" title="Cafés"><span class="solo-lector">Cafés</span><svg viewBox="0 0 12 10" width="15" height="13" aria-hidden="true"><path d="M1.5 2h6.5v4a2.5 2.5 0 0 1-2.5 2.5h-1.5A2.5 2.5 0 0 1 1.5 6z" fill="#c8915e"/><path d="M8 3.2h1a1.6 1.6 0 0 1 0 3.2H8" fill="none" stroke="#c8915e" stroke-width="1.2"/></svg></th><th title="Estrés máximo del día">Estrés</th><th><span class="solo-lector">Eliminar</span></th></tr>
           </thead>
           <tbody id="tabla-dias-body"></tbody>
         </table>
         <button id="btn-borrar-historial" class="boton-texto" type="button" hidden>Borrar historial</button>
-        <p class="atajos" aria-label="Atajos de teclado">
-          <kbd>Espacio</kbd>&nbsp;pausa · <kbd>R</kbd>&nbsp;reinicia · <kbd>1–9</kbd>&nbsp;WIP · <kbd>E</kbd>&nbsp;exhibición · <kbd>B</kbd>&nbsp;cerebro · <kbd>C</kbd>&nbsp;controles
-        </p>
+        <!-- (8.8) Los atajos, en su caja: cerrada no ocupa lugar y abierta los
+             muestra ordenados, de a dos por fila -->
+        <details class="atajos-caja">
+          <summary>Atajos de teclado</summary>
+          <p class="atajos" aria-label="Atajos de teclado"><span><kbd>Espacio</kbd> pausa</span><span><kbd>R</kbd> reinicia</span><span><kbd>1–9</kbd> WIP</span><span><kbd>E</kbd> exhibición</span><span><kbd>B</kbd> cerebro</span><span><kbd>C</kbd> controles</span></p>
+        </details>
         <p class="nota-ilustrativa">Números del juego. Que cada tarea tarde más tiene respaldo. El estrés es un supuesto nuestro. <a href="/limite-wip/" data-guia>Cómo elegir el límite de tu equipo</a></p>
       </section>
     </aside>
@@ -507,6 +568,25 @@
         </div>
       </div>
     </dialog>
+
+    <!-- El recorrido (8.8, 2026-11-09, pedido de Felipe: "hace falta ese mini
+         tutorial flash, dónde está cada cosa y para qué"). Lo abren "¿Dónde
+         está cada cosa?" de la tarjeta de inicio y el botón Ayuda. Oscurece la
+         pantalla, deja a la vista una cosa a la vez y la explica en una línea
+         (src/recorrido.js). Mientras está abierto, el día queda en pausa. -->
+    <div id="recorrido" hidden>
+      <div id="recorrido-foco" aria-hidden="true"></div>
+      <div id="recorrido-tarjeta" role="dialog" aria-modal="true" aria-labelledby="recorrido-titulo" aria-describedby="recorrido-texto" tabindex="-1">
+        <p id="recorrido-paso"></p>
+        <strong id="recorrido-titulo"></strong>
+        <p id="recorrido-texto"></p>
+        <div class="recorrido-botones">
+          <button id="recorrido-saltar" type="button">Saltar</button>
+          <button id="recorrido-atras" type="button">Atrás</button>
+          <button id="recorrido-sigue" type="button">Siguiente</button>
+        </div>
+      </div>
+    </div>
 
     <script type="module" src="/src/main.js"></script>
   </body>

@@ -229,10 +229,20 @@ async function probarEmpezar(p, etiqueta, nombre) {
   const partes = await p.evaluate(() => {
     const t = document.getElementById('aviso-empezar');
     const seVe = (s) => { const el = t.querySelector(s); return !!el && getComputedStyle(el).display !== 'none'; };
-    return { clases: t.className, titulo: seVe('strong'), lineas: [...t.querySelectorAll('.aviso-texto p')].filter((e) => getComputedStyle(e).display !== 'none').length, boton: seVe('#btn-empezar'), enlace: seVe('#aviso-que-es'), numeros: !!document.querySelector('.bloque-numeros') && getComputedStyle(document.querySelector('.bloque-numeros')).display !== 'none' };
+    // (8.8: una línea puede no verse porque se esconde su fila o su recuadro, no ella misma)
+    return { clases: t.className, titulo: seVe('strong'), lineas: [...t.querySelectorAll('.aviso-texto p')].filter((e) => e.getClientRects().length > 0).length, boton: seVe('#btn-empezar'), enlace: seVe('#aviso-que-es'), numeros: !!document.querySelector('.bloque-numeros') && getComputedStyle(document.querySelector('.bloque-numeros')).display !== 'none' };
   });
-  if (!/zoom|letra/.test(nombre)) revisar(partes.titulo && partes.lineas === 4 && partes.boton && partes.enlace, etiqueta(`la tarjeta de inicio se ve completa (${JSON.stringify(partes)})`));
+  // (8.8) Cada línea lleva su dibujo y son seis (las dos frases largas quedaron
+  // en dos cada una). Si arriba no queda lugar cómodo para la mosca, o si la
+  // tarjeta completa no cabe entre los botones de arriba y la hoja, suelta
+  // "¿Qué es esto?" y "Al final verás…" (sin-final: cinco líneas) y, si
+  // todavía no, el recuadro del cigarro y el café (sin-reglas: tres líneas).
+  // El título, las líneas del principio, la pregunta y el botón están siempre.
+  const lineasEsperadas = /sin-reglas/.test(partes.clases) ? 3 : /sin-final/.test(partes.clases) ? 5 : 6;
+  if (!/zoom|letra/.test(nombre)) revisar(partes.titulo && partes.lineas === lineasEsperadas && partes.boton && partes.enlace === !partes.clases && /^(|sin-final|sin-final sin-reglas)$/.test(partes.clases), etiqueta(`la tarjeta de inicio se ve como corresponde (${JSON.stringify(partes)})`));
   else console.log(`   ${nombre}: tarjeta ${partes.clases ? `recortada (${partes.clases})` : 'completa'}`);
+  const zr = await p.evaluate(ZONA_TOQUE, '#btn-recorrido');
+  if (zr) revisar(!zr.tapado && zr.ancho >= 44 && zr.alto >= 44, etiqueta(`zona de toque de "¿Dónde está cada cosa?": ${zr.ancho}×${zr.alto}${zr.tapado ? ' (tapado)' : ''}`));
   revisar(!partes.numeros, etiqueta('antes de empezar la hoja no muestra los números'));
   if (partes.enlace) {
     const ze = await p.evaluate(ZONA_TOQUE, '#aviso-que-es');

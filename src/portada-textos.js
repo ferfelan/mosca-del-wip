@@ -10,14 +10,16 @@ export const INGLES = {
 
   // El inicio y la consola. Desde la 8.7 (2026-11-07): la pregunta de
   // siempre como título y una bajada que dice qué hacer, partiendo por el
-  // juego; sin rótulo arriba (la frase del problema cierra "What you’ll see")
+  // juego. Desde la 8.8 (2026-11-09) vuelve arriba el rótulo con la frase del
+  // problema, como en la 8.6, y el dato del juego es otro, más corto
   // (el mismo título que la pág. 2 del informe en inglés; en computador corta
   // después de "day.", como el español, y no después de "So"; "you finish?"
   // va junto para que "finish?" no quede sola en la tercera línea)
+  rotulo: 'Being busy all the time isn’t the same as making progress',
   titulo: 'Busy all day.<br class="corte" /> So what did you&nbsp;finish?',
   bajada:
     'Measure how many things your team has started and find the limit that lets it finish the most. Start by playing for a minute with an office fly that has a real brain.',
-  datoInicio: 'In the game, with 9 tasks at once the fly finished half as many as with 2, and each one took almost nine times longer.',
+  datoInicio: 'In the game, the fly already ran the test: with 9&nbsp;tasks at once, she ends up overwhelmed. With&nbsp;2, she finishes twice as many.',
   jugar: 'Play',
   jugarMinuto: 'Play (1 minute)',
   verKit: 'See the kit',
@@ -50,7 +52,6 @@ export const INGLES = {
   total18: '<span class="cifra">18</span> finished',
   total9: '<span class="cifra">9</span> finished (half)', // 5.2i: las dos columnas dicen lo mismo
   hechoNota: 'Average of 200 days in the game.',
-  verFrase: 'Being busy all the time isn’t the same as making progress.', // 8.7: vuelve a cerrar esta sección
 
   // Cómo se juega
   pasosTitulo: 'How to play',
@@ -61,21 +62,36 @@ export const INGLES = {
   paso2Alt: 'The fly in front of her board for the day, with 2 tasks in progress, at 10:10.',
   paso3Alt: 'The Days played table, with one day at 2 tasks at once and another at 9.',
 
-  // Para qué sirve un límite y Lo que se lleva tu equipo (8.7, 2026-11-07):
-  // tres líneas en grande con su respaldo del juego, y cuatro frases cortas
+  // Para qué sirve un límite y Lo que se lleva tu equipo (8.7, 2026-11-07;
+  // rediseñadas en la 8.8, 2026-11-09): tres líneas en grande, cada una con
+  // la prueba de la mosca dibujada (un día con 2 a la vez y otro con 9), y
+  // cuatro frases cortas, cada una con un dibujo del tablero del equipo
   sirveTitulo: 'What a limit is for',
+  carril2: 'with 2 tasks at once',
+  carril9: 'with 9 tasks at once',
   sirve1: 'You finish more, and each thing gets done sooner.',
-  sirve1Respaldo: 'In the game, 18&nbsp;tasks a day with 2&nbsp;at once, and&nbsp;9&nbsp;with&nbsp;9.',
+  sirve1Dato2: '<b>18</b> finished per day, 1&nbsp;h each',
+  sirve1Dato9: '<b>9</b> finished per day, almost 9&nbsp;h each',
   sirve2: 'Work moves forward instead of waiting.',
-  sirve2Respaldo: 'In the game, each task moves forward 47%&nbsp;of the time with&nbsp;2, and 9%&nbsp;with&nbsp;9.',
+  avance47: '47%',
+  avance9: '9%',
+  sirve2Dato2: 'each task moves forward almost half the time',
+  sirve2Dato9: 'each task waits 9 out of every 10&nbsp;minutes',
   sirve3: 'Less overload.',
-  sirve3Respaldo: 'In the game, with&nbsp;2 she ends the day Calm, and with&nbsp;9, Overwhelmed.',
+  sirve3Dato2: 'she ends the day <b>Calm</b>, without smoking',
+  sirve3Dato9: 'she ends the day <b>Overwhelmed</b>, with 13&nbsp;cigarettes',
+  sirveOrigen: 'Average of 200 days played. These are numbers from the game, not from people.',
   sirveCierre: 'According to DORA, limiting work in progress is a habit of high-performing teams. How much your team gains, its own test will show.',
   ganaTitulo: 'What your team takes away',
   lleva1: 'Their load in plain sight: how many things each person has started.',
   lleva2: 'Where the work sits waiting.',
   lleva3: 'An agreed limit, written on the board.',
   lleva4: 'Their own data after two weeks.',
+  // (lo que dicen los dibujos del tablero del equipo)
+  dibujoEnCurso: 'In progress',
+  dibujoMax: 'max. 3',
+  dibujoSemana1: 'week 1',
+  dibujoSemana2: 'week 2',
   ganaNota: 'How to choose the limit and test it is in the <a href="/en/wip-limit/">WIP limit guide</a>.',
 
   // El kit para tu equipo
@@ -83,7 +99,7 @@ export const INGLES = {
   kitBajada: 'Three pieces, from 1 minute to 60. Free.',
   kitJuego: 'The game',
   kitJuegoTiempo: '1 minute',
-  kitJuegoTexto: 'To see it.',
+  kitJuegoTexto: 'Play it online on any device, and watch a fly at work.', // 8.8
   kitInforme: 'The report',
   kitInformeTiempo: '10 minutes',
   kitInformeTexto: 'Where each number comes from and what the studies say.',
@@ -106,7 +122,12 @@ export const INGLES = {
   creditoTitulo: 'Why a fly?',
   significa: 'Mosca means fly in Spanish.', // al empezar la sección; en español no hay línea
   creditoDestacado:
-    'Scientists at Janelia, Cambridge and Google, among others, mapped a fly’s central nervous system, 166,700 neurons and their connections. We gave her an office job. Nobody asked her. And no, she doesn’t smoke. The cigarette is a disguise for cleaning her antennae.',
+    'Scientists at Janelia, Cambridge and Google, among others, mapped a fly’s central nervous system, 166,700 neurons and their connections. We gave her an office job. Yes, we put her to work.',
+  // 8.8: el aviso de las películas, con lo que le pasó de verdad a la mosca
+  // del mapa (Berg y otros, 2025, Métodos: le sacaron el sistema nervioso
+  // entero y lo cortaron en 66 láminas de 20 micrones)
+  creditoAviso:
+    'No fly was harmed or made to do any real work. Except the one in the map: its nervous system was taken out and cut into 66&nbsp;slices.',
   cerebro2Alt: 'The brain with 2 tasks at once: few neurons firing.',
   cerebro9Alt: 'The brain with 9 tasks at once: many more neurons firing.',
   cerebro2Pie: '2 tasks at once: <span class="cifra">423</span> neurons firing in the simulation',
@@ -174,7 +195,8 @@ export const INGLES = {
   informeNota: '17 pages, 4 MB.',
   motivoTitulo: 'Why I made it',
   motivoTexto:
-    'I work with teams and I see the same thing over and over: many things started and few finished. I wanted to show it in one minute, by playing, before arguing about it.',
+    'I work with teams and I see the same thing over and over. They commit without knowing how much load they carry. They don’t know where to start or what’s really urgent, because everything is urgent and a priority. You feel you work all day and get nowhere, and the list of pending work keeps getting longer.',
+  motivoTexto2: 'It happens to me too, in my own job. I wanted to show it in one minute, by playing, before arguing about it.', // 8.8
   cierre: 'Closing',
   cierreFrase: 'A sustainable limit, not one thing at a time.',
   hechoPor:

@@ -77,7 +77,8 @@ const DOCUMENTOS = [
   // 4 nov. 2026, 8.4: compartir v23 (ES) y v24 (EN), las urgencias y el recorte del 28 %; completo v21, la Etapa 8 en la sección 29.
   // 4 nov. 2026, arreglos chicos de Felipe (8.4, sección 9): compartir v24 (ES) y v25 (EN), solo texto (Perlow, DORA, "empeora", fecha)
   // 7 nov. 2026, 8.7: completo v24, la sección 31 (la portada que pregunta, los dos bloques, el juego que pregunta y el resumen en prosa).
-  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v24' },
+  // 10 nov. 2026, 8.8: completo v25, la sección 32 (la portada y el juego más vivos, el recorrido, el saltito y el panel) y las fotos del grupo paneles de nuevo.
+  { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v25' },
   // 6 nov. 2026, 8.6: compartir v25 (ES) y v26 (EN), el mensaje nuevo en la portada, la pág. 1 y la pág. 11.
   // 7 nov. 2026, 8.7: compartir v26 (ES) y v27 (EN), sin "Termina más empezando menos" y la pág. 11 con para qué sirve un límite.
   { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v26', paginas: [16, 17] },
@@ -109,7 +110,8 @@ const DOCUMENTOS = [
   { id: 'hoja-equipo', html: 'taller-hoja-equipo.html', nombre: 'Taller - Hoja del equipo', version: 'v5', paginas: [1, 1], aparte: true },
   // Etapa 7 (2026-10-28): los borradores de difusión de docs/etapa7-difusion.md, para leerlos en PDF (DOC=borradores)
   // 7 nov. 2026, 8.7: borradores v3, sin "termina más empezando menos" (los borradores 1 y 6 vuelven a su texto de antes de la 8.6)
-  { id: 'borradores', html: 'borradores.html', nombre: 'Borradores de difusión', version: 'v3', paginas: [9, 10], aparte: true },
+  // 10 nov. 2026, 8.8: borradores v4, el artículo dice "Sí, la pusimos a chambear." donde decía "Nadie le preguntó." (igual que la portada)
+  { id: 'borradores', html: 'borradores.html', nombre: 'Borradores de difusión', version: 'v4', paginas: [9, 10], aparte: true },
 ];
 const SITIO = 'http://localhost:5173'; // raíz del sitio (portada, docs)
 const JUEGO = `${SITIO}/jugar/`; // el juego vive en /jugar/ desde la Etapa 5.1
