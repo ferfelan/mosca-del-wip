@@ -50,11 +50,17 @@ sostenible**.
   empezadas tu equipo y encuentra el límite con el que termina más. Parte
   jugando un minuto con una mosca oficinista de cerebro real." Va en el título
   de la portada y en lo que se ve al compartirla (og, twitter, JSON-LD); la
-  pestaña sigue partiendo con "Límite WIP". La frase del problema ya no va
-  arriba del título (lo repetía): cierra "Lo que vas a ver". En la 8.6
+  pestaña sigue partiendo con "Límite WIP". En la 8.6
   (2026-11-06) el mensaje fue "Termina más empezando menos"; a Felipe le pareció
   que se enredaba y no explicaba nada. El propósito y las hipótesis no
   cambiaron.
+- **La frase del problema va arriba del título** (Felipe, Etapa 8.8,
+  2026-11-10: "me gustaba ese mini título"): "Estar siempre ocupado no es lo
+  mismo que avanzar" es el rótulo chico sobre "Ocupado todo el día. ¿Y qué
+  terminaste?", como en la 8.6. En la 8.7 había salido de arriba y cerraba "Lo
+  que vas a ver"; ahora está en un solo lugar de la portada, arriba. Debajo de
+  la bajada, el dato del juego: "En el juego, la mosca ya hizo la prueba: con 9
+  tareas a la vez, colapsa. Con 2, termina el doble."
 - **Límite sostenible** = el que se mantiene todo el día sin colapsar (el
   juego mide un solo día). En la parte 4.4 (2026-10-20) reemplazó a "límite
   sano" en el panel de Carga del juego y en el informe para compartir (v2 y v3) y en el
