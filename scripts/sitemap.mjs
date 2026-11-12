@@ -1,11 +1,21 @@
-// Arma public/sitemap.xml con todas las páginas del sitio (español e inglés,
-// con sus alternativas hreflang) y los archivos que se descargan (PDF, PPTX,
-// CSV), cada uno con su fecha real de último cambio: la del último commit
-// que tocó el archivo (o sus fuentes). Si el archivo tiene cambios sin
-// guardar en git, la fecha es la de hoy.
+// Arma public/sitemap.xml con las direcciones principales del sitio: las
+// páginas, en español e inglés, con sus alternativas hreflang. Cada una va
+// escrita letra por letra igual que su etiqueta canónica, y este script lo
+// comprueba antes de escribir (si una no calza, se detiene y lo dice).
+// Los archivos que se descargan (PDF, PPTX y CSV) NO van en el sitemap desde
+// el 2026-11-12 (docs/etapa8-10.md). Para los buscadores son copias de su
+// página: la cabecera Link rel="canonical" de vercel.json manda los PDF y los
+// CSV a /informe/, /en/report/, /taller/ y /limite-wip/, y la presentación en
+// PowerPoint es el mismo material que su PDF. Google los anotaba como "Página
+// alternativa con etiqueta canónica adecuada". Se siguen encontrando por los
+// enlaces de su página. Tampoco van las direcciones con ?lang= o con ?v=, ni
+// las que terminan en index.html: son la misma página con otra dirección.
+// La fecha de cada página es la de su último cambio real: la del último
+// commit que tocó sus fuentes. Si alguna tiene cambios sin guardar en git,
+// la fecha es la de hoy.
 // Uso: node scripts/sitemap.mjs        (correrlo antes de cada publicación)
 import { execSync } from 'node:child_process';
-import { writeFileSync, existsSync } from 'node:fs';
+import { writeFileSync, existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const RAIZ = resolve(import.meta.dirname, '..');
@@ -22,20 +32,6 @@ const PAGINAS = [
   { ruta: '/taller/', en: '/en/workshop/', fuentes: ['taller/index.html'], fuentesEn: ['en/workshop/index.html'], prioridad: '0.8' },
   { ruta: '/jugar/', fuentes: ['jugar/index.html', 'src/main.js', 'src/brain.js'], prioridad: '0.9' },
   { ruta: '/creditos/', fuentes: ['creditos/index.html'], prioridad: '0.3' },
-];
-const ARCHIVOS = [
-  { ruta: '/Mosca-del-WIP-Informe.pdf', fuentes: ['public/Mosca-del-WIP-Informe.pdf'] },
-  { ruta: '/Mosca-del-WIP-Report.pdf', fuentes: ['public/Mosca-del-WIP-Report.pdf'] },
-  { ruta: '/Mosca-del-WIP-Resumen.pdf', fuentes: ['public/Mosca-del-WIP-Resumen.pdf'] }, // 8.6
-  { ruta: '/Mosca-del-WIP-Summary.pdf', fuentes: ['public/Mosca-del-WIP-Summary.pdf'] }, // 8.6
-  { ruta: '/taller/Mosca-del-WIP-Taller-Guia-rapida.pdf', fuentes: ['public/taller/Mosca-del-WIP-Taller-Guia-rapida.pdf'] },
-  { ruta: '/taller/Mosca-del-WIP-Taller-Presentacion.pdf', fuentes: ['public/taller/Mosca-del-WIP-Taller-Presentacion.pdf'] },
-  { ruta: '/taller/Mosca-del-WIP-Taller-Presentacion.pptx', fuentes: ['public/taller/Mosca-del-WIP-Taller-Presentacion.pptx'] },
-  { ruta: '/taller/Mosca-del-WIP-Taller-Hoja-del-equipo.pdf', fuentes: ['public/taller/Mosca-del-WIP-Taller-Hoja-del-equipo.pdf'] },
-  { ruta: '/datos/mosca-del-wip-1-a-10-tareas.csv', fuentes: ['public/datos/mosca-del-wip-1-a-10-tareas.csv'] },
-  { ruta: '/datos/mosca-del-wip-1-to-10-tasks.csv', fuentes: ['public/datos/mosca-del-wip-1-to-10-tasks.csv'] },
-  { ruta: '/datos/mosca-del-wip-urgencias.csv', fuentes: ['public/datos/mosca-del-wip-urgencias.csv'] },
-  { ruta: '/datos/mosca-del-wip-urgent-tasks.csv', fuentes: ['public/datos/mosca-del-wip-urgent-tasks.csv'] },
 ];
 
 function git(comando) {
@@ -58,6 +54,48 @@ function fechaDe(fuentes) {
     if (ultima > fecha) fecha = ultima;
   }
   return fecha || HOY;
+}
+
+// Lo que dice el HTML de una página sobre su dirección: la etiqueta canónica
+// y sus alternativas de idioma (sin contar lo que está dentro de comentarios)
+function enlacesDe(ruta) {
+  const archivo = resolve(RAIZ, ruta.slice(1), 'index.html');
+  if (!existsSync(archivo)) return null;
+  const html = readFileSync(archivo, 'utf8').replace(/<!--[\s\S]*?-->/g, '');
+  const enlaces = { canonicas: [], alternas: {} };
+  for (const [etiqueta] of html.matchAll(/<link\b[^>]*>/gi)) {
+    const atributo = (nombre) => etiqueta.match(new RegExp(`\\b${nombre}="([^"]*)"`, 'i'))?.[1];
+    if (atributo('rel') === 'canonical') enlaces.canonicas.push(atributo('href'));
+    if (atributo('rel') === 'alternate' && atributo('hreflang')) enlaces.alternas[atributo('hreflang')] = atributo('href');
+  }
+  return enlaces;
+}
+
+// Cada dirección del sitemap tiene que ser la principal de su página: igual,
+// letra por letra, a su etiqueta canónica, y con su par de idioma bien puesto
+const fallas = [];
+for (const p of PAGINAS) {
+  for (const loc of p.en ? [p.ruta, p.en] : [p.ruta]) {
+    const enlaces = enlacesDe(loc);
+    if (!enlaces) {
+      fallas.push(`${loc}: no existe su index.html (¿falta npm run build?)`);
+      continue;
+    }
+    if (enlaces.canonicas.length !== 1 || enlaces.canonicas[0] !== SITIO + loc) {
+      fallas.push(`${loc}: su etiqueta canónica dice "${enlaces.canonicas.join('" y "') || 'nada'}" y debe decir "${SITIO + loc}"`);
+    }
+    const esperadas = p.en ? { es: SITIO + p.ruta, en: SITIO + p.en, 'x-default': SITIO + p.ruta } : { es: SITIO + p.ruta, 'x-default': SITIO + p.ruta };
+    for (const idioma of new Set([...Object.keys(esperadas), ...Object.keys(enlaces.alternas)])) {
+      if (enlaces.alternas[idioma] !== esperadas[idioma]) {
+        fallas.push(`${loc}: hreflang "${idioma}" dice "${enlaces.alternas[idioma] ?? 'nada'}" y debe decir "${esperadas[idioma] ?? 'nada'}"`);
+      }
+    }
+  }
+}
+if (fallas.length) {
+  console.error('El sitemap NO se escribió. Cada dirección debe ser igual a la etiqueta canónica de su página:');
+  for (const f of fallas) console.error('  ' + f);
+  process.exit(1);
 }
 
 const escapar = (s) => s.replaceAll('&', '&amp;');
@@ -85,14 +123,6 @@ for (const p of PAGINAS) {
     }
     lineas.push('  </url>');
   }
-}
-for (const a of ARCHIVOS) {
-  if (!existsSync(resolve(RAIZ, 'public' + a.ruta))) continue;
-  lineas.push('  <url>');
-  lineas.push(`    <loc>${url(a.ruta)}</loc>`);
-  lineas.push(`    <lastmod>${fechaDe(a.fuentes)}</lastmod>`);
-  lineas.push('    <priority>0.5</priority>');
-  lineas.push('  </url>');
 }
 lineas.push('</urlset>', '');
 writeFileSync(resolve(RAIZ, 'public/sitemap.xml'), lineas.join('\n'));
