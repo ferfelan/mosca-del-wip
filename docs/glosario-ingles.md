@@ -34,6 +34,7 @@ el juego digan lo mismo. Si quieres cambiar una palabra:
 | Español | Inglés |
 |---|---|
 | Mosca del WIP | Mosca del WIP (no se traduce) |
+| Mosca (el nombre en la credencial de "¿Por qué una mosca?", 8.12) | Mosca (un nombre propio no se traduce; al lado, la página dice "Mosca means fly in Spanish.") |
 | WIP | WIP |
 | trabajo en curso | work in progress |
 | tarea / tareas | task / tasks |
@@ -74,7 +75,7 @@ el juego digan lo mismo. Si quieres cambiar una palabra:
 | Español | Inglés |
 |---|---|
 | Saltar al contenido | Skip to content |
-| Mosca del WIP: ir al inicio (el logo, para lectores de pantalla) | Mosca del WIP: go to the top |
+| Mosca del WIP, ir al inicio (el logo, para lectores de pantalla; sin dos puntos desde la 8.12) | Mosca del WIP, go to the home page |
 | Menú | Menu |
 | Secciones de la página | Page sections |
 | El juego · El cerebro · El informe · Preguntas frecuentes (desde el 2026-10-25; antes "Preguntas") | The game · The brain · The report · FAQ |
@@ -137,7 +138,7 @@ el juego digan lo mismo. Si quieres cambiar una palabra:
 | Día terminado | Day over |
 | Fin del día con WIP 9 · hoy | End of the day with WIP 9 · today |
 | R para jugar otro día · 1–9 cambia el WIP · D modo demo | R to play another day · 1–9 changes the WIP · D demo mode |
-| Modo demo · sigue un día con WIP 2… | Demo mode · next up: a day with WIP 2… |
+| Modo demo · sigue un día con WIP 2… | Demo mode · next up, a day with WIP 2… (sin dos puntos desde la 8.12) |
 | Fin del día. Mira la tabla o reinicia para probar otro WIP. | End of the day. Check the table, or restart to try another WIP. |
 | Cerebro en vivo | Live brain |
 | Arriba el cerebro; abajo, el cordón nervioso | The brain on top; the nerve cord below |

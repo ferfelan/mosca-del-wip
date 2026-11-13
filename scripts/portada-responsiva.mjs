@@ -144,7 +144,9 @@ function medir({ tactil, celularVertical, idioma, raiz }) {
     const recorrido = document.createTreeWalker(base, NodeFilter.SHOW_TEXT);
     while (recorrido.nextNode()) {
       const nodo = recorrido.currentNode;
-      if (nodo.parentElement.closest('script, style') || !seVe(nodo.parentElement)) continue;
+      // (el nombre de la credencial de "¿Por qué una mosca?" es "Mosca" en los dos
+      // idiomas, como en el nombre del sitio: un nombre propio no se traduce, 8.12)
+      if (nodo.parentElement.closest('script, style, .credencial-nombre') || !seVe(nodo.parentElement)) continue;
       textos.push(nodo.textContent);
     }
     for (const el of base.querySelectorAll('[aria-label], [title], img[alt]')) textos.push(el.getAttribute('aria-label') || '', el.getAttribute('title') || '', el.getAttribute('alt') || '');
@@ -165,6 +167,11 @@ const ALTO_MAXIMO_FOTO = 16000;
 const SOLO = process.argv[4] && process.argv[4] !== 'todos' ? process.argv[4].split(',') : null;
 const COMBINACIONES = (process.argv[5] || 'oscuro-es,claro-es,oscuro-en,claro-en').split(',').map((c) => c.split('-'));
 const REVISAR = SOLO ? TAMANOS.filter(([nombre]) => SOLO.some((s) => nombre.includes(s))) : TAMANOS;
+// En el computador el contador de visitas de Vercel no existe (src/visitas.js lo
+// pide solo en el sitio armado, y ese archivo lo pone Vercel): con `npx vite
+// preview` daría un 404 en cada revisión. Aquí se responde vacío, igual que en
+// probar-menu y probar-paginas (8.12, 2026-11-13)
+const LOCAL = /localhost|127\.0\.0\.1/.test(DIRECCION);
 
 const navegador =
   process.env.NAVEGADOR === 'webkit'
@@ -179,6 +186,7 @@ for (const [fondo, idioma] of COMBINACIONES) for (const [nombreTamano, ancho, al
     isMobile: tactil,
     hasTouch: tactil,
   });
+  if (LOCAL) await contexto.route('**/_vercel/insights/**', (r) => r.fulfill({ status: 200, contentType: 'text/javascript', body: '' }));
   // El fondo y el idioma como si la persona los hubiera elegido antes
   await contexto.addInitScript(([f, i]) => {
     localStorage.setItem('mosca-fondo', f);
