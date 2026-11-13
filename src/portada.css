@@ -923,8 +923,8 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 
 /* ¿Por qué una mosca? (8.12, 2026-11-13, pedido de Felipe: "lo encuentro muy
    fome"): las mismas frases en un tablero de tres celdas, cada una con su
-   dibujo en un recuadro alto. El mapa: las 66 láminas, con la silueta del
-   sistema nervioso. El trabajo: la credencial de oficina de la mosca, colgada
+   dibujo en un recuadro alto. El mapa: la foto de verdad, con las neuronas
+   en su lugar y el color de su zona. El trabajo: la credencial de oficina de la mosca, colgada
    de su cinta. El juego: las dos fotos del cerebro, siempre de noche, con sus
    colores. Abajo, el aviso y el crédito del Male CNS. Hasta la 8.11 era el
    texto a la izquierda y las fotos a la derecha. */
@@ -934,24 +934,20 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .significa:empty { display: none; }
 .mosca-tablero .gana-item { justify-content: flex-start; }
 .mosca-tablero .dibujo { height: auto; min-height: 330px; }
-/* 1. El mapa: 66 láminas, una por fila. El ancho de cada una (--w) dibuja la
-   silueta: el cerebro arriba, el cuello y el cordón abajo */
-.dibujo-laminas { display: flex; flex-direction: column; gap: 12px; }
-.dibujo-laminas .carril-caso { color: var(--suave); }
-.dibujo-laminas .carril-caso::before { background: var(--acento); box-shadow: 0 0 10px var(--acento); }
-.laminas {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  width: min(100%, 220px);
-  min-height: 200px;
-  margin: 2px auto;
-  filter: drop-shadow(0 0 7px color-mix(in srgb, var(--acento) 42%, transparent));
-}
-:root[data-tema='claro'] .laminas { filter: none; }
-.laminas i { flex: none; width: var(--w); height: 2.4px; border-radius: 2px; background: var(--acento); }
+/* 1. El mapa de verdad (2026-11-13, pedido de Felipe: la silueta de rayas
+   celestes "es como rara"): la foto de 25.000 neuronas del Male CNS, cada una
+   en su lugar real y con el color de su zona (scripts/mapa-cerebro.mjs), en un
+   recuadro que es de noche también con fondo blanco, como el de las fotos del
+   juego. .mapa-corte es la cortina que la destapa de arriba abajo en 66 pasos
+   (las 66 láminas) con su línea de corte. Sin cargas queda fuera de la vista */
+.dibujo-mapa { --acento: var(--vision); display: flex; flex-direction: column; gap: 12px; color: var(--tinta); }
+.dibujo-mapa .carril-caso { color: var(--suave); }
+.dibujo-mapa .carril-caso::before { background: var(--acento); box-shadow: 0 0 10px var(--acento); }
+.mapa { position: relative; flex: 1 1 auto; display: grid; place-items: center; overflow: hidden; }
+.mapa img { display: block; width: min(100%, 246px); height: auto; }
+/* (queda 24 px más abajo del borde, para que tampoco asome el brillo de su línea) */
+.mapa-corte { position: absolute; inset: 0; background: var(--noche); transform: translateY(calc(100% + 24px)); }
+.mapa-corte::before { content: ''; position: absolute; inset: 0 12% auto; height: 2px; border-radius: 2px; background: rgba(238, 243, 255, 0.85); box-shadow: 0 0 12px rgba(238, 243, 255, 0.6); }
 /* 2. El trabajo: la credencial cuelga de su cinta, que baja desde el borde
    del recuadro y entra por el ojal */
 .dibujo-credencial { display: flex; justify-content: center; padding-top: 0; overflow: hidden; }
@@ -1189,14 +1185,11 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .con-carga .cargado .parte-riel i::after { transition: transform calc(var(--dura) * 20ms) linear calc(var(--espera) + var(--desde) * 20ms); }
   .con-carga [data-carga]:not(.cargado) .parte-riel i::after { transform: translateX(-101%); }
 
-  /* ¿Por qué una mosca? (8.12). El mapa: las 66 láminas aparecen de a una, de
-     arriba abajo (19 ms cada una), mientras cuentan las neuronas */
-  .con-carga .cargado .laminas i {
-    transition:
-      opacity 0.2s ease calc(var(--espera) + var(--i) * 19ms),
-      transform 0.3s var(--frena) calc(var(--espera) + var(--i) * 19ms);
-  }
-  .con-carga [data-carga]:not(.cargado) .laminas i { opacity: 0; transform: scaleX(0.3); }
+  /* ¿Por qué una mosca? (8.12). El mapa: la foto se destapa de arriba abajo en
+     66 pasos, uno por lámina (19 ms cada uno, lo mismo que tarda en contar el
+     66), mientras cuentan las neuronas */
+  .con-carga .cargado .mapa-corte { transition: transform 1254ms steps(66, end) var(--espera); }
+  .con-carga [data-carga]:not(.cargado) .mapa-corte { transform: none; }
   /* El trabajo: la credencial cae colgando de su cinta, se balancea y queda quieta */
   .con-carga .cargado .colgante { animation: colgar 1.2s cubic-bezier(0.3, 0.6, 0.4, 1) var(--espera) 1 backwards; }
   .con-carga [data-carga]:not(.cargado) .colgante { opacity: 0; }
@@ -1478,7 +1471,6 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 
   /* ¿Por qué una mosca?: las tres celdas una bajo otra, cada dibujo de su alto */
   .mosca-tablero .dibujo { min-height: 0; }
-  .laminas { flex: none; height: 236px; min-height: 0; }
   .cinta { flex: 0 0 34px; }
   .dibujo-credencial { padding-bottom: 16px; }
   .aviso-mosca { font-size: 16px; }

@@ -144,6 +144,7 @@ export const INGLES = {
   // 8.12: las mismas frases, repartidas en las tres celdas del tablero
   mosca1: 'Scientists mapped a fly’s central nervous system.',
   laminasQuien: 'Janelia, Cambridge and Google, among others',
+  mapaAlt: 'The map of the fly’s nervous system, with the brain on top and the nerve cord below. It shows 25,000 of the neurons, each in its real place and in the color of its zone.',
   laminasDato: '<b data-cuenta="der" data-paso="0.0075">166,700</b> neurons and their connections, in <b data-cuenta data-paso="19">66</b>&nbsp;slices',
   mosca2: 'We gave her an office job. Yes, we put her to work.',
   credencialNombre: 'Mosca',
