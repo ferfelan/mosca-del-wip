@@ -96,7 +96,7 @@
           "isPartOf": { "@id": "https://mosca.deliverycraft.ai/#sitio" },
           "primaryImageOfPage": "https://mosca.deliverycraft.ai/img/vista-previa-en-2026-11-07.jpg",
           "datePublished": "2026-10-24",
-          "dateModified": "2026-11-10"
+          "dateModified": "2026-11-13"
         },
         {
           "@type": "VideoGame",
@@ -273,7 +273,8 @@
         </div>
       </header>
 
-      <!-- 2a. Para qué sirve un límite (8.7, 2026-11-07; rediseñada en la 8.8,
+      <!-- 2a. ¿Qué ganó la mosca al limitar su WIP? (8.7, 2026-11-07, con el
+           título "Para qué sirve un límite" hasta la 8.11; rediseñada en la 8.8,
            2026-11-09, pedido de Felipe: "está muy plano" y los respaldos "son
            medios trabalenguas"). El mismo tablero con filetes y las mismas tres
            líneas en grande. El respaldo de cada una ya no es una frase: es la
@@ -285,14 +286,23 @@
            terminadas, 60 y 534 minutos por tarea, 47 % y 9 % del tiempo
            avanzando, Tranquila y Colapsada, 0 y 13 cigarros. Al final, de
            dónde salen, DORA y la prueba de cada equipo, sin prometer
-           resultados. -->
+           resultados.
+           8.11 (2026-11-12, pedido de Felipe): el título es una pregunta sobre
+           la mosca ("algo como qué ganó o para qué le sirvió a la mosca limitar
+           su WIP") y cada celda se carga la primera vez que se ve ("que se
+           carguen esas barritas"). Lo que se carga lleva data-carga y los
+           números que cuentan, data-cuenta (cómo, en src/portada.js y en
+           src/portada.css, "Las cargas"). Las mismas marcas van en los textos
+           en inglés (src/portada-textos.js). Lo mismo en "Lo que se lleva tu
+           equipo", en las dos columnas de "Hecho", en los tres pasos y en los
+           cerebros de "¿Por qué una mosca?". -->
       <section class="sirve" id="para-que-sirve" aria-labelledby="t-sirve">
-        <h2 id="t-sirve" data-t="sirveTitulo">What a limit is for</h2>
+        <h2 id="t-sirve" data-t="sirveTitulo">What did the fly gain by limiting her WIP?</h2>
         <!-- (8.9, 2026-11-10) Antes de los números se dice de quién son: de la
              mosca, en el juego, y no de un equipo. Por eso la primera línea
              del tablero habla de ella, con "tarea", que es la palabra de la
              mosca. Lo del equipo va al final: lo dice su prueba -->
-        <p class="sirve-bajada" data-t="sirveBajada">In the game, by limiting how many tasks she has at once, the fly gains this. <span class="sirve-aviso">These are her numbers, not your team’s.</span></p>
+        <p class="sirve-bajada" data-t="sirveBajada">In the game, with 2 tasks at once instead of 9, she gained this. <span class="sirve-aviso">These are her numbers, not your team’s.</span></p>
         <div class="tablero-marco">
           <!-- La mosca del logo, asomada al tablero (decorativa): la cabeza va
                detrás del tablero y las patas, encima de su borde -->
@@ -307,37 +317,37 @@
             </g>
           </svg></div>
           <div class="gana-tablero sirve-tablero">
-            <div class="gana-item">
+            <div class="gana-item" data-carga>
               <h3 data-t="sirve1">She finishes more, and each task is done sooner.</h3>
               <div class="prueba">
                 <div class="carril" data-caso="pocas">
                   <p class="carril-caso" data-t="carril2">with 2 tasks at once</p>
                   <div class="fichas" aria-hidden="true"><i style="--i: 0"></i><i style="--i: 1"></i><i style="--i: 2"></i><i style="--i: 3"></i><i style="--i: 4"></i><i style="--i: 5"></i><i style="--i: 6"></i><i style="--i: 7"></i><i style="--i: 8"></i><i style="--i: 9"></i><i style="--i: 10"></i><i style="--i: 11"></i><i style="--i: 12"></i><i style="--i: 13"></i><i style="--i: 14"></i><i style="--i: 15"></i><i style="--i: 16"></i><i style="--i: 17"></i></div>
-                  <p class="carril-dato" data-t="sirve1Dato2"><b>18</b> finished per day, 1&nbsp;h each</p>
+                  <p class="carril-dato" data-t="sirve1Dato2"><b data-cuenta data-paso="55">18</b> finished per day, 1&nbsp;h each</p>
                 </div>
                 <div class="carril" data-caso="muchas">
                   <p class="carril-caso" data-t="carril9">with 9 tasks at once</p>
                   <div class="fichas" aria-hidden="true"><i style="--i: 0"></i><i style="--i: 1"></i><i style="--i: 2"></i><i style="--i: 3"></i><i style="--i: 4"></i><i style="--i: 5"></i><i style="--i: 6"></i><i style="--i: 7"></i><i style="--i: 8"></i><i class="falta" style="--i: 9"></i><i class="falta" style="--i: 10"></i><i class="falta" style="--i: 11"></i><i class="falta" style="--i: 12"></i><i class="falta" style="--i: 13"></i><i class="falta" style="--i: 14"></i><i class="falta" style="--i: 15"></i><i class="falta" style="--i: 16"></i><i class="falta" style="--i: 17"></i></div>
-                  <p class="carril-dato" data-t="sirve1Dato9"><b>9</b> finished per day, almost 9&nbsp;h each</p>
+                  <p class="carril-dato" data-t="sirve1Dato9"><b data-cuenta data-paso="55">9</b> finished per day, almost 9&nbsp;h each</p>
                 </div>
               </div>
             </div>
-            <div class="gana-item">
+            <div class="gana-item" data-carga>
               <h3 data-t="sirve2">Work moves forward instead of waiting.</h3>
               <div class="prueba">
                 <div class="carril" data-caso="pocas">
                   <p class="carril-caso" data-t="carril2">with 2 tasks at once</p>
-                  <div class="avance" style="--avanza: 47%"><span class="avance-riel" aria-hidden="true"></span><span class="avance-cifra" data-t="avance47">47%</span></div>
+                  <div class="avance" style="--avanza: 47%; --n: 47"><span class="avance-riel" aria-hidden="true"></span><span class="avance-cifra" data-t="avance47"><span data-cuenta="der" data-paso="26">47</span>%</span></div>
                   <p class="carril-dato" data-t="sirve2Dato2">each task moves forward almost half the time</p>
                 </div>
                 <div class="carril" data-caso="muchas">
                   <p class="carril-caso" data-t="carril9">with 9 tasks at once</p>
-                  <div class="avance" style="--avanza: 9%"><span class="avance-riel" aria-hidden="true"></span><span class="avance-cifra" data-t="avance9">9%</span></div>
+                  <div class="avance" style="--avanza: 9%; --n: 9"><span class="avance-riel" aria-hidden="true"></span><span class="avance-cifra" data-t="avance9"><span data-cuenta="der" data-paso="26">9</span>%</span></div>
                   <p class="carril-dato" data-t="sirve2Dato9">each task waits 9 out of every 10&nbsp;minutes</p>
                 </div>
               </div>
             </div>
-            <div class="gana-item">
+            <div class="gana-item" data-carga>
               <h3 data-t="sirve3">Less overload.</h3>
               <div class="prueba">
                 <div class="carril carril-cara" data-caso="pocas">
@@ -381,7 +391,7 @@
                     <path class="cara-humo" d="M82.5 64c3.4-3.6-3-5.6 0-9.4s-2.4-5 0-8.6" fill="none" stroke-width="2" stroke-linecap="round" />
                   </svg>
                   <p class="carril-caso" data-t="carril9">with 9 tasks at once</p>
-                  <p class="carril-dato" data-t="sirve3Dato9">she ends the day <b>Overwhelmed</b>, with 13&nbsp;cigarettes</p>
+                  <p class="carril-dato" data-t="sirve3Dato9">she ends the day <b>Overwhelmed</b>, with <span data-cuenta="der" data-paso="70" data-espera="450">13</span>&nbsp;cigarettes</p>
                 </div>
               </div>
             </div>
@@ -398,7 +408,7 @@
       </section>
 
       <!-- 2b. Lo que se lleva tu equipo (8.7; rediseñada en la 8.8 con la misma
-           onda que "Para qué sirve un límite", pedido de Felipe: "ahí está el
+           onda que "¿Qué ganó la mosca al limitar su WIP?", pedido de Felipe: "ahí está el
            valor"). Las mismas cuatro frases, ahora en el tablero con filetes,
            cada una con un dibujo de lo que queda en el tablero del equipo, en
            un color del juego: quién tiene qué empezado (verde), la columna
@@ -411,15 +421,15 @@
       <section class="gana" id="lo-que-se-lleva" aria-labelledby="t-gana">
         <h2 id="t-gana" data-t="ganaTitulo">What your team takes away</h2>
         <ul class="gana-tablero lleva-tablero">
-          <li class="gana-item" data-color="tranquila">
-            <p class="lleva-frase" data-t="lleva1">Their load in plain sight: how many things each person has started.</p>
+          <li class="gana-item" data-color="tranquila" data-carga>
+            <p class="lleva-frase" data-t="lleva1">Their load in plain sight, how many things each person has started.</p>
             <div class="dibujo dibujo-carga" aria-hidden="true">
-              <div class="persona"><span class="avatar"></span><span class="cosas"><i></i><i></i></span><b>2</b></div>
-              <div class="persona"><span class="avatar"></span><span class="cosas"><i></i><i></i><i></i><i></i><i></i><i></i></span><b>6</b></div>
-              <div class="persona"><span class="avatar"></span><span class="cosas"><i></i><i></i><i></i></span><b>3</b></div>
+              <div class="persona"><span class="avatar"></span><span class="cosas"><i></i><i></i></span><b data-cuenta data-paso="90">2</b></div>
+              <div class="persona"><span class="avatar"></span><span class="cosas"><i></i><i></i><i></i><i></i><i></i><i></i></span><b data-cuenta data-paso="90">6</b></div>
+              <div class="persona"><span class="avatar"></span><span class="cosas"><i></i><i></i><i></i></span><b data-cuenta data-paso="90">3</b></div>
             </div>
           </li>
-          <li class="gana-item" data-color="colapsada">
+          <li class="gana-item" data-color="colapsada" data-carga>
             <p class="lleva-frase" data-t="lleva2">Where the work sits waiting.</p>
             <div class="dibujo dibujo-espera" aria-hidden="true">
               <div class="columna-mini"><i></i></div>
@@ -430,7 +440,7 @@
               <div class="columna-mini"><i></i><i></i></div>
             </div>
           </li>
-          <li class="gana-item" data-color="ocupada">
+          <li class="gana-item" data-color="ocupada" data-carga>
             <p class="lleva-frase" data-t="lleva3">An agreed limit, written on the board.</p>
             <div class="dibujo dibujo-limite" aria-hidden="true">
               <div class="columna-mini limite">
@@ -440,7 +450,7 @@
               <div class="en-fila"><i></i><i></i></div>
             </div>
           </li>
-          <li class="gana-item" data-color="vision">
+          <li class="gana-item" data-color="vision" data-carga>
             <p class="lleva-frase" data-t="lleva4">Their own data after two weeks.</p>
             <div class="dibujo dibujo-datos" aria-hidden="true">
               <div class="semana"><span class="barras"><i style="--h: 46%"></i><i style="--h: 72%"></i><i style="--h: 38%"></i><i style="--h: 64%"></i><i style="--h: 52%"></i></span><span class="semana-nombre" data-t="dibujoSemana1">week 1</span></div>
@@ -472,16 +482,16 @@
           <figcaption data-t="figcaption">First with 2 tasks at once. Then with 9.</figcaption>
         </figure>
 
-        <div class="hecho" role="img" data-t-aria="hecho" aria-label="In the game, with 2 tasks at once she finishes 18. With 9 tasks at once she finishes 9, half as many.">
+        <div class="hecho" role="img" data-carga data-t-aria="hecho" aria-label="In the game, with 2 tasks at once she finishes 18. With 9 tasks at once she finishes 9, half as many.">
           <div class="columna pocas">
             <p class="columna-titulo" data-t="dosALaVez">2 at once</p>
-            <div class="tarjetas" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-            <p class="columna-total" data-t="total18"><span class="cifra">18</span> finished</p>
+            <div class="tarjetas" aria-hidden="true"><i style="--i: 0"></i><i style="--i: 1"></i><i style="--i: 2"></i><i style="--i: 3"></i><i style="--i: 4"></i><i style="--i: 5"></i><i style="--i: 6"></i><i style="--i: 7"></i><i style="--i: 8"></i><i style="--i: 9"></i><i style="--i: 10"></i><i style="--i: 11"></i><i style="--i: 12"></i><i style="--i: 13"></i><i style="--i: 14"></i><i style="--i: 15"></i><i style="--i: 16"></i><i style="--i: 17"></i></div>
+            <p class="columna-total" data-t="total18"><span class="cifra" data-cuenta data-paso="60">18</span> finished</p>
           </div>
           <div class="columna muchas">
             <p class="columna-titulo" data-t="nueveALaVez">9 at once</p>
-            <div class="tarjetas" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="falta"></i><i class="falta"></i><i class="falta"></i><i class="falta"></i><i class="falta"></i><i class="falta"></i><i class="falta"></i><i class="falta"></i><i class="falta"></i></div>
-            <p class="columna-total" data-t="total9"><span class="cifra">9</span> finished (half)</p>
+            <div class="tarjetas" aria-hidden="true"><i style="--i: 0"></i><i style="--i: 1"></i><i style="--i: 2"></i><i style="--i: 3"></i><i style="--i: 4"></i><i style="--i: 5"></i><i style="--i: 6"></i><i style="--i: 7"></i><i style="--i: 8"></i><i class="falta" style="--i: 9"></i><i class="falta" style="--i: 10"></i><i class="falta" style="--i: 11"></i><i class="falta" style="--i: 12"></i><i class="falta" style="--i: 13"></i><i class="falta" style="--i: 14"></i><i class="falta" style="--i: 15"></i><i class="falta" style="--i: 16"></i><i class="falta" style="--i: 17"></i></div>
+            <p class="columna-total" data-t="total9"><span class="cifra" data-cuenta data-paso="60">9</span> finished (half)</p>
           </div>
         </div>
         <p class="nota hecho-nota" data-t="hechoNota">Average of 200 days in the game.</p>
@@ -494,15 +504,15 @@
       <section class="pasos" id="como-se-juega" aria-labelledby="t-pasos">
         <h2 id="t-pasos" data-t="pasosTitulo">How to play</h2>
         <ol class="pasos-lista">
-          <li class="paso">
+          <li class="paso" data-carga="pronto">
             <figure class="paso-foto"><img src="/img/step-1-choose-tasks-at-once.jpg" data-src-en="/img/step-1-choose-tasks-at-once.jpg" width="1080" height="675" alt="The game’s control: tasks in progress at once, from 1 to 10, within the sustainable limit." data-t-alt="paso1Alt" loading="lazy" decoding="async" /></figure>
             <p><span class="paso-numero" aria-hidden="true">1</span><span data-t="paso1">You choose how many tasks she can have started at once, from 1 to 10. That’s called a work-in-progress limit (WIP).</span></p>
           </li>
-          <li class="paso">
+          <li class="paso" data-carga="pronto">
             <figure class="paso-foto"><img src="/img/paso-2-mosca-en-su-oficina.jpg" width="1200" height="750" alt="The fly in front of her board for the day, with 2 tasks in progress, at 10:10." data-t-alt="paso2Alt" loading="lazy" decoding="async" /></figure>
             <p><span class="paso-numero" aria-hidden="true">2</span><span data-t="paso2">You watch her day at the office, from 9 to 6, in one minute.</span></p>
           </li>
-          <li class="paso">
+          <li class="paso" data-carga="pronto">
             <figure class="paso-foto"><img src="/img/step-3-days-played-table.jpg" data-src-en="/img/step-3-days-played-table.jpg" width="1080" height="675" alt="The Days played table, with one day at 2 tasks at once and another at 9." data-t-alt="paso3Alt" loading="lazy" decoding="async" /></figure>
             <p><span class="paso-numero" aria-hidden="true">3</span><span data-t="paso3">You compare how much she finished, how long each task took and how many times she went out for a smoke.</span></p>
           </li>
@@ -542,7 +552,7 @@
               <div class="pieza-accion pieza-acciones">
                 <a class="boton" href="/en/report/" data-informe-web data-t="kitInformeLeer">Read it on the web</a>
                 <a class="pieza-enlace" href="/Mosca-del-WIP-Report.pdf" download="Mosca del WIP - Report.pdf" data-informe data-t="descargarCorto">Download the PDF</a>
-                <a class="pieza-enlace" href="/Mosca-del-WIP-Summary.pdf" download="Mosca del WIP - Summary.pdf" data-resumen-pdf data-t="descargarResumen">Four-page summary (PDF)</a>
+                <a class="pieza-enlace" href="/Mosca-del-WIP-Summary.pdf" download="Mosca del WIP - Summary.pdf" data-resumen-pdf data-t="descargarResumen">Executive summary (PDF, 2 pages)</a>
               </div>
             </div>
           </li>
@@ -586,22 +596,22 @@
           <!-- Solo en inglés: qué quiere decir "mosca" (en español queda vacío y no se ve) -->
           <p class="significa" data-t="significa">Mosca means fly in Spanish.</p>
           <p class="destacado" data-t="creditoDestacado">Scientists at Janelia, Cambridge and Google, among others, mapped a fly’s central nervous system, 166,700 neurons and their connections. We gave her an office job. Yes, we put her to work.</p>
-          <p class="aviso-mosca" data-t="creditoAviso">No fly was harmed or made to do any real work. Except the one in the map: its nervous system was taken out and cut into 66&nbsp;slices.</p>
+          <p class="aviso-mosca" data-t="creditoAviso">No fly was harmed or made to do any real work. Except the one in the map, whose nervous system was taken out and cut into 66&nbsp;slices.</p>
           <p data-t="credito1">The neurons that light up in the game come from <a href="https://male-cns.janelia.org">Male CNS v1.0</a>. “This project is a collaboration between FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC Laboratory of Molecular Biology, and Google Research.”</p>
           <p data-t="credito2">Data licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, adapted for the game: only some of the neurons are shown, and the activity you see is simulated.</p>
         </div>
         <div class="credito-lado">
           <div class="cerebros siempre-noche">
-            <figure>
+            <figure data-carga style="--n: 423">
               <img src="/img/cerebro-mosca-2-tareas.jpg" width="610" height="804" alt="The brain with 2 tasks at once: few neurons firing." data-t-alt="cerebro2Alt" loading="lazy" decoding="async" />
-              <figcaption data-t="cerebro2Pie">2 tasks at once: <span class="cifra">423</span> neurons firing in the simulation</figcaption>
+              <figcaption data-t="cerebro2Pie">2 tasks at once: <span class="cifra" data-cuenta="der" data-paso="1.2">423</span> neurons firing in the simulation</figcaption>
             </figure>
-            <figure>
+            <figure data-carga style="--n: 1328">
               <img src="/img/cerebro-mosca-9-tareas.jpg" width="610" height="804" alt="The brain with 9 tasks at once: many more neurons firing." data-t-alt="cerebro9Alt" loading="lazy" decoding="async" />
-              <figcaption data-t="cerebro9Pie">9 at once: <span class="cifra">1,328</span> neurons firing in the simulation</figcaption>
+              <figcaption data-t="cerebro9Pie">9 at once: <span class="cifra" data-cuenta="der" data-paso="1.2">1,328</span> neurons firing in the simulation</figcaption>
             </figure>
           </div>
-          <div class="zonas siempre-noche">
+          <div class="zonas siempre-noche" data-carga>
             <p class="zonas-titulo" data-t="zonasTitulo">Brain colors</p>
             <ul>
               <li style="--zona: #2fe3ff" data-t="zonaVision">Vision</li>
@@ -628,7 +638,7 @@
             <a class="boton principal" href="/en/report/" data-informe-web data-t="leerInforme">Read the report on the web</a>
             <a class="boton" href="/Mosca-del-WIP-Report.pdf" download="Mosca del WIP - Report.pdf" data-informe data-t="descargar">Download the report (PDF)</a>
           </div>
-          <p class="nota" data-t="informeNota">17 pages, 4 MB.</p>
+          <p class="nota" data-t="informeNota">18 pages, 4 MB.</p>
         </div>
       </section>
 

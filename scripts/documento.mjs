@@ -81,12 +81,14 @@ const DOCUMENTOS = [
   { id: 'completo', html: 'completo.html', nombre: 'Informe completo', version: 'v25' },
   // 6 nov. 2026, 8.6: compartir v25 (ES) y v26 (EN), el mensaje nuevo en la portada, la pág. 1 y la pág. 11.
   // 7 nov. 2026, 8.7: compartir v26 (ES) y v27 (EN), sin "Termina más empezando menos" y la pág. 11 con para qué sirve un límite.
-  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v26', paginas: [16, 17] },
-  { id: 'compartir-en', html: 'compartir-en.html', nombre: 'Para compartir en inglés', version: 'v27', paginas: [16, 17] },
+  // 12 nov. 2026, 8.11: compartir v27 (ES) y v28 (EN), el informe vuelve a ser "el extenso": el texto del v22 (v23 en inglés) más la página de las urgencias, 18 hojas. El resumen va aparte.
+  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v27', paginas: [18, 18] },
+  { id: 'compartir-en', html: 'compartir-en.html', nombre: 'Para compartir en inglés', version: 'v28', paginas: [18, 18] },
   // Etapa 8.6 (2026-11-06): el resumen de 4 páginas con el mensaje nuevo, en español e inglés (DOC=resumen y DOC=resumen-en)
   // Etapa 8.7 (2026-11-07): el v2, de nuevo desde cero, en prosa: una columna de 4 páginas en primera persona
-  { id: 'resumen', html: 'resumen.html', nombre: 'Resumen', version: 'v2', paginas: [4, 4], aparte: true },
-  { id: 'resumen-en', html: 'resumen-en.html', nombre: 'Summary', version: 'v2', paginas: [4, 4], aparte: true },
+  // 12 nov. 2026, 8.11: el v3, el resumen ejecutivo, aparte del informe: 2 hojas con la identidad de la portada (los dos tableros de noche sobre blanco y Mona Sans; estilo en docs/contexto/resumen.css; el v2 quedó en docs/contexto/resumen-v2/)
+  { id: 'resumen', html: 'resumen.html', nombre: 'Resumen', version: 'v3', paginas: [2, 2], aparte: true },
+  { id: 'resumen-en', html: 'resumen-en.html', nombre: 'Summary', version: 'v3', paginas: [2, 2], aparte: true },
   { id: 'norte', html: 'norte.html', nombre: 'Norte del proyecto', version: 'v1', paginas: [1, 2], aparte: true },
   { id: 'etapa4-1', html: 'etapa4-1.html', nombre: 'Etapa 4.1 La paradoja', version: 'v1', paginas: [1, 3], aparte: true },
   { id: 'etapa4-2', html: 'etapa4-2.html', nombre: 'Etapa 4.2 Robustez', version: 'v1', paginas: [1, 3], aparte: true },
@@ -106,6 +108,8 @@ const DOCUMENTOS = [
   { id: 'taller-v6', html: 'taller-v6.html', nombre: 'Taller - Guía rápida del facilitador', version: 'v6', paginas: [5, 5], aparte: true },
   // 7 nov. 2026, 8.7: guía v7, solo la foto 3 (la tabla del fin del día con la pregunta nueva)
   { id: 'taller-v7', html: 'taller-v7.html', nombre: 'Taller - Guía rápida del facilitador', version: 'v7', paginas: [5, 5], aparte: true },
+  // 12 nov. 2026, 8.11: guía v8, solo "Informe, págs. 8 y 10" en "¿Esto es real?" (con el informe extenso, el cerebro vuelve a la pág. 10) y el número de versión en la portada y en los créditos (DOC=taller-v8)
+  { id: 'taller-v8', html: 'taller-v8.html', nombre: 'Taller - Guía rápida del facilitador', version: 'v8', paginas: [5, 5], aparte: true },
   // Etapa 7 (2026-10-28): la hoja del equipo sola, 1 hoja, para descargar aparte (DOC=hoja-equipo)
   { id: 'hoja-equipo', html: 'taller-hoja-equipo.html', nombre: 'Taller - Hoja del equipo', version: 'v5', paginas: [1, 1], aparte: true },
   // Etapa 7 (2026-10-28): los borradores de difusión de docs/etapa7-difusion.md, para leerlos en PDF (DOC=borradores)

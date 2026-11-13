@@ -662,7 +662,8 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .kit-cierre { margin-top: 28px; color: var(--suave); font-size: 17px; max-width: 60ch; text-wrap: pretty; }
 
 /* El tablero (portada v4, 2026-10-28): un solo tablero, no tarjetas sueltas:
-   las celdas se separan con líneas finas. Lo usan "Para qué sirve un límite"
+   las celdas se separan con líneas finas. Lo usan "¿Qué ganó la mosca al
+   limitar su WIP?" (hasta la 8.11 se llamaba "Para qué sirve un límite")
    (tres celdas) y "Lo que se lleva tu equipo" (cuatro). En computador van en
    una fila; en celular, una bajo otra. */
 .gana-tablero {
@@ -708,7 +709,7 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .sirve-aviso { display: block; }
 
 /* 8.8 (2026-11-09, pedido de Felipe: la sección "está muy plana" y sus
-   respaldos "son medios trabalenguas"). "Para qué sirve un límite": en cada
+   respaldos "son medios trabalenguas"). "¿Qué ganó la mosca al limitar su WIP?": en cada
    celda, la línea en grande y, abajo, la prueba de la mosca dibujada en un
    recuadro de noche: un día con 2 tareas a la vez (el verde de Tranquila) y
    otro con 9 (el rojo de Colapsada). Los números van escritos al lado de cada
@@ -797,22 +798,7 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .asomada-ventana { bottom: calc(100% - 1px); height: 56.6px; overflow: hidden; z-index: 0; }
 .asomada-cabeza { display: block; width: 100%; height: auto; }
 .asomada-patas { top: -6.2px; height: auto; z-index: 2; }
-/* Una sola vez, cuando la sección entra a la pantalla (src/portada.js pone
-   "animar" y después "visto"): la mosca se asoma, las fichas llegan de a una y
-   las barras se llenan. Sin JavaScript o con movimiento reducido, todo está
-   en su lugar desde el principio */
-@media (prefers-reduced-motion: no-preference) {
-  .sirve.animar .asomada-cabeza { transition: transform 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.25) 0.5s; }
-  .sirve.animar .asomada-patas { transition: opacity 0.25s ease 0.85s; }
-  .sirve.animar .fichas i { transition: opacity 0.3s ease calc(var(--i) * 30ms + 0.15s), transform 0.3s ease calc(var(--i) * 30ms + 0.15s); }
-  .sirve.animar .avance-riel::after { transition: width 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) 0.2s; }
-  .sirve.animar .cara { transition: opacity 0.4s ease 0.25s, transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.25) 0.25s; }
-  .sirve.animar:not(.visto) .asomada-cabeza { transform: translateY(102%); }
-  .sirve.animar:not(.visto) .asomada-patas { opacity: 0; }
-  .sirve.animar:not(.visto) .fichas i { opacity: 0; transform: translateY(6px) scale(0.7); }
-  .sirve.animar:not(.visto) .avance-riel::after { width: 0; }
-  .sirve.animar:not(.visto) .cara { opacity: 0; transform: scale(0.82); }
-}
+/* (cómo se asoma y cómo se carga cada dibujo: más abajo, en "Las cargas") */
 
 /* "Lo que se lleva tu equipo" (8.8): las cuatro frases en el mismo tablero,
    cada una con un dibujo de lo que queda en el tablero del equipo, en un
@@ -932,6 +918,182 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .zonas li.reposo::before { box-shadow: none; }
 @container (max-width: 330px) {
   .zonas ul { grid-template-columns: 1fr; }
+}
+
+/* ---------- Las cargas (8.11, 2026-11-12) ----------
+   Pedido de Felipe: "que la primera vez que los veas como que se carguen esas
+   barritas" y "como que se vaya cargando". Todo lo que lleva data-carga parte
+   vacío y se llena una sola vez por visita, cuando su dibujo ya se ve en la
+   pantalla (src/portada.js pone "con-carga" en la página y "cargado" en cada
+   dibujo cuando le toca). El movimiento dice lo mismo que el dato:
+   - las fichas terminadas se llenan de a una, al mismo paso con 2 y con 9
+     tareas a la vez, y las de 9 se quedan en la mitad;
+   - las dos barras de avance parten juntas y a la misma velocidad: la de 9
+     se detiene casi al tiro y la de 2 sigue hasta 47 %;
+   - los números cuentan junto con su dibujo.
+   Solo se mueven la posición y la transparencia (nada cambia de tamaño ni
+   empuja lo de al lado). Sin JavaScript, con "reducir movimiento" o al
+   imprimir no hay cargas: todo está completo desde el HTML.
+   --espera: lo que aguarda un dibujo cuando entra a la pantalla junto con
+   otros (se cargan de izquierda a derecha).
+   Las transiciones van solo en lo ya cargado (.cargado, .visto): así, al abrir
+   la página, lo pendiente queda vacío de inmediato, sin "descargarse" a la
+   vista de quien entra directo a una sección. */
+@media screen and (prefers-reduced-motion: no-preference) {
+  .con-carga {
+    --frena: cubic-bezier(0.215, 0.61, 0.355, 1);
+    --rebote: cubic-bezier(0.2, 0.9, 0.3, 1.3);
+  }
+  .con-carga [data-carga] { --espera: 0ms; }
+
+  /* Los números que cuentan. El número de verdad sigue escrito en la página
+     (lo leen los lectores de pantalla y los buscadores, y guarda su lugar, así
+     que nada se corre). Mientras cuenta queda invisible y encima va el número
+     del momento, que src/portada.js escribe en data-ahora. Los que van en
+     medio de una frase o a la derecha (data-cuenta="der") crecen hacia la
+     izquierda */
+  [data-ahora] { position: relative; -webkit-text-fill-color: transparent; }
+  [data-ahora]::after {
+    content: attr(data-ahora);
+    content: attr(data-ahora) / '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    -webkit-text-fill-color: currentColor;
+  }
+  [data-cuenta='der'][data-ahora]::after { left: auto; right: 0; }
+
+  /* La mosca del logo se asoma con el primer dibujo de su sección */
+  .con-carga .sirve.visto .asomada-cabeza { transition: transform 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.25) 0.3s; }
+  .con-carga .sirve.visto .asomada-patas { transition: opacity 0.25s ease 0.65s; }
+  .con-carga .sirve:not(.visto) .asomada-cabeza { transform: translateY(102%); }
+  .con-carga .sirve:not(.visto) .asomada-patas { opacity: 0; }
+
+  /* Las fichas terminadas y las tarjetas de "Hecho": los 18 lugares parten
+     vacíos, con su borde de rayitas, y se llenan de a uno (--paso: lo mismo
+     que el data-paso del número de al lado, en index.html) */
+  .con-carga .fichas { --paso: 55ms; }
+  .con-carga .tarjetas { --paso: 60ms; }
+  .con-carga .fichas i:not(.falta),
+  .con-carga .tarjetas i:not(.falta) { position: relative; background: transparent; box-shadow: none; }
+  .con-carga .fichas i:not(.falta) { border: 1px dashed color-mix(in srgb, var(--caso) 55%, transparent); }
+  .con-carga .tarjetas i:not(.falta) { border: 1px dashed color-mix(in srgb, var(--col) 50%, transparent); }
+  .con-carga .fichas i:not(.falta)::after,
+  .con-carga .tarjetas i:not(.falta)::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 3px;
+    background: var(--caso, var(--col));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  }
+  .con-carga .cargado .fichas i::after,
+  .con-carga .cargado .tarjetas i::after {
+    transition:
+      opacity 0.2s ease calc(var(--espera) + var(--i) * var(--paso)),
+      transform 0.34s var(--rebote) calc(var(--espera) + var(--i) * var(--paso));
+  }
+  .con-carga [data-carga]:not(.cargado) .fichas i::after,
+  .con-carga [data-carga]:not(.cargado) .tarjetas i::after { opacity: 0; transform: scale(0.4); }
+
+  /* Cuánto avanza cada tarea: 26 ms por punto, igual que su número. La parte
+     llena entra desde la izquierda (el riel la recorta) */
+  .con-carga .cargado .avance-riel::after { transition: transform calc(var(--n) * 26ms) var(--frena) var(--espera); }
+  .con-carga [data-carga]:not(.cargado) .avance-riel::after { transform: translateX(-101%); }
+
+  /* Cómo cierra el día: primero la cara tranquila y después la colapsada */
+  .con-carga .cargado .cara { transition: opacity 0.35s ease var(--espera), transform 0.5s var(--rebote) var(--espera); }
+  .con-carga .cargado .carril + .carril .cara { transition-delay: calc(var(--espera) + 0.28s); }
+  .con-carga [data-carga]:not(.cargado) .cara { opacity: 0; transform: scale(0.8); }
+
+  /* Su carga a la vista: las cosas empezadas de cada persona llegan de a una */
+  .cosas i:nth-child(2) { --i: 1; }
+  .cosas i:nth-child(3) { --i: 2; }
+  .cosas i:nth-child(4) { --i: 3; }
+  .cosas i:nth-child(5) { --i: 4; }
+  .cosas i:nth-child(6) { --i: 5; }
+  .con-carga .cargado .cosas i {
+    transition:
+      opacity 0.2s ease calc(var(--espera) + var(--i, 0) * 90ms),
+      transform 0.34s var(--rebote) calc(var(--espera) + var(--i, 0) * 90ms);
+  }
+  .con-carga [data-carga]:not(.cargado) .cosas i { opacity: 0; transform: scale(0.4); }
+
+  /* Dónde espera el trabajo: las tarjetas se juntan en la columna del medio y
+     al final aparece el candado */
+  .con-carga .cargado .dibujo-espera .columna-mini i { transition: opacity 0.25s ease var(--espera), transform 0.32s var(--frena) var(--espera); }
+  .con-carga .cargado .dibujo-espera .espera i:nth-of-type(1) { transition-delay: calc(var(--espera) + 0.18s); }
+  .con-carga .cargado .dibujo-espera .espera i:nth-of-type(2) { transition-delay: calc(var(--espera) + 0.31s); }
+  .con-carga .cargado .dibujo-espera .espera i:nth-of-type(3) { transition-delay: calc(var(--espera) + 0.44s); }
+  .con-carga .cargado .dibujo-espera .espera i:nth-of-type(4) { transition-delay: calc(var(--espera) + 0.57s); }
+  .con-carga .cargado .candado { transition: opacity 0.2s ease calc(var(--espera) + 0.8s), transform 0.42s var(--rebote) calc(var(--espera) + 0.8s); }
+  .con-carga [data-carga]:not(.cargado) .dibujo-espera .columna-mini i { opacity: 0; }
+  .con-carga [data-carga]:not(.cargado) .dibujo-espera .espera i { transform: translateY(-7px); }
+  .con-carga [data-carga]:not(.cargado) .candado { opacity: 0; transform: scale(0.3); }
+
+  /* El límite acordado: la columna se llena hasta 3, se enciende un momento
+     (el tope) y lo demás llega y se queda esperando afuera */
+  .con-carga .dibujo-limite .limite { position: relative; }
+  .con-carga .cargado .dibujo-limite .limite i { transition: opacity 0.2s ease calc(var(--espera) + 0.1s), transform 0.34s var(--rebote) calc(var(--espera) + 0.1s); }
+  .con-carga .cargado .dibujo-limite .limite i:nth-of-type(2) { transition-delay: calc(var(--espera) + 0.26s); }
+  .con-carga .cargado .dibujo-limite .limite i:nth-of-type(3) { transition-delay: calc(var(--espera) + 0.42s); }
+  .con-carga [data-carga]:not(.cargado) .dibujo-limite .limite i { opacity: 0; transform: scale(0.5); }
+  .con-carga .dibujo-limite .limite::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 0 0 2px var(--acento), 0 0 16px color-mix(in srgb, var(--acento) 55%, transparent);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .con-carga .cargado .dibujo-limite .limite::after { animation: tope 0.8s ease-out calc(var(--espera) + 0.7s) 1 backwards; }
+  .con-carga .cargado .en-fila i { transition: opacity 0.25s ease calc(var(--espera) + 0.86s), transform 0.42s var(--frena) calc(var(--espera) + 0.86s); }
+  .con-carga .cargado .en-fila i:nth-child(2) { transition-delay: calc(var(--espera) + 1s); }
+  .con-carga [data-carga]:not(.cargado) .en-fila i { opacity: 0; transform: translateX(12px); }
+
+  /* Sus propios datos: las barras suben desde la línea de base, día por día,
+     primero una semana y después la otra */
+  .barras i:nth-child(2) { --i: 1; }
+  .barras i:nth-child(3) { --i: 2; }
+  .barras i:nth-child(4) { --i: 3; }
+  .barras i:nth-child(5) { --i: 4; }
+  .semana + .semana { --s: 1; }
+  .con-carga .barras { overflow: hidden; }
+  .con-carga .cargado .barras i { transition: transform 0.5s var(--frena) calc(var(--espera) + (var(--s, 0) * 5 + var(--i, 0)) * 70ms); }
+  .con-carga [data-carga]:not(.cargado) .barras i { transform: translateY(101%); }
+
+  /* Cómo se juega: los tres pasos están a media luz y se encienden en su
+     orden, 1, 2 y 3 (como los cerebros de más abajo). Nunca desaparecen: así
+     la sección no queda en blanco mientras llegas */
+  .con-carga .paso.cargado { transition: opacity 0.5s ease var(--espera); }
+  .con-carga .paso:not(.cargado) { opacity: 0.3; }
+
+  /* ¿Por qué una mosca?: cada cerebro se enciende mientras cuenta sus neuronas
+     (1,2 ms por neurona: el de 9 tareas tarda el triple) y los colores de la
+     leyenda se prenden de a uno */
+  .con-carga .cerebros .cargado img { transition: opacity calc(var(--n) * 1.2ms) var(--frena) var(--espera); }
+  .con-carga .cerebros figure:not(.cargado) img { opacity: 0.28; }
+  .zonas li:nth-child(2) { --i: 1; }
+  .zonas li:nth-child(3) { --i: 2; }
+  .zonas li:nth-child(4) { --i: 3; }
+  .zonas li:nth-child(5) { --i: 4; }
+  .zonas li:nth-child(6) { --i: 5; }
+  .con-carga .zonas.cargado li::before {
+    transition:
+      opacity 0.3s ease calc(var(--espera) + var(--i, 0) * 90ms),
+      transform 0.4s var(--rebote) calc(var(--espera) + var(--i, 0) * 90ms);
+  }
+  .con-carga .zonas:not(.cargado) li::before { opacity: 0.2; transform: scale(0.5); }
+}
+@keyframes tope {
+  0% { opacity: 0; }
+  30% { opacity: 1; }
+  100% { opacity: 0; }
 }
 
 /* Qué es y qué no es: las dos líneas, la tapa del informe (la mosca con su
@@ -1143,7 +1305,7 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .pieza-cuerpo { padding: 18px 20px 22px; }
   .pieza .boton { width: 100%; max-width: 440px; }
 
-  /* Para qué sirve un límite: las tres celdas una bajo otra, cada una con su
+  /* ¿Qué ganó la mosca al limitar su WIP?: las tres celdas una bajo otra, cada una con su
      línea y la prueba de la mosca, y la mosca asomada más chica, en su franja
      entre el título y el tablero; lo que se lleva tu equipo, lo mismo: cada
      frase con su dibujo al lado */

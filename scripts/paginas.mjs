@@ -160,6 +160,8 @@ for (const fuente of FUENTES) {
   if (!meta.vistaPrevia) throw new Error(`${fuente.archivo}: falta "vistaPrevia" en el comentario <!--meta {...} -->`);
   const imagen = vistaPrevia(meta.vistaPrevia);
   const t = textos(idioma);
+  // La fecha de esta página: la suya si cambió sola, o la de las cuatro (scripts/plantilla.mjs)
+  const modificado = FECHAS.porPagina?.[`${clave}-${idioma}`] ?? FECHAS.modificado;
   const jsonLd = [];
   const mg = meta.miga ? migas(idioma, [{ nombre: meta.miga, ruta: RUTAS[clave][idioma] }]) : null;
   if (meta.articulo) {
@@ -173,7 +175,7 @@ for (const fuente of FUENTES) {
       mainEntityOfPage: `${SITIO}${RUTAS[clave][idioma]}`,
       image: `${SITIO}${imagen}`,
       datePublished: FECHAS.publicado,
-      dateModified: FECHAS.modificado,
+      dateModified: modificado,
       isAccessibleForFree: true,
       author: { '@type': 'Person', '@id': `${SITIO}/#felipe`, name: AUTOR.nombre, url: AUTOR.linkedin, sameAs: [AUTOR.linkedin] },
       publisher: { '@type': 'Organization', '@id': `${SITIO}/#deliverycraft`, name: 'Deliverycraft', url: 'https://deliverycraft.ai/' },
@@ -190,8 +192,8 @@ for (const fuente of FUENTES) {
     .replace('{{kit}}', () => enlacesKit(idioma, clave))
     .replace('{{tabla-datos}}', () => tablaDatos(idioma))
     .replace('{{descargas-taller}}', () => descargasTaller(idioma))
-    .replaceAll('{{fecha}}', () => t.fechaLarga(FECHAS.modificado))
-    .replaceAll('{{fecha-iso}}', () => FECHAS.modificado);
+    .replaceAll('{{fecha}}', () => t.fechaLarga(modificado))
+    .replaceAll('{{fecha-iso}}', () => modificado);
   if (/\{\{[a-z-]+\}\}/.test(cuerpo)) throw new Error(`${fuente.archivo}: quedó un marcador sin reemplazar: ${cuerpo.match(/\{\{[a-z-]+\}\}/)[0]}`);
   const html = pagina({ ...meta, imagen, jsonLd, cuerpo, cssExtra: meta.cssExtra ?? [] });
   mkdirSync(dirname(join(RAIZ, fuente.salida)), { recursive: true });

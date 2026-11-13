@@ -9,7 +9,7 @@
 //   node scripts/informe-web.mjs
 // Las imágenes del informe están en public/img/informe/ (y en/ para el
 // inglés), reducidas a 1600 px desde docs/contexto/img e img-en.
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, statSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 import vm from 'node:vm';
@@ -17,19 +17,22 @@ import { pagina, migas, autor, enlacesKit, SITIO, AUTOR, RUTAS } from './plantil
 import { vistaPrevia } from './sello.mjs';
 
 const RAIZ = fileURLToPath(new URL('..', import.meta.url));
-// Esta página es igual al PDF "Para compartir v22" (en inglés, v23 desde el
-// 2026-10-29: dos frases más naturales). Ese número es interno y no se
-// muestra (pedido de Felipe, 2026-10-28): la página dice solo la fecha, la
-// del último cambio de cada idioma (actualizado en IDIOMAS).
+// Esta página es igual al PDF "Para compartir v27" (en inglés, v28), armado el
+// 2026-11-12 y subido al sitio el 2026-11-13 (8.11): el informe extenso, que es el texto del v22 (v23 en
+// inglés) más la sección de las urgencias, sin la página "Si solo lees una
+// página" (el resumen ejecutivo es otro PDF, aparte). Ese número es interno
+// y no se muestra (pedido de Felipe, 2026-10-28): la página dice solo la
+// fecha, la del último cambio de cada idioma (actualizado en IDIOMAS).
 
 const IDIOMAS = {
   es: {
     fuente: 'docs/contexto/compartir.html',
     salida: 'informe/index.html',
-    actualizadoEl: '2026-11-07',
+    actualizadoEl: '2026-11-13',
     img: '/img/informe/',
-    pdf: { ruta: '/Mosca-del-WIP-Informe.pdf', nombre: 'Mosca del WIP - Informe.pdf', peso: '4 MB', paginas: '17 páginas' },
-    resumen: { ruta: '/Mosca-del-WIP-Resumen.pdf', nombre: 'Mosca del WIP - Resumen.pdf' }, // 8.6: el resumen de 4 páginas
+    // 8.11: las páginas y el peso del PDF ya no se escriben a mano: se cuentan en la fuente y se miden en public/ (ver armar)
+    pdf: { ruta: '/Mosca-del-WIP-Informe.pdf', nombre: 'Mosca del WIP - Informe.pdf', paginas: (n) => `${n} páginas` },
+    resumen: { ruta: '/Mosca-del-WIP-Resumen.pdf', nombre: 'Mosca del WIP - Resumen.pdf' }, // 8.6: el resumen de 4 páginas. 8.11: el resumen ejecutivo de 2 páginas, un PDF aparte
     tapa: '/img/tapa-informe.jpg',
     titulo: 'Informe del límite WIP con una mosca real · Mosca del WIP',
     descripcion: 'Qué pasa en el juego con 1 a 10 tareas a la vez, qué dicen los estudios con personas y cuatro pasos para probar un límite WIP con tu equipo. En la web o en PDF.',
@@ -42,8 +45,8 @@ const IDIOMAS = {
     publicado: 'Publicado el',
     actualizado: 'Actualizado el',
     bajarPdf: 'Descargar el informe (PDF)',
-    bajarResumen: 'Descargar el resumen (PDF, 4 páginas)',
-    pdfNota: (p) => `El PDF tiene ${p.paginas} y pesa ${p.peso}. Puedes compartirlo tal cual, citando al autor.`,
+    bajarResumen: 'Descargar el resumen ejecutivo (PDF, 2 páginas)',
+    pdfNota: (p) => `El PDF tiene ${p.paginas}${p.peso ? ` y pesa ${p.peso}` : ''}. Puedes compartirlo tal cual, citando al autor.`,
     enEstaPagina: 'En esta página',
     anexo: 'Anexo',
     seccion: 'sección',
@@ -52,13 +55,20 @@ const IDIOMAS = {
     kitTitulo: 'Lo que acompaña a este informe',
     datoFreak: 'Dato freak',
     palabra: /(página|Página) <span data-pag="([a-z]+)">\d*<\/span>/g,
-    // 8.4 (2026-11-04, v23): las frases que nombran páginas sin número; las que
-    // llevan número van con data-pag y las traduce "palabra". Si una no está en
-    // la fuente, el script avisa al armar.
+    // Las frases que nombran páginas con el número escrito en el texto o sin
+    // número ("página siguiente"); las que llevan data-pag las traduce
+    // "palabra". Si una no está en la fuente, el script avisa al armar (8.4).
+    // 8.11 (2026-11-12, v27): vuelven las ocho frases del v22, que son las del
+    // informe extenso (la tabla sigue en la página 4, la paradoja en la 5 y el
+    // gancho en la 1: las urgencias entraron después, como la 11).
     frases: [
-      ['La tabla de 1 a 10 está en la página siguiente.', 'La tabla de 1 a 10 está en la <a href="#dia">sección siguiente</a>.'],
-      ['Lo demás, en las diez páginas que siguen y en <a class="sitio" href="https://mosca.deliverycraft.ai/">mosca.deliverycraft.ai</a>.', 'Lo demás, en las diez secciones que siguen.'],
+      ['está en la página siguiente, a la derecha.', 'está en la <a href="#dia">sección siguiente</a>, a la derecha.'],
+      ['La página siguiente explica por qué.', 'La <a href="#tabla">sección siguiente</a> explica por qué.'],
+      ['los dos días de la página anterior:', 'los dos días de la <a href="#dia">sección anterior</a>:'],
+      ['Lo que la tabla de la página 4 no muestra', 'Lo que la tabla de la <a href="#tabla">sección 4</a> no muestra'],
       ['Las columnas que faltan en la página 4,', 'Las columnas que faltan en la sección 4,'],
+      ['son las dos curvas de la página 5.', 'son las dos curvas de la <a href="#paradoja">sección 5</a>.'],
+      ['Cómo se probó está en la página 1:', 'Cómo se probó está en la <a href="#gancho">sección 1</a>:'],
       ['Estas tres páginas son para revisar', 'Estos tres anexos son para revisar'],
     ],
     cerebroAlto: 804,
@@ -66,10 +76,10 @@ const IDIOMAS = {
   en: {
     fuente: 'docs/contexto/compartir-en.html',
     salida: 'en/report/index.html',
-    actualizadoEl: '2026-11-07',
+    actualizadoEl: '2026-11-13',
     img: '/img/informe/en/',
-    pdf: { ruta: '/Mosca-del-WIP-Report.pdf', nombre: 'Mosca del WIP - Report.pdf', peso: '4 MB', paginas: '17 pages' },
-    resumen: { ruta: '/Mosca-del-WIP-Summary.pdf', nombre: 'Mosca del WIP - Summary.pdf' }, // 8.6: the four-page summary
+    pdf: { ruta: '/Mosca-del-WIP-Report.pdf', nombre: 'Mosca del WIP - Report.pdf', paginas: (n) => `${n} pages` },
+    resumen: { ruta: '/Mosca-del-WIP-Summary.pdf', nombre: 'Mosca del WIP - Summary.pdf' }, // 8.6: the four-page summary. 8.11: the two-page executive summary, a separate PDF
     tapa: '/img/tapa-report.jpg',
     titulo: 'WIP limit report with a real fly brain · Mosca del WIP',
     descripcion: 'What happens in the game with 1 to 10 tasks at once, what studies with people say and four steps to try a WIP limit with your team. On the web or as a PDF.',
@@ -82,8 +92,8 @@ const IDIOMAS = {
     publicado: 'Published on',
     actualizado: 'Updated on',
     bajarPdf: 'Download the report (PDF)',
-    bajarResumen: 'Download the summary (PDF, 4 pages)',
-    pdfNota: (p) => `The PDF has ${p.paginas} and weighs ${p.peso}. You can share it as is, crediting the author.`,
+    bajarResumen: 'Download the executive summary (PDF, 2 pages)',
+    pdfNota: (p) => `The PDF has ${p.paginas}${p.peso ? ` and weighs ${p.peso}` : ''}. You can share it as is, crediting the author.`,
     enEstaPagina: 'On this page',
     anexo: 'Appendix',
     seccion: 'section',
@@ -93,9 +103,13 @@ const IDIOMAS = {
     datoFreak: 'Fun fact',
     palabra: /(page|Page) <span data-pag="([a-z]+)">\d*<\/span>/g,
     frases: [
-      ['The table from 1 to 10 is on the next page.', 'The table from 1 to 10 is in the <a href="#dia">next section</a>.'],
-      ['The rest, in the ten pages that follow and at <a class="sitio" href="https://mosca.deliverycraft.ai/?lang=en">mosca.deliverycraft.ai</a>.', 'The rest, in the ten sections that follow.'],
+      ['is on the next page, on the right.', 'is in the <a href="#dia">next section</a>, on the right.'],
+      ['The next page explains why.', 'The <a href="#tabla">next section</a> explains why.'],
+      ['the two days from the previous page:', 'the two days from the <a href="#dia">previous section</a>:'],
+      ['What the table on page 4 doesn’t show', 'What the table in <a href="#tabla">section 4</a> doesn’t show'],
       ['The columns missing from page 4,', 'The columns missing from section 4,'],
+      ['are the two curves on page 5.', 'are the two curves in <a href="#paradoja">section 5</a>.'],
+      ['How it was tested is on page 1:', 'How it was tested is in <a href="#gancho">section 1</a>:'],
       ['These three pages are for checking', 'These three appendices are for checking'],
     ],
     cerebroAlto: 850,
@@ -137,6 +151,12 @@ function armar(idioma) {
   const contenido = hojas.filter((h) => h.k);
   const anexos = contenido.filter((h) => ['real', 'numeros', 'fuentes'].includes(h.k));
   const paginas = contenido.filter((h) => !anexos.includes(h));
+  // 8.11: lo que la página dice del PDF sale de aquí y no de un número escrito a mano. Las páginas son las
+  // hojas de la fuente (portada, contenido, separador, anexos y cierre) y el peso es el del archivo que se
+  // publica, en MB enteros de un millón de bytes (como lo muestra el computador al bajarlo).
+  const rutaPdf = join(RAIZ, 'public', C.pdf.ruta);
+  const pdfDatos = { paginas: C.pdf.paginas(hojas.length), peso: existsSync(rutaPdf) ? `${Math.max(1, Math.round(statSync(rutaPdf).size / 1e6))} MB` : '' };
+  if (!pdfDatos.peso) console.warn(`OJO ${C.salida}: no está public${C.pdf.ruta}, la página queda sin el peso del PDF`);
 
   // 2. Las tablas y los gráficos: el script del PDF corre aquí, con un
   //    "document" de mentira que guarda lo que escribe en cada id
@@ -158,7 +178,7 @@ function armar(idioma) {
     escrito[id] = escrito[id].replace(/#[0-9a-f]{6}\b/gi, (hex) => COLORES[hex.toLowerCase()] ?? hex);
   }
 
-  // 3. Dónde queda cada hoja en la web: 1 a 11 y los anexos A, B y C
+  // 3. Dónde queda cada hoja en la web: 1 a 12 y los anexos A, B y C
   const numero = (k) => {
     const i = paginas.findIndex((h) => h.k === k);
     if (i >= 0) return `${C.seccion} ${i + 1}`;
@@ -196,7 +216,11 @@ function armar(idioma) {
     );
     // 8.4: el div puede traer otros atributos (el del resumen lleva una clase): se conservan
     s = s.replace(/<(tbody|div) id="([a-z-]+)"([^>]*)><\/\1>/g, (m, tag, id, extra) => `<${tag} id="${id}"${extra}>${escrito[id] ?? ''}</${tag}>`);
-    s = s.replace(C.palabra, (m, palabra, k) => `<a href="#${k}">${numero(k)}</a>`);
+    // 8.11: si la palabra abre una frase ("Page 3 shows…"), la sección también va con mayúscula (antes salía "section 3 shows…")
+    s = s.replace(C.palabra, (m, palabra, k) => {
+      const n = numero(k);
+      return `<a href="#${k}">${/^\p{Lu}/u.test(palabra) ? n[0].toUpperCase() + n.slice(1) : n}</a>`;
+    });
     for (const [de, a] of C.frases) s = s.split(de).join(a);
     s = s.replace(/<img class="foto([^"]*)" src="img(?:-en)?\/([a-z0-9-]+)\.jpg"/g, (m, extra, nombre) => {
       const [w, hh] = TAMANOS[nombre] ?? [1600, 1000];
@@ -244,7 +268,7 @@ function armar(idioma) {
         <a class="boton principal" href="${C.pdf.ruta}" download="${C.pdf.nombre}">${C.bajarPdf}</a>
         <a class="boton" href="${C.resumen.ruta}" download="${C.resumen.nombre}">${C.bajarResumen}</a>
       </div>
-      <p class="nota">${C.pdfNota(C.pdf)}</p>
+      <p class="nota">${C.pdfNota(pdfDatos)}</p>
     </div>
     <img class="tapa-informe" src="/img/portada-torre.svg" width="520" height="640" alt="" aria-hidden="true" decoding="async" />
   </div>

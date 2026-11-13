@@ -12,7 +12,10 @@ import { ICONOS } from './sello.mjs';
 
 export const SITIO = 'https://mosca.deliverycraft.ai';
 export const AUTOR = { nombre: 'Felipe Fernández', linkedin: 'https://www.linkedin.com/in/felipefernandezandrade/' };
-export const FECHAS = { publicado: '2026-10-28', modificado: '2026-11-07' }; // 2026-11-07 (8.7): la guía y el taller con para qué sirve un límite y lo que se lleva el equipo; antes 2026-11-06 (8.6), 2026-11-04 (8.4) y 2026-10-29
+// (8.11, 2026-11-13) porPagina: cuando cambia una sola de las cuatro páginas, su fecha va aquí
+// (clave-idioma) y las demás no se mueven. Hoy: el taller en español, que cita la sección 11
+// del informe (las urgencias) y descarga la guía rápida v8
+export const FECHAS = { publicado: '2026-10-28', modificado: '2026-11-07', porPagina: { 'taller-es': '2026-11-13' } }; // 2026-11-07 (8.7): la guía y el taller con para qué sirve un límite y lo que se lleva el equipo; antes 2026-11-06 (8.6), 2026-11-04 (8.4) y 2026-10-29
 
 // Las direcciones de cada página en cada idioma (las mismas de src/idioma.js)
 export const RUTAS = {

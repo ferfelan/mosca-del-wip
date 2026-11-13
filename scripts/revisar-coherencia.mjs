@@ -219,15 +219,18 @@ if (args.includes('--mapa')) {
     { pieza: 'Corrida oficial: eficiencia de flujo', es: 'En el juego, 47 % con 2 a la vez y 9 % con 9', en: 'In the game, 47% with 2 at once and 9% with 9',
       // (8.8) en la portada también en palabras: "espera 9 de cada 10 minutos"
       buscar: ['47 %', '47%', '9 de cada 10 minutos', '9 out of every 10 minutes'] },
-    { pieza: 'Las cuatro ideas', es: '1. Estar siempre ocupado no es avanzar. 2. Un límite bajo, pero no 1. 3. Lo empezado no desaparece. 4. Las urgencias, de a una.',
-      en: '1. Being busy all the time isn’t making progress. 2. A low limit, but not 1. 3. What’s started doesn’t disappear. 4. Urgent tasks, one at a time.',
-      buscar: ['Un límite bajo, pero no 1', 'A low limit, but not 1', 'Lo empezado no desaparece', 'What’s started doesn’t disappear'] },
+    // (8.11, 2026-11-12) "Las cuatro ideas" eran de la página "Si solo lees una página" del informe, que ya no
+    // existe. En su lugar, los tres hallazgos del resumen ejecutivo (el tercero está en "Urgencias: el resultado")
+    { pieza: 'Lo que encontramos (resumen ejecutivo)', es: 'Una sola tarea a la vez no fue lo mejor. Lo empezado no desaparece. Cada urgencia costó una tarea normal.',
+      en: 'One task at a time wasn’t the best. What’s started doesn’t disappear. Each urgent task cost one regular task.',
+      buscar: ['Una sola tarea a la vez no fue lo mejor', 'One task at a time wasn’t the best', 'Lo empezado no desaparece', 'What’s started doesn’t disappear'] },
     // (8.7) reemplaza a "Lo que busca un límite" de la 8.6. (8.9) En la portada
     // los números son de la mosca y se dice antes de mostrarlos; la primera
     // línea habla de ella ("Termina más, y cada tarea sale antes")
-    { pieza: 'Para qué sirve un límite', es: 'En el juego, al limitar sus tareas a la vez, la mosca gana esto. Son sus números, no los de tu equipo. Termina más, y cada tarea sale antes. El trabajo avanza en vez de esperar. Menos sobrecarga. Cuánto gana tu equipo, lo dice su prueba.',
-      en: 'In the game, by limiting how many tasks she has at once, the fly gains this. These are her numbers, not your team’s. She finishes more, and each task is done sooner. Work moves forward instead of waiting. Less overload. How much your team gains, its own test will show.',
-      buscar: ['Para qué sirve un límite', 'What a limit is for', 'en vez de esperar', 'instead of waiting', 'Cuánto gana', 'How much your team gains', 'How much the team gains'] },
+    // (8.11) el título es una pregunta sobre la mosca y la bajada dice con cuántas tareas
+    { pieza: '¿Qué ganó la mosca al limitar su WIP?', es: 'En el juego, con 2 tareas a la vez en lugar de 9, ganó esto. Son sus números, no los de tu equipo. Termina más, y cada tarea sale antes. El trabajo avanza en vez de esperar. Menos sobrecarga. Cuánto gana tu equipo, lo dice su prueba.',
+      en: 'In the game, with 2 tasks at once instead of 9, she gained this. These are her numbers, not your team’s. She finishes more, and each task is done sooner. Work moves forward instead of waiting. Less overload. How much your team gains, its own test will show.',
+      buscar: ['Qué ganó la mosca', 'What did the fly gain', 'en vez de esperar', 'instead of waiting', 'Cuánto gana', 'How much your team gains', 'How much the team gains'] },
     { pieza: 'Lo que se lleva tu equipo', es: 'Su carga a la vista. Dónde se queda esperando el trabajo. Un límite acordado, escrito en el tablero. Sus propios datos después de dos semanas.',
       en: 'Their load in plain sight. Where the work sits waiting. An agreed limit, written on the board. Their own data after two weeks.',
       buscar: ['carga a la vista', 'load in plain sight', 'límite acordado', 'agreed limit'] },
@@ -238,8 +241,8 @@ if (args.includes('--mapa')) {
     { pieza: 'El recorrido del juego (8.8)', es: '¿Dónde está cada cosa? Aquí mandas tú. El día. Su tablero. Cómo le va. Su cerebro, en vivo. Tus días jugados.',
       en: 'Where is everything? You’re in charge here. The day. Her board. How she’s doing. Her brain, live. Your days played.',
       buscar: ['¿Dónde está cada cosa?', 'Where is everything?', 'Aquí mandas tú', 'You’re in charge here'] },
-    { pieza: 'El aviso de la mosca del mapa (8.8)', es: 'Ninguna mosca salió herida ni fue obligada a trabajar de verdad. Salvo la del mapa: a esa le sacaron el sistema nervioso y lo cortaron en 66 láminas.',
-      en: 'No fly was harmed or made to do any real work. Except the one in the map: its nervous system was taken out and cut into 66 slices.',
+    { pieza: 'El aviso de la mosca del mapa (8.8)', es: 'Ninguna mosca salió herida ni fue obligada a trabajar de verdad. Salvo la del mapa, a esa le sacaron el sistema nervioso y lo cortaron en 66 láminas.',
+      en: 'No fly was harmed or made to do any real work. Except the one in the map, whose nervous system was taken out and cut into 66 slices.', // (8.11) sin dos puntos
       buscar: ['Ninguna mosca salió herida', 'No fly was harmed', '66 láminas', '66 slices'] },
     { pieza: 'Los cuatro pasos', es: '1. Pongan el trabajo a la vista. 2. Cuenten lo abierto y pónganle un límite. 3. Cuando alguien queda esperando, ataquen la espera. 4. Prueben dos semanas y midan.',
       en: '1. Make the work visible. 2. Count what’s open and set a limit. 3. When someone is left waiting, go after the wait. 4. Try it for two weeks and measure.',
@@ -269,7 +272,7 @@ if (args.includes('--mapa')) {
     'scripts/informe-web.mjs': 'title y meta del informe web',
     'docs/contexto/resumen.html': 'el resumen (PDF)',
     'docs/contexto/resumen-en.html': 'el resumen en inglés (PDF)',
-    'docs/contexto/taller-v7.html': 'la guía rápida del taller (PDF)',
+    'docs/contexto/taller-v8.html': 'la guía rápida del taller (PDF)',
     'docs/contexto/taller-hoja-equipo.html': 'la hoja del equipo (PDF)',
     'docs/contexto/taller-presentacion/armar-v6.cjs': 'la presentación del taller (PPTX y PDF)',
     'scripts/datos-csv.mjs': 'los CSV de /datos/',

@@ -38,7 +38,7 @@ const INFORMES = {
   es: { pdf: '/Mosca-del-WIP-Informe.pdf', nombre: 'Mosca del WIP - Informe.pdf', tapa: '/img/tapa-informe.jpg' },
   en: { pdf: '/Mosca-del-WIP-Report.pdf', nombre: 'Mosca del WIP - Report.pdf', tapa: '/img/tapa-report.jpg' },
 };
-// El resumen de 4 páginas de cada idioma (8.6; data-resumen-pdf en index.html
+// El resumen ejecutivo de cada idioma (8.6, de 4 páginas; desde la 8.11, de 2; data-resumen-pdf en index.html
 // y RESUMEN_EN en scripts/generar-ingles.mjs)
 const RESUMENES = {
   es: { pdf: '/Mosca-del-WIP-Resumen.pdf', nombre: 'Mosca del WIP - Resumen.pdf' },
@@ -167,7 +167,7 @@ for (const [motor, nombre, opciones, abre] of CASOS) for (const idioma of ['es',
   }
   if (!probados) mal('no hay ningún enlace de descarga a la vista');
   if (probadosTaller.size !== TALLER.length) mal(`se probaron ${probadosTaller.size} archivos del taller y no ${TALLER.length}`);
-  if (!probadoResumen) mal('no se probó el resumen de 4 páginas (no hay un enlace data-resumen-pdf a la vista)');
+  if (!probadoResumen) mal('no se probó el resumen ejecutivo (no hay un enlace data-resumen-pdf a la vista)');
   // En español, ES | EN lleva a la portada en inglés (/en/), donde todos los
   // enlaces y la tapa son del informe en inglés, y ES devuelve a la de
   // español (desde la Etapa 7 cada idioma tiene su dirección); los del taller no cambian

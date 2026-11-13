@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Mosca del WIP · Summary</title>
+<!-- Summary v2 (2026-11-07, Etapa 8.7): el mismo resumen de resumen.html, en inglés.
+     Traducido con naturalidad, sin calcar (glosario en docs/glosario-ingles.md: at once,
+     Calm, Overwhelmed, work in progress). Mismo diseño, mismas cuatro hojas y mismas
+     reglas (node scripts/revisar-paginas.mjs resumen-en). Se arma con
+     DOC=resumen-en node scripts/documento.mjs. La fuente del v1 está en
+     docs/contexto/v1/resumen-en.html. -->
+<link rel="stylesheet" href="estilo.css" />
+<style>
+  body { font-size: 11.3pt; line-height: 1.6; }
+  .hoja { background: #fff; display: flex; flex-direction: column; }
+  .hoja > * { flex: none; }
+  h1 { font-size: 31pt; line-height: 1.08; margin: 0 0 3.2mm; letter-spacing: -0.015em; max-width: 120mm; }
+  .firma { font-size: 9.4pt; color: var(--suave); margin: 0 0 8mm; }
+  h2 { font-family: var(--serif); font-size: 15.5pt; line-height: 1.25; margin: 6.5mm 0 2.4mm; color: var(--tinta); }
+  h2:first-child { margin-top: 0; }
+  p { margin: 0 0 3.3mm; max-width: 150mm; text-wrap: pretty; }
+  /* La mosca con su torre, chica, a la derecha de los primeros párrafos */
+  /* (la primera hoja no va en columna flexible: así el texto rodea la ilustración) */
+  .hoja[data-k='escena'] { display: block; }
+  .torre { float: right; width: 52mm; margin: -6mm -3mm 2mm 7mm; }
+  .torre img { display: block; width: 100%; height: auto; border: 0; border-radius: 0; }
+  /* El único gráfico: terminadas al día de 1 a 10 */
+  .grafico { margin: 1.5mm 0 4.5mm; max-width: 150mm; }
+  .grafico svg { display: block; width: 100%; height: auto; }
+  figcaption { font-size: 8.8pt; color: var(--suave); margin-top: 1.6mm; line-height: 1.45; }
+  /* Los cuatro pasos: una lista numerada simple */
+  ol.lunes { margin: 0 0 3.3mm; padding-left: 5.5mm; max-width: 146mm; }
+  ol.lunes li { margin: 0 0 2.2mm; padding-left: 1.5mm; }
+  ol.lunes li::marker { color: var(--texto); font-weight: 600; }
+  .cierre { font-family: var(--serif); font-size: 17pt; line-height: 1.3; font-weight: 700; color: var(--tinta); margin: 5mm 0 1.6mm; max-width: 150mm; }
+  .juega { font-size: 11.3pt; margin-bottom: 2.6mm; }
+  .chico { font-size: 8.6pt; color: var(--suave); max-width: 150mm; }
+  a.sitio { color: var(--teal); text-decoration: underline; text-decoration-thickness: 0.6pt; text-underline-offset: 0.6mm; }
+  .pie { letter-spacing: 0; }
+</style>
+</head>
+<body>
+
+<!-- =============================== 1 · THE SCENE AND WHAT I DID =============================== -->
+<section class="hoja" data-k="escena">
+  <h1>Busy all day. So what did you finish?</h1>
+  <p class="firma">Felipe Fernández · November 2026</p>
+  <figure class="torre"><img src="img/torre-resumen.svg" alt="Illustration: the fly from the game, wearing a tie, carries on its back a tower of folders that leans and drops sheets of paper, with a cup of coffee on top. On the floor, a single finished folder with a green check mark." /></figure>
+  <p>Monday, 9 a.m. You have three things left over from yesterday, two emails waiting for an answer, the weekly report, a colleague’s emergency and the two things you meant to finish today. That’s nine things started. You work nonstop, move each one forward a little, and by 6 p.m. you haven’t closed a single one.</p>
+  <p>Most of us work like this. I wanted to see what goes on there with numbers, and that’s hard to do with people, because nobody lives the same Monday twice. So I built a game.</p>
+  <p>It’s called Mosca del WIP, it takes a minute and you play it in the browser. The main character is an office fly in a tie, who spends a workday in front of a board with three columns, to do, in progress and done. Before the day starts, you choose how many tasks she can have started at once, from 1 to 10. Teams call that number a work-in-progress limit, or WIP limit. Then she works on her own. She switches tasks, waits for answers from other people and, if she gets stressed, goes out for a smoke.</p>
+  <p>Inside runs the real map of a fruit fly’s brain, neuron by neuron and with its connections, and the more tasks she has open, the more neurons light up. The office rules, on the other hand, are mine, inspired by studies with people. Each task takes 15 to 35 minutes of work. Switching tasks has a cost, and with 10 open, each minute yields half as much. One in five tasks gets stuck for 30 to 60 minutes waiting on someone else. Then I had the computer play 200 days with each number, from 1 to 10, and took the average. That’s what I call the simulation.</p>
+  <div class="pie"><span><b>Mosca del WIP</b> · Summary</span><span></span></div>
+</section>
+
+<!-- =============================== 2 · WHAT HAPPENED =============================== -->
+<section class="hoja" data-k="que-paso">
+  <h2>What happened</h2>
+  <p>In the simulation, with 2 tasks at once the fly finished 18 a day, and each one took an hour from the moment she started it until she closed it. With 9 she finished half as many, about 9, and each one took almost nine hours, the whole day. The fly with 9 was never idle, but she jumped from one task to another, lost time picking each one back up and went out for a smoke 13 times.</p>
+  <figure class="grafico"><div id="g-terminadas"></div>
+    <figcaption>In the simulation, average of 200 days for each number. In green, 2, the one that finished the most, and in red, 9.</figcaption>
+  </figure>
+  <p>You’d think one thing at a time would be best, but not in the game. With 1, the fly finished 15.9 tasks a day, fewer than with 2, because when her only task gets stuck waiting on someone else, she has nothing to do. With 2 she always has the other one at hand. With 3 she finishes almost the same and also ends the day calm. From 4 on, each extra task makes everything a little worse.</p>
+  <p>I also tried getting organized in the middle of the day. The fly starts with 10 tasks at once, and at 12:00 the limit drops to 2. What’s started doesn’t disappear, so she takes no new tasks and closes the ones she has. In the game, only at 14:35 does she have two open again. So if you lower your limit, don’t expect the change on the first day.</p>
+  <p>Finally, I added urgent tasks, which arrive without warning, jump over the limit and get done right away, one at a time. In the simulation, each urgent task cost her about one regular task, and a limit of 2 still finished the most, with one urgent task a day or with five. Raising the limit doesn’t help the urgent task either. With one a day and a limit of 2, each one took 34 minutes from arrival, and with a limit of 10, 52 minutes, because with more things half-done she’s slower at it too.</p>
+  <div class="pie"><span><b>Mosca del WIP</b> · Summary</span><span></span></div>
+</section>
+
+<!-- =============================== 3 · WHY IT HAPPENS AND THE STUDIES =============================== -->
+<section class="hoja" data-k="por-que">
+  <h2>Why it happens</h2>
+  <p>Modig and Åhlström describe two ways to be efficient in their book This is Lean, from 2012. One is being busy all the time, and the other is keeping the work moving without waiting. By their account, focusing on the first makes the second worse. In the game, the fly with 9 tasks has something to do 100% of the day, but each task spends almost all that time waiting its turn.</p>
+  <p>The other part is a division, Little’s law, from 1961. The time each thing takes is what you have started divided by what you finish. In a supermarket line, if the checkout keeps the same pace and the line grows, everyone waits longer. In the game it fits exactly, because with 9 open and about 9 finished a day, each task stays open the whole day, and with 2 open and 18 finished, an hour.</p>
+  <h2>What studies with people say</h2>
+  <p>You might think this is just a game with a fly. That’s why I looked for studies. In Italy, judges who got more cases at once, by lottery, took longer to close them, and the quality of their rulings didn’t change (Coviello, Ichino and Persico, 2014). With recruiters, a bit of parallel work helped them finish more, but past a point they finished less. DORA’s surveys of software teams say that limiting work in progress helps, especially with a board in plain sight.</p>
+  <p>None of them gives a number. They measured what happens when there are too many things open, and found more delay, less finished or both. Your team will have to measure its own number.</p>
+  <p>The game is also a single fly on a single day, with no coworkers to hand work to, so it doesn’t measure people or teams. Her brain is real, but it doesn’t decide anything. And the theory only says that, past a certain point, what gets finished stops going up. That it also goes down, as in the chart, comes from two of my rules, what it costs to switch tasks and the cigarettes.</p>
+  <div class="pie"><span><b>Mosca del WIP</b> · Summary</span><span></span></div>
+</section>
+
+<!-- =============================== 4 · WHAT A LIMIT IS FOR AND WHAT TO DO =============================== -->
+<section class="hoja" data-k="hacer">
+  <h2>What a limit is for</h2>
+  <p>A low limit helps you finish more, as the chart shows, and helps each thing get done sooner. It also keeps work moving instead of waiting. In the game, with 2 at once each task moves forward 47% of the time it’s open, and with 9, only 9%. And there’s less overload. With 2, the fly ends the day calm, and with 9, overwhelmed. According to DORA, limiting work in progress is a habit of high-performing teams. How much your team gains, its own test will show.</p>
+  <h2>What to do on Monday</h2>
+  <p>The game doesn’t tell you your team’s number, because the fly works alone and a team passes work around and helps each other. To find it, I suggest four steps.</p>
+  <ol class="lunes">
+    <li>Make the work visible. Three columns are enough, to do, in progress and done, because what you can’t see, you can’t limit.</li>
+    <li>Count what’s open and set a limit. Count how many things each person has started today, agree on a low limit, write it on the board and stick to it. If there are waits you can’t avoid, don’t make it 1.</li>
+    <li>When someone is left waiting, go after the wait. Instead of opening something else to make good use of the time, help unblock what’s waiting. With fewer waits, the limit can go down.</li>
+    <li>Try it for two weeks and measure. On each card, note the day it started and the day it finished. After two weeks, compare how many got finished and how long each one took.</li>
+  </ol>
+  <p>The first step doesn’t need a meeting. You can count right now how many things you have started.</p>
+  <p class="cierre">A sustainable limit, not one thing at a time.</p>
+  <p class="juega">Play at <a class="sitio" href="https://mosca.deliverycraft.ai/en/">mosca.deliverycraft.ai</a>. You’ll also find there, for free, the WIP limit guide, the report to share and the workshop kit (the kit is in Spanish for now).</p>
+  <p class="chico">You can share this summary as is, crediting the author. Brain data: Male&nbsp;CNS&nbsp;v1.0, CC&nbsp;BY&nbsp;4.0 (male-cns.janelia.org).</p>
+  <div class="pie"><span><b>Mosca del WIP</b> · Summary</span><span></span></div>
+</section>
+
+<script>
+// Los mismos datos del informe para compartir (docs/corrida-oficial.json, 200 días por cada número, semilla 2024)
+const TERMINADAS = [15.9, 18.0, 16.9, 15.4, 14.0, 12.3, 11.2, 10.0, 9.1, 8.2];
+const dec = (x) => x.toFixed(1);
+const LINEA = '#e2ddd2', TENUE = '#8a93a0', SUAVE = '#556070', TINTA = '#1d2532';
+
+// El único gráfico: terminadas al día de 1 a 10. Verde el 2 y rojo el 9 (los colores del
+// informe); el resto gris. El verde y el rojo se confunden con daltonismo (deuteranopía),
+// así que cada uno lleva además su número y su rótulo escritos al lado, en tinta.
+(function () {
+  const W = 600, H = 230, iz = 26, de = 4, ar = 34, ab = 34, max = 20;
+  const bw = (W - iz - de) / 10;
+  const y = (v) => ar + (1 - v / max) * (H - ar - ab);
+  const base = H - ab;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Tasks finished per day by how many she has at once, from 1 to 10. With 2, 18.0. With 9, 9.1. In the simulation.">`;
+  s += `<text x="0" y="14" font-size="13" font-weight="600" fill="${TINTA}">Tasks finished per day</text>`;
+  for (const g of [5, 10, 15]) {
+    s += `<line x1="${iz}" x2="${W - de}" y1="${y(g).toFixed(1)}" y2="${y(g).toFixed(1)}" stroke="${LINEA}" stroke-width="0.8"/>`;
+    s += `<text x="${iz - 7}" y="${(y(g) + 4).toFixed(1)}" font-size="11" fill="${TENUE}" text-anchor="end">${g}</text>`;
+  }
+  TERMINADAS.forEach((v, i) => {
+    const marcado = i === 1 || i === 8;
+    const color = i === 1 ? '#4f9d6a' : i === 8 ? '#cc4a43' : '#d6d1c6';
+    const w = bw * 0.62, x = iz + i * bw + (bw - w) / 2, top = y(v), r = 3;
+    // barra con las esquinas de arriba redondeadas, apoyada en la base
+    s += `<path d="M${x.toFixed(1)},${base} V${(top + r).toFixed(1)} Q${x.toFixed(1)},${top.toFixed(1)} ${(x + r).toFixed(1)},${top.toFixed(1)} H${(x + w - r).toFixed(1)} Q${(x + w).toFixed(1)},${top.toFixed(1)} ${(x + w).toFixed(1)},${(top + r).toFixed(1)} V${base} Z" fill="${color}"/>`;
+    s += `<text x="${(x + w / 2).toFixed(1)}" y="${base + 16}" font-size="12" fill="${marcado ? TINTA : SUAVE}" font-weight="${marcado ? 700 : 400}" text-anchor="middle">${i + 1}</text>`;
+    if (marcado) {
+      s += `<text x="${(x + w / 2).toFixed(1)}" y="${(top - 17).toFixed(1)}" font-size="13" font-weight="700" fill="${TINTA}" text-anchor="middle">${dec(v)}</text>`;
+      s += `<text x="${(x + w / 2).toFixed(1)}" y="${(top - 5).toFixed(1)}" font-size="10" fill="${SUAVE}" text-anchor="middle">with ${i + 1}</text>`;
+    }
+  });
+  s += `<line x1="${iz}" x2="${W - de}" y1="${base}" y2="${base}" stroke="#c9c2b4" stroke-width="1"/>`;
+  s += `<text x="${(iz + W - de) / 2}" y="${H - 1}" font-size="11" fill="${TENUE}" text-anchor="middle">Tasks at once</text>`;
+  document.getElementById('g-terminadas').innerHTML = s + '</svg>';
+})();
+
+// Números de página: las cuatro hojas, de 1/4 a 4/4
+(function () {
+  const hojas = [...document.querySelectorAll('.hoja')];
+  hojas.forEach((h, i) => { const n = h.querySelector('.pie span:last-child'); if (n) n.textContent = `${i + 1} / ${hojas.length}`; });
+})();
+
+// Ningún número suelto al final de una línea: cada número se pega con un espacio duro a
+// la palabra de antes y a la de después (también el signo de porcentaje)
+(function () {
+  const andar = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  const nodos = [];
+  while (andar.nextNode()) if (!andar.currentNode.parentElement.closest('svg, script, style, .pie')) nodos.push(andar.currentNode);
+  const DURO = String.fromCharCode(160); // el espacio duro
+  const despues = new RegExp('(\\d[\\d.,:]*(?:' + DURO + '?%)?) (?=\\S)', 'g');
+  for (const n of nodos) {
+    n.textContent = n.textContent.replace(/(\S) (?=\d)/g, '$1' + DURO).replace(despues, '$1' + DURO);
+  }
+})();
+</script>
+</body>
+</html>

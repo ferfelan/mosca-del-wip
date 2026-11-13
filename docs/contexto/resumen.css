@@ -1,0 +1,352 @@
+/* Resumen ejecutivo v3 (Etapa 8.11, 2026-11-12, pedido de Felipe: "rehacer el
+   resumen pero que sea aparte, una especie de resumen ejecutivo", con la
+   identidad de "Lo que se lleva tu equipo" y de "¿Qué ganó la mosca al limitar
+   su WIP?" de la portada). Es "el sitio en papel": hoja blanca, la letra del
+   sitio (Mona Sans, public/fonts/) y, sobre el blanco, los dos tableros de
+   noche tal como se ven en la portada de fondo negro. Lo usan resumen.html y
+   resumen-en.html. No usa estilo.css, que es el del informe.
+
+   Los tableros salen de index.html y de src/portada.css (.gana-tablero,
+   .sirve-tablero, .prueba, .carril, .fichas, .avance, .cara, .asomada,
+   .lleva-tablero, .dibujo-*), pasados a papel:
+   · las medidas van en milímetros y la letra en puntos (la geometría queda a
+     unos dos tercios de la del sitio y la letra chica, un poco más grande en
+     proporción, para que se lea impresa);
+   · nada se mueve (sin transiciones) y nada brilla (sin sombras difusas, que
+     en un PDF se vuelven una imagen);
+   · los colores translúcidos del sitio van ya mezclados con su fondo de noche
+     (sobre una hoja blanca se verían claros), y así el PDF no lleva
+     transparencias:
+       --filete   = rgba(170,190,255,.26) sobre #060a16   (el --borde-fuerte)
+       --borde-n  = rgba(150,175,255,.12) sobre #060a16   (el --borde)
+       los fondos de la cara, del avatar y de las columnas = el color al 13,
+       15 o 20 % sobre #060a16 (los "color-mix(… transparent)" del sitio);
+   · las fichas que faltan llevan el rojo al 70 % (en el sitio, 55 %) y las
+     tarjetas grises de las columnas van un poco más claras, para que se
+     distingan del fondo también en una impresión en blanco y negro (3 a 1). */
+@font-face {
+  font-family: 'Mona Sans';
+  src: url('../../public/fonts/mona-sans-latin-wdth.woff2') format('woff2-variations'),
+    url('../../public/fonts/mona-sans-latin-wdth.woff2') format('woff2');
+  font-weight: 200 900;
+  font-stretch: 75% 125%;
+  font-style: normal;
+  font-display: block;
+}
+
+:root {
+  /* La hoja: los colores del sitio con fondo blanco */
+  --tinta: #0b1124;
+  --texto: #2a3145;
+  --suave: #3b4459;
+  --tenue: #5d667c;
+  --linea: #d3d8e4;
+  /* Los tableros: los colores de noche del sitio */
+  --noche: #060a16;
+  --noche-2: #0b1124;
+  --filete: #313953;
+  --borde-n: #171e32;
+  --tinta-n: #eef1f8;
+  --suave-n: #a9b1c4;
+  --tenue-n: #8d96ab;
+  --tranquila: #5cc483;
+  --ocupada: #e3b341;
+  --colapsada: #f0675c;
+  --vision: #2fe3ff;
+  --fuente: 'Mona Sans', 'Avenir Next', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+@page { size: A4; margin: 0; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body {
+  margin: 0;
+  background: #fff;
+  color: var(--texto);
+  font-family: var(--fuente);
+  font-size: 9.6pt;
+  line-height: 1.46;
+  font-kerning: normal;
+  -webkit-font-smoothing: antialiased;
+}
+p, h1, h2, h3, ul, ol, figure { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+
+/* ---------- La hoja ---------- */
+.hoja {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 210mm;
+  height: 297mm;
+  padding: 13mm 15mm 18mm;
+  overflow: hidden;
+  background: #fff;
+  break-after: page;
+}
+.hoja > * { flex: none; }
+.pie {
+  position: absolute;
+  left: 15mm;
+  right: 15mm;
+  bottom: 8.6mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 7.8pt;
+  line-height: 1.2;
+  color: var(--tenue);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Arriba: la barra del sitio (el logo y el nombre) y qué es esto ---------- */
+.barra { display: flex; align-items: center; justify-content: space-between; margin-bottom: 7.6mm; }
+.logo { display: flex; align-items: center; gap: 2.2mm; }
+.logo svg { display: block; width: 8.8mm; height: 8.8mm; }
+.logo-nombre { font-size: 11.8pt; font-weight: 720; font-stretch: 108%; letter-spacing: -0.015em; line-height: 1; color: var(--tinta); white-space: nowrap; }
+.rotulo { text-align: right; }
+.rotulo b { display: block; font-size: 10.4pt; font-weight: 680; line-height: 1.2; letter-spacing: -0.006em; color: var(--tinta); }
+.rotulo span { display: block; margin-top: 0.5mm; font-size: 7.8pt; line-height: 1.2; color: var(--tenue); }
+
+/* ---------- El título y la entrada ---------- */
+h1 {
+  margin-bottom: 4.8mm;
+  font-size: 30pt;
+  font-weight: 800;
+  font-stretch: 105%;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  color: var(--tinta);
+}
+.entrada { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 8mm; margin-bottom: 8mm; }
+.entrada p { font-size: 10.1pt; line-height: 1.5; text-wrap: pretty; }
+
+h2 {
+  margin-bottom: 1.6mm;
+  font-size: 15.5pt;
+  font-weight: 760;
+  font-stretch: 106%;
+  line-height: 1.12;
+  letter-spacing: -0.024em;
+  color: var(--tinta);
+  text-wrap: balance;
+}
+.bajada { margin-bottom: 4.6mm; font-size: 9.6pt; line-height: 1.45; color: var(--suave); text-wrap: pretty; }
+/* Antes del primer tablero: cada frase en su línea, y la esquina de la derecha
+   queda libre, que ahí se asoma la mosca */
+.sirve-bajada { max-width: calc(100% - 40mm); }
+.sirve-aviso { display: block; }
+.nota { font-size: 8.2pt; line-height: 1.4; color: var(--tenue); }
+.sirve-origen { margin-top: 2.4mm; }
+.bloque { margin-bottom: 7.6mm; }
+.bloque:last-of-type { margin-bottom: 0; }
+
+/* ---------- El tablero: un solo tablero de noche, con filetes entre las celdas ---------- */
+.tablero-marco { position: relative; }
+.gana-tablero {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.25mm;
+  background: var(--filete);
+  border: 0.25mm solid var(--filete);
+  border-radius: 4mm;
+  overflow: hidden;
+  color: var(--tinta-n);
+}
+.gana-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 3.2mm;
+  padding: 4.2mm;
+  background: var(--noche-2);
+}
+[data-color='tranquila'] { --acento: var(--tranquila); }
+[data-color='colapsada'] { --acento: var(--colapsada); }
+[data-color='ocupada'] { --acento: var(--ocupada); }
+[data-color='vision'] { --acento: var(--vision); }
+
+/* "¿Qué ganó la mosca al limitar su WIP?": en cada celda, la línea en grande y,
+   abajo, la prueba de la mosca dibujada en un recuadro de noche: un día con 2
+   tareas a la vez (el verde de Tranquila) y otro con 9 (el rojo de Colapsada).
+   Los números van escritos al lado de cada dibujo: el color nunca es lo único
+   que lo dice. Las tres celdas comparten filas, las líneas arriba y las
+   pruebas abajo, todas del mismo alto */
+.sirve-tablero { grid-template-rows: auto 1fr; }
+/* (la columna de cada celda ocupa todo el ancho: sin esto, el "space-between"
+   de .gana-item la dejaba del ancho de su texto más largo) */
+.sirve-tablero .gana-item { display: grid; grid-row: span 2; grid-template-rows: subgrid; grid-template-columns: minmax(0, 1fr); justify-content: normal; row-gap: 3.2mm; }
+.sirve-tablero .gana-item h3 {
+  font-size: 12pt;
+  font-weight: 760;
+  line-height: 1.18;
+  letter-spacing: -0.018em;
+  color: var(--tinta-n);
+  text-wrap: balance;
+}
+/* (en papel los dos días de cada prueba miden lo mismo, y así la línea que los
+   separa queda a la misma altura en las tres celdas) */
+.prueba {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  row-gap: 4.2mm;
+  padding: 2.5mm 2.8mm 2.6mm;
+  border-radius: 2.7mm;
+  border: 0.2mm solid var(--borde-n);
+  background: var(--noche);
+}
+.carril { position: relative; min-width: 0; --caso: var(--tranquila); --caso-fondo: #132626; }
+.carril[data-caso='muchas'] { --caso: var(--colapsada); --caso-fondo: #291821; }
+.carril + .carril::before { content: ''; position: absolute; left: 0; right: 0; top: -2.2mm; border-top: 0.2mm dashed var(--filete); }
+.carril-caso {
+  display: flex;
+  align-items: center;
+  gap: 1.3mm;
+  font-size: 7.5pt;
+  font-weight: 650;
+  line-height: 1.2;
+  color: var(--caso);
+}
+.carril-caso::before { content: ''; flex: none; width: 1.4mm; height: 1.4mm; border-radius: 50%; background: currentColor; }
+.carril-dato { font-size: 8.3pt; line-height: 1.36; color: var(--suave-n); text-wrap: balance; }
+.carril-dato b { color: var(--tinta-n); font-weight: 720; }
+/* Las fichas terminadas: 18 lugares, uno por tarea. Con 9 a la vez, la mitad
+   queda vacía */
+.fichas { display: grid; grid-template-columns: repeat(18, minmax(0, 1fr)); gap: 0.5mm; margin: 1.5mm 0 1.4mm; }
+.fichas i { display: block; height: 3mm; border-radius: 0.5mm; background: var(--caso); }
+.fichas i.falta { background: transparent; border: 0.2mm dashed #aa4b47; }
+/* Cuánto avanza cada tarea: lo lleno es el tiempo en que avanza y lo rayado,
+   el que espera; a la derecha, el número */
+.avance { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 1.7mm; margin: 1.5mm 0 1.4mm; }
+.avance-riel {
+  position: relative;
+  height: 3mm;
+  border-radius: 1.5mm;
+  overflow: hidden;
+  border: 0.2mm solid var(--borde-n);
+  background: repeating-linear-gradient(-45deg, var(--filete) 0 0.34mm, var(--noche) 0.34mm 1.2mm);
+}
+.avance-riel::after { content: ''; position: absolute; inset: -0.2mm auto -0.2mm -0.2mm; width: var(--avanza); border-radius: 1.5mm; background: var(--caso); }
+.avance-cifra { min-width: 2.9em; text-align: right; font-size: 8.8pt; font-weight: 760; line-height: 1; font-variant-numeric: tabular-nums; color: var(--caso); }
+/* Cómo cierra el día: la cara de la mosca (la del logo), con su café o con su
+   cigarro, y al lado el dato. En papel la celda es más angosta que en el
+   sitio, así que el caso va arriba, en su línea, igual que en las otras dos */
+.carril-cara { display: grid; grid-template-columns: auto minmax(0, 1fr); align-content: start; align-items: center; column-gap: 2.5mm; row-gap: 1.5mm; }
+.carril-cara .carril-caso { grid-column: 1 / -1; grid-row: 1; }
+.cara { grid-column: 1; grid-row: 2; display: block; width: 13.6mm; height: auto; padding: 0.8mm 0.6mm; border-radius: 2.3mm; background: var(--caso-fondo); }
+.carril-cara .carril-dato { grid-column: 2; grid-row: 2; }
+.cara-humo { stroke: var(--suave-n); opacity: 0.8; fill: none; }
+.cara-sudor { fill: #8fd3ff; }
+
+/* La mosca del logo, asomada al borde de arriba del tablero: la cabeza detrás
+   (en su ventana, que la corta justo en el borde) y las patas encima */
+.asomada { position: absolute; right: 12mm; width: 17mm; }
+.asomada-ventana { bottom: calc(100% - 0.25mm); height: 8.9mm; overflow: hidden; z-index: 0; }
+.asomada-cabeza { display: block; width: 100%; height: auto; }
+.asomada-patas { top: -0.98mm; height: auto; z-index: 2; }
+
+/* "Lo que se lleva tu equipo": las cuatro frases en el mismo tablero, cada una
+   con un dibujo de lo que queda en el tablero del equipo, en un recuadro de
+   noche y con un color del juego */
+.lleva-tablero { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.gana-item .lleva-frase {
+  font-size: 9.6pt;
+  font-weight: 650;
+  line-height: 1.28;
+  letter-spacing: -0.008em;
+  color: var(--tinta-n);
+  text-wrap: balance;
+}
+.dibujo {
+  height: 20.6mm;
+  padding: 2.3mm;
+  border-radius: 2.7mm;
+  border: 0.2mm solid var(--borde-n);
+  background: var(--noche);
+  color: var(--acento);
+}
+.dibujo i { display: block; }
+/* Su carga a la vista: cada persona con las cosas que tiene empezadas */
+.dibujo-carga { display: flex; flex-direction: column; justify-content: center; gap: 1.5mm; }
+.persona { display: grid; grid-template-columns: 4.2mm minmax(0, 1fr) auto; align-items: center; gap: 1.6mm; }
+.avatar { display: block; width: 4.2mm; height: 4.2mm; }
+.cosas { display: flex; gap: 0.5mm; min-width: 0; }
+.cosas i { flex: 0 1 2.9mm; min-width: 1.1mm; height: 2.3mm; border-radius: 0.5mm; background: var(--acento); }
+.persona b { font-size: 8.2pt; font-weight: 720; line-height: 1; font-variant-numeric: tabular-nums; color: var(--tinta-n); }
+/* Dónde espera el trabajo: tres columnas, y la del medio, con candado, llena */
+.dibujo-espera { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.4mm; }
+.columna-mini { display: flex; flex-direction: column; gap: 0.7mm; padding: 1.2mm; border-radius: 1.7mm; border: 0.25mm solid #141824; background: #141824; }
+.columna-mini i { height: 1.8mm; border-radius: 0.5mm; background: #626670; }
+.columna-mini.espera { border-color: #a94b47; background: #24161f; }
+.columna-mini.limite { border-color: #a08034; background: #23201c; }
+.columna-mini.espera i,
+.columna-mini.limite i { background: var(--acento); }
+.candado { display: block; width: 3mm; height: 3mm; align-self: center; margin-bottom: 0.1mm; }
+/* El límite acordado: escrito arriba de la columna, que está llena; lo demás
+   espera afuera. El nombre de la columna y el límite tienen que caber enteros
+   dentro de la columna también en inglés ("In progress" es más largo que "En
+   curso"): por eso van en la letra angosta de Mona Sans (su eje de ancho) y
+   lo que espera afuera ocupa menos (15 %; en el sitio, 20 %). Si cambia un
+   texto, medirlo en los dos idiomas */
+.dibujo-limite { display: flex; align-items: stretch; gap: 1.6mm; }
+.dibujo-limite .columna-mini.limite { flex: 1 1 auto; min-width: 0; gap: 0.9mm; padding: 1.3mm 1.4mm; }
+.columna-mini-cabeza {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8mm;
+  margin-bottom: 0.3mm;
+  font-size: 6.5pt;
+  font-weight: 650;
+  font-stretch: 92%;
+  line-height: 1.2;
+  color: var(--suave-n);
+  white-space: nowrap;
+}
+.columna-mini-cabeza b { flex: none; padding: 0.3mm 1.1mm; border-radius: 3mm; background: var(--acento); color: var(--noche); font-size: 6.3pt; font-weight: 720; }
+.dibujo-limite .columna-mini.limite i { height: 2.4mm; }
+.en-fila { flex: 0 0 15%; display: flex; flex-direction: column; justify-content: flex-end; gap: 0.9mm; padding-bottom: 1.5mm; }
+.en-fila i { height: 2.4mm; border-radius: 0.5mm; border: 0.25mm dashed #5e626c; }
+/* Sus propios datos: dos semanas, un día por barra. Las barras no suben ni
+   bajan de una semana a la otra: no se promete un resultado */
+.dibujo-datos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.4mm; }
+.semana { display: flex; flex-direction: column; gap: 1mm; min-height: 0; }
+.barras { flex: 1 1 auto; display: flex; align-items: flex-end; gap: 0.7mm; min-height: 0; border-bottom: 0.25mm solid var(--filete); }
+.barras i { flex: 1 1 0; height: var(--h); border-radius: 0.5mm 0.5mm 0 0; background: var(--acento); }
+.semana-nombre { font-size: 6.6pt; line-height: 1; text-align: center; color: var(--tenue-n); }
+
+/* ---------- Lo que encontramos: tres hallazgos, cada uno bajo una celda del tablero ---------- */
+/* (los tres comparten filas: los títulos arriba, de dos líneas, y los textos parten a la misma altura) */
+.hallazgos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: auto auto; column-gap: 0.25mm; margin-top: 3mm; }
+.hallazgos li { display: grid; grid-row: span 2; grid-template-rows: subgrid; row-gap: 1.3mm; padding-right: 6.4mm; }
+.hallazgos li:last-child { padding-right: 2mm; }
+.hallazgos h3 { max-width: 43mm; font-size: 10.6pt; font-weight: 720; line-height: 1.22; letter-spacing: -0.012em; color: var(--tinta); text-wrap: balance; }
+.hallazgos p { font-size: 9.4pt; line-height: 1.44; text-wrap: pretty; }
+.puente { margin-top: 5mm; padding-top: 3.4mm; border-top: 0.25mm solid var(--linea); font-size: 10.1pt; line-height: 1.45; color: var(--tinta); text-wrap: pretty; }
+
+/* ---------- La segunda hoja ---------- */
+/* Los estudios y los cuidados, lado a lado */
+.dos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 8mm; }
+.dos h2 { margin-bottom: 2.4mm; }
+.dos p { text-wrap: pretty; }
+/* Los cuatro pasos: son una secuencia, y por eso van numerados */
+.pasos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 8mm; row-gap: 3.8mm; }
+.pasos li { display: grid; grid-template-columns: 5.6mm minmax(0, 1fr); column-gap: 1.6mm; align-items: start; }
+.pasos .n { font-size: 15.5pt; font-weight: 760; font-stretch: 106%; line-height: 0.92; letter-spacing: -0.02em; color: var(--tinta); font-variant-numeric: lining-nums; }
+.pasos h3 { margin-bottom: 0.9mm; font-size: 10.4pt; font-weight: 720; line-height: 1.24; letter-spacing: -0.012em; color: var(--tinta); text-wrap: balance; }
+.pasos p { font-size: 9.4pt; line-height: 1.44; text-wrap: pretty; }
+/* El cierre: la frase del proyecto, dónde está todo y los créditos */
+.cierre { margin-top: 6mm; padding-top: 4.4mm; border-top: 0.25mm solid var(--linea); }
+.norte { margin-bottom: 2mm; font-size: 17pt; font-weight: 780; font-stretch: 106%; line-height: 1.1; letter-spacing: -0.026em; color: var(--tinta); }
+.donde { font-size: 10.1pt; line-height: 1.45; color: var(--texto); }
+.donde a { color: var(--tinta); font-weight: 680; text-decoration: underline; text-decoration-thickness: 0.25mm; text-underline-offset: 0.7mm; }
+.chico { margin-top: 1.8mm; font-size: 8pt; line-height: 1.4; color: var(--tenue); }
+
+/* En la pantalla (al abrir el HTML para revisarlo): las hojas sobre gris */
+@media screen {
+  body { background: #e6e9f0; }
+  .hoja { margin: 8mm auto; box-shadow: 0 2mm 8mm rgba(11, 17, 36, 0.18); }
+}

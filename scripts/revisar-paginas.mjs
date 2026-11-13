@@ -37,11 +37,26 @@ const doc = process.argv[2] ?? 'compartir';
 // del gráfico), un solo gráfico en todo el documento, numeración pareja (1/4 a 4/4), ningún número
 // suelto al final de una línea, y nada de rótulos en mayúsculas, cajas de color, números gigantes,
 // íconos ni "en cuatro ideas"
+// 8.11 (2026-11-12): el informe para compartir vuelve a ser "el extenso" (el texto del v22 más la página
+// de las urgencias), así que se mide otra vez con las reglas con que se midió el v22: hasta 200 palabras
+// por página sin contar el rótulo, el título ni los visuales (las tablas sueltas, las referencias y el
+// Dato freak sí cuentan, como entonces). La regla de las 140 palabras era del recorte de la 8.4 y ya no
+// rige. Lo demás no cambia: llenado de 80 a 95 %, título de máximo 2 líneas, ninguna raya ni negrita en
+// el texto corrido, y los anexos solo informan. (El punto y coma lo revisa scripts/revisar-coherencia.mjs:
+// cero en todo lo público.)
+// 8.11 (2026-11-12): el resumen es ahora el resumen ejecutivo (v3), aparte del informe: 2 hojas con la
+// identidad de la portada del sitio. Sus reglas: cada hoja llena entre 80 y 95 %, entre 380 y 460 palabras
+// (todo el texto de la hoja, los tableros incluidos, menos el pie), un tablero de la portada por hoja
+// (.gana-tablero) y, fuera de los tableros y del logo, ningún fondo de color ni dibujo, la letra Mona Sans
+// cargada, numeración 1 / 2 y 2 / 2, ningún número suelto al final de una línea (los dibujos no cuentan) y
+// cero punto y coma, signos de exclamación, rayas y dos puntos que no sean de hora. Siguen fuera los rótulos
+// en mayúsculas, los bordes gruesos, los números gigantes y "en cuatro ideas". Ya no se piden una sola
+// columna ni un solo gráfico (eran del v2).
 const RESUMEN = doc.startsWith('resumen');
 const REGLAS = RESUMEN
-  ? { llenado: [70, 97], palabras: 350, minimo: 250, visuales: 1, lineasTitulo: 2, frase: 99, v7: true, voz: true, sobremesa: false, resumen: true }
+  ? { llenado: [80, 95], palabras: 460, minimo: 380, visuales: 1, lineasTitulo: 2, frase: 99, v7: true, voz: true, sobremesa: false, resumen: true }
   : doc.startsWith('compartir') // también compartir-en, el mismo informe en inglés (2026-10-25)
-    ? { llenado: [80, 95], palabras: 140, visuales: 1, lineasTitulo: 2, frase: 99, v7: true, voz: true }
+    ? { llenado: [80, 95], palabras: 200, visuales: 1, lineasTitulo: 2, frase: 99, v7: true, voz: true, extenso: true } // 8.11: las reglas del v22 (ver arriba)
     : { llenado: [80, 95], palabras: 190, visuales: 2, lineasTitulo: 99, frase: 99, v7: false };
 const b = await chromium.launch();
 const p = await b.newPage();
@@ -74,7 +89,8 @@ const filas = await p.evaluate((R) => [...document.querySelectorAll('.hoja')].ma
   } else if (R.v7) {
     const c2 = clon.cloneNode(true);
     // 8.4: fuera también los rótulos (.etiqueta), las tablas, las referencias (.cita, .de, .de-donde, el anexo C y los créditos) y el Dato freak
-    c2.querySelectorAll('.kicker, h1, .etiqueta, .visual, table, .cita, .de, .de-donde, .fuentes-simples, .creditos, .sobremesa').forEach((el) => el.remove());
+    // 8.11: el informe para compartir se cuenta de nuevo como en el v22 (sin rótulo, título ni visuales, nada más)
+    c2.querySelectorAll(R.extenso ? '.kicker, h1, .visual' : '.kicker, h1, .etiqueta, .visual, table, .cita, .de, .de-donde, .fuentes-simples, .creditos, .sobremesa').forEach((el) => el.remove());
     palabras = cuenta(c2.innerText);
   } else {
     palabras = [...clon.querySelectorAll('p, li, h3')].filter((el) => !el.closest('figure, table, .chico, .no, .escala, .creditos, .fuentes-simples') && !el.classList.contains('chico') && !el.querySelector('p, li')).reduce((n, el) => n + cuenta(el.innerText), 0);
@@ -99,26 +115,33 @@ const filas = await p.evaluate((R) => [...document.querySelectorAll('.hoja')].ma
   const rayas = (texto.match(/—/g) ?? []).length;
   const dosPuntos = (texto.match(/(?<!\d):(?!\d)/g) ?? []).length;
   const preguntas = (texto.match(/¿/g) ?? []).length;
-  const negritas = [...clon.querySelectorAll('p strong, p b')].filter((el) => !el.closest('.visual, .limites, .fuentes-simples, .creditos, .cierre-pagina, .recuadro, .chico, .sobremesa, figure')).length;
+  const negritas = [...clon.querySelectorAll('p strong, p b')].filter((el) => !el.closest('.visual, .limites, .fuentes-simples, .creditos, .cierre-pagina, .recuadro, .chico, .sobremesa, figure') && !(R.resumen && el.closest('.gana-tablero, .barra'))).length; // 8.11: en el resumen no cuentan las de los tableros ni el rótulo de arriba
   const graficos = h.querySelectorAll('.grafico svg, figure img, img.banda').length;
   // 8.7: lo que el resumen no lleva y los números sueltos al final de una línea
+  // 8.11: el resumen ejecutivo (v3) lleva los dos tableros de la portada. Dentro de ellos (y en la mosca que
+  // se asoma) sí van fondos de noche y dibujos; fuera, solo el logo. Ya no se revisan las columnas (ahora las
+  // tiene) y se suman el tablero por hoja, la letra Mona Sans y las rayas cortas
   const resumen = [];
   if (R.resumen) {
     const numeroSolo = /^[(¿]?\d[\d.,:]*%?[).,:?]*$/;
-    const numeroSigue = /^[(¿]?\d[\d.,:]*%?$/;
+    const numeroSigue = /^[(¿]?\d+(?:[.,:]\d+)*%?$/; // 8.11: el número que cierra una frase («con 2.») puede quedar al final de la línea
     for (const el of h.querySelectorAll('*')) {
-      if (el.closest('.pie, svg, script, style')) continue;
+      if (el.closest('.pie, script, style')) continue;
+      const enTablero = !!el.closest('.gana-tablero, .tablero-marco');
+      if ((el.tagName === 'svg' || el.tagName === 'IMG') && !enTablero && !el.closest('.logo')) resumen.push(`imagen o dibujo fuera de los tableros (${el.getAttribute('src') ?? el.getAttribute('class') ?? 'svg'})`);
+      if (el.closest('svg')) continue;
       const cs = getComputedStyle(el);
       const conTexto = [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim());
       if (conTexto && (cs.textTransform === 'uppercase' || parseFloat(cs.letterSpacing) > 0.06 * parseFloat(cs.fontSize))) resumen.push(`rótulo en mayúsculas o espaciado («${el.textContent.trim().slice(0, 30)}»)`);
       const fondo = cs.backgroundColor;
-      if (!/rgba\(0, 0, 0, 0\)|transparent|rgb\(255, 255, 255\)/.test(fondo)) resumen.push(`caja con fondo de color (${el.tagName.toLowerCase()}.${el.className})`);
+      if (!enTablero && !/rgba\(0, 0, 0, 0\)|transparent|rgb\(255, 255, 255\)/.test(fondo)) resumen.push(`caja con fondo de color fuera de los tableros (${el.tagName.toLowerCase()}.${el.className})`);
       if (['Left', 'Right', 'Top', 'Bottom'].some((l) => parseFloat(cs[`border${l}Width`]) > 1.5)) resumen.push(`caja con borde grueso (${el.tagName.toLowerCase()}.${el.className})`);
       if (conTexto && el.tagName !== 'H1' && /\d/.test(el.textContent) && parseFloat(cs.fontSize) > 24 * 1.333) resumen.push(`número gigante («${el.textContent.trim().slice(0, 20)}»)`);
-      if (el.tagName === 'IMG' && !el.closest('.torre')) resumen.push(`imagen o ícono (${el.getAttribute('src')})`);
-      if (el.tagName === 'svg' && !el.closest('.grafico')) resumen.push('ícono');
-      if (parseFloat(cs.columnCount) > 1 || (cs.display === 'grid' && cs.gridTemplateColumns.split(' ').length > 1)) resumen.push(`columnas (${el.tagName.toLowerCase()}.${el.className})`);
     }
+    const tableros = h.querySelectorAll('.gana-tablero').length;
+    if (tableros !== 1) resumen.push(`${tableros} tableros de la portada (debe ser uno por hoja)`);
+    if (i === 0 && !document.fonts.check('10pt "Mona Sans"')) resumen.push('la letra Mona Sans no cargó');
+    if (/–/.test(h.innerText)) resumen.push('raya corta (–)');
     if (/en cuatro ideas|in four ideas/i.test(h.innerText)) resumen.push('"en cuatro ideas"');
     // número suelto: la última palabra de una línea es un número, o una línea es solo un número
     for (const el of h.querySelectorAll('p, li, figcaption, h1, h2')) {
@@ -127,6 +150,7 @@ const filas = await p.evaluate((R) => [...document.querySelectorAll('.hoja')].ma
       const andar = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
       while (andar.nextNode()) {
         const nodo = andar.currentNode;
+        if (nodo.parentElement.closest('[aria-hidden="true"]')) continue; // 8.11: los dibujos y el número de cada paso no son texto corrido
         for (const m of nodo.textContent.matchAll(/[^\s\u00a0]+/g)) {
           const r = document.createRange();
           r.setStart(nodo, m.index);
@@ -171,10 +195,7 @@ const filas = await p.evaluate((R) => [...document.querySelectorAll('.hoja')].ma
     charts: h.querySelectorAll('.grafico svg').length,
   };
 }), REGLAS);
-if (REGLAS.resumen) {
-  const charts = filas.reduce((n, f) => n + f.charts, 0);
-  if (charts !== 1) console.log(`  ← el resumen lleva ${charts} gráficos (debe ser uno solo)`);
-}
+if (REGLAS.resumen && filas.length !== 2) console.log(`  ← el resumen ejecutivo tiene ${filas.length} hojas (deben ser 2)`); // 8.11: antes se pedía un solo gráfico en las 4 hojas del v2
 for (const f of filas) {
   const avisos = [];
   const mide = REGLAS.v7 ? f.tipo === 'contenido' : true;
@@ -184,13 +205,14 @@ for (const f of filas) {
   if (mide && f.palabras > REGLAS.palabras) avisos.push(`más de ${REGLAS.palabras} palabras`);
   if (mide && REGLAS.minimo && f.palabras < REGLAS.minimo) avisos.push(`menos de ${REGLAS.minimo} palabras`);
   if (REGLAS.resumen) avisos.push(...new Set(f.resumen));
+  if (REGLAS.resumen && f.dosPuntos) avisos.push(`${f.dosPuntos} dos puntos`); // 8.11: el resumen ejecutivo no lleva dos puntos (los de la hora no se cuentan)
   if (mide && f.graficos > REGLAS.visuales && !/dos veces|dos fotos/i.test(f.titulo + ' ' + (f.kicker ?? '')) && f.graficos > 2) avisos.push('más de un visual');
   if (mide && f.lineasTitulo > REGLAS.lineasTitulo) avisos.push('título de 3 líneas');
   if (mide && f.largas.length) avisos.push(`${f.largas.length} frase(s) de más de ${REGLAS.frase} palabras`);
   if (mide && REGLAS.v7 && f.exclamaciones) avisos.push(`${f.exclamaciones} signo(s) de exclamación`);
   if (mide && REGLAS.v7 && REGLAS.sobremesa !== false && !f.deSobremesa) avisos.push('sin línea de sobremesa');
   if (REGLAS.voz && f.tipo !== 'portada' && f.tipo !== 'separador' && f.tipo !== 'cierre') {
-    if (f.puntoComa > 1) avisos.push(`${f.puntoComa} punto y coma`);
+    if (f.puntoComa > (REGLAS.resumen ? 0 : 1)) avisos.push(`${f.puntoComa} punto y coma`); // 8.11: en el resumen ejecutivo, ninguno
     if (f.rayas) avisos.push(`${f.rayas} raya(s)`);
     if (f.negritas) avisos.push(`${f.negritas} negrita(s) en el texto`);
   }

@@ -9,6 +9,8 @@
 //     entero o, si no cabe (desde la 5.2g, por ejemplo en 320×568), el de la
 //     barra,
 //   - el cerebro se encienda y no haya errores,
+//   - al bajar por la página, cada dibujo se cargue (8.11: las fichas, las
+//     barras, los números que cuentan) y ninguno quede a medio camino,
 //   - en inglés no quede ningún texto en español (salvo nombres propios),
 //   - las respuestas de las preguntas frecuentes (se revisan abiertas) y,
 //     bajo 1100 px, el menú de la barra abierto (parte 5.2f) cumplan lo mismo,
@@ -190,6 +192,23 @@ for (const [fondo, idioma] of COMBINACIONES) for (const [nombreTamano, ancho, al
   await pagina.waitForTimeout(4800); // la consola sube sola hasta 10 (la palabra más larga: "Colapsada")
   await pagina.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
   await pagina.screenshot({ path: join(CARPETA, `${nombre}-pantalla.png`) });
+  // (8.11) Como una persona: baja de a poco por toda la página, para que cada
+  // dibujo se cargue la primera vez que se ve, y espera a que terminen. Así
+  // la medición y la foto de la página completa son las de la página ya
+  // cargada, que es como queda al leerla
+  const altoPagina = await pagina.evaluate(() => document.documentElement.scrollHeight);
+  for (let y = 0; y < altoPagina; y += Math.round(alto * 0.5)) {
+    await pagina.evaluate((yy) => window.scrollTo({ top: yy, behavior: 'instant' }), y);
+    await pagina.waitForTimeout(140);
+  }
+  await pagina.waitForFunction(() => !document.querySelector('[data-carga]:not(.cargado), [data-ahora]'), null, { timeout: 8000 }).catch(() => {});
+  await pagina.waitForTimeout(700); // lo último que entró termina de dibujarse
+  const cargas = await pagina.evaluate(() => ({
+    partieron: document.documentElement.classList.contains('con-carga'),
+    sinCargar: [...document.querySelectorAll('[data-carga]:not(.cargado)')].map((el) => el.className || el.tagName.toLowerCase()),
+    contando: [...document.querySelectorAll('[data-ahora]')].map((el) => `${el.textContent} (iba en ${el.dataset.ahora})`),
+  }));
+  await pagina.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
   // Las preguntas frecuentes, todas abiertas
   await pagina.evaluate(() => document.querySelectorAll('.pregunta').forEach((d) => (d.open = true)));
   await pagina.waitForTimeout(400);
@@ -205,6 +224,9 @@ for (const [fondo, idioma] of COMBINACIONES) for (const [nombreTamano, ancho, al
     await pagina.screenshot({ path: join(CARPETA, `${nombre}-menu.png`) });
     await pagina.keyboard.press('Escape');
   }
+  if (!cargas.partieron) problemas.push('las cargas no partieron (la página no tiene "con-carga")');
+  for (const c of cargas.sinCargar) problemas.push(`no se cargó al bajar por la página: «${c}»`);
+  for (const c of cargas.contando) problemas.push(`un número quedó a medio contar: ${c}`);
   problemas.push(...errores.map((e) => `error: ${e}`));
   total += problemas.length;
   console.log(`${problemas.length ? 'REVISAR' : 'ok     '} ${nombre}`);

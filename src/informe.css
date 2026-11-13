@@ -97,12 +97,19 @@
 .lectura .tabla-dia .nivel-t { color: var(--tranquila); font-weight: 600; }
 .lectura .tabla-dia .nivel-m { color: var(--ocupada); }
 .lectura .tabla-dia .nivel-k { color: var(--colapsada); font-weight: 600; }
-.lectura .visual { margin: 0 0 20px; }
+/* En el celular la tabla se desliza de lado dentro de su marco (.visual), igual que las de
+   .tabla-marco, y sigue siendo una sola tabla, para que cada encabezado quede sobre su columna.
+   (8.11, 2026-11-13: antes la tabla era un bloque, su encabezado y su cuerpo se medían por
+   separado y los títulos quedaban corridos hasta 180 px. Estaba así desde la Etapa 7.)
+   La nota de abajo no se va con la tabla al deslizar: se queda pegada a la izquierda. */
+.lectura .visual { margin: 0 0 20px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .lectura .visual > table { margin: 0 0 10px; }
 .lectura .visual > .chico { margin-top: 0; }
-.lectura .visual table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.lectura .visual table thead,
-.lectura .visual table tbody { display: table; width: 100%; }
+.lectura .visual > :not(table) { position: sticky; left: 0; }
+/* En el celular las columnas de números son angostas: sin este mínimo, un título como
+   "Rinden, de cada hora" se partía en cuatro líneas */
+.lectura .tabla-dia th,
+.lectura .tabla-urg th { min-width: 8.5ch; }
 
 /* ---------- Los gráficos (SVG del PDF, con los colores del sitio) ---------- */
 .lectura figure.grafico { overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -111,16 +118,11 @@
 .lectura figure.grafico svg { min-width: 720px; }
 .lectura figure.grafico > div { min-width: 720px; }
 
-/* ---------- Sección 1 (8.4): "Si solo lees una página", los dos gráficos chicos y las cuatro ideas ---------- */
-.lectura figure.grafico > .resumen-graficos { min-width: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 760px; }
-.lectura figure.grafico .resumen-graficos svg { min-width: 0; display: block; width: 100%; height: auto; }
-.ideas { list-style: none; padding: 0; margin: 8px 0 20px; border-top: 1px solid var(--borde-fuerte); max-width: 62ch; }
-.lectura .ideas li { display: grid; grid-template-columns: 40px 1fr; gap: 0 12px; align-items: baseline; padding: 14px 0; border-bottom: 1px solid var(--borde); margin: 0; }
-.ideas .n { font-size: 30px; line-height: 1; color: var(--inf-teal); font-weight: 760; font-variant-numeric: tabular-nums; }
-.lectura .ideas h3 { display: inline; margin: 0; font-size: 18px; color: var(--tinta); }
-.lectura .ideas p { display: inline; margin: 0; font-size: 16.5px; color: var(--suave); }
+/* (8.11, 2026-11-12: el informe ya no trae la página "Si solo lees una página";
+   sus estilos, los dos gráficos chicos y las cuatro ideas, se quitaron de aquí.
+   El resumen ejecutivo es un PDF aparte) */
 
-/* ---------- Sección 10 (8.4): la tabla de las urgencias ---------- */
+/* ---------- Sección 11 (era la 10 hasta la 8.11): la tabla de las urgencias ---------- */
 .lectura .tabla-urg td { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .lectura .tabla-urg td:first-child,
 .lectura .tabla-urg th:first-child { text-align: left; white-space: normal; }
@@ -215,5 +217,4 @@
   .marcador b { font-size: 20px; }
   .comparar { grid-template-columns: 1fr; }
   .dato-freak { grid-template-columns: 1fr; }
-  .lectura figure.grafico > .resumen-graficos { grid-template-columns: 1fr; max-width: 420px; }
 }

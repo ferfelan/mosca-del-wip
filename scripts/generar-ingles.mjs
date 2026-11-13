@@ -59,7 +59,7 @@ const RUTAS = {
   '/creditos/': '/creditos/?lang=en',
 };
 const INFORME_EN = { pdf: '/Mosca-del-WIP-Report.pdf', nombre: 'Mosca del WIP - Report.pdf', tapa: '/img/tapa-report.jpg' };
-const RESUMEN_EN = { pdf: '/Mosca-del-WIP-Summary.pdf', nombre: 'Mosca del WIP - Summary.pdf' }; // 8.6: el resumen de 4 páginas
+const RESUMEN_EN = { pdf: '/Mosca-del-WIP-Summary.pdf', nombre: 'Mosca del WIP - Summary.pdf' }; // 8.6: el resumen aparte (desde la 8.11, el resumen ejecutivo de 2 páginas)
 
 let html = readFileSync(ORIGEN, 'utf8');
 
@@ -188,7 +188,7 @@ enEtiquetas(/\sdata-informe(?=[\s/>])/, (etiqueta) => {
   return e;
 });
 enEtiquetas(/\sdata-tapa(?=[\s/>])/, (etiqueta) => ponerAtributo(etiqueta, 'src', INFORME_EN.tapa));
-// El resumen de 4 páginas en inglés (8.6)
+// El resumen en inglés (8.6: de 4 páginas. 8.11: el resumen ejecutivo, de 2)
 enEtiquetas(/\sdata-resumen-pdf(?=[\s/>])/, (etiqueta) => ponerAtributo(ponerAtributo(etiqueta, 'href', RESUMEN_EN.pdf), 'download', RESUMEN_EN.nombre));
 // ES | EN: marca EN
 enEtiquetas(/\sdata-idioma="es"/, (etiqueta) => quitarAtributo(etiqueta, 'aria-current'));

@@ -12,7 +12,7 @@ export const INGLES = {
   // siempre como título y una bajada que dice qué hacer, partiendo por el
   // juego. Desde la 8.8 (2026-11-09) vuelve arriba el rótulo con la frase del
   // problema, como en la 8.6, y el dato del juego es otro, más corto
-  // (el mismo título que la pág. 2 del informe en inglés; en computador corta
+  // (el mismo título que la pág. 1 del informe en inglés; en computador corta
   // después de "day.", como el español, y no después de "So"; "you finish?"
   // va junto para que "finish?" no quede sola en la tercera línea)
   rotulo: 'Being busy all the time isn’t the same as making progress',
@@ -25,7 +25,7 @@ export const INGLES = {
   verKit: 'See the kit',
   descargar: 'Download the report (PDF)',
   descargarCorto: 'Download the PDF',
-  descargarResumen: 'Four-page summary (PDF)', // 8.6: el resumen de 4 páginas
+  descargarResumen: 'Executive summary (PDF, 2 pages)', // 8.6: el resumen aparte; desde la 8.11 es el resumen ejecutivo, de 2 páginas
   leerInforme: 'Read the report on the web',
   gratis: 'Free, no sign-up. Plays on a computer, phone or tablet.',
   creadoPor: 'Created by <a href="https://www.linkedin.com/in/felipefernandezandrade/" target="_blank" rel="noopener">Felipe Fernández</a>', // 5.2i
@@ -49,8 +49,8 @@ export const INGLES = {
   hecho: 'In the game, with 2 tasks at once she finishes 18. With 9 tasks at once she finishes 9, half as many.',
   dosALaVez: '2 at once',
   nueveALaVez: '9 at once',
-  total18: '<span class="cifra">18</span> finished',
-  total9: '<span class="cifra">9</span> finished (half)', // 5.2i: las dos columnas dicen lo mismo
+  total18: '<span class="cifra" data-cuenta data-paso="60">18</span> finished',
+  total9: '<span class="cifra" data-cuenta data-paso="60">9</span> finished (half)', // 5.2i: las dos columnas dicen lo mismo
   hechoNota: 'Average of 200 days in the game.',
 
   // Cómo se juega
@@ -62,7 +62,8 @@ export const INGLES = {
   paso2Alt: 'The fly in front of her board for the day, with 2 tasks in progress, at 10:10.',
   paso3Alt: 'The Days played table, with one day at 2 tasks at once and another at 9.',
 
-  // Para qué sirve un límite y Lo que se lleva tu equipo (8.7, 2026-11-07;
+  // ¿Qué ganó la mosca al limitar su WIP? (hasta la 8.11, "Para qué sirve un
+  // límite") y Lo que se lleva tu equipo (8.7, 2026-11-07;
   // rediseñadas en la 8.8, 2026-11-09): tres líneas en grande, cada una con
   // la prueba de la mosca dibujada (un día con 2 a la vez y otro con 9), y
   // cuatro frases cortas, cada una con un dibujo del tablero del equipo.
@@ -71,25 +72,26 @@ export const INGLES = {
   // ("She finishes more, and each task is done sooner": con "is done" queda
   // en dos líneas en el computador, como la de antes, "You finish more, and
   // each thing gets done sooner"; con "gets done" se iba a tres)
-  sirveTitulo: 'What a limit is for',
-  sirveBajada: 'In the game, by limiting how many tasks she has at once, the fly gains this. <span class="sirve-aviso">These are her numbers, not your team’s.</span>',
+  sirveTitulo: 'What did the fly gain by limiting her WIP?', // 8.11: el título es una pregunta sobre la mosca
+  sirveBajada: 'In the game, with 2 tasks at once instead of 9, she gained this. <span class="sirve-aviso">These are her numbers, not your team’s.</span>',
   carril2: 'with 2 tasks at once',
   carril9: 'with 9 tasks at once',
   sirve1: 'She finishes more, and each task is done sooner.',
-  sirve1Dato2: '<b>18</b> finished per day, 1&nbsp;h each',
-  sirve1Dato9: '<b>9</b> finished per day, almost 9&nbsp;h each',
+  sirve1Dato2: '<b data-cuenta data-paso="55">18</b> finished per day, 1&nbsp;h each',
+  sirve1Dato9: '<b data-cuenta data-paso="55">9</b> finished per day, almost 9&nbsp;h each',
   sirve2: 'Work moves forward instead of waiting.',
-  avance47: '47%',
-  avance9: '9%',
+  avance47: '<span data-cuenta="der" data-paso="26">47</span>%',
+  avance9: '<span data-cuenta="der" data-paso="26">9</span>%',
   sirve2Dato2: 'each task moves forward almost half the time',
   sirve2Dato9: 'each task waits 9 out of every 10&nbsp;minutes',
   sirve3: 'Less overload.',
   sirve3Dato2: 'she ends the day <b>Calm</b>, without smoking',
-  sirve3Dato9: 'she ends the day <b>Overwhelmed</b>, with 13&nbsp;cigarettes',
+  sirve3Dato9: 'she ends the day <b>Overwhelmed</b>, with <span data-cuenta="der" data-paso="70" data-espera="450">13</span>&nbsp;cigarettes',
   sirveOrigen: 'Average of 200 days played.',
   sirveCierre: 'According to DORA, limiting work in progress is a habit of high-performing teams. How much your team gains, its own test will show.',
   ganaTitulo: 'What your team takes away',
-  lleva1: 'Their load in plain sight: how many things each person has started.',
+  // (8.11) con coma, como el español y como el resumen ejecutivo en inglés (antes llevaba dos puntos)
+  lleva1: 'Their load in plain sight, how many things each person has started.',
   lleva2: 'Where the work sits waiting.',
   lleva3: 'An agreed limit, written on the board.',
   lleva4: 'Their own data after two weeks.',
@@ -133,11 +135,11 @@ export const INGLES = {
   // del mapa (Berg y otros, 2025, Métodos: le sacaron el sistema nervioso
   // entero y lo cortaron en 66 láminas de 20 micrones)
   creditoAviso:
-    'No fly was harmed or made to do any real work. Except the one in the map: its nervous system was taken out and cut into 66&nbsp;slices.',
+    'No fly was harmed or made to do any real work. Except the one in the map, whose nervous system was taken out and cut into 66&nbsp;slices.', // 8.11: sin dos puntos (pedido de Felipe: "es muy IA")
   cerebro2Alt: 'The brain with 2 tasks at once: few neurons firing.',
   cerebro9Alt: 'The brain with 9 tasks at once: many more neurons firing.',
-  cerebro2Pie: '2 tasks at once: <span class="cifra">423</span> neurons firing in the simulation',
-  cerebro9Pie: '9 at once: <span class="cifra">1,328</span> neurons firing in the simulation',
+  cerebro2Pie: '2 tasks at once: <span class="cifra" data-cuenta="der" data-paso="1.2">423</span> neurons firing in the simulation',
+  cerebro9Pie: '9 at once: <span class="cifra" data-cuenta="der" data-paso="1.2">1,328</span> neurons firing in the simulation',
   credito1:
     'The neurons that light up in the game come from <a href="https://male-cns.janelia.org">Male CNS v1.0</a>. “This project is a collaboration between FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC Laboratory of Molecular Biology, and Google Research.”',
   credito2:
@@ -198,7 +200,7 @@ export const INGLES = {
     'It’s a game and a computer experiment, with rules based on studies. It doesn’t measure people or teams: your number is yours to measure.',
   informeTexto:
     'The report explains where each number comes from and gives four steps to try a limit with your team. It takes 10 minutes to read.',
-  informeNota: '17 pages, 4 MB.',
+  informeNota: '18 pages, 4 MB.',
   motivoTitulo: 'Why I made it',
   motivoTexto:
     'I work with teams and I see the same thing over and over. They commit without knowing how much load they carry. They don’t know where to start or what’s really urgent, because everything is urgent and a priority. You feel you work all day and get nowhere, and the list of pending work keeps getting longer.',
