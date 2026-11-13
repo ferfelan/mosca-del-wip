@@ -38,7 +38,7 @@ const SITIO = 'https://mosca.deliverycraft.ai';
 // "Ocupado todo el día. ¿Y qué terminaste?" y "Mide cuántas cosas tiene
 // empezadas tu equipo…"). El título de la pestaña sigue partiendo por "WIP
 // limit", que es lo que la gente busca.
-const TITULO = 'WIP limit: busy all day. So what did you finish? · Mosca del WIP';
+const TITULO = 'WIP limit · Busy all day. So what did you finish? · Mosca del WIP';
 const DESCRIPCION =
   'Measure how many things your team has started and find the WIP limit that lets it finish the most. Start with a one-minute game. Free guide, report and workshop.';
 const TITULO_COMPARTIR = 'Busy all day. So what did you finish? · Mosca del WIP';

@@ -4,12 +4,17 @@
 // comprueba antes de escribir (si una no calza, se detiene y lo dice).
 // Los archivos que se descargan (PDF, PPTX y CSV) NO van en el sitemap desde
 // el 2026-11-12 (docs/etapa8-10.md). Para los buscadores son copias de su
-// página: la cabecera Link rel="canonical" de vercel.json manda los PDF y los
-// CSV a /informe/, /en/report/, /taller/ y /limite-wip/, y la presentación en
-// PowerPoint es el mismo material que su PDF. Google los anotaba como "Página
-// alternativa con etiqueta canónica adecuada". Se siguen encontrando por los
-// enlaces de su página. Tampoco van las direcciones con ?lang= o con ?v=, ni
-// las que terminan en index.html: son la misma página con otra dirección.
+// página: la cabecera Link rel="canonical" de vercel.json manda los PDF del
+// resumen ejecutivo y del taller y los CSV a /informe/, /en/report/, /taller/
+// y /limite-wip/, y la presentación en PowerPoint es el mismo material que su
+// PDF. Google los anotaba como "Página alternativa con etiqueta canónica
+// adecuada". Se siguen encontrando por los enlaces de su página.
+// Desde la 8.12 (2026-11-13) los dos PDF del informe ya no llevan esa
+// cabecera: el informe extenso vive solo en su PDF (la página /informe/ es
+// el resumen ejecutivo), y sin la cabecera los buscadores lo pueden leer por
+// su cuenta. Igual no va en el sitemap (regla de Felipe: solo páginas).
+// Tampoco van las direcciones con ?lang= o con ?v=, ni las que terminan en
+// index.html: son la misma página con otra dirección.
 // La fecha de cada página es la de su último cambio real: la del último
 // commit que tocó sus fuentes. Si alguna tiene cambios sin guardar en git,
 // la fecha es la de hoy.
@@ -28,7 +33,7 @@ const HOY = new Date().toISOString().slice(0, 10);
 const PAGINAS = [
   { ruta: '/', en: '/en/', fuentes: ['index.html', 'src/portada-textos.js'], prioridad: '1.0' },
   { ruta: '/limite-wip/', en: '/en/wip-limit/', fuentes: ['limite-wip/index.html'], fuentesEn: ['en/wip-limit/index.html'], prioridad: '0.9' },
-  { ruta: '/informe/', en: '/en/report/', fuentes: ['informe/index.html', 'docs/contexto/compartir.html'], fuentesEn: ['en/report/index.html', 'docs/contexto/compartir-en.html'], prioridad: '0.8' },
+  { ruta: '/informe/', en: '/en/report/', fuentes: ['informe/index.html', 'docs/contexto/resumen.html', 'docs/contexto/compartir.html'], fuentesEn: ['en/report/index.html', 'docs/contexto/resumen-en.html', 'docs/contexto/compartir-en.html'], prioridad: '0.8' },
   { ruta: '/taller/', en: '/en/workshop/', fuentes: ['taller/index.html'], fuentesEn: ['en/workshop/index.html'], prioridad: '0.8' },
   { ruta: '/jugar/', fuentes: ['jugar/index.html', 'src/main.js', 'src/brain.js'], prioridad: '0.9' },
   { ruta: '/creditos/', fuentes: ['creditos/index.html'], prioridad: '0.3' },

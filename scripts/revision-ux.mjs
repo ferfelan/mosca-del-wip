@@ -82,7 +82,7 @@ const fin = await p.evaluate(() => ({
 revisar(fin.hora === '18:00', `hora al final: ${fin.hora}`);
 revisar(fin.estado === 'Descansa', `la mosca al final: ${fin.estado}`);
 revisar(fin.filas === 1, `filas en días jugados: ${fin.filas}`);
-revisar(/^Estrés de la mosca durante el día: ahora/.test(fin.grafico), `resumen del gráfico: ${fin.grafico}`);
+revisar(/^Estrés de la mosca durante el día, ahora/.test(fin.grafico), `resumen del gráfico: ${fin.grafico}`);
 await p.screenshot({ path: 'capturas/ux-fin-del-dia.png' });
 
 // 4. Solapes: el aviso de fin no debe quedar bajo los paneles

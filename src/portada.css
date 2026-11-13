@@ -62,7 +62,6 @@
   --punto-halo: rgba(255, 255, 255, 0.06);
   --sombra-pantalla: 0 40px 90px rgba(0, 0, 0, 0.55), 0 0 0 6px rgba(255, 255, 255, 0.025);
   --sombra-tapa: -24px 34px 70px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06);
-  --sombra-tapa-chica: -8px 14px 28px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.06);
   --fuente: 'Mona Sans', 'Avenir Next', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
   --ancho: 1280px;
   --margen: clamp(20px, 4vw, 56px);
@@ -98,7 +97,6 @@
   --punto-halo: rgba(16, 24, 48, 0.07);
   --sombra-pantalla: 0 30px 70px rgba(16, 24, 48, 0.2), 0 0 0 6px rgba(16, 24, 48, 0.035);
   --sombra-tapa: -18px 28px 56px rgba(16, 24, 48, 0.24), 0 0 0 1px rgba(16, 24, 48, 0.08);
-  --sombra-tapa-chica: -8px 14px 28px rgba(16, 24, 48, 0.22), 0 0 0 1px rgba(16, 24, 48, 0.08);
   color-scheme: light;
 }
 :root[data-tema='claro'] .siempre-noche { color: var(--tinta); }

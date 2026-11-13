@@ -43,16 +43,14 @@
       "source": "/Mosca-del-WIP-Informe.pdf",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" },
-        { "key": "Content-Disposition", "value": "inline; filename=\"Mosca del WIP - Informe.pdf\"" },
-        { "key": "Link", "value": "<https://mosca.deliverycraft.ai/informe/>; rel=\"canonical\"" }
+        { "key": "Content-Disposition", "value": "inline; filename=\"Mosca del WIP - Informe.pdf\"" }
       ]
     },
     {
       "source": "/Mosca-del-WIP-Report.pdf",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" },
-        { "key": "Content-Disposition", "value": "inline; filename=\"Mosca del WIP - Report.pdf\"" },
-        { "key": "Link", "value": "<https://mosca.deliverycraft.ai/en/report/>; rel=\"canonical\"" }
+        { "key": "Content-Disposition", "value": "inline; filename=\"Mosca del WIP - Report.pdf\"" }
       ]
     },
     {

@@ -156,6 +156,12 @@ function medir({ tactil, celularVertical, idioma, raiz }) {
   return problemas;
 }
 
+// Cuánto espera en cada paso al bajar por la página (milisegundos). Con el
+// computador ocupado (un juego abierto, por ejemplo) los navegadores dibujan
+// más lento y un dibujo puede no alcanzar a cargarse en 140 ms: ahí se corre
+// con PAUSA_AL_BAJAR=450 (8.12, 2026-11-13)
+const PAUSA_AL_BAJAR = Number(process.env.PAUSA_AL_BAJAR) || 140;
+const ALTO_MAXIMO_FOTO = 16000;
 const SOLO = process.argv[4] && process.argv[4] !== 'todos' ? process.argv[4].split(',') : null;
 const COMBINACIONES = (process.argv[5] || 'oscuro-es,claro-es,oscuro-en,claro-en').split(',').map((c) => c.split('-'));
 const REVISAR = SOLO ? TAMANOS.filter(([nombre]) => SOLO.some((s) => nombre.includes(s))) : TAMANOS;
@@ -199,7 +205,7 @@ for (const [fondo, idioma] of COMBINACIONES) for (const [nombreTamano, ancho, al
   const altoPagina = await pagina.evaluate(() => document.documentElement.scrollHeight);
   for (let y = 0; y < altoPagina; y += Math.round(alto * 0.5)) {
     await pagina.evaluate((yy) => window.scrollTo({ top: yy, behavior: 'instant' }), y);
-    await pagina.waitForTimeout(140);
+    await pagina.waitForTimeout(PAUSA_AL_BAJAR);
   }
   await pagina.waitForFunction(() => !document.querySelector('[data-carga]:not(.cargado), [data-ahora]'), null, { timeout: 8000 }).catch(() => {});
   await pagina.waitForTimeout(700); // lo último que entró termina de dibujarse
@@ -213,7 +219,15 @@ for (const [fondo, idioma] of COMBINACIONES) for (const [nombreTamano, ancho, al
   await pagina.evaluate(() => document.querySelectorAll('.pregunta').forEach((d) => (d.open = true)));
   await pagina.waitForTimeout(400);
   const problemas = await pagina.evaluate(medir, { tactil, celularVertical: tactil && ancho < 600 && alto > ancho, idioma });
-  await pagina.screenshot({ path: join(CARPETA, `${nombre}-completa.png`), fullPage: true });
+  // (el motor de Chrome no saca fotos de más de 16.384 px de alto. Desde la
+  // 8.12, en un celular de 320 px con todas las preguntas abiertas la página
+  // mide un poco más: ahí va en dos fotos)
+  const altoCompleto = await pagina.evaluate(() => document.documentElement.scrollHeight);
+  if (altoCompleto <= ALTO_MAXIMO_FOTO) await pagina.screenshot({ path: join(CARPETA, `${nombre}-completa.png`), fullPage: true });
+  else {
+    await pagina.screenshot({ path: join(CARPETA, `${nombre}-completa.png`), fullPage: true, clip: { x: 0, y: 0, width: ancho, height: ALTO_MAXIMO_FOTO } });
+    await pagina.screenshot({ path: join(CARPETA, `${nombre}-completa-2.png`), fullPage: true, clip: { x: 0, y: ALTO_MAXIMO_FOTO, width: ancho, height: altoCompleto - ALTO_MAXIMO_FOTO } });
+  }
   // Bajo 1100 px, el menú de la barra abierto
   if (ancho < 1100) {
     await pagina.click('.menu-boton');

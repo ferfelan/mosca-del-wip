@@ -16,7 +16,9 @@
 .cabeza-informe .pagina-meta { margin-bottom: 20px; }
 .cabeza-informe .nota { margin-top: 0; }
 .tapa-informe { width: 240px; height: auto; justify-self: end; margin-top: 8px; }
-.lectura .kicker { margin: 0 0 10px; font-size: 14px; font-weight: 650; letter-spacing: 0.01em; color: var(--vision); }
+/* (el color del rótulo va mezclado con la tinta, como el de las celdas del kit:
+   solo, sobre el fondo blanco no llega al contraste de un texto chico) */
+.lectura .kicker { margin: 0 0 10px; font-size: 14px; font-weight: 650; letter-spacing: 0.01em; color: color-mix(in srgb, var(--vision) 76%, var(--tinta)); }
 .lectura .entrada p { font-size: 18.5px; line-height: 1.6; color: var(--lectura); }
 
 /* ---------- Los tableros de la portada, dentro de la columna ----------
@@ -36,6 +38,11 @@
 .lectura .sirve-tablero .carril-caso { font-size: 13.5px; line-height: 1.2; color: var(--caso); }
 .lectura .lleva-tablero .lleva-frase { font-size: 18.5px; line-height: 1.3; color: var(--tinta); }
 .lectura .columna-mini-cabeza { font-size: 12.5px; line-height: 1.2; color: var(--suave); }
+/* (en una página de lectura la letra más chica es de 12,5 px, también en el
+   celular: el límite del dibujo y el nombre de cada semana suben medio píxel.
+   El límite conserva su alto, 18,4 px, que es el de la cabecera) */
+.lectura .columna-mini-cabeza b { padding-block: 1.7px; font-size: 12.5px; }
+.lectura .semana-nombre { font-size: 12.5px; }
 .lectura .sirve-origen { margin-top: 16px; }
 
 /* Las secciones que llevan algo más ancho que el texto (los hallazgos, los

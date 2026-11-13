@@ -16,15 +16,15 @@ const AUTOR = 'Felipe Fernández';
 const PDFS = [
   {
     ruta: 'public/Mosca-del-WIP-Informe.pdf',
-    titulo: 'Mosca del WIP: estar siempre ocupado no es lo mismo que avanzar. Un informe con una mosca real sobre por qué limitar el trabajo en curso',
-    tema: 'Por qué conviene limitar el trabajo en curso (WIP): lo que muestra un juego con el cerebro de una mosca real, la ley de Little, la eficiencia de flujo, los estudios con personas y qué pasa con las urgencias. Cuatro pasos para probar un límite con tu equipo.',
+    titulo: 'Mosca del WIP. Estar siempre ocupado no es lo mismo que avanzar. Un informe con una mosca real sobre por qué limitar el trabajo en curso',
+    tema: 'Por qué conviene limitar el trabajo en curso (WIP). Lo que muestra un juego con el cerebro de una mosca real, la ley de Little, la eficiencia de flujo, los estudios con personas y qué pasa con las urgencias. Cuatro pasos para probar un límite con tu equipo.',
     claves: ['límite WIP', 'trabajo en curso', 'work in progress', 'kanban', 'eficiencia de flujo', 'ley de Little', 'multitarea', 'urgencias', 'interrupciones', 'simulación', 'cerebro de mosca', 'Male CNS'],
     idioma: 'es-CL',
   },
   {
     ruta: 'public/Mosca-del-WIP-Report.pdf',
-    titulo: 'Mosca del WIP: being busy all the time is not the same as making progress. A report with a real fly brain on why to limit work in progress',
-    tema: 'Why it pays to limit work in progress (WIP): what a game with a real fruit fly brain shows, Little’s Law, flow efficiency, the studies with people and what happens with urgent tasks. Four steps to try a limit with your team.',
+    titulo: 'Mosca del WIP. Being busy all the time is not the same as making progress. A report with a real fly brain on why to limit work in progress',
+    tema: 'Why it pays to limit work in progress (WIP). What a game with a real fruit fly brain shows, Little’s Law, flow efficiency, the studies with people and what happens with urgent tasks. Four steps to try a limit with your team.',
     claves: ['WIP limit', 'work in progress', 'kanban', 'flow efficiency', "Little's Law", 'multitasking', 'urgent tasks', 'interruptions', 'simulation', 'fruit fly connectome', 'Male CNS'],
     idioma: 'en-US',
   },
@@ -32,14 +32,14 @@ const PDFS = [
   // Desde la 8.11 (2026-11-12): el resumen ejecutivo, de 2 páginas, un PDF aparte del informe (sus claves son las cosas que nombra)
   {
     ruta: 'public/Mosca-del-WIP-Resumen.pdf',
-    titulo: 'Mosca del WIP: ocupado todo el día. ¿Y qué terminaste? Resumen ejecutivo',
+    titulo: 'Mosca del WIP. Ocupado todo el día. ¿Y qué terminaste? Resumen ejecutivo',
     tema: 'Resumen ejecutivo de dos páginas de la Mosca del WIP, un juego de un minuto con una mosca de cerebro real. Qué ganó la mosca al limitar su trabajo en curso, lo que encontró la simulación de 1 a 10 tareas a la vez, qué dicen los estudios con personas, lo que se lleva tu equipo y cuatro pasos para probar un límite.',
     claves: ['resumen ejecutivo', 'límite WIP', 'trabajo en curso', 'work in progress', 'kanban', 'ley de Little', 'límite sostenible', 'urgencias', 'simulación', 'cerebro de mosca', 'Male CNS'],
     idioma: 'es-CL',
   },
   {
     ruta: 'public/Mosca-del-WIP-Summary.pdf',
-    titulo: 'Mosca del WIP: busy all day. So what did you finish? Executive summary',
+    titulo: 'Mosca del WIP. Busy all day. So what did you finish? Executive summary',
     tema: 'A two-page executive summary of Mosca del WIP, a one-minute game with a real fly brain. What the fly gained by limiting her work in progress, what the simulation from 1 to 10 tasks at once found, what studies with people say, what your team takes away and four steps to try a limit.',
     claves: ['executive summary', 'WIP limit', 'work in progress', 'kanban', "Little's Law", 'sustainable limit', 'urgent tasks', 'simulation', 'fruit fly connectome', 'Male CNS'],
     idioma: 'en-US',

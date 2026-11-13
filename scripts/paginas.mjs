@@ -56,7 +56,7 @@ function tablaDatos(idioma) {
     })
     .join('\n');
   return `<div class="tabla-marco ancho"><table class="tabla-dias">
-  <caption>${es ? `En el juego: promedio de ${corrida.dias} días por cada número de tareas (simulación, semilla ${corrida.semilla}). Tiempo por tarea en horas de oficina, de que empieza a que termina. Con fondo, el 2 (verde, la que más termina) y el 9 (rojo, la sobrecarga).` : `In the game: average of ${corrida.dias} days per number of tasks (simulation, seed ${corrida.semilla}). Time per task in office hours, from start to finish. Shaded, 2 (green, finishes the most) and 9 (red, overload).`}</caption>
+  <caption>${es ? `En el juego, promedio de ${corrida.dias} días por cada número de tareas (simulación, semilla ${corrida.semilla}). Tiempo por tarea en horas de oficina, de que empieza a que termina. Con fondo, el 2 (verde, la que más termina) y el 9 (rojo, la sobrecarga).` : `In the game, average of ${corrida.dias} days per number of tasks (simulation, seed ${corrida.semilla}). Time per task in office hours, from start to finish. Shaded, 2 (green, finishes the most) and 9 (red, overload).`}</caption>
   <thead><tr>${cab.map((c, i) => `<th${i > 0 && i < 7 ? ' class="numero"' : ''}>${c}</th>`).join('')}</tr></thead>
   <tbody>
 ${filas}
@@ -78,7 +78,7 @@ function descargasTaller(idioma) {
     { ruta: '/taller/Mosca-del-WIP-Taller-Presentacion.pptx', nombre: 'Mosca del WIP - Taller - Presentación.pptx', titulo: es ? 'Presentación (PowerPoint, 14 láminas)' : 'Slides (PowerPoint, 14 slides, in Spanish)', texto: es ? 'Editable, con notas cortas para quien facilita.' : 'Editable, with short notes for the facilitator.' },
     { ruta: '/taller/Mosca-del-WIP-Taller-Presentacion.pdf', nombre: 'Mosca del WIP - Taller - Presentación.pdf', titulo: es ? 'Presentación (PDF)' : 'Slides (PDF, in Spanish)', texto: es ? 'La misma presentación, para proyectar sin PowerPoint.' : 'The same slides, to project without PowerPoint.' },
     { ruta: '/taller/Mosca-del-WIP-Taller-Guia-rapida.pdf', nombre: 'Mosca del WIP - Taller - Guía rápida del facilitador.pdf', titulo: es ? 'Guía rápida del facilitador (PDF, 5 hojas)' : 'Facilitator’s quick guide (PDF, 5 pages, in Spanish)', texto: es ? 'La sesión en una hoja, qué preparar, qué te van a preguntar y la hoja del equipo.' : 'The session on one page, what to prepare, what they’ll ask you and the team sheet.' },
-    { ruta: '/taller/Mosca-del-WIP-Taller-Hoja-del-equipo.pdf', nombre: 'Mosca del WIP - Taller - Hoja del equipo.pdf', titulo: es ? 'Hoja del equipo (PDF, 1 hoja)' : 'Team sheet (PDF, 1 page, in Spanish)', texto: es ? 'Para imprimir, una por equipo: las cuatro líneas que salen escritas del taller.' : 'To print, one per team: the four lines the team writes during the workshop.' },
+    { ruta: '/taller/Mosca-del-WIP-Taller-Hoja-del-equipo.pdf', nombre: 'Mosca del WIP - Taller - Hoja del equipo.pdf', titulo: es ? 'Hoja del equipo (PDF, 1 hoja)' : 'Team sheet (PDF, 1 page, in Spanish)', texto: es ? 'Para imprimir, una por equipo, con las cuatro líneas que salen escritas del taller.' : 'To print, one per team, with the four lines the team writes during the workshop.' },
   ];
   return `<ul class="descargas-pagina">${archivos
     .map((a) => {
@@ -94,10 +94,10 @@ function datasetJsonLd(idioma) {
   return {
     '@type': 'Dataset',
     '@id': `${SITIO}${RUTAS.guia[idioma]}#datos`,
-    name: es ? 'Mosca del WIP: un día de oficina con 1 a 10 tareas a la vez (promedio de 200 días en el juego)' : 'Mosca del WIP: an office day with 1 to 10 tasks at once (average of 200 days in the game)',
+    name: es ? 'Mosca del WIP, un día de oficina con 1 a 10 tareas a la vez (promedio de 200 días en el juego)' : 'Mosca del WIP, an office day with 1 to 10 tasks at once (average of 200 days in the game)',
     description: es
-      ? 'Para cada número de tareas en curso a la vez, de 1 a 10: cuántas termina la mosca en el día, cuánto tarda cada tarea, cuántos minutos de cada hora rinden, cuánto espera, cigarros, cafés y estrés. Promedio de 200 días simulados por cada número (semilla 2024), en el juego Mosca del WIP. Es una simulación de una mosca sola, no mide personas ni equipos.'
-      : 'For each number of tasks in progress at once, from 1 to 10: how many the fly finishes per day, how long each task takes, how many minutes of every hour are productive, idle time, cigarettes, coffees and stress. Average of 200 simulated days per number (seed 2024), in the game Mosca del WIP. It is a simulation of a single fly and does not measure people or teams.',
+      ? 'Para cada número de tareas en curso a la vez, de 1 a 10, dice cuántas termina la mosca en el día, cuánto tarda cada tarea, cuántos minutos de cada hora rinden, cuánto espera, cigarros, cafés y estrés. Promedio de 200 días simulados por cada número (semilla 2024), en el juego Mosca del WIP. Es una simulación de una mosca sola, no mide personas ni equipos.'
+      : 'For each number of tasks in progress at once, from 1 to 10, it gives how many the fly finishes per day, how long each task takes, how many minutes of every hour are productive, idle time, cigarettes, coffees and stress. Average of 200 simulated days per number (seed 2024), in the game Mosca del WIP. It is a simulation of a single fly and does not measure people or teams.',
     url: `${SITIO}${RUTAS.guia[idioma]}#datos`,
     sameAs: `${SITIO}${RUTAS.guia[idioma === 'es' ? 'en' : 'es']}#datos`,
     inLanguage: idioma,
@@ -125,10 +125,10 @@ function datasetUrgenciasJsonLd(idioma) {
   return {
     '@type': 'Dataset',
     '@id': `${SITIO}${RUTAS.guia[idioma]}#datos-urgencias`,
-    name: es ? 'Mosca del WIP: un día de oficina con 0 a 5 urgencias al día y un límite de 1 a 10 tareas (promedio de 200 días en la simulación)' : 'Mosca del WIP: an office day with 0 to 5 urgent tasks a day and a limit of 1 to 10 tasks (average of 200 days in the simulation)',
+    name: es ? 'Mosca del WIP, un día de oficina con 0 a 5 urgencias al día y un límite de 1 a 10 tareas (promedio de 200 días en la simulación)' : 'Mosca del WIP, an office day with 0 to 5 urgent tasks a day and a limit of 1 to 10 tasks (average of 200 days in the simulation)',
     description: es
-      ? 'Para cada combinación de urgencias al día (0, 1, 2, 3 y 5) y límite de tareas a la vez (1 a 10): tareas normales terminadas en el día, terminadas contando las urgencias, minutos por tarea normal, minutos por urgencia desde que llega y estrés al cerrar. Una urgencia llega sin aviso, pasa por encima del límite y la mosca la hace primero, de a una. Promedio de 200 días simulados por combinación (semilla 2024), en el juego Mosca del WIP. Es una simulación de una mosca sola, no mide personas ni equipos.'
-      : 'For each combination of urgent tasks per day (0, 1, 2, 3 and 5) and limit of tasks at once (1 to 10): regular tasks finished per day, finished counting the urgent ones, minutes per regular task, minutes per urgent task from arrival and stress at close. An urgent task arrives unannounced, jumps over the limit and the fly does it first, one at a time. Average of 200 simulated days per combination (seed 2024), in the game Mosca del WIP. It is a simulation of a single fly and does not measure people or teams.',
+      ? 'Para cada combinación de urgencias al día (0, 1, 2, 3 y 5) y límite de tareas a la vez (1 a 10), trae las tareas normales terminadas en el día, las terminadas contando las urgencias, los minutos por tarea normal, los minutos por urgencia desde que llega y el estrés al cerrar. Una urgencia llega sin aviso, pasa por encima del límite y la mosca la hace primero, de a una. Promedio de 200 días simulados por combinación (semilla 2024), en el juego Mosca del WIP. Es una simulación de una mosca sola, no mide personas ni equipos.'
+      : 'For each combination of urgent tasks per day (0, 1, 2, 3 and 5) and limit of tasks at once (1 to 10), it gives the regular tasks finished per day, those finished counting the urgent ones, the minutes per regular task, the minutes per urgent task from arrival and the stress at close. An urgent task arrives unannounced, jumps over the limit and the fly does it first, one at a time. Average of 200 simulated days per combination (seed 2024), in the game Mosca del WIP. It is a simulation of a single fly and does not measure people or teams.',
     url: `${SITIO}${RUTAS.guia[idioma]}#datos`,
     sameAs: `${SITIO}${RUTAS.guia[idioma === 'es' ? 'en' : 'es']}#datos`,
     inLanguage: idioma,

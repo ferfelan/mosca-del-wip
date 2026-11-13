@@ -30,7 +30,19 @@ export const VISTAS_PREVIAS = ['portada', 'en', 'juego', 'creditos', 'guia', 'wi
 // a decir la pregunta, "Ocupado todo el día. ¿Y qué terminaste?" / "Busy all
 // day. So what did you finish?" (en la 8.6 decían otro mensaje, que ya no se
 // usa). Si cambia otra, se agrega aquí con la fecha del cambio.
-export const SELLO_VISTA = { portada: '2026-11-07', en: '2026-11-07' };
+// Desde la 8.12 (2026-11-13), seis más: la guía (su título ya no lleva dos
+// puntos), el informe (su página es ahora el resumen ejecutivo) y el taller
+// (la tapa de la guía rápida de hoy), cada una en español y en inglés.
+export const SELLO_VISTA = {
+  portada: '2026-11-07',
+  en: '2026-11-07',
+  guia: '2026-11-13',
+  'wip-limit': '2026-11-13',
+  informe: '2026-11-13',
+  report: '2026-11-13',
+  taller: '2026-11-13',
+  workshop: '2026-11-13',
+};
 export function vistaPrevia(pagina = 'portada') {
   if (!VISTAS_PREVIAS.includes(pagina)) throw new Error(`no hay vista previa "${pagina}" (son: ${VISTAS_PREVIAS.join(', ')})`);
   return `/img/vista-previa${pagina === 'portada' ? '' : `-${pagina}`}-${SELLO_VISTA[pagina] ?? SELLO}.jpg`;

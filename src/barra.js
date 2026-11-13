@@ -31,7 +31,7 @@ export const PAGINAS_BARRA = ['portada', 'guia', 'informe', 'taller', 'creditos'
 // Los textos de la barra, en español e inglés (en un solo lugar)
 export const TEXTOS_BARRA = {
   es: {
-    logo: 'Mosca del WIP: ir al inicio',
+    logo: 'Mosca del WIP, ir al inicio',
     menu: 'Menú',
     nav: 'Menú del sitio',
     idioma: 'Idioma',
@@ -47,7 +47,7 @@ export const TEXTOS_BARRA = {
     faq: 'FAQ',
   },
   en: {
-    logo: 'Mosca del WIP: go to the home page',
+    logo: 'Mosca del WIP, go to the home page',
     menu: 'Menu',
     nav: 'Site menu',
     idioma: 'Language',
@@ -174,8 +174,8 @@ export function barraHTML({ idioma = 'es', pagina = 'portada' } = {}) {
         <div class="ajuste">
           <span class="ajuste-nombre">${t.idioma}</span>
           <div class="selector" role="group" aria-label="${escapar(t.idioma)}">
-            ${idiomaEnlace('es', 'ES', 'Español', 'ES: español')}
-            ${idiomaEnlace('en', 'EN', 'English', 'EN: English')}
+            ${idiomaEnlace('es', 'ES', 'Español', 'ES, español')}
+            ${idiomaEnlace('en', 'EN', 'English', 'EN, English')}
           </div>
         </div>
         <div class="ajuste">

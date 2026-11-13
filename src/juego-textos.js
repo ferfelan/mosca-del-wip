@@ -19,7 +19,7 @@
 // El título de la pestaña: el <title> de jugar/index.html queda en español (la
 // dirección es una sola y su idioma oficial es el español); en inglés se cambia
 // desde aquí, como en los créditos (Etapa 7).
-export const TITULO_PESTANA_EN = 'WIP limit game: the fly with a real brain · Mosca del WIP';
+export const TITULO_PESTANA_EN = 'WIP limit game, the fly with a real brain · Mosca del WIP';
 
 // ---------- 1. Textos fijos de la página (español tal cual → inglés) ----------
 export const PAGINA = {
@@ -61,8 +61,8 @@ export const PAGINA = {
     'Average time (in the game) from when a task enters “In progress” until it’s finished. With more tasks at once, each one takes longer (Little’s Law).',
   Eficiencia: 'Efficiency',
   'de cada hora': 'of every hour',
-  'De cada hora, cuántos minutos rinden de verdad: descuenta los cambios de tarea, el tiempo fumando o tomando café y las esperas por bloqueos (promedio desde las 09:00).':
-    'Of every hour, how many minutes really get work done: it leaves out switching tasks, time spent smoking or having coffee, and waiting on blocked tasks (average since 09:00).',
+  'De cada hora, cuántos minutos rinden de verdad. Descuenta los cambios de tarea, el tiempo fumando o tomando café y las esperas por bloqueos (promedio desde las 09:00).':
+    'Of every hour, how many minutes really get work done. It leaves out switching tasks, time spent smoking or having coffee, and waiting on blocked tasks (average since 09:00).',
   'Días jugados': 'Days played',
   'últimos 5': 'last 5',
   'Estrés máximo del día': 'Highest stress of the day',
@@ -77,11 +77,11 @@ export const PAGINA = {
   'Arriba, el cerebro. Abajo, el cordón nervioso': 'The brain on top. The nerve cord below',
   Idioma: 'Language',
   Exhibición: 'Exhibition',
-  'Vista exhibición: pantalla completa para mostrar (tecla E)': 'Exhibition view: full screen, to show it to others (key E)',
+  'Vista exhibición, pantalla completa para mostrar (tecla E)': 'Exhibition view, a full screen to show it to others (key E)',
   'Ocultar el cerebro (tecla B)': 'Hide the brain (key B)',
   'Ocultar el panel del cerebro': 'Hide the brain panel',
-  'Cerebro de la mosca: gira solo. Un clic lo detiene y otro lo hace girar. Detenido, arrastra para girarlo. Rueda o pellizco para acercar':
-    'The fly’s brain: it turns on its own. One click stops it and another starts it again. When stopped, drag to turn it. Scroll or pinch to zoom',
+  'El cerebro de la mosca gira solo. Un clic lo detiene y otro lo hace girar. Detenido, arrastra para girarlo. Rueda o pellizco para acercar':
+    'The fly’s brain turns on its own. One click stops it and another starts it again. When stopped, drag to turn it. Scroll or pinch to zoom',
   Detener: 'Stop',
   'Detener el giro del cerebro (también con un clic en el cerebro)': 'Stop the brain from turning (or click on the brain)',
   Centrar: 'Center',
@@ -97,8 +97,8 @@ export const PAGINA = {
   'límite sostenible 3': 'sustainable limit 3',
   'Tiempo promedio desde que una tarea entra a «En curso» hasta que se termina':
     'Average time from when a task enters “In progress” until it’s finished',
-  'De cada hora, cuántos minutos rinden de verdad: descuenta los cambios de tarea, el tiempo fumando o tomando café y las esperas por bloqueos':
-    'Of every hour, how many minutes really get work done: it leaves out switching tasks, time spent smoking or having coffee, and waiting on blocked tasks',
+  'De cada hora, cuántos minutos rinden de verdad. Descuenta los cambios de tarea, el tiempo fumando o tomando café y las esperas por bloqueos':
+    'Of every hour, how many minutes really get work done. It leaves out switching tasks, time spent smoking or having coffee, and waiting on blocked tasks',
   'De dónde viene la actividad': 'Where the activity comes from',
   '% de las neuronas encendidas': '% of the neurons firing',
   'Estrés del día': 'Stress during the day',
@@ -110,7 +110,7 @@ export const PAGINA = {
   encendida: 'firing',
   'camino de la señal': 'signal path',
   '¿Es real?': 'Is it real?',
-  'Datos: Male CNS v1.0 · CC BY 4.0': 'Data: Male CNS v1.0 · CC BY 4.0',
+  'Datos del Male CNS v1.0 · CC BY 4.0': 'Data from Male CNS v1.0 · CC BY 4.0',
   'Créditos y licencias': 'Credits and licenses',
   'Cómo elegir el límite de tu equipo': 'How to choose your team’s limit', // el enlace a la guía (Etapa 7)
   // "¿Es real?"
@@ -118,13 +118,13 @@ export const PAGINA = {
   'Las neuronas y sus conexiones son de una mosca real.': 'The neurons and their connections come from a real fly.',
   'Las tareas las traducimos en una señal y simulamos cómo responde su cerebro.':
     'We turn the tasks into a signal and simulate how her brain responds.',
-  'Las zonas muestran por dónde pasa la señal que le damos. Que una zona esté en 0% (por ejemplo, Memoria) no significa que la mosca no la use: la señal no llega ahí.':
-    'The zones show where the signal we give her travels. A zone at 0% (Memory, for example) doesn’t mean the fly doesn’t use it: the signal doesn’t reach it.',
-  'Las moscas no fuman: el cigarro es un disfraz.': 'Flies don’t smoke: the cigarette is a disguise.',
+  'Las zonas muestran por dónde pasa la señal que le damos. Que una zona esté en 0% (por ejemplo, Memoria) no significa que la mosca no la use, sino que la señal no llega ahí.':
+    'The zones show where the signal we give her travels. A zone at 0% (Memory, for example) doesn’t mean the fly doesn’t use it, only that the signal doesn’t reach it.',
+  'Las moscas no fuman. El cigarro es un disfraz.': 'Flies don’t smoke. The cigarette is a disguise.',
   'Los números de la oficina son del juego. Que cada tarea tarde más y se termine menos tiene respaldo. Que suba el estrés es un supuesto nuestro.':
     'The office numbers come from the game. That each task takes longer and fewer get finished is backed by evidence. That stress goes up is our own assumption.',
-  'Datos: Male CNS v1.0. Una colaboración entre FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC Laboratory of Molecular Biology y Google Research. Licencia CC BY 4.0 · male-cns.janelia.org':
-    'Data: Male CNS v1.0. A collaboration between FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC Laboratory of Molecular Biology, and Google Research. License CC BY 4.0 · male-cns.janelia.org',
+  'Los datos son del Male CNS v1.0, una colaboración entre FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC Laboratory of Molecular Biology y Google Research. Licencia CC BY 4.0 · male-cns.janelia.org':
+    'The data come from Male CNS v1.0, a collaboration between FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC Laboratory of Molecular Biology, and Google Research. License CC BY 4.0 · male-cns.janelia.org',
   // Botones para volver a mostrar los paneles y aviso del fin del día
   Cerebro: 'Brain',
   'Mostrar el cerebro (tecla B)': 'Show the brain (key B)',
@@ -156,8 +156,8 @@ export const PAGINA = {
   // lo escribe el juego, más abajo)
   '¿Dónde está cada cosa?': 'Where is everything?',
   Ayuda: 'Help',
-  'Recorrido: dónde está cada cosa': 'Tour: where everything is',
-  'Ayuda: dónde está cada cosa': 'Help: where everything is',
+  'Recorrido, dónde está cada cosa': 'Tour, where everything is',
+  'Ayuda, dónde está cada cosa': 'Help, where everything is',
   Saltar: 'Skip',
   Atrás: 'Back',
   Siguiente: 'Next',
@@ -188,10 +188,10 @@ export const PAGINA = {
 // ---------- 2. Bloques que se cambian enteros (dónde está → inglés) ----------
 // Las letras de las teclas no cambian; "Espacio" sí, porque es su nombre.
 export const BLOQUES = {
-  // <kbd>Espacio</kbd> pausa <kbd>R</kbd> otro día … · doble clic: vista inicial
+  // <kbd>Espacio</kbd> pausa <kbd>R</kbd> otro día … · doble clic vuelve a la vista inicial
   // (la E pasó al botón "Volver a la oficina", 2026-10-28)
   '#barra-exhibicion .atajo':
-    '<kbd>Space</kbd> pause <kbd>R</kbd> new day <kbd>1–9</kbd> WIP <kbd>D</kbd> demo <span class="atajo-extra">· double-click: reset view</span>',
+    '<kbd>Space</kbd> pause <kbd>R</kbd> new day <kbd>1–9</kbd> WIP <kbd>D</kbd> demo <span class="atajo-extra">· double-click resets the view</span>',
   // <span><kbd>Espacio</kbd> pausa</span><span><kbd>R</kbd> reinicia</span>… (8.8: cada tecla con lo que hace, de a dos por fila)
   '#panel .atajos':
     '<span><kbd>Space</kbd> pause</span><span><kbd>R</kbd> restart</span><span><kbd>1–9</kbd> WIP</span><span><kbd>E</kbd> exhibition</span><span><kbd>B</kbd> brain</span><span><kbd>C</kbd> controls</span>',
@@ -231,7 +231,7 @@ export const TEXTOS = {
   recorridoSigue: { es: 'Siguiente', en: 'Next' },
   recorridoListo: { es: 'Listo', en: 'Done' },
   // Bajo el slider
-  notaTerminando: { es: (n) => `Terminando lo empezado: ${n} en curso`, en: (n) => `Finishing what’s started: ${n} in progress` },
+  notaTerminando: { es: (n) => `Terminando lo empezado, ${n} en curso`, en: (n) => `Finishing what’s started, ${n} in progress` },
   notaDentro: { es: (n) => `Dentro del límite sostenible (${n})`, en: (n) => `Within the sustainable limit (${n})` },
   notaSobre: { es: (n) => `Sobre el límite sostenible (${n})`, en: (n) => `Over the sustainable limit (${n})` },
   // Botón de pausa
@@ -252,21 +252,21 @@ export const TEXTOS = {
   queHace: {
     es: {
       Trabaja: 'Trabajando en el kanban',
-      Fuma: 'Salió a fumar: pierde tiempo',
-      Café: 'Pausa sana: toma café',
-      Espera: 'Espera: sus tareas están bloqueadas',
+      Fuma: 'Salió a fumar, pierde tiempo',
+      Café: 'Pausa sana, toma café',
+      Espera: 'Espera, sus tareas están bloqueadas',
       'En pausa': 'Juego en pausa',
       Lista: 'Lista para empezar',
-      Descansa: 'Día terminado: descansa',
+      Descansa: 'Día terminado, descansa',
     },
     en: {
       Trabaja: 'Working on the kanban',
-      Fuma: 'Out for a smoke: losing time',
-      Café: 'Healthy break: having a coffee',
-      Espera: 'Waiting: her tasks are blocked',
+      Fuma: 'Out for a smoke, losing time',
+      Café: 'Healthy break, having a coffee',
+      Espera: 'Waiting, her tasks are blocked',
       'En pausa': 'Game paused',
       Lista: 'Ready to start',
-      Descansa: 'Day over: resting',
+      Descansa: 'Day over, resting',
     },
   },
   // Aviso de arriba: en vivo o en pausa, y si son pocas o muchas tareas
@@ -286,7 +286,7 @@ export const TEXTOS = {
   // Resumen del fin del día (exhibición)
   finDelDiaWip: { es: (wip) => `Fin del día con WIP ${wip}`, en: (wip) => `End of the day with WIP ${wip}` },
   hoy: { es: 'hoy', en: 'today' },
-  demoSigue: { es: (wip) => `Modo demo · sigue un día con WIP ${wip}…`, en: (wip) => `Demo mode · next up: a day with WIP ${wip}…` },
+  demoSigue: { es: (wip) => `Modo demo · sigue un día con WIP ${wip}…`, en: (wip) => `Demo mode · next up, a day with WIP ${wip}…` },
   otroDia: {
     es: 'R para jugar otro día · 1–9 cambia el WIP · D modo demo',
     en: 'R to play another day · 1–9 changes the WIP · D demo mode',
@@ -297,8 +297,8 @@ export const TEXTOS = {
     en: 'Real neurons from a fly. The more tasks she has on her plate, the more her brain lights up.',
   },
   fraseFin: {
-    es: 'Día terminado: la mosca descansa y su cerebro se apaga.',
-    en: 'Day over: the fly rests and her brain switches off.',
+    es: 'Día terminado. La mosca descansa y su cerebro se apaga.',
+    en: 'Day over. The fly rests and her brain switches off.',
   },
   // Zonas: de dónde viene la actividad
   zonasAhora: { es: 'De dónde viene la actividad', en: 'Where the activity comes from' },
@@ -306,16 +306,16 @@ export const TEXTOS = {
   zonasSubAhora: { es: '% de las neuronas encendidas', en: '% of the neurons firing' },
   zonasSubDia: { es: 'promedio del día', en: 'average for the day' },
   zonaSinActividad: {
-    es: (nombre, detalle) => `${nombre} (${detalle}): sin neuronas encendidas`,
-    en: (nombre, detalle) => `${nombre} (${detalle}): no neurons firing`,
+    es: (nombre, detalle) => `${nombre} (${detalle}), sin neuronas encendidas`,
+    en: (nombre, detalle) => `${nombre} (${detalle}), no neurons firing`,
   },
   zonaPromedio: {
-    es: (nombre, detalle, pct) => `${nombre} (${detalle}): ${pct}% de las neuronas encendidas, en promedio durante el día`,
-    en: (nombre, detalle, pct) => `${nombre} (${detalle}): ${pct}% of the neurons firing, on average over the day`,
+    es: (nombre, detalle, pct) => `${nombre} (${detalle}), ${pct}% de las neuronas encendidas, en promedio durante el día`,
+    en: (nombre, detalle, pct) => `${nombre} (${detalle}), ${pct}% of the neurons firing, on average over the day`,
   },
   zonaAhora: {
-    es: (nombre, detalle, activas, total) => `${nombre} (${detalle}): ${activas} de las ${total} neuronas encendidas`,
-    en: (nombre, detalle, activas, total) => `${nombre} (${detalle}): ${activas} of the ${total} neurons firing`,
+    es: (nombre, detalle, activas, total) => `${nombre} (${detalle}), ${activas} de las ${total} neuronas encendidas`,
+    en: (nombre, detalle, activas, total) => `${nombre} (${detalle}), ${activas} of the ${total} neurons firing`,
   },
   // Botón Detener / Girar del cerebro
   detener: { es: 'Detener', en: 'Stop' },
@@ -371,9 +371,9 @@ export const TEXTOS = {
   graficoEmpieza: { es: 'el día empieza a las 09:00', en: 'the day starts at 09:00' },
   graficoResumen: {
     es: (ahora, cigarros, cafes) =>
-      `Estrés de la mosca durante el día: ${ahora}. Lleva ${cigarros} ${cigarros === 1 ? 'cigarro' : 'cigarros'} y ${cafes} ${cafes === 1 ? 'café' : 'cafés'}.`,
+      `Estrés de la mosca durante el día, ${ahora}. Lleva ${cigarros} ${cigarros === 1 ? 'cigarro' : 'cigarros'} y ${cafes} ${cafes === 1 ? 'café' : 'cafés'}.`,
     en: (ahora, cigarros, cafes) =>
-      `The fly’s stress during the day: ${ahora}. So far, ${cigarros} ${cigarros === 1 ? 'cigarette' : 'cigarettes'} and ${cafes} ${cafes === 1 ? 'coffee' : 'coffees'}.`,
+      `The fly’s stress during the day, ${ahora}. So far, ${cigarros} ${cigarros === 1 ? 'cigarette' : 'cigarettes'} and ${cafes} ${cafes === 1 ? 'coffee' : 'coffees'}.`,
   },
   graficoCartel: {
     es: (hora, nivel, pct, enCurso, evento) => `<strong>${hora}</strong> · ${nivel} (${pct}%) · ${enCurso} a la vez${evento}`,

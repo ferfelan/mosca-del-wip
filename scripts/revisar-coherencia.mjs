@@ -31,7 +31,7 @@ import { readFileSync, readdirSync, statSync, existsSync, writeFileSync } from '
 import { execSync, execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { homedir } from 'node:os';
-import { join, relative, extname } from 'node:path';
+import { join, relative, extname, basename } from 'node:path';
 
 const R = fileURLToPath(new URL('..', import.meta.url));
 const args = process.argv.slice(2);
@@ -131,6 +131,8 @@ const DIST = join(R, 'dist');
 for (const ruta of archivos(DIST)) {
   const donde = 'sitio: /' + relative(DIST, ruta);
   const ext = extname(ruta).toLowerCase();
+  // (el archivo con que Google comprueba de quién es el sitio lo lee una máquina: no es texto del sitio)
+  if (/^google[0-9a-f]+\.html$/.test(basename(ruta))) continue;
   if (ext === '.html') pagina(donde, readFileSync(ruta, 'utf8'));
   else if (ext === '.pdf') pdf(donde, ruta);
   else if (ext === '.pptx') pptx(donde, ruta);
@@ -147,13 +149,18 @@ for (const ruta of archivos(DIST)) {
 // 2. Los textos del juego, la portada y los créditos (en el JS del sitio): cada
 // texto entre comillas de src/, sin comentarios y sin lo que es código o CSS
 function textosDeCodigo(fuente) {
-  const sinComentarios = fuente.replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/(^|[^:'"`\\])\/\/[^\n]*/g, '$1');
+  const sinComentarios = fuente
+    .replace(/\/\*[\s\S]*?\*\//g, ' ')
+    .replace(/(^|[^:'"`\\])\/\/[^\n]*/g, '$1')
+    // (los avisos para quien programa, new Error(...) y console.*(...), no los lee nadie en el sitio)
+    .replace(/(?:new Error|console\.\w+)\(\s*(?:'(?:[^'\\\n]|\\.)*'|"(?:[^"\\\n]|\\.)*"|`(?:[^`\\]|\\.)*`)/g, ' ');
   const textos = [];
   for (const m of sinComentarios.matchAll(/'((?:[^'\\\n]|\\.)*)'|"((?:[^"\\\n]|\\.)*)"|`((?:[^`\\]|\\.)*)`/g)) {
     let t = (m[1] ?? m[2] ?? m[3]).replace(/\$\{[^}]*\}/g, '0').replace(/\\u([0-9a-f]{4})/gi, (_, h) => String.fromCharCode(parseInt(h, 16))).replace(/\\(.)/g, '$1');
     const sinEtiquetas = t.replace(/<[^>]+>/g, ' ');
     const palabras = sinEtiquetas.match(/\p{L}{2,}/gu) ?? [];
-    const pareceCodigo = /[{}=]|=>|\w\(\)|^[.#\[]|[a-z-]+\s*:\s*[^;]+;\s*[a-z-]+\s*:/.test(sinEtiquetas);
+    // (también es código una consulta de pantalla, como "(max-width: 899px)" o "(prefers-reduced-motion: reduce)")
+    const pareceCodigo = /[{}=]|=>|\w\(\)|^[.#\[]|[a-z-]+\s*:\s*[^;]+;\s*[a-z-]+\s*:|^\s*(?:\([a-z-]+\s*:\s*[^()]*\)\s*(?:and|,)?\s*)+$/.test(sinEtiquetas);
     if (palabras.length >= 2 && /\s/.test(sinEtiquetas.trim()) && !pareceCodigo) textos.push(sinEtiquetas);
   }
   return textos;
@@ -285,14 +292,14 @@ if (args.includes('--mapa')) {
     'docs/paginas/taller.html': 'el taller',
     'docs/paginas/workshop.html': 'el taller en inglés',
     'scripts/paginas.mjs': 'title, meta y JSON-LD de la guía y el taller',
-    'docs/contexto/compartir.html': 'el informe (PDF y web)',
-    'docs/contexto/compartir-en.html': 'el informe en inglés (PDF y web)',
-    'scripts/informe-web.mjs': 'title y meta del informe web',
-    'docs/contexto/resumen.html': 'el resumen (PDF)',
-    'docs/contexto/resumen-en.html': 'el resumen en inglés (PDF)',
-    'docs/contexto/taller-v8.html': 'la guía rápida del taller (PDF)',
+    'docs/contexto/compartir.html': 'el informe (PDF, y el índice de sus páginas en la web)',
+    'docs/contexto/compartir-en.html': 'el informe en inglés (PDF, y el índice de sus páginas en la web)',
+    'scripts/resumen-web.mjs': 'title y meta de la página del resumen ejecutivo (/informe/ y /en/report/)',
+    'docs/contexto/resumen.html': 'el resumen ejecutivo (PDF y web)',
+    'docs/contexto/resumen-en.html': 'el resumen ejecutivo en inglés (PDF y web)',
+    'docs/contexto/taller-v9.html': 'la guía rápida del taller (PDF)',
     'docs/contexto/taller-hoja-equipo.html': 'la hoja del equipo (PDF)',
-    'docs/contexto/taller-presentacion/armar-v6.cjs': 'la presentación del taller (PPTX y PDF)',
+    'docs/contexto/taller-presentacion/armar-v7.cjs': 'la presentación del taller (PPTX y PDF)',
     'scripts/datos-csv.mjs': 'los CSV de /datos/',
     'docs/contexto/vista-previa.html': 'la imagen para redes de la portada',
     'docs/contexto/vista-previa-pagina.html': 'la imagen para redes de las páginas',
