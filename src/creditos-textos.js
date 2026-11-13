@@ -35,25 +35,25 @@ export const INGLES = {
 
   cerebroTitulo: 'The brain data',
   cerebro1:
-    'The neurons that light up in the game come from <a href="https://male-cns.janelia.org">Male CNS v1.0</a>, the map of a male fly’s central nervous system, neuron by neuron. Its authors ask for this credit:',
+    'The neurons that light up in the game come from <a href="https://male-cns.janelia.org">Male CNS v1.0</a>, the map of a male fly’s central nervous system, neuron by neuron. Its authors ask for this credit.',
   cerebro2:
-    'The data are licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>: they can be used and adapted as long as you say where they come from. We adapted them: the game shows only some of the neurons, and the lights you see are our simulation of how they would respond, not a recording of a real fly.',
+    'The data are licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, so they can be used and adapted as long as you say where they come from. We adapted them. The game shows only some of the neurons, and the lights you see are our simulation of how they would respond, not a recording of a real fly.',
 
   otrosTitulo: 'Software and fonts by others',
-  otrosIntro: 'The site uses these things made by other people, each with its license:',
+  otrosIntro: 'The site uses these things made by other people, each with its license.',
   otroThree:
     '<b>Three.js</b> (version 0.186.1) draws the office, the fly and the brain in 3D. <a href="https://github.com/mrdoob/three.js/blob/dev/LICENSE">MIT</a> license, © 2010–2026 three.js authors.',
   otroMona:
     '<b>Mona Sans</b> is the typeface of the home page and this page. Made by GitHub (© 2022 The Mona Sans Project Authors), licensed under the <a href="/fonts/LICENCIA-mona-sans-OFL.txt">SIL Open Font License 1.1</a>.',
   otroVite: '<b>Vite</b> builds the site for publishing. MIT license.',
   otroVercel: '<b>Vercel</b> hosts the site and counts visits with its Web Analytics, which only loads on the published site.',
-  otrosNuestro: 'Everything else is ours: the fly, the office, the drawings, the game photos and the texts.',
+  otrosNuestro: 'Everything else (the fly, the office, the drawings, the game photos and the texts) is ours.',
 
   privacidadTitulo: 'Privacy',
   privacidad1:
-    'No cookies. We only count visits with Vercel Web Analytics, which uses no cookies and identifies no one: it tells us how many people come in, nothing more.',
+    'No cookies. We only count visits with Vercel Web Analytics, which uses no cookies and identifies no one. It tells us how many people come in, nothing more.',
   privacidad2:
-    'What you choose stays in your browser and never reaches us: the days played, the language, the background and which panels you left open. You delete it yourself, with “Clear history” in the game or by clearing this site’s data in your browser.',
+    'What you choose (the days played, the language, the background and which panels you left open) stays in your browser and never reaches us. You delete it yourself, with “Clear history” in the game or by clearing this site’s data in your browser.',
 
   juegoTitulo: 'It’s a game',
   juego1:

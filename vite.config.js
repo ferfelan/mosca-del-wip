@@ -7,9 +7,10 @@
 //   /creditos/   creditos/index.html   créditos y licencias (?lang=en)
 //   /limite-wip/ y /en/wip-limit/      la guía del límite WIP (Etapa 7; GENERADA
 //                                      por scripts/paginas.mjs desde docs/paginas/)
-//   /informe/ y /en/report/            el informe para leer en la web (Etapa 7;
-//                                      GENERADO por scripts/informe-web.mjs desde
-//                                      docs/contexto/compartir(-en).html)
+//   /informe/ y /en/report/            el resumen ejecutivo para leer en la web
+//                                      (desde la 8.12; antes, el informe entero;
+//                                      GENERADO por scripts/resumen-web.mjs desde
+//                                      docs/contexto/resumen(-en).html)
 //   /taller/ y /en/workshop/           el taller (Etapa 7; GENERADO por paginas.mjs)
 //   404.html                           la página "no encontrada" (Vercel la
 //                                      sirve sola para direcciones que no existen)
@@ -29,7 +30,7 @@ export default defineConfig({
         jugar: pagina('jugar/index.html'),
         creditos: pagina('creditos/index.html'),
         // Etapa 7 (2026-10-28): páginas GENERADAS por scripts/paginas.mjs e
-        // informe-web.mjs (corren solos antes de dev y build): no editarlas a mano
+        // resumen-web.mjs (corren solos antes de dev y build): no editarlas a mano
         guia: pagina('limite-wip/index.html'),
         guiaEn: pagina('en/wip-limit/index.html'),
         informe: pagina('informe/index.html'),

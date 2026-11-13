@@ -367,3 +367,27 @@ told in four pages
 # resumen ejecutivo: "Their load in plain sight, how many things each person
 # has started."
 Their load in plain sight: how many
+
+# ─── Etapa 8.12, 2026-11-13: en la web queda el resumen ejecutivo ────────────
+
+# Desde la 8.12 el informe extenso solo se descarga en PDF y en /informe/ (y
+# /en/report/) se lee el resumen ejecutivo. Salen las frases que decían que el
+# informe se lee en la web:
+#   Botón de "Qué es y qué no es": "Leer el informe en la web" / "Read the
+#   report on the web" (ahora "Leer el resumen" / "Read the summary").
+#   Vista previa de /informe/: "El informe, para leer en la web" / "The report,
+#   to read on the web" (ahora "Resumen ejecutivo del informe").
+#   Bajada de la página del informe: "Es el mismo informe del PDF, para leer en
+#   la web, con una sección por página." / "It's the same report as the PDF, to
+#   read on the web, one section per page."
+#   Descripción de la página: "…En la web o en PDF." / "…On the web or as a PDF."
+# (Los dos puntos no van aquí: los cuenta el revisor por su cuenta, en todo lo
+# público, desde esta misma etapa.)
+informe en la web
+report on the web
+para leer en la web
+to read on the web
+con una sección por página
+one section per page
+En la web o en PDF
+On the web or as a PDF

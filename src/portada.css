@@ -62,7 +62,6 @@
   --punto-halo: rgba(255, 255, 255, 0.06);
   --sombra-pantalla: 0 40px 90px rgba(0, 0, 0, 0.55), 0 0 0 6px rgba(255, 255, 255, 0.025);
   --sombra-tapa: -24px 34px 70px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06);
-  --sombra-tapa-chica: -8px 14px 28px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.06);
   --fuente: 'Mona Sans', 'Avenir Next', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
   --ancho: 1280px;
   --margen: clamp(20px, 4vw, 56px);
@@ -98,7 +97,6 @@
   --punto-halo: rgba(16, 24, 48, 0.07);
   --sombra-pantalla: 0 30px 70px rgba(16, 24, 48, 0.2), 0 0 0 6px rgba(16, 24, 48, 0.035);
   --sombra-tapa: -18px 28px 56px rgba(16, 24, 48, 0.24), 0 0 0 1px rgba(16, 24, 48, 0.08);
-  --sombra-tapa-chica: -8px 14px 28px rgba(16, 24, 48, 0.22), 0 0 0 1px rgba(16, 24, 48, 0.08);
   color-scheme: light;
 }
 :root[data-tema='claro'] .siempre-noche { color: var(--tinta); }
@@ -588,79 +586,6 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .paso p { color: var(--suave); font-size: 17px; max-width: 36ch; text-wrap: pretty; }
 .paso-numero { font-weight: 760; color: var(--tinta); margin-right: 8px; }
 
-/* El kit para tu equipo: tres piezas (el juego, el informe y el taller) y la
-   licencia. Cada pieza es una tarjeta con su imagen arriba (una foto del
-   juego, la tapa del informe y la tapa de la guía rápida del taller) y, abajo,
-   cuánto tiempo toma (el orden en que se usan), qué es y su botón o sus
-   archivos. Lo que se lleva el equipo está en su propia sección, arriba. */
-.kit-bajada { color: var(--suave); font-size: 19px; max-width: 40em; margin-bottom: 36px; }
-.piezas {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-}
-.pieza {
-  display: flex;
-  flex-direction: column;
-  border-radius: 20px;
-  border: 1px solid var(--borde);
-  background: var(--noche-2);
-  overflow: hidden;
-}
-.pieza-imagen {
-  margin: 0;
-  aspect-ratio: 16 / 10;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  border-bottom: 1px solid var(--borde);
-  background: var(--noche-3);
-}
-.pieza-imagen-juego img { display: block; width: 100%; height: 100%; object-fit: cover; }
-/* Las tapas: el documento de pie, un poco girado y con su sombra, sobre un
-   fondo con luz abajo. Su ancho es el 36 % de la tarjeta: con la hoja A4 y el
-   marco de 16:10, ocupa el 82 % del alto. */
-.pieza-imagen-tapa { background: radial-gradient(100% 85% at 50% 108%, var(--noche-3), var(--noche-2) 88%); }
-.pieza-tapa {
-  display: block;
-  width: 36%;
-  height: auto;
-  border-radius: 3px;
-  box-shadow: var(--sombra-tapa-chica);
-  transform: perspective(900px) rotateY(14deg);
-}
-.pieza-cuerpo { display: flex; flex-direction: column; gap: 10px; flex: 1; padding: 20px 24px 26px; }
-.pieza-tiempo { font-size: 14px; font-weight: 600; color: var(--tenue); }
-.pieza h3 { margin: 0; }
-.pieza-texto { color: var(--suave); font-size: 16.5px; text-wrap: pretty; }
-.pieza-accion { margin-top: auto; padding-top: 14px; }
-.pieza-acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
-.pieza-enlace { font-size: 15.5px; color: var(--suave); text-underline-offset: 3px; }
-.pieza-enlace:hover { color: var(--tinta); }
-.pieza-titulo-enlace { color: inherit; text-decoration: none; }
-.pieza-titulo-enlace:hover { text-decoration: underline; text-underline-offset: 4px; }
-.pieza .boton { padding-inline: 22px; font-size: 16px; }
-/* Solo en inglés: que el taller por ahora está en español */
-.pieza-idioma { color: var(--tenue); font-size: 14.5px; line-height: 1.5; }
-.pieza-idioma:empty { display: none; }
-/* Los tres archivos del taller, uno por fila, del tamaño de un dedo */
-.descargas { list-style: none; margin: auto 0 0; padding: 6px 0 0; border-top: 1px solid var(--borde); }
-.descargas li { border-bottom: 1px solid var(--borde); }
-.descargas a {
-  display: flex;
-  align-items: center;
-  min-height: 48px;
-  padding: 6px 0;
-  font-size: 16px;
-  font-weight: 600;
-  text-decoration-color: var(--subrayado);
-}
-.descargas a:hover { text-decoration-color: currentColor; }
-.kit-cierre { margin-top: 28px; color: var(--suave); font-size: 17px; max-width: 60ch; text-wrap: pretty; }
-
 /* El tablero (portada v4, 2026-10-28): un solo tablero, no tarjetas sueltas:
    las celdas se separan con líneas finas. Lo usan "¿Qué ganó la mosca al
    limitar su WIP?" (hasta la 8.11 se llamaba "Para qué sirve un límite")
@@ -714,7 +639,9 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
    recuadro de noche: un día con 2 tareas a la vez (el verde de Tranquila) y
    otro con 9 (el rojo de Colapsada). Los números van escritos al lado de cada
    dibujo: el color nunca es lo único que lo dice. */
-.sirve-tablero .gana-item h3 {
+.sirve-tablero .gana-item h3,
+.mosca-tablero .gana-item h3,
+.kit-tablero .gana-item h3 {
   margin: 0;
   font-size: clamp(22px, 2vw, 27px);
   font-weight: 760;
@@ -783,8 +710,14 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
    pruebas abajo, todas del mismo alto */
 @supports (grid-template-rows: subgrid) {
   @media (min-width: 900px) {
-    .sirve-tablero { grid-template-rows: auto 1fr; }
-    .sirve-tablero .gana-item { display: grid; grid-row: span 2; grid-template-rows: subgrid; row-gap: 20px; }
+    .sirve-tablero,
+    .mosca-tablero { grid-template-rows: auto 1fr; }
+    .sirve-tablero .gana-item,
+    .mosca-tablero .gana-item { display: grid; grid-row: span 2; grid-template-rows: subgrid; row-gap: 20px; }
+    /* (el kit tiene tres filas: qué es, el dibujo y los botones) */
+    .kit-tablero { grid-template-rows: auto auto 1fr; }
+    .kit-tablero .gana-item { display: grid; grid-row: span 3; grid-template-rows: subgrid; row-gap: 20px; }
+    .kit-tablero .pieza-accion { align-self: start; }
     .sirve-tablero .prueba { display: flex; flex-direction: column; justify-content: center; }
   }
 }
@@ -889,36 +822,192 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .barras i { flex: 1 1 0; height: var(--h); border-radius: 3px 3px 0 0; background: var(--acento); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22); }
 .semana-nombre { font-size: 12.5px; line-height: 1; text-align: center; color: var(--tenue); }
 
-/* ¿Por qué una mosca?: el texto a la izquierda y, al lado, las dos fotos del
-   cerebro (2 y 9 tareas a la vez), el crédito de MaleCNS y los colores */
-.credito {
-  display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-  column-gap: clamp(24px, 5vw, 80px);
-  align-items: start;
+/* El kit para tu equipo (8.12, 2026-11-13, pedido de Felipe): un tablero como
+   "Lo que se lleva tu equipo", con las tres piezas en sus celdas. Cada una
+   trae cuánto toma (en el color de la pieza), qué es, un dibujo de lo que
+   trae y, abajo, su botón y sus archivos. En computador las tres comparten
+   filas: los dibujos y los botones quedan a la misma altura. Hasta la 8.11
+   eran tres tarjetas con una foto del juego y las dos tapas. */
+.kit-bajada { color: var(--suave); font-size: 19px; max-width: 40em; margin-bottom: 30px; }
+.kit-tablero .gana-item { justify-content: flex-start; }
+.pieza-cabeza { display: flex; flex-direction: column; gap: 8px; }
+/* (el color de la pieza, un poco hacia el del texto: se lee bien con fondo negro y con fondo blanco) */
+.pieza-tiempo { font-size: 14px; font-weight: 650; line-height: 1.2; color: color-mix(in srgb, var(--acento) 76%, var(--tinta)); }
+.pieza-texto { color: var(--suave); font-size: 16.5px; line-height: 1.5; text-wrap: pretty; }
+.kit-tablero .dibujo { height: 156px; }
+.pieza-accion { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.pieza-titulo-enlace { color: inherit; text-decoration: none; }
+.pieza-titulo-enlace:hover { text-decoration: underline; text-underline-offset: 4px; }
+.pieza .boton { padding-inline: 22px; font-size: 16px; }
+/* Solo en inglés: que el taller por ahora está en español */
+.pieza-idioma { color: var(--tenue); font-size: 14.5px; line-height: 1.5; }
+.pieza-idioma:empty { display: none; }
+/* Los archivos de cada pieza, uno por fila, del tamaño de un dedo */
+.descargas { align-self: stretch; list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--borde); }
+.descargas li { border-bottom: 1px solid var(--borde); }
+.descargas a {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 6px 0;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration-color: var(--subrayado);
 }
-.credito h2 { grid-column: 1 / -1; max-width: 16em; }
-.credito-texto p { color: var(--suave); max-width: 62ch; }
-.credito-texto p + p { margin-top: 14px; }
-.credito-texto .destacado { color: var(--tinta); font-size: 20px; text-wrap: pretty; }
-/* 8.8: el aviso de las películas ("ninguna mosca salió herida"), en letra chica */
-.credito-texto .aviso-mosca { margin-top: 10px; font-size: 15px; line-height: 1.5; color: var(--tenue); text-wrap: pretty; }
-.credito-lado { display: grid; gap: 16px; align-content: start; }
-.cerebros { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.descargas a:hover { text-decoration-color: currentColor; }
+.kit-cierre { margin-top: 22px; color: var(--suave); font-size: 17px; max-width: 60ch; text-wrap: pretty; }
+/* El juego: el día de oficina, de 9 a 18, y su tablero. En curso lleva el
+   color de la pieza y en Hecho están las 18 tareas terminadas del día */
+.dibujo-juego { display: flex; flex-direction: column; gap: 10px; }
+.dia {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  font-size: 12.5px;
+  font-weight: 650;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--suave);
+}
+.dia-riel { position: relative; height: 8px; border-radius: 4px; overflow: hidden; background: color-mix(in srgb, var(--tinta) 9%, transparent); }
+.dia-riel::after { content: ''; position: absolute; inset: 0; border-radius: 4px; background: var(--acento); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25); }
+.tablerito { flex: 1 1 auto; min-height: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; container-type: inline-size; }
+.tablerito .columna-mini { min-width: 0; padding: 7px 8px; }
+.tablerito-cabeza { margin-bottom: 2px; overflow: hidden; font-size: 12px; font-weight: 650; line-height: 1.2; white-space: nowrap; color: var(--suave); }
+.tablerito .columna-mini i { height: 11px; }
+.hechas { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 3px; }
+.tablerito .hechas i { height: 9px; border-radius: 2px; background: var(--acento); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22); }
+/* (en una columna angosta los nombres no caben: quedan las tarjetas) */
+@container (max-width: 236px) {
+  .tablerito-cabeza { display: none; }
+}
+/* El informe: las 2 páginas del resumen y las 18 del informe, hoja por hoja */
+.dibujo-informe { display: flex; flex-direction: column; justify-content: center; gap: 12px; }
+.hojas-fila + .hojas-fila { padding-top: 12px; border-top: 1px dashed var(--borde-fuerte); }
+.hojas-nombre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2px 10px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.2;
+  color: var(--suave);
+}
+.hojas-nombre b { font-weight: 720; white-space: nowrap; color: var(--tinta); }
+.hojas { display: grid; grid-template-columns: repeat(18, minmax(0, 1fr)); gap: 3px; }
+.hojas i { aspect-ratio: 5 / 7; background: var(--acento); clip-path: polygon(0 0, 62% 0, 100% 27%, 100% 100%, 0 100%); }
+/* El taller: las cuatro partes de la sesión, cada una desde su minuto
+   (--desde) y con su duración (--dura), sobre los 60 minutos */
+.dibujo-taller { display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+.parte {
+  display: grid;
+  grid-template-columns: 5.7em minmax(0, 1fr) 1.5em;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-weight: 650;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--suave);
+}
+.parte b { text-align: right; font-weight: 720; color: var(--tinta); }
+.parte-riel { position: relative; height: 12px; border-radius: 3px; background: color-mix(in srgb, var(--tinta) 7%, transparent); }
+.parte-riel i { position: absolute; top: 0; bottom: 0; left: calc(var(--desde) / 60 * 100%); width: calc(var(--dura) / 60 * 100%); border-radius: 3px; overflow: hidden; }
+.parte-riel i::after { content: ''; position: absolute; inset: 0; background: var(--acento); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22); }
+.partes-total { margin-top: 2px; padding-top: 9px; border-top: 1px dashed var(--borde-fuerte); text-align: right; font-size: 13px; line-height: 1; color: var(--suave); }
+.partes-total b { font-size: 15px; font-weight: 760; color: var(--tinta); }
+
+/* ¿Por qué una mosca? (8.12, 2026-11-13, pedido de Felipe: "lo encuentro muy
+   fome"): las mismas frases en un tablero de tres celdas, cada una con su
+   dibujo en un recuadro alto. El mapa: la foto de verdad, con las neuronas
+   en su lugar y el color de su zona. El trabajo: la credencial de oficina de la mosca, colgada
+   de su cinta. El juego: las dos fotos del cerebro, siempre de noche, con sus
+   colores. Abajo, el aviso y el crédito del Male CNS. Hasta la 8.11 era el
+   texto a la izquierda y las fotos a la derecha. */
+.credito h2 { max-width: 16em; }
+/* Solo en inglés: qué quiere decir "mosca" */
+.significa { margin: -4px 0 22px; font-size: 17px; color: var(--suave); }
+.significa:empty { display: none; }
+.mosca-tablero .gana-item { justify-content: flex-start; }
+.mosca-tablero .dibujo { height: auto; min-height: 330px; }
+/* 1. El mapa de verdad (2026-11-13, pedido de Felipe: la silueta de rayas
+   celestes "es como rara"): la foto de 25.000 neuronas del Male CNS, cada una
+   en su lugar real y con el color de su zona (scripts/mapa-cerebro.mjs), en un
+   recuadro que es de noche también con fondo blanco, como el de las fotos del
+   juego. .mapa-corte es la cortina que la destapa de arriba abajo en 66 pasos
+   (las 66 láminas) con su línea de corte. Sin cargas queda fuera de la vista */
+.dibujo-mapa { --acento: var(--vision); display: flex; flex-direction: column; gap: 12px; color: var(--tinta); }
+.dibujo-mapa .carril-caso { color: var(--suave); }
+.dibujo-mapa .carril-caso::before { background: var(--acento); box-shadow: 0 0 10px var(--acento); }
+.mapa { position: relative; flex: 1 1 auto; display: grid; place-items: center; overflow: hidden; }
+.mapa img { display: block; width: min(100%, 246px); height: auto; }
+/* (queda 24 px más abajo del borde, para que tampoco asome el brillo de su línea) */
+.mapa-corte { position: absolute; inset: 0; background: var(--noche); transform: translateY(calc(100% + 24px)); }
+.mapa-corte::before { content: ''; position: absolute; inset: 0 12% auto; height: 2px; border-radius: 2px; background: rgba(238, 243, 255, 0.85); box-shadow: 0 0 12px rgba(238, 243, 255, 0.6); }
+/* 2. El trabajo: la credencial cuelga de su cinta, que baja desde el borde
+   del recuadro y entra por el ojal */
+.dibujo-credencial { display: flex; justify-content: center; padding-top: 0; overflow: hidden; }
+.colgante { display: flex; flex-direction: column; align-items: center; transform-origin: 50% 0; }
+.cinta { position: relative; z-index: 1; flex: 1 1 34px; width: 12px; min-height: 30px; margin-bottom: -15px; border-radius: 0 0 3px 3px; background: color-mix(in srgb, var(--acento) 62%, var(--noche)); }
+.credencial {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 176px;
+  padding: 0 16px 14px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--acento) 11%, var(--noche-2));
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--acento) 62%, transparent);
+  text-align: center;
+}
+.credencial-franja { align-self: stretch; display: grid; place-items: center; height: 26px; margin: 0 -16px 12px; background: var(--acento); }
+.credencial-ojal { width: 34px; height: 7px; border-radius: 4px; background: var(--noche); }
+.credencial-foto { display: block; width: 96px; height: auto; border-radius: 12px; background: color-mix(in srgb, var(--acento) 16%, transparent); }
+.credencial-nombre { margin-top: 10px; font-size: 18px; font-weight: 760; line-height: 1.1; letter-spacing: -0.01em; color: var(--tinta); }
+.credencial-cargo { margin: 3px 0 10px; font-size: 13.5px; line-height: 1.2; color: var(--suave); }
+.credencial-dato {
+  align-self: stretch;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--borde-fuerte);
+  font-size: 12.5px;
+  line-height: 1.2;
+  white-space: nowrap;
+  color: var(--suave);
+}
+.credencial-dato + .credencial-dato { margin-top: 6px; }
+.credencial-dato b { font-weight: 720; color: var(--tinta); }
+/* 3. El juego: las dos fotos del cerebro (2 y 9 tareas a la vez) y sus
+   colores, en un recuadro que es de noche también con fondo blanco */
+.dibujo-cerebros { display: flex; flex-direction: column; gap: 14px; color: var(--tinta); }
+.cerebros { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .cerebros figure { margin: 0; }
-.cerebros img { display: block; width: 100%; height: auto; border-radius: 14px; border: 1px solid var(--borde); }
-.cerebros figcaption { margin-top: 8px; font-size: 14px; line-height: 1.4; color: var(--tenue); }
-.cerebros .cifra { color: var(--tinta); font-weight: 650; }
-.zonas { padding: 20px 22px; border-radius: 18px; border: 1px solid var(--borde); background: var(--noche-2); container-type: inline-size; }
-.zonas-titulo { font-size: 14px; font-weight: 600; color: var(--suave); margin-bottom: 12px; }
-.zonas ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; }
-.zonas li { display: flex; align-items: center; gap: 10px; font-size: 15.5px; }
-.zonas li::before { content: ''; flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--zona); box-shadow: 0 0 12px var(--zona); }
+.cerebros img { display: block; width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--borde); }
+.cerebros figcaption { margin-top: 8px; font-size: 13.5px; line-height: 1.38; color: var(--suave); text-wrap: pretty; }
+.cerebros .cifra { font-weight: 720; color: var(--tinta); }
+.zonas { margin-top: auto; padding-top: 12px; border-top: 1px dashed var(--borde-fuerte); container-type: inline-size; }
+.zonas-titulo { margin-bottom: 9px; font-size: 12.5px; font-weight: 650; line-height: 1.2; color: var(--suave); }
+.zonas ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, auto); justify-content: space-between; gap: 8px 12px; }
+.zonas li { display: flex; align-items: center; gap: 7px; font-size: 13px; line-height: 1.2; white-space: nowrap; }
+.zonas li::before { content: ''; flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--zona); box-shadow: 0 0 10px var(--zona); }
 .zonas li.reposo { color: var(--tenue); }
 .zonas li.reposo::before { box-shadow: none; }
-@container (max-width: 330px) {
-  .zonas ul { grid-template-columns: 1fr; }
+@container (max-width: 262px) {
+  .zonas ul { grid-template-columns: repeat(2, auto); justify-content: start; column-gap: 22px; }
 }
+/* Abajo del tablero: el aviso de las películas ("ninguna mosca salió herida")
+   y el crédito, en letra chica */
+.aviso-mosca { margin-top: 22px; max-width: 62ch; font-size: 16.5px; line-height: 1.5; color: var(--suave); text-wrap: pretty; }
+.credito-fuente { margin-top: 10px; max-width: 88ch; text-wrap: pretty; }
+.credito-fuente a { color: var(--suave); }
 
 /* ---------- Las cargas (8.11, 2026-11-12) ----------
    Pedido de Felipe: "que la primera vez que los veas como que se carguen esas
@@ -1073,22 +1162,60 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .con-carga .paso.cargado { transition: opacity 0.5s ease var(--espera); }
   .con-carga .paso:not(.cargado) { opacity: 0.3; }
 
-  /* ¿Por qué una mosca?: cada cerebro se enciende mientras cuenta sus neuronas
-     (1,2 ms por neurona: el de 9 tareas tarda el triple) y los colores de la
-     leyenda se prenden de a uno */
-  .con-carga .cerebros .cargado img { transition: opacity calc(var(--n) * 1.2ms) var(--frena) var(--espera); }
-  .con-carga .cerebros figure:not(.cargado) img { opacity: 0.28; }
+  /* El kit (8.12). El juego: el día avanza de 9 a 18 y las 18 tareas
+     terminadas llegan a Hecho de a una, al mismo paso (60 ms cada una) */
+  .con-carga .cargado .dia-riel::after { transition: transform 1080ms linear var(--espera); }
+  .con-carga [data-carga]:not(.cargado) .dia-riel::after { transform: translateX(-101%); }
+  .con-carga .cargado .hechas i {
+    transition:
+      opacity 0.2s ease calc(var(--espera) + var(--i) * 60ms),
+      transform 0.34s var(--rebote) calc(var(--espera) + var(--i) * 60ms);
+  }
+  .con-carga [data-carga]:not(.cargado) .hechas i { opacity: 0; transform: scale(0.4); }
+  /* El informe: las hojas se ponen de a una, al paso de su número. El resumen
+     termina al tiro y el informe sigue hasta las 18 */
+  .con-carga .cargado .hojas i {
+    transition:
+      opacity 0.2s ease calc(var(--espera) + var(--i) * 60ms),
+      transform 0.34s var(--rebote) calc(var(--espera) + var(--i) * 60ms);
+  }
+  .con-carga [data-carga]:not(.cargado) .hojas i { opacity: 0; transform: translateY(6px); }
+  /* El taller: cada parte se llena desde su minuto y tarda lo que dura (20 ms
+     por minuto), una tras otra; el total cuenta a ese mismo paso */
+  .con-carga .cargado .parte-riel i::after { transition: transform calc(var(--dura) * 20ms) linear calc(var(--espera) + var(--desde) * 20ms); }
+  .con-carga [data-carga]:not(.cargado) .parte-riel i::after { transform: translateX(-101%); }
+
+  /* ¿Por qué una mosca? (8.12). El mapa: la foto se destapa de arriba abajo en
+     66 pasos, uno por lámina (19 ms cada uno, lo mismo que tarda en contar el
+     66), mientras cuentan las neuronas */
+  .con-carga .cargado .mapa-corte { transition: transform 1254ms steps(66, end) var(--espera); }
+  .con-carga [data-carga]:not(.cargado) .mapa-corte { transform: none; }
+  /* El trabajo: la credencial cae colgando de su cinta, se balancea y queda quieta */
+  .con-carga .cargado .colgante { animation: colgar 1.2s cubic-bezier(0.3, 0.6, 0.4, 1) var(--espera) 1 backwards; }
+  .con-carga [data-carga]:not(.cargado) .colgante { opacity: 0; }
+  /* El juego: cada cerebro se enciende mientras cuenta sus neuronas (1,2 ms
+     por neurona: el de 9 tareas tarda el triple) y los colores de la leyenda
+     se prenden de a uno */
+  .con-carga .cargado .cerebros img { transition: opacity calc(var(--n) * 1.2ms) var(--frena) var(--espera); }
+  .con-carga [data-carga]:not(.cargado) .cerebros img { opacity: 0.28; }
   .zonas li:nth-child(2) { --i: 1; }
   .zonas li:nth-child(3) { --i: 2; }
   .zonas li:nth-child(4) { --i: 3; }
   .zonas li:nth-child(5) { --i: 4; }
   .zonas li:nth-child(6) { --i: 5; }
-  .con-carga .zonas.cargado li::before {
+  .con-carga .cargado .zonas li::before {
     transition:
       opacity 0.3s ease calc(var(--espera) + var(--i, 0) * 90ms),
       transform 0.4s var(--rebote) calc(var(--espera) + var(--i, 0) * 90ms);
   }
-  .con-carga .zonas:not(.cargado) li::before { opacity: 0.2; transform: scale(0.5); }
+  .con-carga [data-carga]:not(.cargado) .zonas li::before { opacity: 0.2; transform: scale(0.5); }
+}
+@keyframes colgar {
+  0% { opacity: 0; transform: translateY(-28px) rotate(-9deg); }
+  26% { opacity: 1; transform: translateY(0) rotate(5deg); }
+  52% { transform: rotate(-2.8deg); }
+  76% { transform: rotate(1.2deg); }
+  100% { transform: none; }
 }
 @keyframes tope {
   0% { opacity: 0; }
@@ -1301,8 +1428,6 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .paso { gap: 12px; }
 
   .kit-bajada { font-size: 17px; margin-bottom: 24px; }
-  .piezas { grid-template-columns: 1fr; gap: 12px; }
-  .pieza-cuerpo { padding: 18px 20px 22px; }
   .pieza .boton { width: 100%; max-width: 440px; }
 
   /* ¿Qué ganó la mosca al limitar su WIP?: las tres celdas una bajo otra, cada una con su
@@ -1344,9 +1469,11 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .semana-nombre { font-size: 12px; white-space: nowrap; }
   .motivo-texto p { font-size: 17px; }
 
-  .credito { grid-template-columns: 1fr; }
-  .credito-lado { margin-top: 24px; }
-  .zonas { margin-top: 0; }
+  /* ¿Por qué una mosca?: las tres celdas una bajo otra, cada dibujo de su alto */
+  .mosca-tablero .dibujo { min-height: 0; }
+  .cinta { flex: 0 0 34px; }
+  .dibujo-credencial { padding-bottom: 16px; }
+  .aviso-mosca { font-size: 16px; }
 
   .informe { grid-template-columns: 1fr; }
   .tapa { width: min(64vw, 260px); margin: 0 auto 36px; }
@@ -1378,9 +1505,6 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .lleva-tablero .dibujo { flex: 0 0 auto; height: 100px; }
   .columna-mini-cabeza span { display: inline; }
 }
-@media (max-width: 599px) {
-  .cerebros { gap: 10px; }
-}
 
 /* Computadores angostos (900 a 1099 px, como el iPad en horizontal): el
    lienzo empieza más a la derecha (el cerebro se achica para caber) y el
@@ -1397,10 +1521,6 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .boton.principal { padding-inline: 28px; }
   h1 { font-size: clamp(36px, 3.4vw, 44px); }
   .lleva-tablero { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .piezas { grid-template-columns: 1fr 1fr; }
-  .pieza-taller { grid-column: 1 / -1; flex-direction: row; }
-  .pieza-taller .pieza-imagen { flex: 0 0 42%; aspect-ratio: auto; border-bottom: 0; border-right: 1px solid var(--borde); }
-  .pieza-taller .pieza-tapa { width: 48%; }
 }
 
 /* Pantallas de computador bajas (proyector de 1280 × 720, ventanas chicas):

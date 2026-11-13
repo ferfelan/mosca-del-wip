@@ -7,10 +7,15 @@
 // src/idioma.js.
 import { idiomaDeLaPagina, rutaEnIdioma } from './idioma.js';
 import { iniciarBarra } from './barra.js';
+import { iniciarCargas } from './cargas.js';
 
 const idioma = idiomaDeLaPagina() ?? 'es';
 
 iniciarBarra();
+
+// Los tableros que se cargan la primera vez que se ven (8.12: el resumen
+// ejecutivo de /informe/ trae los dos de la portada). Donde no hay, no hace nada
+iniciarCargas();
 
 // Los enlaces al juego y al inicio, en el idioma de la página
 for (const enlace of document.querySelectorAll('[data-jugar]')) enlace.href = rutaEnIdioma('/jugar/', idioma);

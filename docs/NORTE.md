@@ -59,8 +59,10 @@ sostenible**.
   mismo que avanzar" es el rótulo chico sobre "Ocupado todo el día. ¿Y qué
   terminaste?", como en la 8.6. En la 8.7 había salido de arriba y cerraba "Lo
   que vas a ver"; ahora está en un solo lugar de la portada, arriba. Debajo de
-  la bajada, el dato del juego: "En el juego, la mosca ya hizo la prueba: con 9
-  tareas a la vez, colapsa. Con 2, termina el doble."
+  la bajada, el dato del juego: "En el juego, la mosca ya hizo la prueba. Con 9
+  tareas a la vez, colapsa. Con 2, termina el doble." (así desde la 8.12,
+  2026-11-13, cuando Felipe pidió sacar los dos puntos de todo lo que se lee;
+  antes iba "…la prueba: con 9…").
 - **Límite sostenible** = el que se mantiene todo el día sin colapsar (el
   juego mide un solo día). En la parte 4.4 (2026-10-20) reemplazó a "límite
   sano" en el panel de Carga del juego y en el informe para compartir (v2 y v3) y en el

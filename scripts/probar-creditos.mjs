@@ -236,14 +236,14 @@ for (const [nombre, ancho, alto] of PANTALLAS)
   revisar((await credito.count()) === 1, 'el juego no enlaza a /creditos/ desde el crédito del cerebro');
   if (await credito.count()) {
     const en = await credito.evaluate((a) => ({ title: a.getAttribute('title'), texto: a.textContent.trim() }));
-    revisar(en.title === 'Credits and licenses' && en.texto === 'Data: Male CNS v1.0 · CC BY 4.0', `el crédito del juego en inglés dice "${en.texto}" (${en.title})`);
+    revisar(en.title === 'Credits and licenses' && en.texto === 'Data from Male CNS v1.0 · CC BY 4.0', `el crédito del juego en inglés dice "${en.texto}" (${en.title})`);
   }
   await contexto.close();
   const limpio = await navegador.newContext({ viewport: { width: 1440, height: 900 } });
   const juego = await limpio.newPage();
   await juego.goto(`${DIRECCION}jugar/`, { waitUntil: 'networkidle', timeout: 120000 });
   const es = await juego.locator('a.cerebro-credito[href="/creditos/"]').evaluate((a) => ({ title: a.getAttribute('title'), texto: a.textContent.trim() }));
-  revisar(es.title === 'Créditos y licencias' && es.texto === 'Datos: Male CNS v1.0 · CC BY 4.0', `el crédito del juego en español dice "${es.texto}" (${es.title})`);
+  revisar(es.title === 'Créditos y licencias' && es.texto === 'Datos del Male CNS v1.0 · CC BY 4.0', `el crédito del juego en español dice "${es.texto}" (${es.title})`);
   await limpio.close();
 }
 

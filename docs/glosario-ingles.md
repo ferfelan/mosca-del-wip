@@ -34,6 +34,7 @@ el juego digan lo mismo. Si quieres cambiar una palabra:
 | Español | Inglés |
 |---|---|
 | Mosca del WIP | Mosca del WIP (no se traduce) |
+| Mosca (el nombre en la credencial de "¿Por qué una mosca?", 8.12) | Mosca (un nombre propio no se traduce; al lado, la página dice "Mosca means fly in Spanish.") |
 | WIP | WIP |
 | trabajo en curso | work in progress |
 | tarea / tareas | task / tasks |
@@ -74,7 +75,7 @@ el juego digan lo mismo. Si quieres cambiar una palabra:
 | Español | Inglés |
 |---|---|
 | Saltar al contenido | Skip to content |
-| Mosca del WIP: ir al inicio (el logo, para lectores de pantalla) | Mosca del WIP: go to the top |
+| Mosca del WIP, ir al inicio (el logo, para lectores de pantalla; sin dos puntos desde la 8.12) | Mosca del WIP, go to the home page |
 | Menú | Menu |
 | Secciones de la página | Page sections |
 | El juego · El cerebro · El informe · Preguntas frecuentes (desde el 2026-10-25; antes "Preguntas") | The game · The brain · The report · FAQ |
@@ -112,7 +113,7 @@ el juego digan lo mismo. Si quieres cambiar una palabra:
 | Juega un día completo para comparar | Play a full day to compare |
 | Borrar historial · ¿Seguro? Toca de nuevo | Clear history · Sure? Press again |
 | Números del juego. Que cada tarea tarde más tiene respaldo; el estrés es un supuesto nuestro. | Game numbers. That each task takes longer is backed by evidence; the stress is our assumption. |
-| Terminando lo empezado: 8 en curso | Finishing what's started: 8 in progress |
+| Terminando lo empezado, 8 en curso | Finishing what's started, 8 in progress |
 | En vivo / En pausa / Modo demo | Live / Paused / Demo mode |
 | Muchas / Pocas tareas a la vez | Many / Few tasks at once |
 | Terminando lo empezado · nuevo límite 2 | Finishing what's started · new limit 2 |
@@ -129,21 +130,21 @@ el juego digan lo mismo. Si quieres cambiar una palabra:
 | La misma partida, en grande | The same game, on the big screen |
 | Estado de la mosca | How the fly is doing |
 | Trabajando en el kanban | Working on the kanban |
-| Salió a fumar: pierde tiempo | Out for a smoke: losing time |
-| Pausa sana: toma café | Healthy break: having a coffee |
-| Espera: sus tareas están bloqueadas | Waiting: her tasks are blocked |
+| Salió a fumar, pierde tiempo | Out for a smoke, losing time |
+| Pausa sana, toma café | Healthy break, having a coffee |
+| Espera, sus tareas están bloqueadas | Waiting, her tasks are blocked |
 | Juego en pausa | Game paused |
-| Día terminado: descansa | Day over: resting |
+| Día terminado, descansa | Day over, resting |
 | Día terminado | Day over |
 | Fin del día con WIP 9 · hoy | End of the day with WIP 9 · today |
 | R para jugar otro día · 1–9 cambia el WIP · D modo demo | R to play another day · 1–9 changes the WIP · D demo mode |
-| Modo demo · sigue un día con WIP 2… | Demo mode · next up: a day with WIP 2… |
+| Modo demo · sigue un día con WIP 2… | Demo mode · next up, a day with WIP 2… (sin dos puntos desde la 8.12) |
 | Fin del día. Mira la tabla o reinicia para probar otro WIP. | End of the day. Check the table, or restart to try another WIP. |
 | Cerebro en vivo | Live brain |
 | Arriba el cerebro; abajo, el cordón nervioso | The brain on top; the nerve cord below |
 | Detener / Girar / Centrar | Stop / Rotate / Center |
 | Neuronas reales de una mosca. Mientras más tareas tiene encima, más se enciende. | Real neurons from a fly. The more tasks she has on her plate, the more her brain lights up. |
-| Día terminado: la mosca descansa y su cerebro se apaga. | Day over: the fly rests and her brain switches off. |
+| Día terminado. La mosca descansa y su cerebro se apaga. | Day over. The fly rests and her brain switches off. |
 | Hoy en la oficina / Resumen del día | Today at the office / Day summary |
 | Carga · "9 a la vez" · límite sostenible 3 | Workload · "9 at once" · sustainable limit 3 |
 | De dónde viene / vino la actividad | Where the activity comes / came from |
@@ -153,8 +154,8 @@ el juego digan lo mismo. Si quieres cambiar una palabra:
 | sale a fumar · toma café (al pasar el mouse) | out for a smoke · having coffee |
 | encendida · camino de la señal | firing · signal path |
 | ¿Es real? | Is it real? |
-| Las moscas no fuman: el cigarro es un disfraz. | Flies don't smoke: the cigarette is a disguise. |
-| Datos: Male CNS v1.0 | Data: Male CNS v1.0 |
+| Las moscas no fuman. El cigarro es un disfraz. | Flies don't smoke. The cigarette is a disguise. |
+| Datos del Male CNS v1.0 | Data from Male CNS v1.0 |
 
 **Tarjetita de una neurona** (al pasar el mouse por el cerebro):
 

@@ -19,14 +19,13 @@ export const INGLES = {
   titulo: 'Busy all day.<br class="corte" /> So what did you&nbsp;finish?',
   bajada:
     'Measure how many things your team has started and find the limit that lets it finish the most. Start by playing for a minute with an office fly that has a real brain.',
-  datoInicio: 'In the game, the fly already ran the test: with 9&nbsp;tasks at once, she ends up overwhelmed. With&nbsp;2, she finishes twice as many.',
+  datoInicio: 'In the game, the fly already ran the test. With 9&nbsp;tasks at once, she ends up overwhelmed. With&nbsp;2, she finishes twice as many.',
   jugar: 'Play',
   jugarMinuto: 'Play (1 minute)',
   verKit: 'See the kit',
   descargar: 'Download the report (PDF)',
-  descargarCorto: 'Download the PDF',
   descargarResumen: 'Executive summary (PDF, 2 pages)', // 8.6: el resumen aparte; desde la 8.11 es el resumen ejecutivo, de 2 páginas
-  leerInforme: 'Read the report on the web',
+  leerInforme: 'Read the summary', // 8.12: en la web se lee el resumen ejecutivo
   gratis: 'Free, no sign-up. Plays on a computer, phone or tablet.',
   creadoPor: 'Created by <a href="https://www.linkedin.com/in/felipefernandezandrade/" target="_blank" rel="noopener">Felipe Fernández</a>', // 5.2i
   neuronas: 'neurons firing',
@@ -42,7 +41,7 @@ export const INGLES = {
   juegoTitulo: 'What you’ll see',
   juegoTexto:
     'The same fly, the same day at the office, twice. In the game, with 2 tasks at once she finishes 18. With 9 she finishes half as many, even though she’s busy all day.',
-  video: 'The fly in her office: first with 2 tasks at once, calm, and then with 9, stressed and smoking.',
+  video: 'The fly in her office, first with 2 tasks at once, calm, and then with 9, stressed and smoking.',
   pocas: 'Few tasks at once',
   muchas: 'Many tasks at once',
   figcaption: 'First with 2 tasks at once. Then with 9.',
@@ -58,7 +57,7 @@ export const INGLES = {
   paso1: 'You choose how many tasks she can have started at once, from 1 to 10. That’s called a work-in-progress limit (WIP).',
   paso2: 'You watch her day at the office, from 9 to 6, in one minute.',
   paso3: 'You compare how much she finished, how long each task took and how many times she went out for a smoke.',
-  paso1Alt: 'The game’s control: tasks in progress at once, from 1 to 10, within the sustainable limit.',
+  paso1Alt: 'The game’s control, with the tasks in progress at once, from 1 to 10, within the sustainable limit.',
   paso2Alt: 'The fly in front of her board for the day, with 2 tasks in progress, at 10:10.',
   paso3Alt: 'The Days played table, with one day at 2 tasks at once and another at 9.',
 
@@ -109,41 +108,65 @@ export const INGLES = {
   kitJuegoTiempo: '1 minute',
   kitJuegoTexto: 'Play it online on any device, and watch a fly at work.', // 8.8
   kitInforme: 'The report',
-  kitInformeTiempo: '10 minutes',
-  kitInformeTexto: 'Where each number comes from and what the studies say.',
-  kitInformeLeer: 'Read it on the web',
+  // 8.12: en la web se lee el resumen ejecutivo y el informe entero se descarga
+  kitInformeTiempo: '2 to 10 minutes',
+  kitInformeTexto: 'Read the executive summary on the web. The full report, with every number, its sources and the studies, is a PDF download.',
+  kitInformeLeer: 'Read the summary',
+  kitInformePdf: 'Report (PDF, 18 pages)',
   kitTaller: 'The workshop',
   kitTallerTiempo: '60 minutes',
   kitTallerTexto: 'Slides, a quick guide and the team sheet to print, so your team finds its limit and tries it for 2 weeks.',
-  kitTallerVer: 'See the workshop (60 minutes)',
+  kitTallerVer: 'See the workshop',
   kitTallerIdioma: 'For now, the workshop is in Spanish.', // en español no hay línea
   kitGuia: 'Quick guide (PDF, in Spanish)',
   kitPptx: 'Slides (PowerPoint, in Spanish)',
   kitPdf: 'Slides (PDF, in Spanish)',
   kitHoja: 'Team sheet (PDF, in Spanish)',
-  tapaJuegoAlt: 'The fly from the game at her office, in front of her kanban board.',
-  tapaInformeAlt: 'The report’s cover: the fly carrying a tower of folders.',
-  tapaTallerAlt: 'The cover of the workshop’s quick guide: the fly with 9 tasks in progress.',
+  // (8.12) lo que dicen los dibujos del kit: el día del juego, las páginas del
+  // resumen y del informe, y las cuatro partes del taller (los mismos nombres
+  // de la página del taller en inglés)
+  dibujoDiaDesde: '9 am',
+  dibujoDiaHasta: '6 pm',
+  dibujoPorHacer: 'To do',
+  dibujoHecho: 'Done',
+  dibujoResumen: '<span>The summary, on the web</span><b><span data-cuenta data-paso="60">2</span> pages</b>',
+  dibujoInforme: '<span>The report, as a PDF</span><b><span data-cuenta data-paso="60">18</span> pages</b>',
+  parteConexion: 'Connection',
+  parteConceptos: 'Concepts',
+  partePractica: 'Practice',
+  parteCierre: 'Closing',
+  partesTotal: '<b data-cuenta data-paso="20">60</b> minutes',
   kitCierre: 'Use it and adapt it, also in paid workshops, crediting the author.',
 
   // ¿Por qué una mosca?
   creditoTitulo: 'Why a fly?',
   significa: 'Mosca means fly in Spanish.', // al empezar la sección; en español no hay línea
-  creditoDestacado:
-    'Scientists at Janelia, Cambridge and Google, among others, mapped a fly’s central nervous system, 166,700 neurons and their connections. We gave her an office job. Yes, we put her to work.',
+  // 8.12: las mismas frases, repartidas en las tres celdas del tablero
+  mosca1: 'Scientists mapped a fly’s central nervous system.',
+  laminasQuien: 'Janelia, Cambridge and Google, among others',
+  mapaAlt: 'The map of the fly’s nervous system, with the brain on top and the nerve cord below. It shows 25,000 of the neurons, each in its real place and in the color of its zone.',
+  laminasDato: '<b data-cuenta="der" data-paso="0.0075">166,700</b> neurons and their connections, in <b data-cuenta data-paso="19">66</b>&nbsp;slices',
+  mosca2: 'We gave her an office job. Yes, we put her to work.',
+  credencialNombre: 'Mosca',
+  credencialCargo: 'Office worker',
+  credencialJornada: 'Hours',
+  credencialHorario: '9 to 6',
+  credencialTareas: 'Tasks at once',
+  credencialRango: '1 to 10',
+  mosca3: 'The neurons that light up in the game come from that map.',
   // 8.8: el aviso de las películas, con lo que le pasó de verdad a la mosca
   // del mapa (Berg y otros, 2025, Métodos: le sacaron el sistema nervioso
   // entero y lo cortaron en 66 láminas de 20 micrones)
   creditoAviso:
     'No fly was harmed or made to do any real work. Except the one in the map, whose nervous system was taken out and cut into 66&nbsp;slices.', // 8.11: sin dos puntos (pedido de Felipe: "es muy IA")
-  cerebro2Alt: 'The brain with 2 tasks at once: few neurons firing.',
-  cerebro9Alt: 'The brain with 9 tasks at once: many more neurons firing.',
-  cerebro2Pie: '2 tasks at once: <span class="cifra" data-cuenta="der" data-paso="1.2">423</span> neurons firing in the simulation',
-  cerebro9Pie: '9 at once: <span class="cifra" data-cuenta="der" data-paso="1.2">1,328</span> neurons firing in the simulation',
+  cerebro2Alt: 'The brain with 2 tasks at once, with few neurons firing.',
+  cerebro9Alt: 'The brain with 9 tasks at once, with many more neurons firing.',
+  cerebro2Pie: '2 tasks at once, <span class="cifra" data-cuenta="der" data-paso="1.2">423</span> neurons firing in the simulation',
+  cerebro9Pie: '9 at once, <span class="cifra" data-cuenta="der" data-paso="1.2">1,328</span> neurons firing in the simulation',
   credito1:
-    'The neurons that light up in the game come from <a href="https://male-cns.janelia.org">Male CNS v1.0</a>. “This project is a collaboration between FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC Laboratory of Molecular Biology, and Google Research.”',
+    'The map is <a href="https://male-cns.janelia.org">Male CNS v1.0</a>. “This project is a collaboration between FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC Laboratory of Molecular Biology, and Google Research.”',
   credito2:
-    'Data licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, adapted for the game: only some of the neurons are shown, and the activity you see is simulated.',
+    'Data licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, adapted for the game. Only some of the neurons are shown, and the activity you see is simulated.',
   zonasTitulo: 'Brain colors',
   zonaVision: 'Vision',
   zonaCentral: 'Central brain',
@@ -162,7 +185,7 @@ export const INGLES = {
     'It’s short for work in progress. It’s everything you’ve started and haven’t finished yet. In the game, it’s the tasks the fly has open at the same time.',
   pregunta3: 'How many tasks at once is best?',
   respuesta3:
-    'There’s no number for everyone. In the game, the fly finishes the most with 2 and her sustainable limit is 3, because up to 3 she stays Calm. With more, her stress goes up, and with 9 she ends the day Overwhelmed. But the fly works alone, and the game doesn’t tell you your team’s number. It depends on how much your work waits, and you find it by trying a limit. How to do it is in the guide <a href="/en/wip-limit/">WIP limit: what it is and how to find your team’s</a>.',
+    'There’s no number for everyone. In the game, the fly finishes the most with 2 and her sustainable limit is 3, because up to 3 she stays Calm. With more, her stress goes up, and with 9 she ends the day Overwhelmed. But the fly works alone, and the game doesn’t tell you your team’s number. It depends on how much your work waits, and you find it by trying a limit. How to do it is in the guide <a href="/en/wip-limit/">WIP limit, what it is and how to find your team’s</a>.',
   pregunta4: 'Is the brain from a real fly?',
   respuesta4:
     'The neurons and their connections are. They come from Male CNS v1.0, the map of a male fly’s central nervous system, neuron by neuron, licensed under CC BY 4.0. The activity you see is simulated. We translate the tasks into something a fly can feel, like dust on her antenna, and simulate how her brain responds. Only some of her neurons are shown.',
@@ -186,21 +209,21 @@ export const INGLES = {
     'A limit helps you finish more, keeps work moving instead of waiting, and means less overload. Your team takes away their load in plain sight, where the work sits waiting, an agreed limit and their own data after two weeks. How much it gains, its own test will show.',
   pregunta11: 'Can I use the workshop with my team, or in paid workshops?',
   respuesta11:
-    'Yes. The workshop (the quick guide, the slides and the team sheet) is licensed CC BY 4.0: you can use it and adapt it, also in paid workshops, crediting Felipe Fernández (mosca.deliverycraft.ai). For now it’s in Spanish. The report can be shared as it is, crediting the author, and the game is played on this page.',
+    'Yes. The workshop (the quick guide, the slides and the team sheet) is licensed CC BY 4.0. You can use it and adapt it, also in paid workshops, crediting Felipe Fernández (mosca.deliverycraft.ai). For now it’s in Spanish. The report can be shared as it is, crediting the author, and the game is played on this page.',
   pregunta12: 'Do I need to know about WIP to facilitate it?',
   respuesta12:
-    'No. For each part, the quick guide has the minutes, one or two tips and the question for the room, plus the answers to what you’ll be asked. Read it once and, before the session, play the two days you’ll show: one with 9 tasks at once and one with 2.',
+    'No. For each part, the quick guide has the minutes, one or two tips and the question for the room, plus the answers to what you’ll be asked. Read it once and, before the session, play the two days you’ll show, one with 9 tasks at once and one with 2.',
   pregunta13: 'What about urgent tasks?',
   respuesta13:
-    'The game has a Send an urgent task button. The urgent task jumps over the limit, one at a time. In the simulation, with limit 2, each one cost one regular task. The numbers are in the <a href="/en/report/#urgencias">report</a>.',
+    'The game has a Send an urgent task button. The urgent task jumps over the limit, one at a time. In the simulation, with limit 2, each one cost one regular task. The gist is in the <a href="/en/report/#urgencias">summary</a>, and the numbers are on page 11 of the report.',
 
   // Qué es y qué no es, por qué lo hice, el cierre y el pie
   informeTitulo: 'What it is and what it isn’t',
   informeDestacado:
-    'It’s a game and a computer experiment, with rules based on studies. It doesn’t measure people or teams: your number is yours to measure.',
+    'It’s a game and a computer experiment, with rules based on studies. It doesn’t measure people or teams. Your number is yours to measure.',
   informeTexto:
-    'The report explains where each number comes from and gives four steps to try a limit with your team. It takes 10 minutes to read.',
-  informeNota: '18 pages, 4 MB.',
+    'The report explains where each number comes from and gives four steps to try a limit with your team. It takes 10 minutes to read and comes as a PDF. Its summary is on the web and takes 2 minutes.',
+  informeNota: 'The report is 18 pages, 4 MB.',
   motivoTitulo: 'Why I made it',
   motivoTexto:
     'I work with teams and I see the same thing over and over. They commit without knowing how much load they carry. They don’t know where to start or what’s really urgent, because everything is urgent and a priority. You feel you work all day and get nowhere, and the list of pending work keeps getting longer.',
@@ -228,13 +251,13 @@ export const DINAMICOS = {
     tareas: (n) => `${n} ${n === 1 ? 'tarea' : 'tareas'} a la vez`,
     nivel: (nivel) => nivel,
     resumen: (n, terminadas, nivel, cigarros) =>
-      `Con ${n} a la vez: ${terminadas} terminadas en el día, estrés ${nivel} al cerrar y ${cigarros} cigarros.`,
+      `Con ${n} a la vez, ${terminadas} terminadas en el día, estrés ${nivel} al cerrar y ${cigarros} cigarros.`,
   },
   en: {
     limite: (dentro) => (dentro ? 'Within the sustainable limit (3)' : 'Over the sustainable limit (3)'),
     tareas: (n) => `${n} ${n === 1 ? 'task' : 'tasks'} at once`,
     nivel: (nivel) => ({ Tranquila: 'Calm', Ocupada: 'Busy', Estresada: 'Stressed', Colapsada: 'Overwhelmed' })[nivel],
     resumen: (n, terminadas, nivel, cigarros) =>
-      `With ${n} at once: ${terminadas} finished per day, ${nivel.toLowerCase()} at the end of the day and ${cigarros} ${cigarros === 1 ? 'cigarette' : 'cigarettes'}.`,
+      `With ${n} at once, ${terminadas} finished per day, ${nivel.toLowerCase()} at the end of the day and ${cigarros} ${cigarros === 1 ? 'cigarette' : 'cigarettes'}.`,
   },
 };

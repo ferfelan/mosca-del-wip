@@ -1,6 +1,6 @@
 // La plantilla de las páginas de lectura del sitio (Etapa 7, 2026-10-28): la
 // guía del límite WIP, el informe en la web, el taller, sus versiones en
-// inglés y la página 404. La usan scripts/paginas.mjs y scripts/informe-web.mjs.
+// inglés y la página 404. La usan scripts/paginas.mjs y scripts/resumen-web.mjs.
 // Pone lo que todas comparten: el <head> completo (título, descripción,
 // canonical, hreflang, vista previa, datos estructurados), la barra de arriba
 // (la misma de todo el sitio: src/barra.js) y el pie con las páginas del
@@ -15,7 +15,7 @@ export const AUTOR = { nombre: 'Felipe Fernández', linkedin: 'https://www.linke
 // (8.11, 2026-11-13) porPagina: cuando cambia una sola de las cuatro páginas, su fecha va aquí
 // (clave-idioma) y las demás no se mueven. Hoy: el taller en español, que cita la sección 11
 // del informe (las urgencias) y descarga la guía rápida v8
-export const FECHAS = { publicado: '2026-10-28', modificado: '2026-11-07', porPagina: { 'taller-es': '2026-11-13' } }; // 2026-11-07 (8.7): la guía y el taller con para qué sirve un límite y lo que se lleva el equipo; antes 2026-11-06 (8.6), 2026-11-04 (8.4) y 2026-10-29
+export const FECHAS = { publicado: '2026-10-28', modificado: '2026-11-13', porPagina: {} }; // 2026-11-13 (8.12): la guía y el taller, en los dos idiomas, sin dos puntos y con sus citas al informe apuntando al PDF; antes 2026-11-07 (8.7): la guía y el taller con para qué sirve un límite y lo que se lleva el equipo; antes 2026-11-06 (8.6), 2026-11-04 (8.4) y 2026-10-29
 
 // Las direcciones de cada página en cada idioma (las mismas de src/idioma.js)
 export const RUTAS = {
@@ -136,7 +136,7 @@ export function pagina({ idioma, clave, titulo, descripcion, imagen, imagenAlt, 
   const otra = rutas[idioma === 'es' ? 'en' : 'es'];
   const grafo = { '@context': 'https://schema.org', '@graph': jsonLd };
   return `<!doctype html>
-<!-- GENERADO por scripts/${clave === 'informe' ? 'informe-web.mjs' : 'paginas.mjs'} (Etapa 7). NO EDITAR A MANO: los cambios van en la fuente que dice ese script. -->
+<!-- GENERADO por scripts/${clave === 'informe' ? 'resumen-web.mjs' : 'paginas.mjs'} (Etapa 7). NO EDITAR A MANO: los cambios van en la fuente que dice ese script. -->
 <html lang="${idioma}" data-idioma-pagina="${idioma}">
   <head>
     <meta charset="UTF-8" />
