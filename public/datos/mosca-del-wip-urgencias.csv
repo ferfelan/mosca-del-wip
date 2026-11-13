@@ -1,7 +1,7 @@
-# Mosca del WIP: un día de oficina con 0, 1, 2, 3 o 5 urgencias al día y un límite de 1 a 10 tareas a la vez. Promedio de 200 días por combinación, en la simulación (semilla 2024).
-# Una urgencia llega sin aviso, pasa por encima del límite y la mosca la hace primero, de a una. Cada fila: urgencias al día · el límite (tareas normales a la vez) · tareas normales terminadas en el día ·
+# Mosca del WIP, un día de oficina con 0, 1, 2, 3 o 5 urgencias al día y un límite de 1 a 10 tareas a la vez. Promedio de 200 días por combinación, en la simulación (semilla 2024).
+# Una urgencia llega sin aviso, pasa por encima del límite y la mosca la hace primero, de a una. Cada fila trae urgencias al día · el límite (tareas normales a la vez) · tareas normales terminadas en el día ·
 # terminadas contando las urgencias · minutos de oficina por tarea normal, de que empieza a que termina · minutos por urgencia, de que llega a que termina (vacío sin urgencias) · estrés al cerrar (0 a 100).
-# Autor: Felipe Fernández. Licencia CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Fuente: https://mosca.deliverycraft.ai/limite-wip/#datos
+# De Felipe Fernández, con licencia CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). La fuente es https://mosca.deliverycraft.ai/limite-wip/#datos
 urgencias_al_dia,limite,normales_terminadas_por_dia,terminadas_contando_urgencias,minutos_por_tarea_normal,minutos_por_urgencia,estres_al_cerrar
 0,1,15.885,15.885,34.128,,5
 0,2,17.99,17.99,60.07,,10

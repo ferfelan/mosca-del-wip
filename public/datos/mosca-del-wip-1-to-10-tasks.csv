@@ -1,7 +1,7 @@
-# Mosca del WIP: an office day with 1 to 10 tasks at once. Average of 200 days per number, in the game (simulation, seed 2024).
-# Each row: how many tasks the fly has in progress at once · how many she finishes per day · office minutes each task takes from start to finish ·
+# Mosca del WIP, an office day with 1 to 10 tasks at once. Average of 200 days per number, in the game (simulation, seed 2024).
+# Each row gives how many tasks the fly has in progress at once · how many she finishes per day · office minutes each task takes from start to finish ·
 # minutes of every hour that really get work done · idle minutes per day · cigarettes · coffees · average and maximum stress (0 to 100) · stress level at the end of the day.
-# Author: Felipe Fernández. License CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Source: https://mosca.deliverycraft.ai/en/wip-limit/#datos
+# By Felipe Fernández, under the CC BY 4.0 license (https://creativecommons.org/licenses/by/4.0/). The source is https://mosca.deliverycraft.ai/en/wip-limit/#datos
 tasks_at_once,finished_per_day,minutes_per_task,productive_minutes_per_hour,idle_minutes_per_day,cigarettes,coffees,average_stress,max_stress,stress_level_at_close
 1,15.885,34.128,43.872,134.038,0,6,5.494,10,Calm
 2,17.99,60.07,49.777,19.781,0,5,10,10,Calm

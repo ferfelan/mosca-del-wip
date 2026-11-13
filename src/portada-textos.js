@@ -109,41 +109,64 @@ export const INGLES = {
   kitJuegoTiempo: '1 minute',
   kitJuegoTexto: 'Play it online on any device, and watch a fly at work.', // 8.8
   kitInforme: 'The report',
-  kitInformeTiempo: '10 minutes',
-  kitInformeTexto: 'Where each number comes from and what the studies say.',
-  kitInformeLeer: 'Read it on the web',
+  // 8.12: en la web se lee el resumen ejecutivo y el informe entero se descarga
+  kitInformeTiempo: '2 to 10 minutes',
+  kitInformeTexto: 'The executive summary reads on the web. The full report, with every number, its sources and the studies, is a PDF to download.',
+  kitInformeLeer: 'Read the summary',
+  kitInformePdf: 'Report (PDF, 18 pages)',
   kitTaller: 'The workshop',
   kitTallerTiempo: '60 minutes',
   kitTallerTexto: 'Slides, a quick guide and the team sheet to print, so your team finds its limit and tries it for 2 weeks.',
-  kitTallerVer: 'See the workshop (60 minutes)',
+  kitTallerVer: 'See the workshop',
   kitTallerIdioma: 'For now, the workshop is in Spanish.', // en español no hay línea
   kitGuia: 'Quick guide (PDF, in Spanish)',
   kitPptx: 'Slides (PowerPoint, in Spanish)',
   kitPdf: 'Slides (PDF, in Spanish)',
   kitHoja: 'Team sheet (PDF, in Spanish)',
-  tapaJuegoAlt: 'The fly from the game at her office, in front of her kanban board.',
-  tapaInformeAlt: 'The report’s cover: the fly carrying a tower of folders.',
-  tapaTallerAlt: 'The cover of the workshop’s quick guide: the fly with 9 tasks in progress.',
+  // (8.12) lo que dicen los dibujos del kit: el día del juego, las páginas del
+  // resumen y del informe, y las cuatro partes del taller (los mismos nombres
+  // de la página del taller en inglés)
+  dibujoDiaDesde: '9 am',
+  dibujoDiaHasta: '6 pm',
+  dibujoPorHacer: 'To do',
+  dibujoHecho: 'Done',
+  dibujoResumen: '<span>The summary, on the web</span><b><span data-cuenta data-paso="60">2</span> pages</b>',
+  dibujoInforme: '<span>The report, as a PDF</span><b><span data-cuenta data-paso="60">18</span> pages</b>',
+  parteConexion: 'Connection',
+  parteConceptos: 'Concepts',
+  partePractica: 'Practice',
+  parteCierre: 'Closing',
+  partesTotal: '<b data-cuenta data-paso="20">60</b> minutes',
   kitCierre: 'Use it and adapt it, also in paid workshops, crediting the author.',
 
   // ¿Por qué una mosca?
   creditoTitulo: 'Why a fly?',
   significa: 'Mosca means fly in Spanish.', // al empezar la sección; en español no hay línea
-  creditoDestacado:
-    'Scientists at Janelia, Cambridge and Google, among others, mapped a fly’s central nervous system, 166,700 neurons and their connections. We gave her an office job. Yes, we put her to work.',
+  // 8.12: las mismas frases, repartidas en las tres celdas del tablero
+  mosca1: 'Scientists mapped a fly’s central nervous system.',
+  laminasQuien: 'Janelia, Cambridge and Google, among others',
+  laminasDato: '<b data-cuenta="der" data-paso="0.0075">166,700</b> neurons and their connections, in <b data-cuenta data-paso="19">66</b>&nbsp;slices',
+  mosca2: 'We gave her an office job. Yes, we put her to work.',
+  credencialNombre: 'Mosca',
+  credencialCargo: 'Office worker',
+  credencialJornada: 'Hours',
+  credencialHorario: '9 to 6',
+  credencialTareas: 'Tasks at once',
+  credencialRango: '1 to 10',
+  mosca3: 'The neurons that light up in the game come from that map.',
   // 8.8: el aviso de las películas, con lo que le pasó de verdad a la mosca
   // del mapa (Berg y otros, 2025, Métodos: le sacaron el sistema nervioso
   // entero y lo cortaron en 66 láminas de 20 micrones)
   creditoAviso:
     'No fly was harmed or made to do any real work. Except the one in the map, whose nervous system was taken out and cut into 66&nbsp;slices.', // 8.11: sin dos puntos (pedido de Felipe: "es muy IA")
-  cerebro2Alt: 'The brain with 2 tasks at once: few neurons firing.',
-  cerebro9Alt: 'The brain with 9 tasks at once: many more neurons firing.',
-  cerebro2Pie: '2 tasks at once: <span class="cifra" data-cuenta="der" data-paso="1.2">423</span> neurons firing in the simulation',
-  cerebro9Pie: '9 at once: <span class="cifra" data-cuenta="der" data-paso="1.2">1,328</span> neurons firing in the simulation',
+  cerebro2Alt: 'The brain with 2 tasks at once, with few neurons firing.',
+  cerebro9Alt: 'The brain with 9 tasks at once, with many more neurons firing.',
+  cerebro2Pie: '2 tasks at once, <span class="cifra" data-cuenta="der" data-paso="1.2">423</span> neurons firing in the simulation',
+  cerebro9Pie: '9 at once, <span class="cifra" data-cuenta="der" data-paso="1.2">1,328</span> neurons firing in the simulation',
   credito1:
-    'The neurons that light up in the game come from <a href="https://male-cns.janelia.org">Male CNS v1.0</a>. “This project is a collaboration between FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC Laboratory of Molecular Biology, and Google Research.”',
+    'The map is <a href="https://male-cns.janelia.org">Male CNS v1.0</a>. “This project is a collaboration between FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC Laboratory of Molecular Biology, and Google Research.”',
   credito2:
-    'Data licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, adapted for the game: only some of the neurons are shown, and the activity you see is simulated.',
+    'Data licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, adapted for the game. Only some of the neurons are shown, and the activity you see is simulated.',
   zonasTitulo: 'Brain colors',
   zonaVision: 'Vision',
   zonaCentral: 'Central brain',
