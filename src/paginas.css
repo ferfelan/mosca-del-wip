@@ -43,6 +43,11 @@
   color: var(--tenue);
 }
 .migas ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 8px; }
+/* (8.12) Las listas que no son de lectura no llevan la sangría de ".lectura ul":
+   las migas, las tarjetas del kit y las descargas quedaban 24 px corridas */
+.lectura .migas ol,
+.lectura .enlaces-kit,
+.lectura .descargas-pagina { padding-left: 0; }
 .migas li + li::before { content: '›'; margin-right: 8px; color: var(--tenue); }
 .migas a { color: var(--suave); }
 .migas [aria-current] { color: var(--tinta); }

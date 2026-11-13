@@ -1,6 +1,6 @@
 // La plantilla de las páginas de lectura del sitio (Etapa 7, 2026-10-28): la
 // guía del límite WIP, el informe en la web, el taller, sus versiones en
-// inglés y la página 404. La usan scripts/paginas.mjs y scripts/informe-web.mjs.
+// inglés y la página 404. La usan scripts/paginas.mjs y scripts/resumen-web.mjs.
 // Pone lo que todas comparten: el <head> completo (título, descripción,
 // canonical, hreflang, vista previa, datos estructurados), la barra de arriba
 // (la misma de todo el sitio: src/barra.js) y el pie con las páginas del
@@ -136,7 +136,7 @@ export function pagina({ idioma, clave, titulo, descripcion, imagen, imagenAlt, 
   const otra = rutas[idioma === 'es' ? 'en' : 'es'];
   const grafo = { '@context': 'https://schema.org', '@graph': jsonLd };
   return `<!doctype html>
-<!-- GENERADO por scripts/${clave === 'informe' ? 'informe-web.mjs' : 'paginas.mjs'} (Etapa 7). NO EDITAR A MANO: los cambios van en la fuente que dice ese script. -->
+<!-- GENERADO por scripts/${clave === 'informe' ? 'resumen-web.mjs' : 'paginas.mjs'} (Etapa 7). NO EDITAR A MANO: los cambios van en la fuente que dice ese script. -->
 <html lang="${idioma}" data-idioma-pagina="${idioma}">
   <head>
     <meta charset="UTF-8" />

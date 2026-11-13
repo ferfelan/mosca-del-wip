@@ -3,7 +3,11 @@
 // Busca en todo lo que se publica, en español y en inglés:
 //   1. las frases retiradas de docs/frases-retiradas.txt,
 //   2. las palabras prohibidas ([…], […], […], scrum, sprint, daily, retro),
-//   3. el punto y coma en el texto que se lee.
+//   3. el punto y coma en el texto que se lee,
+//   4. los dos puntos en el texto que se lee (Etapa 8.12, 2026-11-13: "elimina
+//      los : en todos lados"). No cuentan los de una hora (09:00), los de una
+//      dirección (https://) ni los de los archivos que leen las máquinas
+//      (robots.txt, el sitemap y el manifest, donde solo se revisan sus textos).
 // Dónde: el sitio construido (dist/: cada página con su texto, sus atributos que
 // se leen y su JSON-LD, el manifest, el sitemap, los CSV, los PDF y la
 // presentación del taller), los textos del juego y de la portada (src/), los
@@ -66,7 +70,8 @@ const PROHIBIDAS = /(?<![\p{L}\p{N}])([…](es)?|[…](es|idad)?|[…]|[…]|scr
 
 // ---------- Juntar los textos públicos: { donde, texto } ----------
 const piezas = [];
-// solo: 'frases' = revisar solo frases retiradas (lo interno); 'sin-punto-y-coma' = todo menos el punto y coma
+// solo: 'frases' = revisar solo frases retiradas (lo interno); 'sin-punto-y-coma' = todo menos el punto y
+// coma y los dos puntos; 'sin-dos-puntos' = todo menos los dos puntos (archivos que leen las máquinas)
 const agregar = (donde, texto, solo) => { if (texto && texto.trim()) piezas.push({ donde, texto: decodificar(texto), solo }); };
 
 function archivos(dir) {
@@ -129,7 +134,12 @@ for (const ruta of archivos(DIST)) {
   if (ext === '.html') pagina(donde, readFileSync(ruta, 'utf8'));
   else if (ext === '.pdf') pdf(donde, ruta);
   else if (ext === '.pptx') pptx(donde, ruta);
-  else if (['.webmanifest', '.csv', '.txt', '.xml'].includes(ext)) agregar(donde, readFileSync(ruta, 'utf8'));
+  else if (ext === '.csv') agregar(donde, readFileSync(ruta, 'utf8'));
+  else if (['.webmanifest', '.txt', '.xml'].includes(ext)) {
+    // Los leen las máquinas y su formato lleva dos puntos: ahí cuentan solo sus textos
+    agregar(donde, readFileSync(ruta, 'utf8'), 'sin-dos-puntos');
+    if (ext === '.webmanifest') agregar(`${donde} (textos)`, textosJson(JSON.parse(readFileSync(ruta, 'utf8'))).join(' · '));
+  }
   else if (ext === '.json' && statSync(ruta).size < 2e6)
     agregar(donde, textosJson(JSON.parse(readFileSync(ruta, 'utf8'))).join(' · '), ruta.includes(`${DIST}/cerebro/`) ? 'sin-punto-y-coma' : undefined);
 }
@@ -186,13 +196,21 @@ for (const { donde, texto, solo } of piezas) {
   for (const m of texto.matchAll(/;/g)) {
     hallazgos.push({ tipo: 'punto y coma', donde, que: ';', ver: contexto(texto, m.index, 1) });
   }
+  if (solo === 'sin-dos-puntos') continue;
+  for (const m of texto.matchAll(/:/g)) {
+    const antes = texto[m.index - 1] ?? '', despues = texto[m.index + 1] ?? '';
+    if (/\d/.test(antes) && /\d/.test(despues)) continue; // una hora: 09:00
+    if (texto.startsWith('//', m.index + 1)) continue; // una dirección: https://
+    hallazgos.push({ tipo: 'dos puntos', donde, que: ':', ver: contexto(texto, m.index, 1) });
+  }
 }
 
 const porTipo = (t) => hallazgos.filter((h) => h.tipo === t);
 console.log(`\nRevisé ${piezas.length} textos públicos (${new Set(piezas.map((p) => p.donde.split(' (')[0].split(' › ')[0])).size} archivos).`);
-for (const tipo of ['frase retirada', 'palabra prohibida', 'punto y coma']) {
+const TITULOS = { 'frase retirada': 'Frases retiradas', 'palabra prohibida': 'Palabras prohibidas', 'punto y coma': 'Punto y coma', 'dos puntos': 'Dos puntos' };
+for (const tipo of Object.keys(TITULOS)) {
   const lista = porTipo(tipo);
-  console.log(`\n${tipo === 'frase retirada' ? 'Frases retiradas' : tipo === 'palabra prohibida' ? 'Palabras prohibidas' : 'Punto y coma'}: ${lista.length}`);
+  console.log(`\n${TITULOS[tipo]}: ${lista.length}`);
   for (const h of lista) console.log(`  ✗ ${h.donde}\n      «${h.que}» … ${h.ver}`);
 }
 
@@ -357,4 +375,4 @@ if (hallazgos.length) {
   console.log(`\n✗ ${hallazgos.length} cosa(s) por arreglar. No publicar hasta que esto diga 0.`);
   process.exit(1);
 }
-console.log('\n✓ Coherencia: 0 frases retiradas, 0 palabras prohibidas, 0 punto y coma.');
+console.log('\n✓ Coherencia: 0 frases retiradas, 0 palabras prohibidas, 0 punto y coma, 0 dos puntos.');
