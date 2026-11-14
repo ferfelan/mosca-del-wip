@@ -13,6 +13,7 @@
 /* EN PRUEBA (8.13): las opciones 2 y 3 del inicio y la barrita para cambiar
    entre las tres. Sale antes de subir al sitio la que Felipe elija */
 @import './opciones.css';
+@import './opciones-b.css';
 
 @font-face {
   font-family: 'Mona Sans';

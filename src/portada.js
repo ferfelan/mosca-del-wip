@@ -37,6 +37,9 @@ import { iniciarJornada } from './jornada.js';
 import { iniciarCarrera } from './carrera.js';
 import { iniciarEscritorio } from './escritorio.js';
 import { iniciarOpciones } from './opciones.js';
+import { iniciarVueltas } from './vueltas.js';
+import { iniciarMinuto } from './minuto.js';
+import { iniciarSuena } from './suena.js';
 
 // Tabla de 1 a 10 del informe (pág. 4): corrida oficial, 200 días por cada
 // número de tareas, semilla 2024 (docs/corrida-oficial.json). Si la corrida
@@ -266,8 +269,11 @@ const jornada = iniciarJornada();
 // hace nada (parte solo cuando su dibujo está a la vista)
 const carrera = iniciarCarrera();
 const escritorio = iniciarEscritorio();
+const vueltas = iniciarVueltas();
+const minuto = iniciarMinuto();
+const suena = iniciarSuena();
 iniciarOpciones();
-window.__mosca = { ...(window.__mosca || {}), jornada, carrera, escritorio };
+window.__mosca = { ...(window.__mosca || {}), jornada, carrera, escritorio, vueltas, minuto, suena };
 
 // La primera vez que se ve el cerebro, una sola vez: sube de 2 a 10 tareas (el
 // tope del juego) para mostrar qué pasa. Con 10 quedan los números del juego

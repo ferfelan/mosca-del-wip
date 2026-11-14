@@ -10,13 +10,14 @@
    Colapsada con 9 a la vez y el verde de Tranquila con 2, y nunca es lo único
    que lo dice). Solo se mueven la posición y la transparencia. */
 
-/* ---------- Cuál de las tres se ve ---------- */
-.escena[data-opcion='2'],
-.escena[data-opcion='3'] { display: none; }
-:root[data-portada='2'] .escena[data-opcion='1'],
-:root[data-portada='3'] .escena[data-opcion='1'] { display: none; }
+/* ---------- Cuál de las seis se ve (las opciones 4, 5 y 6 están en opciones-b.css) ---------- */
+.escena[data-opcion]:not([data-opcion='1']) { display: none; }
+:root[data-portada]:not([data-portada='1']) .escena[data-opcion='1'] { display: none; }
 :root[data-portada='2'] .escena[data-opcion='2'],
-:root[data-portada='3'] .escena[data-opcion='3'] { display: block; }
+:root[data-portada='3'] .escena[data-opcion='3'],
+:root[data-portada='4'] .escena[data-opcion='4'],
+:root[data-portada='5'] .escena[data-opcion='5'],
+:root[data-portada='6'] .escena[data-opcion='6'] { display: block; }
 
 /* ---------- La barrita de prueba, abajo al centro ---------- */
 .opciones {
@@ -52,12 +53,21 @@
 }
 .opciones a:hover { color: var(--tinta); background: var(--vidrio-hover); }
 .opciones a[aria-current='true'] { background: var(--tinta); color: var(--noche); }
+.opciones-palabra { margin-right: 0.3em; }
 @media (pointer: coarse) {
   .opciones a { height: 44px; }
 }
+/* (con seis opciones, en pantallas angostas cada botón muestra solo su número) */
+@media (max-width: 820px) {
+  .opciones-palabra { display: none; }
+  .opciones a { justify-content: center; min-width: 40px; padding: 0 12px; }
+}
 @media (max-width: 420px) {
   .opciones-rotulo { display: none; }
-  .opciones a { padding: 0 13px; }
+  .opciones { gap: 2px; }
+}
+@media (max-width: 820px) and (pointer: coarse) {
+  .opciones a { min-width: 44px; }
 }
 @media print {
   .opciones { display: none; }
@@ -117,6 +127,7 @@
 }
 .carrera-denuevo:hover { background: var(--vidrio-hover); border-color: var(--borde-hover); }
 .carrera-denuevo svg { flex: none; }
+.carrera-denuevo:focus-visible { border-radius: 999px; }
 /* (sin JavaScript no hay nada que volver a ver) */
 .carrera:not(.viva) .carrera-denuevo { display: none; }
 .carrera-dia { grid-area: dia; margin: 0; }

@@ -1,7 +1,9 @@
 // EN PRUEBA (Etapa 8.13, 2026-11-14). Prueba las opciones 2 y 3 del inicio de
 // la portada (Felipe pidió ver tres propuestas para elegir; la 1 es el tablero
-// de la mosca y la prueba node scripts/probar-jornada.mjs). Cuando él elija,
-// esta prueba se queda solo con la opción elegida o se borra.
+// de la mosca y la prueba node scripts/probar-jornada.mjs). Después pidió tres
+// más con otro mensaje (4, 5 y 6): esas las prueba
+// node scripts/probar-opciones-b.mjs, y la barrita tiene seis botones. Cuando
+// él elija, esta prueba se queda solo con la opción elegida o se borra.
 // Revisa, en español y en inglés:
 //  1. sin ?portada= se ve la opción 1 y no hay barrita; con ?portada=2 o 3 se
 //     ve solo esa, con la barrita, y la elección dura mientras dure la pestaña;
@@ -33,14 +35,14 @@ const TEXTOS = {
     carrera: /^La mosca trabajó el mismo día de oficina dos veces\. Con 9 tareas a la vez terminó 9\. Con 2 a la vez, terminó 18\.$/,
     frase9: /^Con 9 a la vez, cerró el día Colapsada, con 13\scigarros y 9\stareas terminadas\.$/,
     frase2: /^Con 2 a la vez, cerró el día Tranquila, sin fumar y con 18\stareas terminadas\.$/,
-    barra: ['Opción 1', 'Opción 2', 'Opción 3'],
+    barra: ['Opción 1', 'Opción 2', 'Opción 3', 'Opción 4', 'Opción 5', 'Opción 6'],
   },
   en: {
     ruta: 'en/',
     carrera: /^The fly worked the same office day twice\. With 9 tasks at once she finished 9\. With 2 at once, she finished 18\.$/,
     frase9: /^With 9 at once, she ended the day Overwhelmed, with 13\scigarettes and 9\stasks finished\.$/,
     frase2: /^With 2 at once, she ended the day Calm, without smoking and with 18\stasks finished\.$/,
-    barra: ['Option 1', 'Option 2', 'Option 3'],
+    barra: ['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5', 'Option 6'],
   },
 };
 const ANCHOS = [320, 344, 360, 375, 390, 414, 430, 480, 540, 600, 768, 820, 899, 900, 960, 1024, 1100, 1280, 1440, 1920, 2560];

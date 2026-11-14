@@ -20,13 +20,13 @@
         if ((lang === 'en' || lang === 'es') && lang !== propio) {
           location.replace((lang === 'en' ? '/en/' : '/') + location.hash);
         }
-        // EN PRUEBA (8.13, 2026-11-14): Felipe pidió ver tres propuestas del
-        // inicio. ?portada=2 o ?portada=3 muestra esa (la 1 es la de siempre)
-        // y queda elegida mientras dure la pestaña. Esto y src/opciones.*
-        // salen antes de subir al sitio la que él elija.
+        // EN PRUEBA (8.13, 2026-11-14): Felipe pidió ver varias propuestas
+        // del inicio (son seis). ?portada=2 a ?portada=6 muestra esa (la 1 es
+        // la de siempre) y queda elegida mientras dure la pestaña. Esto y
+        // src/opciones* salen antes de subir al sitio la que él elija.
         try {
           var opcion = new URLSearchParams(location.search).get('portada');
-          if (/^[123]$/.test(opcion || '')) sessionStorage.setItem('mosca-portada', opcion);
+          if (/^[1-6]$/.test(opcion || '')) sessionStorage.setItem('mosca-portada', opcion);
           opcion = sessionStorage.getItem('mosca-portada');
           if (opcion) raiz.setAttribute('data-portada', opcion);
         } catch (e) {}
@@ -532,6 +532,248 @@
           <p class="nota jornada-nota" data-t="jornadaNota">Average of 200 days played. These are numbers from the game, not from people.</p>
         </div>
         <!-- /OPCIONES-EN-PRUEBA -->
+
+        <!-- OPCIONES-B-EN-PRUEBA -->
+        <!-- OPCIÓN 4 del inicio (8.13, EN PRUEBA, 2026-11-14). "Tu número". Felipe
+             vio las tres primeras y dijo que el mensaje de 9 y 2 a la vez ya
+             sale tres veces en la página, y pidió tres propuestas con otro
+             mensaje. Esta le habla a la persona: cuenta lo que tiene empezado y
+             aprende que ese número es su WIP. Sobre la cabeza de la mosca da
+             vueltas una tarjeta por cada cosa. No hay números del juego ni
+             promesas: el número es el de la persona. Lo mueve src/vueltas.js
+             (solo cambian la posición y la transparencia, y el movimiento dura
+             menos de 5 segundos después de cada toque). Sin JavaScript se ve
+             la mosca con una tarjeta y la frase que explica qué es el WIP -->
+        <div class="escena" data-opcion="4">
+          <div class="lamina cuenta" role="group" aria-labelledby="t-cuenta">
+            <div class="lamina-cabeza">
+              <p class="lamina-titulo" id="t-cuenta" data-t="cuentaTitulo">How many things have you started right now?</p>
+              <p class="lamina-bajada" data-t="cuentaBajada">Count everything you started and haven’t finished yet.</p>
+            </div>
+            <div class="lamina-dibujo" aria-hidden="true">
+              <svg class="cuenta-dibujo" viewBox="0 0 600 318" focusable="false">
+                <!-- el aire: por donde dan la vuelta las tarjetas -->
+                <ellipse class="m-aire" cx="300" cy="96" rx="215" ry="70" />
+                <!-- la mosca, asomada desde abajo, mirando hacia arriba -->
+                <circle class="m-halo" cx="300" cy="236" r="112" />
+                <g transform="translate(185 160.7) scale(2.3)">
+                  <ellipse cx="50" cy="93" rx="31" ry="28" fill="#655547" stroke="#3e332b" stroke-width="1.3" />
+                  <g class="m-cabeza">
+                    <g transform="translate(5 -5.9) scale(0.9)">
+                      <g class="m-antenas m-de-despierta"><path d="M46.5 22 Q44.5 15.5 40.5 12.5" /><path d="M53.5 22 Q55.5 15.5 59.5 12.5" /></g>
+                      <ellipse cx="50" cy="41" rx="24" ry="22" fill="#6f6052" />
+                      <ellipse cx="31" cy="36.5" rx="15" ry="18" transform="rotate(-14 31 36.5)" fill="#e8402c" />
+                      <ellipse cx="69" cy="36.5" rx="15" ry="18" transform="rotate(14 69 36.5)" fill="#e8402c" />
+                      <g class="m-brillos m-de-despierta" data-brillos><ellipse cx="26" cy="27.5" rx="4.6" ry="3.2" transform="rotate(-35 26 27.5)" fill="#fff" opacity="0.88" /><ellipse cx="64" cy="27.5" rx="4.6" ry="3.2" transform="rotate(-35 64 27.5)" fill="#fff" opacity="0.88" /></g>
+                    </g>
+                    <path d="M46.3 41.5 H53.7 V46.5 C58.6 47.2 59.4 58.6 50 59 C40.6 58.6 41.4 47.2 46.3 46.5 Z" fill="#6f6052" stroke="#3e332b" stroke-width="1.3" stroke-linejoin="round" />
+                  </g>
+                  <!-- el cuello de la camisa y la corbata del juego -->
+                  <g stroke="#3e332b" stroke-width="1.1" stroke-linejoin="round">
+                    <path d="M35.5 62 L50 67.5 L41.5 77 Z" fill="#ece6dc" /><path d="M64.5 62 L50 67.5 L58.5 77 Z" fill="#ece6dc" />
+                    <path d="M46 66.5 H54 L52.4 72.5 H47.6 Z" fill="#1f4fc4" /><path d="M47.6 72.5 H52.4 L55.6 90 L50 96 L44.4 90 Z" fill="#1f4fc4" />
+                  </g>
+                </g>
+                <!-- una tarjeta por cada cosa empezada (las pone src/vueltas.js) -->
+                <g class="m-carta" data-carta style="--c:#1f4fc4;transform:translate(300px, 26px) scale(1.12)"><rect class="m-papel" x="-23" y="-17" width="46" height="34" rx="7" /><rect class="m-pestana" x="-15" y="-9.5" width="17" height="5.5" rx="2.75" /><rect class="m-linea" x="-15" y="1" width="30" height="4" rx="2" /><rect class="m-linea" x="-15" y="8.5" width="19" height="4" rx="2" /></g>
+                <g class="m-carta fuera" data-carta style="--c:#e8402c"><rect class="m-papel" x="-23" y="-17" width="46" height="34" rx="7" /><rect class="m-pestana" x="-15" y="-9.5" width="17" height="5.5" rx="2.75" /><rect class="m-linea" x="-15" y="1" width="30" height="4" rx="2" /><rect class="m-linea" x="-15" y="8.5" width="19" height="4" rx="2" /></g>
+                <g class="m-carta fuera" data-carta style="--c:#e5a020"><rect class="m-papel" x="-23" y="-17" width="46" height="34" rx="7" /><rect class="m-pestana" x="-15" y="-9.5" width="17" height="5.5" rx="2.75" /><rect class="m-linea" x="-15" y="1" width="30" height="4" rx="2" /><rect class="m-linea" x="-15" y="8.5" width="19" height="4" rx="2" /></g>
+                <g class="m-carta fuera" data-carta style="--c:#18794a"><rect class="m-papel" x="-23" y="-17" width="46" height="34" rx="7" /><rect class="m-pestana" x="-15" y="-9.5" width="17" height="5.5" rx="2.75" /><rect class="m-linea" x="-15" y="1" width="30" height="4" rx="2" /><rect class="m-linea" x="-15" y="8.5" width="19" height="4" rx="2" /></g>
+                <g class="m-carta fuera" data-carta style="--c:#7a4de0"><rect class="m-papel" x="-23" y="-17" width="46" height="34" rx="7" /><rect class="m-pestana" x="-15" y="-9.5" width="17" height="5.5" rx="2.75" /><rect class="m-linea" x="-15" y="1" width="30" height="4" rx="2" /><rect class="m-linea" x="-15" y="8.5" width="19" height="4" rx="2" /></g>
+                <g class="m-carta fuera" data-carta style="--c:#1f4fc4"><rect class="m-papel" x="-23" y="-17" width="46" height="34" rx="7" /><rect class="m-pestana" x="-15" y="-9.5" width="17" height="5.5" rx="2.75" /><rect class="m-linea" x="-15" y="1" width="30" height="4" rx="2" /><rect class="m-linea" x="-15" y="8.5" width="19" height="4" rx="2" /></g>
+                <g class="m-carta fuera" data-carta style="--c:#e8402c"><rect class="m-papel" x="-23" y="-17" width="46" height="34" rx="7" /><rect class="m-pestana" x="-15" y="-9.5" width="17" height="5.5" rx="2.75" /><rect class="m-linea" x="-15" y="1" width="30" height="4" rx="2" /><rect class="m-linea" x="-15" y="8.5" width="19" height="4" rx="2" /></g>
+                <g class="m-carta fuera" data-carta style="--c:#e5a020"><rect class="m-papel" x="-23" y="-17" width="46" height="34" rx="7" /><rect class="m-pestana" x="-15" y="-9.5" width="17" height="5.5" rx="2.75" /><rect class="m-linea" x="-15" y="1" width="30" height="4" rx="2" /><rect class="m-linea" x="-15" y="8.5" width="19" height="4" rx="2" /></g>
+                <g class="m-carta fuera" data-carta style="--c:#18794a"><rect class="m-papel" x="-23" y="-17" width="46" height="34" rx="7" /><rect class="m-pestana" x="-15" y="-9.5" width="17" height="5.5" rx="2.75" /><rect class="m-linea" x="-15" y="1" width="30" height="4" rx="2" /><rect class="m-linea" x="-15" y="8.5" width="19" height="4" rx="2" /></g>
+                <g class="m-carta fuera" data-carta style="--c:#7a4de0"><rect class="m-papel" x="-23" y="-17" width="46" height="34" rx="7" /><rect class="m-pestana" x="-15" y="-9.5" width="17" height="5.5" rx="2.75" /><rect class="m-linea" x="-15" y="1" width="30" height="4" rx="2" /><rect class="m-linea" x="-15" y="8.5" width="19" height="4" rx="2" /></g>
+              </svg>
+            </div>
+            <div class="cuenta-mando">
+              <button type="button" class="cuenta-boton" data-quitar data-t-aria="cuentaQuitar" aria-label="Remove one">
+                <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /></svg>
+              </button>
+              <p class="cuenta-cifra" aria-hidden="true"><b class="cuenta-numero" data-numero>1</b> <span data-t="cuentaRotulo">in progress</span></p>
+              <button type="button" class="cuenta-boton cuenta-sumar" data-sumar data-t-aria="cuentaSumar" aria-label="Add one">
+                <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /></svg>
+              </button>
+            </div>
+            <div class="lamina-pie cuenta-pie">
+              <p class="cuenta-es" data-t="cuentaEs">That number is your WIP, your work in progress.</p>
+              <p class="cuenta-reto" data-t="cuentaReto">In the game, give the fly that same number of tasks and watch how her day ends.</p>
+              <!-- el número, dicho en una frase, para quien usa lector de pantalla -->
+              <p class="solo-lector" data-resultado>
+                <span data-forma="una" data-t="cuentaUna">You have 1 thing started.</span>
+                <span data-forma="varias" data-t="cuentaVarias">You have <span data-eco>2</span> things started.</span>
+                <span data-forma="tope" data-t="cuentaTope">You have 10 or more things started.</span>
+              </p>
+            </div>
+          </div>
+          <p class="nota jornada-nota" data-t="cuentaNota">In the game you choose from 1 to 10 tasks at once.</p>
+        </div>
+
+        <!-- OPCIÓN 5 del inicio (8.13, EN PRUEBA, 2026-11-14). "Un día de oficina
+             en un minuto" (la frase es la del juego). Otro mensaje, sin 9 ni 2:
+             qué es esto y cuánto dura. La mosca trabaja en su escritorio y por
+             la ventana pasa su día, de 9 a 18, en un minuto de verdad: el sol
+             cruza, el cielo cambia, el reloj corre y al final se prende la
+             lámpara. Arriba, el cronómetro. Lo mueve src/minuto.js (solo
+             cambian la posición y la transparencia). Como dura más de 5
+             segundos, tiene botón para pausar. Sin JavaScript o con "reducir
+             movimiento" queda quieto a las 18:00 -->
+        <div class="escena" data-opcion="5">
+          <div class="lamina minuto" role="group" aria-labelledby="t-minuto" data-estado="quieta">
+            <div class="lamina-cabeza minuto-cabeza">
+              <p class="minuto-titulo"><span id="t-minuto" data-t="minutoTitulo">An office day in one minute</span> <b class="minuto-crono" data-crono aria-hidden="true">1:00</b></p>
+              <button type="button" class="lamina-boton minuto-boton" data-boton>
+                <span class="minuto-boton-cara" data-de="andando"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M8.5 5.5v13M15.5 5.5v13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /></svg><span data-t="minutoPausar">Pause</span></span>
+                <span class="minuto-boton-cara" data-de="pausada"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M8 5.2v13.6L19 12z" fill="currentColor" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /></svg><span data-t="minutoSeguir">Resume</span></span>
+                <span class="minuto-boton-cara" data-de="quieta"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M4.6 12a7.4 7.4 0 1 0 2.3-5.4M4.6 4.4v4.2h4.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg><span data-t="carreraDeNuevo">Watch again</span></span>
+              </button>
+              <p class="dia minuto-dia" aria-hidden="true"><span data-t="dibujoDiaDesde">9 am</span><span class="dia-riel"></span><span data-t="dibujoDiaHasta">6 pm</span></p>
+            </div>
+            <div class="lamina-dibujo" aria-hidden="true">
+              <svg class="minuto-dibujo" viewBox="0 0 600 350" focusable="false">
+                <defs>
+                  <clipPath id="minuto-vidrio"><rect x="46" y="46" width="258" height="166" rx="8" /></clipPath>
+                  <clipPath id="minuto-corbata"><path d="M47.6 72.5 H52.4 L55.6 90 L50 96 L44.4 90 Z" /></clipPath>
+                  <linearGradient id="minuto-cielo-tarde" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7aa7dd" /><stop offset="0.6" stop-color="#f6c28b" /><stop offset="1" stop-color="#f59a62" /></linearGradient>
+                </defs>
+                <!-- la ventana: por ella pasa el día -->
+                <rect class="n-marco" x="36" y="36" width="278" height="186" rx="16" />
+                <g clip-path="url(#minuto-vidrio)">
+                  <rect x="46" y="46" width="258" height="166" fill="#b9dcf3" />
+                  <rect data-mediodia x="46" y="46" width="258" height="166" fill="#69b6ee" style="opacity:0" />
+                  <rect data-tarde x="46" y="46" width="258" height="166" fill="url(#minuto-cielo-tarde)" />
+                  <g data-sol style="transform:translate(288px, 172px)"><circle r="35" fill="#fff3c4" opacity="0.4" /><circle r="20" fill="#ffd84d" /></g>
+                  <g data-nube1 fill="#fff" opacity="0.86" style="transform:translate(64px, 0px)"><ellipse cx="86" cy="84" rx="22" ry="9" /><ellipse cx="100" cy="77" rx="15" ry="10" /><ellipse cx="114" cy="85" rx="18" ry="8" /></g>
+                  <g data-nube2 fill="#fff" opacity="0.7" style="transform:translate(40px, 0px)"><ellipse cx="204" cy="118" rx="17" ry="7" /><ellipse cx="216" cy="112" rx="12" ry="8" /><ellipse cx="228" cy="119" rx="14" ry="6" /></g>
+                  <!-- la ciudad, a contraluz -->
+                  <path class="n-ciudad" d="M46 212V180h24v-16h20v24h16v-34h30v44h18v-20h24v-28h26v40h20v-22h28v-14h24v58z" />
+                  <!-- una mosca libre, que pasa por fuera una vez -->
+                  <g data-libre style="opacity:0"><ellipse cx="-4" cy="-3.4" rx="4.4" ry="2.4" fill="#fff" opacity="0.7" transform="rotate(-28 -4 -3.4)" /><ellipse cx="4" cy="-3.4" rx="4.4" ry="2.4" fill="#fff" opacity="0.7" transform="rotate(28 4 -3.4)" /><ellipse rx="3.6" ry="2.8" fill="#2b2622" /></g>
+                </g>
+                <path class="n-cruz" d="M175 46v166M46 128h258" />
+                <rect class="n-marco" x="26" y="216" width="298" height="10" rx="5" />
+                <!-- el reloj de la pared -->
+                <circle class="n-reloj-caja" cx="530" cy="72" r="36" />
+                <path class="n-reloj-marcas" d="M530 41v7M530 96v7M499 72h7M554 72h7" />
+                <g transform="translate(530 72)">
+                  <path class="n-reloj-manos" data-hora d="M0 0V-17" style="transform:rotate(180deg)" />
+                  <path class="n-reloj-manos n-minutero" data-minutero d="M0 0V-26" />
+                </g>
+                <circle class="n-reloj-eje" cx="530" cy="72" r="3.6" />
+                <!-- la mosca, en su escritorio -->
+                <g transform="translate(345 91) scale(1.9)">
+                  <ellipse cx="50" cy="93" rx="31" ry="28" fill="#655547" stroke="#3e332b" stroke-width="1.3" />
+                  <g class="n-cabeza">
+                    <g transform="translate(5 -5.9) scale(0.9)">
+                      <g class="n-antenas n-de-despierta"><path d="M46.5 22 Q44.5 15.5 40.5 12.5" /><path d="M53.5 22 Q55.5 15.5 59.5 12.5" /></g>
+                      <ellipse cx="50" cy="41" rx="24" ry="22" fill="#6f6052" />
+                      <ellipse cx="31" cy="36.5" rx="15" ry="18" transform="rotate(-14 31 36.5)" fill="#e8402c" />
+                      <ellipse cx="69" cy="36.5" rx="15" ry="18" transform="rotate(14 69 36.5)" fill="#e8402c" />
+                      <g class="n-brillos n-de-despierta" data-brillos><ellipse cx="26" cy="27.5" rx="4.6" ry="3.2" transform="rotate(-35 26 27.5)" fill="#fff" opacity="0.88" /><ellipse cx="64" cy="27.5" rx="4.6" ry="3.2" transform="rotate(-35 64 27.5)" fill="#fff" opacity="0.88" /></g>
+                    </g>
+                    <path d="M46.3 41.5 H53.7 V46.5 C58.6 47.2 59.4 58.6 50 59 C40.6 58.6 41.4 47.2 46.3 46.5 Z" fill="#6f6052" stroke="#3e332b" stroke-width="1.3" stroke-linejoin="round" />
+                  </g>
+                  <!-- el cuello de la camisa y la corbata del juego -->
+                  <g stroke="#3e332b" stroke-width="1.1" stroke-linejoin="round">
+                    <path d="M35.5 62 L50 67.5 L41.5 77 Z" fill="#ece6dc" /><path d="M64.5 62 L50 67.5 L58.5 77 Z" fill="#ece6dc" />
+                    <path d="M46 66.5 H54 L52.4 72.5 H47.6 Z" fill="#1f4fc4" /><path d="M47.6 72.5 H52.4 L55.6 90 L50 96 L44.4 90 Z" fill="#1f4fc4" />
+                  </g>
+                  <g clip-path="url(#minuto-corbata)" stroke="#f2c14e" stroke-width="2.2"><path d="M42 80.5 58 72.5M42 87.5 58 79.5M42 94.5 58 86.5" /></g>
+                </g>
+                <!-- la luz de la lámpara, que se prende al final del día -->
+                <path class="n-luz" data-luz d="M541 214 L512 270 H612 L583 214 Z" />
+                <!-- el escritorio -->
+                <rect class="n-mesa" x="0" y="268" width="600" height="82" />
+                <rect class="n-mesa-canto" x="0" y="268" width="600" height="3" />
+                <!-- la planta -->
+                <g class="n-hojas"><ellipse cx="94" cy="238" rx="9" ry="25" /><ellipse cx="94" cy="238" rx="9" ry="25" transform="rotate(-34 94 262)" /><ellipse cx="94" cy="238" rx="9" ry="25" transform="rotate(34 94 262)" /></g>
+                <rect class="n-macetero-borde" x="70" y="258" width="48" height="10" rx="3.5" />
+                <path class="n-macetero" d="M74 268h40l-5 30H79z" />
+                <!-- el café, que humea en la mañana -->
+                <g transform="translate(-92 26)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path class="cara-humo" data-vapor d="M428 220c-3.6-4.6 3.6-7 0-11.6M441 220c-3.6-4.6 3.6-7 0-11.6" stroke-width="2.6" style="opacity:0" />
+                  <path d="M416 228h38v20a10 10 0 0 1-10 10h-18a10 10 0 0 1-10-10z" fill="#c8915e" stroke="none" />
+                  <path d="M454 235h4.6a7.6 7.6 0 0 1 0 15.2H453" stroke="#c8915e" stroke-width="5" />
+                  <path d="M420 233h30" stroke="#7a4f2a" stroke-width="4.4" />
+                </g>
+                <!-- el teclado y las patas, que teclean -->
+                <rect class="n-teclado" x="398" y="289" width="84" height="19" rx="5" />
+                <rect class="n-tecla" x="404.0" y="294.0" width="6.4" height="3.8" rx="1.2" /><rect class="n-tecla" x="413.2" y="294.0" width="6.4" height="3.8" rx="1.2" /><rect class="n-tecla" x="422.4" y="294.0" width="6.4" height="3.8" rx="1.2" /><rect class="n-tecla" x="431.6" y="294.0" width="6.4" height="3.8" rx="1.2" /><rect class="n-tecla" x="440.8" y="294.0" width="6.4" height="3.8" rx="1.2" /><rect class="n-tecla" x="450.0" y="294.0" width="6.4" height="3.8" rx="1.2" /><rect class="n-tecla" x="459.2" y="294.0" width="6.4" height="3.8" rx="1.2" /><rect class="n-tecla" x="468.4" y="294.0" width="6.4" height="3.8" rx="1.2" /><rect class="n-tecla" x="404.0" y="300.6" width="6.4" height="3.8" rx="1.2" /><rect class="n-tecla" x="413.2" y="300.6" width="6.4" height="3.8" rx="1.2" /><rect class="n-tecla" x="422.4" y="300.6" width="6.4" height="3.8" rx="1.2" /><rect class="n-tecla" x="431.6" y="300.6" width="6.4" height="3.8" rx="1.2" /><rect class="n-tecla" x="440.8" y="300.6" width="6.4" height="3.8" rx="1.2" /><rect class="n-tecla" x="450.0" y="300.6" width="6.4" height="3.8" rx="1.2" /><rect class="n-tecla" x="459.2" y="300.6" width="6.4" height="3.8" rx="1.2" /><rect class="n-tecla" x="468.4" y="300.6" width="6.4" height="3.8" rx="1.2" />
+                <path class="n-brazo n-brazo-izq" d="M397 272 Q394 291 415 297" />
+                <path class="n-brazo n-brazo-der" d="M483 272 Q486 291 465 297" />
+                <!-- la lámpara -->
+                <path class="n-lampara-brazo" d="M562 266V212" />
+                <rect class="n-lampara" x="542" y="262" width="40" height="8" rx="4" />
+                <path class="n-lampara" d="M538 214h48l-9-28h-30z" />
+              </svg>
+            </div>
+            <p class="lamina-pie" data-t="minutoPie">The game takes just as long. The fly’s office day, from 9 to 6, goes by in one minute.</p>
+          </div>
+          <p class="nota jornada-nota" data-t="minutoNota">The stopwatch counts one real minute.</p>
+        </div>
+
+        <!-- OPCIÓN 6 del inicio (8.13, EN PRUEBA, 2026-11-14). "¿Te suena?". Otro
+             mensaje, sin 9 ni 2 y sin ningún número: el día que conoce
+             cualquiera que trabaje en una oficina. A la mosca le llegan ocho
+             pedidos, uno tras otro, y se le va notando en la cara. Es un
+             dibujo de cómo se siente, no un resultado del juego. Lo mueve
+             src/suena.js (dura menos de 5 segundos, una vez, y se puede
+             repetir). Sin JavaScript o con "reducir movimiento" se ven los
+             ocho pedidos y la mosca al final -->
+        <div class="escena" data-opcion="6">
+          <div class="lamina suena" role="group" aria-labelledby="t-suena" data-animo="colapsada">
+            <div class="lamina-cabeza suena-cabeza">
+              <p class="lamina-titulo" id="t-suena" data-t="suenaTitulo">Any day at the office</p>
+              <button type="button" class="lamina-boton suena-boton" data-denuevo>
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M4.6 12a7.4 7.4 0 1 0 2.3-5.4M4.6 4.4v4.2h4.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                <span data-t="carreraDeNuevo">Watch again</span>
+              </button>
+            </div>
+            <div class="lamina-dibujo suena-escena">
+              <ul class="globos" data-t-aria="suenaLista" aria-label="What people ask the fly for">
+                <li class="globo" data-globo style="--giro:-3deg;--sube:3px;--c:#2fb8d8"><span data-t="globo1">Got a minute?</span></li>
+                <li class="globo" data-globo style="--giro:2.5deg;--sube:-4px;--c:#e8402c"><span data-t="globo2">It’s urgent</span></li>
+                <li class="globo" data-globo style="--giro:-1.5deg;--sube:5px;--c:#e5a020"><span data-t="globo3">How’s mine going?</span></li>
+                <li class="globo" data-globo style="--giro:3deg;--sube:0px;--c:#7a4de0"><span data-t="globo4">This is for today</span></li>
+                <li class="globo" data-globo style="--giro:-2.5deg;--sube:-3px;--c:#2f9e6a"><span data-t="globo5">One quick thing</span></li>
+                <li class="globo" data-globo style="--giro:2deg;--sube:4px;--c:#2fb8d8"><span data-t="globo6">Did you see it?</span></li>
+                <li class="globo" data-globo style="--giro:-2deg;--sube:-2px;--c:#e8402c"><span data-t="globo7">This is urgent too</span></li>
+                <li class="globo" data-globo style="--giro:3.5deg;--sube:3px;--c:#e5a020"><span data-t="globo8">And yesterday’s?</span></li>
+              </ul>
+              <svg class="suena-dibujo" viewBox="0 0 600 210" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
+                <circle class="s-halo" cx="300" cy="128" r="114" />
+                <g transform="translate(185 50.7) scale(2.3)">
+                  <ellipse cx="50" cy="93" rx="31" ry="28" fill="#655547" stroke="#3e332b" stroke-width="1.3" />
+                  <g class="s-cabeza">
+                    <g transform="translate(5 -5.9) scale(0.9)">
+                      <g class="s-antenas s-de-despierta"><path d="M46.5 22 Q44.5 15.5 40.5 12.5" /><path d="M53.5 22 Q55.5 15.5 59.5 12.5" /></g>
+                      <g class="s-antenas s-de-colapsada"><path d="M46.5 22 Q43 15 36.5 18.5" /><path d="M53.5 22 Q57 15 63.5 18.5" /></g>
+                      <ellipse cx="50" cy="41" rx="24" ry="22" fill="#6f6052" />
+                      <ellipse cx="31" cy="36.5" rx="15" ry="18" transform="rotate(-14 31 36.5)" fill="#e8402c" />
+                      <ellipse cx="69" cy="36.5" rx="15" ry="18" transform="rotate(14 69 36.5)" fill="#e8402c" />
+                      <g class="s-brillos s-de-despierta" data-brillos><ellipse cx="26" cy="27.5" rx="4.6" ry="3.2" transform="rotate(-35 26 27.5)" fill="#fff" opacity="0.88" /><ellipse cx="64" cy="27.5" rx="4.6" ry="3.2" transform="rotate(-35 64 27.5)" fill="#fff" opacity="0.88" /></g>
+                      <g class="s-de-colapsada" stroke="#fff" stroke-width="3.4" stroke-linecap="round" opacity="0.92"><path d="M24.5 30 37.5 43M37.5 30 24.5 43" /><path d="M62.5 30 75.5 43M75.5 30 62.5 43" /></g>
+                    </g>
+                    <path d="M46.3 41.5 H53.7 V46.5 C58.6 47.2 59.4 58.6 50 59 C40.6 58.6 41.4 47.2 46.3 46.5 Z" fill="#6f6052" stroke="#3e332b" stroke-width="1.3" stroke-linejoin="round" />
+                    <g transform="translate(0 -13.9)">
+                      <path class="cara-sudor s-gota1" d="M17.5 27c-2.6 3.6-2.6 6.4 0 6.4s2.6-2.8 0-6.4z" />
+                      <path class="cara-sudor s-gota2" d="M22 40.5c-2 2.8-2 5 0 5s2-2.2 0-5z" />
+                    </g>
+                  </g>
+                  <!-- el cuello de la camisa y la corbata del juego -->
+                  <g stroke="#3e332b" stroke-width="1.1" stroke-linejoin="round">
+                    <path d="M35.5 62 L50 67.5 L41.5 77 Z" fill="#ece6dc" /><path d="M64.5 62 L50 67.5 L58.5 77 Z" fill="#ece6dc" />
+                    <path d="M46 66.5 H54 L52.4 72.5 H47.6 Z" fill="#1f4fc4" /><path d="M47.6 72.5 H52.4 L55.6 90 L50 96 L44.4 90 Z" fill="#1f4fc4" />
+                  </g>
+                </g>
+              </svg>
+            </div>
+            <p class="lamina-pie" data-t="suenaPie">Everything urgent, everything started. Sound familiar?</p>
+          </div>
+          <p class="nota jornada-nota" data-t="suenaNota">What that costs the fly shows in the game, in one minute.</p>
+        </div>
+        <!-- /OPCIONES-B-EN-PRUEBA -->
       </header>
 
       <!-- 2a. ¿Qué ganó la mosca al limitar su WIP? (8.7, 2026-11-07, con el
