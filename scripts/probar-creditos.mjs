@@ -20,6 +20,14 @@ import { mkdirSync } from 'node:fs';
 import { INGLES } from '../src/creditos-textos.js';
 
 const DIRECCION = (process.argv[2] || 'http://localhost:5173/').replace(/\/?$/, '/');
+// En el computador el contador de visitas de Vercel no existe (lo pone Vercel
+// en el sitio publicado): con `npx vite preview` daría un 404 en cada revisión,
+// que no es un error de la página. Aquí se responde vacío, igual que en
+// portada-responsiva, probar-menu y probar-paginas (8.13, 2026-11-14)
+const LOCAL = /localhost|127\.0\.0\.1/.test(DIRECCION);
+const sinContador = async (contexto) => {
+  if (LOCAL) await contexto.route('**/_vercel/insights/**', (r) => r.fulfill({ status: 200, contentType: 'text/javascript', body: '' }));
+};
 const CAPTURAS = process.env.CAPTURAS ?? 'capturas/creditos';
 const PANTALLAS = [
   ['celular', 320, 568],
@@ -40,6 +48,7 @@ const propios = new Set(); // enlaces del propio sitio que aparecen en la págin
 
 async function abrir(ancho, alto, idioma, fondo) {
   const contexto = await navegador.newContext({ viewport: { width: ancho, height: alto }, hasTouch: ancho < 900 });
+  await sinContador(contexto);
   const errores = [];
   const pagina = await contexto.newPage();
   pagina.on('pageerror', (e) => errores.push(e.message));
@@ -206,6 +215,7 @@ for (const [nombre, ancho, alto] of PANTALLAS)
 // ---------- 4: cada enlace del propio sitio existe ----------
 {
   const contexto = await navegador.newContext();
+  await sinContador(contexto);
   for (const h of propios) {
     const respuesta = await contexto.request.get(new URL(h, DIRECCION).href);
     revisar(respuesta.ok(), `el enlace ${h} responde ${respuesta.status()}`);
@@ -216,6 +226,7 @@ for (const [nombre, ancho, alto] of PANTALLAS)
 // ---------- 5: la portada y el juego enlazan a los créditos ----------
 {
   const contexto = await navegador.newContext({ viewport: { width: 1440, height: 900 } });
+  await sinContador(contexto);
   const pagina = await contexto.newPage();
   await pagina.goto(DIRECCION, { waitUntil: 'networkidle' });
   // El pie enlaza a los créditos dos veces (la lista de páginas y la línea de
@@ -240,6 +251,7 @@ for (const [nombre, ancho, alto] of PANTALLAS)
   }
   await contexto.close();
   const limpio = await navegador.newContext({ viewport: { width: 1440, height: 900 } });
+  await sinContador(limpio);
   const juego = await limpio.newPage();
   await juego.goto(`${DIRECCION}jugar/`, { waitUntil: 'networkidle', timeout: 120000 });
   const es = await juego.locator('a.cerebro-credito[href="/creditos/"]').evaluate((a) => ({ title: a.getAttribute('title'), texto: a.textContent.trim() }));

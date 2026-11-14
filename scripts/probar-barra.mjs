@@ -23,6 +23,14 @@
 import { chromium, webkit } from 'playwright';
 
 const DIRECCION = process.argv[2] || 'http://localhost:5173/';
+// En el computador el contador de visitas de Vercel no existe (lo pone Vercel
+// en el sitio publicado): con `npx vite preview` daría un 404 en cada revisión,
+// que no es un error de la página. Aquí se responde vacío, igual que en
+// portada-responsiva, probar-menu y probar-paginas (8.13, 2026-11-14)
+const LOCAL = /localhost|127\.0\.0\.1/.test(DIRECCION);
+const sinContador = async (contexto) => {
+  if (LOCAL) await contexto.route('**/_vercel/insights/**', (r) => r.fulfill({ status: 200, contentType: 'text/javascript', body: '' }));
+};
 // Las secciones del menú (portada v2, 2026-10-26: El juego · El kit · El cerebro · FAQ)
 const SECCIONES = ['juego', 'por-que-una-mosca', 'faq']; // las secciones de la portada que están en el menú (2026-10-28: el kit salió)
 // [nombre, ancho, alto, táctil, reducir movimiento]
@@ -61,6 +69,7 @@ for (const [nombre, ancho, alto, tactil, sinMovimiento] of CASOS) for (const idi
     hasTouch: tactil,
     reducedMotion: sinMovimiento ? 'reduce' : 'no-preference',
   });
+  await sinContador(contexto);
   await contexto.addInitScript((i) => localStorage.setItem('mosca-idioma', i), idioma);
   const pagina = await contexto.newPage();
   const errores = [];

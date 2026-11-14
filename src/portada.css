@@ -99,7 +99,7 @@
   --sombra-tapa: -18px 28px 56px rgba(16, 24, 48, 0.24), 0 0 0 1px rgba(16, 24, 48, 0.08);
   color-scheme: light;
 }
-:root[data-tema='claro'] .siempre-noche { color: var(--tinta); }
+:root[data-tema='claro'] .siempre-noche { color: var(--tinta); --riel-vacio: rgba(6, 10, 22, 0.66); --punto-halo: rgba(255, 255, 255, 0.06); }
 /* Mientras se ponen los textos en inglés no se muestra la página (lo decide
    el script del <head>; a los 2,5 s se muestra igual) */
 .traduciendo body { visibility: hidden; }
@@ -183,7 +183,7 @@ html { scroll-padding-top: var(--alto-barra); }
 .boton.principal { background: var(--tinta); border-color: transparent; color: var(--noche); padding: 0 36px; font-size: 17px; font-weight: 650; }
 .boton.principal:hover { background: var(--principal-hover); box-shadow: 0 0 0 5px var(--halo); }
 
-/* ---------- Hero: el texto a la izquierda, el cerebro y la prueba a la derecha ---------- */
+/* ---------- Hero: el texto a la izquierda y el tablero de la mosca a la derecha ---------- */
 .hero {
   max-width: var(--ancho);
   margin: 0 auto;
@@ -216,20 +216,9 @@ h1 {
   max-width: 12.5em;
   text-wrap: balance;
 }
+/* (8.13, 2026-11-14: el dato chico del juego que iba entre la bajada y los
+   botones salió, pedido de Felipe. Lo que decía ahora lo dibuja el tablero) */
 .bajada { color: var(--suave); max-width: 46ch; margin-bottom: 34px; text-wrap: pretty; }
-/* 8.6 (2026-11-06): el dato del juego, en chico, entre el párrafo y los
-   botones, con un filete a la izquierda para que se lea como la prueba */
-.bajada:has(+ .dato-inicio) { margin-bottom: 16px; }
-.dato-inicio {
-  font-size: 15px;
-  line-height: 1.45;
-  color: var(--tenue);
-  max-width: 50ch;
-  margin: 0 0 30px;
-  padding-left: 12px;
-  border-left: 2px solid var(--borde-fuerte);
-  text-wrap: pretty;
-}
 /* Solo en inglés (5.2h): "Mosca means fly in Spanish.", ahora al empezar
    "¿Por qué una mosca?"; en español el párrafo queda vacío y no ocupa lugar */
 .significa { font-size: 15.5px; line-height: 1.3; color: var(--tenue); margin: 0 0 10px; }
@@ -240,88 +229,136 @@ h1 {
 .hero-texto .nota + .nota { margin-top: 5px; }
 .nota-autor a { color: var(--suave); }
 
-.laboratorio {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 28px 0 40px;
+/* ---------- El tablero de la mosca, vivo (8.13, 2026-11-14) ----------
+   Pedido de Felipe: rediseñar el inicio "con el estilo que tenemos en ¿Qué
+   ganó la mosca al limitar su WIP? o Lo que se lleva tu equipo, así tipo
+   dibujo pero algo bacán". Es un tablero como los de más abajo, con sus
+   filetes, y es el tablero de la mosca: arriba, su cara, el reloj del día y
+   los dos botones (9 o 2 tareas a la vez); al medio, las tres columnas de
+   siempre (Por hacer, En curso y Hecho), de noche; abajo, lo que dice el
+   dibujo, con sus números. El color es el del caso (--caso): el rojo de
+   Colapsada con 9 a la vez y el verde de Tranquila con 2, y nunca es lo único
+   que lo dice. Lo mueve src/jornada.js, que solo cambia la posición y la
+   transparencia: nada cambia de tamaño ni empuja lo de al lado. */
+.escena { align-self: center; min-width: 0; padding: 40px 0 48px; }
+.jornada {
+  --caso: var(--colapsada);
+  display: grid;
+  gap: 1px;
+  border: 1px solid var(--borde-fuerte);
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--borde-fuerte);
+  box-shadow: 0 34px 90px color-mix(in srgb, var(--caso) 13%, transparent);
+  container-type: inline-size;
 }
-
-/* El lienzo se funde con la página: mismo fondo y bordes que se desvanecen. */
-.cerebro {
-  position: absolute;
-  top: 0;
-  bottom: 150px;
-  left: -32px;
-  right: calc(-1 * (var(--margen) + max(0px, (100vw - var(--ancho)) / 2)));
+.jornada[data-caso='pocas'] { --caso: var(--tranquila); }
+/* Arriba: la cara de la mosca, la hora, los dos botones y el día, de 9 a 18 */
+.jornada-cabeza {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    'cara titulo elegir'
+    'dia dia dia';
+  align-items: center;
+  gap: 18px;
+  padding: 22px 24px 20px;
+  background: var(--noche-2);
 }
-.cerebro-lienzo,
-.cerebro-foto {
+/* La cara es la de "Menos sobrecarga": con su café mientras está tranquila y
+   con su cigarro desde que sale a fumar. Las dos van una sobre otra */
+.jornada-caras { grid-area: cara; position: relative; width: 108px; height: 86px; }
+.jornada-caras .cara {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  display: block;
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent),
-    linear-gradient(to bottom, transparent, #000 7%, #000 88%, transparent);
-  -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent),
-    linear-gradient(to bottom, transparent, #000 7%, #000 88%, transparent);
-  mask-composite: intersect;
+  background: color-mix(in srgb, var(--caso) 15%, transparent);
+  transition: opacity 0.3s ease, transform 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.3);
 }
-.cerebro-foto { object-fit: contain; transition: opacity 0.8s ease; }
-.cerebro-lienzo { opacity: 0; transition: opacity 0.8s ease; touch-action: pan-y; }
-.cerebro.vivo .cerebro-lienzo { opacity: 1; }
-.cerebro.vivo .cerebro-foto { opacity: 0; }
-@media (pointer: fine) {
-  .cerebro-lienzo { cursor: grab; }
-  .cerebro-lienzo:active { cursor: grabbing; }
-}
-@media (pointer: coarse) {
-  .cerebro-lienzo { pointer-events: none; }
-}
-
-.cerebro-cuenta {
-  position: absolute;
-  z-index: 1;
-  left: 0;
-  top: 28px;
-  max-width: 12em;
-  pointer-events: none;
-  font-size: 15px;
-  line-height: 1.35;
+.jornada[data-cara='tranquila'] .cara-colapsada,
+.jornada[data-cara='colapsada'] .cara-tranquila { opacity: 0; transform: scale(0.82); }
+.jornada-titulo { grid-area: titulo; display: flex; flex-direction: column; gap: 4px; margin: 0; font-size: 15.5px; font-weight: 600; line-height: 1.25; color: var(--suave); }
+.jornada-hora { font-size: 48px; font-weight: 760; font-stretch: 105%; letter-spacing: -0.02em; line-height: 1; color: var(--tinta); }
+.jornada-selector { grid-area: elegir; }
+.jornada-selector button { padding: 0 15px; letter-spacing: 0; white-space: nowrap; }
+/* (el botón del día que se está viendo también sirve: lo juega de nuevo) */
+.jornada-selector button[aria-pressed='true'] { cursor: pointer; }
+.jornada-dia { grid-area: dia; margin: 0; }
+.jornada .dia-riel { height: 8px; }
+.jornada .dia-riel::after { background: var(--caso); transform: translateX(calc((var(--dia, 1) - 1) * 100%)); }
+/* Al medio: el tablero, de noche. En curso y Hecho tienen el mismo ancho y Por
+   hacer, que solo espera, es más angosta */
+.jornada-tablero { display: grid; grid-template-columns: minmax(0, 0.62fr) minmax(0, 1.15fr) minmax(0, 1.15fr); gap: 1px; background: var(--borde-fuerte); }
+.jornada-columna { display: flex; flex-direction: column; gap: 14px; min-width: 0; padding: 16px 22px 24px; background: var(--noche); }
+.jornada-nombre {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  height: 32px;
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 650;
+  line-height: 1.2;
+  white-space: nowrap;
   color: var(--suave);
-  text-shadow: 0 0 14px var(--noche), 0 0 4px var(--noche);
 }
-.cerebro-cuenta .cifra {
+/* (cuántas tiene a la vez, como el límite escrito en "Lo que se lleva tu equipo") */
+.jornada-encurso .jornada-nombre b { padding: 2px 9px; border-radius: 999px; background: var(--caso); color: var(--noche); font-size: 12.5px; font-weight: 720; line-height: 1.3; }
+.jornada-hecho .jornada-nombre b { font-size: 32px; font-weight: 760; font-stretch: 105%; letter-spacing: -0.02em; line-height: 1; color: var(--caso); }
+/* Por hacer: lo que espera su turno */
+.pila { display: flex; flex-direction: column; gap: 6.4px; }
+.pila i { display: block; height: 21.6px; border-radius: 4px; background: color-mix(in srgb, var(--tinta) 15%, transparent); }
+/* En curso: nueve lugares. Cada tarea es una tarjeta con su nombre y, abajo,
+   cuánto lleva avanzado (--p, de 0 a 1). Con 2 a la vez, siete quedan libres */
+.mesa { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 48px; gap: 10px; }
+.tarea {
+  position: relative;
   display: block;
-  font-size: 34px;
-  font-weight: 740;
-  font-stretch: 105%;
-  letter-spacing: -0.02em;
-  line-height: 1.05;
-  color: var(--tinta);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--caso) 13%, transparent);
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--caso) 62%, transparent);
+  transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.3);
 }
-.origen { color: var(--tenue); }
-.consola-frase { font-size: 14px; line-height: 1.45; color: var(--tenue); margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--borde); }
-
-/* Con fondo blanco el cerebro va en un recuadro de noche (sus neón no se ven
-   sobre blanco) y el contador queda adentro, arriba a la izquierda. */
-:root[data-tema='claro'] .cerebro {
-  top: 14px;
-  left: 0;
-  right: 0;
-  border-radius: 28px;
-  overflow: hidden;
-  background: var(--noche);
-  box-shadow: 0 30px 70px rgba(16, 24, 48, 0.2);
+.tarea.libre { opacity: 0; transform: scale(0.6); }
+.tarea::before { content: ''; position: absolute; left: 10px; top: 12px; width: 46%; height: 5px; border-radius: 2px; background: color-mix(in srgb, var(--tinta) 36%, transparent); }
+.tarea i { position: absolute; left: 10px; right: 10px; bottom: 11px; height: 7px; border-radius: 3px; overflow: hidden; background: color-mix(in srgb, var(--tinta) 13%, transparent); }
+.tarea i::after { content: ''; position: absolute; inset: 0; border-radius: 3px; background: var(--caso); transform: translateX(calc((var(--p, 0) - 1) * 100%)); }
+/* Hecho: 18 lugares, que se llenan desde abajo, como una pila. Con 9 a la vez
+   la mitad queda vacía, con su borde de rayitas. Van de a tres por fila: cada
+   una pide un pelo menos que un tercio y crece hasta llenar la fila, para que
+   un ancho con decimales nunca deje solo dos por fila (--hueco es el espacio
+   entre una y otra) */
+.pila-hecho { --hueco: 10px; display: flex; flex-wrap: wrap-reverse; align-content: flex-start; gap: 6.4px var(--hueco); height: 164px; }
+.pila-hecho i { position: relative; flex: 1 0 calc((100% - 2 * var(--hueco)) / 3 - 1px); height: 21.6px; border-radius: 4px; border: 1px dashed color-mix(in srgb, var(--caso) 50%, transparent); }
+.pila-hecho i::after { content: ''; position: absolute; inset: -1px; border-radius: 4px; background: var(--caso); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25); opacity: 0; transform: scale(0.4); }
+/* (el movimiento va solo en la que llega: al empezar un día, las de antes se van de inmediato) */
+.pila-hecho i.hecha::after { opacity: 1; transform: none; transition: opacity 0.2s ease, transform 0.34s cubic-bezier(0.2, 0.9, 0.3, 1.3); }
+/* Abajo: lo que dice el dibujo. Las dos frases ocupan el mismo lugar y se ve
+   la del día elegido (sin JavaScript no hay botones y se leen las dos) */
+.jornada-resultado { display: grid; margin: 0; padding: 17px 24px 19px; background: var(--noche-2); font-size: 17px; line-height: 1.45; color: var(--suave); text-wrap: balance; }
+.jornada-resultado b { color: var(--tinta); font-weight: 720; }
+.jornada.viva .jornada-resultado span { grid-area: 1 / 1; }
+.jornada.viva[data-caso='muchas'] [data-de='pocas'],
+.jornada.viva[data-caso='pocas'] [data-de='muchas'] { visibility: hidden; }
+.jornada:not(.viva) .jornada-selector { display: none; }
+.jornada:not(.viva) [data-de] + [data-de] { margin-top: 4px; }
+.jornada-nota { margin-top: 14px; }
+/* En un tablero angosto (el celular) Por hacer no cabe: quedan En curso y Hecho */
+@container (max-width: 470px) {
+  .jornada-tablero { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .jornada-porhacer { display: none; }
+  .jornada-columna { gap: 12px; padding: 12px 14px 16px; }
+  .mesa { grid-auto-rows: 40px; gap: 8px; }
+  .tarea::before { left: 8px; top: 10px; height: 4px; }
+  .tarea i { left: 8px; right: 8px; bottom: 9px; height: 6px; }
+  .pila-hecho { --hueco: 8px; row-gap: 5.6px; height: 136px; }
+  .pila-hecho i { height: 17.6px; }
 }
-:root[data-tema='claro'] .cerebro-lienzo,
-:root[data-tema='claro'] .cerebro-foto { -webkit-mask-image: none; mask-image: none; }
-:root[data-tema='claro'] .cerebro-cuenta { left: 26px; top: 62px; }
 
-/* ---------- La consola: cuántas tareas a la vez ---------- */
+/* ---------- La consola: cuántas tareas a la vez ----------
+   (desde la 8.13 vive junto al cerebro, en "¿Por qué una mosca?") */
 .consola {
   position: relative;
   z-index: 2;
@@ -333,6 +370,7 @@ h1 {
   backdrop-filter: blur(14px) saturate(1.15);
   box-shadow: var(--consola-sombra);
 }
+.consola-frase { font-size: 14px; line-height: 1.45; color: var(--tenue); margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--borde); }
 .consola-cabeza { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 16px; }
 .consola-cabeza label { font-size: 15.5px; font-weight: 600; color: var(--tinta); }
 .wip-numero {
@@ -922,32 +960,74 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 .partes-total b { font-size: 15px; font-weight: 760; color: var(--tinta); }
 
 /* ¿Por qué una mosca? (8.12, 2026-11-13, pedido de Felipe: "lo encuentro muy
-   fome"): las mismas frases en un tablero de tres celdas, cada una con su
-   dibujo en un recuadro alto. El mapa: la foto de verdad, con las neuronas
-   en su lugar y el color de su zona. El trabajo: la credencial de oficina de la mosca, colgada
-   de su cinta. El juego: las dos fotos del cerebro, siempre de noche, con sus
-   colores. Abajo, el aviso y el crédito del Male CNS. Hasta la 8.11 era el
-   texto a la izquierda y las fotos a la derecha. */
+   fome"): las mismas frases en un tablero, cada una con su dibujo en un
+   recuadro alto. Abajo, el aviso y el crédito del Male CNS.
+   8.13 (2026-11-14, pedido de Felipe: "me llevaría ese cerebro a la parte de
+   El cerebro" y ahí "dejaría el cerebro girando y la tarjeta de la mosca"):
+   son dos celdas. La primera, el doble de ancha, trae el cerebro del juego en
+   3D, que hasta la 8.12 estaba en el inicio, con su consola al lado. La
+   segunda, la credencial de oficina de la mosca. Salieron la foto del mapa y
+   las dos fotos del cerebro: el cerebro girando es ese mismo mapa, de verdad. */
 .credito h2 { max-width: 16em; }
 /* Solo en inglés: qué quiere decir "mosca" */
 .significa { margin: -4px 0 22px; font-size: 17px; color: var(--suave); }
 .significa:empty { display: none; }
+.mosca-tablero { grid-template-columns: minmax(0, 2.35fr) minmax(0, 1fr); }
 .mosca-tablero .gana-item { justify-content: flex-start; }
 .mosca-tablero .dibujo { height: auto; min-height: 330px; }
-/* 1. El mapa de verdad (2026-11-13, pedido de Felipe: la silueta de rayas
-   celestes "es como rara"): la foto de 25.000 neuronas del Male CNS, cada una
-   en su lugar real y con el color de su zona (scripts/mapa-cerebro.mjs), en un
-   recuadro que es de noche también con fondo blanco, como el de las fotos del
-   juego. .mapa-corte es la cortina que la destapa de arriba abajo en 66 pasos
-   (las 66 láminas) con su línea de corte. Sin cargas queda fuera de la vista */
-.dibujo-mapa { --acento: var(--vision); display: flex; flex-direction: column; gap: 12px; color: var(--tinta); }
-.dibujo-mapa .carril-caso { color: var(--suave); }
-.dibujo-mapa .carril-caso::before { background: var(--acento); box-shadow: 0 0 10px var(--acento); }
-.mapa { position: relative; flex: 1 1 auto; display: grid; place-items: center; overflow: hidden; }
-.mapa img { display: block; width: min(100%, 246px); height: auto; }
-/* (queda 24 px más abajo del borde, para que tampoco asome el brillo de su línea) */
-.mapa-corte { position: absolute; inset: 0; background: var(--noche); transform: translateY(calc(100% + 24px)); }
+/* 1. El cerebro del juego y su consola, en un recuadro que es de noche también
+   con fondo blanco (sus neón solo se ven sobre oscuro). A la izquierda, el
+   cerebro, con quiénes lo mapearon arriba y cuántas neuronas son abajo; a la
+   derecha, cuántas tareas a la vez y los colores de sus zonas */
+.dibujo-vivo { --acento: var(--vision); display: grid; grid-template-columns: minmax(0, 1.28fr) minmax(0, 1fr); gap: 18px 28px; padding: 16px 20px 18px; color: var(--tinta); }
+.dibujo-vivo .carril-caso { color: var(--suave); }
+.dibujo-vivo .carril-caso::before { background: var(--acento); box-shadow: 0 0 10px var(--acento); }
+.laboratorio { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.escenario { position: relative; flex: 1 1 auto; min-height: 380px; overflow: hidden; }
+.cerebro { position: absolute; inset: 0; }
+/* El lienzo se funde con el recuadro: mismo fondo y bordes que se desvanecen. */
+.cerebro-lienzo,
+.cerebro-foto {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent),
+    linear-gradient(to bottom, transparent, #000 6%, #000 92%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent),
+    linear-gradient(to bottom, transparent, #000 6%, #000 92%, transparent);
+  mask-composite: intersect;
+}
+.cerebro-foto { object-fit: contain; transition: opacity 0.8s ease; }
+.cerebro-lienzo { opacity: 0; transition: opacity 0.8s ease; touch-action: pan-y; }
+.cerebro.vivo .cerebro-lienzo { opacity: 1; }
+.cerebro.vivo .cerebro-foto { opacity: 0; }
+@media (pointer: fine) {
+  .cerebro-lienzo { cursor: grab; }
+  .cerebro-lienzo:active { cursor: grabbing; }
+}
+@media (pointer: coarse) {
+  .cerebro-lienzo { pointer-events: none; }
+}
+.origen { color: var(--tenue); }
+/* .mapa-corte es la cortina que destapa el cerebro de arriba abajo en 66 pasos
+   (las 66 láminas) con su línea de corte. Sin cargas queda fuera de la vista
+   (24 px más abajo del borde, para que tampoco asome el brillo de su línea) */
+.mapa-corte { position: absolute; z-index: 2; inset: 0; background: var(--noche); transform: translateY(calc(100% + 24px)); }
 .mapa-corte::before { content: ''; position: absolute; inset: 0 12% auto; height: 2px; border-radius: 2px; background: rgba(238, 243, 255, 0.85); box-shadow: 0 0 12px rgba(238, 243, 255, 0.6); }
+/* La consola ya no flota sobre el cerebro: va al lado, dentro del recuadro,
+   sin caja propia, y sus tres datos van uno por fila */
+.dibujo-vivo .consola { align-self: center; min-width: 0; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.dibujo-vivo .consola-datos { grid-template-columns: 1fr; gap: 8px; margin-top: 12px; padding-top: 12px; }
+.dibujo-vivo .dato { flex-direction: row; justify-content: space-between; align-items: baseline; gap: 12px; }
+.dibujo-vivo .dato dt { font-size: 14px; }
+.dibujo-vivo .dato dd { font-size: 21px; }
+/* Cuántas neuronas están encendidas: lo primero de la lista y en el celeste
+   del cerebro (hasta la 8.12 iba en grande encima del cerebro, en el inicio) */
+.dibujo-vivo .dato-neuronas dd { font-size: 27px; font-stretch: 105%; color: var(--acento); }
+.dibujo-vivo .zonas { margin-top: 14px; }
 /* 2. El trabajo: la credencial cuelga de su cinta, que baja desde el borde
    del recuadro y entra por el ojal */
 .dibujo-credencial { display: flex; justify-content: center; padding-top: 0; overflow: hidden; }
@@ -985,14 +1065,20 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 }
 .credencial-dato + .credencial-dato { margin-top: 6px; }
 .credencial-dato b { font-weight: 720; color: var(--tinta); }
-/* 3. El juego: las dos fotos del cerebro (2 y 9 tareas a la vez) y sus
-   colores, en un recuadro que es de noche también con fondo blanco */
-.dibujo-cerebros { display: flex; flex-direction: column; gap: 14px; color: var(--tinta); }
-.cerebros { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-.cerebros figure { margin: 0; }
-.cerebros img { display: block; width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--borde); }
-.cerebros figcaption { margin-top: 8px; font-size: 13.5px; line-height: 1.38; color: var(--suave); text-wrap: pretty; }
-.cerebros .cifra { font-weight: 720; color: var(--tinta); }
+/* En computador la credencial va más grande: comparte fila con el cerebro
+   vivo, que es alto, y con la cinta tan larga se veía chica (8.13) */
+@media (min-width: 1100px) {
+  .mosca-tablero .cinta { width: 14px; margin-bottom: -17px; }
+  .mosca-tablero .credencial { width: 216px; padding: 0 20px 18px; border-radius: 16px; }
+  .mosca-tablero .credencial-franja { height: 30px; margin: 0 -20px 14px; }
+  .mosca-tablero .credencial-ojal { width: 40px; height: 8px; }
+  .mosca-tablero .credencial-foto { width: 124px; border-radius: 14px; }
+  .mosca-tablero .credencial-nombre { margin-top: 12px; font-size: 21px; }
+  .mosca-tablero .credencial-cargo { margin: 4px 0 12px; font-size: 15px; }
+  .mosca-tablero .credencial-dato { padding-top: 8px; font-size: 14px; }
+  .mosca-tablero .credencial-dato + .credencial-dato { margin-top: 8px; }
+}
+/* Los colores del cerebro, bajo la consola */
 .zonas { margin-top: auto; padding-top: 12px; border-top: 1px dashed var(--borde-fuerte); container-type: inline-size; }
 .zonas-titulo { margin-bottom: 9px; font-size: 12.5px; font-weight: 650; line-height: 1.2; color: var(--suave); }
 .zonas ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, auto); justify-content: space-between; gap: 8px 12px; }
@@ -1185,19 +1271,16 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .con-carga .cargado .parte-riel i::after { transition: transform calc(var(--dura) * 20ms) linear calc(var(--espera) + var(--desde) * 20ms); }
   .con-carga [data-carga]:not(.cargado) .parte-riel i::after { transform: translateX(-101%); }
 
-  /* ¿Por qué una mosca? (8.12). El mapa: la foto se destapa de arriba abajo en
-     66 pasos, uno por lámina (19 ms cada uno, lo mismo que tarda en contar el
-     66), mientras cuentan las neuronas */
+  /* ¿Por qué una mosca? (8.12). El cerebro se destapa de arriba abajo en 66
+     pasos, uno por lámina (19 ms cada uno, lo mismo que tarda en contar el
+     66), mientras cuentan las neuronas. (Hasta la 8.12 se destapaba la foto
+     del mapa; desde la 8.13 es el cerebro del juego, en 3D) */
   .con-carga .cargado .mapa-corte { transition: transform 1254ms steps(66, end) var(--espera); }
   .con-carga [data-carga]:not(.cargado) .mapa-corte { transform: none; }
   /* El trabajo: la credencial cae colgando de su cinta, se balancea y queda quieta */
   .con-carga .cargado .colgante { animation: colgar 1.2s cubic-bezier(0.3, 0.6, 0.4, 1) var(--espera) 1 backwards; }
   .con-carga [data-carga]:not(.cargado) .colgante { opacity: 0; }
-  /* El juego: cada cerebro se enciende mientras cuenta sus neuronas (1,2 ms
-     por neurona: el de 9 tareas tarda el triple) y los colores de la leyenda
-     se prenden de a uno */
-  .con-carga .cargado .cerebros img { transition: opacity calc(var(--n) * 1.2ms) var(--frena) var(--espera); }
-  .con-carga [data-carga]:not(.cargado) .cerebros img { opacity: 0.28; }
+  /* Los colores de la leyenda se prenden de a uno, cuando el cerebro ya se destapó */
   .zonas li:nth-child(2) { --i: 1; }
   .zonas li:nth-child(3) { --i: 2; }
   .zonas li:nth-child(4) { --i: 3; }
@@ -1205,8 +1288,8 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .zonas li:nth-child(6) { --i: 5; }
   .con-carga .cargado .zonas li::before {
     transition:
-      opacity 0.3s ease calc(var(--espera) + var(--i, 0) * 90ms),
-      transform 0.4s var(--rebote) calc(var(--espera) + var(--i, 0) * 90ms);
+      opacity 0.3s ease calc(var(--espera) + 0.9s + var(--i, 0) * 90ms),
+      transform 0.4s var(--rebote) calc(var(--espera) + 0.9s + var(--i, 0) * 90ms);
   }
   .con-carga [data-carga]:not(.cargado) .zonas li::before { opacity: 0.2; transform: scale(0.5); }
 }
@@ -1377,7 +1460,6 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
      segunda frase no cabe en una línea) */
   h1 br.corte { display: none; }
   .bajada { margin-bottom: 24px; }
-  .dato-inicio { margin-bottom: 24px; font-size: 14.5px; }
   /* En celular, justo después de la presentación, uno bajo el otro: Jugar (el
      juego tiene su versión de celular) y el informe. */
   .hero .acciones { display: grid; gap: 12px; }
@@ -1386,18 +1468,19 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .hero .boton { width: 100%; max-width: 440px; font-size: 17px; }
   .solo-computador { display: none !important; }
 
-  .laboratorio { padding: 8px 0 0; }
-  .cerebro { position: relative; inset: auto; height: min(118vw, 580px, max(320px, 100svh - 40px)); margin: 0 calc(-1 * var(--margen)); }
-  .cerebro-cuenta { top: 16px; max-width: 9em; font-size: 13.5px; }
-  :root[data-tema='claro'] .cerebro { margin: 0; border-radius: 22px; }
-  :root[data-tema='claro'] .cerebro-cuenta { left: 18px; top: 26px; }
-  .cerebro-cuenta .cifra { font-size: 28px; }
-  .consola { margin-top: -40px; padding: 18px 18px 16px; border-radius: 20px; }
+  /* El tablero de la mosca va después de los botones, a todo el ancho: la
+     cara y la hora arriba, y los dos botones en su propia fila, del tamaño de
+     un dedo */
+  .escena { padding: 28px 0 0; }
+  .jornada { border-radius: 20px; }
+  .jornada-cabeza { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: 'cara titulo' 'elegir elegir' 'dia dia'; gap: 14px; padding: 16px; }
+  .jornada-caras { width: 84px; height: 67px; }
+  .jornada-titulo { font-size: 14.5px; }
+  .jornada-hora { font-size: 38px; }
+  .jornada-selector button { flex: 1 1 0; height: 44px; }
+  .jornada-resultado { padding: 14px 16px 16px; font-size: 15.5px; }
+
   .wip-numero { font-size: 38px; }
-  .consola-datos { grid-template-columns: 1fr; gap: 10px; }
-  .dato { flex-direction: row; justify-content: space-between; align-items: baseline; gap: 12px; }
-  .dato dt { font-size: 14.5px; }
-  .dato dd { font-size: 22px; }
 
   .sirve,
   .gana,
@@ -1469,8 +1552,11 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .semana-nombre { font-size: 12px; white-space: nowrap; }
   .motivo-texto p { font-size: 17px; }
 
-  /* ¿Por qué una mosca?: las tres celdas una bajo otra, cada dibujo de su alto */
+  /* ¿Por qué una mosca?: las dos celdas una bajo otra, cada dibujo de su alto.
+     En la primera, el cerebro arriba y la consola abajo */
   .mosca-tablero .dibujo { min-height: 0; }
+  .dibujo-vivo { grid-template-columns: 1fr; gap: 18px; padding: 14px 14px 16px; }
+  .escenario { min-height: min(96vw, 420px); }
   .cinta { flex: 0 0 34px; }
   .dibujo-credencial { padding-bottom: 16px; }
   .aviso-mosca { font-size: 16px; }
@@ -1506,17 +1592,17 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .columna-mini-cabeza span { display: inline; }
 }
 
-/* Computadores angostos (900 a 1099 px, como el iPad en horizontal): el
-   lienzo empieza más a la derecha (el cerebro se achica para caber) y el
-   contador queda en el espacio libre de la izquierda; los dos botones caben
-   en una fila. */
+/* Computadores angostos (900 a 1099 px, como el iPad en horizontal): los dos
+   botones caben en una fila; en el tablero de la mosca, los dos botones del
+   día bajan a su propia fila; y en "¿Por qué una mosca?" las dos celdas van
+   una bajo otra, para que el cerebro y su consola quepan lado a lado. */
 @media (min-width: 900px) and (max-width: 1099px) {
-  .cerebro { left: 64px; }
-  /* Con fondo blanco el recuadro ocupa toda la columna y el lienzo, adentro,
-     deja libre el lugar del contador */
-  :root[data-tema='claro'] .cerebro-lienzo,
-  :root[data-tema='claro'] .cerebro-foto { left: 64px; width: calc(100% - 64px); }
-  .cerebro-cuenta { max-width: 8em; font-size: 14px; }
+  .jornada-cabeza { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: 'cara titulo' 'elegir elegir' 'dia dia'; }
+  .jornada-selector { justify-self: start; }
+  .mosca-tablero { grid-template-columns: 1fr; grid-template-rows: none; }
+  .mosca-tablero .gana-item { grid-row: auto; grid-template-rows: auto auto; }
+  .mosca-tablero .dibujo-credencial { min-height: 0; padding-bottom: 18px; }
+  .mosca-tablero .cinta { flex: 0 0 34px; }
   .boton { padding-inline: 20px; }
   .boton.principal { padding-inline: 28px; }
   h1 { font-size: clamp(36px, 3.4vw, 44px); }
@@ -1524,22 +1610,24 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 }
 
 /* Pantallas de computador bajas (proyector de 1280 × 720, ventanas chicas):
-   todo un poco más compacto para que el cerebro tenga lugar. */
+   todo un poco más compacto para que el tablero de la mosca quepa entero. */
 @media (min-width: 900px) and (max-height: 820px) {
   .hero { min-height: max(calc(100svh - var(--alto-barra)), 620px); }
   .hero-texto { padding: 40px 0 48px; }
   .rotulo { margin-bottom: 14px; }
   h1 { font-size: clamp(38px, 3.2vw, 46px); margin-bottom: 18px; }
   .bajada { margin-bottom: 28px; }
-  .dato-inicio { margin-bottom: 26px; }
-  .laboratorio { padding: 20px 0 28px; }
-  .cerebro { bottom: 120px; }
-  .consola { padding: 14px 20px 12px; }
-  .consola-frase { display: none; }
-  .wip-numero { font-size: 36px; }
-  .consola-datos { margin-top: 10px; padding-top: 10px; }
-  .dato dd { font-size: 24px; }
-  .consola-nota { margin-top: 8px; }
+  .escena { padding: 24px 0 32px; }
+  .jornada-cabeza { padding-block: 16px; gap: 14px 18px; }
+  .jornada-caras { width: 96px; height: 77px; }
+  .jornada-hora { font-size: 42px; }
+  .jornada-columna { padding-block: 14px 18px; }
+  .mesa { grid-auto-rows: 42px; gap: 9px; }
+  .pila-hecho { row-gap: 5.6px; height: 144px; }
+  .pila-hecho i,
+  .pila i { height: 19.3px; }
+  .pila { gap: 5.6px; }
+  .jornada-resultado { padding-block: 14px 16px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

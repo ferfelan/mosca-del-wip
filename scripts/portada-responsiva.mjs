@@ -8,7 +8,9 @@
 //   - en celular vertical haya un Jugar en la primera pantalla: el grande
 //     entero o, si no cabe (desde la 5.2g, por ejemplo en 320×568), el de la
 //     barra,
-//   - el cerebro se encienda y no haya errores,
+//   - el tablero del inicio parta y se lea bien con sus dos días (8.13),
+//   - el cerebro se encienda (desde la 8.13 está en "¿Por qué una mosca?") y
+//     no haya errores,
 //   - al bajar por la página, cada dibujo se cargue (8.11: las fichas, las
 //     barras, los números que cuentan) y ninguno quede a medio camino,
 //   - en inglés no quede ningún texto en español (salvo nombres propios),
@@ -136,6 +138,7 @@ function medir({ tactil, celularVertical, idioma, raiz }) {
     if (abajo > window.innerHeight && !(enBarra && seVe(enBarra))) problemas.push(`el botón Jugar queda bajo la primera pantalla (${Math.round(abajo)} px de ${window.innerHeight}) y la barra no muestra el suyo`);
   }
   if (!raiz && !document.querySelector('.cerebro.vivo')) problemas.push('el cerebro no se encendió (queda la foto fija)');
+  if (!raiz && !document.querySelector('.jornada.viva')) problemas.push('el tablero del inicio no partió (quedó sin sus botones)');
   if (document.documentElement.lang !== idioma) problemas.push(`la página dice lang="${document.documentElement.lang}" y debía ser ${idioma}`);
   // En inglés: ninguna palabra en español a la vista ni en lo que lee un lector de pantalla
   if (idioma === 'en') {
@@ -198,7 +201,23 @@ for (const [fondo, idioma] of COMBINACIONES) for (const [nombreTamano, ancho, al
   pagina.on('console', (m) => { if (m.type() === 'error') errores.push(m.text()); });
   // La portada en inglés vive en /en/ (Etapa 7); lo recordado solo vale para el juego y los créditos
   await pagina.goto(DIRECCION + (idioma === 'en' ? 'en/' : ''), { waitUntil: 'load' });
-  // El cerebro solo se dibuja cuando se ve (en celular horizontal queda más abajo)
+  // (8.13) El tablero del inicio juega solo el día con 9 tareas a la vez y
+  // después el día con 2. Aquí se deja quieto para medirlo: primero el día con
+  // 2 ya cerrado (se mide solo el inicio) y después el día con 9, que es como
+  // queda para el resto de la revisión y para las fotos. Que se mueva bien se
+  // prueba aparte, en scripts/probar-jornada.mjs
+  await pagina.waitForFunction(() => window.__mosca?.jornada, null, { timeout: 15000 }).catch(() => {});
+  const problemasDia2 = await pagina.evaluate(async (datos) => {
+    const jornada = window.__mosca?.jornada;
+    if (!jornada) return ['el tablero del inicio no partió'];
+    jornada.mostrarCerrado('pocas');
+    await new Promise((listo) => setTimeout(listo, 500));
+    return [];
+  }, null);
+  if (!problemasDia2.length) problemasDia2.push(...(await pagina.evaluate(medir, { tactil, idioma, raiz: '.hero' })));
+  await pagina.evaluate(() => window.__mosca?.jornada?.mostrarCerrado('muchas'));
+  // El cerebro solo se dibuja cuando se ve (desde la 8.13 está más abajo, en
+  // "¿Por qué una mosca?", y se pide cuando falta poco para llegar a él)
   // (los saltos son directos: con la página deslizándose sola, la barra de
   // arriba quedaría encima del texto en la medición)
   await pagina.evaluate(() => document.querySelector('.cerebro').scrollIntoView({ block: 'center', behavior: 'instant' }));
@@ -246,6 +265,7 @@ for (const [fondo, idioma] of COMBINACIONES) for (const [nombreTamano, ancho, al
     await pagina.screenshot({ path: join(CARPETA, `${nombre}-menu.png`) });
     await pagina.keyboard.press('Escape');
   }
+  problemas.push(...problemasDia2.map((p) => `(inicio, día con 2 a la vez) ${p}`));
   if (!cargas.partieron) problemas.push('las cargas no partieron (la página no tiene "con-carga")');
   for (const c of cargas.sinCargar) problemas.push(`no se cargó al bajar por la página: «${c}»`);
   for (const c of cargas.contando) problemas.push(`un número quedó a medio contar: ${c}`);

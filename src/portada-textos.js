@@ -19,7 +19,15 @@ export const INGLES = {
   titulo: 'Busy all day.<br class="corte" /> So what did you&nbsp;finish?',
   bajada:
     'Measure how many things your team has started and find the limit that lets it finish the most. Start by playing for a minute with an office fly that has a real brain.',
-  datoInicio: 'In the game, the fly already ran the test. With 9&nbsp;tasks at once, she ends up overwhelmed. With&nbsp;2, she finishes twice as many.',
+  // 8.13 (2026-11-14, pedido de Felipe): el dato chico del juego salió del
+  // inicio y, en vez del cerebro, va el tablero de la mosca, vivo: un día con 9
+  // tareas a la vez y otro con 2 ("has something to do" es como lo dice el
+  // informe en inglés, en la tabla del anexo B)
+  jornadaTitulo: 'The fly’s day',
+  jornadaElegir: 'Tasks at once',
+  jornadaResultado9: 'With 9 at once, she had something to do <b>100%</b> of the day and finished <b>9</b>&nbsp;tasks.',
+  jornadaResultado2: 'With 2 at once, she had something to do <b>96%</b> of the day and finished <b>18</b>&nbsp;tasks.',
+  jornadaNota: 'Average of 200 days played. These are numbers from the game, not from people.',
   jugar: 'Play',
   jugarMinuto: 'Play (1 minute)',
   verKit: 'See the kit',
@@ -141,10 +149,11 @@ export const INGLES = {
   // ¿Por qué una mosca?
   creditoTitulo: 'Why a fly?',
   significa: 'Mosca means fly in Spanish.', // al empezar la sección; en español no hay línea
-  // 8.12: las mismas frases, repartidas en las tres celdas del tablero
+  // 8.12: las mismas frases, en un tablero. Desde la 8.13 (2026-11-14) la
+  // primera y la tercera van juntas, sobre el cerebro del juego en 3D, que
+  // bajó desde el inicio; la segunda, sobre la credencial
   mosca1: 'Scientists mapped a fly’s central nervous system.',
   laminasQuien: 'Janelia, Cambridge and Google, among others',
-  mapaAlt: 'The map of the fly’s nervous system, with the brain on top and the nerve cord below. It shows 25,000 of the neurons, each in its real place and in the color of its zone.',
   laminasDato: '<b data-cuenta="der" data-paso="0.0075">166,700</b> neurons and their connections, in <b data-cuenta data-paso="19">66</b>&nbsp;slices',
   mosca2: 'We gave her an office job. Yes, we put her to work.',
   credencialNombre: 'Mosca',
@@ -159,10 +168,6 @@ export const INGLES = {
   // entero y lo cortaron en 66 láminas de 20 micrones)
   creditoAviso:
     'No fly was harmed or made to do any real work. Except the one in the map, whose nervous system was taken out and cut into 66&nbsp;slices.', // 8.11: sin dos puntos (pedido de Felipe: "es muy IA")
-  cerebro2Alt: 'The brain with 2 tasks at once, with few neurons firing.',
-  cerebro9Alt: 'The brain with 9 tasks at once, with many more neurons firing.',
-  cerebro2Pie: '2 tasks at once, <span class="cifra" data-cuenta="der" data-paso="1.2">423</span> neurons firing in the simulation',
-  cerebro9Pie: '9 at once, <span class="cifra" data-cuenta="der" data-paso="1.2">1,328</span> neurons firing in the simulation',
   credito1:
     'The map is <a href="https://male-cns.janelia.org">Male CNS v1.0</a>. “This project is a collaboration between FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC Laboratory of Molecular Biology, and Google Research.”',
   credito2:

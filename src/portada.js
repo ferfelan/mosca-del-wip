@@ -2,12 +2,17 @@
 // 2026-10-26: la pregunta como título, "Cómo se juega", el kit, "¿Por qué una
 // mosca?" y la FAQ; el cerebro, la consola, el clip, la barra y el idioma
 // siguen igual).
-// 1. El cerebro del juego en grande: las mismas neuronas reales (MaleCNS) y
-//    la misma actividad simulada de src/cerebro.js, que se carga después de
-//    dibujar la página. Mientras tanto se ve una foto fija del mismo cerebro.
-// 2. La consola: de 1 a 10 tareas a la vez, con los números del informe.
-//    Al entrar sube sola de 2 a 10 una vez (hasta 10 desde la portada v4,
-//    2026-10-28: el tope del juego); después manda la persona.
+// 0. El tablero de la mosca, vivo, en el inicio (8.13, 2026-11-14): un día de
+//    oficina con 9 tareas a la vez y otro con 2 (src/jornada.js).
+// 1. El cerebro del juego: las mismas neuronas reales (MaleCNS) y la misma
+//    actividad simulada de src/cerebro.js. Desde la 8.13 (pedido de Felipe)
+//    vive en "¿Por qué una mosca?" y no en el inicio: se baja cuando esa
+//    sección está por verse. Mientras tanto se ve una foto fija del mismo
+//    cerebro.
+// 2. La consola, junto al cerebro: de 1 a 10 tareas a la vez, con los números
+//    del informe. La primera vez que se ve el cerebro sube sola de 2 a 10
+//    (hasta 10 desde la portada v4, 2026-10-28: el tope del juego); después
+//    manda la persona.
 // 3. El clip del juego: se baja cuando está por verse, marca si son pocas o
 //    muchas tareas y se detiene fuera de la pantalla.
 // 4. Idioma (español o inglés) y fondo (negro o blanco), en la barra de
@@ -27,6 +32,7 @@ import { leerIdioma, idiomaDeLaPagina, rutaEnIdioma, formatoNumero } from './idi
 import { DINAMICOS } from './portada-textos.js';
 import { iniciarBarra } from './barra.js';
 import { iniciarCargas } from './cargas.js';
+import { iniciarJornada } from './jornada.js';
 
 // Tabla de 1 a 10 del informe (pág. 4): corrida oficial, 200 días por cada
 // número de tareas, semilla 2024 (docs/corrida-oficial.json). Si la corrida
@@ -75,7 +81,7 @@ let introPaso = 0;
 // Estado del cerebro (se llena en encenderCerebro)
 const lienzo = cerebroCaja.querySelector('.cerebro-lienzo');
 let cerebro = null;
-let visible = true;
+let visible = !('IntersectionObserver' in window); // (8.13) el cerebro ya no está en la primera pantalla
 let raf = 0;
 let ultimo = 0;
 let hastaQuieto = 0; // con "reducir movimiento" solo se dibuja mientras cambia
@@ -249,10 +255,27 @@ marcarSeccion();
 // (el código está en src/cargas.js: lo comparte con las páginas de lectura)
 iniciarCargas();
 
-// Al entrar, una sola vez: sube de 2 a 10 tareas (el tope del juego) para
-// mostrar qué pasa. Con 10 quedan los números del juego para 10 (8,2
-// terminadas, Colapsada, 15 cigarros) y el cerebro de 10 tareas
+// ---------- El tablero de la mosca, vivo, en el inicio (8.13) ----------
+// (window.__mosca es para las pruebas, como en el juego: deja el dibujo quieto)
+const jornada = iniciarJornada();
+window.__mosca = { ...(window.__mosca || {}), jornada };
+
+// La primera vez que se ve el cerebro, una sola vez: sube de 2 a 10 tareas (el
+// tope del juego) para mostrar qué pasa. Con 10 quedan los números del juego
+// para 10 (8,2 terminadas, Colapsada, 15 cigarros) y el cerebro de 10 tareas.
+// Hasta la 8.12 el cerebro estaba en el inicio y esto pasaba al entrar. Ahora
+// espera dos cosas: que el cerebro ya esté encendido (o que se sepa que no va
+// a encender, y entonces suben solo los números) y que la persona lo esté
+// viendo (casi la mitad, como las cargas)
 const TOPE_SUBIDA = 10;
+let cerebroListo = false;
+let cerebroVisto = false;
+let subio = false;
+function talVezSubir() {
+  if (subio || !cerebroListo || !cerebroVisto) return;
+  subio = true;
+  subidaSola();
+}
 function subidaSola() {
   if (quieto.matches || tocado) return;
   const paso = () => {
@@ -294,7 +317,8 @@ function cuadro(t) {
   cerebro.renderizar();
   if (!cerebroCaja.classList.contains('vivo')) {
     cerebroCaja.classList.add('vivo');
-    subidaSola();
+    cerebroListo = true;
+    talVezSubir();
   }
   const { activas } = cerebro.lectura();
   if (activas !== ultimaCuenta) {
@@ -330,7 +354,8 @@ async function encenderCerebro() {
   const senal = corte.signal;
   if (senal.aborted) return;
   if (!hayWebGL()) {
-    subidaSola();
+    cerebroListo = true;
+    talVezSubir();
     return;
   }
   try {
@@ -341,7 +366,8 @@ async function encenderCerebro() {
   } catch (error) {
     if (senal.aborted) return; // la página se está yendo: no hay nada que mostrar
     console.warn('El cerebro no cargó. Queda la foto fija.', error);
-    subidaSola();
+    cerebroListo = true;
+    talVezSubir();
     return;
   }
   // En la portada la rueda del mouse mueve la página (en el juego hace zoom)
@@ -361,10 +387,23 @@ async function encenderCerebro() {
   despertar(1800);
 }
 
-new IntersectionObserver(([e]) => {
-  visible = e.isIntersecting;
-  if (visible) despertar(400);
-}).observe(cerebroCaja);
+if ('IntersectionObserver' in window) {
+  new IntersectionObserver(
+    ([e]) => {
+      visible = e.isIntersecting;
+      if (visible) despertar(400);
+      // (la barra de arriba tapa 64 px: lo que queda debajo de ella no cuenta)
+      const altoPantalla = e.rootBounds?.height || innerHeight;
+      if (!cerebroVisto && visible && (e.intersectionRatio >= 0.45 || e.intersectionRect.height >= altoPantalla * 0.5)) {
+        cerebroVisto = true;
+        talVezSubir();
+      }
+    },
+    { rootMargin: '-64px 0px 0px 0px', threshold: [0, 0.2, 0.45, 0.7, 1] },
+  ).observe(cerebroCaja);
+} else {
+  cerebroVisto = true;
+}
 document.addEventListener('visibilitychange', () => {
   if (!document.hidden) despertar(400);
 });
@@ -372,14 +411,14 @@ document.addEventListener('visibilitychange', () => {
 // de nuevo a su tamaño (con "reducir movimiento" no se dibuja solo)
 addEventListener('resize', () => despertar(400));
 
-// Después de dibujar la página: así el texto y los botones salen primero.
-// En celulares y tablets (puntero grueso) el cerebro en 3D pesa unos 600 KB y
-// armarlo ocupa el procesador justo cuando la página recién aparece (Etapa 7,
-// medido con Lighthouse): ahí parte con el primer toque, desplazamiento o
-// tecla, o a los 3 segundos si nadie toca nada. Mientras tanto se ve la foto
-// del cerebro. En el computador parte apenas la página está dibujada.
+// El cerebro en 3D pesa unos 600 KB y armarlo ocupa el procesador. Desde la
+// 8.13 (2026-11-14) no está en el inicio sino en "¿Por qué una mosca?", así
+// que ya no se baja al entrar: se pide cuando a la persona le falta poco para
+// llegar a él (una pantalla y media, o 900 px), y parte cuando el navegador
+// tiene un momento libre. Mientras tanto se ve la foto del cerebro. Quien
+// entra directo a la sección (el menú "El cerebro") lo pide de inmediato. Sin
+// IntersectionObserver se pide apenas la página está dibujada, como antes.
 const despues = window.requestIdleCallback || ((fn) => setTimeout(fn, 200));
-const tactil = matchMedia('(pointer: coarse)').matches;
 let cerebroPedido = false;
 function pedirCerebro() {
   if (cerebroPedido) return;
@@ -387,19 +426,19 @@ function pedirCerebro() {
   despues(encenderCerebro, { timeout: 1200 });
 }
 function programarCerebro() {
-  if (!tactil) {
+  if (!('IntersectionObserver' in window)) {
     pedirCerebro();
     return;
   }
-  const senales = ['scroll', 'pointerdown', 'touchstart', 'keydown'];
-  let espera = 0;
-  const alTocar = () => {
-    clearTimeout(espera);
-    for (const s of senales) removeEventListener(s, alTocar);
-    pedirCerebro();
-  };
-  for (const s of senales) addEventListener(s, alTocar, { passive: true });
-  espera = setTimeout(alTocar, 3000);
+  const cerca = new IntersectionObserver(
+    ([e]) => {
+      if (!e.isIntersecting) return;
+      cerca.disconnect();
+      pedirCerebro();
+    },
+    { rootMargin: `${Math.max(900, Math.round(innerHeight * 1.5))}px 0px` },
+  );
+  cerca.observe(cerebroCaja);
 }
 if (document.readyState === 'complete') programarCerebro();
 else addEventListener('load', programarCerebro, { once: true });

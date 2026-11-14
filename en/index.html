@@ -216,19 +216,28 @@
     <!-- /BARRA -->
     <main>
       <!-- 1. El inicio. Desde la 8.7 (2026-11-07, segunda vuelta de Felipe): la
-           pregunta de siempre como título, una bajada que dice qué hacer (medir
-           y encontrar el límite, partiendo por el juego) y el dato del juego en
-           chico; los dos botones abajo. Desde la 8.8 (2026-11-09, pedido de
-           Felipe) vuelve arriba del título la frase del problema, como en la
-           8.6 ("me gustaba ese mini título"), y el dato del juego dice otra
-           cosa, más corta. El cerebro en vivo y la consola a la derecha, como
-           antes. -->
+           pregunta de siempre como título y una bajada que dice qué hacer (medir
+           y encontrar el límite, partiendo por el juego); los dos botones abajo.
+           Desde la 8.8 (2026-11-09) va arriba del título la frase del problema.
+           8.13 (2026-11-14, pedido de Felipe): sale el dato chico del juego
+           (la frase está en docs/frases-retiradas.txt) y, a la derecha, en vez
+           del cerebro en 3D y la consola (que bajaron a "¿Por qué una mosca?"), va un
+           dibujo con el estilo de los tableros de más abajo: el tablero de la
+           mosca, vivo. Es el título dibujado. Juega un día de oficina con 9
+           tareas a la vez y después el mismo día con 2: el reloj va de 9 a 18,
+           las tareas avanzan en "En curso" y caen en "Hecho" a la hora en que
+           cayeron, en promedio, en los 200 días de la corrida oficial (los
+           minutos están en src/jornada.js y salen de mirar esa corrida, sin
+           cambiarle nada). Abajo, lo que dice el dibujo, con sus números: tuvo
+           qué hacer el 100 % y el 96 % del día (docs/etapa4-1.md, "con qué
+           hacer") y terminó 9 y 18 tareas. Se juega una vez por visita y
+           después manda la persona, con los dos botones. Sin JavaScript o con
+           "reducir movimiento" queda quieto, con el día de 9 ya cerrado. -->
       <header class="hero" id="inicio" tabindex="-1">
         <div class="hero-texto">
           <p class="rotulo" data-t="rotulo">Being busy all the time isn’t the same as making progress</p>
           <h1 data-t="titulo">Busy all day.<br class="corte" /> So what did you&nbsp;finish?</h1>
           <p class="bajada" data-t="bajada">Measure how many things your team has started and find the limit that lets it finish the most. Start by playing for a minute with an office fly that has a real brain.</p>
-          <p class="dato-inicio" data-t="datoInicio">In the game, the fly already ran the test. With 9&nbsp;tasks at once, she ends up overwhelmed. With&nbsp;2, she finishes twice as many.</p>
           <div class="acciones">
             <a class="boton principal" href="/jugar/?lang=en" data-jugar data-t="jugarMinuto">Play (1 minute)</a>
             <a class="boton" href="#kit" data-t="verKit">See the kit</a>
@@ -238,38 +247,74 @@
           <p class="nota nota-autor" data-t="creadoPor">Created by <a href="https://www.linkedin.com/in/felipefernandezandrade/" target="_blank" rel="noopener">Felipe Fernández</a></p>
         </div>
 
-        <!-- El cerebro del juego (las mismas neuronas y la misma actividad
-             simulada) y una prueba rápida: cuántas tareas a la vez. -->
-        <div class="laboratorio">
-          <div class="cerebro siempre-noche" data-tareas="2">
-            <!-- La foto del cerebro mientras carga el 3D: WebP (pesa un tercio) y, en celular, la versión de 800 px; el JPEG queda para navegadores viejos -->
-            <picture>
-              <source type="image/webp" srcset="/img/cerebro-portada-800.webp 800w, /img/cerebro-portada.webp 1000w" sizes="(max-width: 899px) 100vw, 50vw" />
-              <img class="cerebro-foto" src="/img/cerebro-portada.jpg" width="1000" height="1018" alt="" aria-hidden="true" decoding="async" fetchpriority="high" />
-            </picture>
-            <canvas class="cerebro-lienzo" aria-hidden="true"></canvas>
-          </div>
-          <p class="cerebro-cuenta siempre-noche"><span class="cifra" data-neuronas>423</span> <span data-t="neuronas">neurons firing</span> <span class="origen" data-t="enSimulacion">in the simulation</span></p>
-
-          <div class="consola" role="group" aria-labelledby="t-wip">
-            <p class="consola-frase" data-t="consolaFrase">Real neurons from a fly. The more tasks she has on her plate, the more her brain lights up.</p>
-            <div class="consola-control">
-              <div class="consola-cabeza">
-                <label id="t-wip" for="wip" data-t="tareasLabel">Tasks in progress at once (WIP)</label>
-                <output class="wip-numero" for="wip" data-wip>2</output>
-                <p class="wip-limite" data-limite>Within the sustainable limit (3)</p>
+        <!-- El tablero de la mosca, vivo (8.13). Lo mueve src/jornada.js -->
+        <div class="escena">
+          <div class="jornada" role="group" aria-labelledby="t-jornada" data-caso="muchas" data-cara="colapsada">
+            <div class="jornada-cabeza">
+              <div class="jornada-caras" aria-hidden="true">
+                <svg class="cara cara-tranquila" viewBox="12 14 84 64" aria-hidden="true" focusable="false">
+                  <g transform="translate(5 8) scale(0.9)">
+                    <g stroke="#3e332b" stroke-width="3.6" stroke-linecap="round" fill="none"><path d="M46.5 22 Q44.5 15.5 40.5 12.5" /><path d="M53.5 22 Q55.5 15.5 59.5 12.5" /></g>
+                    <ellipse cx="50" cy="41" rx="24" ry="22" fill="#6f6052" />
+                    <ellipse cx="31" cy="36.5" rx="15" ry="18" transform="rotate(-14 31 36.5)" fill="#e8402c" />
+                    <ellipse cx="69" cy="36.5" rx="15" ry="18" transform="rotate(14 69 36.5)" fill="#e8402c" />
+                    <ellipse cx="26" cy="27.5" rx="4.6" ry="3.2" transform="rotate(-35 26 27.5)" fill="#fff" opacity="0.88" />
+                    <ellipse cx="64" cy="27.5" rx="4.6" ry="3.2" transform="rotate(-35 64 27.5)" fill="#fff" opacity="0.88" />
+                  </g>
+                  <path d="M46.3 55.4 H53.7 V60.4 C58.6 61.1 59.4 72.5 50 72.9 C40.6 72.5 41.4 61.1 46.3 60.4 Z" fill="#6f6052" stroke="#3e332b" stroke-width="1.3" stroke-linejoin="round" />
+                  <!-- su café (tranquila, la mosca toma café y no fuma) -->
+                  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path class="cara-humo" d="M74.5 49.5c-1.6-2 1.6-3 0-5M80.5 49.5c-1.6-2 1.6-3 0-5" stroke-width="1.6" />
+                    <path d="M69 54h17v8.5a7 7 0 0 1-7 7h-3a7 7 0 0 1-7-7z" fill="#c8915e" stroke="none" />
+                    <path d="M86 57h2.2a3.9 3.9 0 0 1 0 7.8H85.6" stroke="#c8915e" stroke-width="2.6" />
+                    <path d="M70.5 56.2h14" stroke="#7a4f2a" stroke-width="2.2" />
+                  </g>
+                </svg>
+                <svg class="cara cara-colapsada" viewBox="12 14 84 64" aria-hidden="true" focusable="false">
+                  <g transform="translate(5 8) scale(0.9)">
+                    <g stroke="#3e332b" stroke-width="3.6" stroke-linecap="round" fill="none"><path d="M46.5 22 Q43 15 36.5 18.5" /><path d="M53.5 22 Q57 15 63.5 18.5" /></g>
+                    <ellipse cx="50" cy="41" rx="24" ry="22" fill="#6f6052" />
+                    <ellipse cx="31" cy="36.5" rx="15" ry="18" transform="rotate(-14 31 36.5)" fill="#e8402c" />
+                    <ellipse cx="69" cy="36.5" rx="15" ry="18" transform="rotate(14 69 36.5)" fill="#e8402c" />
+                    <g stroke="#fff" stroke-width="3.4" stroke-linecap="round" opacity="0.92"><path d="M24.5 30 37.5 43M37.5 30 24.5 43" /><path d="M62.5 30 75.5 43M75.5 30 62.5 43" /></g>
+                  </g>
+                  <path d="M46.3 55.4 H53.7 V60.4 C58.6 61.1 59.4 72.5 50 72.9 C40.6 72.5 41.4 61.1 46.3 60.4 Z" fill="#6f6052" stroke="#3e332b" stroke-width="1.3" stroke-linejoin="round" />
+                  <!-- el sudor y el cigarro (colapsada, sale a fumar) -->
+                  <path class="cara-sudor" d="M17.5 27c-2.6 3.6-2.6 6.4 0 6.4s2.6-2.8 0-6.4zM22 40.5c-2 2.8-2 5 0 5s2-2.2 0-5z" />
+                  <g transform="rotate(14 54 68)" stroke="#3e332b" stroke-width="1">
+                    <rect x="53" y="65.6" width="24" height="5.8" rx="1.6" fill="#ece6dc" />
+                    <rect x="72" y="65.6" width="5" height="5.8" rx="1.6" fill="#ff7043" />
+                  </g>
+                  <path class="cara-humo" d="M82.5 64c3.4-3.6-3-5.6 0-9.4s-2.4-5 0-8.6" fill="none" stroke-width="2" stroke-linecap="round" />
+                </svg>
               </div>
-              <input id="wip" class="wip" type="range" min="1" max="10" step="1" value="2" aria-valuetext="2 tasks at once" />
-              <div class="marcas" aria-hidden="true"><span>1</span><span>2</span><span class="limite">3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+              <p class="jornada-titulo"><span id="t-jornada" data-t="jornadaTitulo">The fly’s day</span> <b class="jornada-hora" data-hora aria-hidden="true">18:00</b></p>
+              <div class="selector jornada-selector" role="group" data-t-aria="jornadaElegir" aria-label="Tasks at once">
+                <button type="button" data-elegir="muchas" aria-pressed="true" data-t="nueveALaVez">9 at once</button>
+                <button type="button" data-elegir="pocas" aria-pressed="false" data-t="dosALaVez">2 at once</button>
+              </div>
+              <p class="dia jornada-dia" aria-hidden="true"><span data-t="dibujoDiaDesde">9 am</span><span class="dia-riel"></span><span data-t="dibujoDiaHasta">6 pm</span></p>
             </div>
-            <dl class="consola-datos">
-              <div class="dato"><dt data-t="terminadas">finished per day</dt><dd data-terminadas>18.0</dd></div>
-              <div class="dato"><dt data-t="estres">stress at the end of the day</dt><dd class="nivel" data-estres>Calm</dd></div>
-              <div class="dato"><dt data-t="cigarros">cigarettes</dt><dd data-cigarros>0</dd></div>
-            </dl>
-            <p class="nota consola-nota" data-t="consolaNota">Average of 200 days played. These are numbers from the game, not from people.</p>
-            <p class="solo-lector" aria-live="polite" data-resumen></p>
+            <div class="jornada-tablero" aria-hidden="true">
+              <div class="jornada-columna jornada-porhacer">
+                <p class="jornada-nombre"><span data-t="dibujoPorHacer">To do</span></p>
+                <div class="pila"><i></i><i></i><i></i><i></i></div>
+              </div>
+              <div class="jornada-columna jornada-encurso">
+                <p class="jornada-nombre"><span data-t="dibujoEnCurso">In progress</span><b data-encurso>9</b></p>
+                <div class="mesa"><span class="tarea" style="--p: 0.91"><i></i></span><span class="tarea" style="--p: 0.82"><i></i></span><span class="tarea" style="--p: 0.72"><i></i></span><span class="tarea" style="--p: 0.63"><i></i></span><span class="tarea" style="--p: 0.5"><i></i></span><span class="tarea" style="--p: 0.38"><i></i></span><span class="tarea" style="--p: 0.25"><i></i></span><span class="tarea" style="--p: 0.14"><i></i></span><span class="tarea" style="--p: 0.03"><i></i></span></div>
+              </div>
+              <div class="jornada-columna jornada-hecho">
+                <p class="jornada-nombre"><span data-t="dibujoHecho">Done</span><b data-hechas>9</b></p>
+                <div class="pila-hecho"><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              </div>
+            </div>
+            <p class="jornada-resultado">
+              <span data-de="muchas" data-t="jornadaResultado9">With 9 at once, she had something to do <b>100%</b> of the day and finished <b>9</b>&nbsp;tasks.</span>
+              <span data-de="pocas" data-t="jornadaResultado2">With 2 at once, she had something to do <b>96%</b> of the day and finished <b>18</b>&nbsp;tasks.</span>
+            </p>
           </div>
+          <p class="nota jornada-nota" data-t="jornadaNota">Average of 200 days played. These are numbers from the game, not from people.</p>
         </div>
       </header>
 
@@ -612,23 +657,23 @@
            8.8 (2026-11-09) lleva "Sí, la pusimos a chambear" y el aviso de las
            películas ("ninguna mosca salió herida"), con lo que de verdad le
            pasó a la del mapa: le sacaron el sistema nervioso entero y lo
-           cortaron en 66 láminas (Berg y otros, 2025, Métodos).
-           8.12 (2026-11-13, pedido de Felipe: "aún no me convence, lo
-           encuentro muy fome"): las mismas frases, ahora en un tablero de tres
-           celdas con dibujos que se cargan, como los de arriba:
-           1. el mapa de verdad: una foto con 25.000 de sus neuronas, cada una
-              en su lugar real y con el color de su zona (la hace
-              scripts/mapa-cerebro.mjs con los datos del Male CNS), que aparece
-              de arriba abajo en 66 pasos mientras cuentan las láminas y las
-              166.700 neuronas. Del corte solo el número de láminas es un
-              dato: no dice por dónde se cortó. Hasta el 13 de noviembre era
-              una silueta de 66 rayas celestes, y Felipe la encontró rara
-              ("el cerebro que aparece que es medio celeste es como raro");
-           2. el trabajo: la credencial de oficina de la mosca, con la cara del
-              logo, el cuello de la camisa y la corbata azul con rayas doradas
-              del juego. Es un chiste: no hay empresa ni nombre de nadie;
-           3. el juego: las dos fotos de verdad del cerebro (2 y 9 tareas a la
-              vez) con las neuronas encendidas en la simulación, y sus colores.
+           cortaron en 66 láminas (Berg y otros, 2025, Métodos). Desde la 8.12
+           (2026-11-13) es un tablero con dibujos que se cargan.
+           8.13 (2026-11-14, pedido de Felipe: "me llevaría ese cerebro a la
+           parte de El cerebro" y ahí "dejaría el cerebro girando y la tarjeta
+           de la mosca"): el tablero tiene dos celdas.
+           1. El cerebro del juego, en 3D y girando, que hasta la 8.12 estaba
+              en el inicio de la página: las mismas neuronas del Male CNS y la
+              misma actividad simulada de src/cerebro.js, con su consola (de 1
+              a 10 tareas a la vez) y sus colores. Reemplaza a la foto del mapa
+              y a las dos fotos del cerebro con 2 y con 9 tareas, porque es lo
+              mismo y de verdad: el mapa girando y encendiéndose. Se baja
+              cuando la sección está por verse (src/portada.js) y mientras
+              tanto queda su foto fija. Se destapa de arriba abajo en 66 pasos,
+              uno por lámina, mientras cuentan las láminas y las 166.700
+              neuronas, y después la consola sube sola de 2 a 10 una vez.
+           2. El trabajo: la credencial de oficina de la mosca, igual que en la
+              8.12 (un chiste: no hay empresa ni nombre de nadie).
            Abajo, el aviso y el crédito con la cita textual del Male CNS. El
            menú de arriba ("El cerebro") lleva a esta sección por su id. -->
       <section class="credito" id="por-que-una-mosca" aria-labelledby="t-credito">
@@ -636,15 +681,58 @@
         <!-- Solo en inglés: qué quiere decir "mosca" (en español queda vacío y no se ve) -->
         <p class="significa" data-t="significa">Mosca means fly in Spanish.</p>
         <ul class="gana-tablero mosca-tablero">
-          <li class="gana-item" data-color="vision" data-carga>
-            <h3 data-t="mosca1">Scientists mapped a fly’s central nervous system.</h3>
-            <div class="dibujo dibujo-mapa siempre-noche">
-              <p class="carril-caso" data-t="laminasQuien">Janelia, Cambridge and Google, among others</p>
-              <div class="mapa">
-                <img src="/img/cerebro-mosca-mapa.jpg" width="720" height="876" alt="The map of the fly’s nervous system, with the brain on top and the nerve cord below. It shows 25,000 of the neurons, each in its real place and in the color of its zone." data-t-alt="mapaAlt" loading="lazy" decoding="async" />
-                <span class="mapa-corte" aria-hidden="true"></span>
+          <li class="gana-item mosca-cerebro" data-color="vision" data-carga>
+            <h3><span data-t="mosca1">Scientists mapped a fly’s central nervous system.</span> <span data-t="mosca3">The neurons that light up in the game come from that map.</span></h3>
+            <div class="dibujo dibujo-vivo siempre-noche">
+              <!-- El cerebro del juego (las mismas neuronas y la misma actividad
+                   simulada) y, al lado, cuántas tareas a la vez -->
+              <div class="laboratorio">
+                <p class="carril-caso" data-t="laminasQuien">Janelia, Cambridge and Google, among others</p>
+                <div class="escenario">
+                  <div class="cerebro" data-tareas="2">
+                    <!-- La foto del cerebro mientras carga el 3D: WebP (pesa un tercio) y, en celular, la versión de 800 px; el JPEG queda para navegadores viejos -->
+                    <picture>
+                      <source type="image/webp" srcset="/img/cerebro-portada-800.webp 800w, /img/cerebro-portada.webp 1000w" sizes="(max-width: 899px) 90vw, 360px" />
+                      <img class="cerebro-foto" src="/img/cerebro-portada.jpg" width="1000" height="1018" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+                    </picture>
+                    <canvas class="cerebro-lienzo" aria-hidden="true"></canvas>
+                  </div>
+                  <span class="mapa-corte" aria-hidden="true"></span>
+                </div>
+                <p class="carril-dato" data-t="laminasDato"><b data-cuenta="der" data-paso="0.0075">166,700</b> neurons and their connections, in <b data-cuenta data-paso="19">66</b>&nbsp;slices</p>
               </div>
-              <p class="carril-dato" data-t="laminasDato"><b data-cuenta="der" data-paso="0.0075">166,700</b> neurons and their connections, in <b data-cuenta data-paso="19">66</b>&nbsp;slices</p>
+              <div class="consola" role="group" aria-labelledby="t-wip">
+                <p class="consola-frase" data-t="consolaFrase">Real neurons from a fly. The more tasks she has on her plate, the more her brain lights up.</p>
+                <div class="consola-control">
+                  <div class="consola-cabeza">
+                    <label id="t-wip" for="wip" data-t="tareasLabel">Tasks in progress at once (WIP)</label>
+                    <output class="wip-numero" for="wip" data-wip>2</output>
+                    <p class="wip-limite" data-limite>Within the sustainable limit (3)</p>
+                  </div>
+                  <input id="wip" class="wip" type="range" min="1" max="10" step="1" value="2" aria-valuetext="2 tasks at once" />
+                  <div class="marcas" aria-hidden="true"><span>1</span><span>2</span><span class="limite">3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+                </div>
+                <dl class="consola-datos">
+                  <!-- (hasta la 8.12 este contador iba encima del cerebro, en el inicio) -->
+                  <div class="dato dato-neuronas"><dt><span data-t="neuronas">neurons firing</span> <span class="origen" data-t="enSimulacion">in the simulation</span></dt><dd data-neuronas>423</dd></div>
+                  <div class="dato"><dt data-t="terminadas">finished per day</dt><dd data-terminadas>18.0</dd></div>
+                  <div class="dato"><dt data-t="estres">stress at the end of the day</dt><dd class="nivel" data-estres>Calm</dd></div>
+                  <div class="dato"><dt data-t="cigarros">cigarettes</dt><dd data-cigarros>0</dd></div>
+                </dl>
+                <p class="nota consola-nota" data-t="consolaNota">Average of 200 days played. These are numbers from the game, not from people.</p>
+                <p class="solo-lector" aria-live="polite" data-resumen></p>
+                <div class="zonas">
+                  <p class="zonas-titulo" data-t="zonasTitulo">Brain colors</p>
+                  <ul>
+                    <li style="--zona: #2fe3ff" data-t="zonaVision">Vision</li>
+                    <li style="--zona: #8b5cff" data-t="zonaCentral">Central brain</li>
+                    <li style="--zona: #ffd84d" data-t="zonaMemoria">Memory</li>
+                    <li style="--zona: #ff4fd8" data-t="zonaMando">Command</li>
+                    <li style="--zona: #ff7f66" data-t="zonaMovimiento">Movement</li>
+                    <li class="reposo" style="--zona: #5d6680" data-t="zonaReposo">At rest</li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </li>
           <li class="gana-item" data-color="ocupada" data-carga>
@@ -678,32 +766,6 @@
                   <p class="credencial-dato"><span data-t="credencialJornada">Hours</span><b data-t="credencialHorario">9 to 6</b></p>
                   <p class="credencial-dato"><span data-t="credencialTareas">Tasks at once</span><b data-t="credencialRango">1 to 10</b></p>
                 </div>
-              </div>
-            </div>
-          </li>
-          <li class="gana-item" data-carga>
-            <h3 data-t="mosca3">The neurons that light up in the game come from that map.</h3>
-            <div class="dibujo dibujo-cerebros siempre-noche">
-              <div class="cerebros">
-                <figure style="--n: 423">
-                  <img src="/img/cerebro-mosca-2-tareas.jpg" width="610" height="804" alt="The brain with 2 tasks at once, with few neurons firing." data-t-alt="cerebro2Alt" loading="lazy" decoding="async" />
-                  <figcaption data-t="cerebro2Pie">2 tasks at once, <span class="cifra" data-cuenta="der" data-paso="1.2">423</span> neurons firing in the simulation</figcaption>
-                </figure>
-                <figure style="--n: 1328">
-                  <img src="/img/cerebro-mosca-9-tareas.jpg" width="610" height="804" alt="The brain with 9 tasks at once, with many more neurons firing." data-t-alt="cerebro9Alt" loading="lazy" decoding="async" />
-                  <figcaption data-t="cerebro9Pie">9 at once, <span class="cifra" data-cuenta="der" data-paso="1.2">1,328</span> neurons firing in the simulation</figcaption>
-                </figure>
-              </div>
-              <div class="zonas">
-                <p class="zonas-titulo" data-t="zonasTitulo">Brain colors</p>
-                <ul>
-                  <li style="--zona: #2fe3ff" data-t="zonaVision">Vision</li>
-                  <li style="--zona: #8b5cff" data-t="zonaCentral">Central brain</li>
-                  <li style="--zona: #ffd84d" data-t="zonaMemoria">Memory</li>
-                  <li style="--zona: #ff4fd8" data-t="zonaMando">Command</li>
-                  <li style="--zona: #ff7f66" data-t="zonaMovimiento">Movement</li>
-                  <li class="reposo" style="--zona: #5d6680" data-t="zonaReposo">At rest</li>
-                </ul>
               </div>
             </div>
           </li>
