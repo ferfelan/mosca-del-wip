@@ -28,6 +28,17 @@ export const INGLES = {
   jornadaResultado9: 'With 9 at once, she had something to do <b>100%</b> of the day and finished <b>9</b>&nbsp;tasks.',
   jornadaResultado2: 'With 2 at once, she had something to do <b>96%</b> of the day and finished <b>18</b>&nbsp;tasks.',
   jornadaNota: 'Average of 200 days played. These are numbers from the game, not from people.',
+  // EN PRUEBA (8.13): las opciones 2 y 3 del inicio, para que Felipe elija.
+  // La 2, el mismo día en dos pistas a la vez. La 3, el escritorio de la mosca
+  // al cerrar el día ("Overwhelmed" y "Calm" son los niveles del juego)
+  carreraTitulo: 'The same day, twice',
+  carreraDeNuevo: 'Watch again',
+  carreraCon9: 'She had something to do 100% of the day',
+  carreraCon2: 'She had something to do 96% of the day',
+  carreraResultado: 'The fly worked the same office day twice. With 9 tasks at once she finished <b>9</b>. With 2 at once, she finished <b>18</b>.',
+  escritorioTitulo: 'The fly at the end of the day',
+  escritorioResultado9: 'With 9 at once, she ended the day Overwhelmed, with <b>13</b>&nbsp;cigarettes and <b>9</b>&nbsp;tasks finished.',
+  escritorioResultado2: 'With 2 at once, she ended the day Calm, without smoking and with <b>18</b>&nbsp;tasks finished.',
   jugar: 'Play',
   jugarMinuto: 'Play (1 minute)',
   verKit: 'See the kit',

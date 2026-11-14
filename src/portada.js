@@ -33,6 +33,10 @@ import { DINAMICOS } from './portada-textos.js';
 import { iniciarBarra } from './barra.js';
 import { iniciarCargas } from './cargas.js';
 import { iniciarJornada } from './jornada.js';
+// EN PRUEBA (8.13): las opciones 2 y 3 del inicio y la barrita para cambiar entre las tres
+import { iniciarCarrera } from './carrera.js';
+import { iniciarEscritorio } from './escritorio.js';
+import { iniciarOpciones } from './opciones.js';
 
 // Tabla de 1 a 10 del informe (pág. 4): corrida oficial, 200 días por cada
 // número de tareas, semilla 2024 (docs/corrida-oficial.json). Si la corrida
@@ -258,7 +262,12 @@ iniciarCargas();
 // ---------- El tablero de la mosca, vivo, en el inicio (8.13) ----------
 // (window.__mosca es para las pruebas, como en el juego: deja el dibujo quieto)
 const jornada = iniciarJornada();
-window.__mosca = { ...(window.__mosca || {}), jornada };
+// EN PRUEBA (8.13): las otras dos propuestas del inicio. La que no se ve no
+// hace nada (parte solo cuando su dibujo está a la vista)
+const carrera = iniciarCarrera();
+const escritorio = iniciarEscritorio();
+iniciarOpciones();
+window.__mosca = { ...(window.__mosca || {}), jornada, carrera, escritorio };
 
 // La primera vez que se ve el cerebro, una sola vez: sube de 2 a 10 tareas (el
 // tope del juego) para mostrar qué pasa. Con 10 quedan los números del juego

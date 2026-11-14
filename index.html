@@ -19,6 +19,16 @@
         if ((lang === 'en' || lang === 'es') && lang !== propio) {
           location.replace((lang === 'en' ? '/en/' : '/') + location.hash);
         }
+        // EN PRUEBA (8.13, 2026-11-14): Felipe pidió ver tres propuestas del
+        // inicio. ?portada=2 o ?portada=3 muestra esa (la 1 es la de siempre)
+        // y queda elegida mientras dure la pestaña. Esto y src/opciones.*
+        // salen antes de subir al sitio la que él elija.
+        try {
+          var opcion = new URLSearchParams(location.search).get('portada');
+          if (/^[123]$/.test(opcion || '')) sessionStorage.setItem('mosca-portada', opcion);
+          opcion = sessionStorage.getItem('mosca-portada');
+          if (opcion) raiz.setAttribute('data-portada', opcion);
+        } catch (e) {}
         var fondo;
         try {
           fondo = localStorage.getItem('mosca-fondo');
@@ -249,8 +259,9 @@
           <p class="nota nota-autor" data-t="creadoPor">Creado por <a href="https://www.linkedin.com/in/felipefernandezandrade/" target="_blank" rel="noopener">Felipe Fernández</a></p>
         </div>
 
-        <!-- El tablero de la mosca, vivo (8.13). Lo mueve src/jornada.js -->
-        <div class="escena">
+        <!-- El tablero de la mosca, vivo (8.13). Lo mueve src/jornada.js.
+             Es la "opción 1" de las tres propuestas del inicio -->
+        <div class="escena" data-opcion="1">
           <div class="jornada" role="group" aria-labelledby="t-jornada" data-caso="muchas" data-cara="colapsada">
             <div class="jornada-cabeza">
               <div class="jornada-caras" aria-hidden="true">
@@ -318,6 +329,211 @@
           </div>
           <p class="nota jornada-nota" data-t="jornadaNota">Promedio de 200 días jugados. Son números del juego, no de personas.</p>
         </div>
+
+        <!-- OPCIONES-EN-PRUEBA -->
+        <!-- OPCIÓN 2 del inicio (8.13, EN PRUEBA, 2026-11-14). "El mismo día,
+             dos veces": el mismo día de oficina corre a la vez en dos pistas,
+             una con 9 tareas a la vez y otra con 2, con un solo reloj. Los
+             tiempos son los mismos de la opción 1 (src/jornada.js, de la
+             corrida oficial). Lo mueve src/carrera.js. Sin JavaScript o con
+             "reducir movimiento" queda el día ya cerrado -->
+        <div class="escena" data-opcion="2">
+          <div class="carrera" role="group" aria-labelledby="t-carrera">
+            <div class="carrera-cabeza">
+              <p class="carrera-titulo"><span id="t-carrera" data-t="carreraTitulo">El mismo día, dos veces</span> <b class="carrera-hora" data-hora aria-hidden="true">18:00</b></p>
+              <button type="button" class="carrera-denuevo" data-denuevo>
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M4.6 12a7.4 7.4 0 1 0 2.3-5.4M4.6 4.4v4.2h4.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                <span data-t="carreraDeNuevo">Ver de nuevo</span>
+              </button>
+              <p class="dia carrera-dia" aria-hidden="true"><span data-t="dibujoDiaDesde">9 h</span><span class="dia-riel"></span><span data-t="dibujoDiaHasta">18 h</span></p>
+            </div>
+            <div class="pista" data-caso="muchas" data-cara="colapsada">
+              <div class="pista-caras" aria-hidden="true">
+                <svg class="cara cara-tranquila" viewBox="12 14 84 64" aria-hidden="true" focusable="false">
+                  <g transform="translate(5 8) scale(0.9)">
+                    <g stroke="#3e332b" stroke-width="3.6" stroke-linecap="round" fill="none"><path d="M46.5 22 Q44.5 15.5 40.5 12.5" /><path d="M53.5 22 Q55.5 15.5 59.5 12.5" /></g>
+                    <ellipse cx="50" cy="41" rx="24" ry="22" fill="#6f6052" />
+                    <ellipse cx="31" cy="36.5" rx="15" ry="18" transform="rotate(-14 31 36.5)" fill="#e8402c" />
+                    <ellipse cx="69" cy="36.5" rx="15" ry="18" transform="rotate(14 69 36.5)" fill="#e8402c" />
+                    <ellipse cx="26" cy="27.5" rx="4.6" ry="3.2" transform="rotate(-35 26 27.5)" fill="#fff" opacity="0.88" />
+                    <ellipse cx="64" cy="27.5" rx="4.6" ry="3.2" transform="rotate(-35 64 27.5)" fill="#fff" opacity="0.88" />
+                  </g>
+                  <path d="M46.3 55.4 H53.7 V60.4 C58.6 61.1 59.4 72.5 50 72.9 C40.6 72.5 41.4 61.1 46.3 60.4 Z" fill="#6f6052" stroke="#3e332b" stroke-width="1.3" stroke-linejoin="round" />
+                  <!-- su café (tranquila, la mosca toma café y no fuma) -->
+                  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path class="cara-humo" d="M74.5 49.5c-1.6-2 1.6-3 0-5M80.5 49.5c-1.6-2 1.6-3 0-5" stroke-width="1.6" />
+                    <path d="M69 54h17v8.5a7 7 0 0 1-7 7h-3a7 7 0 0 1-7-7z" fill="#c8915e" stroke="none" />
+                    <path d="M86 57h2.2a3.9 3.9 0 0 1 0 7.8H85.6" stroke="#c8915e" stroke-width="2.6" />
+                    <path d="M70.5 56.2h14" stroke="#7a4f2a" stroke-width="2.2" />
+                  </g>
+                </svg>
+                <svg class="cara cara-colapsada" viewBox="12 14 84 64" aria-hidden="true" focusable="false">
+                  <g transform="translate(5 8) scale(0.9)">
+                    <g stroke="#3e332b" stroke-width="3.6" stroke-linecap="round" fill="none"><path d="M46.5 22 Q43 15 36.5 18.5" /><path d="M53.5 22 Q57 15 63.5 18.5" /></g>
+                    <ellipse cx="50" cy="41" rx="24" ry="22" fill="#6f6052" />
+                    <ellipse cx="31" cy="36.5" rx="15" ry="18" transform="rotate(-14 31 36.5)" fill="#e8402c" />
+                    <ellipse cx="69" cy="36.5" rx="15" ry="18" transform="rotate(14 69 36.5)" fill="#e8402c" />
+                    <g stroke="#fff" stroke-width="3.4" stroke-linecap="round" opacity="0.92"><path d="M24.5 30 37.5 43M37.5 30 24.5 43" /><path d="M62.5 30 75.5 43M75.5 30 62.5 43" /></g>
+                  </g>
+                  <path d="M46.3 55.4 H53.7 V60.4 C58.6 61.1 59.4 72.5 50 72.9 C40.6 72.5 41.4 61.1 46.3 60.4 Z" fill="#6f6052" stroke="#3e332b" stroke-width="1.3" stroke-linejoin="round" />
+                  <!-- el sudor y el cigarro (colapsada, sale a fumar) -->
+                  <path class="cara-sudor" d="M17.5 27c-2.6 3.6-2.6 6.4 0 6.4s2.6-2.8 0-6.4zM22 40.5c-2 2.8-2 5 0 5s2-2.2 0-5z" />
+                  <g transform="rotate(14 54 68)" stroke="#3e332b" stroke-width="1">
+                    <rect x="53" y="65.6" width="24" height="5.8" rx="1.6" fill="#ece6dc" />
+                    <rect x="72" y="65.6" width="5" height="5.8" rx="1.6" fill="#ff7043" />
+                  </g>
+                  <path class="cara-humo" d="M82.5 64c3.4-3.6-3-5.6 0-9.4s-2.4-5 0-8.6" fill="none" stroke-width="2" stroke-linecap="round" />
+                </svg>
+              </div>
+              <p class="pista-caso"><b data-t="nueveALaVez">9 a la vez</b> <span data-t="carreraCon9">Tuvo qué hacer el 100&nbsp;% del día</span></p>
+              <div class="pista-fila pista-encurso" aria-hidden="true"><span class="pista-rotulo" data-t="dibujoEnCurso">En curso</span><span class="pista-mesa"><span class="pista-tarea"><i></i></span><span class="pista-tarea"><i></i></span><span class="pista-tarea"><i></i></span><span class="pista-tarea"><i></i></span><span class="pista-tarea"><i></i></span><span class="pista-tarea"><i></i></span><span class="pista-tarea"><i></i></span><span class="pista-tarea"><i></i></span><span class="pista-tarea"><i></i></span></span></div>
+              <div class="pista-fila pista-hecho" aria-hidden="true"><span class="pista-rotulo" data-t="dibujoHecho">Hecho</span><span class="pista-meta"><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><b class="pista-cuenta" data-hechas>9</b></div>
+            </div>
+            <div class="pista" data-caso="pocas" data-cara="tranquila">
+              <div class="pista-caras" aria-hidden="true">
+                <svg class="cara cara-tranquila" viewBox="12 14 84 64" aria-hidden="true" focusable="false">
+                  <g transform="translate(5 8) scale(0.9)">
+                    <g stroke="#3e332b" stroke-width="3.6" stroke-linecap="round" fill="none"><path d="M46.5 22 Q44.5 15.5 40.5 12.5" /><path d="M53.5 22 Q55.5 15.5 59.5 12.5" /></g>
+                    <ellipse cx="50" cy="41" rx="24" ry="22" fill="#6f6052" />
+                    <ellipse cx="31" cy="36.5" rx="15" ry="18" transform="rotate(-14 31 36.5)" fill="#e8402c" />
+                    <ellipse cx="69" cy="36.5" rx="15" ry="18" transform="rotate(14 69 36.5)" fill="#e8402c" />
+                    <ellipse cx="26" cy="27.5" rx="4.6" ry="3.2" transform="rotate(-35 26 27.5)" fill="#fff" opacity="0.88" />
+                    <ellipse cx="64" cy="27.5" rx="4.6" ry="3.2" transform="rotate(-35 64 27.5)" fill="#fff" opacity="0.88" />
+                  </g>
+                  <path d="M46.3 55.4 H53.7 V60.4 C58.6 61.1 59.4 72.5 50 72.9 C40.6 72.5 41.4 61.1 46.3 60.4 Z" fill="#6f6052" stroke="#3e332b" stroke-width="1.3" stroke-linejoin="round" />
+                  <!-- su café (tranquila, la mosca toma café y no fuma) -->
+                  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path class="cara-humo" d="M74.5 49.5c-1.6-2 1.6-3 0-5M80.5 49.5c-1.6-2 1.6-3 0-5" stroke-width="1.6" />
+                    <path d="M69 54h17v8.5a7 7 0 0 1-7 7h-3a7 7 0 0 1-7-7z" fill="#c8915e" stroke="none" />
+                    <path d="M86 57h2.2a3.9 3.9 0 0 1 0 7.8H85.6" stroke="#c8915e" stroke-width="2.6" />
+                    <path d="M70.5 56.2h14" stroke="#7a4f2a" stroke-width="2.2" />
+                  </g>
+                </svg>
+              </div>
+              <p class="pista-caso"><b data-t="dosALaVez">2 a la vez</b> <span data-t="carreraCon2">Tuvo qué hacer el 96&nbsp;% del día</span></p>
+              <div class="pista-fila pista-encurso" aria-hidden="true"><span class="pista-rotulo" data-t="dibujoEnCurso">En curso</span><span class="pista-mesa"><span class="pista-tarea"><i></i></span><span class="pista-tarea"><i></i></span></span></div>
+              <div class="pista-fila pista-hecho" aria-hidden="true"><span class="pista-rotulo" data-t="dibujoHecho">Hecho</span><span class="pista-meta"><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i><i class="hecha"></i></span><b class="pista-cuenta" data-hechas>18</b></div>
+            </div>
+            <p class="carrera-resultado" data-t="carreraResultado">La mosca trabajó el mismo día de oficina dos veces. Con 9 tareas a la vez terminó <b>9</b>. Con 2 a la vez, terminó <b>18</b>.</p>
+          </div>
+          <p class="nota jornada-nota" data-t="jornadaNota">Promedio de 200 días jugados. Son números del juego, no de personas.</p>
+        </div>
+
+        <!-- OPCIÓN 3 del inicio (8.13, EN PRUEBA, 2026-11-14). "El escritorio
+             de la mosca al cerrar el día": la mosca, grande, en su escritorio a
+             las 18:00. El escritorio es su tablero: a la izquierda la pila de
+             Por hacer, al medio lo que tiene En curso y a la derecha la torre
+             de Hecho. Con 9 a la vez, nueve tareas desparramadas, 13 colillas
+             y una torre de 9. Con 2 a la vez, dos tareas ordenadas, su café y
+             una torre de 18. Los números son los de la corrida oficial. Lo
+             mueve src/escritorio.js y solo cambian la posición y la
+             transparencia. Sin JavaScript o con "reducir movimiento" queda el
+             día con 9 -->
+        <div class="escena" data-opcion="3">
+          <div class="escritorio" role="group" aria-labelledby="t-escritorio" data-caso="muchas" data-cara="colapsada">
+            <div class="escritorio-cabeza">
+              <p class="escritorio-titulo" id="t-escritorio" data-t="escritorioTitulo">La mosca al cerrar el día</p>
+              <div class="selector escritorio-selector" role="group" data-t-aria="jornadaElegir" aria-label="Tareas a la vez">
+                <button type="button" data-elegir="muchas" aria-pressed="true" data-t="nueveALaVez">9 a la vez</button>
+                <button type="button" data-elegir="pocas" aria-pressed="false" data-t="dosALaVez">2 a la vez</button>
+              </div>
+            </div>
+            <div class="escritorio-escena" aria-hidden="true">
+              <svg class="escritorio-dibujo" viewBox="0 0 600 350" focusable="false">
+                <defs><clipPath id="escritorio-corbata"><path d="M47.6 72.5 H52.4 L55.6 90 L50 96 L44.4 90 Z" /></clipPath></defs>
+                <!-- la pared: el reloj, a las 18:00, y la luz detrás de la mosca -->
+                <circle class="e-halo" cx="300" cy="128" r="122" />
+                <g class="e-reloj">
+                  <circle class="e-reloj-caja" cx="76" cy="84" r="36" />
+                  <path class="e-reloj-marcas" d="M76 53v7M76 108v7M45 84h7M100 84h7" />
+                  <path class="e-reloj-manos" d="M76 84V60M76 84v19" />
+                  <circle class="e-reloj-eje" cx="76" cy="84" r="3.6" />
+                </g>
+                <!-- la mosca (la misma de la credencial), detrás del escritorio -->
+                <g transform="translate(185 16) scale(2.3)">
+                  <ellipse cx="50" cy="93" rx="31" ry="28" fill="#655547" stroke="#3e332b" stroke-width="1.3" />
+                  <g class="e-cabeza">
+                    <g transform="translate(5 -5.9) scale(0.9)">
+                      <g class="e-antenas e-de-tranquila"><path d="M46.5 22 Q44.5 15.5 40.5 12.5" /><path d="M53.5 22 Q55.5 15.5 59.5 12.5" /></g>
+                      <g class="e-antenas e-de-colapsada"><path d="M46.5 22 Q43 15 36.5 18.5" /><path d="M53.5 22 Q57 15 63.5 18.5" /></g>
+                      <ellipse cx="50" cy="41" rx="24" ry="22" fill="#6f6052" />
+                      <ellipse cx="31" cy="36.5" rx="15" ry="18" transform="rotate(-14 31 36.5)" fill="#e8402c" />
+                      <ellipse cx="69" cy="36.5" rx="15" ry="18" transform="rotate(14 69 36.5)" fill="#e8402c" />
+                      <g class="e-de-tranquila"><ellipse cx="26" cy="27.5" rx="4.6" ry="3.2" transform="rotate(-35 26 27.5)" fill="#fff" opacity="0.88" /><ellipse cx="64" cy="27.5" rx="4.6" ry="3.2" transform="rotate(-35 64 27.5)" fill="#fff" opacity="0.88" /></g>
+                      <g class="e-de-colapsada" stroke="#fff" stroke-width="3.4" stroke-linecap="round" opacity="0.92"><path d="M24.5 30 37.5 43M37.5 30 24.5 43" /><path d="M62.5 30 75.5 43M75.5 30 62.5 43" /></g>
+                    </g>
+                    <path d="M46.3 41.5 H53.7 V46.5 C58.6 47.2 59.4 58.6 50 59 C40.6 58.6 41.4 47.2 46.3 46.5 Z" fill="#6f6052" stroke="#3e332b" stroke-width="1.3" stroke-linejoin="round" />
+                    <!-- colapsada: el sudor, el cigarro y su humo -->
+                    <g class="e-de-colapsada" transform="translate(0 -13.9)">
+                      <path class="cara-sudor" d="M17.5 27c-2.6 3.6-2.6 6.4 0 6.4s2.6-2.8 0-6.4zM22 40.5c-2 2.8-2 5 0 5s2-2.2 0-5z" />
+                      <g transform="rotate(14 54 68)" stroke="#3e332b" stroke-width="1">
+                        <rect x="53" y="65.6" width="24" height="5.8" rx="1.6" fill="#ece6dc" />
+                        <rect x="72" y="65.6" width="5" height="5.8" rx="1.6" fill="#ff7043" />
+                      </g>
+                      <path class="cara-humo" d="M82.5 64c3.4-3.6-3-5.6 0-9.4s-2.4-5 0-8.6" stroke-width="2" stroke-linecap="round" />
+                    </g>
+                  </g>
+                  <!-- el cuello de la camisa y la corbata del juego -->
+                  <g stroke="#3e332b" stroke-width="1.1" stroke-linejoin="round">
+                    <path d="M35.5 62 L50 67.5 L41.5 77 Z" fill="#ece6dc" /><path d="M64.5 62 L50 67.5 L58.5 77 Z" fill="#ece6dc" />
+                    <path d="M46 66.5 H54 L52.4 72.5 H47.6 Z" fill="#1f4fc4" /><path d="M47.6 72.5 H52.4 L55.6 90 L50 96 L44.4 90 Z" fill="#1f4fc4" />
+                  </g>
+                  <g clip-path="url(#escritorio-corbata)" stroke="#f2c14e" stroke-width="2.2"><path d="M42 80.5 58 72.5M42 87.5 58 79.5M42 94.5 58 86.5" /></g>
+                </g>
+                <!-- el escritorio -->
+                <rect class="e-mesa" x="0" y="242" width="600" height="108" />
+                <rect class="e-mesa-canto" x="0" y="242" width="600" height="3" />
+                <!-- las patas de adelante, apoyadas en el escritorio -->
+                <g class="e-patas" transform="translate(185 16) scale(2.3)"><path d="M24 82 Q13.5 86 13 101" /><path d="M76 82 Q86.5 86 87 101" /></g>
+                <!-- Por hacer: la pila de lo que espera -->
+                <rect class="e-bandeja" x="28" y="300" width="96" height="5" rx="2.5" />
+                <g class="e-pila"><rect class="e-espera" style="--k: 0" x="34" y="291.0" width="84" height="9" rx="3" /><rect class="e-espera" style="--k: 1" x="34" y="279.5" width="84" height="9" rx="3" /><rect class="e-espera" style="--k: 2" x="34" y="268.0" width="84" height="9" rx="3" /><rect class="e-espera" style="--k: 3" x="34" y="256.5" width="84" height="9" rx="3" /><rect class="e-espera e-mas" style="--k: 4" x="34" y="245.0" width="84" height="9" rx="3" /><rect class="e-espera e-mas" style="--k: 5" x="34" y="233.5" width="84" height="9" rx="3" /><rect class="e-espera e-mas" style="--k: 6" x="34" y="222.0" width="84" height="9" rx="3" /><rect class="e-espera e-mas" style="--k: 7" x="34" y="210.5" width="84" height="9" rx="3" /><rect class="e-espera e-mas" style="--k: 8" x="34" y="199.0" width="84" height="9" rx="3" /><rect class="e-espera e-mas" style="--k: 9" x="34" y="187.5" width="84" height="9" rx="3" /><rect class="e-espera e-mas" style="--k: 10" x="34" y="176.0" width="84" height="9" rx="3" /></g>
+                <!-- con 9 a la vez: el cenicero, con las 13 colillas del día -->
+                <g class="e-cenicero e-de-colapsada" transform="translate(437 257) scale(1.3) translate(-437 -257)">
+                  <path class="cara-humo" d="M437 222c5-6-5-10 0-17s-4-9 0-15" stroke-width="2.6" stroke-linecap="round" />
+                  <g transform="translate(417 236) rotate(-58)"><rect x="-8" y="-2.6" width="16" height="5.2" rx="2.2" fill="#ece6dc" /><rect x="-8" y="-2.6" width="8.5" height="5.2" rx="2.2" fill="#d9a066" /><rect x="5.6" y="-2.6" width="2.4" height="5.2" rx="1.2" fill="#8b8f99" /></g><g transform="translate(424 233) rotate(-78)"><rect x="-8" y="-2.6" width="16" height="5.2" rx="2.2" fill="#ece6dc" /><rect x="-8" y="-2.6" width="8.5" height="5.2" rx="2.2" fill="#d9a066" /><rect x="5.6" y="-2.6" width="2.4" height="5.2" rx="1.2" fill="#8b8f99" /></g><g transform="translate(431 231) rotate(-96)"><rect x="-8" y="-2.6" width="16" height="5.2" rx="2.2" fill="#ece6dc" /><rect x="-8" y="-2.6" width="8.5" height="5.2" rx="2.2" fill="#d9a066" /><rect x="5.6" y="-2.6" width="2.4" height="5.2" rx="1.2" fill="#8b8f99" /></g><g transform="translate(438 230) rotate(-84)"><rect x="-8" y="-2.6" width="16" height="5.2" rx="2.2" fill="#ece6dc" /><rect x="-8" y="-2.6" width="8.5" height="5.2" rx="2.2" fill="#d9a066" /><rect x="5.6" y="-2.6" width="2.4" height="5.2" rx="1.2" fill="#8b8f99" /></g><g transform="translate(445 231) rotate(-70)"><rect x="-8" y="-2.6" width="16" height="5.2" rx="2.2" fill="#ece6dc" /><rect x="-8" y="-2.6" width="8.5" height="5.2" rx="2.2" fill="#d9a066" /><rect x="5.6" y="-2.6" width="2.4" height="5.2" rx="1.2" fill="#8b8f99" /></g><g transform="translate(452 233) rotate(-104)"><rect x="-8" y="-2.6" width="16" height="5.2" rx="2.2" fill="#ece6dc" /><rect x="-8" y="-2.6" width="8.5" height="5.2" rx="2.2" fill="#d9a066" /><rect x="5.6" y="-2.6" width="2.4" height="5.2" rx="1.2" fill="#8b8f99" /></g><g transform="translate(458 236) rotate(-122)"><rect x="-8" y="-2.6" width="16" height="5.2" rx="2.2" fill="#ece6dc" /><rect x="-8" y="-2.6" width="8.5" height="5.2" rx="2.2" fill="#d9a066" /><rect x="5.6" y="-2.6" width="2.4" height="5.2" rx="1.2" fill="#8b8f99" /></g><g transform="translate(428 238) rotate(-30)"><rect x="-8" y="-2.6" width="16" height="5.2" rx="2.2" fill="#ece6dc" /><rect x="-8" y="-2.6" width="8.5" height="5.2" rx="2.2" fill="#d9a066" /><rect x="5.6" y="-2.6" width="2.4" height="5.2" rx="1.2" fill="#8b8f99" /></g><g transform="translate(449 238) rotate(-152)"><rect x="-8" y="-2.6" width="16" height="5.2" rx="2.2" fill="#ece6dc" /><rect x="-8" y="-2.6" width="8.5" height="5.2" rx="2.2" fill="#d9a066" /><rect x="5.6" y="-2.6" width="2.4" height="5.2" rx="1.2" fill="#8b8f99" /></g>
+                  <path d="M408 239h58l-8 18h-42z" fill="#2f7579" />
+                  <path d="M408 239h58" stroke="#52a5a8" stroke-width="3.4" stroke-linecap="round" />
+                  <g transform="translate(402 252) rotate(18)"><rect x="-8" y="-2.6" width="16" height="5.2" rx="2.2" fill="#ece6dc" /><rect x="-8" y="-2.6" width="8.5" height="5.2" rx="2.2" fill="#d9a066" /><rect x="5.6" y="-2.6" width="2.4" height="5.2" rx="1.2" fill="#8b8f99" /></g><g transform="translate(470 256) rotate(-24)"><rect x="-8" y="-2.6" width="16" height="5.2" rx="2.2" fill="#ece6dc" /><rect x="-8" y="-2.6" width="8.5" height="5.2" rx="2.2" fill="#d9a066" /><rect x="5.6" y="-2.6" width="2.4" height="5.2" rx="1.2" fill="#8b8f99" /></g><g transform="translate(462 265) rotate(32)"><rect x="-8" y="-2.6" width="16" height="5.2" rx="2.2" fill="#ece6dc" /><rect x="-8" y="-2.6" width="8.5" height="5.2" rx="2.2" fill="#d9a066" /><rect x="5.6" y="-2.6" width="2.4" height="5.2" rx="1.2" fill="#8b8f99" /></g><g transform="translate(410 262) rotate(-12)"><rect x="-8" y="-2.6" width="16" height="5.2" rx="2.2" fill="#ece6dc" /><rect x="-8" y="-2.6" width="8.5" height="5.2" rx="2.2" fill="#d9a066" /><rect x="5.6" y="-2.6" width="2.4" height="5.2" rx="1.2" fill="#8b8f99" /></g>
+                </g>
+                <!-- con 2 a la vez: su café -->
+                <g class="e-taza e-de-tranquila" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path class="cara-humo" d="M428 220c-3.6-4.6 3.6-7 0-11.6M441 220c-3.6-4.6 3.6-7 0-11.6" stroke-width="2.6" />
+                  <path d="M416 228h38v20a10 10 0 0 1-10 10h-18a10 10 0 0 1-10-10z" fill="#c8915e" stroke="none" />
+                  <path d="M454 235h4.6a7.6 7.6 0 0 1 0 15.2H453" stroke="#c8915e" stroke-width="5" />
+                  <path d="M420 233h30" stroke="#7a4f2a" stroke-width="4.4" />
+                </g>
+                <!-- En curso: las tareas abiertas, sobre el escritorio -->
+                <g class="e-hojas">
+                  <g class="e-hoja e-vuelve" style="--i: 0; --lio: translate(196px, 297px) rotate(-14deg)"><rect class="e-papel" x="-29" y="-20" width="58" height="40" rx="6" /><rect class="e-nombre" x="-21" y="-12" width="25" height="5" rx="2.5" /><rect class="e-riel" x="-21" y="7" width="42" height="6" rx="3" /><rect class="e-avance" x="-21" y="7" width="40.7" height="6" rx="3" /></g>
+                  <g class="e-hoja e-sigue" style="--i: 1; --lio: translate(250px, 314px) rotate(8deg); --orden: translate(262px, 300px)"><rect class="e-papel" x="-29" y="-20" width="58" height="40" rx="6" /><rect class="e-nombre" x="-21" y="-12" width="25" height="5" rx="2.5" /><rect class="e-riel" x="-21" y="7" width="42" height="6" rx="3" /><rect class="e-avance e-de-muchas" x="-21" y="7" width="36.8" height="6" rx="3" /><rect class="e-avance e-de-pocas" x="-21" y="7" width="32.2" height="6" rx="3" /></g>
+                  <g class="e-hoja e-vuelve" style="--i: 2; --lio: translate(287px, 285px) rotate(-7deg)"><rect class="e-papel" x="-29" y="-20" width="58" height="40" rx="6" /><rect class="e-nombre" x="-21" y="-12" width="25" height="5" rx="2.5" /><rect class="e-riel" x="-21" y="7" width="42" height="6" rx="3" /><rect class="e-avance" x="-21" y="7" width="32.3" height="6" rx="3" /></g>
+                  <g class="e-hoja e-sigue" style="--i: 3; --lio: translate(337px, 316px) rotate(14deg); --orden: translate(338px, 300px)"><rect class="e-papel" x="-29" y="-20" width="58" height="40" rx="6" /><rect class="e-nombre" x="-21" y="-12" width="25" height="5" rx="2.5" /><rect class="e-riel" x="-21" y="7" width="42" height="6" rx="3" /><rect class="e-avance e-de-muchas" x="-21" y="7" width="28.2" height="6" rx="3" /><rect class="e-avance e-de-pocas" x="-21" y="7" width="10.5" height="6" rx="3" /></g>
+                  <g class="e-hoja e-vuelve" style="--i: 4; --lio: translate(375px, 291px) rotate(-10deg)"><rect class="e-papel" x="-29" y="-20" width="58" height="40" rx="6" /><rect class="e-nombre" x="-21" y="-12" width="25" height="5" rx="2.5" /><rect class="e-riel" x="-21" y="7" width="42" height="6" rx="3" /><rect class="e-avance" x="-21" y="7" width="23.0" height="6" rx="3" /></g>
+                  <g class="e-hoja e-vuelve" style="--i: 5; --lio: translate(421px, 317px) rotate(6deg)"><rect class="e-papel" x="-29" y="-20" width="58" height="40" rx="6" /><rect class="e-nombre" x="-21" y="-12" width="25" height="5" rx="2.5" /><rect class="e-riel" x="-21" y="7" width="42" height="6" rx="3" /><rect class="e-avance" x="-21" y="7" width="17.6" height="6" rx="3" /></g>
+                  <g class="e-hoja e-vuelve" style="--i: 6; --lio: translate(232px, 275px) rotate(17deg)"><rect class="e-papel" x="-29" y="-20" width="58" height="40" rx="6" /><rect class="e-nombre" x="-21" y="-12" width="25" height="5" rx="2.5" /><rect class="e-riel" x="-21" y="7" width="42" height="6" rx="3" /><rect class="e-avance" x="-21" y="7" width="12.5" height="6" rx="3" /></g>
+                  <g class="e-hoja e-vuelve" style="--i: 7; --lio: translate(315px, 272px) rotate(-18deg)"><rect class="e-papel" x="-29" y="-20" width="58" height="40" rx="6" /><rect class="e-nombre" x="-21" y="-12" width="25" height="5" rx="2.5" /><rect class="e-riel" x="-21" y="7" width="42" height="6" rx="3" /><rect class="e-avance" x="-21" y="7" width="7.6" height="6" rx="3" /></g>
+                  <g class="e-hoja e-vuelve" style="--i: 8; --lio: translate(393px, 285px) rotate(11deg)"><rect class="e-papel" x="-29" y="-20" width="58" height="40" rx="6" /><rect class="e-nombre" x="-21" y="-12" width="25" height="5" rx="2.5" /><rect class="e-riel" x="-21" y="7" width="42" height="6" rx="3" /><rect class="e-avance" x="-21" y="7" width="6" height="6" rx="3" /></g>
+                </g>
+                <!-- Hecho: la torre de las terminadas -->
+                <rect class="e-bandeja" x="476" y="300" width="96" height="5" rx="2.5" />
+                <g class="e-lugares"><rect x="482" y="291.0" width="84" height="9" rx="3" /><rect x="482" y="279.5" width="84" height="9" rx="3" /><rect x="482" y="268.0" width="84" height="9" rx="3" /><rect x="482" y="256.5" width="84" height="9" rx="3" /><rect x="482" y="245.0" width="84" height="9" rx="3" /><rect x="482" y="233.5" width="84" height="9" rx="3" /><rect x="482" y="222.0" width="84" height="9" rx="3" /><rect x="482" y="210.5" width="84" height="9" rx="3" /><rect x="482" y="199.0" width="84" height="9" rx="3" /><rect x="482" y="187.5" width="84" height="9" rx="3" /><rect x="482" y="176.0" width="84" height="9" rx="3" /><rect x="482" y="164.5" width="84" height="9" rx="3" /><rect x="482" y="153.0" width="84" height="9" rx="3" /><rect x="482" y="141.5" width="84" height="9" rx="3" /><rect x="482" y="130.0" width="84" height="9" rx="3" /><rect x="482" y="118.5" width="84" height="9" rx="3" /><rect x="482" y="107.0" width="84" height="9" rx="3" /><rect x="482" y="95.5" width="84" height="9" rx="3" /></g>
+                <g class="e-torre"><rect class="e-losa e-base" style="--k: 0" x="482" y="291.0" width="84" height="9" rx="3" /><rect class="e-losa e-base" style="--k: 1" x="482" y="279.5" width="84" height="9" rx="3" /><rect class="e-losa e-base" style="--k: 2" x="482" y="268.0" width="84" height="9" rx="3" /><rect class="e-losa e-base" style="--k: 3" x="482" y="256.5" width="84" height="9" rx="3" /><rect class="e-losa e-base" style="--k: 4" x="482" y="245.0" width="84" height="9" rx="3" /><rect class="e-losa e-base" style="--k: 5" x="482" y="233.5" width="84" height="9" rx="3" /><rect class="e-losa e-base" style="--k: 6" x="482" y="222.0" width="84" height="9" rx="3" /><rect class="e-losa e-base" style="--k: 7" x="482" y="210.5" width="84" height="9" rx="3" /><rect class="e-losa e-base" style="--k: 8" x="482" y="199.0" width="84" height="9" rx="3" /><rect class="e-losa e-doble" style="--k: 9" x="482" y="187.5" width="84" height="9" rx="3" /><rect class="e-losa e-doble" style="--k: 10" x="482" y="176.0" width="84" height="9" rx="3" /><rect class="e-losa e-doble" style="--k: 11" x="482" y="164.5" width="84" height="9" rx="3" /><rect class="e-losa e-doble" style="--k: 12" x="482" y="153.0" width="84" height="9" rx="3" /><rect class="e-losa e-doble" style="--k: 13" x="482" y="141.5" width="84" height="9" rx="3" /><rect class="e-losa e-doble" style="--k: 14" x="482" y="130.0" width="84" height="9" rx="3" /><rect class="e-losa e-doble" style="--k: 15" x="482" y="118.5" width="84" height="9" rx="3" /><rect class="e-losa e-doble" style="--k: 16" x="482" y="107.0" width="84" height="9" rx="3" /><rect class="e-losa e-doble" style="--k: 17" x="482" y="95.5" width="84" height="9" rx="3" /></g>
+              </svg>
+              <div class="escritorio-zonas">
+                <p><span data-t="dibujoPorHacer">Por hacer</span></p>
+                <p><span data-t="dibujoEnCurso">En curso</span><b class="escritorio-encurso" data-encurso>9</b></p>
+                <p><span data-t="dibujoHecho">Hecho</span><b class="escritorio-hechas" data-hechas>9</b></p>
+              </div>
+            </div>
+            <p class="escritorio-resultado">
+              <span data-de="muchas" data-t="escritorioResultado9">Con 9 a la vez, cerró el día Colapsada, con <b>13</b>&nbsp;cigarros y <b>9</b>&nbsp;tareas terminadas.</span>
+              <span data-de="pocas" data-t="escritorioResultado2">Con 2 a la vez, cerró el día Tranquila, sin fumar y con <b>18</b>&nbsp;tareas terminadas.</span>
+            </p>
+          </div>
+          <p class="nota jornada-nota" data-t="jornadaNota">Promedio de 200 días jugados. Son números del juego, no de personas.</p>
+        </div>
+        <!-- /OPCIONES-EN-PRUEBA -->
       </header>
 
       <!-- 2a. ¿Qué ganó la mosca al limitar su WIP? (8.7, 2026-11-07, con el

@@ -10,6 +10,9 @@
    Con el botón de arriba el fondo pasa a blanco (ver "Fondo blanco"). */
 /* La barra de arriba, igual en todas las páginas (src/barra.css) */
 @import './barra.css';
+/* EN PRUEBA (8.13): las opciones 2 y 3 del inicio y la barrita para cambiar
+   entre las tres. Sale antes de subir al sitio la que Felipe elija */
+@import './opciones.css';
 
 @font-face {
   font-family: 'Mona Sans';

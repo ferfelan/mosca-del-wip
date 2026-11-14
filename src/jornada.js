@@ -37,7 +37,7 @@ const SE_VE = 0.45; // parte cuando ya se ve casi la mitad (como las cargas de m
 // Cada lugar entrega una tarea cada cierto rato (las horas de "caen" se
 // reparten por turno entre los lugares). La primera viene empezada de ayer,
 // como en el juego, y la última queda a medias para mañana.
-function avance(dia, lugar, minuto) {
+export function avance(dia, lugar, minuto) {
   let antes = null;
   for (let k = lugar; k < dia.caen.length; k += dia.enCurso) {
     const cae = dia.caen[k];
