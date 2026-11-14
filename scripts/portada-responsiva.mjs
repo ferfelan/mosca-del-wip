@@ -8,7 +8,9 @@
 //   - en celular vertical haya un Jugar en la primera pantalla: el grande
 //     entero o, si no cabe (desde la 5.2g, por ejemplo en 320×568), el de la
 //     barra,
-//   - el cerebro se encienda y no haya errores,
+//   - el dibujo del inicio ("¿Te suena?") parta y se lea bien (8.13),
+//   - el cerebro se encienda (desde la 8.13 está en "¿Por qué una mosca?") y
+//     no haya errores,
 //   - al bajar por la página, cada dibujo se cargue (8.11: las fichas, las
 //     barras, los números que cuentan) y ninguno quede a medio camino,
 //   - en inglés no quede ningún texto en español (salvo nombres propios),
@@ -136,6 +138,7 @@ function medir({ tactil, celularVertical, idioma, raiz }) {
     if (abajo > window.innerHeight && !(enBarra && seVe(enBarra))) problemas.push(`el botón Jugar queda bajo la primera pantalla (${Math.round(abajo)} px de ${window.innerHeight}) y la barra no muestra el suyo`);
   }
   if (!raiz && !document.querySelector('.cerebro.vivo')) problemas.push('el cerebro no se encendió (queda la foto fija)');
+  if (!raiz && !document.querySelector('.suena.viva')) problemas.push('el dibujo del inicio no partió (quedó sin su botón de pausa)');
   if (document.documentElement.lang !== idioma) problemas.push(`la página dice lang="${document.documentElement.lang}" y debía ser ${idioma}`);
   // En inglés: ninguna palabra en español a la vista ni en lo que lee un lector de pantalla
   if (idioma === 'en') {
@@ -198,7 +201,20 @@ for (const [fondo, idioma] of COMBINACIONES) for (const [nombreTamano, ancho, al
   pagina.on('console', (m) => { if (m.type() === 'error') errores.push(m.text()); });
   // La portada en inglés vive en /en/ (Etapa 7); lo recordado solo vale para el juego y los créditos
   await pagina.goto(DIRECCION + (idioma === 'en' ? 'en/' : ''), { waitUntil: 'load' });
-  // El cerebro solo se dibuja cuando se ve (en celular horizontal queda más abajo)
+  // (8.13) El dibujo del inicio ("¿Te suena?") se repite solo: a la mosca le
+  // llegan pedidos, se van y vuelven a llegar. Aquí se deja quieto para
+  // medirlo y para las fotos, con todos los pedidos a la vista y la mosca al
+  // final. Que se mueva bien se prueba aparte, en scripts/probar-suena.mjs
+  await pagina.waitForFunction(() => window.__mosca?.suena, null, { timeout: 15000 }).catch(() => {});
+  const problemasInicio = await pagina.evaluate(async () => {
+    const suena = window.__mosca?.suena;
+    if (!suena) return ['el dibujo del inicio no partió'];
+    suena.mostrarCerrado();
+    await new Promise((listo) => setTimeout(listo, 500));
+    return [];
+  });
+  // El cerebro solo se dibuja cuando se ve (desde la 8.13 está más abajo, en
+  // "¿Por qué una mosca?", y se pide cuando falta poco para llegar a él)
   // (los saltos son directos: con la página deslizándose sola, la barra de
   // arriba quedaría encima del texto en la medición)
   await pagina.evaluate(() => document.querySelector('.cerebro').scrollIntoView({ block: 'center', behavior: 'instant' }));
@@ -246,6 +262,7 @@ for (const [fondo, idioma] of COMBINACIONES) for (const [nombreTamano, ancho, al
     await pagina.screenshot({ path: join(CARPETA, `${nombre}-menu.png`) });
     await pagina.keyboard.press('Escape');
   }
+  problemas.push(...problemasInicio.map((p) => `(inicio) ${p}`));
   if (!cargas.partieron) problemas.push('las cargas no partieron (la página no tiene "con-carga")');
   for (const c of cargas.sinCargar) problemas.push(`no se cargó al bajar por la página: «${c}»`);
   for (const c of cargas.contando) problemas.push(`un número quedó a medio contar: ${c}`);

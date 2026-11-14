@@ -233,7 +233,12 @@ if (process.env.FOTOS) {
       const p = await c.newPage();
       p.on('pageerror', (e) => console.log('ERROR', e.message));
       await p.goto(`${SITIO}/`, { waitUntil: 'networkidle' });
-      await p.waitForTimeout(5000); // el cerebro se enciende y la consola sube sola de 2 a 10
+      // (8.13) En el inicio ya no está el cerebro: está el dibujo "¿Te suena?",
+      // los pedidos que le van llegando a la mosca, que se repite solo. Para la
+      // foto se deja quieto, con todos los pedidos y la mosca al final
+      await p.waitForFunction(() => window.__mosca?.suena, null, { timeout: 15000 }).catch(() => {});
+      await p.evaluate(() => window.__mosca?.suena?.mostrarCerrado());
+      await p.waitForTimeout(900);
       return p;
     };
     let p = await portada({ viewport: { width: 1440, height: 800 }, deviceScaleFactor: 1.5 }, 'oscuro');

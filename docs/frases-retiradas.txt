@@ -391,3 +391,14 @@ con una sección por página
 one section per page
 En la web o en PDF
 On the web or as a PDF
+
+# ─── Etapa 8.13, 2026-11-14: el inicio de la portada, dibujado ───────────────
+
+# El dato chico del inicio de la portada, bajo la bajada (Felipe pidió
+# borrarlo; en su lugar va el tablero de la mosca, que lo muestra dibujado):
+#   "En el juego, la mosca ya hizo la prueba. Con 9 tareas a la vez, colapsa.
+#   Con 2, termina el doble."
+#   "In the game, the fly already ran the test. With 9 tasks at once, she ends
+#   up overwhelmed. With 2, she finishes twice as many."
+la mosca ya hizo la prueba
+the fly already ran the test

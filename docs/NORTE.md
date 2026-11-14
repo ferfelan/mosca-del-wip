@@ -62,7 +62,15 @@ sostenible**.
   la bajada, el dato del juego: "En el juego, la mosca ya hizo la prueba. Con 9
   tareas a la vez, colapsa. Con 2, termina el doble." (así desde la 8.12,
   2026-11-13, cuando Felipe pidió sacar los dos puntos de todo lo que se lee;
-  antes iba "…la prueba: con 9…").
+  antes iba "…la prueba: con 9…"). **En la 8.13 (2026-11-14) Felipe pidió
+  borrar ese dato del inicio**: en su lugar va un dibujo. Vio seis propuestas
+  y eligió "¿Te suena?": a la mosca le van llegando pedidos ("¿Tienes un
+  minuto?", "Es urgente"…) y se le nota en la cara, con la frase "Todo
+  urgente, todo empezado. ¿Te suena?". No lleva números: Felipe dijo que el
+  mensaje de 9 y 2 tareas a la vez ya se repetía en la página, y ese
+  resultado se cuenta más abajo ("¿Qué ganó la mosca al limitar su WIP?" y
+  "Lo que vas a ver"). El propósito y las hipótesis no cambiaron
+  (`docs/etapa8-13.md`).
 - **Límite sostenible** = el que se mantiene todo el día sin colapsar (el
   juego mide un solo día). En la parte 4.4 (2026-10-20) reemplazó a "límite
   sano" en el panel de Carga del juego y en el informe para compartir (v2 y v3) y en el
