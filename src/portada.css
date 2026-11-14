@@ -234,11 +234,13 @@ h1 {
    ganó la mosca al limitar su WIP? o Lo que se lleva tu equipo, así tipo
    dibujo pero algo bacán". Vio seis propuestas y eligió esta, porque el
    mensaje de 9 y 2 tareas a la vez ya está más abajo. Es una lámina como los
-   tableros de más abajo, con sus filetes: arriba el título y el botón de
-   pausa, al medio los pedidos que le van llegando a la mosca y la mosca, de
-   noche, y abajo la frase. Lo mueve src/suena.js, que solo dice qué pedidos
-   llegaron y cómo está la mosca: aquí solo cambian la posición y la
-   transparencia, y nada cambia de tamaño ni empuja lo de al lado. */
+   tableros de más abajo, con sus filetes: arriba el título, al medio los
+   pedidos que le van llegando a la mosca y la mosca, de noche, y abajo la
+   frase. Se repite sin fin y sin botones (Felipe sacó también el de pausa,
+   "que sea un loop que siempre se repita"). Lo mueve src/suena.js, que solo
+   dice qué pedidos llegaron y cómo está la mosca: aquí solo cambian la
+   posición y la transparencia, y nada cambia de tamaño ni empuja lo de al
+   lado. */
 .escena { align-self: center; min-width: 0; padding: 40px 0 48px; }
 .escena-nota { margin-top: 14px; }
 .lamina {
@@ -267,37 +269,6 @@ h1 {
 :root[data-tema='claro'] .suena { --pata: #3e332b; }
 .suena[data-animo='apurada'] { --animo: var(--ocupada); }
 .suena[data-animo='colapsada'] { --animo: var(--colapsada); }
-/* (la cabeza mide lo mismo con el botón y sin él, así nada salta sin JavaScript) */
-.suena-cabeza { display: flex; align-items: center; justify-content: space-between; gap: 12px 18px; min-height: 68px; padding-block: 14px; }
-/* El botón de pausa: chico y redondo. Felipe pidió que el dibujo se repita
-   solo y sin el botón "Ver de nuevo"; como algo que se mueve solo y no
-   termina tiene que poder detenerse, queda este, que dice su nombre a quien
-   usa lector de pantalla (Pausar el dibujo o Seguir el dibujo) */
-.suena-pausa {
-  position: relative;
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  border-radius: 50%;
-  border: 1px solid var(--borde-fuerte);
-  background: transparent;
-  color: var(--suave);
-  cursor: pointer;
-  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
-}
-.suena-pausa:hover { background: var(--vidrio-hover); border-color: var(--borde-hover); color: var(--tinta); }
-.suena-pausa:focus-visible { border-radius: 50%; }
-.suena-pausa svg { grid-area: 1 / 1; }
-/* (sin JavaScript o con "reducir movimiento" no hay nada que pausar) */
-.suena:not(.viva) .suena-pausa { display: none; }
-.suena:not([data-estado='pausada']) .suena-pausa [data-de='pausada'],
-.suena[data-estado='pausada'] .suena-pausa [data-de='andando'] { display: none; }
-@media (pointer: coarse) {
-  .suena-pausa { width: 44px; height: 44px; }
-}
 /* Los pedidos: una lista de verdad, repartida en filas */
 .suena-escena { display: grid; }
 .globos { display: flex; flex-wrap: wrap; justify-content: center; align-content: flex-start; gap: 10px 9px; margin: 0; padding: 26px 22px 2px; list-style: none; }
@@ -323,8 +294,8 @@ h1 {
    src/suena.js). Llega con un saltito y se va más rápido de lo que llegó
    (--sale es su turno al irse) */
 .suena.viva .globo:not(.llego) { opacity: 0; transform: translateY(calc(var(--sube) + 16px)) rotate(var(--giro)) scale(0.82); }
-.suena.viva:is([data-estado='andando'], [data-estado='pausada']) .globo:not(.llego) { transition: opacity 0.18s ease var(--sale, 0ms), transform 0.2s ease-in var(--sale, 0ms); }
-.suena.viva:is([data-estado='andando'], [data-estado='pausada']) .globo.llego { transition: transform 0.42s cubic-bezier(0.2, 0.9, 0.3, 1.3), opacity 0.2s ease; }
+.suena.viva[data-estado='andando'] .globo:not(.llego) { transition: opacity 0.18s ease var(--sale, 0ms), transform 0.2s ease-in var(--sale, 0ms); }
+.suena.viva[data-estado='andando'] .globo.llego { transition: transform 0.42s cubic-bezier(0.2, 0.9, 0.3, 1.3), opacity 0.2s ease; }
 /* La mosca (la de la credencial), asomada desde abajo. Su alto sigue al ancho
    de la lámina (el dibujo mide 600 × 210) */
 .suena-dibujo { margin-top: -12px; }
@@ -337,9 +308,9 @@ h1 {
 .suena[data-animo='tranquila'] :is(.s-gota1, .s-gota2),
 .suena[data-animo='apurada'] .s-gota2 { opacity: 0; }
 .suena[data-animo='colapsada'] .s-cabeza { transform: translate(50px, 62px) rotate(6deg) translate(-50px, -60px); }
-.suena:is([data-estado='andando'], [data-estado='pausada']) .s-cabeza { transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.2); }
-.suena:is([data-estado='andando'], [data-estado='pausada']) :is(.s-de-despierta, .s-de-colapsada, .s-gota1, .s-gota2) { transition: opacity 0.3s ease; }
-.suena:is([data-estado='andando'], [data-estado='pausada']) .s-brillos { transition: transform 0.3s ease, opacity 0.3s ease; }
+.suena[data-estado='andando'] .s-cabeza { transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.2); }
+.suena[data-estado='andando'] :is(.s-de-despierta, .s-de-colapsada, .s-gota1, .s-gota2) { transition: opacity 0.3s ease; }
+.suena[data-estado='andando'] .s-brillos { transition: transform 0.3s ease, opacity 0.3s ease; }
 /* En una lámina angosta (el celular) van menos pedidos y más chicos, para que
    los pedidos y la mosca quepan juntos en la pantalla: 10 en vez de 14, y 8
    en las más angostas */
@@ -347,8 +318,6 @@ h1 {
   .lamina-cabeza { padding: 14px 16px 15px; }
   .lamina-titulo { font-size: 16px; }
   .lamina-pie { padding: 14px 16px 16px; font-size: 15.5px; }
-  .suena-cabeza { min-height: 68px; padding-block: 12px; }
-  .suena-pausa { width: 44px; height: 44px; }
   .globos { gap: 10px 8px; padding: 20px 10px 0; }
   .globo { padding: 8px 13px 8px 10px; font-size: 14.5px; }
   .globo.de-ancha { display: none; }
@@ -1612,8 +1581,8 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   h1 { font-size: clamp(38px, 3.2vw, 46px); margin-bottom: 18px; }
   .bajada { margin-bottom: 28px; }
   .escena { width: 100%; max-width: 520px; margin-inline: auto; padding: 24px 0 32px; }
+  .lamina-cabeza { padding-block: 13px 14px; }
   .lamina-pie { padding-block: 13px 15px; }
-  .suena-cabeza { min-height: 62px; padding-block: 11px; }
   /* (con poco alto van 10 pedidos en vez de 14, como en el celular) */
   .globos { padding-top: 22px; }
   .globo.de-ancha { display: none; }

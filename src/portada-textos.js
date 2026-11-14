@@ -22,10 +22,8 @@ export const INGLES = {
   // 8.13 (2026-11-14, pedido de Felipe): el dato chico del juego salió del
   // inicio y, en vez del cerebro, va un dibujo. Felipe vio seis propuestas y
   // eligió "¿Te suena?": los pedidos que le van llegando a la mosca en un día
-  // cualquiera, sin números. Se repite solo y tiene un botón chico de pausa
+  // cualquiera, sin números. Se repite solo, sin fin y sin botones
   suenaTitulo: 'Any day at the office',
-  suenaPausar: 'Pause the drawing',
-  suenaSeguir: 'Resume the drawing',
   suenaLista: 'What people ask the fly for',
   globo1: 'Got a minute?',
   globo2: 'It’s urgent',

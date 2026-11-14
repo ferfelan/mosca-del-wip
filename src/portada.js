@@ -3,7 +3,7 @@
 // mosca?" y la FAQ; el cerebro, la consola, el clip, la barra y el idioma
 // siguen igual).
 // 0. El dibujo del inicio (8.13, 2026-11-14): "¿Te suena?", los pedidos que le
-//    van llegando a la mosca. Se repite solo y tiene su botón de pausa
+//    van llegando a la mosca. Se repite solo, sin fin y sin botones
 //    (src/suena.js).
 // 1. El cerebro del juego: las mismas neuronas reales (MaleCNS) y la misma
 //    actividad simulada de src/cerebro.js. Desde la 8.13 (pedido de Felipe)

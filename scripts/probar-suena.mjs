@@ -1,6 +1,7 @@
 // Prueba el dibujo del inicio de la portada: "¿Te suena?" (Etapa 8.13,
 // 2026-11-14). Felipe vio seis propuestas del inicio, eligió esta y pidió que
-// se repita sola (sin el botón "Ver de nuevo") y con más pedidos.
+// se repita sola (sin el botón "Ver de nuevo") y con más pedidos. Después sacó
+// también el botón de pausa: "que sea un loop que siempre se repita".
 // Revisa, en español y en inglés:
 //  1. en el inicio hay un solo dibujo: no queda ninguna de las otras
 //     propuestas, ni la barrita para cambiar, ni ?portada= hace algo;
@@ -8,13 +9,12 @@
 //     tranquila a apurada y a colapsada; cuando están todos se quedan un rato,
 //     se van, la mosca vuelve a estar tranquila y empieza otra vuelta sola, en
 //     otro orden;
-//  3. no hay botón "Ver de nuevo"; hay un botón de pausa, que dice su nombre a
-//     quien usa lector de pantalla, pausa con clic, sigue con el teclado y no
-//     pierde el foco;
+//  3. no tiene botones (ni "Ver de nuevo" ni pausa) y un clic en el dibujo no
+//     lo detiene;
 //  4. se detiene cuando sale de la pantalla y sigue al volver;
 //  5. nada cambia de tamaño mientras se mueve;
 //  6. con "reducir movimiento" no se mueve nada y sin JavaScript se ve quieto,
-//     con todos los pedidos, la mosca al final y sin botón;
+//     con todos los pedidos y la mosca al final;
 //  7. a 21 anchos de pantalla se ven 14, 10 u 8 pedidos según el ancho de la
 //     lámina, ninguno se sale de ella y no hay desborde hacia el lado;
 //  8. en el computador la lámina cabe entera en la primera pantalla (también
@@ -37,8 +37,6 @@ const TEXTOS = {
   es: {
     ruta: '',
     titulo: 'Un día cualquiera en la oficina',
-    pausar: 'Pausar el dibujo',
-    seguir: 'Seguir el dibujo',
     deNuevo: /ver de nuevo/i,
     lista: 'Lo que le piden a la mosca',
     pie: 'Todo urgente, todo empezado. ¿Te suena?',
@@ -50,8 +48,6 @@ const TEXTOS = {
   en: {
     ruta: 'en/',
     titulo: 'Any day at the office',
-    pausar: 'Pause the drawing',
-    seguir: 'Resume the drawing',
     deNuevo: /watch again/i,
     lista: 'What people ask the fly for',
     pie: 'Everything urgent, everything started. Sound familiar?',
@@ -152,6 +148,8 @@ async function probarIdioma(idioma) {
       lista: document.querySelector('.suena .globos')?.getAttribute('aria-label'),
       pedidos: [...document.querySelectorAll('.suena [data-globo]')].map((g) => g.textContent.trim()),
       textoInicio: document.querySelector('.hero').textContent,
+      // (sin botones: ni "Ver de nuevo" ni pausa, ni nada que se pueda apretar)
+      botones: document.querySelectorAll('.escena :is(button, a, input, [tabindex], [role="button"], [data-pausa])').length,
     }));
     revisar(hay.escenas === 1 && hay.laminas === 1 && hay.suena, `en el inicio debía haber un solo dibujo y hay ${hay.escenas} escenas y ${hay.laminas} láminas`);
     revisar(!hay.barrita && hay.opciones === 0 && !hay.marca, `quedan restos de las propuestas (barrita ${hay.barrita}, data-opcion ${hay.opciones}, data-portada ${hay.marca})`);
@@ -161,12 +159,13 @@ async function probarIdioma(idioma) {
     revisar(hay.lista === T.lista, `la lista se llama "${hay.lista}"`);
     revisar(JSON.stringify(hay.pedidos) === JSON.stringify(T.pedidos), `los pedidos no son los esperados: ${hay.pedidos.join(' | ')}`);
     revisar(!T.deNuevo.test(hay.textoInicio), 'en el inicio todavía dice "Ver de nuevo"');
+    revisar(hay.botones === 0, `el dibujo tiene ${hay.botones} botones y no debía tener ninguno`);
     revisar(!/[:;—–]/.test(hay.pedidos.join(' ') + hay.pie + hay.titulo), 'hay dos puntos, punto y coma o rayas en los textos del dibujo');
     revisar(errores.length === 0, `errores al abrir: ${errores.join(' | ')}`);
     await contexto.close();
   }
 
-  // ---------- 2 a 5. Computador: se repite solo, el botón de pausa, fuera de la pantalla ----------
+  // ---------- 2 a 5. Computador: se repite solo, sin botones, y se detiene fuera de la pantalla ----------
   {
     const { contexto, pagina, errores } = await abrir(T.ruta);
     await pagina.waitForFunction(() => window.__mosca?.suena, null, { timeout: 15000 });
@@ -220,33 +219,15 @@ async function probarIdioma(idioma) {
       revisar(desdeQuePartio.length > 0 && desdeQuePartio.every((m) => m.estado === 'andando'), `el dibujo se detuvo solo (pasó por ${[...new Set(notas.map((m) => m.estado))].join(', ')})`);
     }
 
-    // el botón de pausa
-    const boton = pagina.locator('.suena [data-pausa]');
-    const nombre = () => pagina.evaluate(() => [...document.querySelectorAll('.suena [data-pausa] span')].filter((s) => getComputedStyle(s).display !== 'none').map((s) => s.textContent.trim()).join('|'));
-    revisar((await boton.count()) === 1 && (await boton.isVisible()), 'no se ve el botón de pausa');
-    revisar((await nombre()) === T.pausar, `el botón de pausa se llama "${await nombre()}"`);
-    const caja = await boton.boundingBox();
-    revisar(caja && caja.width >= 40 && caja.height >= 40, `el botón de pausa mide ${caja?.width} × ${caja?.height}`);
-    await boton.click();
-    const alPausar = await mirar(pagina);
-    revisar(alPausar.estado === 'pausada', `con un clic el dibujo quedó "${alPausar.estado}"`);
-    revisar((await nombre()) === T.seguir, `en pausa el botón se llama "${await nombre()}"`);
-    await pagina.waitForTimeout(1600);
-    const enPausa = await mirar(pagina);
-    revisar(enPausa.llegaron === alPausar.llegaron && enPausa.vuelta === alPausar.vuelta, `en pausa siguieron llegando pedidos (de ${alPausar.llegaron} a ${enPausa.llegaron})`);
-    // sigue con el teclado y el foco no se pierde
-    await boton.focus();
-    await pagina.keyboard.press('Enter');
-    const alSeguir = await mirar(pagina);
-    revisar(alSeguir.estado === 'andando', `con Enter el dibujo quedó "${alSeguir.estado}"`);
-    revisar(await pagina.evaluate(() => document.activeElement?.matches('.suena [data-pausa]')), 'el foco se perdió al seguir');
-    await pagina.waitForTimeout(1500);
-    const despues = await mirar(pagina);
-    revisar(despues.llegaron !== enPausa.llegaron || despues.vuelta !== enPausa.vuelta, 'después de seguir no llegaron más pedidos');
-    await pagina.keyboard.press('Space');
-    revisar((await mirar(pagina)).estado === 'pausada', 'con la barra espaciadora no se pausó');
-    await pagina.keyboard.press('Space');
-    revisar((await mirar(pagina)).estado === 'andando', 'con la barra espaciadora no siguió');
+    // un clic en el dibujo no lo detiene: siempre se repite
+    // (se espera hasta que cambie algo: con todos a la vista se quedan 3,2 s)
+    await pagina.locator('.suena').click();
+    const alClic = await mirar(pagina);
+    const siguio = await pagina
+      .waitForFunction((a) => window.__mosca.suena.llegaron() !== a.llegaron || window.__mosca.suena.vuelta() !== a.vuelta, alClic, { timeout: 6000 })
+      .then(() => true, () => false);
+    const trasClic = await mirar(pagina);
+    revisar(siguio && trasClic.estado === 'andando', `después de un clic el dibujo quedó "${trasClic.estado}" y no siguió llegando nada`);
 
     // fuera de la pantalla se detiene, y sigue al volver
     await pagina.evaluate(() => scrollTo({ top: document.body.scrollHeight, behavior: 'instant' }));
@@ -274,10 +255,8 @@ async function probarIdioma(idioma) {
     revisar(a.estado === 'quieta' && a.animo === 'colapsada' && a.llegaron === a.cuantos && a.cuantos === 14, `con "reducir movimiento" quedó ${JSON.stringify(a)}`);
     revisar(JSON.stringify(a) === JSON.stringify(b), 'con "reducir movimiento" algo se movió');
     const ve = await pagina.evaluate(() => ({
-      boton: getComputedStyle(document.querySelector('.suena [data-pausa]')).display,
       opacos: [...document.querySelectorAll('.suena [data-globo]')].filter((g) => getComputedStyle(g).display !== 'none' && getComputedStyle(g).opacity !== '1').length,
     }));
-    revisar(ve.boton === 'none', 'con "reducir movimiento" se ve el botón de pausa, que no sirve');
     revisar(ve.opacos === 0, `con "reducir movimiento" hay ${ve.opacos} pedidos que no se ven`);
     revisar(errores.length === 0, `errores con "reducir movimiento": ${errores.join(' | ')}`);
     await contexto.close();
@@ -289,7 +268,6 @@ async function probarIdioma(idioma) {
     const cajas = await pagina.locator('.suena [data-globo]').evaluateAll((globos) => globos.map((g) => ({ display: getComputedStyle(g).display, opacidad: getComputedStyle(g).opacity })));
     revisar(cajas.length === 14 && cajas.every((c) => c.display !== 'none' && c.opacidad === '1'), 'sin JavaScript no se ven los 14 pedidos');
     revisar((await pagina.locator('.suena').getAttribute('data-animo')) === 'colapsada', 'sin JavaScript la mosca no está al final');
-    revisar(!(await pagina.locator('.suena [data-pausa]').isVisible()), 'sin JavaScript se ve el botón de pausa, que no sirve');
     await contexto.close();
   }
 
@@ -310,15 +288,14 @@ async function probarIdioma(idioma) {
           const c = g.getBoundingClientRect();
           return c.left < caja.left - 0.5 || c.right > caja.right + 0.5 || c.top < celda.top - 0.5;
         }).length;
-        const titulo = raiz.querySelector('.lamina-titulo').getBoundingClientRect();
-        const boton = raiz.querySelector('[data-pausa]').getBoundingClientRect();
+        const titulo = raiz.querySelector('.lamina-titulo');
         const pie = raiz.querySelector('.lamina-pie');
         return {
           ancho: caja.width,
           cuantos: visibles.length,
           fuera,
           desborde: document.documentElement.scrollWidth - document.documentElement.clientWidth,
-          encima: boton.width > 0 && titulo.right > boton.left + 0.5,
+          tituloCortado: titulo.scrollWidth > titulo.clientWidth + 1 || titulo.getBoundingClientRect().right > caja.right + 0.5,
           pieCortado: pie.scrollWidth > pie.clientWidth + 1,
           letra: Math.min(...visibles.map((g) => parseFloat(getComputedStyle(g).fontSize))),
           mosca: raiz.querySelector('.suena-dibujo').getBoundingClientRect().height,
@@ -340,7 +317,7 @@ async function probarIdioma(idioma) {
       revisar(m.cuantos === esperados, `a ${ancho} px (lámina de ${Math.round(m.ancho)}) se ven ${m.cuantos} pedidos y debían ser ${esperados}`);
       revisar(m.fuera === 0, `a ${ancho} px hay ${m.fuera} pedidos fuera de la lámina`);
       revisar(m.desborde <= 0, `a ${ancho} px la página se sale ${m.desborde} px hacia el lado`);
-      revisar(!m.encima, `a ${ancho} px el título queda encima del botón de pausa`);
+      revisar(!m.tituloCortado, `a ${ancho} px el título del dibujo se corta`);
       revisar(!m.pieCortado, `a ${ancho} px la frase de abajo se corta`);
       revisar(m.letra >= 12, `a ${ancho} px la letra de los pedidos mide ${m.letra} px`);
       revisar(m.mosca >= 90, `a ${ancho} px la mosca mide ${Math.round(m.mosca)} px de alto`);
@@ -364,12 +341,10 @@ async function probarIdioma(idioma) {
       const caja = document.querySelector('.suena').getBoundingClientRect();
       const celda = document.querySelector('.suena .suena-escena').getBoundingClientRect();
       const barra = document.querySelector('.barra')?.getBoundingClientRect().bottom ?? 0;
-      const boton = document.querySelector('.suena [data-pausa]').getBoundingClientRect();
-      return { arriba: caja.top, abajo: caja.bottom, alto: caja.height, celda: celda.height, barra, pantalla: innerHeight, boton: Math.min(boton.width, boton.height) };
+      return { arriba: caja.top, abajo: caja.bottom, alto: caja.height, celda: celda.height, barra, pantalla: innerHeight };
     });
     if (tactil) {
       revisar(m.celda <= m.pantalla - m.barra - 8, `en ${ancho} × ${alto} los pedidos y la mosca no caben juntos (miden ${Math.round(m.celda)} y hay ${Math.round(m.pantalla - m.barra)} px bajo la barra)`);
-      revisar(m.boton >= 44, `en ${ancho} × ${alto} (táctil) el botón de pausa mide ${m.boton} px`);
     } else {
       revisar(m.arriba >= m.barra - 1 && m.abajo <= m.pantalla + 1, `en ${ancho} × ${alto} la lámina no cabe entera en la primera pantalla (va de ${Math.round(m.arriba)} a ${Math.round(m.abajo)} y la pantalla mide ${m.pantalla})`);
     }

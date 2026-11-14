@@ -6,25 +6,25 @@
 // notando en la cara. Es un dibujo de cómo se siente, no un resultado del
 // juego.
 //
-// Se repite solo, sin fin (pedido de Felipe, que no quiso el botón "Ver de
-// nuevo"): los pedidos llegan de a uno, en desorden. Con el tercero a la mosca
-// le sale una gota de sudor y cuando ya llegaron tres de cada cuatro queda con
-// los ojos en cruz. Se quedan un rato, se van todos, la mosca respira y vuelven
-// a llegar, en otro orden. Como se mueve solo y no termina, tiene un botón
-// chico para pausarlo y seguir. Además se detiene solo cuando no está a la
-// vista o la pestaña está escondida.
+// Se repite solo, sin fin y sin botones. Felipe primero sacó el botón "Ver de
+// nuevo" y después el de pausa: "que sea un loop que siempre se repita". Los
+// pedidos llegan de a uno, en desorden. Con el tercero a la mosca le sale una
+// gota de sudor y cuando ya llegaron tres de cada cuatro queda con los ojos en
+// cruz. Se quedan un rato, se van todos, la mosca respira y vuelven a llegar,
+// en otro orden. Solo se detiene cuando nadie lo ve (fuera de la pantalla o con
+// la pestaña escondida) y sigue donde quedó al volver.
 //
 // El dibujo se mueve con CSS (src/portada.css): aquí solo se dice qué pedidos
 // llegaron y cómo está la mosca. En tarjetas angostas se ven menos pedidos (lo
 // decide el CSS), así que en cada vuelta se cuentan los que se ven. Sin
 // JavaScript o con "reducir movimiento" se ven todos los pedidos y la mosca al
-// final, quietos y sin botón.
+// final, quietos.
 const PARTE = 500; // ms antes del primer pedido de cada vuelta
 const CADA = 430; // ms entre un pedido y el siguiente
 const QUEDA = 3200; // ms con todos los pedidos a la vista (alcanza para leer la frase de abajo)
 const SALE = 28; // ms entre un pedido y otro cuando se van
 const RESPIRO = 900; // ms con la mosca tranquila antes de que vuelvan a llegar
-const AL_SEGUIR = 320; // ms entre que se sigue (o vuelve a verse) y lo próximo que toca
+const AL_SEGUIR = 320; // ms entre que vuelve a verse y lo próximo que toca
 const SE_VE = 0.45; // parte cuando ya se ve casi la mitad (como las cargas de más abajo)
 
 // En qué orden llegan los pedidos de esa vuelta: saltando por la lista (nunca
@@ -41,7 +41,6 @@ export function iniciarSuena() {
   const quieto = matchMedia('(prefers-reduced-motion: reduce)');
   const todos = [...raiz.querySelectorAll('[data-globo]')];
   const brillos = raiz.querySelector('[data-brillos]');
-  const boton = raiz.querySelector('[data-pausa]');
   let globos = todos; // los pedidos que se ven en este ancho
   let orden = [];
   let llegaron = 0; // cuántos pedidos de esta vuelta ya llegaron
@@ -70,7 +69,7 @@ export function iniciarSuena() {
     clearTimeout(reloj);
     reloj = 0;
   }
-  // Sigue donde quedó (después de una pausa, o al volver a verse)
+  // Sigue donde quedó (al volver a verse o al volver a la pestaña)
   function seguir() {
     if (reloj || !toca || !corre()) return;
     luego(AL_SEGUIR, toca);
@@ -146,18 +145,7 @@ export function iniciarSuena() {
     empezarVuelta();
   }
 
-  // El botón: pausa y sigue (los dos nombres están escritos en la página, en los dos idiomas)
-  boton.addEventListener('click', () => {
-    if (raiz.dataset.estado === 'andando') {
-      raiz.dataset.estado = 'pausada';
-      detener();
-    } else if (raiz.dataset.estado === 'pausada') {
-      raiz.dataset.estado = 'andando';
-      seguir();
-    } else if (!quieto.matches) {
-      partir();
-    }
-  });
+  // Con la pestaña escondida nadie lo ve: se detiene y sigue al volver
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) detener();
     else seguir();
@@ -185,7 +173,6 @@ export function iniciarSuena() {
   });
 
   if (quieto.matches || !('IntersectionObserver' in window)) {
-    // (sin movimiento no hay nada que pausar: el botón no aparece)
     mostrarCerrado();
   } else {
     encender();

@@ -138,7 +138,7 @@ function medir({ tactil, celularVertical, idioma, raiz }) {
     if (abajo > window.innerHeight && !(enBarra && seVe(enBarra))) problemas.push(`el botón Jugar queda bajo la primera pantalla (${Math.round(abajo)} px de ${window.innerHeight}) y la barra no muestra el suyo`);
   }
   if (!raiz && !document.querySelector('.cerebro.vivo')) problemas.push('el cerebro no se encendió (queda la foto fija)');
-  if (!raiz && !document.querySelector('.suena.viva')) problemas.push('el dibujo del inicio no partió (quedó sin su botón de pausa)');
+  if (!raiz && !document.querySelector('.suena.viva')) problemas.push('el dibujo del inicio no partió (quedó quieto)');
   if (document.documentElement.lang !== idioma) problemas.push(`la página dice lang="${document.documentElement.lang}" y debía ser ${idioma}`);
   // En inglés: ninguna palabra en español a la vista ni en lo que lee un lector de pantalla
   if (idioma === 'en') {

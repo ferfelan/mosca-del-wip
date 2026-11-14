@@ -2,8 +2,9 @@
 // sacadas del juego en español y en inglés:
 //   public/img/paso-1-elegir-tareas-a-la-vez.jpg y step-1-choose-tasks-at-once.jpg (Etapa 7: antes paso-1.jpg y paso-1-en.jpg)   el control de 1 a 10, antes de Empezar
 //   public/img/paso-3-tabla-de-dias-jugados.jpg y step-3-days-played-table.jpg (antes paso-3.jpg y paso-3-en.jpg)   la tabla de días jugados: un día con 2 y otro con 9
-// (paso-2-mosca-en-su-oficina.jpg, la mosca frente a su tablero a las 10:10, y cerebro-mosca-2-tareas.jpg y
-// cerebro-mosca-9-tareas.jpg vienen de la propuesta, docs/propuesta-portada/img/.)
+// (paso-2-mosca-en-su-oficina.jpg, la mosca frente a su tablero a las 10:10, viene de la propuesta,
+// docs/propuesta-portada/img/. De ahí venían también cerebro-mosca-2-tareas.jpg y cerebro-mosca-9-tareas.jpg,
+// que salieron del sitio en la 8.13 y quedaron guardadas en el Escritorio.)
 // Igual que "fotos" de scripts/propuesta-portada.mjs, pero en los dos idiomas.
 // Necesita npm run dev. Uso: node scripts/fotos-portada.mjs [dirección]
 import { chromium } from 'playwright';

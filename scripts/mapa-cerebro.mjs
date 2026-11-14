@@ -7,7 +7,12 @@
 // cerebro ni sus datos. No necesita el sitio encendido.
 //
 // Uso:  node scripts/mapa-cerebro.mjs [salida.jpg]
-// Deja: public/img/cerebro-mosca-mapa.jpg (720 px de ancho)
+// Deja: capturas/cerebro-mosca-mapa.jpg (720 px de ancho). Hasta la 8.13 la
+// dejaba en public/img/ y se veía en "¿Por qué una mosca?". Desde la 8.13 ahí
+// va el cerebro en 3D y el sitio ya no usa esta foto. La última que se vio en
+// el sitio quedó guardada en el Escritorio, en "Mosca del WIP/Versiones
+// anteriores/Imágenes del sitio" (pedido de Felipe, "las fotos guárdalas por
+// ahí").
 //
 // Qué es dato y qué no: la posición y la zona de cada punto son del Male CNS.
 // El tamaño, el brillo y la inclinación de la vista (la misma del cerebro del
@@ -18,7 +23,7 @@ import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..');
-const SALIDA = process.argv[2] || join(RAIZ, 'public/img/cerebro-mosca-mapa.jpg');
+const SALIDA = process.argv[2] || join(RAIZ, 'capturas/cerebro-mosca-mapa.jpg');
 
 // Los mismos de src/cerebro.js (GRUPOS_VISUALES, FONDO e INCLINACION)
 const COLORES = { vision: '#2fe3ff', central: '#8b5cff', memoria: '#ffd84d', mando: '#ff4fd8', movimiento: '#ff7f66' };

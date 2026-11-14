@@ -246,24 +246,18 @@
              cualquiera que trabaje en una oficina. A la mosca le van llegando
              pedidos, uno tras otro, y se le va notando en la cara. Es un
              dibujo de cómo se siente, no un resultado del juego. Lo mueve
-             src/suena.js: se repite solo, sin fin (pedido de Felipe), y como
-             se mueve solo tiene un botón chico para pausarlo y seguir. Sin
+             src/suena.js: se repite solo, sin fin y sin botones (Felipe sacó
+             también el de pausa, "que sea un loop que siempre se repita"). Sin
              JavaScript o con "reducir movimiento" se ven todos los pedidos y
-             la mosca al final, quietos y sin botón. Son 14 pedidos: en
+             la mosca al final, quietos. Son 14 pedidos: en
              láminas angostas (el celular) y en pantallas bajas de computador
              se ven 10 (salen los "de-ancha") y en las muy angostas 8 (salen
              también los "de-media"), para que la mosca y los pedidos quepan
              juntos en la pantalla (src/portada.css) -->
         <div class="escena">
           <div class="lamina suena" role="group" aria-labelledby="t-suena" data-animo="colapsada">
-            <div class="lamina-cabeza suena-cabeza">
+            <div class="lamina-cabeza">
               <p class="lamina-titulo" id="t-suena" data-t="suenaTitulo">Any day at the office</p>
-              <button type="button" class="suena-pausa" data-pausa>
-                <svg data-de="andando" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M8.5 5.5v13M15.5 5.5v13" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" /></svg>
-                <svg data-de="pausada" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M8.8 5.6v12.8L18.6 12z" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" /></svg>
-                <span class="solo-lector" data-de="andando" data-t="suenaPausar">Pause the drawing</span>
-                <span class="solo-lector" data-de="pausada" data-t="suenaSeguir">Resume the drawing</span>
-              </button>
             </div>
             <div class="lamina-dibujo suena-escena">
               <ul class="globos" data-t-aria="suenaLista" aria-label="What people ask the fly for">
