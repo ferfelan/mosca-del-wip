@@ -2,8 +2,9 @@
 // 2026-10-26: la pregunta como título, "Cómo se juega", el kit, "¿Por qué una
 // mosca?" y la FAQ; el cerebro, la consola, el clip, la barra y el idioma
 // siguen igual).
-// 0. El tablero de la mosca, vivo, en el inicio (8.13, 2026-11-14): un día de
-//    oficina con 9 tareas a la vez y otro con 2 (src/jornada.js).
+// 0. El dibujo del inicio (8.13, 2026-11-14): "¿Te suena?", los pedidos que le
+//    van llegando a la mosca. Se repite solo y tiene su botón de pausa
+//    (src/suena.js).
 // 1. El cerebro del juego: las mismas neuronas reales (MaleCNS) y la misma
 //    actividad simulada de src/cerebro.js. Desde la 8.13 (pedido de Felipe)
 //    vive en "¿Por qué una mosca?" y no en el inicio: se baja cuando esa
@@ -32,13 +33,6 @@ import { leerIdioma, idiomaDeLaPagina, rutaEnIdioma, formatoNumero } from './idi
 import { DINAMICOS } from './portada-textos.js';
 import { iniciarBarra } from './barra.js';
 import { iniciarCargas } from './cargas.js';
-import { iniciarJornada } from './jornada.js';
-// EN PRUEBA (8.13): las opciones 2 y 3 del inicio y la barrita para cambiar entre las tres
-import { iniciarCarrera } from './carrera.js';
-import { iniciarEscritorio } from './escritorio.js';
-import { iniciarOpciones } from './opciones.js';
-import { iniciarVueltas } from './vueltas.js';
-import { iniciarMinuto } from './minuto.js';
 import { iniciarSuena } from './suena.js';
 
 // Tabla de 1 a 10 del informe (pág. 4): corrida oficial, 200 días por cada
@@ -262,18 +256,10 @@ marcarSeccion();
 // (el código está en src/cargas.js: lo comparte con las páginas de lectura)
 iniciarCargas();
 
-// ---------- El tablero de la mosca, vivo, en el inicio (8.13) ----------
+// ---------- El dibujo del inicio: "¿Te suena?" (8.13) ----------
 // (window.__mosca es para las pruebas, como en el juego: deja el dibujo quieto)
-const jornada = iniciarJornada();
-// EN PRUEBA (8.13): las otras dos propuestas del inicio. La que no se ve no
-// hace nada (parte solo cuando su dibujo está a la vista)
-const carrera = iniciarCarrera();
-const escritorio = iniciarEscritorio();
-const vueltas = iniciarVueltas();
-const minuto = iniciarMinuto();
 const suena = iniciarSuena();
-iniciarOpciones();
-window.__mosca = { ...(window.__mosca || {}), jornada, carrera, escritorio, vueltas, minuto, suena };
+window.__mosca = { ...(window.__mosca || {}), suena };
 
 // La primera vez que se ve el cerebro, una sola vez: sube de 2 a 10 tareas (el
 // tope del juego) para mostrar qué pasa. Con 10 quedan los números del juego

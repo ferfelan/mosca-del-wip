@@ -233,11 +233,11 @@ if (process.env.FOTOS) {
       const p = await c.newPage();
       p.on('pageerror', (e) => console.log('ERROR', e.message));
       await p.goto(`${SITIO}/`, { waitUntil: 'networkidle' });
-      // (8.13) En el inicio ya no está el cerebro: está el tablero de la mosca,
-      // que juega solo un día con 9 tareas a la vez y otro con 2. Para la foto
-      // se deja quieto, con el día de 9 ya cerrado (el del título)
-      await p.waitForFunction(() => window.__mosca?.jornada, null, { timeout: 15000 }).catch(() => {});
-      await p.evaluate(() => window.__mosca?.jornada?.mostrarCerrado('muchas'));
+      // (8.13) En el inicio ya no está el cerebro: está el dibujo "¿Te suena?",
+      // los pedidos que le van llegando a la mosca, que se repite solo. Para la
+      // foto se deja quieto, con todos los pedidos y la mosca al final
+      await p.waitForFunction(() => window.__mosca?.suena, null, { timeout: 15000 }).catch(() => {});
+      await p.evaluate(() => window.__mosca?.suena?.mostrarCerrado());
       await p.waitForTimeout(900);
       return p;
     };

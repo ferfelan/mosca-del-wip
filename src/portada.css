@@ -10,10 +10,6 @@
    Con el botón de arriba el fondo pasa a blanco (ver "Fondo blanco"). */
 /* La barra de arriba, igual en todas las páginas (src/barra.css) */
 @import './barra.css';
-/* EN PRUEBA (8.13): las opciones 2 y 3 del inicio y la barrita para cambiar
-   entre las tres. Sale antes de subir al sitio la que Felipe elija */
-@import './opciones.css';
-@import './opciones-b.css';
 
 @font-face {
   font-family: 'Mona Sans';
@@ -233,132 +229,136 @@ h1 {
 .hero-texto .nota + .nota { margin-top: 5px; }
 .nota-autor a { color: var(--suave); }
 
-/* ---------- El tablero de la mosca, vivo (8.13, 2026-11-14) ----------
+/* ---------- El dibujo del inicio: "¿Te suena?" (8.13, 2026-11-14) ----------
    Pedido de Felipe: rediseñar el inicio "con el estilo que tenemos en ¿Qué
    ganó la mosca al limitar su WIP? o Lo que se lleva tu equipo, así tipo
-   dibujo pero algo bacán". Es un tablero como los de más abajo, con sus
-   filetes, y es el tablero de la mosca: arriba, su cara, el reloj del día y
-   los dos botones (9 o 2 tareas a la vez); al medio, las tres columnas de
-   siempre (Por hacer, En curso y Hecho), de noche; abajo, lo que dice el
-   dibujo, con sus números. El color es el del caso (--caso): el rojo de
-   Colapsada con 9 a la vez y el verde de Tranquila con 2, y nunca es lo único
-   que lo dice. Lo mueve src/jornada.js, que solo cambia la posición y la
-   transparencia: nada cambia de tamaño ni empuja lo de al lado. */
+   dibujo pero algo bacán". Vio seis propuestas y eligió esta, porque el
+   mensaje de 9 y 2 tareas a la vez ya está más abajo. Es una lámina como los
+   tableros de más abajo, con sus filetes: arriba el título y el botón de
+   pausa, al medio los pedidos que le van llegando a la mosca y la mosca, de
+   noche, y abajo la frase. Lo mueve src/suena.js, que solo dice qué pedidos
+   llegaron y cómo está la mosca: aquí solo cambian la posición y la
+   transparencia, y nada cambia de tamaño ni empuja lo de al lado. */
 .escena { align-self: center; min-width: 0; padding: 40px 0 48px; }
-.jornada {
-  --caso: var(--colapsada);
+.escena-nota { margin-top: 14px; }
+.lamina {
+  --luz: var(--colapsada);
   display: grid;
   gap: 1px;
   border: 1px solid var(--borde-fuerte);
   border-radius: 24px;
   overflow: hidden;
   background: var(--borde-fuerte);
-  box-shadow: 0 34px 90px color-mix(in srgb, var(--caso) 13%, transparent);
+  box-shadow: 0 34px 90px color-mix(in srgb, var(--luz) 11%, transparent);
   container-type: inline-size;
 }
-.jornada[data-caso='pocas'] { --caso: var(--tranquila); }
-/* Arriba: la cara de la mosca, la hora, los dos botones y el día, de 9 a 18 */
-.jornada-cabeza {
+.lamina-cabeza { padding: 17px 24px 18px; background: var(--noche-2); }
+.lamina-titulo { margin: 0; font-size: 17px; font-weight: 650; line-height: 1.25; color: var(--tinta); text-wrap: balance; }
+.lamina-dibujo { background: var(--noche); }
+.lamina-dibujo svg { display: block; width: 100%; height: auto; }
+.lamina-pie { margin: 0; padding: 17px 24px 19px; background: var(--noche-2); font-size: 17px; line-height: 1.45; color: var(--suave); text-wrap: balance; }
+/* El color del halo de la mosca dice cómo está (--animo): verde tranquila,
+   amarillo apurada y rojo colapsada. Nunca es lo único que lo dice: también
+   cambian la cara, las antenas y el sudor */
+.suena {
+  --pata: #9c8874;
+  --animo: var(--tranquila);
+}
+:root[data-tema='claro'] .suena { --pata: #3e332b; }
+.suena[data-animo='apurada'] { --animo: var(--ocupada); }
+.suena[data-animo='colapsada'] { --animo: var(--colapsada); }
+/* (la cabeza mide lo mismo con el botón y sin él, así nada salta sin JavaScript) */
+.suena-cabeza { display: flex; align-items: center; justify-content: space-between; gap: 12px 18px; min-height: 68px; padding-block: 14px; }
+/* El botón de pausa: chico y redondo. Felipe pidió que el dibujo se repita
+   solo y sin el botón "Ver de nuevo"; como algo que se mueve solo y no
+   termina tiene que poder detenerse, queda este, que dice su nombre a quien
+   usa lector de pantalla (Pausar el dibujo o Seguir el dibujo) */
+.suena-pausa {
+  position: relative;
+  flex: none;
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  grid-template-areas:
-    'cara titulo elegir'
-    'dia dia dia';
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--borde-fuerte);
+  background: transparent;
+  color: var(--suave);
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+.suena-pausa:hover { background: var(--vidrio-hover); border-color: var(--borde-hover); color: var(--tinta); }
+.suena-pausa:focus-visible { border-radius: 50%; }
+.suena-pausa svg { grid-area: 1 / 1; }
+/* (sin JavaScript o con "reducir movimiento" no hay nada que pausar) */
+.suena:not(.viva) .suena-pausa { display: none; }
+.suena:not([data-estado='pausada']) .suena-pausa [data-de='pausada'],
+.suena[data-estado='pausada'] .suena-pausa [data-de='andando'] { display: none; }
+@media (pointer: coarse) {
+  .suena-pausa { width: 44px; height: 44px; }
+}
+/* Los pedidos: una lista de verdad, repartida en filas */
+.suena-escena { display: grid; }
+.globos { display: flex; flex-wrap: wrap; justify-content: center; align-content: flex-start; gap: 10px 9px; margin: 0; padding: 26px 22px 2px; list-style: none; }
+.globo {
+  display: inline-flex;
   align-items: center;
-  gap: 18px;
-  padding: 22px 24px 20px;
+  gap: 9px;
+  padding: 8px 15px 8px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--borde-fuerte);
   background: var(--noche-2);
-}
-/* La cara es la de "Menos sobrecarga": con su café mientras está tranquila y
-   con su cigarro desde que sale a fumar. Las dos van una sobre otra */
-.jornada-caras { grid-area: cara; position: relative; width: 108px; height: 86px; }
-.jornada-caras .cara {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  background: color-mix(in srgb, var(--caso) 15%, transparent);
-  transition: opacity 0.3s ease, transform 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.3);
-}
-.jornada[data-cara='tranquila'] .cara-colapsada,
-.jornada[data-cara='colapsada'] .cara-tranquila { opacity: 0; transform: scale(0.82); }
-.jornada-titulo { grid-area: titulo; display: flex; flex-direction: column; gap: 4px; margin: 0; font-size: 15.5px; font-weight: 600; line-height: 1.25; color: var(--suave); }
-.jornada-hora { font-size: 48px; font-weight: 760; font-stretch: 105%; letter-spacing: -0.02em; line-height: 1; color: var(--tinta); }
-.jornada-selector { grid-area: elegir; }
-.jornada-selector button { padding: 0 15px; letter-spacing: 0; white-space: nowrap; }
-/* (el botón del día que se está viendo también sirve: lo juega de nuevo) */
-.jornada-selector button[aria-pressed='true'] { cursor: pointer; }
-.jornada-dia { grid-area: dia; margin: 0; }
-.jornada .dia-riel { height: 8px; }
-.jornada .dia-riel::after { background: var(--caso); transform: translateX(calc((var(--dia, 1) - 1) * 100%)); }
-/* Al medio: el tablero, de noche. En curso y Hecho tienen el mismo ancho y Por
-   hacer, que solo espera, es más angosta */
-.jornada-tablero { display: grid; grid-template-columns: minmax(0, 0.62fr) minmax(0, 1.15fr) minmax(0, 1.15fr); gap: 1px; background: var(--borde-fuerte); }
-.jornada-columna { display: flex; flex-direction: column; gap: 14px; min-width: 0; padding: 16px 22px 24px; background: var(--noche); }
-.jornada-nombre {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  height: 32px;
-  margin: 0;
-  font-size: 13.5px;
-  font-weight: 650;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+  font-size: 15px;
+  font-weight: 600;
   line-height: 1.2;
   white-space: nowrap;
-  color: var(--suave);
+  color: var(--tinta);
+  transform: translateY(var(--sube)) rotate(var(--giro));
 }
-/* (cuántas tiene a la vez, como el límite escrito en "Lo que se lleva tu equipo") */
-.jornada-encurso .jornada-nombre b { padding: 2px 9px; border-radius: 999px; background: var(--caso); color: var(--noche); font-size: 12.5px; font-weight: 720; line-height: 1.3; }
-.jornada-hecho .jornada-nombre b { font-size: 32px; font-weight: 760; font-stretch: 105%; letter-spacing: -0.02em; line-height: 1; color: var(--caso); }
-/* Por hacer: lo que espera su turno */
-.pila { display: flex; flex-direction: column; gap: 6.4px; }
-.pila i { display: block; height: 21.6px; border-radius: 4px; background: color-mix(in srgb, var(--tinta) 15%, transparent); }
-/* En curso: nueve lugares. Cada tarea es una tarjeta con su nombre y, abajo,
-   cuánto lleva avanzado (--p, de 0 a 1). Con 2 a la vez, siete quedan libres */
-.mesa { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 48px; gap: 10px; }
-.tarea {
-  position: relative;
-  display: block;
-  border-radius: 8px;
-  background: color-mix(in srgb, var(--caso) 13%, transparent);
-  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--caso) 62%, transparent);
-  transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.3);
-}
-.tarea.libre { opacity: 0; transform: scale(0.6); }
-.tarea::before { content: ''; position: absolute; left: 10px; top: 12px; width: 46%; height: 5px; border-radius: 2px; background: color-mix(in srgb, var(--tinta) 36%, transparent); }
-.tarea i { position: absolute; left: 10px; right: 10px; bottom: 11px; height: 7px; border-radius: 3px; overflow: hidden; background: color-mix(in srgb, var(--tinta) 13%, transparent); }
-.tarea i::after { content: ''; position: absolute; inset: 0; border-radius: 3px; background: var(--caso); transform: translateX(calc((var(--p, 0) - 1) * 100%)); }
-/* Hecho: 18 lugares, que se llenan desde abajo, como una pila. Con 9 a la vez
-   la mitad queda vacía, con su borde de rayitas. Van de a tres por fila: cada
-   una pide un pelo menos que un tercio y crece hasta llenar la fila, para que
-   un ancho con decimales nunca deje solo dos por fila (--hueco es el espacio
-   entre una y otra) */
-.pila-hecho { --hueco: 10px; display: flex; flex-wrap: wrap-reverse; align-content: flex-start; gap: 6.4px var(--hueco); height: 164px; }
-.pila-hecho i { position: relative; flex: 1 0 calc((100% - 2 * var(--hueco)) / 3 - 1px); height: 21.6px; border-radius: 4px; border: 1px dashed color-mix(in srgb, var(--caso) 50%, transparent); }
-.pila-hecho i::after { content: ''; position: absolute; inset: -1px; border-radius: 4px; background: var(--caso); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25); opacity: 0; transform: scale(0.4); }
-/* (el movimiento va solo en la que llega: al empezar un día, las de antes se van de inmediato) */
-.pila-hecho i.hecha::after { opacity: 1; transform: none; transition: opacity 0.2s ease, transform 0.34s cubic-bezier(0.2, 0.9, 0.3, 1.3); }
-/* Abajo: lo que dice el dibujo. Las dos frases ocupan el mismo lugar y se ve
-   la del día elegido (sin JavaScript no hay botones y se leen las dos) */
-.jornada-resultado { display: grid; margin: 0; padding: 17px 24px 19px; background: var(--noche-2); font-size: 17px; line-height: 1.45; color: var(--suave); text-wrap: balance; }
-.jornada-resultado b { color: var(--tinta); font-weight: 720; }
-.jornada.viva .jornada-resultado span { grid-area: 1 / 1; }
-.jornada.viva[data-caso='muchas'] [data-de='pocas'],
-.jornada.viva[data-caso='pocas'] [data-de='muchas'] { visibility: hidden; }
-.jornada:not(.viva) .jornada-selector { display: none; }
-.jornada:not(.viva) [data-de] + [data-de] { margin-top: 4px; }
-.jornada-nota { margin-top: 14px; }
-/* En un tablero angosto (el celular) Por hacer no cabe: quedan En curso y Hecho */
+:root[data-tema='claro'] .globo { background: #fff; box-shadow: 0 6px 16px rgba(16, 24, 48, 0.1); }
+.globo::before { content: ''; flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+/* Con el dibujo vivo, cada pedido se ve desde que llega (.llego, lo pone
+   src/suena.js). Llega con un saltito y se va más rápido de lo que llegó
+   (--sale es su turno al irse) */
+.suena.viva .globo:not(.llego) { opacity: 0; transform: translateY(calc(var(--sube) + 16px)) rotate(var(--giro)) scale(0.82); }
+.suena.viva:is([data-estado='andando'], [data-estado='pausada']) .globo:not(.llego) { transition: opacity 0.18s ease var(--sale, 0ms), transform 0.2s ease-in var(--sale, 0ms); }
+.suena.viva:is([data-estado='andando'], [data-estado='pausada']) .globo.llego { transition: transform 0.42s cubic-bezier(0.2, 0.9, 0.3, 1.3), opacity 0.2s ease; }
+/* La mosca (la de la credencial), asomada desde abajo. Su alto sigue al ancho
+   de la lámina (el dibujo mide 600 × 210) */
+.suena-dibujo { margin-top: -12px; }
+.s-halo { fill: color-mix(in srgb, var(--animo) 15%, transparent); }
+.s-antenas { fill: none; stroke: var(--pata); stroke-width: 3.6; stroke-linecap: round; }
+/* Cómo se le nota: tranquila, apurada (una gota) y colapsada (dos gotas, los
+   ojos en cruz y las antenas caídas) */
+.suena[data-animo='colapsada'] .s-de-despierta,
+.suena:not([data-animo='colapsada']) .s-de-colapsada,
+.suena[data-animo='tranquila'] :is(.s-gota1, .s-gota2),
+.suena[data-animo='apurada'] .s-gota2 { opacity: 0; }
+.suena[data-animo='colapsada'] .s-cabeza { transform: translate(50px, 62px) rotate(6deg) translate(-50px, -60px); }
+.suena:is([data-estado='andando'], [data-estado='pausada']) .s-cabeza { transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.2); }
+.suena:is([data-estado='andando'], [data-estado='pausada']) :is(.s-de-despierta, .s-de-colapsada, .s-gota1, .s-gota2) { transition: opacity 0.3s ease; }
+.suena:is([data-estado='andando'], [data-estado='pausada']) .s-brillos { transition: transform 0.3s ease, opacity 0.3s ease; }
+/* En una lámina angosta (el celular) van menos pedidos y más chicos, para que
+   los pedidos y la mosca quepan juntos en la pantalla: 10 en vez de 14, y 8
+   en las más angostas */
 @container (max-width: 470px) {
-  .jornada-tablero { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .jornada-porhacer { display: none; }
-  .jornada-columna { gap: 12px; padding: 12px 14px 16px; }
-  .mesa { grid-auto-rows: 40px; gap: 8px; }
-  .tarea::before { left: 8px; top: 10px; height: 4px; }
-  .tarea i { left: 8px; right: 8px; bottom: 9px; height: 6px; }
-  .pila-hecho { --hueco: 8px; row-gap: 5.6px; height: 136px; }
-  .pila-hecho i { height: 17.6px; }
+  .lamina-cabeza { padding: 14px 16px 15px; }
+  .lamina-titulo { font-size: 16px; }
+  .lamina-pie { padding: 14px 16px 16px; font-size: 15.5px; }
+  .suena-cabeza { min-height: 68px; padding-block: 12px; }
+  .suena-pausa { width: 44px; height: 44px; }
+  .globos { gap: 10px 8px; padding: 20px 10px 0; }
+  .globo { padding: 8px 13px 8px 10px; font-size: 14.5px; }
+  .globo.de-ancha { display: none; }
+  .suena-dibujo { margin-top: -8px; }
+}
+@container (max-width: 330px) {
+  .globos { gap: 8px 6px; padding: 16px 8px 0; }
+  .globo { gap: 7px; padding: 6px 10px 6px 8px; font-size: 13px; }
+  .globo::before { width: 8px; height: 8px; }
+  .globo.de-media { display: none; }
 }
 
 /* ---------- La consola: cuántas tareas a la vez ----------
@@ -1472,17 +1472,9 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .hero .boton { width: 100%; max-width: 440px; font-size: 17px; }
   .solo-computador { display: none !important; }
 
-  /* El tablero de la mosca va después de los botones, a todo el ancho: la
-     cara y la hora arriba, y los dos botones en su propia fila, del tamaño de
-     un dedo */
+  /* El dibujo del inicio va después de los botones, a todo el ancho */
   .escena { padding: 28px 0 0; }
-  .jornada { border-radius: 20px; }
-  .jornada-cabeza { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: 'cara titulo' 'elegir elegir' 'dia dia'; gap: 14px; padding: 16px; }
-  .jornada-caras { width: 84px; height: 67px; }
-  .jornada-titulo { font-size: 14.5px; }
-  .jornada-hora { font-size: 38px; }
-  .jornada-selector button { flex: 1 1 0; height: 44px; }
-  .jornada-resultado { padding: 14px 16px 16px; font-size: 15.5px; }
+  .lamina { border-radius: 20px; }
 
   .wip-numero { font-size: 38px; }
 
@@ -1597,12 +1589,9 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 }
 
 /* Computadores angostos (900 a 1099 px, como el iPad en horizontal): los dos
-   botones caben en una fila; en el tablero de la mosca, los dos botones del
-   día bajan a su propia fila; y en "¿Por qué una mosca?" las dos celdas van
+   botones caben en una fila; y en "¿Por qué una mosca?" las dos celdas van
    una bajo otra, para que el cerebro y su consola quepan lado a lado. */
 @media (min-width: 900px) and (max-width: 1099px) {
-  .jornada-cabeza { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: 'cara titulo' 'elegir elegir' 'dia dia'; }
-  .jornada-selector { justify-self: start; }
   .mosca-tablero { grid-template-columns: 1fr; grid-template-rows: none; }
   .mosca-tablero .gana-item { grid-row: auto; grid-template-rows: auto auto; }
   .mosca-tablero .dibujo-credencial { min-height: 0; padding-bottom: 18px; }
@@ -1614,24 +1603,20 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 }
 
 /* Pantallas de computador bajas (proyector de 1280 × 720, ventanas chicas):
-   todo un poco más compacto para que el tablero de la mosca quepa entero. */
+   todo un poco más compacto y el dibujo del inicio un poco más angosto, para
+   que quepa entero. */
 @media (min-width: 900px) and (max-height: 820px) {
   .hero { min-height: max(calc(100svh - var(--alto-barra)), 620px); }
   .hero-texto { padding: 40px 0 48px; }
   .rotulo { margin-bottom: 14px; }
   h1 { font-size: clamp(38px, 3.2vw, 46px); margin-bottom: 18px; }
   .bajada { margin-bottom: 28px; }
-  .escena { padding: 24px 0 32px; }
-  .jornada-cabeza { padding-block: 16px; gap: 14px 18px; }
-  .jornada-caras { width: 96px; height: 77px; }
-  .jornada-hora { font-size: 42px; }
-  .jornada-columna { padding-block: 14px 18px; }
-  .mesa { grid-auto-rows: 42px; gap: 9px; }
-  .pila-hecho { row-gap: 5.6px; height: 144px; }
-  .pila-hecho i,
-  .pila i { height: 19.3px; }
-  .pila { gap: 5.6px; }
-  .jornada-resultado { padding-block: 14px 16px; }
+  .escena { width: 100%; max-width: 520px; margin-inline: auto; padding: 24px 0 32px; }
+  .lamina-pie { padding-block: 13px 15px; }
+  .suena-cabeza { min-height: 62px; padding-block: 11px; }
+  /* (con poco alto van 10 pedidos en vez de 14, como en el celular) */
+  .globos { padding-top: 22px; }
+  .globo.de-ancha { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

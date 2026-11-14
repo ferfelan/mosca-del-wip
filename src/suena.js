@@ -1,41 +1,85 @@
-// OPCIÓN 6 del inicio (Etapa 8.13, EN PRUEBA, 2026-11-14). "¿Te suena?".
-// Felipe pidió tres propuestas con otro mensaje, porque el de 9 y 2 a la vez
-// ya sale tres veces en la página. Esta no tiene ningún número: es el día que
-// conoce cualquiera que trabaje en una oficina. A la mosca le llegan ocho
+// El dibujo del inicio: "¿Te suena?" (Etapa 8.13, 2026-11-14). Felipe vio seis
+// propuestas del inicio y eligió esta, porque el mensaje de 9 y 2 tareas a la
+// vez ya sale más abajo en la página. No tiene ningún número: es el día que
+// conoce cualquiera que trabaje en una oficina. A la mosca le van llegando
 // pedidos, uno tras otro ("¿Tienes un minuto?", "Es urgente"…), y se le va
 // notando en la cara. Es un dibujo de cómo se siente, no un resultado del
 // juego.
 //
-// La primera vez que se ve, una sola vez: los pedidos llegan de a uno, en
-// desorden, en menos de 5 segundos. Con el tercero le sale una gota de sudor y
-// con el último queda con los ojos en cruz. Después queda quieto y el botón
-// "Ver de nuevo" lo repite. El dibujo se mueve con CSS (src/opciones-b.css):
-// aquí solo se dice qué pedidos llegaron y cómo está la mosca. Sin JavaScript
-// o con "reducir movimiento" se ven los ocho pedidos y la mosca al final.
-const ORDEN = [2, 5, 0, 7, 3, 1, 6, 4]; // en qué orden llegan (no de izquierda a derecha)
-const PARTE = 420; // ms hasta el primer pedido
-const CADA = 480; // ms entre un pedido y el siguiente (los 8 pedidos caben en menos de 5 segundos)
-const SE_VE = 0.45;
+// Se repite solo, sin fin (pedido de Felipe, que no quiso el botón "Ver de
+// nuevo"): los pedidos llegan de a uno, en desorden. Con el tercero a la mosca
+// le sale una gota de sudor y cuando ya llegaron tres de cada cuatro queda con
+// los ojos en cruz. Se quedan un rato, se van todos, la mosca respira y vuelven
+// a llegar, en otro orden. Como se mueve solo y no termina, tiene un botón
+// chico para pausarlo y seguir. Además se detiene solo cuando no está a la
+// vista o la pestaña está escondida.
+//
+// El dibujo se mueve con CSS (src/portada.css): aquí solo se dice qué pedidos
+// llegaron y cómo está la mosca. En tarjetas angostas se ven menos pedidos (lo
+// decide el CSS), así que en cada vuelta se cuentan los que se ven. Sin
+// JavaScript o con "reducir movimiento" se ven todos los pedidos y la mosca al
+// final, quietos y sin botón.
+const PARTE = 500; // ms antes del primer pedido de cada vuelta
+const CADA = 430; // ms entre un pedido y el siguiente
+const QUEDA = 3200; // ms con todos los pedidos a la vista (alcanza para leer la frase de abajo)
+const SALE = 28; // ms entre un pedido y otro cuando se van
+const RESPIRO = 900; // ms con la mosca tranquila antes de que vuelvan a llegar
+const AL_SEGUIR = 320; // ms entre que se sigue (o vuelve a verse) y lo próximo que toca
+const SE_VE = 0.45; // parte cuando ya se ve casi la mitad (como las cargas de más abajo)
+
+// En qué orden llegan los pedidos de esa vuelta: saltando por la lista (nunca
+// de izquierda a derecha) y partiendo de otro lugar cada vez
+function ordenDe(cuantos, vuelta) {
+  const mcd = (a, b) => (b ? mcd(b, a % b) : a);
+  const salto = [5, 3, 7, 11].find((s) => s < cuantos && mcd(s, cuantos) === 1) || 1;
+  return Array.from({ length: cuantos }, (_, k) => (vuelta * 4 + k * salto) % cuantos);
+}
 
 export function iniciarSuena() {
   const raiz = document.querySelector('.suena');
   if (!raiz) return null;
   const quieto = matchMedia('(prefers-reduced-motion: reduce)');
-  const globos = [...raiz.querySelectorAll('[data-globo]')];
+  const todos = [...raiz.querySelectorAll('[data-globo]')];
   const brillos = raiz.querySelector('[data-brillos]');
-  const boton = raiz.querySelector('[data-denuevo]');
+  const boton = raiz.querySelector('[data-pausa]');
+  let globos = todos; // los pedidos que se ven en este ancho
+  let orden = [];
+  let llegaron = 0; // cuántos pedidos de esta vuelta ya llegaron
+  let vuelta = 0;
+  let reloj = 0; // un solo reloj: lo próximo que toca
+  let toca = null; // lo que toca cuando corra el reloj (o cuando se siga)
+  let aLaVista = false;
   let partio = false;
-  let esperas = [];
 
-  const despues = (ms, hacer) => esperas.push(setTimeout(hacer, ms));
-  function cortar() {
-    for (const espera of esperas) clearTimeout(espera);
-    esperas = [];
+  const corre = () => raiz.dataset.estado === 'andando' && aLaVista && !document.hidden;
+
+  // Deja anotado lo próximo que toca y, si el dibujo está corriendo, lo hace en ese rato
+  function luego(ms, hacer) {
+    clearTimeout(reloj);
+    reloj = 0;
+    toca = hacer;
+    if (!corre()) return;
+    reloj = setTimeout(() => {
+      reloj = 0;
+      const ahora = toca;
+      toca = null;
+      ahora();
+    }, ms);
+  }
+  function detener() {
+    clearTimeout(reloj);
+    reloj = 0;
+  }
+  // Sigue donde quedó (después de una pausa, o al volver a verse)
+  function seguir() {
+    if (reloj || !toca || !corre()) return;
+    luego(AL_SEGUIR, toca);
   }
 
   // Cómo está la mosca cuando ya llegaron tantos pedidos
-  function animo(llegaron) {
-    raiz.dataset.animo = llegaron >= globos.length ? 'colapsada' : llegaron >= 3 ? 'apurada' : 'tranquila';
+  function animo() {
+    const colapsa = Math.ceil(globos.length * 0.75);
+    raiz.dataset.animo = llegaron >= colapsa ? 'colapsada' : llegaron >= 3 ? 'apurada' : 'tranquila';
   }
 
   // La mosca mira hacia el pedido que acaba de llegar
@@ -50,63 +94,126 @@ export function iniciarSuena() {
     brillos.style.transform = `translate(${(lado * 3.2).toFixed(1)}px, -1.6px)`;
   }
 
+  // Una vuelta: llegan de a uno, se quedan un rato, se van y la mosca respira
+  function empezarVuelta() {
+    globos = todos.filter((g) => getComputedStyle(g).display !== 'none');
+    orden = ordenDe(globos.length, vuelta);
+    llegaron = 0;
+    for (const globo of todos) globo.classList.remove('llego');
+    animo();
+    mirar(null);
+    luego(PARTE, llega);
+  }
+  function llega() {
+    const globo = globos[orden[llegaron]];
+    globo.style.removeProperty('--sale');
+    globo.classList.add('llego');
+    llegaron++;
+    animo();
+    mirar(raiz.dataset.animo === 'colapsada' ? null : globo);
+    if (llegaron < globos.length) luego(CADA, llega);
+    else luego(QUEDA, seVan);
+  }
+  function seVan() {
+    orden.forEach((cual, k) => globos[cual].style.setProperty('--sale', `${k * SALE}ms`));
+    for (const globo of todos) globo.classList.remove('llego');
+    llegaron = 0;
+    vuelta++;
+    animo();
+    mirar(null);
+    luego(globos.length * SALE + 220 + RESPIRO, empezarVuelta);
+  }
+
+  // Deja a la vista todos los pedidos y la mosca al final, quietos
   function mostrarCerrado() {
     partio = true;
-    cortar();
-    for (const globo of globos) globo.classList.add('llego');
+    detener();
+    toca = null;
+    globos = todos.filter((g) => getComputedStyle(g).display !== 'none');
+    for (const globo of todos) {
+      globo.style.removeProperty('--sale');
+      globo.classList.add('llego');
+    }
+    llegaron = globos.length;
+    animo();
     mirar(null);
-    animo(globos.length);
     raiz.dataset.estado = 'quieta';
   }
 
-  function jugar() {
-    cortar();
-    for (const globo of globos) globo.classList.remove('llego');
-    mirar(null);
-    animo(0);
+  function partir() {
+    partio = true;
     raiz.dataset.estado = 'andando';
-    ORDEN.forEach((cual, k) => {
-      despues(PARTE + k * CADA, () => {
-        globos[cual].classList.add('llego');
-        animo(k + 1);
-        if (k + 1 < globos.length) mirar(globos[cual]);
-        else mirar(null);
-      });
-    });
-    despues(PARTE + ORDEN.length * CADA + 300, () => (raiz.dataset.estado = 'quieta'));
+    empezarVuelta();
   }
 
+  // El botón: pausa y sigue (los dos nombres están escritos en la página, en los dos idiomas)
   boton.addEventListener('click', () => {
-    partio = true;
-    if (quieto.matches) mostrarCerrado();
-    else jugar();
+    if (raiz.dataset.estado === 'andando') {
+      raiz.dataset.estado = 'pausada';
+      detener();
+    } else if (raiz.dataset.estado === 'pausada') {
+      raiz.dataset.estado = 'andando';
+      seguir();
+    } else if (!quieto.matches) {
+      partir();
+    }
   });
-  // (si piden "reducir movimiento" mientras llegan los pedidos, quedan todos de una vez)
-  quieto.addEventListener?.('change', () => {
-    if (quieto.matches && raiz.dataset.estado !== 'quieta') mostrarCerrado();
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) detener();
+    else seguir();
   });
 
-  if (quieto.matches || !('IntersectionObserver' in window)) {
-    // (sin movimiento no hay nada que volver a ver: el botón no aparece)
-    mostrarCerrado();
-  } else {
+  function encender() {
     raiz.classList.add('viva');
     // Antes de que se vea: ningún pedido y la mosca tranquila
     raiz.dataset.estado = 'por-partir';
-    animo(0);
+    for (const globo of todos) globo.classList.remove('llego');
+    llegaron = 0;
+    animo();
+    mirar(null);
+  }
+  // (si piden "reducir movimiento" con la página abierta, queda todo a la vista y quieto)
+  quieto.addEventListener?.('change', () => {
+    if (quieto.matches) {
+      mostrarCerrado();
+      raiz.classList.remove('viva');
+    } else if ('IntersectionObserver' in window) {
+      encender();
+      if (aLaVista) partir();
+      else partio = false;
+    }
+  });
+
+  if (quieto.matches || !('IntersectionObserver' in window)) {
+    // (sin movimiento no hay nada que pausar: el botón no aparece)
+    mostrarCerrado();
+  } else {
+    encender();
+  }
+  if ('IntersectionObserver' in window) {
     new IntersectionObserver(
-      ([e], observador) => {
-        const altoPantalla = e.rootBounds?.height || innerHeight;
-        if (!partio && e.isIntersecting && (e.intersectionRatio >= SE_VE || e.intersectionRect.height >= altoPantalla * 0.5)) {
-          partio = true;
-          observador.disconnect();
-          jugar();
+      ([e]) => {
+        aLaVista = e.isIntersecting;
+        if (!aLaVista) {
+          detener();
+          return;
         }
+        if (quieto.matches) return;
+        const altoPantalla = e.rootBounds?.height || innerHeight;
+        if (!partio && (e.intersectionRatio >= SE_VE || e.intersectionRect.height >= altoPantalla * 0.5)) partir();
+        else seguir();
       },
       { rootMargin: '-64px 0px 0px 0px', threshold: [0, 0.2, SE_VE, 0.7, 1] },
     ).observe(raiz);
   }
 
-  // (para las pruebas)
-  return { mostrarCerrado, estado: () => raiz.dataset.estado, animo: () => raiz.dataset.animo };
+  // (para las pruebas: mostrarCerrado deja el dibujo quieto, con todos los pedidos)
+  return {
+    mostrarCerrado,
+    estado: () => raiz.dataset.estado,
+    animo: () => raiz.dataset.animo,
+    vuelta: () => vuelta,
+    llegaron: () => llegaron,
+    cuantos: () => globos.length,
+  };
 }

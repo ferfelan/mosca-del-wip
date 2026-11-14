@@ -20,43 +20,12 @@ export const INGLES = {
   bajada:
     'Measure how many things your team has started and find the limit that lets it finish the most. Start by playing for a minute with an office fly that has a real brain.',
   // 8.13 (2026-11-14, pedido de Felipe): el dato chico del juego salió del
-  // inicio y, en vez del cerebro, va el tablero de la mosca, vivo: un día con 9
-  // tareas a la vez y otro con 2 ("has something to do" es como lo dice el
-  // informe en inglés, en la tabla del anexo B)
-  jornadaTitulo: 'The fly’s day',
-  jornadaElegir: 'Tasks at once',
-  jornadaResultado9: 'With 9 at once, she had something to do <b>100%</b> of the day and finished <b>9</b>&nbsp;tasks.',
-  jornadaResultado2: 'With 2 at once, she had something to do <b>96%</b> of the day and finished <b>18</b>&nbsp;tasks.',
-  jornadaNota: 'Average of 200 days played. These are numbers from the game, not from people.',
-  // EN PRUEBA (8.13): las opciones 2 y 3 del inicio, para que Felipe elija.
-  // La 2, el mismo día en dos pistas a la vez. La 3, el escritorio de la mosca
-  // al cerrar el día ("Overwhelmed" y "Calm" son los niveles del juego)
-  carreraTitulo: 'The same day, twice',
-  carreraDeNuevo: 'Watch again',
-  carreraCon9: 'She had something to do 100% of the day',
-  carreraCon2: 'She had something to do 96% of the day',
-  carreraResultado: 'The fly worked the same office day twice. With 9 tasks at once she finished <b>9</b>. With 2 at once, she finished <b>18</b>.',
-  escritorioTitulo: 'The fly at the end of the day',
-  escritorioResultado9: 'With 9 at once, she ended the day Overwhelmed, with <b>13</b>&nbsp;cigarettes and <b>9</b>&nbsp;tasks finished.',
-  escritorioResultado2: 'With 2 at once, she ended the day Calm, without smoking and with <b>18</b>&nbsp;tasks finished.',
-  // Las opciones 4, 5 y 6 del inicio (8.13, en prueba): otro mensaje, sin 9 ni 2
-  cuentaTitulo: 'How many things have you started right now?',
-  cuentaBajada: 'Count everything you started and haven’t finished yet.',
-  cuentaQuitar: 'Remove one',
-  cuentaSumar: 'Add one',
-  cuentaRotulo: 'in progress',
-  cuentaEs: 'That number is your WIP, your work in progress.',
-  cuentaUna: 'You have 1 thing started.',
-  cuentaVarias: 'You have <span data-eco>2</span> things started.',
-  cuentaTope: 'You have 10 or more things started.',
-  cuentaReto: 'In the game, give the fly that same number of tasks and watch how her day ends.',
-  cuentaNota: 'In the game you choose from 1 to 10 tasks at once.',
-  minutoTitulo: 'An office day in one minute',
-  minutoPausar: 'Pause',
-  minutoSeguir: 'Resume',
-  minutoPie: 'The game takes just as long. The fly’s office day, from 9 to 6, goes by in one minute.',
-  minutoNota: 'The stopwatch counts one real minute.',
+  // inicio y, en vez del cerebro, va un dibujo. Felipe vio seis propuestas y
+  // eligió "¿Te suena?": los pedidos que le van llegando a la mosca en un día
+  // cualquiera, sin números. Se repite solo y tiene un botón chico de pausa
   suenaTitulo: 'Any day at the office',
+  suenaPausar: 'Pause the drawing',
+  suenaSeguir: 'Resume the drawing',
   suenaLista: 'What people ask the fly for',
   globo1: 'Got a minute?',
   globo2: 'It’s urgent',
@@ -66,6 +35,12 @@ export const INGLES = {
   globo6: 'Did you see it?',
   globo7: 'This is urgent too',
   globo8: 'And yesterday’s?',
+  globo9: 'Did you get my email?',
+  globo10: 'I need it now',
+  globo11: 'I added you to a meeting',
+  globo12: 'Just one question',
+  globo13: 'Can you help me with this?',
+  globo14: 'Can you look at it now?',
   suenaPie: 'Everything urgent, everything started. Sound familiar?',
   suenaNota: 'What that costs the fly shows in the game, in one minute.',
   jugar: 'Play',
