@@ -248,8 +248,9 @@ for (const [nombre, ancho, alto] of PANTALLAS)
   revisar(delPie.length >= 1 && delPie.every((h) => h === '/creditos/?lang=en'), `la portada en inglés no enlaza a /creditos/?lang=en desde el pie (${delPie.join(', ') || 'ningún enlace'})`);
   // El juego (queda en inglés: el idioma se recuerda)
   await pagina.goto(`${DIRECCION}jugar/`, { waitUntil: 'networkidle', timeout: 120000 });
-  const credito = pagina.locator('a.cerebro-credito[href="/creditos/"]');
-  revisar((await credito.count()) === 1, 'el juego no enlaza a /creditos/ desde el crédito del cerebro');
+  // en inglés va a /creditos/?lang=en, igual que el pie de /en/ (revisión final, S5)
+  const credito = pagina.locator('a.cerebro-credito[href="/creditos/?lang=en"]');
+  revisar((await credito.count()) === 1, 'el juego en inglés no enlaza a /creditos/?lang=en desde el crédito del cerebro');
   if (await credito.count()) {
     const en = await credito.evaluate((a) => ({ title: a.getAttribute('title'), texto: a.textContent.trim() }));
     revisar(en.title === 'Credits and licenses' && en.texto === 'Data from Male CNS v1.0 · CC BY 4.0', `el crédito del juego en inglés dice "${en.texto}" (${en.title})`);

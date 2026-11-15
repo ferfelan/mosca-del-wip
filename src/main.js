@@ -586,6 +586,15 @@ function refrescarUI(estado, cigarroEnMano) {
 // dice su propio resumen (#ex-fin).
 const elAnuncio = document.getElementById('anuncio-juego');
 let finAnunciado = false;
+// Copia a la región escondida lo que dice el aviso de fin del día. Al cambiar
+// de idioma se copia de nuevo (repintarTextos), para que no quede en el otro
+function copiarAvisoFin() {
+  const partes = [...elBanner.querySelectorAll('p')]
+    .filter((p) => !p.hidden)
+    .map((p) => p.textContent.replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
+  elAnuncio.textContent = partes.join(' ');
+}
 function anunciarFinDelDia(terminado) {
   if (!terminado) {
     if (finAnunciado) {
@@ -598,12 +607,7 @@ function anunciarFinDelDia(terminado) {
   finAnunciado = true;
   // un momento después, cuando el aviso ya tiene sus líneas de urgencias
   setTimeout(() => {
-    if (!finAnunciado) return;
-    const partes = [...elBanner.querySelectorAll('p')]
-      .filter((p) => !p.hidden)
-      .map((p) => p.textContent.replace(/\s+/g, ' ').trim())
-      .filter(Boolean);
-    elAnuncio.textContent = partes.join(' ');
+    if (finAnunciado) copiarAvisoFin();
   }, 300);
 }
 
@@ -1824,6 +1828,9 @@ function repintarTextos() {
   graficoDia.dibujar();
   oficina.ponerTextos();
   refrescarUI(juego.estado(), mosca.cigarroEnMano());
+  // el fin del día que ya se le dijo al lector de pantalla, en el idioma de
+  // ahora (revisión final, S14)
+  if (finAnunciado && elAnuncio.textContent) copiarAvisoFin();
   if (!elInfo.hidden) alternarInfo(true);
   recorrido.repintar();
 }
