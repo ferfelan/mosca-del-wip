@@ -437,3 +437,28 @@ That each task takes longer when more are open is not an opinion
 Que cada tarea tarde más cuando hay más abiertas no es una opinión
 Con más tareas a la vez, cada una tarda más (Ley de Little)
 With more tasks at once, each one takes longer (Little’s Law)
+
+# ─── Revisión final, fase 2, 2026-11-15: errores claros del inglés ───────────
+# Los pasos 1 y 3 de "Four steps to try a limit with your team", que estaban
+# iguales en el resumen ejecutivo en inglés (PDF y /en/report/) y en el informe
+# en inglés (pág. 12). El paso 1 dejaba la lista colgando de una coma y con los
+# nombres de las columnas en minúscula, y el paso 3 pegaba dos órdenes con una
+# coma y llevaba comillas rectas (EC13 y EC5 de la revisión). El español no
+# cambió.
+#   "Three columns are enough, to do, in progress, done. What you can’t see,
+#   you can’t limit." → "Three columns are enough (To do, In progress, Done)…"
+#   "Don’t open something else to "make good use of the time", help unblock
+#   what’s waiting." → "…to “make good use of the time.” Help unblock what’s
+#   waiting."
+Three columns are enough, to do, in progress, done
+"make good use of the time", help unblock
+
+# El encabezado de la última columna de la tabla de la guía en inglés y los
+# nombres de esa columna en los datos estructurados de la guía (EC2): "Stress
+# at close" no calzaba con el glosario ("stress at the end of the day") ni con
+# la tabla del informe ("Stress at day’s end"). Ahora "Stress at day’s end",
+# "stress level at day’s end" y "the stress at the end of the day". Los nombres
+# de las columnas de los CSV (stress_at_close, stress_level_at_close) no se
+# tocaron, porque otros programas los leen por nombre, y esta línea no los
+# encuentra (llevan guion bajo).
+Stress at close

@@ -76,7 +76,7 @@ export const INGLES = {
 
   // Cómo se juega
   pasosTitulo: 'How to play',
-  paso1: 'You choose how many tasks she can have started at once, from 1 to 10. That’s called a work-in-progress limit (WIP).',
+  paso1: 'You choose how many tasks she can have started at once, from 1 to 10. That’s called a work-in-progress (WIP) limit.',
   paso2: 'You watch her day at the office, from 9 to 6, in one minute.',
   paso3: 'You compare how much she finished, how long each task took and how many times she went out for a smoke.',
   paso1Alt: 'The game’s control, with the tasks in progress at once, from 1 to 10, within the sustainable limit.',
@@ -224,7 +224,7 @@ export const INGLES = {
     'Play one day with 2 tasks at once and another with 9, and compare the Days played table. On a computer, the Exhibition view shows the game large, for a TV or a projector. The kit on this page has the <a href="/en/report/">report</a>, with four steps to try a limit, and a <a href="/en/workshop/">60-minute workshop</a> with its guide to facilitate it.',
   pregunta10: 'What does my team take away?',
   respuesta10:
-    'A limit helps you finish more, keeps work moving instead of waiting, and means less overload. Your team takes away their load in plain sight, where the work sits waiting, an agreed limit and their own data after two weeks. How much it gains, its own test will show.',
+    'A limit helps you finish more, keeps work moving instead of waiting, and means less overload. Your team leaves with its load in plain sight, a clear view of where the work sits waiting, an agreed limit and its own data after two weeks. How much it gains, its own test will show.',
   pregunta11: 'Can I use the workshop with my team, or in paid workshops?',
   respuesta11:
     'Yes. The workshop (the quick guide, the slides and the team sheet) is licensed CC BY 4.0. You can use it and adapt it, also in paid workshops, crediting Felipe Fernández (mosca.deliverycraft.ai). For now it’s in Spanish. The report can be shared as it is, crediting the author, and the game is played on this page.',
