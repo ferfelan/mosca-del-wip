@@ -85,14 +85,16 @@ const DOCUMENTOS = [
   // 12 nov. 2026, 8.11: compartir v27 (ES) y v28 (EN), el informe vuelve a ser "el extenso": el texto del v22 (v23 en inglés) más la página de las urgencias, 18 hojas. El resumen va aparte.
   // 13 nov. 2026, 8.12: compartir v28 (ES) y v29 (EN), sin dos puntos en nada de lo que se lee ("elimina los : en todos lados"), salvo las horas del reloj. Mismas 18 hojas y misma paginación, ningún número ni fuente cambia. Las fuentes anteriores quedan en docs/contexto/v27/ y v28/.
   // 14 nov. 2026, 8.14: compartir v29 (ES) y v30 (EN), con la ley de Little y su condición, "al mismo ritmo de salida" ("at the same output rate"), en el dato freak de la pág. 5, la tabla de reglas de la pág. 2 y la tabla "Cada número y de dónde sale" del anexo B (pág. 14). Mismas 18 hojas y misma paginación, ningún número ni fuente cambia. Las fuentes anteriores quedan en docs/contexto/v28/compartir.html y v29/compartir-en.html.
+  // 15 nov. 2026, fase 2 de la revisión final: compartir en inglés v31, solo errores claros del inglés (gramática, comillas, "urgent work" para equipos y personas, "right away", los pasos 1 y 3) y los dos enlaces al juego a /en/. El español sigue en v29. Mismas 18 hojas y misma paginación, ningún número ni fuente cambia. La fuente anterior queda en docs/contexto/v30/compartir-en.html.
   { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v29', paginas: [18, 18] },
-  { id: 'compartir-en', html: 'compartir-en.html', nombre: 'Para compartir en inglés', version: 'v30', paginas: [18, 18] },
+  { id: 'compartir-en', html: 'compartir-en.html', nombre: 'Para compartir en inglés', version: 'v31', paginas: [18, 18] },
   // Etapa 8.6 (2026-11-06): el resumen de 4 páginas con el mensaje nuevo, en español e inglés (DOC=resumen y DOC=resumen-en)
   // Etapa 8.7 (2026-11-07): el v2, de nuevo desde cero, en prosa: una columna de 4 páginas en primera persona
   // 12 nov. 2026, 8.11: el v3, el resumen ejecutivo, aparte del informe: 2 hojas con la identidad de la portada (los dos tableros de noche sobre blanco y Mona Sans; estilo en docs/contexto/resumen.css; el v2 quedó en docs/contexto/resumen-v2/)
   // 14 nov. 2026, 8.14: el v4, sin la bajada de "¿Qué ganó la mosca…?", con "al mismo ritmo de salida" en la ley de Little y con la letra fija (letrasFijas): al copiar el texto, los títulos ya no salen pegados
+  // 15 nov. 2026, fase 2 de la revisión final: el Summary v5, solo los pasos 1 y 3 (errores claros del inglés, iguales al informe en inglés v31). El Resumen en español sigue en v4.
   { id: 'resumen', html: 'resumen.html', nombre: 'Resumen', version: 'v4', paginas: [2, 2], aparte: true, letrasFijas: true },
-  { id: 'resumen-en', html: 'resumen-en.html', nombre: 'Summary', version: 'v4', paginas: [2, 2], aparte: true, letrasFijas: true },
+  { id: 'resumen-en', html: 'resumen-en.html', nombre: 'Summary', version: 'v5', paginas: [2, 2], aparte: true, letrasFijas: true },
   { id: 'norte', html: 'norte.html', nombre: 'Norte del proyecto', version: 'v1', paginas: [1, 2], aparte: true },
   { id: 'etapa4-1', html: 'etapa4-1.html', nombre: 'Etapa 4.1 La paradoja', version: 'v1', paginas: [1, 3], aparte: true },
   { id: 'etapa4-2', html: 'etapa4-2.html', nombre: 'Etapa 4.2 Robustez', version: 'v1', paginas: [1, 3], aparte: true },

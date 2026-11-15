@@ -100,7 +100,7 @@
         "name": "Mosca del WIP",
         "url": "https://mosca.deliverycraft.ai/"
       },
-      "keywords": "WIP limit, work in progress, kanban, flow efficiency, Little's Law, multitasking, WIP limit game, WIP limit workshop, fruit fly connectome"
+      "keywords": "WIP limit, work in progress, kanban, flow efficiency, Little's law, multitasking, WIP limit game, WIP limit workshop, fruit fly connectome"
     },
     {
       "@type": "BreadcrumbList",
@@ -148,7 +148,7 @@
         "work in progress",
         "kanban",
         "flow efficiency",
-        "Little's Law",
+        "Little's law",
         "multitasking",
         "simulation"
       ],
@@ -191,7 +191,7 @@
         },
         {
           "@type": "PropertyValue",
-          "name": "stress level at close"
+          "name": "stress level at day’s end"
         }
       ],
       "distribution": [
@@ -213,7 +213,7 @@
       "@type": "Dataset",
       "@id": "https://mosca.deliverycraft.ai/en/wip-limit/#datos-urgencias",
       "name": "Mosca del WIP, an office day with 0 to 5 urgent tasks a day and a limit of 1 to 10 tasks (average of 200 days in the simulation)",
-      "description": "For each combination of urgent tasks per day (0, 1, 2, 3 and 5) and limit of tasks at once (1 to 10), it gives the regular tasks finished per day, those finished counting the urgent ones, the minutes per regular task, the minutes per urgent task from arrival and the stress at close. An urgent task arrives unannounced, jumps over the limit and the fly does it first, one at a time. Average of 200 simulated days per combination (seed 2024), in the game Mosca del WIP. It is a simulation of a single fly and does not measure people or teams.",
+      "description": "For each combination of urgent tasks per day (0, 1, 2, 3 and 5) and limit of tasks at once (1 to 10), it gives the regular tasks finished per day, those finished counting the urgent ones, the minutes per regular task, the minutes per urgent task from arrival and the stress at the end of the day. An urgent task arrives unannounced, jumps over the limit and the fly does it first, one at a time. Average of 200 simulated days per combination (seed 2024), in the game Mosca del WIP. It is a simulation of a single fly and does not measure people or teams.",
       "url": "https://mosca.deliverycraft.ai/en/wip-limit/#datos",
       "sameAs": "https://mosca.deliverycraft.ai/limite-wip/#datos",
       "inLanguage": "en",
@@ -270,7 +270,7 @@
         },
         {
           "@type": "PropertyValue",
-          "name": "stress at close"
+          "name": "stress at day’s end"
         }
       ],
       "distribution": [
@@ -378,11 +378,11 @@
     <h2>On this page</h2>
     <ol>
       <li><a href="#que-es">What WIP is and what a WIP limit is</a></li>
-      <li><a href="#ocupado-no-es-avanzar">Why being busy is not the same as making progress</a></li>
+      <li><a href="#ocupado-no-es-avanzar">Why being busy isn’t the same as making progress</a></li>
       <li><a href="#como-elegir">How to choose your team’s WIP limit</a></li>
       <li><a href="#cuando-algo-espera">What to do when something is left waiting</a></li>
       <li><a href="#urgencias">What about urgent tasks?</a></li>
-      <li><a href="#ley-de-little">Little’s Law, in plain words</a></li>
+      <li><a href="#ley-de-little">Little’s law, in plain words</a></li>
       <li><a href="#errores-comunes">Common mistakes when setting a limit</a></li>
       <li><a href="#estudios">What the studies with people say</a></li>
       <li><a href="#datos">The game’s data, from 1 to 10 tasks</a></li>
@@ -398,7 +398,7 @@
   </section>
 
   <section id="ocupado-no-es-avanzar">
-    <h2>Why being busy is not the same as making progress</h2>
+    <h2>Why being busy isn’t the same as making progress</h2>
     <p class="respuesta">Because there are two ways to be efficient. One is keeping everyone busy, resource efficiency. The other is having each thing move without waiting, flow efficiency. With many things open, people are busy all day and each thing spends almost all its time waiting for its turn.</p>
     <p>In the game, with 9 tasks at once the fly was busy almost all day and finished half as many as with 2.</p>
     <div class="tabla-marco"><table class="tabla-dias">
@@ -424,7 +424,7 @@
     <div class="recuadro"><p>Reducing waits lets you lower the limit. Raising the limit doesn’t reduce the waits.</p></div>
 
     <h3>The two-week test</h3>
-    <p>Write the limit on the In progress column and note on each card the day it started and the day it finished. After two weeks, compare how many things got finished and how long each one took with the two previous weeks, and decide whether to keep, lower or raise the limit. What’s started takes time to clear. In the game, when the fly drops from 10 tasks to 2 at noon, she only gets back to two open at 2:35 pm. The <a href="/en/workshop/">60-minute workshop</a> takes the team through these steps with the game live. Its material is in Spanish for now.</p>
+    <p>Write the limit on the In progress column and note on each card the day it started and the day it finished. After two weeks, compare how many things got finished and how long each one took with the two previous weeks, and decide whether to keep, lower or raise the limit. What’s started takes time to clear. In the game, when the fly drops from 10 tasks to 2 at 12:00, she only gets back to two open at 14:35. The <a href="/en/workshop/">60-minute workshop</a> takes the team through these steps with the game live. Its material is in Spanish for now.</p>
   </section>
 
   <section id="cuando-algo-espera">
@@ -436,13 +436,13 @@
   <section id="urgencias">
     <h2>What about urgent tasks?</h2>
     <p class="respuesta">In the game, the “Send an urgent task” button sends one to the fly. The urgent task jumps over the limit, one at a time, and she does it first.</p>
-    <p>In the simulation, with limit 2, each urgent task a day cost one regular task, from 18.0 finished with no urgent tasks to 17.1 with one a day. Raising the limit doesn’t help the urgent task, because with more things half-done it waits too. The full numbers are in the <a href="/Mosca-del-WIP-Report.pdf">report, p. 11</a> and in the second table of the <a href="#datos">data</a>.</p>
+    <p>In the simulation, with limit 2, each urgent task a day cost one regular task, from 18.0 finished with no urgent tasks to 17.1 with one a day. Raising the limit doesn’t help the urgent task, because with more things half-done it waits too. The full numbers are on <a href="/Mosca-del-WIP-Report.pdf">page 11 of the report</a> and in the second <a href="#datos">data table</a>.</p>
     <p>In a team it also helps to let urgent work in one at a time and over the limit, with its own card on the board. If it arrives every day, that is something to look at in the two-week review. <span class="origen">suggestion</span></p>
   </section>
 
   <section id="ley-de-little">
-    <h2>Little’s Law, in plain words</h2>
-    <p class="respuesta">Little’s Law says that the time each thing takes equals how many are open divided by how many get finished per unit of time. At the same pace, fewer things open means less time for each one. If a team finishes 5 things a week and has 10 open, each one takes 2 weeks on average, and with 20 open it takes 4.</p>
+    <h2>Little’s law, in plain words</h2>
+    <p class="respuesta">Little’s law says that the time each thing takes equals how many are open divided by how many get finished per unit of time. At the same pace, fewer things open means less time for each one. If a team finishes 5 things a week and has 10 open, each one takes 2 weeks on average, and with 20 open it takes 4.</p>
     <p>It is a theorem John Little published in 1961, and it holds for any stable system (<a href="https://pubsonline.informs.org/doi/10.1287/opre.1110.0940">Little, 2011</a>). In the game it holds on its own, with 1 hour per task with 2 and almost 9 hours with 9. That fewer things also get finished with many open comes from the cost of switching tasks and from stress, which are assumptions of the game.</p>
   </section>
 
@@ -475,7 +475,7 @@
     <p class="respuesta">In the game, with 2 tasks at once the fly finishes more than with any other number, and up to 3 she ends the day Calm. From 4 on her stress goes up, and with 9 she finishes half as many as with 2.</p>
     <div class="tabla-marco ancho" tabindex="0" role="region" aria-label="Table of 1 to 10 tasks at once"><table class="tabla-dias">
   <caption>In the game, average of 200 days per number of tasks (simulation, seed 2024). Time per task in office hours, from start to finish. Shaded, 2 (green, finishes the most) and 9 (red, overload).</caption>
-  <thead><tr><th>Tasks at once</th><th class="numero">Finished per day</th><th class="numero">Time per task</th><th class="numero">Productive, of every hour</th><th class="numero">Idle, per day</th><th class="numero">Cigarettes</th><th class="numero">Coffees</th><th>Stress at close</th></tr></thead>
+  <thead><tr><th>Tasks at once</th><th class="numero">Finished per day</th><th class="numero">Time per task</th><th class="numero">Productive, of every hour</th><th class="numero">Idle, per day</th><th class="numero">Cigarettes</th><th class="numero">Coffees</th><th>Stress at day’s end</th></tr></thead>
   <tbody>
 <tr><td>1</td><td class="numero"><b>15.9</b></td><td class="numero">34 min</td><td class="numero">44 min</td><td class="numero">134 min</td><td class="numero">0</td><td class="numero">6</td><td class="nivel-tranquila">Calm</td></tr>
 <tr class="mejor"><td>2 · finishes the most</td><td class="numero"><b>18.0</b></td><td class="numero">1 h 00 min</td><td class="numero">50 min</td><td class="numero">20 min</td><td class="numero">0</td><td class="numero">5</td><td class="nivel-tranquila">Calm</td></tr>
@@ -497,7 +497,7 @@
       <li><a href="/datos/mosca-del-wip-urgent-tasks.csv" download="mosca-del-wip-urgent-tasks.csv"><b>Download the urgent tasks data (CSV, in English)</b><span>Fifty rows, by urgent tasks a day and limit.</span></a></li>
       <li><a href="/datos/mosca-del-wip-urgencias.csv" download="mosca-del-wip-urgencias.csv"><b>Download the urgent tasks data (CSV, in Spanish)</b><span>The same rows.</span></a></li>
     </ul>
-    <p class="nota">Where each rule of the game comes from is in appendix B of the <a href="/Mosca-del-WIP-Report.pdf">report, p. 14</a>.</p>
+    <p class="nota">Where each rule of the game comes from is in Appendix B of the <a href="/Mosca-del-WIP-Report.pdf">report, p. 14</a>.</p>
   </section>
 
   <section id="kit">

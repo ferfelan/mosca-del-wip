@@ -92,7 +92,7 @@ const IDIOMAS = {
     anexo: /^Appendix ([ABC]) ·\s*/,
     anexoNombre: 'Appendix',
     kitTitulo: 'What goes with this report',
-    palabrasClave: 'WIP limit, work in progress, kanban, flow efficiency, Little’s Law, multitasking, fruit fly connectome',
+    palabrasClave: 'WIP limit, work in progress, kanban, flow efficiency, Little’s law, multitasking, fruit fly connectome',
   },
 };
 
