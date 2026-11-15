@@ -85,6 +85,11 @@ for (const archivo of TALLER) if (!archivo.tamano) mal(`falta public${archivo.ru
 
 for (const [motor, nombre, opciones, abre] of CASOS) for (const idioma of ['es', 'en']) {
   const contexto = await (await abrir(motor)).newContext({ ...opciones, acceptDownloads: true });
+  // (revisión final, fase 2, 2026-11-15) El contador de visitas de Vercel no se
+  // carga nunca. Contra el sitio publicado se cargaba en cada portada que abre
+  // esta prueba, y no sumaba visitas solo si el contador notaba que el navegador
+  // es automático. Se responde vacío todo /_vercel/, antes de abrir páginas.
+  await contexto.route('**/_vercel/**', (r) => r.fulfill({ status: 200, contentType: 'text/javascript', body: '' }));
   if (opciones.userAgent === IPHONE || opciones.userAgent === IPAD) await contexto.addInitScript(cincoToques);
   const pagina = await contexto.newPage();
   const errores = [];

@@ -27,6 +27,8 @@
 // oscuro-es,claro-es,oscuro-en,claro-en).
 // Con NAVEGADOR=webkit revisa con el motor de Safari, el que usan todos los
 // navegadores del iPhone (la primera vez: npx playwright install webkit).
+// Debe decir "portada: todo bien…" y salir con 0. Si encuentra algo, sale con 1
+// (desde la revisión final, fase 2, 2026-11-15; antes salía siempre con 0).
 import { chromium, webkit } from 'playwright';
 import { mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -275,3 +277,4 @@ for (const [fondo, idioma] of COMBINACIONES) for (const [nombreTamano, ancho, al
 await navegador.close();
 console.log(`\nFotos en ${CARPETA}`);
 console.log(total ? `${total} cosas para revisar` : `portada: todo bien en los ${REVISAR.length} tamaños, con ${COMBINACIONES.length} combinaciones de fondo e idioma`);
+if (total) process.exitCode = 1;
