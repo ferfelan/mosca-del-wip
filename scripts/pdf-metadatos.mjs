@@ -6,13 +6,40 @@
 // Con rutas, solo esos PDF (los demás no cambian, ni su fecha):
 //   node scripts/pdf-metadatos.mjs public/Mosca-del-WIP-Report.pdf
 // Comprobar con: pdfinfo public/Mosca-del-WIP-Informe.pdf
-import { readFileSync, writeFileSync } from 'node:fs';
+//
+// Al final, cada PDF que tocó queda linealizado ("optimizado para la web",
+// revisión final antes de compartir el sitio, 2026-11-15): el navegador
+// muestra la primera página sin esperar a bajar el archivo entero, que en el
+// informe son 4 MB. Lo hace qpdf (instalarlo una vez con "brew install
+// qpdf"), porque pdf-lib guarda el PDF sin linealizar. qpdf no cambia lo que
+// se ve ni las propiedades (título, autor, tema, palabras clave, idioma) y
+// suma unos pocos KB. Si qpdf no está, el script se detiene con un aviso
+// antes de tocar ningún PDF. pdfinfo dice entonces "Optimized: yes". Como
+// pdf-lib pierde las propiedades de un PDF linealizado al leerlo (también la
+// fecha de creación), si el PDF ya lo está, qpdf lo deja normal antes de
+// leerlo. Así el script se puede correr las veces que haga falta.
+import { execFileSync } from 'node:child_process';
+import { readFileSync, statSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 import { PDFDocument, PDFName, PDFString } from 'pdf-lib';
 
 const RAIZ = fileURLToPath(new URL('..', import.meta.url));
 const AUTOR = 'Felipe Fernández';
+// qpdf, el que deja cada PDF linealizado (primero el del PATH y después los
+// lugares donde lo deja Homebrew)
+const QPDF = ['qpdf', '/opt/homebrew/bin/qpdf', '/usr/local/bin/qpdf'].find((q) => {
+  try {
+    execFileSync(q, ['--version'], { stdio: 'ignore' });
+    return true;
+  } catch {
+    return false;
+  }
+});
+if (!QPDF) {
+  console.error('Falta qpdf, que deja cada PDF optimizado para la web (linealizado). Instalarlo una vez con "brew install qpdf" y volver a correr. No se tocó ningún PDF.');
+  process.exit(1);
+}
 const PDFS = [
   {
     ruta: 'public/Mosca-del-WIP-Informe.pdf',
@@ -70,9 +97,15 @@ const PDFS = [
 const SOLO = process.argv.slice(2).map((r) => r.replace(/^\.\//, ''));
 const fuera = SOLO.filter((r) => !PDFS.some((p) => p.ruta === r));
 if (fuera.length) throw new Error(`no conozco ${fuera.join(', ')}: los PDF del sitio son ${PDFS.map((p) => p.ruta).join(', ')}`);
-for (const p of PDFS.filter((x) => !SOLO.length || SOLO.includes(x.ruta))) {
+const TOCAR = PDFS.filter((x) => !SOLO.length || SOLO.includes(x.ruta));
+for (const p of TOCAR) {
   const ruta = join(RAIZ, p.ruta);
-  const doc = await PDFDocument.load(readFileSync(ruta), { updateMetadata: false });
+  // pdf-lib pierde las propiedades (y con ellas la fecha de creación) cuando
+  // lee un PDF que ya está linealizado. Si lo está, qpdf lo entrega normal
+  // antes de leerlo, sin cambiar nada más. Al final se vuelve a linealizar.
+  const yaLineal = !execFileSync(QPDF, ['--check-linearization', ruta], { encoding: 'utf8' }).includes('is not linearized');
+  const entrada = yaLineal ? execFileSync(QPDF, [ruta, '-'], { maxBuffer: 256 << 20 }) : readFileSync(ruta);
+  const doc = await PDFDocument.load(entrada, { updateMetadata: false });
   doc.setTitle(p.titulo, { showInWindowTitleBar: true });
   doc.setAuthor(AUTOR);
   doc.setSubject(p.tema);
@@ -85,4 +118,22 @@ for (const p of PDFS.filter((x) => !SOLO.length || SOLO.includes(x.ruta))) {
   const bytes = await doc.save();
   writeFileSync(ruta, bytes);
   console.log(`${p.ruta}: ${(bytes.length / 1048576).toFixed(1)} MB · ${p.idioma} · "${p.titulo.slice(0, 60)}…"`);
+}
+
+// Al final, linealizar cada PDF que se tocó y comprobarlo (si qpdf avisa
+// algo, el script se detiene y lo muestra). --check-linearization termina
+// bien aunque el PDF no esté linealizado, así que se lee lo que responde.
+for (const p of TOCAR) {
+  const ruta = join(RAIZ, p.ruta);
+  const antes = statSync(ruta).size;
+  try {
+    execFileSync(QPDF, ['--linearize', '--deterministic-id', ruta, '--replace-input'], { stdio: 'pipe' });
+    execFileSync(QPDF, ['--check', ruta], { stdio: 'pipe' });
+    const lineal = execFileSync(QPDF, ['--check-linearization', ruta], { encoding: 'utf8', stdio: 'pipe' });
+    if (!lineal.includes('no linearization errors')) throw new Error(lineal);
+  } catch (e) {
+    console.error(`qpdf no pudo linealizar ${p.ruta}:\n${(e.stderr || e.stdout || e.message).toString().trim()}`);
+    process.exit(1);
+  }
+  console.log(`${p.ruta}: linealizado (${Math.round(antes / 1024)} → ${Math.round(statSync(ruta).size / 1024)} KB)`);
 }
