@@ -18,11 +18,14 @@
 // tarde con mucho WIP, bajando el límite y el resumen del fin del día) y los
 // lienzos del kanban, el póster y los post-its, para mirarlos.
 // Requiere npm run dev. Capturas en capturas/ingles/ (o CAPTURAS=<carpeta>).
+// Debe decir "inglés: todo bien" y salir con 0. Si encuentra algo, sale con 1
+// (desde la revisión final, fase 2, 2026-11-15; antes salía siempre con 0).
+// JUEGO=<dirección> prueba otro servidor (por defecto http://localhost:5173/jugar/).
 import { chromium } from 'playwright';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { PAGINA, TEXTOS } from '../src/juego-textos.js';
 
-const JUEGO = 'http://localhost:5173/jugar/';
+const JUEGO = process.env.JUEGO ?? 'http://localhost:5173/jugar/';
 const CAPTURAS = process.env.CAPTURAS ?? 'capturas/ingles';
 // TAMANOS=1440x900 prueba solo uno (para ir más rápido)
 const TAMANOS = process.env.TAMANOS
@@ -539,3 +542,4 @@ if (avisos.length) {
 console.log(`\nCapturas en ${CAPTURAS}/`);
 console.log(fallas.length ? `\n${fallas.length} FALLAS` : '\ninglés: todo bien');
 console.log('errores:', fallas.some((f) => f.startsWith('sin errores')) ? 'sí (ver arriba)' : 'ninguno');
+if (fallas.length) process.exitCode = 1;

@@ -9,16 +9,19 @@
 // escena sí, y el doble clic (o el botón "Vista inicial") la devuelve; la
 // tarjetita habla simple (nombre y rol, sin Hz ni limpieza).
 // Requiere npm run dev.
-// Uso: node scripts/probar-giro.mjs   → debe decir "giro: todo bien"
+// Uso: node scripts/probar-giro.mjs   → debe decir "giro: todo bien" y salir
+// con 0 (con 1 si encuentra algo; desde la revisión final, fase 2, 2026-11-15).
+// JUEGO=<dirección> prueba otro servidor (por defecto http://localhost:5173/jugar/).
 import { chromium } from 'playwright';
+const JUEGO = process.env.JUEGO ?? 'http://localhost:5173/jugar/';
 
 const b = await chromium.launch({ args: ['--enable-unsafe-swiftshader', '--use-gl=angle', '--ignore-gpu-blocklist'] });
 const p = await b.newPage({ viewport: { width: 1512, height: 860 } });
 const errores = [];
 p.on('pageerror', (e) => errores.push(e.message));
-await p.goto('http://localhost:5173/jugar/', { waitUntil: 'networkidle' });
+await p.goto(JUEGO, { waitUntil: 'networkidle' });
 await p.evaluate(() => ['mosca-del-wip-cerebro-oculto', 'mosca-del-wip-controles-oculto'].forEach((k) => localStorage.removeItem(k)));
-await p.goto('http://localhost:5173/jugar/', { waitUntil: 'networkidle' });
+await p.goto(JUEGO, { waitUntil: 'networkidle' });
 await p.waitForFunction(() => window.__mosca && window.__mosca.cerebro());
 await p.evaluate(() => window.__mosca.empezar()); // el juego parte detenido hasta apretar Empezar
 
@@ -215,3 +218,4 @@ await p.evaluate(() => window.__mosca.vista('control'));
 revisar(errores.length === 0, `sin errores en la página${errores.length ? `: ${errores.join(' | ')}` : ''}`);
 await b.close();
 console.log(fallas.length ? `\ngiro: ${fallas.length} problema(s)` : '\ngiro: todo bien');
+if (fallas.length) process.exitCode = 1;

@@ -1,7 +1,12 @@
 // Prueba que Control y Exhibición muestren SIEMPRE la misma partida: misma
 // hora, pausa, WIP, fin del día e historial; teclas Espacio/R/1–9/D/E/Esc; y
 // el modo demo. Requiere npm run dev.
+// Debe decir "sincronía: todo bien" y "errores: ninguno", y salir con 0. Si
+// encuentra una falla o un error en la página, sale con 1 (desde la revisión
+// final, fase 2, 2026-11-15; antes salía siempre con 0).
+// JUEGO=<dirección> prueba otro servidor (por defecto http://localhost:5173/jugar/).
 import { chromium } from 'playwright';
+const JUEGO = process.env.JUEGO ?? 'http://localhost:5173/jugar/';
 const b = await chromium.launch({ args: ['--enable-unsafe-swiftshader', '--use-gl=angle', '--ignore-gpu-blocklist'] });
 const p = await b.newPage({ viewport: { width: 1512, height: 860 } });
 const errores = [];
@@ -9,7 +14,7 @@ p.on('pageerror', (e) => errores.push(e.message));
 p.on('console', (m) => { if (['error', 'warning'].includes(m.type()) && !m.text().includes('PCFSoft')) errores.push(m.text()); });
 const fallas = [];
 const revisar = (ok, texto) => { if (!ok) fallas.push(texto); console.log(`${ok ? 'ok   ' : 'FALLA'} ${texto}`); };
-await p.goto('http://localhost:5173/jugar/', { waitUntil: 'networkidle' });
+await p.goto(JUEGO, { waitUntil: 'networkidle' });
 await p.evaluate(() => localStorage.clear());
 await p.reload({ waitUntil: 'networkidle' });
 await p.waitForFunction(() => window.__mosca && window.__mosca.cerebro());
@@ -153,3 +158,4 @@ revisar(c.wip === 2 && c.enCurso > 2 && c.hora >= '09:30', `después de las 09:1
 console.log(fallas.length ? `\n${fallas.length} FALLAS` : '\nsincronía: todo bien');
 console.log('errores:', errores.length ? errores : 'ninguno');
 await b.close();
+if (fallas.length || errores.length) process.exitCode = 1;
