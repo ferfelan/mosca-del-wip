@@ -245,8 +245,8 @@
       </button>
     </div>
 
-    <div id="escena">
-      <canvas id="lienzo-3d"></canvas>
+    <div id="escena" role="main">
+      <canvas id="lienzo-3d" role="img" aria-label="La oficina de la mosca, en 3D"></canvas>
       <div class="rotulo-escena solo-exhibicion">
         <span class="punto-vivo" aria-hidden="true"></span>
         <span class="ex-situacion ex-terminado">Día terminado ·</span>
@@ -275,7 +275,7 @@
       <div id="ex-fin" class="aviso-fin oculto solo-exhibicion" role="status">
         <strong id="ex-fin-titulo">Fin del día</strong>
         <table class="comparacion" aria-label="Comparación de los días">
-          <thead><tr><th></th><th>Terminadas</th><th title="Tiempo por tarea, en horas y minutos del juego">Tiempo<br />por tarea</th><th>Colillas</th><th>Cafés</th><th>Estrés<br />máx.</th></tr></thead>
+          <thead><tr><td></td><th>Terminadas</th><th title="Tiempo por tarea, en horas y minutos del juego">Tiempo<br />por tarea</th><th>Colillas</th><th>Cafés</th><th>Estrés<br />máx.</th></tr></thead>
           <tbody id="ex-fin-filas"></tbody>
         </table>
         <!-- 8.7: la pregunta para la sala, al final de lo que se lee -->
@@ -389,8 +389,8 @@
         </div>
         <div class="cerebro-acciones solo-control">
           <div class="idioma" role="group" aria-label="Idioma">
-            <button type="button" data-idioma="es" lang="es" aria-pressed="true" aria-label="Español" title="Español">ES</button>
-            <button type="button" data-idioma="en" lang="en" aria-pressed="false" aria-label="English" title="English">EN</button>
+            <button type="button" data-idioma="es" lang="es" aria-pressed="true" aria-label="ES, español" title="Español">ES</button>
+            <button type="button" data-idioma="en" lang="en" aria-pressed="false" aria-label="EN, English" title="English">EN</button>
           </div>
           <button id="btn-exhibicion" class="boton-exhibicion" type="button" title="Vista exhibición, pantalla completa para mostrar (tecla E)">
             Exhibición
@@ -403,7 +403,7 @@
       </header>
       <div class="cerebro-cuerpo">
         <div class="cerebro-lienzo">
-          <canvas id="lienzo-cerebro" aria-label="El cerebro de la mosca gira solo. Un clic lo detiene y otro lo hace girar. Detenido, arrastra para girarlo. Rueda o pellizco para acercar"></canvas>
+          <canvas id="lienzo-cerebro" role="img" aria-label="El cerebro de la mosca gira solo. Un clic lo detiene y otro lo hace girar. Detenido, arrastra para girarlo. Rueda o pellizco para acercar"></canvas>
           <div class="cerebro-botones">
             <button id="btn-girar-cerebro" class="boton-centrar" type="button" aria-pressed="false" title="Detener el giro del cerebro (también con un clic en el cerebro)">
               <svg class="icono-detener" viewBox="0 0 16 16" width="10" height="10" aria-hidden="true"><path d="M5 3.5v9M11 3.5v9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
@@ -491,8 +491,8 @@
       <div class="cel-idioma">
         <span>Idioma</span>
         <div class="idioma" role="group" aria-label="Idioma">
-          <button type="button" data-idioma="es" lang="es" aria-pressed="true" aria-label="Español" title="Español">ES</button>
-          <button type="button" data-idioma="en" lang="en" aria-pressed="false" aria-label="English" title="English">EN</button>
+          <button type="button" data-idioma="es" lang="es" aria-pressed="true" aria-label="ES, español" title="Español">ES</button>
+          <button type="button" data-idioma="en" lang="en" aria-pressed="false" aria-label="EN, English" title="English">EN</button>
         </div>
       </div>
     </section>
@@ -536,8 +536,8 @@
     <!-- ES | EN cuando el panel del cerebro no está (cerebro oculto o
          exhibición): el mismo botón que va en su cabecera -->
     <div id="idioma-flotante" class="idioma idioma-flotante" role="group" aria-label="Idioma">
-      <button type="button" data-idioma="es" lang="es" aria-pressed="true" aria-label="Español" title="Español">ES</button>
-      <button type="button" data-idioma="en" lang="en" aria-pressed="false" aria-label="English" title="English">EN</button>
+      <button type="button" data-idioma="es" lang="es" aria-pressed="true" aria-label="ES, español" title="Español">ES</button>
+      <button type="button" data-idioma="en" lang="en" aria-pressed="false" aria-label="EN, English" title="English">EN</button>
     </div>
 
     <div id="velo" aria-hidden="true"></div>
@@ -553,6 +553,8 @@
         <button id="cel-reiniciar" type="button">Reiniciar día</button>
       </div>
     </div>
+    <!-- Revisión final (S14): el fin del día dicho al lector de pantalla -->
+    <p id="anuncio-juego" class="solo-lector" role="status"></p>
 
     <!-- Salir del juego (2026-10-28, pedido de Felipe): "← Inicio" (Control y
          Exhibición) y la flecha del celular preguntan antes de ir a la portada.
@@ -582,7 +584,7 @@
       <div id="recorrido-tarjeta" role="dialog" aria-modal="true" aria-labelledby="recorrido-titulo" aria-describedby="recorrido-texto" tabindex="-1">
         <p id="recorrido-paso"></p>
         <strong id="recorrido-titulo"></strong>
-        <p id="recorrido-texto"></p>
+        <p id="recorrido-texto" aria-live="polite"></p>
         <div class="recorrido-botones">
           <button id="recorrido-saltar" type="button">Saltar</button>
           <button id="recorrido-atras" type="button">Atrás</button>

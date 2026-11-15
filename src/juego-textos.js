@@ -73,6 +73,7 @@ export const PAGINA = {
     'Game numbers. That each task takes longer is backed by evidence. The stress is our assumption.',
   // Panel del cerebro
   'Cerebro de la mosca en vivo': 'The fly’s brain, live',
+  'La oficina de la mosca, en 3D': 'The fly’s office, in 3D',
   'Cerebro en vivo': 'Live brain',
   'Arriba, el cerebro. Abajo, el cordón nervioso': 'The brain on top. The nerve cord below',
   Idioma: 'Language',

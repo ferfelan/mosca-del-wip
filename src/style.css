@@ -20,7 +20,7 @@
   --medio: #a87c0c;
   --alerta: #cc4a43;
   --urgencia: #d9732e; /* la urgencia (8.3): el naranjo de "Estresada", el mismo del tablero */
-  --anillo: rgba(184, 88, 42, 0.28);
+  --anillo: #b8582a; /* sólido, se ve con teclado (revisión final, S11) */
   /* El ancho del panel de controles (8.8, pedido de Felipe: "muy apretado",
      "sin que la mosca le quite espacio"). 280 px como siempre y, solo cuando
      a la mosca le sobra lugar entre los dos paneles, hasta 320 px: la mosca
@@ -1658,7 +1658,7 @@ body.exhibicion .cifra-sub[hidden] {
 }
 
 .boton-es-real:focus-visible {
-  box-shadow: 0 0 0 3px rgba(143, 176, 255, 0.45);
+  box-shadow: 0 0 0 3px rgba(143, 176, 255, 0.9);
 }
 
 .cerebro-credito {
@@ -1681,7 +1681,7 @@ a.cerebro-credito:hover {
 }
 a.cerebro-credito:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(143, 176, 255, 0.45);
+  box-shadow: 0 0 0 3px rgba(143, 176, 255, 0.9);
 }
 
 /* ---------- Sobre el dibujo: botones Detener/Girar y Centrar ---------- */
@@ -3124,7 +3124,7 @@ html:not(.celular) #panel .metrica-dibujo {
   background: var(--urgencia);
 }
 
-.boton-urgencia:hover:not(:disabled) {
+.boton-urgencia:hover:not(:disabled):not([aria-disabled='true']) {
   background: rgba(32, 42, 84, 0.92);
 }
 
@@ -3136,7 +3136,8 @@ html:not(.celular) #panel .metrica-dibujo {
   box-shadow: 0 0 0 3px rgba(143, 176, 255, 0.55);
 }
 
-.boton-urgencia:disabled {
+.boton-urgencia:disabled,
+.boton-urgencia[aria-disabled='true'] {
   opacity: 0.62;
   cursor: default;
 }
