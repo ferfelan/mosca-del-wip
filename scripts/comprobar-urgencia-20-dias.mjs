@@ -8,11 +8,29 @@
 // urgencia unos 30 a 40 minutos (34 en la simulación). Si se aleja mucho,
 // termina con error y hay que avisar antes de seguir.
 // Requiere npm run dev. Uso: node scripts/comprobar-urgencia-20-dias.mjs [días]
+//
+// Revisión final, fase 2 (2026-11-15). Con 20 días daba "SE ALEJA" en 1 de
+// cada 4 corridas con el juego sano: lo que tarda una urgencia varía mucho de
+// un día a otro (desvío de unos 19 min), así que el promedio de 20 días se sale
+// de 30 a 40 por puro azar. Además el rango estaba centrado en 35 y la
+// simulación con la urgencia a las 10:00 (lo que hace esta prueba) da 35,7 min
+// (35,6 a 35,8 con el navegador fluido y 36,5 si va a 10 cuadros por segundo;
+// 20.000 días simulados con src/brain.js sin tocar). Ahora juega 100 días por
+// defecto (unos 26 min) y el rango es 31,4 a 40, centrado en 35,7 y dentro del
+// de antes (el borde de arriba no se mueve y el de abajo sube), así que no se
+// afloja. En 20.000 corridas armadas con días simulados, el juego sano sale de
+// rango entre 2 y 3 % de las veces (antes 24 %; con el navegador lento, 5 %
+// contra 39 %), y un juego que hace esperar más a la urgencia (la mosca avanza
+// también las normales mientras hay una urgencia) sale de rango el 100 % de
+// las veces, igual que antes. Las normales siguen en 17,1 ± 1,5.
+// El nombre del archivo sigue diciendo 20 días porque así lo citan las
+// bitácoras.
 import { chromium } from 'playwright';
 
 const JUEGO = process.env.JUEGO ?? 'http://localhost:5173/jugar/';
-const DIAS = Number(process.argv[2] ?? 20);
-const ESPERADO = { normales: 17.1, urgencia: 34, normalesTolerancia: 1.5, urgenciaRango: [30, 40] };
+const DIAS = Number(process.argv[2] ?? 100);
+const ESPERADO = { normales: 17.1, urgencia: 35.7, normalesTolerancia: 1.5, urgenciaRango: [31.4, 40] };
+if (DIAS < 100) console.log(`OJO, con ${DIAS} días el promedio de la urgencia varía mucho de una corrida a otra (con 20 días, 1 de cada 3 corridas sanas sale de ${ESPERADO.urgenciaRango.join(' a ')} min). Para dar por buena la pantalla, usar 100 días o más.`);
 
 const b = await chromium.launch({ args: ['--enable-unsafe-swiftshader', '--use-gl=angle', '--ignore-gpu-blocklist'] });
 const ctx = await b.newContext({ viewport: { width: 1512, height: 860 }, locale: 'es-CL' });
@@ -74,7 +92,7 @@ const urgencia = prom(conTiempo.map((x) => x.tardaron));
 const sinTerminar = dias.filter((x) => x.urgencias === 0).length;
 const sd = (xs) => Math.sqrt(prom(xs.map((x) => (x - prom(xs)) ** 2)) * (xs.length / (xs.length - 1)));
 console.log(`\npromedio de ${DIAS} días: ${normales.toFixed(2)} normales terminadas (desvío ${sd(dias.map((x) => x.normales)).toFixed(2)}); cada urgencia tardó ${urgencia.toFixed(1)} min (desvío ${sd(conTiempo.map((x) => x.tardaron)).toFixed(1)}); ${sinTerminar} sin terminar`);
-console.log(`esperado (simulación 8.2, límite 2, 1 al día): ${ESPERADO.normales} normales y ${ESPERADO.urgencia} min`);
+console.log(`esperado (simulación, límite 2, la urgencia a las 10:00): ${ESPERADO.normales} ± ${ESPERADO.normalesTolerancia} normales y ${ESPERADO.urgencia} min por urgencia (de ${ESPERADO.urgenciaRango.join(' a ')})`);
 const lejosNormales = Math.abs(normales - ESPERADO.normales) > ESPERADO.normalesTolerancia;
 const lejosUrgencia = urgencia < ESPERADO.urgenciaRango[0] || urgencia > ESPERADO.urgenciaRango[1];
 if (errores.length) console.log(`errores en la consola: ${errores.slice(0, 3).join(' | ')}`);
@@ -82,4 +100,4 @@ if (lejosNormales || lejosUrgencia || errores.length) {
   console.log(`\nSE ALEJA: ${lejosNormales ? `normales a más de ${ESPERADO.normalesTolerancia} de ${ESPERADO.normales}` : ''} ${lejosUrgencia ? `urgencia fuera de ${ESPERADO.urgenciaRango.join('–')} min` : ''}`);
   process.exit(1);
 }
-console.log('\n20 días por la pantalla: todo bien (cerca de lo que dio la simulación)');
+console.log(`\n${DIAS} días por la pantalla: todo bien (cerca de lo que dio la simulación)`);
