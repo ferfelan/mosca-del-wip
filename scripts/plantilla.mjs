@@ -143,6 +143,7 @@ export function pagina({ idioma, clave, titulo, descripcion, imagen, imagenAlt, 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>${escapar(titulo)}</title>
     <meta name="description" content="${escapar(descripcion)}" />
+    <meta name="author" content="Felipe Fernández" />
     <meta name="theme-color" content="#060a16" />
     <meta name="color-scheme" content="dark" />${sinIndexar ? '\n    <meta name="robots" content="noindex" />' : ''}
     <!-- Antes de dibujar: el fondo que la persona eligió (como en la portada).
