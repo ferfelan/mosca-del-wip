@@ -318,6 +318,13 @@ export function iniciarBarra({ alCambiarFondo, alElegirIdioma } = {}) {
     const barra = laBarra();
     if (barra && abierta() && (e.target === barra || !barra.contains(e.target))) abrirMenu(false);
   });
+  // Si el foco sale de la barra con el menú abierto (Tab en la ventana
+  // angosta), el menú se cierra, para que el foco no quede escondido detrás
+  // de él (revisión final, S15). Con mouse o dedo no cambia nada.
+  addEventListener('focusin', (e) => {
+    const barra = laBarra();
+    if (barra && abierta() && !barra.contains(e.target)) abrirMenu(false);
+  });
   // Si la ventana se agranda hasta la barra completa, el menú se cierra
   matchMedia('(max-width: 1099px)').addEventListener('change', () => abrirMenu(false));
 

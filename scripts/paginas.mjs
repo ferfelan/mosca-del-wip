@@ -55,7 +55,8 @@ function tablaDatos(idioma) {
       return `<tr${clase}><td>${etiqueta}</td><td class="numero"><b>${num(f.terminadas)}</b></td><td class="numero">${horas(f.tiempo_por_tarea_min)}</td><td class="numero">${Math.round(f.eficiencia_min_por_hora)} min</td><td class="numero">${Math.round(f.espera_min)} min</td><td class="numero">${f.colillas}</td><td class="numero">${f.cafes}</td><td class="nivel-${f.nivel.toLowerCase()}">${nivel}</td></tr>`;
     })
     .join('\n');
-  return `<div class="tabla-marco ancho"><table class="tabla-dias">
+  // tabindex, rol y nombre para moverla con el teclado en Safari (revisión final, S17)
+  return `<div class="tabla-marco ancho" tabindex="0" role="region" aria-label="${es ? 'Tabla de 1 a 10 tareas a la vez' : 'Table of 1 to 10 tasks at once'}"><table class="tabla-dias">
   <caption>${es ? `En el juego, promedio de ${corrida.dias} días por cada número de tareas (simulación, semilla ${corrida.semilla}). Tiempo por tarea en horas de oficina, de que empieza a que termina. Con fondo, el 2 (verde, la que más termina) y el 9 (rojo, la sobrecarga).` : `In the game, average of ${corrida.dias} days per number of tasks (simulation, seed ${corrida.semilla}). Time per task in office hours, from start to finish. Shaded, 2 (green, finishes the most) and 9 (red, overload).`}</caption>
   <thead><tr>${cab.map((c, i) => `<th${i > 0 && i < 7 ? ' class="numero"' : ''}>${c}</th>`).join('')}</tr></thead>
   <tbody>
