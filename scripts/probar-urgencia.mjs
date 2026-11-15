@@ -76,7 +76,7 @@ const leer = (p) =>
     const texto = (id) => el(id).textContent.replace(/\s+/g, ' ').trim();
     return {
       visible: !btn.hidden && r.width > 0 && r.height > 0,
-      apagado: btn.disabled,
+      apagado: btn.disabled || btn.getAttribute('aria-disabled') === 'true',
       texto: btn.textContent.trim(),
       caja: r.toJSON(),
       hora: e.hora,

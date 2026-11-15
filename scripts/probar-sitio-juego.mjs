@@ -21,11 +21,18 @@ const problemas = [];
 const mal = (m) => problemas.push(m);
 const b = await chromium.launch();
 const esperar = (ms) => new Promise((r) => setTimeout(r, ms));
+// (revisión final, fase 2, 2026-11-15) El contador de visitas de Vercel no se
+// carga nunca. Contra el sitio real se cargaba, y aunque se calla solo cuando
+// nota un navegador automático, en la primera vez esta prueba se hace pasar por
+// una persona y ahí sumaba visitas falsas (la revisión 04a calculó 4 por corrida).
+// Se responde vacío todo /_vercel/, en cada contexto y antes de abrir páginas.
+const sinAnalitica = (ctx) => ctx.route('**/_vercel/**', (r) => r.fulfill({ status: 200, contentType: 'text/javascript', body: '' }));
 
 const caja = (p, sel) => p.evaluate((s) => { const el = document.querySelector(s); if (!el || !el.getClientRects().length) return null; const r = el.getBoundingClientRect(); return { x: r.x, y: r.y, w: r.width, h: r.height, texto: el.textContent.trim(), href: el.getAttribute('href'), title: el.getAttribute('title') }; }, sel);
 
 for (const idioma of ['es', 'en']) {
   const ctx = await b.newContext({ viewport: { width: 1440, height: 900 }, locale: 'es-CL' });
+  await sinAnalitica(ctx);
   const p = await ctx.newPage();
   p.on('pageerror', (e) => mal(`error de página (${idioma}): ${e.message}`));
   p.on('dialog', (d) => { mal(`${idioma}: apareció un diálogo: ${d.message()}`); d.dismiss(); });
@@ -118,6 +125,7 @@ for (const idioma of ['es', 'en']) {
 // Celular: la píldora no se ve, sigue la flecha
 for (const idioma of ['es', 'en']) {
   const ctx = await b.newContext({ viewport: { width: 390, height: 664 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true, userAgent: devices['iPhone 14'].userAgent, locale: 'es-CL' });
+  await sinAnalitica(ctx);
   const p = await ctx.newPage();
   p.on('pageerror', (e) => mal(`error de página (celular ${idioma}): ${e.message}`));
   await p.goto(idioma === 'es' ? `${U}/jugar/` : `${U}/jugar/?lang=en`, { waitUntil: 'networkidle' });
@@ -155,6 +163,7 @@ const PRIMERA_VEZ = [
 for (const [nombre, opciones, pasos, ayuda] of PRIMERA_VEZ) for (const idioma of ['es', 'en']) {
   const tag = `primera vez, ${nombre} ${idioma}`;
   const ctx = await b.newContext(opciones);
+  await sinAnalitica(ctx);
   await ctx.addInitScript(comoPersona);
   const p = await ctx.newPage();
   p.on('pageerror', (e) => mal(`error de página (${tag}): ${e.message}`));

@@ -39,6 +39,9 @@ export default defineConfig({
         tallerEn: pagina('en/workshop/index.html'),
         noEncontrada: pagina('404.html'),
       },
+      // El aviso de licencia de three.js (MIT, "@license") viaja dentro de su
+      // archivo, como pide la licencia (revisión final, S6)
+      output: { comments: { legal: true, annotation: false, jsdoc: false } },
     },
     // three.js pesa más de 500 kB a propósito: el aviso no aporta
     chunkSizeWarningLimit: 900,

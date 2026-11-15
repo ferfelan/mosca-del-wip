@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Límite WIP · Ocupado todo el día. ¿Y qué terminaste? · Mosca del WIP</title>
     <meta name="description" content="Mide cuántas cosas tiene empezadas tu equipo y encuentra el límite WIP con el que termina más. Parte con un juego de un minuto. Guía, informe y taller gratis." />
+    <meta name="author" content="Felipe Fernández" />
     <meta name="theme-color" content="#060a16" />
     <meta name="color-scheme" content="dark" />
     <!-- Antes de dibujar: el fondo y el idioma que la persona eligió, para que
@@ -95,7 +96,7 @@
           "isPartOf": { "@id": "https://mosca.deliverycraft.ai/#sitio" },
           "primaryImageOfPage": "https://mosca.deliverycraft.ai/img/vista-previa-2026-11-07.jpg",
           "datePublished": "2026-10-24",
-          "dateModified": "2026-11-14"
+          "dateModified": "2026-11-15"
         },
         {
           "@type": "VideoGame",
@@ -710,7 +711,7 @@
                 <div class="consola-control">
                   <div class="consola-cabeza">
                     <label id="t-wip" for="wip" data-t="tareasLabel">Tareas en curso a la vez (WIP)</label>
-                    <output class="wip-numero" for="wip" data-wip>2</output>
+                    <output class="wip-numero" for="wip" data-wip aria-live="off">2</output>
                     <p class="wip-limite" data-limite>Dentro del límite sostenible (3)</p>
                   </div>
                   <input id="wip" class="wip" type="range" min="1" max="10" step="1" value="2" aria-valuetext="2 tareas a la vez" />

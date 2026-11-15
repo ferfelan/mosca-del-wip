@@ -27,3 +27,15 @@ const enIPhoneOIPad =
 if (enIPhoneOIPad) {
   for (const enlace of document.querySelectorAll('a[download]')) enlace.removeAttribute('download');
 }
+
+// Las tablas anchas que se deslizan hacia el lado se mueven con las flechas
+// cuando tienen el foco del teclado. Chrome y Firefox ya lo hacen solos,
+// Safari no (revisión final, S17). Con mouse o dedo no cambia nada.
+for (const marco of document.querySelectorAll('.tabla-marco[tabindex]')) {
+  marco.addEventListener('keydown', (e) => {
+    if (e.target !== marco || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    e.preventDefault();
+    marco.scrollBy({ left: e.key === 'ArrowRight' ? 80 : -80 });
+  });
+}

@@ -58,7 +58,7 @@ export const PAGINA = {
   'Reiniciar día': 'Restart day',
   'Tiempo por tarea': 'Time per task',
   'Tiempo promedio (del juego) desde que una tarea entra a «En curso» hasta que se termina. Con más tareas a la vez y el mismo ritmo de salida, cada una tarda más (Ley de Little).':
-    'Average time (in the game) from when a task enters “In progress” until it’s finished. With more tasks at once and the same output rate, each one takes longer (Little’s Law).',
+    'Average time (in the game) from when a task enters “In progress” until it’s finished. With more tasks at once and the same output rate, each one takes longer (Little’s law).',
   Eficiencia: 'Efficiency',
   'de cada hora': 'of every hour',
   'De cada hora, cuántos minutos rinden de verdad. Descuenta los cambios de tarea, el tiempo fumando o tomando café y las esperas por bloqueos (promedio desde las 09:00).':
@@ -73,6 +73,7 @@ export const PAGINA = {
     'Game numbers. That each task takes longer is backed by evidence. The stress is our assumption.',
   // Panel del cerebro
   'Cerebro de la mosca en vivo': 'The fly’s brain, live',
+  'La oficina de la mosca, en 3D': 'The fly’s office, in 3D',
   'Cerebro en vivo': 'Live brain',
   'Arriba, el cerebro. Abajo, el cordón nervioso': 'The brain on top. The nerve cord below',
   Idioma: 'Language',
@@ -220,7 +221,7 @@ export const TEXTOS = {
     },
     en: {
       tareas: ['You’re in charge here', 'With this control you choose how many tasks she has started at once, from 1 to 10.'],
-      reloj: ['The day', 'It runs from 9 to 6 and lasts one minute. Here you start it, pause it, speed it up or play another one.'],
+      reloj: ['The day', 'It runs from 09:00 to 18:00 and lasts one minute. Here you start it, pause it, speed it up or play another one.'],
       tablero: ['Her board', 'Tasks move from To do to In progress, and from there to Done.'],
       numeros: ['How she’s doing', 'What she has finished, how long each task takes and her stress. If she gets stressed, she goes out for a smoke.'],
       cerebro: ['Her brain, live', 'Real neurons from a fly. The more tasks she has on her plate, the more her brain lights up.'],

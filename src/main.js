@@ -114,7 +114,13 @@ let cambiandoVista = false;
 const MAX_DIAS = 5;
 const elBtnBorrar = document.getElementById('btn-borrar-historial');
 
+// Copia en memoria de los días para cuando el navegador no deja guardar
+// (por ejemplo, con todas las cookies bloqueadas). Así la tabla y el resumen
+// del final tienen todos los días de esta visita, no solo el último.
+let diasEnMemoria = null;
+
 function cargarDias() {
+  if (diasEnMemoria) return diasEnMemoria.slice(-MAX_DIAS);
   try {
     const dias = JSON.parse(localStorage.getItem(CLAVE_STORAGE)) || [];
     return Array.isArray(dias) ? dias.slice(-MAX_DIAS) : [];
@@ -127,8 +133,10 @@ function escribirDias(dias) {
   const recortados = dias.slice(-MAX_DIAS);
   try {
     localStorage.setItem(CLAVE_STORAGE, JSON.stringify(recortados));
+    diasEnMemoria = null;
   } catch {
     // sin almacenamiento disponible: la tabla igual se ve en esta sesión
+    diasEnMemoria = recortados;
   }
   pintarTabla(recortados);
 }
@@ -302,9 +310,14 @@ function alternarPausa() {
   pausado = !pausado;
   if (!pausado && !empezado) {
     empezado = true;
+    // Si el foco estaba en la tarjeta que se va, pasa al botón de pausa, lo
+    // siguiente útil, para que el teclado no vuelva al comienzo (revisión
+    // final, S13)
+    const focoEnTarjeta = elAvisoEmpezar.contains(document.activeElement);
     elAvisoEmpezar.hidden = true;
     document.documentElement.classList.remove('por-empezar');
     soltarEncajeAviso();
+    if (focoEnTarjeta) elBtnPausa.focus({ preventScroll: true });
   }
   pintarBotonPausa();
 }
@@ -444,7 +457,11 @@ function pintarBotonUrgencia(estado) {
   if (clave === urgenciaPintada) return;
   urgenciaPintada = clave;
   elBtnUrgencia.hidden = !visible;
-  elBtnUrgencia.disabled = enCurso || tope;
+  // Apagado con aria-disabled y no con disabled, para que el foco del teclado
+  // no se pierda mientras dura la urgencia (revisión final, S13). Se ve igual
+  // y el clic no hace nada, porque mandarUrgencia revisa la misma regla.
+  if (enCurso || tope) elBtnUrgencia.setAttribute('aria-disabled', 'true');
+  else elBtnUrgencia.removeAttribute('aria-disabled');
   elBtnUrgencia.textContent = texto;
 }
 
@@ -560,6 +577,38 @@ function refrescarUI(estado, cigarroEnMano) {
   document.body.classList.toggle('dia-terminado', estado.terminado);
   elBanner.classList.toggle('oculto', !estado.terminado);
   elExFin.classList.toggle('oculto', !estado.terminado);
+  anunciarFinDelDia(estado.terminado);
+}
+
+// El fin del día también se le dice al lector de pantalla (revisión final,
+// S14). El aviso se ve pero no es región viva, así que su texto, que ya está
+// traducido, se copia a una región escondida que sí lo es. En Exhibición lo
+// dice su propio resumen (#ex-fin).
+const elAnuncio = document.getElementById('anuncio-juego');
+let finAnunciado = false;
+// Copia a la región escondida lo que dice el aviso de fin del día. Al cambiar
+// de idioma se copia de nuevo (repintarTextos), para que no quede en el otro
+function copiarAvisoFin() {
+  const partes = [...elBanner.querySelectorAll('p')]
+    .filter((p) => !p.hidden)
+    .map((p) => p.textContent.replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
+  elAnuncio.textContent = partes.join(' ');
+}
+function anunciarFinDelDia(terminado) {
+  if (!terminado) {
+    if (finAnunciado) {
+      finAnunciado = false;
+      elAnuncio.textContent = '';
+    }
+    return;
+  }
+  if (finAnunciado || vista === 'exhibicion') return;
+  finAnunciado = true;
+  // un momento después, cuando el aviso ya tiene sus líneas de urgencias
+  setTimeout(() => {
+    if (finAnunciado) copiarAvisoFin();
+  }, 300);
 }
 
 // Eficiencia: de cada hora, cuántos minutos rinden de verdad ("38 min")
@@ -649,6 +698,7 @@ function llenarResumenDelDia() {
 function pintarResumen() {
   const dias = diasDelResumen;
   const actual = dias[dias.length - 1];
+  if (!actual) return;
   elExFinTitulo.textContent = tx('finDelDiaWip', actual.wip);
   elExFinFilas.innerHTML = '';
   dias.slice(-3).forEach((d, i, lista) => {
@@ -890,8 +940,16 @@ function pintarControlesOculto() {
   document.getElementById('btn-ocultar-controles').setAttribute('aria-expanded', String(!controlesOculto));
 }
 
+// Si el foco estaba en lo que se esconde, pasa al botón que hace lo contrario
+// (revisión final, S13)
+function seguirConElFoco(ocultar, foco, panel, botonOcultar, botonMostrar) {
+  if (ocultar && panel.contains(foco)) botonMostrar.focus({ preventScroll: true });
+  else if (!ocultar && foco === botonMostrar) botonOcultar.focus({ preventScroll: true });
+}
+
 function alternarControles(ocultar = !controlesOculto) {
   if (vista !== 'control' || esCelular()) return;
+  const foco = document.activeElement;
   controlesOculto = ocultar;
   try {
     localStorage.setItem(CLAVE_CONTROLES_OCULTO, ocultar ? '1' : '0');
@@ -899,6 +957,7 @@ function alternarControles(ocultar = !controlesOculto) {
     // sin almacenamiento: sólo dura esta sesión
   }
   pintarControlesOculto();
+  seguirConElFoco(ocultar, foco, document.getElementById('panel'), document.getElementById('btn-ocultar-controles'), document.getElementById('btn-mostrar-controles'));
 }
 document.getElementById('btn-ocultar-controles').addEventListener('click', () => alternarControles(true));
 document.getElementById('btn-mostrar-controles').addEventListener('click', () => alternarControles(false));
@@ -906,6 +965,7 @@ pintarControlesOculto();
 
 function alternarCerebro(ocultar = !cerebroOculto) {
   if (vista !== 'control' || esCelular()) return;
+  const foco = document.activeElement;
   cerebroOculto = ocultar;
   try {
     localStorage.setItem(CLAVE_CEREBRO_OCULTO, ocultar ? '1' : '0');
@@ -913,6 +973,7 @@ function alternarCerebro(ocultar = !cerebroOculto) {
     // sin almacenamiento: sólo dura esta sesión
   }
   pintarCerebroOculto();
+  seguirConElFoco(ocultar, foco, document.getElementById('cerebro'), document.getElementById('btn-ocultar-cerebro'), document.getElementById('btn-mostrar-cerebro'));
 }
 document.getElementById('btn-ocultar-cerebro').addEventListener('click', () => alternarCerebro(true));
 document.getElementById('btn-mostrar-cerebro').addEventListener('click', () => alternarCerebro(false));
@@ -1247,11 +1308,13 @@ window.addEventListener('keydown', (e) => {
     alternarInfo(false);
     return;
   }
+  // Con Cmd, Ctrl o Alt, las teclas son del navegador (Cmd+C copia), no del
+  // juego (revisión final, S12)
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
   if (e.key === 'e' || e.key === 'E') cambiarVista();
   if (e.key === 'b' || e.key === 'B') alternarCerebro();
   if (e.key === 'c' || e.key === 'C') alternarControles();
   if (e.key === 'Escape' && vista === 'exhibicion') cambiarVista('control');
-  if (e.metaKey || e.ctrlKey || e.altKey) return;
   // Para presentar (en las dos vistas): Espacio pausa/reanuda, R día nuevo,
   // 1–9 y 0 (=10) cambian el WIP; en exhibición, D activa el modo demo
   if (e.code === 'Space' && !(e.target instanceof HTMLButtonElement)) {
@@ -1577,6 +1640,8 @@ function ponerEnlacesInicio() {
   for (const a of document.querySelectorAll('.volver-inicio, #cel-volver, #btn-salir-juego, #aviso-que-es')) a.setAttribute('href', rutaEnIdioma('/', idioma));
   // el enlace a la guía del límite WIP, en el panel (Etapa 7): /limite-wip/ o /en/wip-limit/
   for (const a of document.querySelectorAll('[data-guia]')) a.setAttribute('href', rutaEnIdioma('/limite-wip/', idioma));
+  // el crédito del cerebro: /creditos/ o /creditos/?lang=en (revisión final, S5)
+  for (const a of document.querySelectorAll('.cerebro-credito')) a.setAttribute('href', rutaEnIdioma('/creditos/', idioma));
 }
 
 // Antes de ir a la portada, el juego pregunta (2026-10-28, pedido de Felipe:
@@ -1763,6 +1828,9 @@ function repintarTextos() {
   graficoDia.dibujar();
   oficina.ponerTextos();
   refrescarUI(juego.estado(), mosca.cigarroEnMano());
+  // el fin del día que ya se le dijo al lector de pantalla, en el idioma de
+  // ahora (revisión final, S14)
+  if (finAnunciado && elAnuncio.textContent) copiarAvisoFin();
   if (!elInfo.hidden) alternarInfo(true);
   recorrido.repintar();
 }
@@ -1771,6 +1839,12 @@ function repintarTextos() {
 const CUADRO_MINIMO = 1000 / 61;
 let ultimoTiempo = performance.now();
 let fotoLista = false;
+// Si el navegador pierde el 3D y lo devuelve (por ejemplo, un celular que
+// vuelve de otra app), la foto del escritorio se saca de nuevo, porque su
+// imagen se pierde con el 3D y quedaba negra (revisión final, S19)
+renderer.domElement.addEventListener('webglcontextrestored', () => {
+  fotoLista = false;
+});
 let ultimoCuadro = 0;
 
 function animar(ahora = performance.now()) {

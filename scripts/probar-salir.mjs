@@ -5,7 +5,8 @@
 // del juego no hacen nada; Esc, "Seguir jugando" o un clic en el fondo cierran
 // y el día vuelve a correr; "Salir del juego" lleva a la portada en el mismo
 // idioma; en el celular la tarjeta cabe en la pantalla. Requiere npm run dev.
-// Uso: node scripts/probar-salir.mjs   → debe decir "salir: todo bien"
+// Uso: node scripts/probar-salir.mjs   → debe decir "salir: todo bien" y salir
+//   con 0 (con 1 si encuentra algo; desde la revisión final, fase 2, 2026-11-15)
 //   JUEGO=<dirección> (http://localhost:5173/jugar/ por defecto), CAPTURAS=<carpeta>,
 //   NAVEGADOR=webkit (el motor de Safari; por defecto, Chromium)
 import { chromium, webkit, devices } from 'playwright';
@@ -87,3 +88,4 @@ for (const idioma of ['es', 'en']) {
 }
 await b.close();
 console.log(mal.length ? 'PROBLEMAS:\n- ' + mal.join('\n- ') : 'salir: todo bien');
+if (mal.length) process.exitCode = 1;

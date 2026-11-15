@@ -10,7 +10,11 @@
 //      (robots.txt, el sitemap y el manifest, donde solo se revisan sus textos),
 //   5. las palabras pegadas en los PDF del sitio (Etapa 8.14, 2026-11-14): el
 //      texto de cada PDF según el visor de Chrome (PDFium) y según pdftotext.
-//      Necesita pypdfium2 en .venv-datos (ver scripts/texto-pdfium.py).
+//      Necesita pypdfium2 en .venv-datos (ver scripts/texto-pdfium.py),
+//   6. los nombres y los metadatos (revisión final, fase 2, 2026-11-15): el
+//      autor y el título de los PDF y de la presentación del sitio, los autores
+//      del JSON-LD, el autor de las páginas, "FlyWire" (nunca) y los nombres de
+//      empresas que no se nombran (detalle en la sección 6, más abajo).
 // Dónde: el sitio construido (dist/: cada página con su texto, sus atributos que
 // se leen y su JSON-LD, el manifest, el sitemap, los CSV, los PDF y la
 // presentación del taller), los textos del juego y de la portada (src/), los
@@ -286,13 +290,104 @@ if (textosPdfium) {
   }
 }
 
+// ---------- 6. Nombres y metadatos (revisión final, fase 2, 2026-11-15) ----------
+// Quién firma cada cosa y los nombres que no van (hallazgo A13 de la revisión
+// final: hasta aquí nada de esto se revisaba solo).
+//  - Los PDF del sitio llevan de autor "Felipe Fernández" (definición de
+//    terminado, "metadatos limpios"), también en sus metadatos XMP si los
+//    tienen (algunos lectores muestran esos), y su título, su tema y sus
+//    palabras clave van sin dos puntos (regla de la 8.12, que en la 8.12 se
+//    aplicó también a las propiedades de los PDF).
+//  - La presentación del taller (PPTX), igual: autor y "modificado por"
+//    "Felipe Fernández" y el título sin dos puntos.
+//  - En el JSON-LD de cada página, cada author y creator es la persona "Felipe
+//    Fernández", también cuando apunta con @id a otra parte de la página.
+//  - El autor de cada página (<meta name="author">): si alguna página lo tiene,
+//    todas lo llevan una vez y con "Felipe Fernández". Si ninguna lo tiene, se
+//    avisa y no se cuenta (el 2026-11-15 lo agregó a todas la rama
+//    fase2-sitio, que todavía no estaba en main: al juntarse, se exige solo).
+//  - "FlyWire" no aparece en nada público: el mapa del juego es el Male CNS
+//    (MaleCNS), y de FlyWire no se usa nada (regla desde la Etapa 5).
+//  - Las empresas que el proyecto decidió no nombrar: EmpresaX ("Por qué lo hice",
+//    Etapa 8.8, sección 7 de docs/etapa8-8.md). No se agregan otras sin que
+//    estén decididas así en CLAUDE.md o en las bitácoras.
+// Como en las revisiones 2 a 4, lo interno del Escritorio no cuenta.
+const AUTOR = 'Felipe Fernández';
+const EMPRESAS_QUE_NO_SE_NOMBRAN = ['EmpresaX'];
+const esAutor = (t) => typeof t === 'string' && t.normalize('NFC').trim() === AUTOR.normalize('NFC');
+const avisos = [];
+const malNombre = (donde, que, ver) => hallazgos.push({ tipo: 'nombres y metadatos', donde, que, ver });
+// Los PDF: sus propiedades (pdfinfo) y sus metadatos XMP (pdfinfo -meta)
+for (const ruta of PDF_DEL_SITIO) {
+  const donde = `sitio: /${relative(DIST, ruta)}`;
+  const info = execFileSync('pdfinfo', ['-enc', 'UTF-8', ruta], { encoding: 'utf8' });
+  const campo = (n) => new RegExp(`^${n}:[ \\t]*(.*)$`, 'm').exec(info)?.[1].trim() ?? '';
+  if (!esAutor(campo('Author'))) malNombre(`${donde} (propiedades)`, campo('Author') || 'sin autor', `el autor tiene que ser «${AUTOR}»`);
+  if (!campo('Title')) malNombre(`${donde} (propiedades)`, 'sin título', 'cada PDF del sitio lleva su título');
+  for (const [n, nombre] of [['Title', 'título'], ['Subject', 'tema'], ['Keywords', 'palabras clave']])
+    if (campo(n).includes(':')) malNombre(`${donde} (propiedades)`, ':', `dos puntos en el ${nombre}, ${campo(n)}`);
+  const xmp = execFileSync('pdfinfo', ['-meta', ruta], { encoding: 'utf8' });
+  const lista = (etiqueta) => [...(new RegExp(`<${etiqueta}>([\\s\\S]*?)</${etiqueta}>`).exec(xmp)?.[1] ?? '').matchAll(/<rdf:li[^>]*>([^<]*)<\/rdf:li>/g)].map((m) => decodificar(m[1]));
+  for (const c of lista('dc:creator')) if (!esAutor(c)) malNombre(`${donde} (XMP)`, c || 'sin autor', `el autor tiene que ser «${AUTOR}»`);
+  for (const t of lista('dc:title')) if (t.includes(':')) malNombre(`${donde} (XMP)`, ':', `dos puntos en el título, ${t}`);
+}
+// La presentación del taller: sus propiedades (docProps/core.xml)
+for (const ruta of archivos(DIST).filter((r) => extname(r).toLowerCase() === '.pptx')) {
+  const donde = `sitio: /${relative(DIST, ruta)} (propiedades)`;
+  let core = '';
+  try { core = execFileSync('unzip', ['-p', ruta, 'docProps/core.xml'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }); } catch { /* sin propiedades */ }
+  const etiqueta = (n) => { const m = new RegExp(`<${n}>([^<]*)</${n}>`).exec(core); return m ? decodificar(m[1]) : null; };
+  if (!esAutor(etiqueta('dc:creator'))) malNombre(donde, etiqueta('dc:creator') || 'sin autor', `el autor tiene que ser «${AUTOR}»`);
+  const modifico = etiqueta('cp:lastModifiedBy');
+  if (modifico !== null && !esAutor(modifico)) malNombre(donde, modifico || 'vacío', `"modificado por" tiene que ser «${AUTOR}»`);
+  if ((etiqueta('dc:title') ?? '').includes(':')) malNombre(donde, ':', `dos puntos en el título, ${etiqueta('dc:title')}`);
+}
+// Las páginas: los autores del JSON-LD y el autor de la página
+const PAGINAS_HTML = archivos(DIST).filter((r) => extname(r).toLowerCase() === '.html' && !/^google[0-9a-f]+\.html$/.test(basename(r)));
+const recorrer = (v, visitar) => {
+  if (Array.isArray(v)) v.forEach((x) => recorrer(x, visitar));
+  else if (v && typeof v === 'object') { visitar(v); Object.values(v).forEach((x) => recorrer(x, visitar)); }
+};
+const metaAutor = [];
+for (const ruta of PAGINAS_HTML) {
+  const donde = 'sitio: /' + relative(DIST, ruta);
+  const html = readFileSync(ruta, 'utf8');
+  const bloques = [...html.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1]));
+  const porId = new Map();
+  bloques.forEach((b) => recorrer(b, (o) => { if (o['@id'] && Object.keys(o).length > 1) porId.set(o['@id'], o); }));
+  bloques.forEach((b) => recorrer(b, (o) => {
+    for (const clave of ['author', 'creator']) for (const a of [].concat(o[clave] ?? [])) {
+      const soloId = a && typeof a === 'object' && a['@id'] && Object.keys(a).length === 1;
+      const quien = soloId ? porId.get(a['@id']) : a;
+      if (typeof quien === 'string' ? esAutor(quien) : esAutor(quien?.name) && [].concat(quien['@type'] ?? []).includes('Person')) continue;
+      const que = soloId && !quien ? a['@id'] : typeof quien === 'string' ? quien : quien?.name ?? 'sin nombre';
+      const por = soloId && !quien ? ', que no está en la página' : typeof quien === 'object' && quien && ![].concat(quien['@type'] ?? []).includes('Person') ? `, que no es una persona (${[].concat(quien['@type'] ?? 'sin tipo').join(', ')})` : '';
+      malNombre(`${donde} (JSON-LD)`, que, `${clave}${por}. Tiene que ser la persona «${AUTOR}»`);
+    }
+  }));
+  const autores = [...html.matchAll(/<meta\s[^>]*name="author"[^>]*>/gi)].map((m) => decodificar(/content="([^"]*)"/.exec(m[0])?.[1] ?? ''));
+  metaAutor.push({ donde, autores });
+}
+if (metaAutor.some((p) => p.autores.length)) {
+  for (const { donde, autores } of metaAutor)
+    if (autores.length !== 1 || !esAutor(autores[0])) malNombre(`${donde} (meta author)`, autores.length ? autores.join(' y ') : 'sin <meta name="author">', `cada página lleva uno solo, «${AUTOR}»`);
+} else avisos.push(`Ninguna de las ${PAGINAS_HTML.length} páginas tiene <meta name="author">. No se cuenta. Cuando una lo tenga, se exige en todas.`);
+// "FlyWire" y las empresas que no se nombran, en todo lo público (no en lo interno del Escritorio)
+const EMPRESAS = new RegExp(`(?<![\\p{L}\\p{N}])(?:${EMPRESAS_QUE_NO_SE_NOMBRAN.join('|')})(?![\\p{L}\\p{N}])`, 'giu');
+for (const { donde, texto, solo } of piezas) {
+  if (solo === 'frases') continue;
+  for (const m of texto.matchAll(/fly[\s_-]*wire/giu)) malNombre(donde, m[0], `${contexto(texto, m.index, m[0].length)} (nunca FlyWire, el mapa del juego es el Male CNS)`);
+  for (const m of texto.matchAll(EMPRESAS)) malNombre(donde, m[0], `${contexto(texto, m.index, m[0].length)} (una empresa que no se nombra)`);
+}
+
 const porTipo = (t) => hallazgos.filter((h) => h.tipo === t);
-console.log(`\nRevisé ${piezas.length} textos públicos (${new Set(piezas.map((p) => p.donde.split(' (')[0].split(' › ')[0])).size} archivos) y las palabras de ${PDF_DEL_SITIO.length} PDF con dos lectores.`);
-const TITULOS = { 'frase retirada': 'Frases retiradas', 'palabra prohibida': 'Palabras prohibidas', 'punto y coma': 'Punto y coma', 'dos puntos': 'Dos puntos', 'palabras pegadas': 'Palabras pegadas en los PDF' };
+console.log(`\nRevisé ${piezas.length} textos públicos (${new Set(piezas.map((p) => p.donde.split(' (')[0].split(' › ')[0])).size} archivos), las palabras de ${PDF_DEL_SITIO.length} PDF con dos lectores y los autores y metadatos de esos PDF, de la presentación y de ${PAGINAS_HTML.length} páginas.`);
+const TITULOS = { 'frase retirada': 'Frases retiradas', 'palabra prohibida': 'Palabras prohibidas', 'punto y coma': 'Punto y coma', 'dos puntos': 'Dos puntos', 'palabras pegadas': 'Palabras pegadas en los PDF', 'nombres y metadatos': 'Nombres y metadatos' };
 for (const tipo of Object.keys(TITULOS)) {
   const lista = porTipo(tipo);
   console.log(`\n${TITULOS[tipo]}: ${lista.length}`);
   for (const h of lista) console.log(`  ✗ ${h.donde}\n      «${h.que}» … ${h.ver}`);
+  if (tipo === 'nombres y metadatos') for (const a of avisos) console.log(`  (aviso) ${a}`);
 }
 
 // ---------- Mapa: dónde aparece cada mensaje clave (escribe docs/mapa-de-contenidos.md) ----------
@@ -458,4 +553,4 @@ if (hallazgos.length) {
   console.log(`\n✗ ${hallazgos.length} cosa(s) por arreglar. No publicar hasta que esto diga 0.`);
   process.exit(1);
 }
-console.log('\n✓ Coherencia: 0 frases retiradas, 0 palabras prohibidas, 0 punto y coma, 0 dos puntos, 0 palabras pegadas en los PDF.');
+console.log('\n✓ Coherencia: 0 frases retiradas, 0 palabras prohibidas, 0 punto y coma, 0 dos puntos, 0 palabras pegadas en los PDF, 0 en nombres y metadatos.');

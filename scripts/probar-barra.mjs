@@ -20,6 +20,8 @@
 // Uso (con npm run dev, o con la dirección publicada):
 //   node scripts/probar-barra.mjs [dirección]
 // Con NAVEGADOR=webkit prueba con el motor de Safari (el del iPhone).
+// Debe decir "barra: todo bien" y salir con 0. Si encuentra algo, sale con 1
+// (desde la revisión final, fase 2, 2026-11-15; antes salía siempre con 0).
 import { chromium, webkit } from 'playwright';
 
 const DIRECCION = process.argv[2] || 'http://localhost:5173/';
@@ -253,3 +255,4 @@ for (const [nombre, ancho, alto, tactil, sinMovimiento] of CASOS) for (const idi
 }
 await navegador.close();
 console.log(total ? `\n${total} cosas para revisar` : '\nbarra: todo bien');
+if (total) process.exitCode = 1;

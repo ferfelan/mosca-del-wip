@@ -46,7 +46,7 @@ function tablaDatos(idioma) {
   };
   const cab = es
     ? ['Tareas a la vez', 'Terminadas en el día', 'Tiempo por tarea', 'Rinden, de cada hora', 'Esperando, por día', 'Cigarros', 'Cafés', 'Estrés al cerrar']
-    : ['Tasks at once', 'Finished per day', 'Time per task', 'Productive, of every hour', 'Idle, per day', 'Cigarettes', 'Coffees', 'Stress at close'];
+    : ['Tasks at once', 'Finished per day', 'Time per task', 'Productive, of every hour', 'Idle, per day', 'Cigarettes', 'Coffees', 'Stress at day’s end'];
   const filas = corrida.filas
     .map((f) => {
       const clase = f.wip === 2 ? ' class="mejor"' : f.wip === 9 ? ' class="sobre"' : '';
@@ -55,7 +55,8 @@ function tablaDatos(idioma) {
       return `<tr${clase}><td>${etiqueta}</td><td class="numero"><b>${num(f.terminadas)}</b></td><td class="numero">${horas(f.tiempo_por_tarea_min)}</td><td class="numero">${Math.round(f.eficiencia_min_por_hora)} min</td><td class="numero">${Math.round(f.espera_min)} min</td><td class="numero">${f.colillas}</td><td class="numero">${f.cafes}</td><td class="nivel-${f.nivel.toLowerCase()}">${nivel}</td></tr>`;
     })
     .join('\n');
-  return `<div class="tabla-marco ancho"><table class="tabla-dias">
+  // tabindex, rol y nombre para moverla con el teclado en Safari (revisión final, S17)
+  return `<div class="tabla-marco ancho" tabindex="0" role="region" aria-label="${es ? 'Tabla de 1 a 10 tareas a la vez' : 'Table of 1 to 10 tasks at once'}"><table class="tabla-dias">
   <caption>${es ? `En el juego, promedio de ${corrida.dias} días por cada número de tareas (simulación, semilla ${corrida.semilla}). Tiempo por tarea en horas de oficina, de que empieza a que termina. Con fondo, el 2 (verde, la que más termina) y el 9 (rojo, la sobrecarga).` : `In the game, average of ${corrida.dias} days per number of tasks (simulation, seed ${corrida.semilla}). Time per task in office hours, from start to finish. Shaded, 2 (green, finishes the most) and 9 (red, overload).`}</caption>
   <thead><tr>${cab.map((c, i) => `<th${i > 0 && i < 7 ? ' class="numero"' : ''}>${c}</th>`).join('')}</tr></thead>
   <tbody>
@@ -107,10 +108,10 @@ function datasetJsonLd(idioma) {
     publisher: { '@type': 'Organization', '@id': `${SITIO}/#deliverycraft`, name: 'Deliverycraft', url: 'https://deliverycraft.ai/' },
     datePublished: '2026-10-28',
     dateModified: '2026-10-28',
-    keywords: es ? ['límite WIP', 'trabajo en curso', 'work in progress', 'kanban', 'eficiencia de flujo', 'ley de Little', 'multitarea', 'simulación'] : ['WIP limit', 'work in progress', 'kanban', 'flow efficiency', "Little's Law", 'multitasking', 'simulation'],
+    keywords: es ? ['límite WIP', 'trabajo en curso', 'work in progress', 'kanban', 'eficiencia de flujo', 'ley de Little', 'multitarea', 'simulación'] : ['WIP limit', 'work in progress', 'kanban', 'flow efficiency', "Little's law", 'multitasking', 'simulation'],
     variableMeasured: (es
       ? ['tareas a la vez', 'terminadas por día', 'minutos por tarea', 'minutos que rinden por hora', 'minutos esperando por día', 'cigarros', 'cafés', 'estrés promedio', 'estrés máximo', 'nivel de estrés al cerrar']
-      : ['tasks at once', 'finished per day', 'minutes per task', 'productive minutes per hour', 'idle minutes per day', 'cigarettes', 'coffees', 'average stress', 'maximum stress', 'stress level at close']
+      : ['tasks at once', 'finished per day', 'minutes per task', 'productive minutes per hour', 'idle minutes per day', 'cigarettes', 'coffees', 'average stress', 'maximum stress', 'stress level at day’s end']
     ).map((v) => ({ '@type': 'PropertyValue', name: v })),
     distribution: [
       { '@type': 'DataDownload', encodingFormat: 'text/csv', contentUrl: `${SITIO}/datos/mosca-del-wip-1-a-10-tareas.csv`, inLanguage: 'es' },
@@ -128,7 +129,7 @@ function datasetUrgenciasJsonLd(idioma) {
     name: es ? 'Mosca del WIP, un día de oficina con 0 a 5 urgencias al día y un límite de 1 a 10 tareas (promedio de 200 días en la simulación)' : 'Mosca del WIP, an office day with 0 to 5 urgent tasks a day and a limit of 1 to 10 tasks (average of 200 days in the simulation)',
     description: es
       ? 'Para cada combinación de urgencias al día (0, 1, 2, 3 y 5) y límite de tareas a la vez (1 a 10), trae las tareas normales terminadas en el día, las terminadas contando las urgencias, los minutos por tarea normal, los minutos por urgencia desde que llega y el estrés al cerrar. Una urgencia llega sin aviso, pasa por encima del límite y la mosca la hace primero, de a una. Promedio de 200 días simulados por combinación (semilla 2024), en el juego Mosca del WIP. Es una simulación de una mosca sola, no mide personas ni equipos.'
-      : 'For each combination of urgent tasks per day (0, 1, 2, 3 and 5) and limit of tasks at once (1 to 10), it gives the regular tasks finished per day, those finished counting the urgent ones, the minutes per regular task, the minutes per urgent task from arrival and the stress at close. An urgent task arrives unannounced, jumps over the limit and the fly does it first, one at a time. Average of 200 simulated days per combination (seed 2024), in the game Mosca del WIP. It is a simulation of a single fly and does not measure people or teams.',
+      : 'For each combination of urgent tasks per day (0, 1, 2, 3 and 5) and limit of tasks at once (1 to 10), it gives the regular tasks finished per day, those finished counting the urgent ones, the minutes per regular task, the minutes per urgent task from arrival and the stress at the end of the day. An urgent task arrives unannounced, jumps over the limit and the fly does it first, one at a time. Average of 200 simulated days per combination (seed 2024), in the game Mosca del WIP. It is a simulation of a single fly and does not measure people or teams.',
     url: `${SITIO}${RUTAS.guia[idioma]}#datos`,
     sameAs: `${SITIO}${RUTAS.guia[idioma === 'es' ? 'en' : 'es']}#datos`,
     inLanguage: idioma,
@@ -141,7 +142,7 @@ function datasetUrgenciasJsonLd(idioma) {
     keywords: es ? ['límite WIP', 'trabajo en curso', 'urgencias', 'interrupciones', 'kanban', 'vía rápida', 'multitarea', 'simulación'] : ['WIP limit', 'work in progress', 'urgent tasks', 'interruptions', 'kanban', 'expedite lane', 'multitasking', 'simulation'],
     variableMeasured: (es
       ? ['urgencias al día', 'límite', 'tareas normales terminadas por día', 'terminadas contando urgencias', 'minutos por tarea normal', 'minutos por urgencia', 'estrés al cerrar']
-      : ['urgent tasks per day', 'limit', 'regular tasks finished per day', 'finished counting urgent tasks', 'minutes per regular task', 'minutes per urgent task', 'stress at close']
+      : ['urgent tasks per day', 'limit', 'regular tasks finished per day', 'finished counting urgent tasks', 'minutes per regular task', 'minutes per urgent task', 'stress at day’s end']
     ).map((v) => ({ '@type': 'PropertyValue', name: v })),
     distribution: [
       { '@type': 'DataDownload', encodingFormat: 'text/csv', contentUrl: `${SITIO}/datos/mosca-del-wip-urgencias.csv`, inLanguage: 'es' },

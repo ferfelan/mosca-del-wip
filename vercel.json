@@ -20,7 +20,9 @@
       "source": "/(.*)",
       "headers": [
         { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Content-Security-Policy", "value": "frame-ancestors 'none'" }
       ]
     },
     {
@@ -35,9 +37,24 @@
       "source": "/datos/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" },
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Link", "value": "<https://mosca.deliverycraft.ai/limite-wip/#datos>; rel=\"canonical\"" }
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
       ]
+    },
+    {
+      "source": "/datos/mosca-del-wip-1-a-10-tareas.csv",
+      "headers": [{ "key": "Link", "value": "<https://mosca.deliverycraft.ai/limite-wip/#datos>; rel=\"canonical\"" }]
+    },
+    {
+      "source": "/datos/mosca-del-wip-urgencias.csv",
+      "headers": [{ "key": "Link", "value": "<https://mosca.deliverycraft.ai/limite-wip/#datos>; rel=\"canonical\"" }]
+    },
+    {
+      "source": "/datos/mosca-del-wip-1-to-10-tasks.csv",
+      "headers": [{ "key": "Link", "value": "<https://mosca.deliverycraft.ai/en/wip-limit/#datos>; rel=\"canonical\"" }]
+    },
+    {
+      "source": "/datos/mosca-del-wip-urgent-tasks.csv",
+      "headers": [{ "key": "Link", "value": "<https://mosca.deliverycraft.ai/en/wip-limit/#datos>; rel=\"canonical\"" }]
     },
     {
       "source": "/Mosca-del-WIP-Informe.pdf",

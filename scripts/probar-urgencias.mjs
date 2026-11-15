@@ -4,11 +4,20 @@
 // nunca haya dos urgencias con prioridad a la vez, que las normales en curso
 // no pasen el límite (en C, nada lo pasa y ninguna tiene prioridad), que los
 // tiempos no sean negativos y que normales + urgentes = terminadas.
+// Desde la revisión final (fase 2, 2026-11-15) revisa también la regla central,
+// paso a paso: si al empezar un paso hay una urgencia con prioridad que se puede
+// trabajar (no trabada), en ese paso ninguna tarea normal cambia sus minutos
+// restantes ni sale de "En curso", porque la mosca trabaja solo en la urgencia
+// (reglas 3 y 4 de docs/etapa8-2-criterios.md; así también se revisa la 5, que
+// al destrabarse vuelve solo a ella). La comprobación la escribió y midió la
+// revisión 04a (con las reglas de hoy, 0 fallas; con un error metido en el que
+// la mosca alterna entre la urgencia y las normales, más de 200 mil).
 // Uso: node scripts/probar-urgencias.mjs   → termina en "invariantes: todo bien"
+// y sale con 0; si encuentra algo, escribe FALLA y sale con 1.
 import { DayBrain } from '../src/brain.js';
 import { sembrar } from './medicion.mjs';
 const VARIANTES = { principal: { entrada: 'interrumpe' }, B: { entrada: 'termina-tarea' }, C: { entrada: 'cola' }, D: { entrada: 'interrumpe', duracion: [8, 18] } };
-let fallas = 0, ticks = 0;
+let fallas = 0, ticks = 0, conUrgencia = 0;
 const falla = (msg) => { if (fallas++ < 15) console.log('FALLA', msg); };
 for (const [nombre, op] of Object.entries(VARIANTES)) {
   for (const wip of [1, 2, 5, 10]) {
@@ -18,7 +27,17 @@ for (const [nombre, op] of Object.entries(VARIANTES)) {
       for (let d = 0; d < 20; d++) {
         const dia = new DayBrain(wip, { urgenciasPorDia: porDia, urgencias: op });
         while (!dia.terminado) {
+          // La regla central: con una urgencia que se puede trabajar, las normales quedan quietas
+          const urgente = dia.enCurso.find((t) => t.prioridad && t.minutosBloqueada <= 0);
+          const normalesAntes = urgente ? dia.enCurso.filter((t) => !t.prioridad).map((t) => [t, t.minutosRestantes]) : null;
           dia.tick(0.15); ticks++;
+          if (normalesAntes) {
+            conUrgencia++;
+            for (const [t, restante] of normalesAntes) {
+              if (!dia.enCurso.includes(t)) falla(`${nombre} wip ${wip} ${porDia}/día, día ${d}: una normal salió de En curso con una urgencia que se podía trabajar`);
+              else if (t.minutosRestantes !== restante) falla(`${nombre} wip ${wip} ${porDia}/día, día ${d}: una normal pasó de ${restante.toFixed(3)} a ${t.minutosRestantes.toFixed(3)} min con una urgencia que se podía trabajar`);
+            }
+          }
           const prio = dia.enCurso.filter((t) => t.prioridad).length;
           const dentro = dia.enCurso.filter((t) => !t.prioridad).length;
           if (nombre === 'C') { if (dia.enCurso.length > wip) falla(`${nombre} wip ${wip}: en curso ${dia.enCurso.length} > límite`); if (prio) falla(`${nombre}: urgencia con prioridad`); }
@@ -37,4 +56,6 @@ for (const [nombre, op] of Object.entries(VARIANTES)) {
     }
   }
 }
-console.log(fallas ? `FALLAS: ${fallas}` : `invariantes: todo bien (${ticks} pasos revisados)`);
+console.log(fallas ? `FALLAS: ${fallas}` : `invariantes: todo bien (${ticks} pasos revisados, ${conUrgencia} con una urgencia que se podía trabajar)`);
+// (revisión final, fase 2) Antes terminaba siempre con 0, aunque encontrara algo
+if (fallas) process.exitCode = 1;

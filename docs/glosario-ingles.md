@@ -24,7 +24,10 @@ el juego digan lo mismo. Si quieres cambiar una palabra:
 - Inglés de Estados Unidos.
 - Los números son los mismos; cambia cómo se escriben: **15.9** y **1,328** en
   inglés; **15,9** y **1.328** en español.
-- La hora va igual en los dos idiomas: **14:25**.
+- La hora va igual en los dos idiomas: **14:25**. También dentro de una frase
+  en la guía en inglés ("at 12:00", "at 14:35") y en el recorrido del juego
+  ("from 09:00 to 18:00"), desde la revisión final del 2026-11-15. Antes
+  decían "at noon", "2:35 pm" y "from 9 to 6".
 - La mosca es "she" (ella).
 - Las letras de las teclas no cambian (E, B, C, R, D, 1–9). Solo cambia el
   nombre de la barra espaciadora: "Espacio" → "Space".
@@ -44,9 +47,13 @@ el juego digan lo mismo. Si quieres cambiar una palabra:
 | Dentro del / Sobre el límite sostenible (3) | Within / Over the sustainable limit (3) |
 | terminadas (en el día) | finished per day (desde el 2026-10-29; antes "finished in the day") |
 | estrés al cerrar | stress at the end of the day |
+| Estrés al cerrar (encabezado de la última columna de la tabla de la guía y el nombre de esa medida en sus datos estructurados) | Stress at day’s end (como la tabla del informe, desde la revisión final del 2026-11-15; antes "Stress at close". Los nombres de las columnas de los CSV, como `stress_at_close`, no cambian porque otros programas los leen) |
 | Tranquila / Ocupada / Estresada / Colapsada | Calm / Busy / Stressed / Overwhelmed |
 | cigarros | cigarettes |
 | salir a fumar | go out for a smoke |
+| se estresa (la regla de fumar) | gets stressed (nunca "overwhelmed", que es el nivel Colapsada; revisión final, 2026-11-15) |
+| límite de trabajo en curso (WIP) | work-in-progress (WIP) limit, o WIP limit (la sigla va antes de "limit"; revisión final, 2026-11-15) |
+| las urgencias de un equipo o de personas | urgent work ("urgent task" solo para la mosca, igual que "task"; revisión final, 2026-11-15) |
 | café | coffee |
 | Por hacer / En curso / Hecho | To do / In progress / Done |
 | Tablero del día | Today's board |
@@ -212,7 +219,7 @@ inglés cambia con él (los dos con la misma versión).
 | Español | Inglés |
 |---|---|
 | Para compartir (el informe) | Report |
-| Estar siempre ocupado no es lo mismo que avanzar | Being busy all the time isn't the same as making progress |
+| Estar siempre ocupado no es lo mismo que avanzar | Being busy all the time isn't the same as making progress (también en las propiedades del PDF del informe y, como "Why being busy isn’t the same as making progress", en una sección de la guía, desde la revisión final del 2026-11-15. La imagen para compartir de /en/report/ todavía dice "is not" dibujado, y su texto alternativo la describe tal cual) |
 | Un límite sostenible, no una cosa a la vez | A sustainable limit, not one thing at a time |
 | Dato freak | Fun fact |
 | y otros (en las citas) | et al. |
@@ -222,7 +229,8 @@ inglés cambia con él (los dos con la misma versión).
 | Regla nuestra · Inspirado en | Our rule · Inspired by |
 | Matemática · Teoría · Simulación · Según estudios · Supuesto nuestro · Dato real · Decisión nuestra · Disfraz · Ilustrativo | Math · Theory · Simulation · From studies · Our assumption · Real data · Our choice · Disguise · Illustrative |
 | Para seguir leyendo · Anexos | Further reading · Appendices |
-| la ley de Little | Little's law |
+| la ley de Little | Little's law (con minúscula también en los títulos, las palabras clave y las propiedades de los PDF, desde la revisión final del 2026-11-15) |
+| anexo A, B o C | Appendix A, B o C (con mayúscula también dentro de una frase, como en el informe; revisión final, 2026-11-15) |
 | Lo que se lleva tu equipo (portada v4, 2026-10-28) | What your team takes away |
 | Su capacidad, a la vista · Dónde espera el trabajo · Un acuerdo del equipo · Datos propios | Your capacity, in plain sight · Where the work waits · A team agreement · Your own data |
 | capacidad (del equipo) | capacity |

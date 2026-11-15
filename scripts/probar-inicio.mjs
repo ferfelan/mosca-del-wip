@@ -70,7 +70,11 @@ for (const [w, h] of TAMANOS) for (const idioma of ['es', 'en']) {
   ok(c0.x === 16 && c0.y === 16, `${tag}: el enlace no está en la esquina (${c0.x},${c0.y})`);
   await foto('control');
   await foto('control-zoom', { x: 0, y: 0, width: 400, height: 110 });
-  // primer Tab: el enlace es lo primero con el teclado
+  // primer Tab: el enlace es lo primero con el teclado. Desde la revisión final
+  // (S13) el día empieza con el foco en Pausa, así que el Tab se mide desde el
+  // comienzo de la página, como quien llega con el teclado (un ancla temporal al
+  // inicio del <body> recibe el foco y se quita; Chromium sigue desde ahí)
+  await p.evaluate(() => { const a = document.createElement('span'); a.tabIndex = -1; document.body.prepend(a); a.focus(); a.remove(); });
   await p.keyboard.press('Tab');
   const foco = await p.evaluate(() => document.activeElement?.id);
   ok(foco === 'volver-inicio', `${tag}: el primer Tab va a "${foco}", no al enlace`);
