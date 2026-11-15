@@ -438,6 +438,14 @@ input[type='range']:focus-visible::-moz-range-thumb {
   color: var(--tinta-suave);
 }
 
+/* (8.14) "11 + 5": las urgencias en chico y siempre juntas ("+ 5" no se
+   separa). Antes, en el cuadro del panel, quedaba "11 +" arriba y "5" abajo */
+.metrica-extra {
+  font-size: 0.7em;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
 /* Tiempo por tarea: misma forma que la fila del estrés */
 .tiempo-tarea {
   margin-top: 12px;
@@ -537,10 +545,17 @@ tr.vacia td {
 
 /* ---------- Aviso de fin de día ---------- */
 
+/* (8.14) Al centro del espacio libre entre la tarjeta del cerebro (16 + 360 px,
+   a la izquierda) y el panel, como la tarjeta de inicio. Antes se centraba sin
+   contar el cerebro y, con las líneas de las urgencias, en 1440 × 900 tapaba
+   la esquina de la tarjeta del cerebro */
 #banner-fin-dia {
+  --libre-izq: 376px;
+  --libre-der: calc(var(--ancho-panel) + 16px);
   position: fixed;
   bottom: 24px;
-  left: calc((100vw - var(--ancho-panel) - 32px) / 2);
+  left: calc(var(--libre-izq) + (100vw - var(--libre-izq) - var(--libre-der)) / 2);
+  max-width: calc(100vw - var(--libre-izq) - var(--libre-der) - 32px);
   transform: translateX(-50%);
   padding: 12px 20px;
   border-radius: 12px;
@@ -1400,6 +1415,26 @@ body.dia-terminado:not(.exhibicion):not(.controles-oculto) .cifra {
   display: none;
 }
 
+/* (8.14) Las líneas de las urgencias ("+ 3 urgencias · 1 a medias" y cuánto
+   tardó cada una) también se ven en Control, cuando el resumen muestra los
+   números (con el panel escondido): cada una en su renglón */
+.cifra {
+  flex-wrap: wrap;
+}
+
+.cifras .cifra-sub-urgencias:not([hidden]),
+.cifras .cifra-sub-tardaron:not([hidden]) {
+  display: block;
+  flex-basis: 100%;
+  font-size: 11.5px;
+  line-height: 1.35;
+  color: var(--oscuro-suave);
+}
+
+body.exhibicion .cifra-sub[hidden] {
+  display: none;
+}
+
 /* ---------- Zonas: de dónde viene la actividad (suman 100 %) ----------
    Qué parte de las neuronas encendidas está en cada zona; al terminar el
    día, el promedio del día. En Control, dos columnas; en Exhibición, las
@@ -2211,6 +2246,7 @@ body.exhibicion .cifras-titulo {
 body.exhibicion .cifra {
   grid-column: span 6;
   flex-direction: column;
+  flex-wrap: nowrap;
   align-items: flex-start;
   justify-content: flex-start;
   gap: 2px;
@@ -2257,6 +2293,71 @@ body.exhibicion .cifra-valor {
 body.exhibicion .cifra-valor small {
   font-size: 0.48em;
   font-weight: 600;
+}
+
+/* (8.14) Un día con urgencias. "Terminadas" lleva en grande las normales y,
+   en chico, "+ 3 urgencias · 1 a medias". Va sola en su fila, a lo ancho, y
+   Colillas y Cafés debajo, una al lado de la otra: así nada se monta. Antes
+   iba "7 normales + 3 urgencias (1 quedó a medias)" en una línea que no se
+   partía y, en una ventana ancha y baja (1906 × 837), se montaba sobre
+   Colillas y Cafés. Cuánto tardó cada urgencia va como segunda línea de
+   "Tiempo por tarea", a lo ancho. Todo se lee de lejos (es para proyectar) */
+body.exhibicion .cifras.con-urgencias .cifra-hechas {
+  grid-column: span 6;
+}
+
+/* Las dos con el nombre arriba y el número abajo, también hasta 1600 de ancho,
+   donde los números van en filas: en media fila "COLILLAS 14" no cabe al lado
+   y "CAFÉS 12" sí, y quedaban armadas distinto, una junto a la otra */
+body.exhibicion .cifras.con-urgencias .cifra-colillas,
+body.exhibicion .cifras.con-urgencias .cifra-cafes {
+  grid-column: span 3;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+body.exhibicion .cifra-sub.cifra-sub-urgencias,
+body.exhibicion .cifra-sub.cifra-sub-tardaron {
+  font-size: clamp(13px, 1.9vh, 17px);
+  line-height: 1.3;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  /* si va en dos líneas, que queden parejas ("Cada urgencia tardó 63 min /
+     desde que llegó" y no "… desde / que llegó"), para leerla de lejos */
+  text-wrap: balance;
+}
+
+body.exhibicion .cifra-sub.cifra-sub-urgencias {
+  font-weight: 650;
+  color: var(--oscuro-tinta);
+}
+
+body.exhibicion .cifra-sub.cifra-sub-tardaron {
+  margin-top: 4px;
+  color: var(--oscuro-suave);
+}
+
+.sin-corte {
+  white-space: nowrap;
+}
+
+/* En los anchos donde los números van en columnas, la línea de las urgencias
+   va al lado del número, en su misma base, y baja entera si no cabe */
+@media (min-width: 1601px) {
+  body.exhibicion .cifras.con-urgencias .cifra-hechas {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 12px;
+  }
+  body.exhibicion .cifras.con-urgencias .cifra-hechas .cifra-label {
+    flex-basis: 100%;
+  }
+  body.exhibicion .cifras.con-urgencias .cifra-sub-urgencias {
+    flex-basis: auto;
+    margin-top: 0;
+  }
 }
 
 /* Carga: tareas a la vez contra el límite sano, en verde, amarillo o rojo */
@@ -2599,10 +2700,25 @@ body.exhibicion #btn-mostrar-controles {
 }
 
 body.controles-oculto #banner-fin-dia {
-  left: 50%;
+  --libre-der: 0px;
+}
+
+body.cerebro-oculto #banner-fin-dia {
+  --libre-izq: 0px;
 }
 
 /* ---------- Mejor día y atajos ---------- */
+
+/* (8.14) "12 + 3" y, debajo y en chico, "(1 a medias)": en una sola línea la
+   tabla de "Días jugados" quedaba más ancha que el panel con el peor día */
+.celda-nota {
+  display: block;
+  font-size: 0.86em;
+  font-weight: 500;
+  line-height: 1.2;
+  opacity: 0.78;
+  white-space: nowrap;
+}
 
 tr.mejor-dia td {
   background: rgba(79, 157, 106, 0.1);
@@ -3072,9 +3188,11 @@ html:not(.celular) #panel .metrica-dibujo {
   white-space: nowrap;
 }
 
-/* En Exhibición, bajo "Terminadas": cuánto tardó cada urgencia (ocupa su
-   propio renglón también cuando los números van en filas) */
-body.exhibicion .cifra-sub-urgencias {
+/* En Exhibición, las líneas de las urgencias (bajo "Terminadas" y bajo
+   "Tiempo por tarea", 8.14) ocupan su propio renglón cuando los números van
+   en filas */
+body.exhibicion .cifra-sub-urgencias,
+body.exhibicion .cifra-sub-tardaron {
   flex-basis: 100%;
 }
 

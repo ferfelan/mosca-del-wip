@@ -49,6 +49,7 @@ export const INGLES = {
   leerInforme: 'Read the summary', // 8.12: en la web se lee el resumen ejecutivo
   gratis: 'Free, no sign-up. Plays on a computer, phone or tablet.',
   creadoPor: 'Created by <a href="https://www.linkedin.com/in/felipefernandezandrade/" target="_blank" rel="noopener">Felipe Fernández</a>', // 5.2i
+  bajar: 'Scroll down to the drawing', // 8.14: la flecha chica del celular, al final de la primera pantalla
   neuronas: 'neurons firing',
   enSimulacion: 'in the simulation',
   consolaFrase: 'Real neurons from a fly. The more tasks she has on her plate, the more her brain lights up.',
@@ -93,7 +94,6 @@ export const INGLES = {
   // en dos líneas en el computador, como la de antes, "You finish more, and
   // each thing gets done sooner"; con "gets done" se iba a tres)
   sirveTitulo: 'What did the fly gain by limiting her WIP?', // 8.11: el título es una pregunta sobre la mosca
-  sirveBajada: 'In the game, with 2 tasks at once instead of 9, she gained this. <span class="sirve-aviso">These are her numbers, not your team’s.</span>',
   carril2: 'with 2 tasks at once',
   carril9: 'with 9 tasks at once',
   sirve1: 'She finishes more, and each task is done sooner.',
@@ -107,7 +107,7 @@ export const INGLES = {
   sirve3: 'Less overload.',
   sirve3Dato2: 'she ends the day <b>Calm</b>, without smoking',
   sirve3Dato9: 'she ends the day <b>Overwhelmed</b>, with <span data-cuenta="der" data-paso="70" data-espera="450">13</span>&nbsp;cigarettes',
-  sirveOrigen: 'Average of 200 days played.',
+  sirveOrigen: 'In the game, average of 200 days played.', // 8.14: dice de dónde salen los números (la bajada de arriba salió)
   sirveCierre: 'According to DORA, limiting work in progress is a habit of high-performing teams. How much your team gains, its own test will show.',
   ganaTitulo: 'What your team takes away',
   // (8.11) con coma, como el español y como el resumen ejecutivo en inglés (antes llevaba dos puntos)

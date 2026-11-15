@@ -192,21 +192,30 @@ function guardarDia(resumen) {
 // el mouse, "15 normales + 3 urgencias"); su tiempo por tarea es el de las
 // normales. Sin urgencias, lo mismo de siempre.
 // (8.4) Si alguna urgencia quedó sin terminar a las 18:00, la celda lo dice:
-// "10 + 2 (1 a medias)" (los días guardados antes de la 8.4 no traen el dato)
+// "10 + 2 (1 a medias)" (los días guardados antes de la 8.4 no traen el dato).
+// (8.14) "(1 a medias)" va debajo y en chico, para que la tabla quepa en el panel
 const aMediasDe = (d) => d.urgenciasSinTerminar ?? 0;
 const celdaHechas = (d) =>
   d.urgencias > 0 || aMediasDe(d) > 0
-    ? `<td title="${tx('hechasConUrgencias', d.hechasNormales, d.urgencias, aMediasDe(d))}">${d.hechasNormales} + ${d.urgencias}${aMediasDe(d) ? tx('aMediasCorto', aMediasDe(d)) : ''}</td>`
+    ? `<td title="${tx('hechasConUrgencias', d.hechasNormales, d.urgencias, aMediasDe(d))}">${d.hechasNormales} + ${d.urgencias}${aMediasDe(d) ? `<small class="celda-nota">${tx('aMediasCorto', aMediasDe(d))}</small>` : ''}</td>`
     : `<td>${d.hechas}</td>`;
 const tiempoDelDia = (d) => (d.urgencias > 0 ? d.tiempoPorTareaNormales : d.tiempoPorTarea);
 
 // "Terminadas" en el panel: un número; con urgencias terminadas, "15 + 3" y
 // al pasar el mouse "15 normales + 3 urgencias" (8.3)
+// (8.14) Con urgencias, "11 + 5" con el "+ 5" en chico, como en la vista
+// grande. En el cuadro del panel (computador) "11 + 5" se partía en "11 +" y
+// "5": ahora cabe en una línea (con un espacio fino antes del "+") y, si
+// alguna vez no cupiera, baja entero "+ 5"
 function pintarHechas(el, estado) {
   const urgentes = estado.urgencias.terminadas;
   const aMedias = urgenciasAMedias(estado);
-  const texto = urgentes || aMedias ? `${estado.hechasNormales} + ${urgentes}` : String(estado.hechas);
-  if (el.textContent !== texto) el.textContent = texto;
+  const conUrgencias = urgentes > 0 || aMedias > 0;
+  const texto = conUrgencias ? `${estado.hechasNormales} + ${urgentes}` : String(estado.hechas);
+  if (el.textContent !== texto) {
+    if (conUrgencias) el.innerHTML = `${estado.hechasNormales} <span class="metrica-extra">+ ${urgentes}</span>`;
+    else el.textContent = texto;
+  }
   const titulo = urgentes || aMedias ? tx('hechasConUrgencias', estado.hechasNormales, urgentes, aMedias) : null;
   if (titulo === null) {
     if (el.hasAttribute('title')) el.removeAttribute('title');
@@ -567,7 +576,8 @@ const elCifraCarga = document.getElementById('cifra-carga');
 const cifras = {
   carga: document.getElementById('cf-carga'),
   hechas: document.getElementById('cf-hechas'),
-  urgencias: document.getElementById('cf-urgencias'), // (8.3) cuánto tardó cada urgencia
+  urgencias: document.getElementById('cf-urgencias'), // (8.14) "+ 3 urgencias · 1 a medias", bajo las normales
+  tardaron: document.getElementById('cf-tardaron'), // (8.14) cuánto tardó cada urgencia, bajo el tiempo por tarea
   tiempo: document.getElementById('cf-tiempo'),
   tiempoNota: document.getElementById('cf-tiempo-nota'), // (8.3) " (normales)"
   eficiencia: document.getElementById('cf-eficiencia'),
@@ -589,20 +599,35 @@ const urgenciasAMedias = (estado) => (estado.terminado ? estado.urgencias.llegad
 const escribir = (el, texto) => {
   if (el.textContent !== texto) el.textContent = texto;
 };
+// (8.14) "+ 3 urgencias · 1 a medias": cada parte va entera y, si no caben en
+// una línea, la segunda baja completa (el punto queda al final de la primera)
+const elCifras = document.querySelector('.cifras');
+function sinCortar(el, texto) {
+  const partes = texto.split(' · ');
+  if (el.textContent !== partes.join('\u00a0· ')) {
+    el.innerHTML = partes.map((parte, i) => `<span class="sin-corte">${parte}${i < partes.length - 1 ? '\u00a0·' : ''}</span>`).join(' ');
+  }
+  if (el.hidden !== !texto) el.hidden = !texto;
+}
 function pintarCifras(estado) {
   escribir(elCifrasTitulo, tx(estado.terminado ? 'resumenDelDia' : 'hoyEnLaOficina'));
   escribir(cifras.carga, String(estado.enCurso));
   elCifraCarga.dataset.carga = nivelCarga(estado.enCurso);
   segmentosCarga.forEach((s, i) => s.classList.toggle('lleno', i < estado.enCurso));
-  // Con urgencias terminadas (8.3), las terminadas en dos cifras ("15 normales
-  // + 3 urgencias") y, al terminar el día, cuánto tardó cada una desde que llegó
+  // Con urgencias (8.3), el número grande son las normales y, en chico, "+ 3
+  // urgencias · 1 a medias" (8.14: antes iba todo en una línea, "15 normales +
+  // 3 urgencias (1 quedó a medias)", y en la vista grande se montaba sobre
+  // Colillas y Cafés). Al terminar el día, cuánto tardó cada urgencia desde
+  // que llegó va como segunda línea de "Tiempo por tarea"
   const urgentes = estado.urgencias.terminadas;
   const aMedias = urgenciasAMedias(estado);
-  if (urgentes || aMedias) conUnidades(cifras.hechas, tx('hechasConUrgencias', estado.hechasNormales, urgentes, aMedias));
-  else escribir(cifras.hechas, String(estado.hechas));
+  const conUrgencias = urgentes > 0 || aMedias > 0;
+  escribir(cifras.hechas, String(conUrgencias ? estado.hechasNormales : estado.hechas));
+  sinCortar(cifras.urgencias, conUrgencias ? tx('urgenciasExtra', urgentes, aMedias) : '');
+  if (elCifras.classList.contains('con-urgencias') !== conUrgencias) elCifras.classList.toggle('con-urgencias', conUrgencias);
   const tardaron = urgentes && estado.terminado ? tx('urgenciasTardaron', Math.round(estado.urgencias.tardaron), urgentes) : '';
-  escribir(cifras.urgencias, tardaron);
-  if (cifras.urgencias.hidden !== !tardaron) cifras.urgencias.hidden = !tardaron;
+  escribir(cifras.tardaron, tardaron);
+  if (cifras.tardaron.hidden !== !tardaron) cifras.tardaron.hidden = !tardaron;
   // En grande, las unidades van más chicas que los números ("7 h 46 min")
   conUnidades(cifras.tiempo, estado.tiempoPorTareaNormales === null ? '–' : formatoTiempo(estado.tiempoPorTareaNormales));
   pintarNotaNormales(cifras.tiempoNota, urgentes > 0);
@@ -1896,7 +1921,8 @@ if (import.meta.env.DEV) {
       ponerWip(v);
     },
     // bloqueadas: n bloquea las n tareas en curso más antiguas por `minutosBloqueo`
-    forzar({ estres, fumando, cafe, colillas, hechas, bloqueadas, minutosBloqueo = 45 } = {}) {
+    // (8.14) cafes: n deja el contador de cafés en n (el peor día de scripts/probar-desbordes.mjs)
+    forzar({ estres, fumando, cafe, colillas, cafes, hechas, bloqueadas, minutosBloqueo = 45 } = {}) {
       if (bloqueadas !== undefined) {
         juego.enCurso.forEach((t, i) => {
           t.minutosBloqueada = i < bloqueadas ? minutosBloqueo : 0;
@@ -1916,6 +1942,7 @@ if (import.meta.env.DEV) {
         juego.minutosCafeRestantes = cafe ? 1e6 : 0;
       }
       if (colillas !== undefined) juego.colillas = colillas;
+      if (cafes !== undefined) juego.cafes = cafes;
       if (hechas !== undefined) {
         while (juego.hechas.length < hechas && juego.porHacer.length) juego.hechas.push(juego.porHacer.shift());
       }

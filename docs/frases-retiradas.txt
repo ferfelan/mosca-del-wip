@@ -402,3 +402,38 @@ On the web or as a PDF
 #   up overwhelmed. With 2, she finishes twice as many."
 la mosca ya hizo la prueba
 the fly already ran the test
+
+# ─── Etapa 8.14, 2026-11-14: la primera pantalla del celular, una frase menos, los cuadros del juego y los PDF ───
+
+# La bajada de "¿Qué ganó la mosca al limitar su WIP?" (8.11). Felipe pidió
+# borrarla de todos lados: la portada, su inglés, y el resumen ejecutivo en PDF
+# y en la web (/informe/ y /en/report/), en los dos idiomas. Para que los
+# números sigan diciendo de dónde salen, la nota chica de abajo del tablero
+# pasó de "Promedio de 200 días jugados." a "En el juego, promedio de 200 días
+# jugados." ("In the game, average of 200 days played."). "Promedio de 200 días
+# jugados" no va aquí: sigue en la consola del cerebro y en la FAQ.
+#   "En el juego, con 2 tareas a la vez en lugar de 9, ganó esto. Son sus
+#   números, no los de tu equipo."
+#   "In the game, with 2 tasks at once instead of 9, she gained this. These are
+#   her numbers, not your team’s."
+con 2 tareas a la vez en lugar de 9, ganó esto
+with 2 tasks at once instead of 9, she gained this
+Son sus números, no los de tu equipo
+These are her numbers, not your team’s
+
+# La ley de Little sin su condición. Felipe pidió en el resumen "La ley de
+# Little, que es matemática, dice que, al mismo ritmo de salida, cada tarea
+# tarda más cuando hay más abiertas" y lo mismo donde se simplificara igual.
+# Se corrigió en el resumen (PDF y web), el informe para compartir (el dato
+# freak de la pág. 5, la tabla de reglas de la pág. 2 y la tabla "Cada número
+# y de dónde sale" del anexo B, pág. 14), la ayuda de "Tiempo por tarea" del
+# juego y el borrador 1 de difusión, en los dos idiomas. No van aquí las frases
+# viejas que quedan dentro de las nuevas (la de la tabla de reglas y la del
+# anexo B), porque la revisión las encontraría en el texto corregido.
+dice que cada tarea tarda más cuando hay más abiertas
+says that each task takes longer when more are open
+Que cada tarea tarde más cuando hay más tareas abiertas
+That each task takes longer when more are open is not an opinion
+Que cada tarea tarde más cuando hay más abiertas no es una opinión
+Con más tareas a la vez, cada una tarda más (Ley de Little)
+With more tasks at once, each one takes longer (Little’s Law)

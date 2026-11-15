@@ -132,10 +132,10 @@ h2 {
   text-wrap: balance;
 }
 .bajada { margin-bottom: 4.6mm; font-size: 9.6pt; line-height: 1.45; color: var(--suave); text-wrap: pretty; }
-/* Antes del primer tablero: cada frase en su línea, y la esquina de la derecha
-   queda libre, que ahí se asoma la mosca */
-.sirve-bajada { max-width: calc(100% - 40mm); }
-.sirve-aviso { display: block; }
+/* 8.14 (2026-11-14): sin la bajada que iba antes del primer tablero (la borró
+   Felipe), bajo el título queda justo el lugar para que se asome la mosca (su
+   ventana mide 8,9 mm de alto) */
+.sirve h2 { margin-bottom: 10.6mm; }
 .nota { font-size: 8.2pt; line-height: 1.4; color: var(--tenue); }
 .sirve-origen { margin-top: 2.4mm; }
 .bloque { margin-bottom: 7.6mm; }

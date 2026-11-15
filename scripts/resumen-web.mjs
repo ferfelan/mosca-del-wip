@@ -32,7 +32,7 @@ const IDIOMAS = {
     informeFuente: 'docs/contexto/compartir.html',
     portada: 'index.html',
     salida: 'informe/index.html',
-    actualizadoEl: '2026-11-13',
+    actualizadoEl: '2026-11-14', // 8.14: sin la bajada de "¿Qué ganó…?", la nota "En el juego…" y la ley de Little con su condición
     pdf: { ruta: '/Mosca-del-WIP-Informe.pdf', nombre: 'Mosca del WIP - Informe.pdf', paginas: (n) => `${n} páginas` },
     resumen: { ruta: '/Mosca-del-WIP-Resumen.pdf', nombre: 'Mosca del WIP - Resumen.pdf' },
     tapa: '/img/tapa-informe.jpg',
@@ -66,7 +66,7 @@ const IDIOMAS = {
     informeFuente: 'docs/contexto/compartir-en.html',
     portada: 'en/index.html',
     salida: 'en/report/index.html',
-    actualizadoEl: '2026-11-13',
+    actualizadoEl: '2026-11-14', // 8.14: sin la bajada de "¿Qué ganó…?", la nota "En el juego…" y la ley de Little con su condición
     pdf: { ruta: '/Mosca-del-WIP-Report.pdf', nombre: 'Mosca del WIP - Report.pdf', paginas: (n) => `${n} pages` },
     resumen: { ruta: '/Mosca-del-WIP-Summary.pdf', nombre: 'Mosca del WIP - Summary.pdf' },
     tapa: '/img/tapa-report.jpg',
@@ -210,7 +210,6 @@ function armar(idioma) {
 
 <section class="sirve" id="que-gano">
   <h2>${h2(sirve)}</h2>
-  <p class="sirve-bajada">${bajada(sirve)}</p>
   ${sangria(tableroSirve)}
   <p class="nota sirve-origen">${primero(sirve, /<p class="nota sirve-origen">([\s\S]*?)<\/p>/, R)}</p>
 </section>

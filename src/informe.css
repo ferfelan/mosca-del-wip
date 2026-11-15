@@ -31,6 +31,9 @@
 .lectura .gana-tablero { padding: 0; font-size: inherit; }
 .lectura .gana-tablero li { margin: 0; }
 .lectura .sirve-bajada { margin: 0 0 30px; font-size: 18.5px; line-height: 1.5; color: var(--suave); }
+/* (8.14) sin bajada antes del primer tablero: bajo el título, el lugar justo
+   para que se asome la mosca (56,6 px; 46,1 en el celular) */
+.lectura .sirve h2 { margin-bottom: 64px; }
 .lectura .gana .sirve-bajada { max-width: 60ch; margin-bottom: 24px; }
 .lectura .sirve-tablero .gana-item h3 { margin: 0; }
 .lectura .gana-tablero p { margin: 0; }
@@ -144,7 +147,7 @@
   .cabeza-informe { grid-template-columns: 1fr; }
   .tapa-informe { display: none; }
   .lectura .sirve-bajada { font-size: 17px; }
-  .lectura .sirve .sirve-bajada { margin-bottom: 48px; }
+  .lectura .sirve h2 { margin-bottom: 54px; }
   .lectura .hallazgos { grid-template-columns: 1fr; }
   .lectura .hallazgos li { padding: 18px 0 18px; }
   .lectura .hallazgos li + li { padding-left: 0; border-left: 0; border-top: 1px solid var(--borde); }

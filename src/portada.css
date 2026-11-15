@@ -631,9 +631,14 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
 [data-color='vision'] { --acento: var(--vision); }
 .gana-nota { margin-top: 22px; max-width: 72ch; text-wrap: pretty; }
 
-/* 8.9 (2026-11-10): antes del tablero, de quién son los números (de la mosca,
-   en el juego). En computador cada frase va en su línea y el párrafo deja
-   libre la esquina de la derecha, donde se asoma la mosca */
+/* 8.14 (2026-11-14): Felipe borró la bajada que iba entre "¿Qué ganó la mosca
+   al limitar su WIP?" y el tablero ("En el juego, con 2 tareas a la vez en
+   lugar de 9, ganó esto…"). Bajo el título queda justo el lugar para que se
+   asome la mosca (su ventana mide 56,6 px de alto, y se dejan 15 más) sin tocar nunca las letras
+   del título, que en inglés llega más a la derecha */
+.sirve h2 { margin-bottom: 72px; }
+/* La bajada de los bloques del resumen en la web (/informe/), que carga este
+   archivo. Deja libre la esquina de la derecha */
 .sirve-bajada {
   max-width: min(40em, calc(100% - 232px));
   margin: 0 0 30px;
@@ -642,7 +647,6 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   line-height: 1.5;
   text-wrap: pretty;
 }
-.sirve-aviso { display: block; }
 
 /* 8.8 (2026-11-09, pedido de Felipe: la sección "está muy plana" y sus
    respaldos "son medios trabalenguas"). "¿Qué ganó la mosca al limitar su WIP?": en cada
@@ -1485,10 +1489,10 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   .gana-tablero,
   .lleva-tablero { grid-template-columns: 1fr; border-radius: 20px; }
   .gana-item { gap: 16px; padding: 20px 18px 18px; }
-  /* (8.9) la franja de la mosca asomada queda entre la bajada y el tablero */
-  .sirve h2 { margin-bottom: 14px; }
+  /* (8.14) la franja de la mosca asomada queda entre el título y el tablero
+     (su ventana mide 46,1 px de alto en el celular) */
+  .sirve h2 { margin-bottom: 54px; }
   .sirve-bajada { max-width: none; margin-bottom: 48px; font-size: 17px; }
-  .sirve-aviso { display: inline; }
   .sirve-tablero .gana-item h3 { font-size: 21px; }
   .asomada { right: 22px; width: 88px; }
   .asomada-ventana { height: 46.1px; }
@@ -1586,6 +1590,70 @@ h3 { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 8px
   /* (con poco alto van 10 pedidos en vez de 14, como en el celular) */
   .globos { padding-top: 22px; }
   .globo.de-ancha { display: none; }
+}
+
+/* ---------- El inicio en el celular: la primera pantalla (8.14, 2026-11-14) ----------
+   Pedido de Felipe: en el celular, la primera pantalla es solo el título, la
+   bajada y Jugar ("Ver el kit" y las dos notas van también, si caben sin
+   apretar). La frase chica de arriba sale de ahí, porque repite el título (en
+   computador se queda). El dibujo empieza justo después de la primera
+   pantalla y nunca asoma a medias. La primera pantalla mide el alto real de
+   la pantalla con las barras de Safari a la vista (svh) y lo que sobra se
+   reparte arriba y abajo (un poco más abajo, para que el texto quede algo
+   sobre la mitad), con una flecha chica que avisa que hay más. Lo mismo en el
+   celular acostado (aunque mida 900 px o más de ancho) y en las tablets
+   donde el dibujo no cabe entero bajo el texto. En las tablets altas (desde
+   740 px de ancho y 1.100 de alto, como un iPad Air en Safari) sí cabe entero:
+   ahí va en la primera pantalla, como antes, completo. En computador, todo
+   queda igual. */
+.bajar { display: none; }
+@media (max-width: 899px), (orientation: landscape) and (max-height: 500px) {
+  .hero { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+  /* solo el del inicio: la página de créditos también tiene un rótulo
+     ("Mosca del WIP", sobre su título) y carga este archivo */
+  .hero .rotulo { display: none; }
+  .hero-texto {
+    position: relative;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: calc(100vh - var(--alto-barra));
+    min-height: calc(100svh - var(--alto-barra));
+    padding: 20px 0 clamp(64px, 10svh, 120px);
+  }
+  .bajar {
+    position: absolute;
+    left: 50%;
+    bottom: 8px;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin-left: -22px;
+    border-radius: 50%;
+    color: var(--tenue);
+    text-decoration: none;
+  }
+  .bajar:hover { color: var(--tinta); }
+}
+/* Tablets altas: el texto y, justo debajo, el dibujo entero, los dos en la
+   primera pantalla (medido en scripts/probar-suena.mjs, también en inglés) */
+@media (min-width: 740px) and (max-width: 899px) and (min-height: 1100px) {
+  .hero-texto { min-height: 0; padding: 16px 0 0; }
+  .bajar { display: none; }
+}
+/* Tablets donde el dibujo va más abajo: el título un poco más grande, para
+   que la primera pantalla no se vea vacía */
+@media (min-width: 600px) and (max-width: 899px) and (min-height: 501px) and (max-height: 1099px), (min-width: 600px) and (max-width: 739px) and (min-height: 501px) {
+  h1 { font-size: clamp(40px, 6.4vw, 52px); }
+}
+/* Celular acostado: los dos botones en una fila (cabe el ancho y falta alto)
+   y el dibujo, más abajo, del ancho que tiene en los computadores bajos */
+@media (orientation: landscape) and (max-height: 500px) {
+  .hero .acciones { display: flex; flex-wrap: wrap; }
+  .hero .boton { width: auto; }
+  .escena { width: 100%; max-width: 520px; margin-inline: auto; padding: 24px 0 32px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

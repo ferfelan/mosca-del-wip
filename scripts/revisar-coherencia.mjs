@@ -7,7 +7,10 @@
 //   4. los dos puntos en el texto que se lee (Etapa 8.12, 2026-11-13: "elimina
 //      los : en todos lados"). No cuentan los de una hora (09:00), los de una
 //      dirección (https://) ni los de los archivos que leen las máquinas
-//      (robots.txt, el sitemap y el manifest, donde solo se revisan sus textos).
+//      (robots.txt, el sitemap y el manifest, donde solo se revisan sus textos),
+//   5. las palabras pegadas en los PDF del sitio (Etapa 8.14, 2026-11-14): el
+//      texto de cada PDF según el visor de Chrome (PDFium) y según pdftotext.
+//      Necesita pypdfium2 en .venv-datos (ver scripts/texto-pdfium.py).
 // Dónde: el sitio construido (dist/: cada página con su texto, sus atributos que
 // se leen y su JSON-LD, el manifest, el sitemap, los CSV, los PDF y la
 // presentación del taller), los textos del juego y de la portada (src/), los
@@ -212,9 +215,80 @@ for (const { donde, texto, solo } of piezas) {
   }
 }
 
+// ---------- 5. Palabras pegadas en los PDF del sitio (Etapa 8.14, 2026-11-14) ----------
+// Felipe copió el texto del resumen desde el visor de PDF de Chrome y los
+// títulos salieron pegados ("Ocupadotodoeldía.", "Unlímite sostenible,
+// nounacosaalavez."). Ese texto es el que leen Google y las IA. Los lectores
+// de PDF no leen los espacios, los deducen de dónde queda cada letra, y cada
+// uno lo hace a su manera. Aquí se saca el texto de cada PDF del sitio con dos
+// lectores, PDFium (el del visor de Chrome, con scripts/texto-pdfium.py) y
+// pdftotext, y una palabra de uno que en el otro sale como dos o más palabras
+// separadas cuenta como pegada (en el que la tiene junta). Las letras sueltas
+// no cuentan como palabra, salvo a, e, i, o, u, y. Las líneas con tres o más
+// letras sueltas (otras que esas) no se revisan: son rótulos en mayúsculas con
+// las letras muy separadas, que todos los lectores sacan con letras sueltas
+// ("G U ÍA RÁP IDA"), y eso es otro problema (bitácora de la 8.14).
+const PDF_DEL_SITIO = archivos(DIST).filter((r) => extname(r).toLowerCase() === '.pdf');
+const LETRA_SOLA = new Set(['a', 'e', 'i', 'o', 'u', 'y']);
+const ESPACIOS = /[\s\u00a0\u2009\u202f]+/u;
+const palabrasDe = (t) =>
+  t
+    .normalize('NFC')
+    .replace(/\u0002/g, '-')
+    .split(/\r\n|\r|\n/)
+    .map((linea) => linea.split(ESPACIOS).map((w) => w.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '').toLowerCase()).filter(Boolean))
+    .filter((linea) => linea.filter((w) => w.length === 1 && /\p{L}/u.test(w) && !LETRA_SOLA.has(w)).length < 3)
+    .flat();
+// Una palabra pegada en un lector es la que en el otro sale como dos a diez
+// palabras seguidas (se comparan sin signos: "sostenible,nounacosa" calza con
+// "sostenible, no una cosa"). Cuenta solo si al menos una de ellas tiene dos
+// letras o más: "1h" o "1/2" se leen igual que "1 h" o "1 / 2".
+const sinSignos = (w) => w.replace(/[^\p{L}\p{N}]/gu, '');
+function seguidas(palabras) {
+  const juntas = new Map();
+  for (let i = 0; i < palabras.length; i++) {
+    let clave = sinSignos(palabras[i]);
+    for (let k = 1; k < 10 && i + k < palabras.length; k++) {
+      clave += sinSignos(palabras[i + k]);
+      if (!juntas.has(clave)) juntas.set(clave, palabras.slice(i, i + k + 1));
+    }
+  }
+  return juntas;
+}
+let textosPdfium = null;
+try {
+  textosPdfium = JSON.parse(
+    execFileSync(join(R, '.venv-datos', 'bin', 'python'), [join(R, 'scripts', 'texto-pdfium.py'), ...PDF_DEL_SITIO], { encoding: 'utf8', maxBuffer: 256 << 20, stdio: ['ignore', 'pipe', 'pipe'] }),
+  );
+} catch {
+  hallazgos.push({ tipo: 'palabras pegadas', donde: 'PDF del sitio', que: 'no pude leerlos con PDFium', ver: 'instalar una vez con "uv pip install --python .venv-datos/bin/python pypdfium2" y volver a correr' });
+}
+if (textosPdfium) {
+  for (const ruta of PDF_DEL_SITIO) {
+    const lectores = {
+      'visor de Chrome': palabrasDe(textosPdfium[ruta] ?? ''),
+      pdftotext: palabrasDe(execFileSync('pdftotext', ['-enc', 'UTF-8', ruta, '-'], { encoding: 'utf8', maxBuffer: 64 << 20 })),
+    };
+    const nombres = Object.keys(lectores);
+    for (const lector of nombres) {
+      const otro = nombres.find((n) => n !== lector);
+      const vocab = new Set(lectores[otro].map(sinSignos));
+      const juntas = seguidas(lectores[otro]);
+      const vistas = new Set();
+      for (const w of lectores[lector]) {
+        const clave = sinSignos(w);
+        if (!clave || vocab.has(clave) || vistas.has(clave)) continue;
+        vistas.add(clave);
+        const partes = juntas.get(clave);
+        if (partes && partes.some((x) => (x.match(/\p{L}/gu) ?? []).length >= 2)) hallazgos.push({ tipo: 'palabras pegadas', donde: `sitio: /${relative(DIST, ruta)} (${lector})`, que: w, ver: `en ${otro} son «${partes.join(' ')}»` });
+      }
+    }
+  }
+}
+
 const porTipo = (t) => hallazgos.filter((h) => h.tipo === t);
-console.log(`\nRevisé ${piezas.length} textos públicos (${new Set(piezas.map((p) => p.donde.split(' (')[0].split(' › ')[0])).size} archivos).`);
-const TITULOS = { 'frase retirada': 'Frases retiradas', 'palabra prohibida': 'Palabras prohibidas', 'punto y coma': 'Punto y coma', 'dos puntos': 'Dos puntos' };
+console.log(`\nRevisé ${piezas.length} textos públicos (${new Set(piezas.map((p) => p.donde.split(' (')[0].split(' › ')[0])).size} archivos) y las palabras de ${PDF_DEL_SITIO.length} PDF con dos lectores.`);
+const TITULOS = { 'frase retirada': 'Frases retiradas', 'palabra prohibida': 'Palabras prohibidas', 'punto y coma': 'Punto y coma', 'dos puntos': 'Dos puntos', 'palabras pegadas': 'Palabras pegadas en los PDF' };
 for (const tipo of Object.keys(TITULOS)) {
   const lista = porTipo(tipo);
   console.log(`\n${TITULOS[tipo]}: ${lista.length}`);
@@ -252,9 +326,11 @@ if (args.includes('--mapa')) {
     // (8.7) reemplaza a "Lo que busca un límite" de la 8.6. (8.9) En la portada
     // los números son de la mosca y se dice antes de mostrarlos; la primera
     // línea habla de ella ("Termina más, y cada tarea sale antes")
-    // (8.11) el título es una pregunta sobre la mosca y la bajada dice con cuántas tareas
-    { pieza: '¿Qué ganó la mosca al limitar su WIP?', es: 'En el juego, con 2 tareas a la vez en lugar de 9, ganó esto. Son sus números, no los de tu equipo. Termina más, y cada tarea sale antes. El trabajo avanza en vez de esperar. Menos sobrecarga. Cuánto gana tu equipo, lo dice su prueba.',
-      en: 'In the game, with 2 tasks at once instead of 9, she gained this. These are her numbers, not your team’s. She finishes more, and each task is done sooner. Work moves forward instead of waiting. Less overload. How much your team gains, its own test will show.',
+    // (8.11) el título es una pregunta sobre la mosca. (8.14) Felipe borró la
+    // bajada ("En el juego, con 2 tareas a la vez en lugar de 9, ganó esto…") y
+    // la nota de abajo del tablero dice de dónde salen los números
+    { pieza: '¿Qué ganó la mosca al limitar su WIP?', es: 'Termina más, y cada tarea sale antes. El trabajo avanza en vez de esperar. Menos sobrecarga. En el juego, promedio de 200 días jugados. Cuánto gana tu equipo, lo dice su prueba.',
+      en: 'She finishes more, and each task is done sooner. Work moves forward instead of waiting. Less overload. In the game, average of 200 days played. How much your team gains, its own test will show.',
       buscar: ['Qué ganó la mosca', 'What did the fly gain', 'en vez de esperar', 'instead of waiting', 'Cuánto gana', 'How much your team gains', 'How much the team gains'] },
     { pieza: 'Lo que se lleva tu equipo', es: 'Su carga a la vista. Dónde se queda esperando el trabajo. Un límite acordado, escrito en el tablero. Sus propios datos después de dos semanas.',
       en: 'Their load in plain sight. Where the work sits waiting. An agreed limit, written on the board. Their own data after two weeks.',
@@ -382,4 +458,4 @@ if (hallazgos.length) {
   console.log(`\n✗ ${hallazgos.length} cosa(s) por arreglar. No publicar hasta que esto diga 0.`);
   process.exit(1);
 }
-console.log('\n✓ Coherencia: 0 frases retiradas, 0 palabras prohibidas, 0 punto y coma, 0 dos puntos.');
+console.log('\n✓ Coherencia: 0 frases retiradas, 0 palabras prohibidas, 0 punto y coma, 0 dos puntos, 0 palabras pegadas en los PDF.');

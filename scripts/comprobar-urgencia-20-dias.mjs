@@ -56,8 +56,11 @@ for (let d = 1; d <= DIAS; d++) {
   await p.waitForFunction(() => window.__mosca.estado().terminado, { timeout: 90000, polling: 100 });
   await p.waitForTimeout(300);
   const e = await estado();
-  const cifra = (await p.textContent('#cf-hechas')).replace(/\s+/g, ' ').trim();
-  const tardo = (await p.textContent('#cf-urgencias')).replace(/\s+/g, ' ').trim();
+  // (8.14) el número grande son las normales, debajo "+ 1 urgencia" y cuánto
+  // tardó va bajo el tiempo por tarea
+  const leerTexto = async (sel) => ((await p.textContent(sel)) ?? '').replace(/\s+/g, ' ').trim();
+  const cifra = `${await leerTexto('#cf-hechas')} ${await leerTexto('#cf-urgencias')}`.trim();
+  const tardo = await leerTexto('#cf-tardaron');
   const dia = { d, horaBoton, normales: e.hechasNormales, urgencias: e.urgencias.terminadas, llegadas: e.urgencias.llegadas, tardaron: e.urgencias.tardaron === null ? null : Math.round(e.urgencias.tardaron * 10) / 10, cifra, tardo };
   dias.push(dia);
   console.log(`día ${String(d).padStart(2)}: botón a las ${horaBoton} · ${dia.normales} normales + ${dia.urgencias} urgencia (llegó ${dia.llegadas}) · tardó ${dia.tardaron} min · pantalla: «${cifra}» «${tardo}»`);

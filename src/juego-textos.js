@@ -57,8 +57,8 @@ export const PAGINA = {
   Velocidad: 'Speed',
   'Reiniciar día': 'Restart day',
   'Tiempo por tarea': 'Time per task',
-  'Tiempo promedio (del juego) desde que una tarea entra a «En curso» hasta que se termina. Con más tareas a la vez, cada una tarda más (Ley de Little).':
-    'Average time (in the game) from when a task enters “In progress” until it’s finished. With more tasks at once, each one takes longer (Little’s Law).',
+  'Tiempo promedio (del juego) desde que una tarea entra a «En curso» hasta que se termina. Con más tareas a la vez y el mismo ritmo de salida, cada una tarda más (Ley de Little).':
+    'Average time (in the game) from when a task enters “In progress” until it’s finished. With more tasks at once and the same output rate, each one takes longer (Little’s Law).',
   Eficiencia: 'Efficiency',
   'de cada hora': 'of every hour',
   'De cada hora, cuántos minutos rinden de verdad. Descuenta los cambios de tarea, el tiempo fumando o tomando café y las esperas por bloqueos (promedio desde las 09:00).':
@@ -402,6 +402,18 @@ export const TEXTOS = {
     es: (normales, urgentes, aMedias = 0) =>
       `${normales} normales + ${urgentes} ${urgentes === 1 ? 'urgencia' : 'urgencias'}${aMedias ? ` (${aMedias} ${aMedias === 1 ? 'quedó' : 'quedaron'} a medias)` : ''}`,
     en: (normales, urgentes, aMedias = 0) => `${normales} regular + ${urgentes} urgent${aMedias ? ` (${aMedias} left unfinished)` : ''}`,
+  },
+  // (8.14) En las cifras grandes, bajo o al lado del número de las normales:
+  // "+ 3 urgencias · 1 a medias" (si ninguna terminó, "1 urgencia a medias").
+  // Antes iba todo en una línea ("7 normales + 3 urgencias (1 quedó a
+  // medias)") y en la vista grande se montaba sobre Colillas y Cafés
+  urgenciasExtra: {
+    es: (urgentes, aMedias = 0) =>
+      urgentes > 0
+        ? `+ ${urgentes} ${urgentes === 1 ? 'urgencia' : 'urgencias'}${aMedias ? ` · ${aMedias} a medias` : ''}`
+        : `${aMedias} ${aMedias === 1 ? 'urgencia' : 'urgencias'} a medias`,
+    en: (urgentes, aMedias = 0) =>
+      urgentes > 0 ? `+ ${urgentes} urgent${aMedias ? ` · ${aMedias} unfinished` : ''}` : `${aMedias} urgent ${aMedias === 1 ? 'task' : 'tasks'} unfinished`,
   },
   // La celda de las tablas, corta: "10 + 2 (1 a medias)"
   aMediasCorto: { es: (n) => ` (${n} a medias)`, en: (n) => ` (${n} unfinished)` },

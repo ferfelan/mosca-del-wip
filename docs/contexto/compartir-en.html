@@ -413,7 +413,7 @@
   <p>With today’s waits, from 3 tasks on she has enough to do all day. Opening more doesn’t give her more work, it just puts tasks in line to wait their turn. In factories that point has a name, “critical WIP” (Hopp and Spearman, <em>Factory Physics</em>).</p>
   <p>That each task takes longer when more are open is almost a matter of splitting time among all of them, which makes it math and not a finding. It’s what happens when you split one hour among nine tasks. Each one gets a few minutes and the other eight wait.</p>
   <p class="cierre-pagina">The theory only says that what gets finished stops going up. That it also goes down comes from our rules, the cost of switching tasks and the cigarettes.</p>
-  <div class="sobremesa"><span class="rotulo">Fun fact</span><span>That each task takes longer when more are open is not an opinion. It’s a theorem, from 1961. <span class="de-donde">(Little’s law)</span></span></div>
+  <div class="sobremesa"><span class="rotulo">Fun fact</span><span>That, at the same output rate, each task takes longer when more are open is not an opinion. It’s a theorem, from 1961. <span class="de-donde">(Little’s law)</span></span></div>
   <div class="pie"><span><b>Mosca del WIP</b> · Felipe Fernández</span><span></span></div>
 </section>
 
@@ -735,7 +735,7 @@ document.getElementById('t-reglas').innerHTML = [
   ['Whatever is left half-done takes away a little focus.', 'Leroy (2009)'],
   ['More open tasks, more stress. It rises fast and falls slowly. The game splits it into four levels, which are Calm (under 25%), Busy, Stressed and Overwhelmed (from 75%).', 'Dickerson and Kemeny (2004)'],
   ['When stressed she goes out to "smoke" (8 minutes without working). Without much stress she has a "coffee," a short break.', 'Parrott (1999) · Taylor et al. (2014) · Albulescu et al. (2022) · Lovallo et al. (2005)'],
-  ['Each task takes longer the more tasks are open.', 'Little’s law (1961)'],
+  ['At the same output rate, each task takes longer the more tasks are open.', 'Little’s law (1961)'],
   // v23 (8.4): la fila de las urgencias
   ['Urgent tasks arrive without warning, jump over the limit and get done right away, one at a time, up to 5 a day.', 'Anderson (2010) · Mark et al. (2005, 2008) · Perlow (1999)'],
 ].map(([r, o]) => `<tr><td>${r}</td><td>${o}</td></tr>`).join('');
@@ -898,7 +898,7 @@ document.getElementById('t-origen').innerHTML = [
   ['<b>What’s left half-done takes away focus.</b> 3% for each half-done task', 'Leroy (2009) found that what’s left half-done stays on your mind', 'The 3%.'],
   ['<b>More tasks, more stress.</b> It rises fast and falls slowly, with levels at 25, 50 and 75%', 'Dickerson and Kemeny (2004) found that the stress hormone peaks in 20 to 40 minutes and comes down more slowly', 'That it rises with the tasks, and the three levels.'],
   ['<b>Smoking and coffee.</b> Smoking is 8 minutes without working, and coffee is a short break, only without much stress', 'Parrott (1999) and Taylor et al. (2014) found that smoking doesn’t calm you down. Albulescu et al. (2022), that the break helps. Lovallo et al. (2005, 2006), that caffeine raises cortisol', 'The minutes and the stress points.'],
-  ['<b>Each task takes longer with more open.</b> It follows on its own', 'Little’s law (1961), which is math', 'Nothing.'],
+  ['<b>At the same output rate, each task takes longer with more open.</b> It follows on its own', 'Little’s law (1961), which is math', 'Nothing.'],
   // v23: la fila de las urgencias
   ['<b>Urgent tasks.</b> They arrive without warning, jump over the limit and get done right away, one at a time, up to 5 a day', 'Anderson (2010), the kanban expedite lane, secondary source. Mark et al. (2005, 2008) and Perlow (1999), on what interruptions cost', 'The whole rule and the numbers.'],
 ].map((f) => `<tr>${f.map((c) => `<td>${c}</td>`).join('')}</tr>`).join('');

@@ -91,8 +91,13 @@ for (const [nombre, ancho, alto] of PANTALLAS)
           titulo: document.title,
           h1: { top: h1.top, bottom: h1.bottom, ancho: h1.width },
           escondida: document.documentElement.classList.contains('traduciendo'),
+          // (8.14) el rótulo "Mosca del WIP" sobre el título
+          rotulo: document.querySelector('.creditos-main .rotulo')?.getBoundingClientRect().height ?? 0,
         };
       });
+      // (8.14) La portada esconde su rótulo en el celular y este archivo carga
+      // los estilos de la portada: una regla suelta (.rotulo) escondía este también
+      revisar(estado.rotulo > 0, `${etiqueta}: no se ve el rótulo "Mosca del WIP" sobre el título`);
       revisar(estado.sobra <= 0, `${etiqueta}: la página se sale ${estado.sobra} px por el lado`);
       revisar(estado.tema === fondo, `${etiqueta}: el fondo es ${estado.tema}`);
       revisar(estado.lang === idioma, `${etiqueta}: <html lang> es ${estado.lang}`);

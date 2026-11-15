@@ -61,7 +61,8 @@
 //      SALIDA=/otra/carpeta, FECHA=2026-10-19,   → otra carpeta, fecha o versión
 //      VERSION=v2
 import { chromium, devices } from 'playwright';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -83,13 +84,15 @@ const DOCUMENTOS = [
   // 7 nov. 2026, 8.7: compartir v26 (ES) y v27 (EN), sin "Termina más empezando menos" y la pág. 11 con para qué sirve un límite.
   // 12 nov. 2026, 8.11: compartir v27 (ES) y v28 (EN), el informe vuelve a ser "el extenso": el texto del v22 (v23 en inglés) más la página de las urgencias, 18 hojas. El resumen va aparte.
   // 13 nov. 2026, 8.12: compartir v28 (ES) y v29 (EN), sin dos puntos en nada de lo que se lee ("elimina los : en todos lados"), salvo las horas del reloj. Mismas 18 hojas y misma paginación, ningún número ni fuente cambia. Las fuentes anteriores quedan en docs/contexto/v27/ y v28/.
-  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v28', paginas: [18, 18] },
-  { id: 'compartir-en', html: 'compartir-en.html', nombre: 'Para compartir en inglés', version: 'v29', paginas: [18, 18] },
+  // 14 nov. 2026, 8.14: compartir v29 (ES) y v30 (EN), con la ley de Little y su condición, "al mismo ritmo de salida" ("at the same output rate"), en el dato freak de la pág. 5, la tabla de reglas de la pág. 2 y la tabla "Cada número y de dónde sale" del anexo B (pág. 14). Mismas 18 hojas y misma paginación, ningún número ni fuente cambia. Las fuentes anteriores quedan en docs/contexto/v28/compartir.html y v29/compartir-en.html.
+  { id: 'compartir', html: 'compartir.html', nombre: 'Para compartir', version: 'v29', paginas: [18, 18] },
+  { id: 'compartir-en', html: 'compartir-en.html', nombre: 'Para compartir en inglés', version: 'v30', paginas: [18, 18] },
   // Etapa 8.6 (2026-11-06): el resumen de 4 páginas con el mensaje nuevo, en español e inglés (DOC=resumen y DOC=resumen-en)
   // Etapa 8.7 (2026-11-07): el v2, de nuevo desde cero, en prosa: una columna de 4 páginas en primera persona
   // 12 nov. 2026, 8.11: el v3, el resumen ejecutivo, aparte del informe: 2 hojas con la identidad de la portada (los dos tableros de noche sobre blanco y Mona Sans; estilo en docs/contexto/resumen.css; el v2 quedó en docs/contexto/resumen-v2/)
-  { id: 'resumen', html: 'resumen.html', nombre: 'Resumen', version: 'v3', paginas: [2, 2], aparte: true },
-  { id: 'resumen-en', html: 'resumen-en.html', nombre: 'Summary', version: 'v3', paginas: [2, 2], aparte: true },
+  // 14 nov. 2026, 8.14: el v4, sin la bajada de "¿Qué ganó la mosca…?", con "al mismo ritmo de salida" en la ley de Little y con la letra fija (letrasFijas): al copiar el texto, los títulos ya no salen pegados
+  { id: 'resumen', html: 'resumen.html', nombre: 'Resumen', version: 'v4', paginas: [2, 2], aparte: true, letrasFijas: true },
+  { id: 'resumen-en', html: 'resumen-en.html', nombre: 'Summary', version: 'v4', paginas: [2, 2], aparte: true, letrasFijas: true },
   { id: 'norte', html: 'norte.html', nombre: 'Norte del proyecto', version: 'v1', paginas: [1, 2], aparte: true },
   { id: 'etapa4-1', html: 'etapa4-1.html', nombre: 'Etapa 4.1 La paradoja', version: 'v1', paginas: [1, 3], aparte: true },
   { id: 'etapa4-2', html: 'etapa4-2.html', nombre: 'Etapa 4.2 Robustez', version: 'v1', paginas: [1, 3], aparte: true },
@@ -120,7 +123,8 @@ const DOCUMENTOS = [
   // 7 nov. 2026, 8.7: borradores v3, sin "termina más empezando menos" (los borradores 1 y 6 vuelven a su texto de antes de la 8.6)
   // 10 nov. 2026, 8.8: borradores v4, el artículo dice "Sí, la pusimos a chambear." donde decía "Nadie le preguntó." (igual que la portada)
   // 13 nov. 2026, 8.12: borradores v5, sin dos puntos (los rótulos Título, URL y Text van solos en su línea) y con el informe como descarga
-  { id: 'borradores', html: 'borradores.html', nombre: 'Borradores de difusión', version: 'v5', paginas: [9, 10], aparte: true },
+  // 14 nov. 2026, 8.14: borradores v6, el borrador 1 con la ley de Little y su condición ("Que, al mismo ritmo de salida, cada tarea tarde más…")
+  { id: 'borradores', html: 'borradores.html', nombre: 'Borradores de difusión', version: 'v6', paginas: [9, 10], aparte: true },
 ];
 const SITIO = 'http://localhost:5173'; // raíz del sitio (portada, docs)
 const JUEGO = `${SITIO}/jugar/`; // el juego vive en /jugar/ desde la Etapa 5.1
@@ -426,6 +430,114 @@ if (process.env.FOTOS) {
   }
 }
 
+// (8.14, 2026-11-14) La letra fija del resumen. Felipe copió el texto del
+// resumen desde el visor de PDF de Chrome y los títulos salieron pegados
+// ("Ocupadotodoeldía."). Los lectores de PDF no ven los espacios, miran dónde
+// queda cada letra y su ancho. Los títulos tienen las letras más juntas
+// (letter-spacing negativo), así que el hueco entre palabras parece el de dos
+// letras seguidas. Además Mona Sans es una letra variable, y Chrome la guarda
+// como "Type 3", con la que pdftotext -raw pega todo el texto. Aquí, antes de
+// imprimir, cada texto en Mona Sans pasa a una copia fija de la letra con su
+// grueso y su ancho, y con el espaciado entre letras ya incluido en el ancho
+// de cada una (las arma scripts/letras-pdf.py en docs/contexto/letras-pdf/).
+// Cada letra queda donde estaba, y eso se comprueba: si algo se mueve más de
+// una décima de píxel, el PDF no se arma (las copias redondean el ancho de cada
+// letra a la milésima de em, y eso mueve algunos textos hasta 0,03 px, menos
+// de una centésima de milímetro).
+// La holgura: con eso solo, el visor de Chrome todavía pegaba "El trabajo" y
+// "your team". Ese visor pone un espacio entre dos palabras solo si el hueco es
+// más ancho que la mitad de la letra más ancha de las dos que lo rodean, cuando
+// las dos son angostas (menos de 0,4 em, como la l, la r o la t). En los
+// títulos con las letras más juntas el espacio mide 0,18 a 0,19 em, y la r o la
+// t, 0,39. Por eso, en los textos con espaciado negativo, la copia lleva
+// HOLGURA milésimas de em menos por letra y el CSS se las devuelve con
+// letter-spacing. Cada letra sigue en su lugar, pero el PDF muestra después de
+// cada letra un hueco de 0,04 em (ningún lector lo toma por un espacio, todos
+// piden más de 0,07 em) y entre palabras uno de 0,22 em o más (más que la
+// mitad de cualquier letra angosta).
+const HOLGURA = 40;
+const LETRAS_PDF = join(CARPETA, 'letras-pdf');
+const PYTHON_LETRAS = resolve('.venv-datos/bin/python');
+const claveLetra = ({ wght, wdth, track }) => `w${wght}-d${String(wdth).replace('.', '_')}-t${track < 0 ? 'm' : track > 0 ? 'p' : ''}${String(Math.abs(track)).padStart(3, '0')}`;
+const letraDe = (t) => ({ wght: t.wght, wdth: t.wdth, track: t.track - t.holgura });
+async function fijarLetras(p) {
+  // 1. Qué letra usa cada texto (antes de cambiar nada)
+  const textos = await p.evaluate(() => {
+    const lista = [];
+    const vistos = new Set();
+    const caminante = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    for (let n = caminante.nextNode(); n; n = caminante.nextNode()) {
+      const el = n.parentElement;
+      if (!n.textContent.trim() || vistos.has(el)) continue;
+      vistos.add(el);
+      const cs = getComputedStyle(el);
+      if (!/Mona Sans/.test(cs.fontFamily)) continue;
+      const tam = parseFloat(cs.fontSize);
+      el.dataset.letraPdf = String(lista.length);
+      const r = el.getBoundingClientRect();
+      lista.push({ wght: Math.round(parseFloat(cs.fontWeight)), wdth: parseFloat(cs.fontStretch), estilo: cs.fontStyle, espaciado: (parseFloat(cs.letterSpacing) || 0) / tam, ligaduras: cs.fontVariantLigatures, caja: [r.left, r.top, r.width, r.height] });
+    }
+    // las letras que Mona Sans muestra con ::before o ::after, o con las viñetas, quedarían sin copia fija
+    const sueltos = [...document.querySelectorAll('*')].filter((el) => ['::before', '::after', '::marker'].some((ps) => {
+      const cs = getComputedStyle(el, ps);
+      return /Mona Sans/.test(cs.fontFamily) && /["'][^"']*\S[^"']*["']/.test(cs.content ?? '') && (ps !== '::marker' || getComputedStyle(el).display === 'list-item');
+    })).length;
+    return { lista, sueltos };
+  });
+  if (textos.sueltos) throw new Error(`letra fija: ${textos.sueltos} textos de ::before, ::after o viñetas en Mona Sans, que este paso no sabe cambiar`);
+  const raras = textos.lista.filter((t) => t.estilo !== 'normal' || Math.abs(t.espaciado * 1000 - Math.round(t.espaciado * 1000)) > 0.05);
+  if (raras.length) throw new Error(`letra fija: estilos que no sé copiar (cursiva o espaciado que no es de milésimas de em): ${JSON.stringify(raras.slice(0, 3))}`);
+  for (const t of textos.lista) {
+    t.track = Math.round(t.espaciado * 1000) || 0;
+    t.holgura = t.track < 0 ? HOLGURA : 0;
+  }
+  // 2. Las copias que faltan, con scripts/letras-pdf.py
+  const combinaciones = [...new Map(textos.lista.map((t) => [claveLetra(letraDe(t)), letraDe(t)])).values()];
+  const faltan = combinaciones.filter((c) => !existsSync(join(LETRAS_PDF, `letra-pdf-${claveLetra(c)}.woff2`)));
+  if (faltan.length) {
+    try {
+      execFileSync(PYTHON_LETRAS, ['scripts/letras-pdf.py', JSON.stringify(faltan)], { stdio: 'inherit' });
+    } catch {
+      throw new Error(`letra fija: faltan ${faltan.length} copias de la letra y no se pudieron armar. Instalar una vez con "uv pip install --python .venv-datos/bin/python fonttools brotli" y volver a correr`);
+    }
+  }
+  // 3. Ponerlas: cada texto con su copia, y de espaciado solo la holgura (el
+  // resto ya va dentro de la letra)
+  const css = combinaciones
+    .map((c) => `@font-face { font-family: 'Letra PDF ${claveLetra(c)}'; src: url('${pathToFileURL(join(LETRAS_PDF, `letra-pdf-${claveLetra(c)}.woff2`)).href}') format('woff2'); font-weight: ${c.wght}; font-stretch: ${c.wdth}%; font-style: normal; }`)
+    .concat(
+      textos.lista.map(
+        (t, i) =>
+          `[data-letra-pdf="${i}"] { font-family: 'Letra PDF ${claveLetra(letraDe(t))}' !important; letter-spacing: ${t.holgura ? `${t.holgura / 1000}em` : '0'} !important;${t.track ? ' font-variant-ligatures: no-common-ligatures !important;' : ''} }`,
+      ),
+    )
+    .join('\n');
+  await p.addStyleTag({ content: css });
+  await p.evaluate(async (familias) => {
+    await Promise.all(familias.map((f) => document.fonts.load(`16px '${f}'`)));
+    await document.fonts.ready;
+  }, combinaciones.map((c) => `Letra PDF ${claveLetra(c)}`));
+  // 4. Que nada se haya movido
+  const despues = await p.evaluate((n) => {
+    const fuera = [];
+    for (let i = 0; i < n; i++) {
+      const el = document.querySelector(`[data-letra-pdf="${i}"]`);
+      const r = el.getBoundingClientRect();
+      const familia = getComputedStyle(el).fontFamily;
+      fuera.push({ caja: [r.left, r.top, r.width, r.height], familia });
+    }
+    return fuera;
+  }, textos.lista.length);
+  const movidos = textos.lista
+    .map((t, i) => ({ i, d: Math.max(...t.caja.map((v, k) => Math.abs(v - despues[i].caja[k]))) }))
+    .filter((x) => x.d > 0.001);
+  const masMovido = Math.max(0, ...movidos.map((x) => x.d));
+  if (masMovido > 0.1) throw new Error(`letra fija: ${movidos.length} textos se movieron (el más, ${masMovido.toFixed(3)} px)`);
+  const usadas = await p.evaluate(() => [...document.fonts].filter((f) => f.family.startsWith('Letra PDF') && f.status !== 'loaded').map((f) => f.family));
+  if (usadas.length) throw new Error(`letra fija: no cargaron ${usadas.join(', ')}`);
+  console.log(`letra fija: ${textos.lista.length} textos con ${combinaciones.length} copias de Mona Sans (${movidos.length ? `${movidos.length} se corrieron hasta ${masMovido.toFixed(3)} px` : 'ninguno se movió'})`);
+}
+
 // Los PDF. Revisión: ninguna página puede desbordarse (se cortaría el texto),
 // ninguna imagen puede faltar, y cada uno debe quedar en su rango de páginas.
 const pedido = process.env.DOC;
@@ -446,6 +558,7 @@ for (const doc of DOCUMENTOS.filter((d) => (pedido ? d.id === pedido : !d.aparte
   if (doc.paginas && (revision.hojas < doc.paginas[0] || revision.hojas > doc.paginas[1])) {
     console.log(`OJO (${doc.id}): tiene ${revision.hojas} páginas y debe tener entre ${doc.paginas[0]} y ${doc.paginas[1]}`);
   }
+  if (doc.letrasFijas) await fijarLetras(p);
   const salida = join(SALIDA, `${FECHA} ${doc.nombre} ${process.env.VERSION ?? doc.version}.pdf`);
   await p.pdf({ path: salida, preferCSSPageSize: true, printBackground: true, margin: { top: 0, bottom: 0, left: 0, right: 0 } });
   // Etapa 8.6 (punto 9): todo PDF nuevo lleva en sus propiedades el autor,

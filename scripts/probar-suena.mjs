@@ -24,6 +24,17 @@
 // 10. el cerebro en 3D, que desde la 8.13 vive en "¿Por qué una mosca?", no se
 //     baja al entrar: se pide al acercarse a su sección, se enciende, y su
 //     consola sube sola de 2 a 10 cuando ya se ve.
+// Desde la 8.14 (2026-11-14), la primera pantalla del celular:
+// 11. mientras el dibujo espera a verse (o carga) muestra la escena completa y
+//     quieta, nunca una caja vacía. Cuando se ve, se queda un momento, los
+//     pedidos se van y vuelven a llegar de a uno;
+// 12. en celulares (también con las barras de Safari a la vista y acostados)
+//     la primera pantalla es el título, la bajada y Jugar: el rótulo chico no
+//     está y el dibujo empieza justo después, sin asomarse. En las tablets
+//     altas el dibujo cabe entero junto al texto, y en las otras va después.
+//     En el computador el rótulo sigue y la flecha no se ve;
+// 13. la flecha chica lleva al dibujo y ahí se mueve de verdad (con
+//     NAVEGADOR=webkit, en el motor de Safari).
 // Uso: node scripts/probar-suena.mjs [dirección]   (con npm run dev, con
 // npx vite preview o la dirección publicada; NAVEGADOR=webkit usa el motor de
 // Safari). Debe decir "dibujo del inicio: todo bien".
@@ -58,6 +69,21 @@ const TEXTOS = {
   },
 };
 const ANCHOS = [320, 344, 360, 375, 390, 414, 430, 480, 540, 600, 768, 820, 899, 900, 960, 1024, 1100, 1280, 1440, 1920, 2560];
+// La primera pantalla en celulares y tablets (8.14): nombre, ancho, alto y qué
+// se espera. "celular" y "acostado" = el dibujo empieza justo después de la
+// primera pantalla; "tablet-alta" = el texto y el dibujo entero en la primera
+// pantalla; "tablet" = el dibujo después; "computador" = como siempre. Los
+// altos "barras" son los de Safari con sus barras a la vista
+const PRIMERA = [
+  ['iphone-se', 375, 667, 'celular'], ['iphone-se-barras', 375, 548, 'celular'],
+  ['iphone-15', 393, 852, 'celular'], ['iphone-15-barras', 393, 659, 'celular'],
+  ['iphone-felipe', 430, 932, 'celular'], ['iphone-felipe-barras', 430, 739, 'celular'],
+  ['android', 412, 915, 'celular'], ['android-chico', 360, 640, 'celular'],
+  ['acostado', 852, 393, 'acostado'], ['acostado-grande', 932, 430, 'acostado'],
+  ['tablet', 820, 1180, 'tablet-alta'], ['tablet-barras', 820, 1106, 'tablet-alta'],
+  ['tablet-768', 768, 1024, 'tablet'], ['tablet-600', 600, 960, 'tablet'],
+  ['computador', 1440, 900, 'computador'], ['macbook-felipe', 1512, 860, 'computador'], ['ventana-felipe', 1906, 837, 'computador'],
+];
 // Pantallas donde el dibujo tiene que caber (ancho, alto, táctil)
 const ENTERAS = [
   [320, 568, true], [360, 800, true], [375, 667, true], [390, 844, true], [430, 932, true], [768, 1024, true],
@@ -175,8 +201,13 @@ async function probarIdioma(idioma) {
     const notas = await leerNotas(pagina);
     const N = notas.at(-1)?.cuantos ?? 0;
     revisar(N === 14, `en el computador debían verse 14 pedidos y se ven ${N}`);
-    const primera = notas.filter((m) => m.vuelta === 0);
+    // (desde la 8.14 la primera vuelta parte con la escena completa, que se
+    // queda un momento y se va: se mide desde que no queda ningún pedido)
+    const vuelta0 = notas.filter((m) => m.vuelta === 0);
+    const vaciaEn = vuelta0.findIndex((m) => m.llegados.length === 0);
+    const primera = vaciaEn >= 0 ? vuelta0.slice(vaciaEn) : [];
     const segunda = notas.filter((m) => m.vuelta === 1);
+    revisar(vaciaEn >= 0, 'en la primera vuelta la escena completa nunca se fue');
     revisar(primera.length > 0 && segunda.length > 0, 'el dibujo no llegó a dar una vuelta y empezar otra solo');
     if (primera.length && segunda.length) {
       // llegan de a uno y ninguno se va antes de tiempo
@@ -348,6 +379,114 @@ async function probarIdioma(idioma) {
     } else {
       revisar(m.arriba >= m.barra - 1 && m.abajo <= m.pantalla + 1, `en ${ancho} × ${alto} la lámina no cabe entera en la primera pantalla (va de ${Math.round(m.arriba)} a ${Math.round(m.abajo)} y la pantalla mide ${m.pantalla})`);
     }
+    await contexto.close();
+  }
+
+  // ---------- 11 a 13. La primera pantalla en el celular (8.14) ----------
+  for (const [nombre, ancho, alto, tipo] of PRIMERA) {
+    const tactil = tipo !== 'computador';
+    const { contexto, pagina, errores } = await abrir(T.ruta, {
+      viewport: { width: ancho, height: alto },
+      hasTouch: tactil,
+      isMobile: tactil,
+      deviceScaleFactor: tactil ? 2 : 1,
+    });
+    await pagina.waitForFunction(() => window.__mosca?.suena, null, { timeout: 15000 });
+    await pagina.waitForTimeout(600);
+    const m = await pagina.evaluate(() => {
+      const raiz = document.querySelector('.suena');
+      const caja = raiz.getBoundingClientRect();
+      const barra = document.querySelector('.barra')?.getBoundingClientRect().bottom ?? 0;
+      const rotulo = document.querySelector('.hero .rotulo');
+      const jugar = document.querySelector('.hero [data-jugar]').getBoundingClientRect();
+      const h1 = document.querySelector('.hero h1').getBoundingClientRect();
+      const flecha = document.querySelector('.hero .bajar');
+      const fr = flecha?.getBoundingClientRect();
+      const visibles = [...raiz.querySelectorAll('[data-globo]')].filter((g) => getComputedStyle(g).display !== 'none');
+      return {
+        arriba: caja.top,
+        abajo: caja.bottom,
+        barra,
+        pantalla: innerHeight,
+        rotulo: rotulo ? getComputedStyle(rotulo).display !== 'none' && rotulo.getBoundingClientRect().height > 0 : false,
+        jugarAbajo: jugar.bottom,
+        tituloArriba: h1.top,
+        // (el dibujo de la flecha, 22 px, va al medio de su zona de 44 px para el dedo)
+        flecha: flecha && getComputedStyle(flecha).display !== 'none' ? { arriba: fr.top, abajo: flecha.querySelector('svg').getBoundingClientRect().bottom, ancho: fr.width, alto: fr.height } : null,
+        estado: raiz.dataset.estado,
+        animo: raiz.dataset.animo,
+        llegaron: visibles.filter((g) => g.classList.contains('llego')).length,
+        cuantos: visibles.length,
+        opacos: visibles.filter((g) => getComputedStyle(g).opacity !== '1').length,
+        desborde: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      };
+    });
+    const donde = `${nombre} (${ancho} × ${alto})`;
+    revisar(m.desborde <= 0, `${donde}: la página se sale ${m.desborde} px hacia el lado`);
+    if (tipo === 'computador') {
+      revisar(m.rotulo, `${donde}: en el computador el rótulo chico tiene que seguir arriba del título`);
+      revisar(!m.flecha, `${donde}: en el computador no va la flecha hacia el dibujo`);
+      revisar(m.arriba >= m.barra - 1 && m.abajo <= m.pantalla + 1, `${donde}: el dibujo no cabe entero en la primera pantalla (de ${Math.round(m.arriba)} a ${Math.round(m.abajo)})`);
+    } else {
+      revisar(!m.rotulo, `${donde}: el rótulo chico sigue en la primera pantalla y repite el título`);
+      revisar(m.tituloArriba >= m.barra - 1, `${donde}: el título queda bajo la barra`);
+      revisar(m.jugarAbajo <= m.pantalla, `${donde}: "Jugar" no cabe en la primera pantalla (termina en ${Math.round(m.jugarAbajo)} y la pantalla mide ${m.pantalla})`);
+      if (tipo === 'tablet-alta') {
+        revisar(m.arriba >= m.barra - 1 && m.abajo <= m.pantalla + 1, `${donde}: en la tablet alta el dibujo debía caber entero junto al texto (va de ${Math.round(m.arriba)} a ${Math.round(m.abajo)})`);
+      } else {
+        // nunca asoma a medias: empieza después de la primera pantalla
+        revisar(m.arriba >= m.pantalla, `${donde}: el dibujo asoma en la primera pantalla (empieza en ${Math.round(m.arriba)} y la pantalla mide ${m.pantalla})`);
+        // mientras espera, la escena completa y quieta (nunca una caja vacía)
+        revisar(m.estado === 'por-partir' && m.llegaron === m.cuantos && m.opacos === 0 && m.animo === 'colapsada', `${donde}: mientras espera, el dibujo no muestra la escena completa (${m.estado}, ${m.llegaron} de ${m.cuantos} pedidos, ${m.opacos} sin ver, mosca ${m.animo})`);
+        if (tipo === 'celular' || tipo === 'tablet') {
+          revisar(!!m.flecha && m.flecha.abajo <= m.pantalla && m.flecha.ancho >= 44 && m.flecha.alto >= 44, `${donde}: falta la flecha hacia el dibujo, o no se ve entera, o mide menos de 44 px (${JSON.stringify(m.flecha)})`);
+        }
+      }
+    }
+    // la flecha lleva al dibujo y ahí se mueve de verdad: la escena completa
+    // se va y los pedidos vuelven a llegar
+    if (m.flecha && m.flecha.abajo <= m.pantalla && tactil) {
+      await pagina.locator('.hero .bajar').tap();
+      const partio = await pagina.waitForFunction(() => document.querySelector('.suena').dataset.estado === 'andando', null, { timeout: 6000 }).then(() => true, () => false);
+      revisar(partio, `${donde}: después de la flecha el dibujo no partió`);
+      // (la página baja suave: se mide cuando se detiene)
+      await pagina.waitForFunction(
+        () =>
+          new Promise((listo) => {
+            let antes = scrollY;
+            let quieta = 0;
+            const vez = setInterval(() => {
+              quieta = scrollY === antes ? quieta + 1 : 0;
+              antes = scrollY;
+              if (quieta >= 4) {
+                clearInterval(vez);
+                listo(true);
+              }
+            }, 80);
+          }),
+        null,
+        { timeout: 8000 },
+      );
+      const lugar = await pagina.evaluate(() => {
+        const c = document.querySelector('.suena').getBoundingClientRect();
+        return { arriba: c.top, abajo: c.bottom, pantalla: innerHeight, barra: document.querySelector('.barra')?.getBoundingClientRect().bottom ?? 0 };
+      });
+      revisar(lugar.arriba >= lugar.barra - 1 && lugar.arriba < lugar.pantalla / 2, `${donde}: la flecha no dejó el dibujo a la vista bajo la barra (empieza en ${Math.round(lugar.arriba)})`);
+      const seFueron = await pagina.waitForFunction(() => window.__mosca.suena.llegaron() === 0, null, { timeout: 5000 }).then(() => true, () => false);
+      const llegan = await pagina.waitForFunction(() => window.__mosca.suena.llegaron() >= 2, null, { timeout: 6000 }).then(() => true, () => false);
+      revisar(seFueron && llegan, `${donde}: el dibujo no se mueve (se fueron ${seFueron}, llegan ${llegan})`);
+      // y se ve moverse: el pedido que llegó se ve entero y el que falta, no
+      await pagina.waitForTimeout(600);
+      const se = await pagina.evaluate(() => {
+        const visibles = [...document.querySelectorAll('.suena [data-globo]')].filter((g) => getComputedStyle(g).display !== 'none');
+        return {
+          llegados: visibles.filter((g) => g.classList.contains('llego')).map((g) => getComputedStyle(g).opacity),
+          faltan: visibles.filter((g) => !g.classList.contains('llego')).map((g) => getComputedStyle(g).opacity),
+        };
+      });
+      revisar(se.llegados.length >= 2 && se.llegados.some((o) => o === '1') && se.faltan.every((o) => o === '0'), `${donde}: los pedidos no se ven llegar (${JSON.stringify(se)})`);
+    }
+    revisar(errores.length === 0, `${donde}: errores ${errores.slice(0, 3).join(' | ')}`);
     await contexto.close();
   }
 

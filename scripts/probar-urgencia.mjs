@@ -9,7 +9,13 @@
 // 5 el botón dice "Hoy ya llegaron 5"; cambiar el límite antes de las 09:15
 // rearma el día sin urgencias. Y (8.4) una urgencia a las 17:50 que no alcanza
 // a terminar: el resumen, el aviso y las tablas dicen "(1 quedó a medias)".
-// Capturas en docs/etapa8-3-capturas/.
+// (8.14, 2026-11-14) En el resumen grande, el número de Terminadas son las
+// normales y debajo, en chico, "+ 2 urgencias · 1 a medias". Cuánto tardó cada
+// urgencia va como segunda línea de "Tiempo por tarea" (#cf-tardaron). Y en
+// el cuadro "Terminadas" del panel, con 5 urgencias, "13 + 5" va en una línea
+// y dentro de su cuadro (antes quedaba "13 +" arriba y "5" abajo).
+// Capturas en docs/etapa8-3-capturas/ (son de la 8.3: después de correr esta
+// prueba, devolverlas con git checkout para no reescribir la historia).
 // Requiere npm run dev. Uso: node scripts/probar-urgencia.mjs → "urgencia: todo bien"
 import { chromium, devices } from 'playwright';
 import { mkdirSync } from 'node:fs';
@@ -32,6 +38,8 @@ const T = {
     tardo: (m, u) => `${u === 1 ? 'La urgencia tardó' : 'Cada urgencia tardó'} ${m} min desde que llegó`,
     aMedias: (n) => ` (${n} ${n === 1 ? 'quedó' : 'quedaron'} a medias)`,
     aMediasCorto: (n) => ` (${n} a medias)`,
+    // (8.14) la línea chica bajo el número grande de Terminadas
+    extra: (u, a = 0) => (u > 0 ? `+ ${u} ${u === 1 ? 'urgencia' : 'urgencias'}${a ? ` · ${a} a medias` : ''}` : `${a} ${a === 1 ? 'urgencia' : 'urgencias'} a medias`),
   },
   en: {
     boton: 'Send an urgent task', enCurso: 'An urgent task is in progress', tope: '5 already arrived today', llego: 'An urgent task arrived', urgente: 'Urgent', normales: ' (regular)',
@@ -39,6 +47,7 @@ const T = {
     tardo: (m, u) => `${u === 1 ? 'The urgent task took' : 'Each urgent task took'} ${m} min from arrival`,
     aMedias: (n) => ` (${n} left unfinished)`,
     aMediasCorto: (n) => ` (${n} unfinished)`,
+    extra: (u, a = 0) => (u > 0 ? `+ ${u} urgent${a ? ` · ${a} unfinished` : ''}` : `${a} urgent ${a === 1 ? 'task' : 'tasks'} unfinished`),
   },
 };
 
@@ -81,9 +90,26 @@ const leer = (p) =>
       textosKanban: window.__mosca.textosEscena().kanban,
       mHechas: texto('m-hechas'),
       mHechasTitulo: el('m-hechas').getAttribute('title'),
+      // (8.14) "13 + 5" en una línea y dentro de su cuadro: el "+ 5" va a la
+      // derecha del número y a su altura (antes quedaba "13 +" arriba y "5" abajo)
+      mHechasUnaLinea: (() => {
+        const v = el('m-hechas');
+        const todo = document.createRange();
+        todo.selectNodeContents(v);
+        // cada pedazo del texto, por dónde termina abajo: en la misma línea
+        // quedan a pocos px (el "+ 5" es más chico); en otra, a una línea entera
+        const alto = parseFloat(getComputedStyle(v).fontSize) * 1.1;
+        const abajo = [...todo.getClientRects()].filter((q) => q.width > 0).map((q) => q.bottom).sort((a, b) => a - b);
+        let lineas = abajo.length ? 1 : 0;
+        for (let i = 1; i < abajo.length; i++) if (abajo[i] - abajo[i - 1] > alto * 0.5) lineas++;
+        const caja = v.closest('.metrica');
+        const borde = caja.getBoundingClientRect().right - parseFloat(getComputedStyle(caja).paddingRight);
+        return lineas === 1 && todo.getBoundingClientRect().right <= borde + 0.5;
+      })(),
       mTiempoNota: el('m-tiempo-nota').textContent,
       cfHechas: texto('cf-hechas'),
       cfUrg: el('cf-urgencias').hidden ? null : texto('cf-urgencias'),
+      cfTardaron: el('cf-tardaron').hidden ? null : texto('cf-tardaron'),
       cfTiempoNota: el('cf-tiempo-nota').textContent,
       // las dos líneas del aviso de fin del día (van una bajo la otra)
       banner: el('banner-urgencias').hidden ? null : `${texto('banner-urgencias-hechas')} ${texto('banner-urgencias-tardo')}`.trim(),
@@ -159,11 +185,19 @@ async function probarComputador(idioma) {
   const urgAntes = (await tareas(p)).find((x) => x.urgente);
   let avanzo = false;
   let normalesQuietas = true;
-  for (let i = 0; i < 20 && !avanzo; i++) {
+  // (8.14) La urgencia es una tarea como las demás y a veces se traba
+  // esperando a otra persona (30 a 60 minutos, docs/etapa8-2-criterios.md).
+  // Mientras está trabada, la mosca sigue con las normales, que es la regla:
+  // desde ese momento no se miran (antes la prueba fallaba de a ratos por eso)
+  // y se espera más a que la urgencia avance
+  let trabada = false;
+  for (let i = 0; i < 40 && !avanzo; i++) {
     await p.evaluate(() => window.__mosca.adelantar(3));
     const ahora = await tareas(p);
     const u1 = ahora.find((x) => x.urgente);
+    if (u1?.bloqueada) trabada = true;
     avanzo = !!u1 && u1.restante < urgAntes.restante - 1e-9;
+    if (trabada) continue;
     for (const a of antes) {
       const d = ahora.find((x) => x.id === a.id);
       if (d && Math.abs(d.restante - a.restante) > 1e-9) normalesQuietas = false;
@@ -190,7 +224,7 @@ async function probarComputador(idioma) {
   revisar(!v.kanban.enCurso.some((c) => c.urgente), eti('En curso queda sin urgentes'));
   revisar(v.visible && !v.apagado && v.texto === t.boton, eti(`el botón vuelve a decir «${v.texto}»`));
   revisar(v.mHechas === `${v.hechasNormales} + 1` && v.mHechasTitulo === t.hechas(v.hechasNormales, 1), eti(`Terminadas del panel: «${v.mHechas}» (${v.mHechasTitulo})`));
-  revisar(v.cfHechas === t.hechas(v.hechasNormales, 1) && v.cfUrg === null, eti(`Terminadas en grande: «${v.cfHechas}», sin la línea del tiempo hasta terminar el día`));
+  revisar(v.cfHechas === String(v.hechasNormales) && v.cfUrg === t.extra(1) && v.cfTardaron === null, eti(`Terminadas en grande: «${v.cfHechas}» y «${v.cfUrg}», sin la línea del tiempo hasta terminar el día`));
   revisar(v.mTiempoNota === t.normales && v.cfTiempoNota === t.normales, eti(`el rótulo del tiempo por tarea dice «${v.mTiempoNota.trim()}»`));
 
   // Segunda urgencia, apretada en Exhibición (con su aviso), y captura
@@ -207,8 +241,8 @@ async function probarComputador(idioma) {
   v = await leer(p);
   const m = await tardoEsperado(p);
   revisar(v.terminado && !v.visible, eti('al cierre el botón no se ve'));
-  revisar(v.cfHechas === t.hechas(v.hechasNormales, 2), eti(`Resumen del día · Terminadas: «${v.cfHechas}»`));
-  revisar(v.cfUrg === t.tardo(m, 2), eti(`Resumen del día: «${v.cfUrg}»`));
+  revisar(v.cfHechas === String(v.hechasNormales) && v.cfUrg === t.extra(2), eti(`Resumen del día · Terminadas: «${v.cfHechas}» y «${v.cfUrg}»`));
+  revisar(v.cfTardaron === t.tardo(m, 2), eti(`Resumen del día, bajo el tiempo por tarea: «${v.cfTardaron}»`));
   revisar(v.exFin[v.exFin.length - 1]?.[0] === `${v.hechasNormales} + 2`, eti(`la tabla del fin del día dice «${v.exFin[v.exFin.length - 1]?.[0]}»`));
   await p.screenshot({ path: `${DIR}/${idioma}-exhibicion-resumen.png` });
   await p.evaluate(() => window.__mosca.vista('control'));
@@ -238,6 +272,7 @@ async function probarComputador(idioma) {
   const m5 = await tardoEsperado(p);
   revisar(v.banner === `${t.hechas(v.hechasNormales, 5)}. ${t.tardo(m5, 5)}.`, eti(`día 2 · aviso: «${v.banner}»`));
   revisar(v.mHechas === `${v.hechasNormales} + 5`, eti(`día 2 · Terminadas del panel: «${v.mHechas}»`));
+  revisar(v.mHechasUnaLinea, eti(`día 2 · Terminadas del panel en una línea y dentro de su cuadro: «${v.mHechas}»`));
   if (idioma === 'es') await p.screenshot({ path: `${DIR}/control-resumen-5-urgencias.png` });
 
   // Día 3, sin apretar el botón: el resumen de siempre (números solos, nada más)
@@ -246,7 +281,7 @@ async function probarComputador(idioma) {
   await p.evaluate(() => window.__mosca.completarDia());
   await p.waitForTimeout(600);
   v = await leer(p);
-  revisar(/^\d+$/.test(v.mHechas) && v.mHechasTitulo === null && /^\d+$/.test(v.cfHechas) && v.cfUrg === null && v.banner === null && v.mTiempoNota === '' && v.cfTiempoNota === '', eti('sin urgencias, el resumen es el de siempre'));
+  revisar(/^\d+$/.test(v.mHechas) && v.mHechasTitulo === null && /^\d+$/.test(v.cfHechas) && v.cfUrg === null && v.cfTardaron === null && v.banner === null && v.mTiempoNota === '' && v.cfTiempoNota === '', eti('sin urgencias, el resumen es el de siempre'));
   revisar(v.tabla.length === 3 && /^\d+$/.test(v.tabla[2][0]) && v.tabla[2][1] === null, eti('sin urgencias, la tabla es la de siempre'));
 
   // Día 4: una urgencia a las 09:05 y cambiar el límite antes de las 09:15 rearma sin urgencias
@@ -279,7 +314,7 @@ async function probarComputador(idioma) {
   v = await leer(p);
   const aMedias = t.hechas(v.hechasNormales, 0) + t.aMedias(1);
   revisar(v.terminado && v.urg.terminadas === 0 && v.urg.llegadas === 1, eti('día 5: la urgencia quedó sin terminar al cierre'));
-  revisar(v.cfHechas === aMedias && v.cfUrg === null, eti(`día 5 · Resumen del día: «${v.cfHechas}», sin línea de cuánto tardó`));
+  revisar(v.cfHechas === String(v.hechasNormales) && v.cfUrg === t.extra(0, 1) && v.cfTardaron === null, eti(`día 5 · Resumen del día: «${v.cfHechas}» y «${v.cfUrg}», sin línea de cuánto tardó`));
   revisar(v.mHechas === `${v.hechasNormales} + 0` && v.mHechasTitulo === aMedias, eti(`día 5 · Terminadas del panel: «${v.mHechas}» (${v.mHechasTitulo})`));
   revisar(v.banner === `${aMedias}.` && v.bannerTardoOculto, eti(`día 5 · aviso: «${v.banner}»`));
   const ultima = v.tabla[v.tabla.length - 1];

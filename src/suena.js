@@ -19,6 +19,15 @@
 // decide el CSS), así que en cada vuelta se cuentan los que se ven. Sin
 // JavaScript o con "reducir movimiento" se ven todos los pedidos y la mosca al
 // final, quietos.
+//
+// (8.14, 2026-11-14) El dibujo nunca es una caja vacía. Mientras carga y
+// mientras espera a verse, muestra la escena completa y quieta, igual que sin
+// JavaScript: todos los pedidos y la mosca al final. Antes esperaba vacío, y
+// en el celular asomaba abajo de la primera pantalla como una caja negra.
+// Cuando se ve, la escena se queda un momento, los pedidos se van y empiezan a
+// llegar de a uno, como en cada vuelta. No es un video, así que el modo de
+// bajo consumo del iPhone no lo detiene.
+const AL_PARTIR = 700; // ms con la escena completa antes de que se vayan, la primera vez que se ve
 const PARTE = 500; // ms antes del primer pedido de cada vuelta
 const CADA = 430; // ms entre un pedido y el siguiente
 const QUEDA = 3200; // ms con todos los pedidos a la vista (alcanza para leer la frase de abajo)
@@ -93,9 +102,12 @@ export function iniciarSuena() {
     brillos.style.transform = `translate(${(lado * 3.2).toFixed(1)}px, -1.6px)`;
   }
 
+  // Los pedidos que se ven en este ancho (el CSS esconde algunos en las láminas angostas)
+  const visibles = () => todos.filter((g) => getComputedStyle(g).display !== 'none');
+
   // Una vuelta: llegan de a uno, se quedan un rato, se van y la mosca respira
   function empezarVuelta() {
-    globos = todos.filter((g) => getComputedStyle(g).display !== 'none');
+    globos = visibles();
     orden = ordenDe(globos.length, vuelta);
     llegaron = 0;
     for (const globo of todos) globo.classList.remove('llego');
@@ -113,22 +125,23 @@ export function iniciarSuena() {
     if (llegaron < globos.length) luego(CADA, llega);
     else luego(QUEDA, seVan);
   }
-  function seVan() {
-    orden.forEach((cual, k) => globos[cual].style.setProperty('--sale', `${k * SALE}ms`));
+  // Se van todos, más rápido de lo que llegaron, y la mosca respira antes de lo que sigue
+  function irse(despues) {
+    orden.forEach((cual, k) => globos[cual]?.style.setProperty('--sale', `${k * SALE}ms`));
     for (const globo of todos) globo.classList.remove('llego');
     llegaron = 0;
-    vuelta++;
     animo();
     mirar(null);
-    luego(globos.length * SALE + 220 + RESPIRO, empezarVuelta);
+    luego(globos.length * SALE + 220 + RESPIRO, despues);
+  }
+  function seVan() {
+    vuelta++;
+    irse(empezarVuelta);
   }
 
-  // Deja a la vista todos los pedidos y la mosca al final, quietos
-  function mostrarCerrado() {
-    partio = true;
-    detener();
-    toca = null;
-    globos = todos.filter((g) => getComputedStyle(g).display !== 'none');
+  // Todos los pedidos a la vista y la mosca al final (la escena completa)
+  function completa() {
+    globos = visibles();
     for (const globo of todos) {
       globo.style.removeProperty('--sale');
       globo.classList.add('llego');
@@ -136,13 +149,26 @@ export function iniciarSuena() {
     llegaron = globos.length;
     animo();
     mirar(null);
+  }
+
+  // Deja a la vista todos los pedidos y la mosca al final, quietos
+  function mostrarCerrado() {
+    partio = true;
+    detener();
+    toca = null;
+    completa();
     raiz.dataset.estado = 'quieta';
   }
 
+  // Parte la primera vez que se ve: desde la escena completa (lo que se veía
+  // mientras esperaba), que se queda un momento y se va, y después llegan de a uno
   function partir() {
     partio = true;
     raiz.dataset.estado = 'andando';
-    empezarVuelta();
+    if (llegaron > 0) {
+      orden = ordenDe(globos.length, vuelta);
+      luego(AL_PARTIR, () => irse(empezarVuelta));
+    } else empezarVuelta();
   }
 
   // Con la pestaña escondida nadie lo ve: se detiene y sigue al volver
@@ -153,12 +179,9 @@ export function iniciarSuena() {
 
   function encender() {
     raiz.classList.add('viva');
-    // Antes de que se vea: ningún pedido y la mosca tranquila
+    // Antes de que se vea: la escena completa y quieta, nunca una caja vacía (8.14)
     raiz.dataset.estado = 'por-partir';
-    for (const globo of todos) globo.classList.remove('llego');
-    llegaron = 0;
-    animo();
-    mirar(null);
+    completa();
   }
   // (si piden "reducir movimiento" con la página abierta, queda todo a la vista y quieto)
   quieto.addEventListener?.('change', () => {

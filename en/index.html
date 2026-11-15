@@ -238,6 +238,11 @@
           <p class="nota" data-t="gratis">Free, no sign-up. Plays on a computer, phone or tablet.</p>
           <!-- 5.2i: el autor, con enlace a su LinkedIn (abre en otra pestaña) -->
           <p class="nota nota-autor" data-t="creadoPor">Created by <a href="https://www.linkedin.com/in/felipefernandezandrade/" target="_blank" rel="noopener">Felipe Fernández</a></p>
+          <!-- 8.14 (2026-11-14): en el celular la primera pantalla es solo el
+               título, la bajada y los botones, y el dibujo empieza justo
+               después, sin asomarse a medias. Esta flecha chica avisa que hay
+               más abajo y lleva al dibujo. En computador no se ve -->
+          <a class="bajar" href="#dibujo" data-t-aria="bajar" aria-label="Scroll down to the drawing"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M6 9.5l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg></a>
         </div>
 
         <!-- El dibujo del inicio (8.13, 2026-11-14): "¿Te suena?". Felipe vio
@@ -253,8 +258,10 @@
              láminas angostas (el celular) y en pantallas bajas de computador
              se ven 10 (salen los "de-ancha") y en las muy angostas 8 (salen
              también los "de-media"), para que la mosca y los pedidos quepan
-             juntos en la pantalla (src/portada.css) -->
-        <div class="escena">
+             juntos en la pantalla (src/portada.css). 8.14: mientras no se
+             ve, o mientras carga, muestra la escena completa y quieta (todos
+             los pedidos y la mosca al final), nunca una caja vacía -->
+        <div class="escena" id="dibujo">
           <div class="lamina suena" role="group" aria-labelledby="t-suena" data-animo="colapsada">
             <div class="lamina-cabeza">
               <p class="lamina-titulo" id="t-suena" data-t="suenaTitulo">Any day at the office</p>
@@ -335,11 +342,11 @@
            cerebros de "¿Por qué una mosca?". -->
       <section class="sirve" id="para-que-sirve" aria-labelledby="t-sirve">
         <h2 id="t-sirve" data-t="sirveTitulo">What did the fly gain by limiting her WIP?</h2>
-        <!-- (8.9, 2026-11-10) Antes de los números se dice de quién son: de la
-             mosca, en el juego, y no de un equipo. Por eso la primera línea
-             del tablero habla de ella, con "tarea", que es la palabra de la
-             mosca. Lo del equipo va al final: lo dice su prueba -->
-        <p class="sirve-bajada" data-t="sirveBajada">In the game, with 2 tasks at once instead of 9, she gained this. <span class="sirve-aviso">These are her numbers, not your team’s.</span></p>
+        <!-- (8.9, 2026-11-10) La primera línea del tablero habla de la mosca,
+             con "tarea", que es su palabra. Lo del equipo va al final: lo dice
+             su prueba. (8.14, 2026-11-14) Felipe borró la bajada que iba aquí.
+             Que los números son del juego lo dice ahora la nota de abajo del
+             tablero -->
         <div class="tablero-marco">
           <!-- La mosca del logo, asomada al tablero (decorativa): la cabeza va
                detrás del tablero y las patas, encima de su borde -->
@@ -440,7 +447,7 @@
             </g>
           </svg>
         </div>
-        <p class="nota sirve-origen" data-t="sirveOrigen">Average of 200 days played.</p>
+        <p class="nota sirve-origen" data-t="sirveOrigen">In the game, average of 200 days played.</p>
         <p class="sirve-cierre" data-t="sirveCierre">According to DORA, limiting work in progress is a habit of high-performing teams. How much your team gains, its own test will show.</p>
       </section>
 
