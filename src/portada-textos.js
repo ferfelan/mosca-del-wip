@@ -241,7 +241,7 @@ export const INGLES = {
     'It’s a game and a computer experiment, with rules based on studies. It doesn’t measure people or teams. Your number is yours to measure.',
   informeTexto:
     'The report explains where each number comes from and gives four steps to try a limit with your team. It takes 10 minutes to read and comes as a PDF. Its summary is on the web and takes 2 minutes.',
-  informeNota: 'The report is 18 pages, 4 MB.',
+  informeNota: 'The report is 18 pages, 3 MB.',
   motivoTitulo: 'Why I made it',
   motivoTexto:
     'I work with teams and I see the same thing over and over. They commit without knowing how much load they carry. They don’t know where to start or what’s really urgent, because everything is urgent and a priority. You feel you work all day and get nowhere, and the list of pending work keeps getting longer.',

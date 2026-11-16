@@ -550,3 +550,8 @@ Just one question
 # personas").
 studies with people
 study with people
+# 8.17 (2026-11-16). El informe para compartir pesa 3 MB (antes 4 MB), en la
+# portada y en la página del informe, en los dos idiomas.
+pesa 4 MB
+18 pages, 4 MB
+weighs 4 MB
