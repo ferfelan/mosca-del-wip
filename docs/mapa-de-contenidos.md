@@ -1,6 +1,6 @@
 # Mapa de contenidos: dónde vive cada mensaje
 
-Al día el 2026-11-15. Lo escribe solo `node scripts/revisar-coherencia.mjs --mapa`
+Al día el 2026-11-16. Lo escribe solo `node scripts/revisar-coherencia.mjs --mapa`
 (no se edita a mano: si algo está mal, se corrige en el script).
 
 **Para qué sirve.** Cuando cambia uno de estos mensajes, aquí está cada lugar
