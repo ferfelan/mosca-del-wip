@@ -23,6 +23,15 @@ export const TITULO_PESTANA_EN = 'WIP limit game, the fly with a real brain · M
 
 // ---------- 1. Textos fijos de la página (español tal cual → inglés) ----------
 export const PAGINA = {
+  // El aviso sin 3D (revisión final v3, M8)
+  'Tu navegador no puede mostrar la oficina en 3D.': 'Your browser can’t show the office in 3D.',
+  'Prueba con otro navegador o activa la aceleración por hardware. Mientras, puedes leer la guía o el informe.':
+    'Try another browser or turn on hardware acceleration. Meanwhile, you can read the guide or the report.',
+  'Se perdió el dibujo 3D.': 'The 3D view was lost.',
+  'Recarga la página para volver a la oficina.': 'Reload the page to get back to the office.',
+  'Recargar la página': 'Reload the page',
+  'Leer la guía': 'Read the guide',
+  'Leer el informe': 'Read the report',
   // Barra de la exhibición y rótulos sobre la escena
   'La misma partida, en grande': 'The same game, on the big screen',
   'Día terminado ·': 'Day over ·',
@@ -124,7 +133,7 @@ export const PAGINA = {
   'Las moscas no fuman. El cigarro es un disfraz.': 'Flies don’t smoke. The cigarette is a disguise.',
   'Los números de la oficina son del juego. Que cada tarea tarde más y se termine menos tiene respaldo. Que suba el estrés es un supuesto nuestro.':
     'The office numbers come from the game. That each task takes longer and fewer get finished is backed by evidence. That stress goes up is our own assumption.',
-  'Los datos son del Male CNS v1.0, una colaboración entre FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC Laboratory of Molecular Biology y Google Research. Licencia CC BY 4.0 · male-cns.janelia.org':
+  'Los datos son del Male CNS v1.0, una colaboración entre FlyEM (HHMI Janelia), la Universidad de Cambridge (Departamento de Zoología), el MRC Laboratory of Molecular Biology y Google Research. Licencia CC BY 4.0 · male-cns.janelia.org':
     'The data come from Male CNS v1.0, a collaboration between FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC Laboratory of Molecular Biology, and Google Research. License CC BY 4.0 · male-cns.janelia.org',
   // Botones para volver a mostrar los paneles y aviso del fin del día
   Cerebro: 'Brain',
@@ -149,7 +158,7 @@ export const PAGINA = {
   // (el espacio entre ¿Con y cuál no se parte: en el computador la línea se
   // cortaba en "¿Con / cuál")
   'Prueba un día con 9 y otro con 2. ¿Con\u00a0cuál crees que termina más?':
-    'Try one day with 9 and another with 2. Which one do you think she’ll finish more with?',
+    'Try one day with 9 and another with 2. Which one do you think gets more done?',
   'Empezar el día': 'Start the day',
   '¿Qué es esto?': 'What is this?',
   // El recorrido (8.8, 2026-11-09): el botón de la tarjeta, el de Ayuda y los
@@ -164,7 +173,7 @@ export const PAGINA = {
   Siguiente: 'Next',
   'Mira la tabla o reinicia para probar otro WIP.': 'Check the table, or restart to try another WIP.',
   // (8.7) al fin del día, en Control, Exhibición y el celular
-  '¿Y tú, cuántas cosas tienes empezadas hoy?': 'And you, how many things do you have started today?',
+  '¿Y tú, cuántas cosas tienes empezadas hoy?': 'What about you? How many things do you have in progress today?',
   // Celular (Parte 5.2e): volver, la píldora del reloj, la hoja de abajo, las
   // pestañas y el fin del día ("Cerebro", "Idioma" y "Reiniciar día" ya están)
   'Volver a la portada': 'Back to the home page',

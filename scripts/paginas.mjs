@@ -56,13 +56,17 @@ function tablaDatos(idioma) {
     })
     .join('\n');
   // tabindex, rol y nombre para moverla con el teclado en Safari (revisión final, S17)
-  return `<div class="tabla-marco ancho" tabindex="0" role="region" aria-label="${es ? 'Tabla de 1 a 10 tareas a la vez' : 'Table of 1 to 10 tasks at once'}"><table class="tabla-dias">
-  <caption>${es ? `En el juego, promedio de ${corrida.dias} días por cada número de tareas (simulación, semilla ${corrida.semilla}). Tiempo por tarea en horas de oficina, de que empieza a que termina. Con fondo, el 2 (verde, la que más termina) y el 9 (rojo, la sobrecarga).` : `In the game, average of ${corrida.dias} days per number of tasks (simulation, seed ${corrida.semilla}). Time per task in office hours, from start to finish. Shaded, 2 (green, finishes the most) and 9 (red, overload).`}</caption>
+  // La nota va bajo el recuadro y no como <caption>: dentro de la tabla era tan
+  // ancha como la tabla y se leía cortada (revisión final v3, M25)
+  const nota = es
+    ? `En el juego, promedio de ${corrida.dias} días por cada número de tareas (simulación, semilla ${corrida.semilla}). Tiempo por tarea en horas de oficina, de que empieza a que termina. Con fondo, el 2 (verde, la que más termina) y el 9 (rojo, la sobrecarga).` : `In the game, average of ${corrida.dias} days per number of tasks (simulation, seed ${corrida.semilla}). Time per task in office hours, from start to finish. Shaded, 2 (green, finishes the most) and 9 (red, overload).`;
+  return `<div class="tabla-marco ancho" tabindex="0" role="region" aria-label="${es ? 'Tabla de 1 a 10 tareas a la vez' : 'Table of 1 to 10 tasks at once'}"><table class="tabla-dias" aria-describedby="nota-tabla-dias">
   <thead><tr>${cab.map((c, i) => `<th${i > 0 && i < 7 ? ' class="numero"' : ''}>${c}</th>`).join('')}</tr></thead>
   <tbody>
 ${filas}
   </tbody>
-</table></div>`;
+</table></div>
+<p class="nota-tabla" id="nota-tabla-dias">${nota}</p>`;
 }
 
 // El peso de un archivo como se lee: en KB bajo 1 MB (la hoja del equipo pesa

@@ -63,8 +63,8 @@ const TEXTOS = {
     lista: 'What people ask the fly for',
     pie: 'Everything urgent, everything started. Sound familiar?',
     pedidos: [
-      'Got a minute?', 'It’s urgent', 'How’s mine going?', 'This is for today', 'One quick thing', 'Did you see it?', 'This is urgent too',
-      'And yesterday’s?', 'Did you get my email?', 'I need it now', 'I added you to a meeting', 'Just one question', 'Can you help me with this?', 'Can you look at it now?',
+      'Got a minute?', 'It’s urgent', 'Any update on mine?', 'I need this today', 'One quick thing', 'Did you see it?', 'This is urgent too',
+      'What about yesterday’s?', 'Did you get my email?', 'I need it now', 'I added you to a meeting', 'Quick question', 'Can you help me with this?', 'Can you look at it now?',
     ],
   },
 };

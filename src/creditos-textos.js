@@ -29,7 +29,7 @@ export const INGLES = {
 
   autorTitulo: 'Author and rights',
   autor1:
-    'Mosca del WIP was made by <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a> in 2026. © 2026 Felipe Fernández. All rights reserved over the game, the code, the images and the texts, including both reports.',
+    'Mosca del WIP was made by <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a> in 2026. © 2026 Felipe Fernández. All rights reserved over the game, the code, the images and the site’s texts, including both reports. The workshop (quick guide, slides and team sheet) and the CSV data are licensed CC BY 4.0, so you can use and adapt them, also in paid workshops, crediting Felipe Fernández (mosca.deliverycraft.ai).',
   autor2:
     'You can play for free, share the link and show the game to your team, in a class or in a talk. You may share the PDF report as is, crediting the author. To use the code, the images or the texts in something else, write to Felipe.',
 

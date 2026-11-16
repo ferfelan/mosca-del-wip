@@ -1075,6 +1075,52 @@ body.en-recorrido #aviso-empezar {
   outline-offset: 3px;
 }
 
+/* ---------- Sin 3D: el aviso (revisión final v3, M8) ----------
+   Igual que la pregunta de salir, con el fondo más oscuro porque detrás no
+   hay oficina. Los enlaces van con borde y "Recargar la página", lleno. */
+#aviso-3d {
+  width: min(400px, calc(100vw - 32px));
+  max-width: none;
+  padding: 0;
+  border: none;
+  border-radius: 14px;
+  background: var(--tinta);
+  color: #fbf8f2;
+  box-shadow: 0 14px 36px rgba(40, 30, 15, 0.32);
+}
+
+#aviso-3d::backdrop {
+  background: rgba(7, 11, 21, 0.78);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+#aviso-3d .salir-tarjeta > div:not(.salir-botones) {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#aviso-3d .salir-botones a {
+  border: 1.5px solid rgba(251, 248, 242, 0.45);
+  background: transparent;
+  color: #fbf8f2;
+}
+
+#aviso-3d .salir-botones a:hover {
+  background: rgba(251, 248, 242, 0.1);
+}
+
+#aviso-3d .aviso-principal {
+  border: none;
+  background: #fbf8f2;
+  color: var(--tinta);
+}
+
+#aviso-3d [hidden] {
+  display: none !important;
+}
+
 /* ---------- Historial ---------- */
 
 .nota-tenue {

@@ -40,7 +40,7 @@ const SITIO = 'https://mosca.deliverycraft.ai';
 // limit", que es lo que la gente busca.
 const TITULO = 'WIP limit · Busy all day. So what did you finish? · Mosca del WIP';
 const DESCRIPCION =
-  'Measure how many things your team has started and find the WIP limit that lets it finish the most. Start with a one-minute game. Free guide, report and workshop.';
+  'Measure how many things your team has in progress and find the WIP limit that gets the most done. Start with a one-minute game. Free guide, report and workshop.';
 const TITULO_COMPARTIR = 'Busy all day. So what did you finish? · Mosca del WIP';
 const DESCRIPCION_COMPARTIR = INGLES.bajada;
 const ALT_VISTA_PREVIA = `The fly from the game at her desk, with many tasks at once, next to the title ${INGLES.titulo.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')} A 1-minute game, mosca.deliverycraft.ai.`;
@@ -167,10 +167,14 @@ html = html.replace(/\{\s*"@type": "WebSite"[\s\S]*?\n        \}/, (bloque) =>
   ),
 );
 html = html.replace(/\{\s*"@type": "VideoGame"[\s\S]*?\n        \}/, (bloque) =>
-  bloque.replace(
-    /"description": "[^"]*"/,
-    `"description": ${JSON.stringify('An office fly with a real brain spends a day at the office. You choose how many tasks she has in progress at once, from 1 to 10, and see how many she finishes, how long each one takes and how stressed she gets. A one-minute game to teach the WIP limit.')}`,
-  ),
+  bloque
+    .replace(
+      /"description": "[^"]*"/,
+      `"description": ${JSON.stringify('An office fly with a real brain spends a day at the office. You choose how many tasks she has in progress at once, from 1 to 10, and see how many she finishes, how long each one takes and how stressed she gets. A one-minute game to teach the WIP limit.')}`,
+    )
+    // La tapa del juego tiene el tablero en español: en /en/ va la vista
+    // previa en inglés (revisión final v3, M16)
+    .replace(`"image": "${SITIO}/img/tapa-juego.jpg"`, `"image": "${SITIO}${VISTA_PREVIA}"`),
 );
 unaVez('"jobTitle": "Coach de equipos"', '"jobTitle": "Team coach"');
 

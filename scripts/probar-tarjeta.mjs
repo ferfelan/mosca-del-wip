@@ -56,7 +56,7 @@ const ok = (cond, msg) => { if (!cond) mal.push(msg); };
 // cigarro y el café, la pregunta, los dos botones y "¿Qué es esto?"
 const TEXTOS = {
   es: ['Tú eres el jefe de la mosca.', 'Decide cuántas tareas puede tener empezadas a la vez, de 1 a 10.', 'Mira su día de oficina en un minuto.', 'Al final verás cuánto terminó, cuánto tardó cada tarea y cómo quedó de estrés.', 'Si se estresa, sale a fumar y pierde tiempo.', 'Si no está tan estresada, se toma un café.', 'Prueba un día con 9 y otro con 2. ¿Con cuál crees que termina más?', 'Empezar el día', '¿Dónde está cada cosa?', '¿Qué es esto?'],
-  en: ['You’re the fly’s boss.', 'Choose how many tasks she can have started at once, from 1 to 10.', 'Watch her office day in one minute.', 'At the end you’ll see how much she finished, how long each task took and how stressed she ended up.', 'If she gets stressed, she goes out for a smoke and loses time.', 'If she isn’t too stressed, she has a coffee.', 'Try one day with 9 and another with 2. Which one do you think she’ll finish more with?', 'Start the day', 'Where is everything?', 'What is this?'],
+  en: ['You’re the fly’s boss.', 'Choose how many tasks she can have started at once, from 1 to 10.', 'Watch her office day in one minute.', 'At the end you’ll see how much she finished, how long each task took and how stressed she ended up.', 'If she gets stressed, she goes out for a smoke and loses time.', 'If she isn’t too stressed, she has a coffee.', 'Try one day with 9 and another with 2. Which one do you think gets more done?', 'Start the day', 'Where is everything?', 'What is this?'],
 };
 // Lo que se ve de la tarjeta según lo que soltó (las clases que le pone
 // src/main.js): las posiciones que quedan en null

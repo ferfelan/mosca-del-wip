@@ -462,3 +462,91 @@ Three columns are enough, to do, in progress, done
 # tocaron, porque otros programas los leen por nombre, y esta línea no los
 # encuentra (llevan guion bajo).
 Stress at close
+
+# ─── Etapa 8.16, 2026-11-15: revisión final v3 (lo que aprobó Felipe) ────────
+
+# M3, créditos. "Todos los derechos reservados sobre el juego, el código, las
+# imágenes y los textos, incluidos los dos informes." → "…y los textos del
+# sitio, incluidos los dos informes. El taller (…) y los datos en CSV tienen
+# licencia CC BY 4.0…". Lo mismo en inglés ("…the images and the texts,
+# including both reports." → "…and the site’s texts, including both reports…").
+y los textos, incluidos los dos informes
+and the texts, including both reports
+
+# M5, portada (¿Qué es la Mosca del WIP?). "Las reglas salen de estudios con
+# personas, y por dentro corre el mapa real del cerebro de una mosca." → "Las
+# reglas se inspiran en estudios con personas, y las neuronas que se encienden
+# son de una mosca real." En inglés "The rules come from studies with people,
+# and inside it runs the real map of a fly’s brain." → "The rules are inspired
+# by studies with real people, and the neurons that light up come from a real
+# fly."
+Las reglas salen de estudios con personas
+The rules come from studies with people
+
+# M10, crédito del cerebro en español (la frase mezclaba inglés y español).
+# "…FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the
+# MRC Laboratory of Molecular Biology y Google Research." → "…la Universidad
+# de Cambridge (Departamento de Zoología), el MRC Laboratory of Molecular
+# Biology y Google Research." El crédito oficial en inglés no cambia. Se busca
+# "the MRC… y Google" (artículo en inglés con "y"): en español correcto es "el
+# MRC Laboratory of Molecular Biology y Google Research" (la presentación) y en
+# inglés "…Molecular Biology, and Google Research".
+the MRC Laboratory of Molecular Biology y Google
+
+# M13, presentación del taller, lámina del ritmo. "En un equipo son días." →
+# "En un equipo pueden ser días."
+En un equipo son días
+
+# M22, las 10 primeras propuestas del editor de inglés (N1, N2, N3, N4 a N7,
+# N10, N22, N24, N25, N33, N62, N63, N67, N110).
+# N1 y N2, bajada y descripción de /en/. "Measure how many things your team
+# has started and find the limit that lets it finish the most. Start by
+# playing for a minute with an office fly that has a real brain." → "Measure
+# how many things your team has in progress and find the limit that gets the
+# most done. Start with a one-minute game about an office fly with a real
+# brain."
+lets it finish the most
+Start by playing for a minute with an office fly
+# N24 y N25, el juego. "Which one do you think she’ll finish more with?" →
+# "Which one do you think gets more done?". "And you, how many things do you
+# have started today?" → "What about you? How many things do you have in
+# progress today?"
+she’ll finish more with
+how many things do you have started today
+# N10, en cinco lugares. "How much your team gains, its own test will show."
+# (y "How much it gains…", "How much the team gains…") → "Your team’s own test
+# will show how much it gains."
+its own test will show
+# N33 y M2, título de la guía y su tarjeta. "WIP limit, what it is and how to
+# find your team’s" → "What a WIP limit is and how to find your team’s".
+# "12-minute read" / "Lectura de 12 minutos" → "About a 7-minute read" /
+# "Lectura de unos 7 minutos".
+WIP limit, what it is and how to find
+12-minute read
+Lectura de 12 minutos
+# N62 y N63, los cuatro pasos (Report y Summary). "With unavoidable waits, not
+# one." → "If some waiting can’t be avoided, make it more than one." "After
+# two weeks, compare how many got finished and how long each one took." →
+# "…compare how many got finished, and how long each took, with the two
+# weeks before."
+With unavoidable waits, not one
+compare how many got finished and how long each one took
+# N22 y N67. "before arguing about it" → "before debating it". "if they argue
+# between two" → "if they’re torn between two numbers".
+before arguing about it
+if they argue between two
+# N3, portada. "What that costs the fly shows in the game, in one minute." →
+# "The game shows what that costs the fly, in one minute."
+What that costs the fly shows in the game
+# N4 a N7, globos de la portada. "How’s mine going?" → "Any update on mine?",
+# "This is for today" → "I need this today", "And yesterday’s?" → "What about
+# yesterday’s?", "Just one question" → "Quick question".
+How’s mine going
+This is for today
+And yesterday’s?
+Just one question
+# N110. "studies with people" / "study with people" → "studies with real
+# people" / "study with real people" (en español sigue "estudios con
+# personas").
+studies with people
+study with people

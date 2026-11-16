@@ -33,11 +33,14 @@ export const VISTAS_PREVIAS = ['portada', 'en', 'juego', 'creditos', 'guia', 'wi
 // Desde la 8.12 (2026-11-13), seis más: la guía (su título ya no lleva dos
 // puntos), el informe (su página es ahora el resumen ejecutivo) y el taller
 // (la tapa de la guía rápida de hoy), cada una en español y en inglés.
+// Desde la revisión final v3 (2026-11-15), las dos de la guía dicen "Lectura
+// de unos 7 minutos" / "About a 7-minute read" (antes 12, M2), y la de inglés
+// lleva el título nuevo, "What a WIP limit is and how to find your team’s".
 export const SELLO_VISTA = {
   portada: '2026-11-07',
   en: '2026-11-07',
-  guia: '2026-11-13',
-  'wip-limit': '2026-11-13',
+  guia: '2026-11-15',
+  'wip-limit': '2026-11-15',
   informe: '2026-11-13',
   report: '2026-11-13',
   taller: '2026-11-13',

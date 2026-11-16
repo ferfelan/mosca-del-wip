@@ -524,7 +524,7 @@
       <p>Las zonas muestran por dónde pasa la señal que le damos. Que una zona esté en 0% (por ejemplo, Memoria) no significa que la mosca no la use, sino que la señal no llega ahí.</p>
       <p>Las moscas no fuman. El cigarro es un disfraz.</p>
       <p>Los números de la oficina son del juego. Que cada tarea tarde más y se termine menos tiene respaldo. Que suba el estrés es un supuesto nuestro.</p>
-      <p class="cerebro-info-credito">Los datos son del Male CNS v1.0, una colaboración entre FlyEM (HHMI Janelia), the University of Cambridge (Dept. of Zoology), the MRC Laboratory of Molecular Biology y Google Research. Licencia CC BY 4.0 · male-cns.janelia.org</p>
+      <p class="cerebro-info-credito">Los datos son del Male CNS v1.0, una colaboración entre FlyEM (HHMI Janelia), la Universidad de Cambridge (Departamento de Zoología), el MRC Laboratory of Molecular Biology y Google Research. Licencia CC BY 4.0 · male-cns.janelia.org</p>
     </div>
 
     <button id="btn-mostrar-controles" type="button" title="Mostrar los controles (tecla C)" aria-controls="panel">
@@ -569,6 +569,29 @@
         <div class="salir-botones">
           <a id="btn-salir-juego" href="/">Salir del juego</a>
           <button id="btn-seguir-jugando" type="button" autofocus>Seguir jugando</button>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Sin 3D (revisión final v3, M8). Si el navegador no puede dibujar la
+         oficina en 3D (computadores sin aceleración, escritorios remotos), o si
+         el dibujo se pierde a mitad del día, un aviso en el idioma elegido con
+         enlaces a la guía y al informe. Nunca una oficina vacía sin explicar.
+         Lo abre src/main.js. -->
+    <dialog id="aviso-3d" aria-labelledby="aviso-3d-titulo" aria-describedby="aviso-3d-texto">
+      <div class="salir-tarjeta">
+        <div id="aviso-3d-sin" hidden>
+          <strong id="aviso-3d-titulo">Tu navegador no puede mostrar la oficina en 3D.</strong>
+          <p id="aviso-3d-texto">Prueba con otro navegador o activa la aceleración por hardware. Mientras, puedes leer la guía o el informe.</p>
+        </div>
+        <div id="aviso-3d-perdido" hidden>
+          <strong id="aviso-3d-titulo-perdido">Se perdió el dibujo 3D.</strong>
+          <p id="aviso-3d-texto-perdido">Recarga la página para volver a la oficina.</p>
+        </div>
+        <div class="salir-botones">
+          <button id="btn-recargar-3d" class="aviso-principal" type="button" hidden>Recargar la página</button>
+          <a data-guia href="/limite-wip/">Leer la guía</a>
+          <a data-informe href="/informe/">Leer el informe</a>
         </div>
       </div>
     </dialog>

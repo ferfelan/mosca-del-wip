@@ -51,7 +51,7 @@ const PDFS = [
   {
     ruta: 'public/Mosca-del-WIP-Report.pdf',
     titulo: 'Mosca del WIP. Being busy all the time isn’t the same as making progress. A report with a real fly brain on why to limit work in progress',
-    tema: 'Why it pays to limit work in progress (WIP). What a game with a real fruit fly brain shows, Little’s law, flow efficiency, the studies with people and what happens with urgent tasks. Four steps to try a limit with your team.',
+    tema: 'Why it pays to limit work in progress (WIP). What a game with a real fruit fly brain shows, Little’s law, flow efficiency, the studies with real people and what happens with urgent tasks. Four steps to try a limit with your team.',
     claves: ['WIP limit', 'work in progress', 'kanban', 'flow efficiency', "Little's law", 'multitasking', 'urgent tasks', 'interruptions', 'simulation', 'fruit fly connectome', 'Male CNS'],
     idioma: 'en-US',
   },
@@ -67,7 +67,7 @@ const PDFS = [
   {
     ruta: 'public/Mosca-del-WIP-Summary.pdf',
     titulo: 'Mosca del WIP. Busy all day. So what did you finish? Executive summary',
-    tema: 'A two-page executive summary of Mosca del WIP, a one-minute game with a real fly brain. What the fly gained by limiting her work in progress, what the simulation from 1 to 10 tasks at once found, what studies with people say, what your team takes away and four steps to try a limit.',
+    tema: 'A two-page executive summary of Mosca del WIP, a one-minute game with a real fly brain. What the fly gained by limiting her work in progress, what the simulation from 1 to 10 tasks at once found, what studies with real people say, what your team takes away and four steps to try a limit.',
     claves: ['executive summary', 'WIP limit', 'work in progress', 'kanban', "Little's law", 'sustainable limit', 'urgent tasks', 'simulation', 'fruit fly connectome', 'Male CNS'],
     idioma: 'en-US',
   },
