@@ -425,14 +425,14 @@ if (args.includes('--mapa')) {
     // bajada ("En el juego, con 2 tareas a la vez en lugar de 9, ganó esto…") y
     // la nota de abajo del tablero dice de dónde salen los números
     { pieza: '¿Qué ganó la mosca al limitar su WIP?', es: 'Termina más, y cada tarea sale antes. El trabajo avanza en vez de esperar. Menos sobrecarga. En el juego, promedio de 200 días jugados. Cuánto gana tu equipo, lo dice su prueba.',
-      en: 'She finishes more, and each task is done sooner. Work moves forward instead of waiting. Less overload. In the game, average of 200 days played. How much your team gains, its own test will show.',
-      buscar: ['Qué ganó la mosca', 'What did the fly gain', 'en vez de esperar', 'instead of waiting', 'Cuánto gana', 'How much your team gains', 'How much the team gains'] },
+      en: 'She finishes more, and each task is done sooner. Work moves forward instead of waiting. Less overload. In the game, average of 200 days played. Your team’s own test will show how much it gains.',
+      buscar: ['Qué ganó la mosca', 'What did the fly gain', 'en vez de esperar', 'instead of waiting', 'Cuánto gana', 'own test will show how much it gains'] }, // (revisión final v3, N10) antes "How much your team gains, its own test will show"
     { pieza: 'Lo que se lleva tu equipo', es: 'Su carga a la vista. Dónde se queda esperando el trabajo. Un límite acordado, escrito en el tablero. Sus propios datos después de dos semanas.',
       en: 'Their load in plain sight. Where the work sits waiting. An agreed limit, written on the board. Their own data after two weeks.',
       buscar: ['carga a la vista', 'load in plain sight', 'límite acordado', 'agreed limit'] },
     { pieza: 'Las preguntas del juego (8.7)', es: 'En la tarjeta: ¿Con cuál crees que termina más? Al fin del día: ¿Y tú, cuántas cosas tienes empezadas hoy?',
-      en: 'On the card: Which one do you think she’ll finish more with? At the end of the day: And you, how many things do you have started today?',
-      buscar: ['¿Con cuál crees que termina más?', 'Which one do you think she’ll finish more with?', 'cuántas cosas tienes empezadas hoy', 'how many things do you have started today'] },
+      en: 'On the card: Which one do you think gets more done? At the end of the day: What about you? How many things do you have in progress today?',
+      buscar: ['¿Con cuál crees que termina más?', 'Which one do you think gets more done?', 'cuántas cosas tienes empezadas hoy', 'How many things do you have in progress today'] },
     // (8.8, 2026-11-09)
     { pieza: 'El recorrido del juego (8.8)', es: '¿Dónde está cada cosa? Aquí mandas tú. El día. Su tablero. Cómo le va. Su cerebro, en vivo. Tus días jugados.',
       en: 'Where is everything? You’re in charge here. The day. Her board. How she’s doing. Her brain, live. Your days played.',

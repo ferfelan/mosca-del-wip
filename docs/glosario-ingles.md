@@ -259,3 +259,28 @@ juega parte del día y cambia de idioma ida y vuelta. Revisa que no quede
 nada en español, que nada se salga de su caja, que al volver a español todo
 diga exactamente lo mismo que antes y que el día no se reinicie. Debe decir
 "inglés: todo bien". Las capturas quedan en `capturas/ingles/`.
+
+## 7. Revisión final v3 (2026-11-15): las frases más naturales
+
+Felipe aprobó las 10 primeras propuestas del editor de inglés de la revisión
+final (M22, sin cambiar el sentido ni prometer nada) y "studies with real
+people" (N110). El inglés de antes está en `docs/frases-retiradas.txt`.
+
+| Español | Inglés desde la v3 |
+|---|---|
+| Mide cuántas cosas tiene empezadas tu equipo y encuentra el límite con el que termina más. Parte jugando un minuto con una mosca oficinista de cerebro real. (la bajada de la portada) | Measure how many things your team has in progress and find the limit that gets the most done. Start with a one-minute game about an office fly with a real brain. |
+| ¿Con cuál crees que termina más? (la tarjeta del juego) | Which one do you think gets more done? |
+| ¿Y tú, cuántas cosas tienes empezadas hoy? (el fin del día) | What about you? How many things do you have in progress today? |
+| Cuánto gana tu equipo, lo dice su prueba. | Your team’s own test will show how much it gains. |
+| Límite WIP, qué es y cómo encontrar el de tu equipo (la guía) | What a WIP limit is and how to find your team’s |
+| Con esperas inevitables, no una. (paso 2) | If some waiting can’t be avoided, make it more than one. |
+| A las dos semanas comparen cuántas terminaron y cuánto tardó cada una. (paso 4) | After two weeks, compare how many got finished, and how long each took, with the two weeks before. (como ya decía la guía en español, "con las dos semanas anteriores") |
+| antes de discutirlo (Por qué lo hice) · si dudan entre dos (el taller) | before debating it · if they’re torn between two numbers |
+| Lo que eso le cuesta a la mosca se ve en el juego, en un minuto. ("¿Te suena?") | The game shows what that costs the fly, in one minute. |
+| ¿Cómo va lo mío? · Esto es para hoy · ¿Y lo de ayer? · Solo una pregunta (globos de "¿Te suena?") | Any update on mine? · I need this today · What about yesterday’s? · Quick question |
+| estudios con personas | studies with real people (en todo el sitio, los PDF y sus propiedades) |
+| cosas en curso, cosas empezadas (equipos) | things in progress (forma principal; "tasks" sigue siendo solo para la mosca) |
+| Tu navegador no puede mostrar la oficina en 3D. (aviso del juego sin 3D, M8) | Your browser can’t show the office in 3D. |
+| Prueba con otro navegador o activa la aceleración por hardware. Mientras, puedes leer la guía o el informe. | Try another browser or turn on hardware acceleration. Meanwhile, you can read the guide or the report. |
+| Se perdió el dibujo 3D. · Recarga la página para volver a la oficina. · Recargar la página | The 3D view was lost. · Reload the page to get back to the office. · Reload the page |
+| Leer la guía · Leer el informe | Read the guide · Read the report |

@@ -15,7 +15,7 @@ export const AUTOR = { nombre: 'Felipe Fernández', linkedin: 'https://www.linke
 // (8.11, 2026-11-13) porPagina: cuando cambia una sola de las cuatro páginas, su fecha va aquí
 // (clave-idioma) y las demás no se mueven. Hoy: el taller en español, que cita la sección 11
 // del informe (las urgencias) y descarga la guía rápida v8
-export const FECHAS = { publicado: '2026-10-28', modificado: '2026-11-15', porPagina: {} }; // 2026-11-15 (revisión final): el autor para las redes, la tabla de la guía con teclado y los errores claros del inglés; antes 2026-11-13 (8.12): la guía y el taller, en los dos idiomas, sin dos puntos y con sus citas al informe apuntando al PDF; antes 2026-11-07 (8.7): la guía y el taller con para qué sirve un límite y lo que se lleva el equipo; antes 2026-11-06 (8.6), 2026-11-04 (8.4) y 2026-10-29
+export const FECHAS = { publicado: '2026-10-28', modificado: '2026-11-15', porPagina: {} }; // 2026-11-15 (revisión final v3, en la tarde): la tabla de 1 a 10 que cabe entera, el título de la guía en inglés y las frases más naturales del inglés; y en la mañana (revisión final): el autor para las redes, la tabla de la guía con teclado y los errores claros del inglés; antes 2026-11-13 (8.12): la guía y el taller, en los dos idiomas, sin dos puntos y con sus citas al informe apuntando al PDF; antes 2026-11-07 (8.7): la guía y el taller con para qué sirve un límite y lo que se lleva el equipo; antes 2026-11-06 (8.6), 2026-11-04 (8.4) y 2026-10-29
 
 // Las direcciones de cada página en cada idioma (las mismas de src/idioma.js)
 export const RUTAS = {

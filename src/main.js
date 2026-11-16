@@ -13,6 +13,7 @@ import { leerIdioma, marcarIdioma, elegirIdioma, formatoNumero, rutaEnIdioma } f
 import { tx, ponerIdiomaJuego, nombreNivel, zona, prepararPagina, traducirPagina } from './juego-textos.js';
 import { iniciarCelular, esCelular, vistaCelular } from './celular.js';
 import { crearRecorrido } from './recorrido.js';
+import { hayWebGL2, prepararAviso3D, mostrarAviso3D, cerrarAviso3D } from './aviso3d.js';
 
 // ---------- Idioma: español (siempre al llegar) o inglés ----------
 // Se decide antes de armar la oficina, así el kanban, el póster y los
@@ -31,7 +32,28 @@ const CLAVE_STORAGE = 'mosca-del-wip-dias';
 const MIN_SIM_POR_SEG_REAL = 540 / 60; // día de 540 min simulados en 60s reales a x1
 
 const canvas = document.getElementById('lienzo-3d');
-const { scene, camera, renderer, controls } = crearEscena(canvas);
+// Sin 3D no hay oficina (revisión final v3, M8): se avisa en el idioma
+// elegido, con enlaces a la guía y al informe (src/aviso3d.js), y el resto
+// del juego no corre.
+prepararAviso3D();
+let escena = null;
+if (hayWebGL2()) {
+  try {
+    escena = crearEscena(canvas);
+  } catch (error) {
+    console.warn('La oficina 3D no se pudo armar.', error);
+  }
+}
+if (!escena) {
+  for (const boton of document.querySelectorAll('[data-idioma]')) boton.setAttribute('aria-pressed', String(boton.dataset.idioma === idioma));
+  mostrarAviso3D('sin');
+  await new Promise(() => {});
+}
+const { scene, camera, renderer, controls } = escena;
+// Si el dibujo 3D se pierde a mitad del día, el aviso pide recargar, y se
+// cierra solo si el navegador lo recupera (three.js vuelve a dibujar)
+renderer.domElement.addEventListener('webglcontextlost', () => mostrarAviso3D('perdido'));
+renderer.domElement.addEventListener('webglcontextrestored', () => cerrarAviso3D());
 const oficina = crearOficina(scene, { anisotropia: renderer.capabilities.getMaxAnisotropy() });
 const mosca = crearMosca(scene, {
   taza: { objeto: oficina.taza, reposo: oficina.reposoTaza, AGARRE: oficina.AGARRE_TAZA, BORDE: oficina.BORDE_TAZA },
@@ -1640,6 +1662,8 @@ function ponerEnlacesInicio() {
   for (const a of document.querySelectorAll('.volver-inicio, #cel-volver, #btn-salir-juego, #aviso-que-es')) a.setAttribute('href', rutaEnIdioma('/', idioma));
   // el enlace a la guía del límite WIP, en el panel (Etapa 7): /limite-wip/ o /en/wip-limit/
   for (const a of document.querySelectorAll('[data-guia]')) a.setAttribute('href', rutaEnIdioma('/limite-wip/', idioma));
+  // el enlace al informe del aviso sin 3D: /informe/ o /en/report/ (revisión final v3, M8)
+  for (const a of document.querySelectorAll('[data-informe]')) a.setAttribute('href', rutaEnIdioma('/informe/', idioma));
   // el crédito del cerebro: /creditos/ o /creditos/?lang=en (revisión final, S5)
   for (const a of document.querySelectorAll('.cerebro-credito')) a.setAttribute('href', rutaEnIdioma('/creditos/', idioma));
 }

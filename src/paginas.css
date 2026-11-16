@@ -187,6 +187,20 @@ dd > .origen {
 .lectura td.numero,
 .lectura th.numero { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .lectura caption { caption-side: bottom; padding: 10px 0 0; font-size: 14px; color: var(--tenue); text-align: left; }
+/* La tabla de 1 a 10 cabe entera en el computador: los títulos de sus ocho
+   columnas bajan de línea y los números no, y su nota va bajo el recuadro
+   (revisión final v3, M25) */
+.lectura .tabla-marco.ancho table { font-size: 15px; }
+.lectura .tabla-marco.ancho th,
+.lectura .tabla-marco.ancho td { padding: 9px 8px; }
+.lectura .tabla-marco.ancho th { white-space: normal; }
+.lectura .nota-tabla { margin: -8px 0 24px; font-size: 14px; line-height: 1.5; color: var(--tenue); }
+/* En celulares de 380 px o menos, la tabla de 2 y 9 tareas cabe sin esconder
+   la columna de 9 (revisión final v3, M30) */
+@media (max-width: 380px) {
+  .tabla-marco:not(.ancho) th, .tabla-marco:not(.ancho) td { padding: 8px 8px; }
+  .tabla-marco:not(.ancho) th.numero { white-space: normal; }
+}
 /* La tabla de 1 a 10 tareas: la fila que más termina y la de sobrecarga */
 .tabla-dias tr.mejor td { background: color-mix(in srgb, var(--tranquila) 14%, transparent); }
 .tabla-dias tr.sobre td { background: color-mix(in srgb, var(--colapsada) 14%, transparent); }
@@ -229,6 +243,9 @@ dd > .origen {
 .descargas-pagina a:hover { background: var(--vidrio-hover); }
 .descargas-pagina b { color: var(--tinta); font-weight: 650; }
 .descargas-pagina small { margin-left: auto; white-space: nowrap; }
+/* A 320 px el peso del archivo baja de línea y la tarjeta no se corta
+   (revisión final v3, M31) */
+@media (max-width: 340px) { .descargas-pagina a { flex-wrap: wrap; } }
 
 /* ---------- Quién escribe (para que Felipe lo revise) ---------- */
 .autor {

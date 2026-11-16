@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Mosca del WIP · Resumen ejecutivo</title>
+<!-- Resumen ejecutivo v3 (2026-11-12, Etapa 8.11, pedido de Felipe: "rehacer el
+     resumen pero que sea aparte, una especie de resumen ejecutivo, rediséñalo
+     porque como está no me gustó"). El v1 (8.6) era casi puro cuadro y el v2
+     (8.7), cuatro hojas de puro texto: sus fuentes están en docs/contexto/v1/ y
+     en docs/contexto/resumen-v2/. Este es un documento aparte del informe, de
+     dos hojas (una hoja por los dos lados), con la identidad de la portada del
+     sitio: hoja blanca, letra Mona Sans y, sobre el blanco, los dos tableros de
+     noche de la portada ("¿Qué ganó la mosca al limitar su WIP?" y "Lo que se
+     lleva tu equipo"), con el mismo HTML de index.html. El estilo está en
+     resumen.css (lo comparte con resumen-en.html, el mismo resumen en inglés).
+     1 · qué es, el tablero de lo que ganó la mosca, lo que encontramos (tres
+         hallazgos, cada uno bajo una celda del tablero) y el paso a la hoja 2.
+         Quien lee solo esta hoja se lleva lo esencial
+     2 · los estudios con personas y qué es del juego y qué no, el tablero de lo
+         que se lleva tu equipo, los cuatro pasos (el texto del informe) y el
+         cierre con la dirección del sitio
+     Ningún número nuevo: todos salen del informe y de docs/corrida-oficial.json
+     y cada uno dice si es del juego, de la simulación o de estudios. Sin punto
+     y coma, sin signos de exclamación, sin dos puntos y sin rayas. Se revisa
+     con node scripts/revisar-paginas.mjs resumen y se arma con
+     DOC=resumen node scripts/documento.mjs. -->
+<link rel="stylesheet" href="resumen.css" />
+</head>
+<body>
+
+<!-- Los dibujos que se repiten: el logo del sitio (public/favicon.svg, "La
+     asomada") y la persona de "Su carga a la vista" -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="as-facetas" width="4" height="3.46" patternUnits="userSpaceOnUse"><circle cx="1" cy="0.87" r="0.85" fill="#b3281a"/><circle cx="3" cy="2.6" r="0.85" fill="#b3281a"/></pattern>
+    <clipPath id="as-nota"><path d="M9 49.5 a3.5 3.5 0 0 1 3.5 -3.5 H87.5 a3.5 3.5 0 0 1 3.5 3.5 V80 L76 95 H12.5 a3.5 3.5 0 0 1 -3.5 -3.5 Z"/></clipPath>
+    <clipPath id="as-bajo-borde"><rect x="0" y="45.2" width="100" height="54"/></clipPath>
+    <clipPath id="persona-circulo"><circle cx="12" cy="12" r="12"/></clipPath>
+  </defs>
+  <symbol id="marca" viewBox="0 0 100 100">
+    <g transform="translate(5 -5.9) scale(0.9)">
+      <g stroke="#3e332b" stroke-width="3.6" stroke-linecap="round" fill="none"><path d="M46.5 22 Q44.5 15.5 40.5 12.5"/><path d="M53.5 22 Q55.5 15.5 59.5 12.5"/></g>
+      <ellipse cx="50" cy="41" rx="24" ry="22" fill="#6f6052"/>
+      <ellipse cx="31" cy="36.5" rx="15" ry="18" transform="rotate(-14 31 36.5)" fill="#e8402c"/>
+      <ellipse cx="69" cy="36.5" rx="15" ry="18" transform="rotate(14 69 36.5)" fill="#e8402c"/>
+      <ellipse cx="31" cy="36.5" rx="15" ry="18" transform="rotate(-14 31 36.5)" fill="url(#as-facetas)" opacity="0.32"/>
+      <ellipse cx="69" cy="36.5" rx="15" ry="18" transform="rotate(14 69 36.5)" fill="url(#as-facetas)" opacity="0.32"/>
+      <ellipse cx="26" cy="27.5" rx="4.6" ry="3.2" transform="rotate(-35 26 27.5)" fill="#fff" opacity="0.88"/>
+      <ellipse cx="64" cy="27.5" rx="4.6" ry="3.2" transform="rotate(-35 64 27.5)" fill="#fff" opacity="0.88"/>
+    </g>
+    <g transform="rotate(-4 50 46)">
+      <path d="M9 49.5 a3.5 3.5 0 0 1 3.5 -3.5 H87.5 a3.5 3.5 0 0 1 3.5 3.5 V80 L76 95 H12.5 a3.5 3.5 0 0 1 -3.5 -3.5 Z" transform="translate(1.8 2.6)" fill="#2a2108" opacity="0.22"/>
+      <path d="M9 49.5 a3.5 3.5 0 0 1 3.5 -3.5 H87.5 a3.5 3.5 0 0 1 3.5 3.5 V80 L76 95 H12.5 a3.5 3.5 0 0 1 -3.5 -3.5 Z" fill="#ffd84d"/>
+      <rect x="9" y="46" width="82" height="9" fill="#f2c53c" clip-path="url(#as-nota)"/>
+      <g fill="#6f6052" stroke="#3e332b" stroke-width="1.1">
+        <rect x="13.2" y="43.4" width="4.3" height="7.4" rx="2.15"/><rect x="17.5" y="43.4" width="4.3" height="7.4" rx="2.15"/><rect x="21.8" y="43.4" width="4.3" height="7.4" rx="2.15"/>
+        <rect x="73.9" y="43.4" width="4.3" height="7.4" rx="2.15"/><rect x="78.2" y="43.4" width="4.3" height="7.4" rx="2.15"/><rect x="82.5" y="43.4" width="4.3" height="7.4" rx="2.15"/>
+      </g>
+      <path d="M91 80 L76 95 L78.14 82.36 Z" fill="#fff0b0"/>
+    </g>
+    <path d="M46.3 41.5 H53.7 V46.5 C58.6 47.2 59.4 58.6 50 59 C40.6 58.6 41.4 47.2 46.3 46.5 Z" fill="#6f6052"/>
+    <path d="M46.3 41.5 H53.7 V46.5 C58.6 47.2 59.4 58.6 50 59 C40.6 58.6 41.4 47.2 46.3 46.5 Z" fill="none" stroke="#3e332b" stroke-width="1.3" stroke-linejoin="round" clip-path="url(#as-bajo-borde)"/>
+    <ellipse cx="46.6" cy="52" rx="1.9" ry="1.3" transform="rotate(-30 46.6 52)" fill="#fff" opacity="0.45"/>
+  </symbol>
+  <!-- (el avatar del sitio es un fondo con dos degradados: aquí, el mismo dibujo en trazos) -->
+  <symbol id="persona" viewBox="0 0 24 24">
+    <g clip-path="url(#persona-circulo)">
+      <rect width="24" height="24" fill="#172f2c"/>
+      <circle cx="12" cy="8.64" r="4.1" fill="#5cc483"/>
+      <ellipse cx="12" cy="24" rx="14.6" ry="10.35" fill="#5cc483"/>
+    </g>
+  </symbol>
+</svg>
+
+<!-- =============================== 1 · QUÉ ES, QUÉ GANÓ LA MOSCA Y LO QUE ENCONTRAMOS =============================== -->
+<section class="hoja" data-k="juego">
+  <header class="barra">
+    <div class="logo"><svg viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#marca"/></svg><span class="logo-nombre">Mosca del WIP</span></div>
+    <p class="rotulo"><b>Resumen ejecutivo</b><span>Felipe Fernández, noviembre 2026</span></p>
+  </header>
+
+  <h1>Ocupado todo el día.<br /> ¿Y qué terminaste?</h1>
+  <div class="entrada">
+    <p>Mosca del WIP es un juego de un minuto. Tú eliges cuántas tareas puede tener empezadas a la vez una mosca oficinista, de 1 a 10, y miras su día de trabajo frente al tablero. Ese número es su límite de trabajo en curso, o WIP por su sigla en inglés.</p>
+    <p>Por dentro hay un experimento en el computador, con el mapa real del cerebro de una mosca de la fruta y reglas de oficina inspiradas en estudios con personas. El computador jugó 200 días con cada límite y sacamos el promedio.</p>
+  </div>
+
+  <!-- El tablero de la portada (index.html, "¿Qué ganó la mosca al limitar su
+       WIP?"), con el mismo HTML y los mismos textos. En el papel, los cortes de
+       línea de cada dato van puestos a mano, para que los dos días se lean en
+       paralelo (arriba cuánto, abajo cómo). Los números son los de la corrida oficial
+       (docs/corrida-oficial.json y docs/etapa4-1.md): 18,0 y 9,1 terminadas, 60 y
+       534 minutos por tarea, 47 % y 9 % del tiempo avanzando, Tranquila y
+       Colapsada, 0 y 13 cigarros -->
+  <section class="bloque sirve">
+    <h2>¿Qué ganó la mosca al limitar su WIP?</h2>
+    <div class="tablero-marco">
+      <!-- La mosca del logo, asomada al tablero (decorativa): la cabeza va
+           detrás del tablero y las patas, encima de su borde -->
+      <div class="asomada asomada-ventana" aria-hidden="true"><svg class="asomada-cabeza" viewBox="8 2 84 44" focusable="false">
+        <g transform="translate(5 -5.9) scale(0.9)">
+          <g stroke="#3e332b" stroke-width="3.6" stroke-linecap="round" fill="none"><path d="M46.5 22 Q44.5 15.5 40.5 12.5" /><path d="M53.5 22 Q55.5 15.5 59.5 12.5" /></g>
+          <ellipse cx="50" cy="41" rx="24" ry="22" fill="#6f6052" />
+          <ellipse cx="31" cy="36.5" rx="15" ry="18" transform="rotate(-14 31 36.5)" fill="#e8402c" />
+          <ellipse cx="69" cy="36.5" rx="15" ry="18" transform="rotate(14 69 36.5)" fill="#e8402c" />
+          <ellipse cx="26" cy="27.5" rx="4.6" ry="3.2" transform="rotate(-35 26 27.5)" fill="#fff" opacity="0.88" />
+          <ellipse cx="64" cy="27.5" rx="4.6" ry="3.2" transform="rotate(-35 64 27.5)" fill="#fff" opacity="0.88" />
+        </g>
+      </svg></div>
+      <div class="gana-tablero sirve-tablero">
+        <div class="gana-item">
+          <h3>Termina más, y cada tarea sale antes.</h3>
+          <div class="prueba">
+            <div class="carril" data-caso="pocas">
+              <p class="carril-caso">con 2 tareas a la vez</p>
+              <div class="fichas" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <p class="carril-dato"><b>18</b> terminadas al día,<br /> 1&nbsp;h cada una</p>
+            </div>
+            <div class="carril" data-caso="muchas">
+              <p class="carril-caso">con 9 tareas a la vez</p>
+              <div class="fichas" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="falta"></i><i class="falta"></i><i class="falta"></i><i class="falta"></i><i class="falta"></i><i class="falta"></i><i class="falta"></i><i class="falta"></i><i class="falta"></i></div>
+              <p class="carril-dato"><b>9</b> terminadas al día,<br /> casi 9&nbsp;h cada una</p>
+            </div>
+          </div>
+        </div>
+        <div class="gana-item">
+          <h3>El trabajo avanza en vez de esperar.</h3>
+          <div class="prueba">
+            <div class="carril" data-caso="pocas">
+              <p class="carril-caso">con 2 tareas a la vez</p>
+              <div class="avance" style="--avanza: 47%"><span class="avance-riel" aria-hidden="true"></span><span class="avance-cifra">47&nbsp;%</span></div>
+              <p class="carril-dato">cada tarea avanza casi<br /> la mitad del tiempo</p>
+            </div>
+            <div class="carril" data-caso="muchas">
+              <p class="carril-caso">con 9 tareas a la vez</p>
+              <div class="avance" style="--avanza: 9%"><span class="avance-riel" aria-hidden="true"></span><span class="avance-cifra">9&nbsp;%</span></div>
+              <p class="carril-dato">cada tarea espera<br /> 9 de cada 10&nbsp;minutos</p>
+            </div>
+          </div>
+        </div>
+        <div class="gana-item">
+          <h3>Menos sobrecarga.</h3>
+          <div class="prueba">
+            <div class="carril carril-cara" data-caso="pocas">
+              <svg class="cara" viewBox="12 14 84 64" aria-hidden="true" focusable="false">
+                <g transform="translate(5 8) scale(0.9)">
+                  <g stroke="#3e332b" stroke-width="3.6" stroke-linecap="round" fill="none"><path d="M46.5 22 Q44.5 15.5 40.5 12.5" /><path d="M53.5 22 Q55.5 15.5 59.5 12.5" /></g>
+                  <ellipse cx="50" cy="41" rx="24" ry="22" fill="#6f6052" />
+                  <ellipse cx="31" cy="36.5" rx="15" ry="18" transform="rotate(-14 31 36.5)" fill="#e8402c" />
+                  <ellipse cx="69" cy="36.5" rx="15" ry="18" transform="rotate(14 69 36.5)" fill="#e8402c" />
+                  <ellipse cx="26" cy="27.5" rx="4.6" ry="3.2" transform="rotate(-35 26 27.5)" fill="#fff" opacity="0.88" />
+                  <ellipse cx="64" cy="27.5" rx="4.6" ry="3.2" transform="rotate(-35 64 27.5)" fill="#fff" opacity="0.88" />
+                </g>
+                <path d="M46.3 55.4 H53.7 V60.4 C58.6 61.1 59.4 72.5 50 72.9 C40.6 72.5 41.4 61.1 46.3 60.4 Z" fill="#6f6052" stroke="#3e332b" stroke-width="1.3" stroke-linejoin="round" />
+                <!-- su café (tranquila, la mosca toma café y no fuma) -->
+                <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path class="cara-humo" d="M74.5 49.5c-1.6-2 1.6-3 0-5M80.5 49.5c-1.6-2 1.6-3 0-5" stroke-width="1.6" />
+                  <path d="M69 54h17v8.5a7 7 0 0 1-7 7h-3a7 7 0 0 1-7-7z" fill="#c8915e" stroke="none" />
+                  <path d="M86 57h2.2a3.9 3.9 0 0 1 0 7.8H85.6" stroke="#c8915e" stroke-width="2.6" />
+                  <path d="M70.5 56.2h14" stroke="#7a4f2a" stroke-width="2.2" />
+                </g>
+              </svg>
+              <p class="carril-caso">con 2 tareas a la vez</p>
+              <p class="carril-dato">cierra el día<br /> <b>Tranquila</b>,<br /> sin fumar</p>
+            </div>
+            <div class="carril carril-cara" data-caso="muchas">
+              <svg class="cara" viewBox="12 14 84 64" aria-hidden="true" focusable="false">
+                <g transform="translate(5 8) scale(0.9)">
+                  <g stroke="#3e332b" stroke-width="3.6" stroke-linecap="round" fill="none"><path d="M46.5 22 Q43 15 36.5 18.5" /><path d="M53.5 22 Q57 15 63.5 18.5" /></g>
+                  <ellipse cx="50" cy="41" rx="24" ry="22" fill="#6f6052" />
+                  <ellipse cx="31" cy="36.5" rx="15" ry="18" transform="rotate(-14 31 36.5)" fill="#e8402c" />
+                  <ellipse cx="69" cy="36.5" rx="15" ry="18" transform="rotate(14 69 36.5)" fill="#e8402c" />
+                  <g stroke="#fff" stroke-width="3.4" stroke-linecap="round" opacity="0.92"><path d="M24.5 30 37.5 43M37.5 30 24.5 43" /><path d="M62.5 30 75.5 43M75.5 30 62.5 43" /></g>
+                </g>
+                <path d="M46.3 55.4 H53.7 V60.4 C58.6 61.1 59.4 72.5 50 72.9 C40.6 72.5 41.4 61.1 46.3 60.4 Z" fill="#6f6052" stroke="#3e332b" stroke-width="1.3" stroke-linejoin="round" />
+                <!-- el sudor y el cigarro (colapsada, sale a fumar) -->
+                <path class="cara-sudor" d="M17.5 27c-2.6 3.6-2.6 6.4 0 6.4s2.6-2.8 0-6.4zM22 40.5c-2 2.8-2 5 0 5s2-2.2 0-5z" />
+                <g transform="rotate(14 54 68)" stroke="#3e332b" stroke-width="1">
+                  <rect x="53" y="65.6" width="24" height="5.8" rx="1.6" fill="#ece6dc" />
+                  <rect x="72" y="65.6" width="5" height="5.8" rx="1.6" fill="#ff7043" />
+                </g>
+                <path class="cara-humo" d="M82.5 64c3.4-3.6-3-5.6 0-9.4s-2.4-5 0-8.6" fill="none" stroke-width="2" stroke-linecap="round" />
+              </svg>
+              <p class="carril-caso">con 9 tareas a la vez</p>
+              <p class="carril-dato">cierra el día<br /> <b>Colapsada</b>,<br /> con 13&nbsp;cigarros</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <svg class="asomada asomada-patas" viewBox="8 42 84 10" aria-hidden="true" focusable="false">
+        <g fill="#6f6052" stroke="#3e332b" stroke-width="1.1">
+          <rect x="13.2" y="43.4" width="4.3" height="7.4" rx="2.15" /><rect x="17.5" y="43.4" width="4.3" height="7.4" rx="2.15" /><rect x="21.8" y="43.4" width="4.3" height="7.4" rx="2.15" />
+          <rect x="73.9" y="43.4" width="4.3" height="7.4" rx="2.15" /><rect x="78.2" y="43.4" width="4.3" height="7.4" rx="2.15" /><rect x="82.5" y="43.4" width="4.3" height="7.4" rx="2.15" />
+        </g>
+      </svg>
+    </div>
+    <p class="nota sirve-origen">En el juego, promedio de 200 días jugados.</p>
+  </section>
+
+  <!-- Lo que encontramos: tres hallazgos, cada uno bajo una celda del tablero.
+       1 tarea a la vez: 15,9 terminadas (corrida oficial). Bajar de 10 a 2 a las
+       12:00: vuelve a 2 abiertas a las 14:35 (corrida oficial). Urgencias: con
+       límite 2, 18,0 → 17,1 → 16,2 → 15,1 → 13,5 con 0, 1, 2, 3 y 5 al día, y el 2
+       sigue siendo el mejor límite (docs/etapa8-2.md) -->
+  <section class="bloque hallamos">
+    <h2>Lo que encontramos</h2>
+    <ul class="hallazgos">
+      <li>
+        <h3>Una sola tarea a la vez no fue lo mejor</h3>
+        <p>En el juego, con 1 tarea a la vez la mosca termina 15,9 al día, menos que con 2. Si esa tarea queda esperando a alguien, no tiene nada que hacer. Hasta con 3 cierra el día Tranquila, y ese es su límite sostenible.</p>
+      </li>
+      <li>
+        <h3>Lo empezado no desaparece</h3>
+        <p>En el juego, la mosca parte con 10 tareas a la vez y a las 12:00 su límite baja a 2. No toma tareas nuevas, y recién a las 14:35 vuelve a tener 2 abiertas. Bajar el límite no la calma de inmediato.</p>
+      </li>
+      <li>
+        <h3>Cada urgencia costó una tarea normal</h3>
+        <p>En la simulación, a la mosca le llegan urgencias que pasan por encima del límite. Con límite 2, cada urgencia al día le cuesta cerca de una tarea normal. El 2 sigue siendo el límite con que más termina.</p>
+      </li>
+    </ul>
+    <p class="puente">Los estudios con personas apuntan en la misma dirección y ninguno da un número. El de tu equipo sale de su propia prueba, y los cuatro pasos para hacerla están en la página 2.</p>
+  </section>
+
+  <div class="pie"><span>mosca.deliverycraft.ai</span><span></span></div>
+</section>
+
+<!-- =============================== 2 · LOS ESTUDIOS, LOS CUIDADOS Y QUÉ HACER =============================== -->
+<section class="hoja" data-k="equipo">
+  <header class="barra">
+    <div class="logo"><svg viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#marca"/></svg><span class="logo-nombre">Mosca del WIP</span></div>
+    <p class="rotulo"><b>Resumen ejecutivo</b><span>Felipe Fernández, noviembre 2026</span></p>
+  </header>
+
+  <!-- Los estudios (informe, "Con personas reales") y los cuidados (informe,
+       anexo A, "¿Es real?" y "Los límites de este experimento") -->
+  <div class="bloque dos">
+    <section>
+      <h2>Qué dicen los estudios<br /> con personas</h2>
+      <p>En Italia, los jueces que por sorteo recibieron más causas a la vez tardaron más en cerrarlas, y la calidad de sus fallos no cambió (Coviello, Ichino y Persico, 2014). Con reclutadores, un poco de trabajo en paralelo ayudó a terminar más, y pasado un punto terminaron menos. Las encuestas de DORA a equipos de software dicen que limitar el trabajo en curso ayuda, sobre todo con un tablero visible. Ninguno midió cuántas cosas conviene tener abiertas.</p>
+    </section>
+    <section>
+      <h2>Qué es del juego<br /> y qué no</h2>
+      <p>El juego es una mosca sola en un solo día, sin compañeros a quienes pasarles trabajo, y no mide personas ni equipos. La ley de Little, que es matemática, dice que, al mismo ritmo de salida, cada tarea tarda más cuando hay más abiertas. En cambio, que con 9 termine la mitad depende de dos reglas nuestras, lo que cuesta cambiar de tarea y los cigarros, y que el estrés suba es un supuesto nuestro. Su cerebro es real, pero no decide nada.</p>
+    </section>
+  </div>
+
+  <!-- El tablero de la portada (index.html, "Lo que se lleva tu equipo"), con
+       el mismo HTML. Los dibujos son decorativos: el texto dice todo sin ellos,
+       y las barras de las dos semanas no suben ni bajan, para no prometer un
+       resultado -->
+  <section class="bloque gana">
+    <h2>Lo que se lleva tu equipo</h2>
+    <p class="bajada">Es lo que queda a la vista después de probar un límite dos semanas. Cuánto gana tu equipo, lo dice su prueba.</p>
+    <ul class="gana-tablero lleva-tablero">
+      <li class="gana-item" data-color="tranquila">
+        <p class="lleva-frase">Su carga a la vista, cuántas cosas tiene empezadas cada uno.</p>
+        <div class="dibujo dibujo-carga" aria-hidden="true">
+          <div class="persona"><svg class="avatar" viewBox="0 0 24 24" focusable="false"><use href="#persona"/></svg><span class="cosas"><i></i><i></i></span><b>2</b></div>
+          <div class="persona"><svg class="avatar" viewBox="0 0 24 24" focusable="false"><use href="#persona"/></svg><span class="cosas"><i></i><i></i><i></i><i></i><i></i><i></i></span><b>6</b></div>
+          <div class="persona"><svg class="avatar" viewBox="0 0 24 24" focusable="false"><use href="#persona"/></svg><span class="cosas"><i></i><i></i><i></i></span><b>3</b></div>
+        </div>
+      </li>
+      <li class="gana-item" data-color="colapsada">
+        <p class="lleva-frase">Dónde se queda esperando el trabajo.</p>
+        <div class="dibujo dibujo-espera" aria-hidden="true">
+          <div class="columna-mini"><i></i></div>
+          <div class="columna-mini espera">
+            <svg class="candado" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="12" height="8.5" rx="2" fill="currentColor" fill-opacity="0.25" /><path d="M6.8 9V6.6a3.2 3.2 0 0 1 6.4 0V9" /></svg>
+            <i></i><i></i><i></i><i></i>
+          </div>
+          <div class="columna-mini"><i></i><i></i></div>
+        </div>
+      </li>
+      <li class="gana-item" data-color="ocupada">
+        <p class="lleva-frase">Un límite acordado, escrito en el tablero.</p>
+        <div class="dibujo dibujo-limite" aria-hidden="true">
+          <div class="columna-mini limite">
+            <p class="columna-mini-cabeza"><span>En curso</span><b>máx. 3</b></p>
+            <i></i><i></i><i></i>
+          </div>
+          <div class="en-fila"><i></i><i></i></div>
+        </div>
+      </li>
+      <li class="gana-item" data-color="vision">
+        <p class="lleva-frase">Sus propios datos después de dos semanas.</p>
+        <div class="dibujo dibujo-datos" aria-hidden="true">
+          <div class="semana"><span class="barras"><i style="--h: 46%"></i><i style="--h: 72%"></i><i style="--h: 38%"></i><i style="--h: 64%"></i><i style="--h: 52%"></i></span><span class="semana-nombre">semana 1</span></div>
+          <div class="semana"><span class="barras"><i style="--h: 60%"></i><i style="--h: 40%"></i><i style="--h: 70%"></i><i style="--h: 48%"></i><i style="--h: 56%"></i></span><span class="semana-nombre">semana 2</span></div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Los cuatro pasos, con el texto del informe ("Qué hacer con esto"). Los
+       pasos 1 y 3 llevan coma donde el informe lleva dos puntos, porque el
+       resumen no usa dos puntos -->
+  <section class="bloque cuatro">
+    <h2>Cuatro pasos para probar un límite con tu equipo</h2>
+    <p class="bajada">El juego no dice cuál es el número de tu equipo. Estos cuatro pasos sirven para encontrarlo.</p>
+    <ol class="pasos">
+      <li><span class="n" aria-hidden="true">1</span><div><h3>Pongan el trabajo a la vista</h3><p>Tres columnas bastan, por hacer, en curso y hecho. Lo que no se ve no se puede limitar.</p></div></li>
+      <li><span class="n" aria-hidden="true">2</span><div><h3>Cuenten lo abierto y pónganle un límite</h3><p>Cuenten cuántas cosas tiene abiertas cada persona hoy. Acuerden un límite bajo, escríbanlo en el tablero y respétenlo. Con esperas inevitables,&nbsp;no&nbsp;una.</p></div></li>
+      <li><span class="n" aria-hidden="true">3</span><div><h3>Cuando alguien queda esperando, ataquen la espera</h3><p>No abran otra cosa para "aprovechar el tiempo", ayuden a destrabar lo que espera. Con menos esperas, el límite puede bajar.</p></div></li>
+      <li><span class="n" aria-hidden="true">4</span><div><h3>Prueben dos semanas y midan</h3><p>En cada tarjeta anoten el día que empezó y el día que terminó. A las dos semanas comparen cuántas terminaron y cuánto tardó cada una.</p></div></li>
+    </ol>
+  </section>
+
+  <div class="cierre">
+    <p class="norte">Un límite sostenible, no una cosa a la vez.</p>
+    <p class="donde">El juego, la guía del límite WIP, el informe y el kit del taller están gratis en <a href="https://mosca.deliverycraft.ai/">mosca.deliverycraft.ai</a>.</p>
+    <p class="chico">Puedes compartir este resumen tal cual, citando al autor. Los datos del cerebro son del Male&nbsp;CNS&nbsp;v1.0, con licencia CC&nbsp;BY&nbsp;4.0.</p>
+  </div>
+
+  <div class="pie"><span>mosca.deliverycraft.ai</span><span></span></div>
+</section>
+
+<script>
+// Números de página: las dos hojas, 1 / 2 y 2 / 2
+(function () {
+  const hojas = [...document.querySelectorAll('.hoja')];
+  hojas.forEach((h, i) => { const n = h.querySelector('.pie span:last-child'); if (n) n.textContent = `${i + 1} / ${hojas.length}`; });
+})();
+
+// Ningún número suelto al final ni al principio de una línea: en el texto
+// corrido, cada número se pega con un espacio duro a la palabra que le sigue
+// («1 tarea», «200 días», «14:35 vuelve») y, si cierra la frase o va antes de
+// una coma, a la palabra de antes («con 2.», «a 10,»). Los tableros no se
+// tocan: traen sus propios espacios duros, los de la portada
+(function () {
+  const andar = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  const nodos = [];
+  while (andar.nextNode()) if (!andar.currentNode.parentElement.closest('svg, script, style, .pie, .gana-tablero')) nodos.push(andar.currentNode);
+  const DURO = String.fromCharCode(160); // el espacio duro
+  for (const n of nodos) {
+    n.textContent = n.textContent
+      .replace(/(\d) %/g, '$1' + DURO + '%')
+      .replace(/(\S) (?=\d+(?:[.,:]\d+)*(?:\u00a0%)?[.,)?]+(?:\s|$))/g, '$1' + DURO)
+      .replace(/(\d+(?:[.,:]\d+)*(?:\u00a0%)?) (?=\S)/g, '$1' + DURO);
+  }
+})();
+</script>
+</body>
+</html>

@@ -18,7 +18,7 @@ export const INGLES = {
   rotulo: 'Being busy all the time isn’t the same as making progress',
   titulo: 'Busy all day.<br class="corte" /> So what did you&nbsp;finish?',
   bajada:
-    'Measure how many things your team has started and find the limit that lets it finish the most. Start by playing for a minute with an office fly that has a real brain.',
+    'Measure how many things your team has in progress and find the limit that gets the most done. Start with a one-minute game about an office fly with a real brain.',
   // 8.13 (2026-11-14, pedido de Felipe): el dato chico del juego salió del
   // inicio y, en vez del cerebro, va un dibujo. Felipe vio seis propuestas y
   // eligió "¿Te suena?": los pedidos que le van llegando a la mosca en un día
@@ -27,20 +27,20 @@ export const INGLES = {
   suenaLista: 'What people ask the fly for',
   globo1: 'Got a minute?',
   globo2: 'It’s urgent',
-  globo3: 'How’s mine going?',
-  globo4: 'This is for today',
+  globo3: 'Any update on mine?',
+  globo4: 'I need this today',
   globo5: 'One quick thing',
   globo6: 'Did you see it?',
   globo7: 'This is urgent too',
-  globo8: 'And yesterday’s?',
+  globo8: 'What about yesterday’s?',
   globo9: 'Did you get my email?',
   globo10: 'I need it now',
   globo11: 'I added you to a meeting',
-  globo12: 'Just one question',
+  globo12: 'Quick question',
   globo13: 'Can you help me with this?',
   globo14: 'Can you look at it now?',
   suenaPie: 'Everything urgent, everything started. Sound familiar?',
-  suenaNota: 'What that costs the fly shows in the game, in one minute.',
+  suenaNota: 'The game shows what that costs the fly, in one minute.',
   jugar: 'Play',
   jugarMinuto: 'Play (1 minute)',
   verKit: 'See the kit',
@@ -108,7 +108,7 @@ export const INGLES = {
   sirve3Dato2: 'she ends the day <b>Calm</b>, without smoking',
   sirve3Dato9: 'she ends the day <b>Overwhelmed</b>, with <span data-cuenta="der" data-paso="70" data-espera="450">13</span>&nbsp;cigarettes',
   sirveOrigen: 'In the game, average of 200 days played.', // 8.14: dice de dónde salen los números (la bajada de arriba salió)
-  sirveCierre: 'According to DORA, limiting work in progress is a habit of high-performing teams. How much your team gains, its own test will show.',
+  sirveCierre: 'According to DORA, limiting work in progress is a habit of high-performing teams. Your team’s own test will show how much it gains.',
   ganaTitulo: 'What your team takes away',
   // (8.11) con coma, como el español y como el resumen ejecutivo en inglés (antes llevaba dos puntos)
   lleva1: 'Their load in plain sight, how many things each person has started.',
@@ -197,13 +197,13 @@ export const INGLES = {
   preguntasTitulo: 'FAQ',
   pregunta1: 'What is Mosca del WIP?',
   respuesta1:
-    'It’s a one-minute game that is also a computer experiment. You’re the boss of an office fly. You decide how many tasks she has started at once and watch how many she finishes, how long each one takes and how stressed she is at the end of the day. The rules come from studies with people, and inside it runs the real map of a fly’s brain. It shows you, simply, what it costs to have everything started.',
+    'It’s a one-minute game that is also a computer experiment. You’re the boss of an office fly. You decide how many tasks she has started at once and watch how many she finishes, how long each one takes and how stressed she is at the end of the day. The rules are inspired by studies with real people, and the neurons that light up come from a real fly. It shows you, simply, what it costs to have everything started.',
   pregunta2: 'What does WIP mean?',
   respuesta2:
     'It’s short for work in progress. It’s everything you’ve started and haven’t finished yet. In the game, it’s the tasks the fly has open at the same time.',
   pregunta3: 'How many tasks at once is best?',
   respuesta3:
-    'There’s no number for everyone. In the game, the fly finishes the most with 2 and her sustainable limit is 3, because up to 3 she stays Calm. With more, her stress goes up, and with 9 she ends the day Overwhelmed. But the fly works alone, and the game doesn’t tell you your team’s number. It depends on how much your work waits, and you find it by trying a limit. How to do it is in the guide <a href="/en/wip-limit/">WIP limit, what it is and how to find your team’s</a>.',
+    'There’s no number for everyone. In the game, the fly finishes the most with 2 and her sustainable limit is 3, because up to 3 she stays Calm. With more, her stress goes up, and with 9 she ends the day Overwhelmed. But the fly works alone, and the game doesn’t tell you your team’s number. It depends on how much your work waits, and you find it by trying a limit. How to do it is in the guide <a href="/en/wip-limit/">What a WIP limit is and how to find your team’s</a>.',
   pregunta4: 'Is the brain from a real fly?',
   respuesta4:
     'The neurons and their connections are. They come from Male CNS v1.0, the map of a male fly’s central nervous system, neuron by neuron, licensed under CC BY 4.0. The activity you see is simulated. We translate the tasks into something a fly can feel, like dust on her antenna, and simulate how her brain responds. Only some of her neurons are shown.',
@@ -224,7 +224,7 @@ export const INGLES = {
     'Play one day with 2 tasks at once and another with 9, and compare the Days played table. On a computer, the Exhibition view shows the game large, for a TV or a projector. The kit on this page has the <a href="/en/report/">report</a>, with four steps to try a limit, and a <a href="/en/workshop/">60-minute workshop</a> with its guide to facilitate it.',
   pregunta10: 'What does my team take away?',
   respuesta10:
-    'A limit helps you finish more, keeps work moving instead of waiting, and means less overload. Your team leaves with its load in plain sight, a clear view of where the work sits waiting, an agreed limit and its own data after two weeks. How much it gains, its own test will show.',
+    'A limit helps you finish more, keeps work moving instead of waiting, and means less overload. Your team leaves with its load in plain sight, a clear view of where the work sits waiting, an agreed limit and its own data after two weeks. Your team’s own test will show how much it gains.',
   pregunta11: 'Can I use the workshop with my team, or in paid workshops?',
   respuesta11:
     'Yes. The workshop (the quick guide, the slides and the team sheet) is licensed CC BY 4.0. You can use it and adapt it, also in paid workshops, crediting Felipe Fernández (mosca.deliverycraft.ai). For now it’s in Spanish. The report can be shared as it is, crediting the author, and the game is played on this page.',
@@ -245,7 +245,7 @@ export const INGLES = {
   motivoTitulo: 'Why I made it',
   motivoTexto:
     'I work with teams and I see the same thing over and over. They commit without knowing how much load they carry. They don’t know where to start or what’s really urgent, because everything is urgent and a priority. You feel you work all day and get nowhere, and the list of pending work keeps getting longer.',
-  motivoTexto2: 'It happens to me too, in my own job. I wanted to show it in one minute, by playing, before arguing about it.', // 8.8
+  motivoTexto2: 'It happens to me too, in my own job. I wanted to show it in one minute, by playing, before debating it.', // 8.8
   cierre: 'Closing',
   cierreFrase: 'A sustainable limit, not one thing at a time.',
   hechoPor:
@@ -269,7 +269,7 @@ export const DINAMICOS = {
     tareas: (n) => `${n} ${n === 1 ? 'tarea' : 'tareas'} a la vez`,
     nivel: (nivel) => nivel,
     resumen: (n, terminadas, nivel, cigarros) =>
-      `Con ${n} a la vez, ${terminadas} terminadas en el día, estrés ${nivel} al cerrar y ${cigarros} cigarros.`,
+      `Con ${n} a la vez, ${terminadas} terminadas en el día, estrés ${nivel} al cerrar y ${cigarros} ${cigarros === 1 ? 'cigarro' : 'cigarros'}.`,
   },
   en: {
     limite: (dentro) => (dentro ? 'Within the sustainable limit (3)' : 'Over the sustainable limit (3)'),

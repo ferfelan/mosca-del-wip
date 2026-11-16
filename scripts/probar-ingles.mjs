@@ -395,7 +395,7 @@ for (const [w, h] of TAMANOS) {
   const tarjeta = await en.evaluate(() => document.getElementById('aviso-empezar').innerText.replace(/\s+/g, ' ').trim());
   revisar(
     tarjeta ===
-      'You’re the fly’s boss. Choose how many tasks she can have started at once, from 1 to 10. Watch her office day in one minute. At the end you’ll see how much she finished, how long each task took and how stressed she ended up. If she gets stressed, she goes out for a smoke and loses time. If she isn’t too stressed, she has a coffee. Try one day with 9 and another with 2. Which one do you think she’ll finish more with? Start the day Where is everything? What is this?',
+      'You’re the fly’s boss. Choose how many tasks she can have started at once, from 1 to 10. Watch her office day in one minute. At the end you’ll see how much she finished, how long each task took and how stressed she ended up. If she gets stressed, she goes out for a smoke and loses time. If she isn’t too stressed, she has a coffee. Try one day with 9 and another with 2. Which one do you think gets more done? Start the day Where is everything? What is this?',
     `la tarjeta de inicio en inglés («${tarjeta}»)`
   );
   const cargaEs = await es.evaluate(() => ({ lang: document.documentElement.lang, escondida: window.__escondida === true }));
