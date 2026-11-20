@@ -19,8 +19,8 @@ el juego digan lo mismo. Si quieres cambiar una palabra:
 
 ## Cómo está escrito el inglés
 
-- Simple, cálido y corto, con la misma voz del informe. Nunca la palabra
-  "[…]". No agrega ni quita nada de lo que dice el español.
+- Simple, cálido y corto, con la misma voz del informe. Nunca jerga de
+  metodologías. No agrega ni quita nada de lo que dice el español.
 - Inglés de Estados Unidos.
 - Los números son los mismos; cambia cómo se escriben: **15.9** y **1,328** en
   inglés; **15,9** y **1.328** en español.

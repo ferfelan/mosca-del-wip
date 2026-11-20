@@ -119,8 +119,8 @@ Por DOI (Crossref) o en la página oficial:
   23(3-parte 2):849–867, DOI 10.1287/isre.1110.0408), Tastekin y otros 2026
   (Cell 189(18):5527–5551.e5, DOI 10.1016/j.cell.2026.08.016), Hampel y
   otros 2020 (resumen), Pencavel (texto del autor), DORA (página oficial),
-  Principio 8 del Manifiesto […] (texto oficial en español: "Los procesos
-  […] promueven el desarrollo sostenible. Los promotores, desarrolladores
+  Principio 8 del manifiesto de 2001 sobre desarrollo de software (texto oficial en español: "[Estos procesos]
+  promueven el desarrollo sostenible. Los promotores, desarrolladores
   y usuarios debemos ser capaces de mantener un ritmo constante de forma
   indefinida."), crédito de MaleCNS (página oficial).
 - **Confirmadas** (ya estaban verificadas): Coviello y otros 2014 (AER

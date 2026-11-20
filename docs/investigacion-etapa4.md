@@ -1,6 +1,6 @@
 # Investigación Etapa 4.3 — "Mosca del WIP": qué respalda la evidencia, qué la matiza y qué no hay que decir
 
-La evidencia real respalda la idea central del juego —tener más trabajo abierto no hace avanzar más rápido; desde cierto punto solo alarga la espera— pero la respalda la matemática de colas (Little, Factory Physics) y unos pocos estudios de campo con correlaciones o "experimentos naturales" (jueces italianos, reclutadores), no experimentos con equipos […]; el número exacto "2 a 4 tareas" es un resultado de nuestra simulación, no un hallazgo científico.
+La evidencia real respalda la idea central del juego —tener más trabajo abierto no hace avanzar más rápido; desde cierto punto solo alarga la espera— pero la respalda la matemática de colas (Little, Factory Physics) y unos pocos estudios de campo con correlaciones o "experimentos naturales" (jueces italianos, reclutadores), no experimentos con equipos de software; el número exacto "2 a 4 tareas" es un resultado de nuestra simulación, no un hallazgo científico.
 
 ## TL;DR
 
@@ -15,7 +15,7 @@ La evidencia real respalda la idea central del juego —tener más trabajo abier
 1. **Respalda el norte:** la ley de Little (1961; 2011) es un teorema: WIP promedio = rendimiento × tiempo promedio en el sistema.\[1\] Si lo terminado no sube, más WIP solo significa más espera.
 2. **Respalda H1/H2:** Factory Physics (Hopp & Spearman) define un "WIP crítico" desde el cual el rendimiento ya no sube; con variabilidad (bloqueos) hace falta algo más de WIP para llegar ahí.\[2\]\[3\]\[4\] Es exactamente la forma "saturación + espera" de nuestros resultados 4.1 y 4.2.
 3. **Respalda H2 con datos de campo:** jueces italianos que, por sorteo de causas, hacían más malabares tardaron más en cerrar casos sin mejorar la calidad (Coviello, Ichino & Persico 2014, AER).\[5\] Reclutadores: relación en U invertida entre multitarea y productividad (Aral et al. 2012).\[6\] Equipos de I+D: U invertida entre pertenecer a varios equipos y desempeño (Bertolotti et al. 2015).\[7\]
-4. **Respalda "sostenible":** Principio 8 del Manifiesto […]; Pencavel (2015): bajo 49 horas semanales la producción era proporcional a las horas (elasticidad 1,002) y desde 49 horas subía mucho menos (elasticidad 0,172); 70 horas producían casi lo mismo que 56.
+4. **Respalda "sostenible":** Principio 8 del manifiesto de 2001 sobre desarrollo de software; Pencavel (2015): bajo 49 horas semanales la producción era proporcional a las horas (elasticidad 1,002) y desde 49 horas subía mucho menos (elasticidad 0,172); 70 horas producían casi lo mismo que 56.
 5. **Matiza:** DORA/Accelerate: "WIP limits on their own do not strongly predict delivery performance"; funcionan combinados con tableros visibles y retroalimentación.\[8\]\[9\]\[10\]
 6. **Matiza:** Modig & Åhlström es un libro de divulgación; una reseña académica (Bølviken & Koskela 2017) dice que sus conceptos son inconsistentes y que la idea no es nueva (Shingo).\[11\]
 7. **Matiza:** Mark, Gudith & Klocke (2008): las personas interrumpidas terminaron *más rápido* pero con más estrés. Las interrupciones cuestan estrés, no necesariamente tiempo.\[12\]\[13\]
@@ -67,7 +67,7 @@ La evidencia real respalda la idea central del juego —tener más trabajo abier
 
 **A3. "Valores típicos" de eficiencia de flujo (5–15 %, 15–40 %)**
 - **Idea:** las cifras circulan, pero vienen de la experiencia de consultores, no de estudios publicados con datos.
-- **Qué dice exactamente:** David J. Anderson (blog de su escuela, djaa.com): "Typically, we expect flow efficiency to be in the range 1%-25%… Flow efficiency is seldom observed above 40%", y sin Kanban "usually less than 10% and as low as 1%".\[29\] La cifra "5–15 %" se atribuye a Daniel Vacanti (*Actionable […] Metrics for Predictability*) según blogs de proveedores (Businessmap).\[30\] Otros sitios dan "15–25 %" o "15–40 %" sin fuente original.\[31\]\[32\]
+- **Qué dice exactamente:** David J. Anderson (blog de su escuela, djaa.com): "Typically, we expect flow efficiency to be in the range 1%-25%… Flow efficiency is seldom observed above 40%", y sin Kanban "usually less than 10% and as low as 1%".\[29\] La cifra "5–15 %" se atribuye a Daniel Vacanti (su libro sobre métricas de flujo) según blogs de proveedores (Businessmap).\[30\] Otros sitios dan "15–25 %" o "15–40 %" sin fuente original.\[31\]\[32\]
 - **Tipo y fuerza:** opinión experta / anécdota de consultoría; no se encontró ningún conjunto de datos publicado.
 - **Cómo usarla:** como mucho: "consultores de Kanban reportan que en su experiencia suele ser baja (a menudo bajo 25 %)".
 - **Estado:** fuente secundaria; sin datos verificables.
@@ -167,9 +167,9 @@ La evidencia real respalda la idea central del juego —tener más trabajo abier
 
 ### E. Ritmo sostenible y recuperación
 
-**E1. Principio 8 del Manifiesto […]**
-- **Español oficial ([…].org/iso/es/principles.html):** "Los procesos […] promueven el desarrollo sostenible. Los promotores, desarrolladores y usuarios debemos ser capaces de mantener un ritmo constante de forma indefinida."\[55\]
-- **Inglés:** "[…] processes promote sustainable development. The sponsors, developers, and users should be able to maintain a constant pace indefinitely." (no re-verificado).
+**E1. Principio 8 del manifiesto de 2001 sobre desarrollo de software**
+- **Español oficial (página de principios del sitio del manifiesto):** "[Estos procesos] promueven el desarrollo sostenible. Los promotores, desarrolladores y usuarios debemos ser capaces de mantener un ritmo constante de forma indefinida."\[55\]
+- **Inglés:** "[These] processes promote sustainable development. The sponsors, developers, and users should be able to maintain a constant pace indefinitely." (no re-verificado).
 - **Tipo:** declaración de principios. **Estado:** español verificado en fuente primaria.
 
 **E2. Pencavel (2015) — horas largas**
@@ -250,7 +250,7 @@ Ver sección 6.
 3. **La eficiencia de flujo de la mosca es casi aritmética** (≈ tiempo trabajando ÷ número de tareas). No mostrarla como hallazgo.
 4. **DORA no dice que el WIP solo baste**, y su ideal ("single-piece flow") es más extremo que nuestro "no una cosa a la vez": DORA propone atacar las esperas en vez de subir el límite ("Don't relax your WIP limits when people are idle").\[10\] Nuestra frase vale para *una persona con esperas que no puede ayudar a otros*; en un equipo, la respuesta lean a las esperas es ayudar a destrabar, no abrir más trabajo.\[10\]
 5. **Modig & Åhlström tiene críticas académicas.** Usarlo como marco, no como prueba.
-6. **La evidencia de campo es correlacional o de un caso** (Aral, Bertolotti, Sjøberg, DORA). La más fuerte (Coviello) es sobre jueces, no equipos […].
+6. **La evidencia de campo es correlacional o de un caso** (Aral, Bertolotti, Sjøberg, DORA). La más fuerte (Coviello) es sobre jueces, no equipos de software.
 7. **Interrupción ≠ WIP.** En Mark et al. 2008 los interrumpidos fueron *más rápidos* (con más estrés).\[78\]
 8. **Little no habla de transiciones.** H3 es un resultado de simulación.
 9. **Café y cortisol:** el beneficio del "café" del juego debe atribuirse a la pausa, no a la cafeína.
@@ -371,7 +371,7 @@ Ver sección 6.
 - Taylor, G., et al. (2014). *BMJ*, 348, g1151. DOI 10.1136/bmj.g1151
 - Taylor, G. M. J., et al. (2021). Smoking cessation for improving mental health. *Cochrane Database of Systematic Reviews*, CD013522. DOI 10.1002/14651858.CD013522.pub2
 - Weinberg, G. M. (1992). *Quality Software Management, Vol. 1: Systems Thinking*. Dorset House.
-- […] Manifesto. Principios del Manifiesto […]. https://[…].org/iso/es/principles.html
+- Principios del manifiesto de 2001 sobre desarrollo de software. Texto oficial en español, en el sitio del manifiesto.
 
 ## Fuentes
 
@@ -429,7 +429,7 @@ Ver sección 6.
 52. [TinySwEng - R. Feldt](https://www.cse.chalmers.se/~feldt/tinysweng/121001.html)
 53. [Quantifying the Effect of Using Kanban versus Scrum:](https://mediaweb.saintleo.edu/Courses/COM430/M2Readings/Quantifying%20the%20effect%20KanbanvScrum.pdf)
 54. [A statistical analysis of the effects of Scrum and Kanban on software development projects - ScienceDirect](https://www.sciencedirect.com/science/article/abs/pii/S0736584515301599)
-55. [Principios del Manifiesto […]](https://[…].org/iso/es/principles.html)
+55. Principios del manifiesto de 2001 sobre desarrollo de software, texto oficial en español, en el sitio del manifiesto
 56. [The Productivity of Working Hours - Pencavel - 2015 - The Economic Journal - Wiley Online Library](https://onlinelibrary.wiley.com/doi/abs/10.1111/ecoj.12166)
 57. [(PDF) Acute Stressors and Cortisol Responses: A Theoretical Integration and Synthesis of Laboratory Research](https://www.researchgate.net/publication/8582418_Acute_Stressors_and_Cortisol_Responses_A_Theoretical_Integration_and_Synthesis_of_Laboratory_Research)
 58. [Google Scholar](https://scholar.google.com/scholar_lookup?title=Acute+stressors+and+cortisol+responses:+A+theoretical+integration+and+synthesis+of+laboratory+research&amp=&author=S.+S.+Dickerson&amp=&author=M.+E.+Kemeny&amp=&publication_year=2004&amp=&journal=Psychological+Bulletin&amp=&pages=355-391&amp=&doi=10.1037/0033-2909.130.3.355&amp=&pmid=15122924)

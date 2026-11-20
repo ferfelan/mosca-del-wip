@@ -56,6 +56,10 @@ The fly brain data, the fonts and the libraries belong to their authors and
 keep their own licenses. They are listed in
 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
 
+The short quotes from papers, books and web pages in the research notes belong
+to their authors. They appear with their source and are not covered by CC BY
+4.0.
+
 ---
 
 # Licencias del contenido
@@ -113,3 +117,7 @@ resumen que muestran las páginas `/informe/` y `/en/report/`.
 Los datos del cerebro de la mosca, las letras y las bibliotecas son de sus
 autores y conservan sus propias licencias. Están en
 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+
+Las citas cortas de artículos, libros y páginas web que aparecen en las notas
+de investigación son de sus autores. Van con su fuente y no quedan bajo CC BY
+4.0.

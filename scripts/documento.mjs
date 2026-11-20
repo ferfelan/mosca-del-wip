@@ -26,7 +26,7 @@
 // cabeza y hojas que caen desde la torre; v13: gotas corriendo por la cabeza y
 // hojas desparramadas para varios lados; 24 oct., primeros lectores: compartir v14,
 // el feedback de tres lectores junto, y completo v7; revisión de Felipe del v14, el mismo
-// día: compartir v15 ("Dato freak", sin "[…]", pág. 8 con cinco tarjetas, pág. 9 en dos
+// día: compartir v15 ("Dato freak", sin jerga de metodologías, pág. 8 con cinco tarjetas, pág. 9 en dos
 // filas, gráfico de la pág. 5 con valores en 2 y 9) y completo v8; arreglos de Felipe al
 // v15, el mismo día: compartir v16, datos freak nuevos y "Regla nuestra" en la pág. 2; v17, mismo
 // día: la tarjeta de DORA de la pág. 8 sin la frase del ideal, que ya está en el dato freak de la pág. 6;
