@@ -555,3 +555,25 @@ study with people
 pesa 4 MB
 18 pages, 4 MB
 weighs 4 MB
+
+# ─── Etapa 8.18, 2026-11-19: el código pasa a ser abierto ────────────────────
+
+# Pie de todas las páginas: "© 2026 Felipe Fernández. Todos los derechos
+# reservados. Los datos del cerebro son del Male CNS v1.0…" → "© 2026 Felipe
+# Fernández. El código es abierto, con licencia MIT, y está en GitHub. Los datos
+# del cerebro…". En inglés, "All rights reserved. The brain data…" → "The code
+# is open source under the MIT license, and it’s on GitHub. The brain data…".
+Todos los derechos reservados. Los datos del cerebro
+All rights reserved. The brain data
+
+# Créditos, "Autor y derechos": "Todos los derechos reservados sobre el juego,
+# el código, las imágenes y los textos del sitio, incluidos los dos informes."
+# → "El código del juego y del sitio es abierto, con licencia MIT, y está en
+# GitHub. Los textos y las imágenes del sitio, el taller (…) y los datos en CSV
+# tienen licencia CC BY 4.0…". Y "Para usar el código, las imágenes o los textos
+# en otra cosa, escríbele a Felipe." → "Para traducirlos o adaptarlos,
+# escríbele a Felipe." (habla del informe y del resumen, que siguen igual).
+Todos los derechos reservados sobre el juego
+All rights reserved over the game
+Para usar el código, las imágenes o los textos en otra cosa
+To use the code, the images or the texts in something else

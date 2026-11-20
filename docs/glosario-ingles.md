@@ -89,7 +89,8 @@ el juego digan lo mismo. Si quieres cambiar una palabra:
 | Preguntas frecuentes | Frequently asked questions |
 | Gratis y sin registro. Se juega en el computador, el celular o la tablet. | Free, no sign-up. Plays on a computer, phone or tablet. (Desde el 2026-10-25 el informe también está en inglés: ya no se dice "The report is in Spanish.") |
 | el límite de tareas en curso (WIP) · cuánto rinde (presentación de la portada, 2026-10-25) | the limit on tasks in progress (WIP) · how much of each hour really counts |
-| © 2026 Felipe Fernández. Todos los derechos reservados. Los datos del cerebro son del Male CNS v1.0, con licencia CC BY 4.0. (pie, 2026-10-25) | © 2026 Felipe Fernández. All rights reserved. The brain data come from Male CNS v1.0, licensed CC BY 4.0. |
+| © 2026 Felipe Fernández. El código es abierto, con licencia MIT, y está en GitHub. Los datos del cerebro son del Male CNS v1.0, con licencia CC BY 4.0. (pie, desde el 2026-11-19; antes decía "Todos los derechos reservados" y "All rights reserved") | © 2026 Felipe Fernández. The code is open source under the MIT license, and it’s on GitHub. The brain data come from Male CNS v1.0, licensed CC BY 4.0. |
+| código abierto (2026-11-19) | open source |
 | Que cada tarea tarde más y se termine menos tiene respaldo; que suba el estrés es un supuesto nuestro. | That each task takes longer and fewer get finished is backed by evidence; that stress goes up is our own assumption. |
 
 ## 2. En la pantalla del juego

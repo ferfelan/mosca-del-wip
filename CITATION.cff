@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use Mosca del WIP, please cite it like this."
+type: software
+title: "Mosca del WIP"
+abstract: "A one-minute browser game about limiting work in progress, with an office fly whose brain comes from the Male CNS v1.0 connectome. It comes with a guide, a report and a workshop kit."
+authors:
+  - family-names: "Fernández"
+    given-names: "Felipe"
+url: "https://mosca.deliverycraft.ai/"
+repository-code: "https://github.com/ferfelan/mosca-del-wip"
+license: MIT
+keywords:
+  - "work in progress"
+  - "WIP limit"
+  - "kanban"
+  - "simulation"
+  - "connectome"
+  - "Drosophila"

@@ -1,0 +1,32 @@
+name: Something is wrong
+description: A broken page, a number that does not match or a sentence that reads badly.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Thank you for telling us. You can write in English or in Spanish.
+  - type: textarea
+    id: que
+    attributes:
+      label: What happened
+      description: What you saw and what you expected to see.
+    validations:
+      required: true
+  - type: input
+    id: donde
+    attributes:
+      label: Where
+      description: The address of the page, or the file in this repository.
+      placeholder: https://mosca.deliverycraft.ai/jugar/
+    validations:
+      required: true
+  - type: input
+    id: equipo
+    attributes:
+      label: Device and browser
+      description: For example, an iPhone with Safari or a computer with Chrome.
+  - type: textarea
+    id: pasos
+    attributes:
+      label: Steps to see it
+      description: A screenshot helps a lot.

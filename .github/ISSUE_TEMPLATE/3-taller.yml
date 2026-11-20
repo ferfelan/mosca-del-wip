@@ -1,0 +1,31 @@
+name: I ran the workshop
+description: Tell how the session went with your team, so the kit can improve.
+labels: ["workshop"]
+body:
+  - type: markdown
+    attributes:
+      value: Thank you. Please do not name people or companies without their permission. You can write in English or in Spanish.
+  - type: input
+    id: personas
+    attributes:
+      label: How many people took part
+  - type: input
+    id: tipo
+    attributes:
+      label: What kind of team it was
+      description: In general words, such as a support team or a product team.
+  - type: textarea
+    id: bien
+    attributes:
+      label: What worked
+    validations:
+      required: true
+  - type: textarea
+    id: mal
+    attributes:
+      label: What was confusing or did not work
+  - type: textarea
+    id: limite
+    attributes:
+      label: The limit the team chose and what happened after two weeks
+      description: Only if you want to share it.

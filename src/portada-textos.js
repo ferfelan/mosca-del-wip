@@ -258,7 +258,7 @@ export const INGLES = {
   pieTaller: 'The workshop',
   pieCreditos: 'Credits and licenses',
   derechos:
-    '© 2026 Felipe Fernández. All rights reserved. The brain data come from Male CNS v1.0, licensed CC BY 4.0. <a href="/creditos/?lang=en">Credits and licenses</a>',
+    '© 2026 Felipe Fernández. The code is open source under the MIT license, and it’s on <a href="https://github.com/ferfelan/mosca-del-wip">GitHub</a>. The brain data come from Male CNS v1.0, licensed CC BY 4.0. <a href="/creditos/?lang=en">Credits and licenses</a>',
 };
 
 // Lo que cambia con la consola, en los dos idiomas. El nivel de estrés llega

@@ -1,0 +1,24 @@
+name: Idea or improvement
+description: Something the game, the site or the workshop could do better.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: Open the idea here before you write code, so we can agree on it first. You can write in English or in Spanish.
+  - type: textarea
+    id: idea
+    attributes:
+      label: The idea
+      description: What you would change and who it helps.
+    validations:
+      required: true
+  - type: textarea
+    id: porque
+    attributes:
+      label: Why it matters
+  - type: checkboxes
+    id: reglas
+    attributes:
+      label: Before you send it
+      options:
+        - label: I know the rules of the game in src/brain.js are frozen, because the numbers of the report come from them.

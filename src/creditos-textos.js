@@ -12,7 +12,7 @@ export const INGLES = {
   jugar: PORTADA.jugar,
   hechoPor: PORTADA.hechoPor,
   sinCookies: PORTADA.sinCookies,
-  derechos: '© 2026 Felipe Fernández. All rights reserved. The brain data come from Male CNS v1.0, licensed CC BY 4.0.',
+  derechos: '© 2026 Felipe Fernández. The code is open source under the MIT license, and it’s on <a href="https://github.com/ferfelan/mosca-del-wip">GitHub</a>. The brain data come from Male CNS v1.0, licensed CC BY 4.0.',
   pieMapa: PORTADA.pieMapa,
   pieJuego: PORTADA.pieJuego,
   pieGuia: PORTADA.pieGuia,
@@ -29,9 +29,9 @@ export const INGLES = {
 
   autorTitulo: 'Author and rights',
   autor1:
-    'Mosca del WIP was made by <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a> in 2026. © 2026 Felipe Fernández. All rights reserved over the game, the code, the images and the site’s texts, including both reports. The workshop (quick guide, slides and team sheet) and the CSV data are licensed CC BY 4.0, so you can use and adapt them, also in paid workshops, crediting Felipe Fernández (mosca.deliverycraft.ai).',
+    'Mosca del WIP was made by <a href="https://www.linkedin.com/in/felipefernandezandrade/">Felipe Fernández</a> in 2026. © 2026 Felipe Fernández. The code of the game and the site is open source under the MIT license, and it’s on <a href="https://github.com/ferfelan/mosca-del-wip">GitHub</a>. The site’s texts and images, the workshop (quick guide, slides and team sheet) and the CSV data are licensed CC BY 4.0, so you can use and adapt them, also in paid workshops, crediting Felipe Fernández (mosca.deliverycraft.ai).',
   autor2:
-    'You can play for free, share the link and show the game to your team, in a class or in a talk. You may share the PDF report as is, crediting the author. To use the code, the images or the texts in something else, write to Felipe.',
+    'You can play for free, share the link and show the game to your team, in a class or in a talk. You may share the PDF report and its summary as they are, crediting the author. To translate or adapt them, write to Felipe.',
 
   cerebroTitulo: 'The brain data',
   cerebro1:
@@ -45,6 +45,8 @@ export const INGLES = {
     '<b>Three.js</b> (version 0.186.1) draws the office, the fly and the brain in 3D. <a href="https://github.com/mrdoob/three.js/blob/dev/LICENSE">MIT</a> license, © 2010–2026 three.js authors.',
   otroMona:
     '<b>Mona Sans</b> is the typeface of the home page and this page. Made by GitHub (© 2022 The Mona Sans Project Authors), licensed under the <a href="/fonts/LICENCIA-mona-sans-OFL.txt">SIL Open Font License 1.1</a>.',
+  otroModelo:
+    '<b>The brain model</b> follows the rules and the numbers of the one published by Shiu and others in 2024 in the journal Nature. Its code is under the <a href="https://github.com/philshiu/Drosophila_brain_model/blob/main/LICENSE">MIT</a> license, © 2023 Philip Shiu and Nico Spiller.',
   otroVite: '<b>Vite</b> builds the site for publishing. MIT license.',
   otroVercel: '<b>Vercel</b> hosts the site and counts visits with its Web Analytics, which only loads on the published site.',
   otrosNuestro: 'Everything else (the fly, the office, the drawings, the game photos and the texts) is ours.',

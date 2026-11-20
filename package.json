@@ -1,6 +1,17 @@
 {
   "name": "mosca-del-wip",
   "version": "0.0.0",
+  "description": "Un juego de un minuto sobre el límite de trabajo en curso (WIP), con una mosca oficinista de cerebro real. A one-minute game about work-in-progress limits.",
+  "license": "MIT",
+  "author": "Felipe Fernández",
+  "homepage": "https://mosca.deliverycraft.ai/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ferfelan/mosca-del-wip.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ferfelan/mosca-del-wip/issues"
+  },
   "private": true,
   "type": "module",
   "engines": {

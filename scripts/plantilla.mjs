@@ -40,7 +40,7 @@ const T = {
     pieTaller: 'El taller',
     pieCreditos: 'Créditos y licencias',
     pieInicio: 'Inicio',
-    derechos: '© 2026 Felipe Fernández. Todos los derechos reservados. Los datos del cerebro son del Male CNS v1.0, con licencia CC BY 4.0.',
+    derechos: '© 2026 Felipe Fernández. El código es abierto, con licencia MIT, y está en <a href="https://github.com/ferfelan/mosca-del-wip">GitHub</a>. Los datos del cerebro son del Male CNS v1.0, con licencia CC BY 4.0.',
     fechaLarga: (iso) => {
       const [a, m, d] = iso.split('-').map(Number);
       return `${d} de ${['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'][m - 1]} de ${a}`;
@@ -57,7 +57,7 @@ const T = {
     pieTaller: INGLES.pieTaller,
     pieCreditos: INGLES.pieCreditos,
     pieInicio: 'Home',
-    derechos: '© 2026 Felipe Fernández. All rights reserved. The brain data come from Male CNS v1.0, licensed CC BY 4.0.',
+    derechos: '© 2026 Felipe Fernández. The code is open source under the MIT license, and it’s on <a href="https://github.com/ferfelan/mosca-del-wip">GitHub</a>. The brain data come from Male CNS v1.0, licensed CC BY 4.0.',
     fechaLarga: (iso) => {
       const [a, m, d] = iso.split('-').map(Number);
       return `${['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][m - 1]} ${d}, ${a}`;

@@ -1,0 +1,20 @@
+name: Translation
+description: Offer a new language or fix a translation.
+labels: ["translation"]
+body:
+  - type: markdown
+    attributes:
+      value: Spanish is the source. The English texts are in src/juego-textos.js and src/portada-textos.js, and the glossary is in docs/glosario-ingles.md.
+  - type: input
+    id: idioma
+    attributes:
+      label: Language
+    validations:
+      required: true
+  - type: textarea
+    id: que
+    attributes:
+      label: What you want to translate or fix
+      description: The game, the home page, the guide or the workshop kit.
+    validations:
+      required: true

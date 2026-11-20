@@ -2,7 +2,7 @@
 //
 // Busca en todo lo que se publica, en español y en inglés:
 //   1. las frases retiradas de docs/frases-retiradas.txt,
-//   2. las palabras prohibidas ([…], […], […], scrum, sprint, daily, retro),
+//   2. las palabras prohibidas (las de métodos y sus reuniones, lista más abajo),
 //   3. el punto y coma en el texto que se lee,
 //   4. los dos puntos en el texto que se lee (Etapa 8.12, 2026-11-13: "elimina
 //      los : en todos lados"). No cuentan los de una hora (09:00), los de una
@@ -15,6 +15,8 @@
 //      autor y el título de los PDF y de la presentación del sitio, los autores
 //      del JSON-LD, el autor de las páginas, "FlyWire" (nunca) y los nombres de
 //      empresas que no se nombran (detalle en la sección 6, más abajo).
+// Desde la Etapa 8.18 (2026-11-19) revisa también los documentos del
+// repositorio público (el README, la guía para aportar y los demás).
 // Dónde: el sitio construido (dist/: cada página con su texto, sus atributos que
 // se leen y su JSON-LD, el manifest, el sitemap, los CSV, los PDF y la
 // presentación del taller), los textos del juego y de la portada (src/), los
@@ -22,7 +24,7 @@
 // si existe, lo vigente suelto en ~/Desktop/Mosca del WIP (salvo el Informe
 // completo, que cuenta la historia y por eso cita textos viejos).
 // Lo interno del Escritorio (los PDF de cada etapa y el de los borradores, que
-// trae las reglas con las palabras prohibidas y el nombre del foro r/[…]) se
+// trae las reglas con las palabras prohibidas y el nombre de un foro) se
 // revisa solo por frases retiradas: el texto de los borradores se revisa
 // entero desde docs/etapa7-difusion.md. Los datos del cerebro (public/cerebro)
 // no se tocan (regla de la 8.6) y su texto de origen no se muestra: no cuentan
@@ -73,7 +75,13 @@ const RETIRADAS = readFileSync(join(R, 'docs', 'frases-retiradas.txt'), 'utf8')
   .split('\n')
   .map((l) => l.trim())
   .filter((l) => l && !l.startsWith('#'));
-const PROHIBIDAS = /(?<![\p{L}\p{N}])([…](es)?|[…](es|idad)?|[…]|[…]|scrum|sprints?|daily|dailies|retros?)(?![\p{L}\p{N}])/giu;
+// (la lista completa vive en un archivo privado, espejo/palabras-prohibidas.txt,
+// que no pasa a la copia pública del repositorio: ahí se revisan solo las de abajo)
+const LISTA_PROHIBIDAS = join(R, 'espejo', 'palabras-prohibidas.txt');
+const FORMAS_PROHIBIDAS = existsSync(LISTA_PROHIBIDAS)
+  ? readFileSync(LISTA_PROHIBIDAS, 'utf8').split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('#'))
+  : ['scrum', 'sprints?', 'daily', 'dailies', 'retros?'];
+const PROHIBIDAS = new RegExp(`(?<![\\p{L}\\p{N}])(${FORMAS_PROHIBIDAS.join('|')})(?![\\p{L}\\p{N}])`, 'giu');
 
 // ---------- Juntar los textos públicos: { donde, texto } ----------
 const piezas = [];
@@ -176,10 +184,53 @@ for (const n of readdirSync(join(R, 'src')).filter((n) => n.endsWith('.js'))) {
   agregar(`textos: src/${n}`, textosDeCodigo(readFileSync(join(R, 'src', n), 'utf8')).join(' ¦ '));
 }
 
-// 3. Los borradores de difusión (los mismos 8 que arma scripts/borradores.mjs)
-const md = readFileSync(join(R, 'docs', 'etapa7-difusion.md'), 'utf8');
-const sec3 = md.slice(md.indexOf('## 3. Borradores'), md.indexOf('## 4. Subir'));
-[...sec3.matchAll(/```text\n([\s\S]*?)\n```/g)].forEach((m, i) => agregar(`borradores: docs/etapa7-difusion.md, borrador ${i + 1}`, m[1]));
+// 3. Los borradores de difusión (los mismos 8 que arma scripts/borradores.mjs).
+// Son de trabajo y no están en la copia pública del repositorio: ahí se saltan.
+const DIFUSION = join(R, 'docs', 'etapa7-difusion.md');
+if (existsSync(DIFUSION)) {
+  const md = readFileSync(DIFUSION, 'utf8');
+  const sec3 = md.slice(md.indexOf('## 3. Borradores'), md.indexOf('## 4. Subir'));
+  [...sec3.matchAll(/```text\n([\s\S]*?)\n```/g)].forEach((m, i) => agregar(`borradores: docs/etapa7-difusion.md, borrador ${i + 1}`, m[1]));
+}
+
+// 3b. Los documentos del repositorio público (Etapa 8.18, 2026-11-19): el
+// README en los dos idiomas, la guía para aportar, el código de conducta, la
+// seguridad, el índice de docs/ y las plantillas de GitHub. Se leen como texto:
+// sin los bloques de código, sin el código entre acentos graves y sin la
+// dirección de cada enlace. Las licencias y los avisos de terceros llevan textos
+// legales de otros, que no se pueden cambiar: ahí no cuentan el punto y coma ni
+// los dos puntos. En las plantillas (YAML) se revisan solo sus textos.
+function textoMarkdown(t) {
+  return t
+    .replace(/^---\n[\s\S]*?\n---\n/, ' ')
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/`[^`\n]*`/g, ' ')
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/https?:\/\/[^\s)>]+/g, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/^\s*\|?[\s|:-]+\|?\s*$/gm, ' ');
+}
+function textosYaml(t) {
+  const salida = [];
+  for (const linea of t.split('\n')) {
+    const m = /^\s*(?:-\s+)?(?:name|about|title|description|label|placeholder|value)\s*:\s*(.+)$/.exec(linea);
+    if (m && !/^[|>]/.test(m[1])) salida.push(m[1].replace(/^(['"])(.*)\1$/, '$2'));
+    else if (!/^\s*(?:-\s+)?[\w-]+\s*:/.test(linea) && linea.trim() && !linea.trim().startsWith('#')) salida.push(linea.trim().replace(/^-\s+/, ''));
+  }
+  return salida.join(' · ');
+}
+const DOCUMENTOS_REPO = ['README.md', 'README.es.md', 'CONTRIBUTING.md', 'CONTRIBUTING.es.md', 'CODE_OF_CONDUCT.md', 'SECURITY.md', 'docs/README.md'];
+const LEGALES_REPO = ['LICENSE', 'LICENSE-CONTENT.md', 'THIRD-PARTY-NOTICES.md', 'CITATION.cff'];
+for (const n of DOCUMENTOS_REPO) if (existsSync(join(R, n))) agregar(`repositorio: ${n}`, textoMarkdown(readFileSync(join(R, n), 'utf8')));
+for (const n of LEGALES_REPO) if (existsSync(join(R, n))) agregar(`repositorio: ${n}`, textoMarkdown(readFileSync(join(R, n), 'utf8')), 'sin-punto-y-coma');
+if (existsSync(join(R, '.github'))) {
+  for (const ruta of archivos(join(R, '.github'))) {
+    const donde = `repositorio: ${relative(R, ruta)}`;
+    if (/\.ya?ml$/.test(ruta)) agregar(donde, textosYaml(readFileSync(ruta, 'utf8')));
+    else if (/\.md$/.test(ruta)) agregar(donde, textoMarkdown(readFileSync(ruta, 'utf8')));
+  }
+}
 
 // 4. Lo vigente en la carpeta del Escritorio (si está en este computador)
 if (existsSync(ESCRITORIO)) {
@@ -308,12 +359,17 @@ if (textosPdfium) {
 //    fase2-sitio, que todavía no estaba en main: al juntarse, se exige solo).
 //  - "FlyWire" no aparece en nada público: el mapa del juego es el Male CNS
 //    (MaleCNS), y de FlyWire no se usa nada (regla desde la Etapa 5).
-//  - Las empresas que el proyecto decidió no nombrar: EmpresaX ("Por qué lo hice",
-//    Etapa 8.8, sección 7 de docs/etapa8-8.md). No se agregan otras sin que
-//    estén decididas así en CLAUDE.md o en las bitácoras.
+//  - Las empresas que el proyecto decidió no nombrar ("Por qué lo hice", Etapa
+//    8.8). La lista está en un archivo privado (ver más abajo). No se agregan
+//    otras sin que estén decididas así en las bitácoras.
 // Como en las revisiones 2 a 4, lo interno del Escritorio no cuenta.
 const AUTOR = 'Felipe Fernández';
-const EMPRESAS_QUE_NO_SE_NOMBRAN = ['EmpresaX'];
+// (la lista vive en un archivo privado, espejo/no-nombrar.txt, que no pasa a la
+// copia pública del repositorio: ahí la lista queda vacía y esta parte no revisa nada)
+const NO_NOMBRAR = join(R, 'espejo', 'no-nombrar.txt');
+const EMPRESAS_QUE_NO_SE_NOMBRAN = existsSync(NO_NOMBRAR)
+  ? readFileSync(NO_NOMBRAR, 'utf8').split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('#'))
+  : [];
 const esAutor = (t) => typeof t === 'string' && t.normalize('NFC').trim() === AUTOR.normalize('NFC');
 const avisos = [];
 const malNombre = (donde, que, ver) => hallazgos.push({ tipo: 'nombres y metadatos', donde, que, ver });
@@ -373,7 +429,10 @@ if (metaAutor.some((p) => p.autores.length)) {
     if (autores.length !== 1 || !esAutor(autores[0])) malNombre(`${donde} (meta author)`, autores.length ? autores.join(' y ') : 'sin <meta name="author">', `cada página lleva uno solo, «${AUTOR}»`);
 } else avisos.push(`Ninguna de las ${PAGINAS_HTML.length} páginas tiene <meta name="author">. No se cuenta. Cuando una lo tenga, se exige en todas.`);
 // "FlyWire" y las empresas que no se nombran, en todo lo público (no en lo interno del Escritorio)
-const EMPRESAS = new RegExp(`(?<![\\p{L}\\p{N}])(?:${EMPRESAS_QUE_NO_SE_NOMBRAN.join('|')})(?![\\p{L}\\p{N}])`, 'giu');
+const escaparRegex = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const EMPRESAS = EMPRESAS_QUE_NO_SE_NOMBRAN.length
+  ? new RegExp(`(?<![\\p{L}\\p{N}])(?:${EMPRESAS_QUE_NO_SE_NOMBRAN.map(escaparRegex).join('|')})(?![\\p{L}\\p{N}])`, 'giu')
+  : /(?!)/gu;
 for (const { donde, texto, solo } of piezas) {
   if (solo === 'frases') continue;
   for (const m of texto.matchAll(/fly[\s_-]*wire/giu)) malNombre(donde, m[0], `${contexto(texto, m.index, m[0].length)} (nunca FlyWire, el mapa del juego es el Male CNS)`);
