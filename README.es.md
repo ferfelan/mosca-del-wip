@@ -52,6 +52,8 @@ acuerda un límite y lo prueba dos semanas en el tablero que ya usa.
 - Los archivos están en [`public/taller/`](public/taller/).
 - El taller tiene licencia CC BY 4.0. Puedes usarlo y adaptarlo, también en
   talleres pagados, citando al autor.
+- ¿Lo usaste con un equipo? Cuenta cómo te fue en
+  [este hilo](https://github.com/ferfelan/mosca-del-wip/issues/7).
 
 El juego no dice el número de tu equipo. Cuánto gana tu equipo, lo dice su
 prueba.
@@ -147,7 +149,10 @@ equipos reales sería otro proyecto, y todavía no se ha hecho.
 Las ideas, las correcciones y las traducciones son bienvenidas. Parte por
 [CONTRIBUTING.es.md](CONTRIBUTING.es.md) y por las tareas marcadas como
 [good first issue](https://github.com/ferfelan/mosca-del-wip/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22).
-Si hiciste el taller con un equipo, hay un formulario para contar cómo te fue.
+Si lo usaste con un equipo, cuenta cómo te fue en
+[este hilo](https://github.com/ferfelan/mosca-del-wip/issues/7). Con dos o tres
+líneas basta, sin nombres de personas ni de empresas. Si hiciste el taller
+completo, también hay un formulario más largo.
 
 ## Cómo está hecho
 

@@ -13,8 +13,11 @@ In English in [CONTRIBUTING.md](CONTRIBUTING.md).
   de acuerdo primero.
 - **Traduce.** El juego y el sitio están en español y en inglés. El taller
   está solo en español por ahora.
-- **Cuenta cómo te fue con el taller.** Si lo hiciste con un equipo, hay un
-  formulario para eso. No nombres personas ni empresas sin su permiso.
+- **Cuenta cómo te fue.** Si usaste el juego o el taller con un equipo, deja
+  dos o tres líneas en
+  [este hilo](https://github.com/ferfelan/mosca-del-wip/issues/7). Si hiciste
+  el taller completo, también hay un formulario más largo. No nombres
+  personas ni empresas.
 - **Arregla o mejora el código.** Parte por los issues marcados como good
   first issue.
 

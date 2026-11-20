@@ -54,6 +54,8 @@ tests it for two weeks on the board it already uses.
   Spanish.
 - The kit is licensed CC BY 4.0. You can use it and adapt it, also in paid
   workshops, crediting the author.
+- Did you use it with a team? Tell how it went in
+  [this thread](https://github.com/ferfelan/mosca-del-wip/issues/7).
 
 The game does not tell you your team's number. Your team's own test will show
 how much it gains.
@@ -150,8 +152,10 @@ real teams would be another project, and it has not been done yet.
 Ideas, corrections and translations are welcome. Start with
 [CONTRIBUTING.md](CONTRIBUTING.md) and with the issues labeled
 [good first issue](https://github.com/ferfelan/mosca-del-wip/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22).
-If you ran the workshop with a team, there is an issue form to tell how it
-went.
+If you used it with a team, tell how it went in
+[this thread](https://github.com/ferfelan/mosca-del-wip/issues/7). Two or three
+lines are enough, with no names of people or companies. If you ran the full
+workshop, there is also a longer issue form.
 
 ## How it is made
 

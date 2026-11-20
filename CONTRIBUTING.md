@@ -13,8 +13,11 @@ En español en [CONTRIBUTING.es.md](CONTRIBUTING.es.md).
   it first.
 - **Translate.** The game and the site are in Spanish and English. The
   workshop kit is in Spanish only for now.
-- **Tell how the workshop went.** If you ran it with a team, there is an issue
-  form for that. Do not name people or companies without their permission.
+- **Tell how it went.** If you used the game or the workshop with a team,
+  leave two or three lines in
+  [this thread](https://github.com/ferfelan/mosca-del-wip/issues/7). If you ran
+  the full workshop, there is also a longer issue form. Do not name people or
+  companies.
 - **Fix or improve the code.** Start with the issues labeled good first issue.
 
 You can write issues and pull requests in Spanish or in English.

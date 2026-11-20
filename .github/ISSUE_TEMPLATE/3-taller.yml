@@ -4,7 +4,7 @@ labels: ["workshop"]
 body:
   - type: markdown
     attributes:
-      value: Thank you. Please do not name people or companies without their permission. You can write in English or in Spanish.
+      value: Thank you. Please do not name people or companies. You can write in English or in Spanish.
   - type: input
     id: personas
     attributes:
